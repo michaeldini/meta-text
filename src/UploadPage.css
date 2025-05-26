@@ -1,0 +1,90 @@
+body {
+    background: #111;
+    color: #fff;
+}
+
+.upload-page {
+    max-width: 500px;
+    margin: 2rem auto;
+    background: #181818;
+    color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+    padding: 2rem;
+}
+
+.upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.upload-form input[type="file"] {
+    display: none;
+}
+
+.file-label {
+    display: inline-block;
+    background: none;
+    color: #fff;
+    padding: 0.7rem 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+    transition: background 0.2s, border 0.2s, box-shadow 0.2s;
+    border: 1.5px solid #4747c1;
+    box-shadow: 0 2px 8px 0 rgba(100, 108, 255, 0.08);
+    outline: none;
+}
+
+.file-label:hover,
+.file-label:focus {
+    background: #646cff;
+    border: 1.5px solid #a18aff;
+    box-shadow: 0 0 0 2px #a18aff33;
+}
+
+.file-name {
+    display: block;
+    margin-top: 0.2rem;
+    margin-bottom: 0.5rem;
+    color: #bbb;
+    font-size: 0.97rem;
+    word-break: break-all;
+    padding-left: 2px;
+}
+
+.error-msg {
+    color: #ff6b6b;
+    margin-top: 0.5rem;
+}
+
+.success-msg {
+    color: #4caf50;
+    margin-top: 0.5rem;
+}
+
+.labels-list {
+    margin-top: 2rem;
+    color: #fff;
+}
+
+.labels-list ul {
+    list-style: disc inside;
+    padding-left: 1rem;
+}
+
+.labels-list li {
+    margin-bottom: 0.3rem;
+    font-size: 1.05rem;
+}
+
+input {
+    min-height: 2.5rem;
+    border: 1.5px solid #4747c1;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+}
