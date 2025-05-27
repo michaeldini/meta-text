@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./DocumentViewer.css";
 
-const META_FIELDS = ["notes", "summary", "aiImageUrl"];
+const META_FIELDS = ["notes", "summary", "aiImageUrl", "aiSummary"];
 
 export default function DocumentViewer() {
     const { name } = useParams();
@@ -14,10 +14,13 @@ export default function DocumentViewer() {
         notes: true,
         summary: true,
         aiImageUrl: true,
+        aiSummary: true,
     });
     const [saveStatus, setSaveStatus] = useState(null);
     const [horizontalScroll, setHorizontalScroll] = useState(false);
     const [autoSaveTimeout, setAutoSaveTimeout] = useState(null);
+    const [aiSummaryLoading, setAiSummaryLoading] = useState([]);
+    const [aiSummaryError, setAiSummaryError] = useState([]);
 
     useEffect(() => {
         async function fetchDocument() {
@@ -36,6 +39,9 @@ export default function DocumentViewer() {
             }
         }
         if (name) fetchDocument();
+        // Reset per-row loading/error when document changes
+        setAiSummaryLoading([]);
+        setAiSummaryError([]);
     }, [name]);
 
     const handleToggleMeta = (field) => {
@@ -68,6 +74,49 @@ export default function DocumentViewer() {
             setSaveStatus("success");
         } catch {
             setSaveStatus("error");
+        }
+    };
+
+    const handleGenerateAiSummary = async (idx) => {
+        setAiSummaryLoading((prev) => {
+            const arr = [...prev];
+            arr[idx] = true;
+            return arr;
+        });
+        setAiSummaryError((prev) => {
+            const arr = [...prev];
+            arr[idx] = null;
+            return arr;
+        });
+        try {
+            const res = await fetch("/api/ai-complete", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ prompt: editSections[idx]?.content || "" }),
+            });
+            if (!res.ok) throw new Error("AI summary failed");
+            const data = await res.json();
+            setEditSections((prev) => {
+                const arr = [...prev];
+                arr[idx] = { ...arr[idx], aiSummary: data.result };
+                return arr;
+            });
+            setAiSummaryLoading((prev) => {
+                const arr = [...prev];
+                arr[idx] = false;
+                return arr;
+            });
+        } catch (e) {
+            setAiSummaryError((prev) => {
+                const arr = [...prev];
+                arr[idx] = e.message || "Error generating summary";
+                return arr;
+            });
+            setAiSummaryLoading((prev) => {
+                const arr = [...prev];
+                arr[idx] = false;
+                return arr;
+            });
         }
     };
 
@@ -154,6 +203,23 @@ export default function DocumentViewer() {
                                                             className="docviewer-edit-textarea"
                                                             rows={1}
                                                         />
+                                                    ) : field === "aiSummary" ? (
+                                                        <div className="docviewer-ai-summary-cell">
+                                                            <button
+                                                                className="docviewer-ai-summary-btn"
+                                                                onClick={() => handleGenerateAiSummary(idx)}
+                                                                disabled={aiSummaryLoading[idx]}
+                                                                style={{ marginBottom: 4 }}
+                                                            >
+                                                                {aiSummaryLoading[idx] ? "Generating..." : "Generate"}
+                                                            </button>
+                                                            {aiSummaryError[idx] && (
+                                                                <div className="docviewer-ai-summary-error">{aiSummaryError[idx]}</div>
+                                                            )}
+                                                            <div className="docviewer-ai-summary-text">
+                                                                {editSections[idx]?.aiSummary || <span className="docviewer-empty">—</span>}
+                                                            </div>
+                                                        </div>
                                                     ) : field === "aiImageUrl" && section[field] ? (
                                                         <img
                                                             src={section[field]}

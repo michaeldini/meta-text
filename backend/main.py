@@ -5,6 +5,8 @@ from sqlmodel import SQLModel, Field, Session, create_engine, select
 import os
 import json
 
+from openai import OpenAI
+
 app = FastAPI()
 
 app.add_middleware(
@@ -88,6 +90,7 @@ async def create_split_document(request: Request, session: Session = Depends(get
         "content": doc.content,
         "notes": "",
         "summary": "",
+        "aiSummary": "",
         "aiImageUrl": ""
     }
     content_json = json.dumps([initial_section])
@@ -160,6 +163,29 @@ async def save_split_document(request: Request, session: Session = Depends(get_s
         session.add(split_doc)
     session.commit()
     return {"success": True}
+
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=OPENAI_API_KEY)
+
+@app.post("/api/ai-complete")
+async def summarize_prompt(request: Request):
+    body = await request.json()
+    prompt = body.get("prompt")
+    if not prompt:
+        raise HTTPException(status_code=400, detail="Missing prompt.")
+    try:
+                
+        response = client.responses.create(
+            model="gpt-4o-mini-2024-07-18",
+            instructions="Write a helpful and extremely concise one sentence summary.",
+            input=prompt,
+            max_output_tokens=1024,
+        )
+
+        ai_text = response.output_text
+        return {"result": ai_text}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")
 
 @app.get("/")
 def read_root():
