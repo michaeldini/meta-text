@@ -1,4 +1,4 @@
-**/*/.sqlite
+**/*.sqlite
 # Logs
 logs
 *.log
@@ -23,3 +23,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+__pycache__
+
