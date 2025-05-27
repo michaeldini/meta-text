@@ -1,6 +1,7 @@
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException, Request, Depends
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 from sqlmodel import SQLModel, Field, Session, create_engine, select
 import os
 import json
@@ -28,6 +29,24 @@ class Documents(SQLModel, table=True):
 class SplitDocuments(SQLModel, table=True):
     name: str = Field(primary_key=True)
     content: str
+
+class AiSummaryResponse(BaseModel):
+    title: str
+    summary: str
+    characters: list[str]
+    locations: list[str]
+    themes: list[str]
+    symbols: list[str]
+
+class AiSummary(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    label: str = Field(index=True, unique=True)
+    title: str
+    summary: str
+    characters: str  # store as JSON string
+    locations: str   # store as JSON string
+    themes: str      # store as JSON string
+    symbols: str     # store as JSON string
 
 def init_db():
     SQLModel.metadata.create_all(engine)
@@ -186,6 +205,91 @@ async def summarize_prompt(request: Request):
         return {"result": ai_text}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")
+    
+@app.post("/api/ai-symbolism")
+async def symbolism_prompt(request: Request):
+    body = await request.json()
+    prompt = body.get("prompt")
+    if not prompt:
+        raise HTTPException(status_code=400, detail="Missing prompt.")
+    try:
+        response = client.responses.create(
+            model="gpt-4o-mini-2024-07-18",
+            instructions="Only list and briefly describe any symbolisms.",
+            input=prompt,
+            max_output_tokens=1024,
+            
+        )
+        ai_text = response.output_text
+        return {"result": ai_text}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")
+    
+
+@app.post("/api/ai-complete-summary")
+async def complete_summary(request: Request, session: Session = Depends(get_session)):
+    body = await request.json()
+    prompt = body.get("prompt")
+    if not prompt:
+        raise HTTPException(status_code=400, detail="Missing prompt.")
+    try:
+        instructions_path = os.path.join(os.path.dirname(__file__), "instructions.txt")
+        with open(instructions_path, "r", encoding="utf-8") as f:
+            instructions = f.read()
+        # Get label if provided
+        label = body.get("label")
+        response = client.responses.parse(
+            model="gpt-4o-mini-2024-07-18",
+            instructions=instructions,
+            input=prompt,
+            text_format=AiSummaryResponse,
+        )
+        ai_data = response.output_parsed
+        # Save to DB if label is provided
+        if label:
+            # Convert lists to JSON strings
+            import json as _json
+            db_obj = session.exec(select(AiSummary).where(AiSummary.label == label)).first()
+            if db_obj:
+                db_obj.title = ai_data.title
+                db_obj.summary = ai_data.summary
+                db_obj.characters = _json.dumps(ai_data.characters)
+                db_obj.locations = _json.dumps(ai_data.locations)
+                db_obj.themes = _json.dumps(ai_data.themes)
+                db_obj.symbols = _json.dumps(ai_data.symbols)
+            else:
+                db_obj = AiSummary(
+                    label=label,
+                    title=ai_data.title,
+                    summary=ai_data.summary,
+                    characters=_json.dumps(ai_data.characters),
+                    locations=_json.dumps(ai_data.locations),
+                    themes=_json.dumps(ai_data.themes),
+                    symbols=_json.dumps(ai_data.symbols),
+                )
+                session.add(db_obj)
+            session.commit()
+        # Always return the result
+        return {"result": ai_data}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")
+
+@app.get("/api/ai-summary/{label}")
+def get_ai_summary(label: str, session: Session = Depends(get_session)):
+    import json as _json
+    db_obj = session.exec(select(AiSummary).where(AiSummary.label == label)).first()
+    if not db_obj:
+        raise HTTPException(status_code=404, detail="No summary found.")
+    return {
+        "result": {
+            "title": db_obj.title,
+            "summary": db_obj.summary,
+            "characters": _json.loads(db_obj.characters),
+            "locations": _json.loads(db_obj.locations),
+            "themes": _json.loads(db_obj.themes),
+            "symbols": _json.loads(db_obj.symbols),
+        }
+    }
 
 @app.get("/")
 def read_root():

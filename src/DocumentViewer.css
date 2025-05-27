@@ -262,3 +262,12 @@ td.docviewer-content {
     border-color: #857cff;
     color: #b3aaff;
 }
+
+
+.docviewer-ai-summary-text,
+.docviewer-ai-themes-cell {
+    font-size: 1.08rem;
+    color: #fff;
+    padding: 0.5em 1em;
+    border-bottom: 1px solid #333;
+}
