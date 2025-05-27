@@ -1,6 +1,5 @@
 import './App.css'
-import UploadPage from './UploadPage'
-import NewPage from './NewPage'
+import DocumentManagePage from './DocumentManagePage';
 import EditPage from './EditPage'
 import DocumentViewer from './DocumentViewer';
 import DocumentListPage from './DocumentListPage';
@@ -11,8 +10,7 @@ function App() {
     <>
       <nav>
         <div className="options-container" >
-          <Link to="/upload"><button>Upload</button></Link>
-          <Link to="/new"><button>New Split-Text</button></Link>
+          <Link to="/manage"><button>Manage Docs</button></Link>
           <Link to="/edit"><button>Edit</button></Link>
           <Link to="/viewer"><button>View Docs</button></Link>
         </div>
@@ -20,8 +18,7 @@ function App() {
       </nav>
       <Routes>
         <Route path="/" element={<div>Welcome to Meta-Text</div>} />
-        <Route path="/upload" element={<UploadPage />} />
-        <Route path="/new" element={<NewPage />} />
+        <Route path="/manage" element={<DocumentManagePage />} />
         <Route path="/edit" element={<EditPage />} />
         <Route path="/viewer" element={<DocumentListPage />} />
         <Route path="/viewer/:name" element={<DocumentViewer />} />
