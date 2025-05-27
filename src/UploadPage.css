@@ -6,10 +6,9 @@ body {
 .upload-page {
     max-width: 500px;
     margin: 2rem auto;
-    background: #181818;
     color: #fff;
     border-radius: 12px;
-    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+    box-shadow: 0 2px 8px #4747c1;
     padding: 2rem;
 }
 
@@ -23,37 +22,44 @@ body {
     display: none;
 }
 
-.file-label {
-    display: inline-block;
-    background: none;
-    color: #fff;
-    padding: 0.7rem 1.2rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 1rem;
-    margin-bottom: 0.2rem;
-    transition: background 0.2s, border 0.2s, box-shadow 0.2s;
-    border: 1.5px solid #4747c1;
-    box-shadow: 0 2px 8px 0 rgba(100, 108, 255, 0.08);
-    outline: none;
+.inline-inputs {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
 }
 
-.file-label:hover,
-.file-label:focus {
-    background: #646cff;
-    border: 1.5px solid #a18aff;
-    box-shadow: 0 0 0 2px #a18aff33;
+.file-label {
+    cursor: pointer;
+    height: 2.5rem;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border: 1.5px solid #4747c1;
+    border-radius: 4px;
+    margin-right: 0.5rem;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.file-label:hover {
+    background: #747bff;
 }
 
 .file-name {
-    display: block;
-    margin-top: 0.2rem;
-    margin-bottom: 0.5rem;
-    color: #bbb;
-    font-size: 0.97rem;
-    word-break: break-all;
-    padding-left: 2px;
+    font-size: 0.95rem;
+    color: #333;
+    margin-right: 0.5rem;
+}
+
+.label-input {
+    flex: 1;
+    min-width: 150px;
+    padding: 0.5rem;
+    border: 1.5px solid #4747c1;
+    border-radius: 4px;
 }
 
 .error-msg {

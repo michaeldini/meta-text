@@ -64,18 +64,20 @@ function UploadPage() {
         <div className="upload-page">
             <h2>Upload Text File</h2>
             <form onSubmit={handleSubmit} className="upload-form">
-                <input
-                    id="file-upload"
-                    type="file"
-                    accept=".txt"
-                    onChange={handleFileChange}
-                    style={{ display: 'none' }}
-                />
-                <label htmlFor="file-upload" className="file-label">
-                    {file ? 'Change File' : 'Choose File'}
-                </label>
-                {file && <span className="file-name">{file.name}</span>}
-                <input type="text" placeholder="Label" value={label} onChange={handleLabelChange} />
+                <div className="inline-inputs">
+                    <input
+                        id="file-upload"
+                        type="file"
+                        accept=".txt"
+                        onChange={handleFileChange}
+                        style={{ display: 'none' }}
+                    />
+                    <label htmlFor="file-upload" className="file-label">
+                        {file ? 'Change File' : 'Choose File'}
+                    </label>
+                    {file && <span className="file-name">{file.name}</span>}
+                    <input type="text" placeholder="Label" value={label} onChange={handleLabelChange} className="label-input" />
+                </div>
                 <button type="submit" disabled={loading}>{loading ? 'Uploading...' : 'Upload'}</button>
             </form>
             {error && <div className="error-msg">{error}</div>}

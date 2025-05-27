@@ -19,7 +19,7 @@ function App() {
         <span style={{ textTransform: 'uppercase' }}>Meta-Text</span>
       </nav>
       <Routes>
-        <Route path="/" element={<UploadPage />} />
+        <Route path="/" element={<div>Welcome to Meta-Text</div>} />
         <Route path="/upload" element={<UploadPage />} />
         <Route path="/new" element={<NewPage />} />
         <Route path="/edit" element={<EditPage />} />
