@@ -44,6 +44,18 @@ export default function DocumentViewer() {
         setAiSummaryError([]);
     }, [name]);
 
+    // Debounced autosave for text input changes
+    useEffect(() => {
+        if (!editSections.length) return;
+        if (autoSaveTimeout) clearTimeout(autoSaveTimeout);
+        const timeout = setTimeout(() => {
+            handleSave();
+        }, 800);
+        setAutoSaveTimeout(timeout);
+        return () => clearTimeout(timeout);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [editSections]);
+
     const handleToggleMeta = (field) => {
         setVisibleMeta((prev) => ({ ...prev, [field]: !prev[field] }));
     };
@@ -54,11 +66,6 @@ export default function DocumentViewer() {
             updated[idx] = { ...updated[idx], [field]: value };
             return updated;
         });
-        // Autosave logic
-        if (autoSaveTimeout) clearTimeout(autoSaveTimeout);
-        setAutoSaveTimeout(setTimeout(() => {
-            handleSave();
-        }, 800)); // 800ms debounce
     };
 
     const handleSave = async () => {
@@ -96,11 +103,14 @@ export default function DocumentViewer() {
             });
             if (!res.ok) throw new Error("AI summary failed");
             const data = await res.json();
+            // Update editSections, then save after update
             setEditSections((prev) => {
                 const arr = [...prev];
                 arr[idx] = { ...arr[idx], aiSummary: data.result };
                 return arr;
             });
+            // Save after state update
+            setTimeout(() => handleSave(), 0);
             setAiSummaryLoading((prev) => {
                 const arr = [...prev];
                 arr[idx] = false;

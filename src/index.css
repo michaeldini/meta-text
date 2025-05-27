@@ -51,8 +51,6 @@ button {
   transition: background 0.2s, border 0.2s, box-shadow 0.2s;
   border: 1.5px solid #4747c1;
   box-shadow: 0 2px 8px 0 rgba(100, 108, 255, 0.08);
-
-
 }
 
 button:hover,
@@ -61,19 +59,4 @@ button:focus {
   background: #646cff;
   border: 1.5px solid #a18aff;
   box-shadow: 0 0 0 2px #a18aff33;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-
-  a:hover {
-    color: #747bff;
-  }
-
-  button {
-    background-color: #f9f9f9;
-  }
 }

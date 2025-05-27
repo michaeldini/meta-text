@@ -13,12 +13,12 @@ export default function DocumentManagePage() {
     const [uploadSuccess, setUploadSuccess] = useState('');
     const [uploadLoading, setUploadLoading] = useState(false);
 
-    // Split-document state
+    // Meta-text state
     const [selectedDoc, setSelectedDoc] = useState('');
     const [newLabel, setNewLabel] = useState('');
-    const [splitError, setSplitError] = useState('');
-    const [splitSuccess, setSplitSuccess] = useState('');
-    const [splitLoading, setSplitLoading] = useState(false);
+    const [metaError, setMetaError] = useState('');
+    const [metaSuccess, setMetaSuccess] = useState('');
+    const [metaLoading, setMetaLoading] = useState(false);
 
     // Fetch docs
     const fetchDocs = () => {
@@ -32,7 +32,7 @@ export default function DocumentManagePage() {
 
     useEffect(() => {
         fetchDocs();
-    }, [uploadSuccess, splitSuccess]);
+    }, [uploadSuccess, metaSuccess]);
 
     // Upload handlers
     const handleFileChange = (e) => {
@@ -76,16 +76,16 @@ export default function DocumentManagePage() {
         setUploadLoading(false);
     };
 
-    // Split-document handlers
-    const handleSplitSubmit = async (e) => {
+    // Meta-text handlers
+    const handleMetaSubmit = async (e) => {
         e.preventDefault();
-        setSplitError('');
-        setSplitSuccess('');
+        setMetaError('');
+        setMetaSuccess('');
         if (!selectedDoc || !newLabel) {
-            setSplitError('Please select a document and enter a label.');
+            setMetaError('Please select a document and enter a label.');
             return;
         }
-        setSplitLoading(true);
+        setMetaLoading(true);
         try {
             const res = await fetch('/api/create-split-document', {
                 method: 'POST',
@@ -93,25 +93,25 @@ export default function DocumentManagePage() {
                 body: JSON.stringify({ sourceLabel: selectedDoc, newLabel }),
             });
             if (res.ok) {
-                setSplitSuccess('Meta-document created!');
+                setMetaSuccess('Meta-text created!');
                 setNewLabel('');
                 setSelectedDoc('');
             } else {
                 const data = await res.json();
-                setSplitError(data.error || 'Failed to create split-document.');
+                setMetaError(data.error || 'Failed to create meta-text.');
             }
         } catch {
-            setSplitError('Failed to create split-document.');
+            setMetaError('Failed to create meta-text.');
         }
-        setSplitLoading(false);
+        setMetaLoading(false);
     };
 
     return (
         <div className="document-manage-page">
             <h2>Manage Documents</h2>
             <div className="manage-sections">
-                <section className="upload-section">
-                    <h3>Upload Text File</h3>
+                <section>
+                    <h3>Upload A Source Document</h3>
                     <form onSubmit={handleUploadSubmit} className="upload-form">
                         <div className="inline-inputs">
                             <input
@@ -121,50 +121,54 @@ export default function DocumentManagePage() {
                                 onChange={handleFileChange}
                                 style={{ display: 'none' }}
                             />
-                            <label htmlFor="file-upload" className="file-label">
-                                {file ? 'Change File' : 'Choose File'}
+                            <label htmlFor="file-upload" className="input-file-label">
+                                {file ? 'Change Source Document' : 'Choose Source Document'}
                             </label>
                             {file && <span className="file-name">{file.name}</span>}
-                            <input type="text" placeholder="Label" value={uploadLabel} onChange={handleUploadLabelChange} className="label-input" />
+                            <input
+                                type="text"
+                                className="input-text"
+                                value={uploadLabel}
+                                onChange={handleUploadLabelChange}
+                                placeholder="Label"
+                            />
                         </div>
                         <button type="submit" disabled={uploadLoading}>{uploadLoading ? 'Uploading...' : 'Upload'}</button>
                     </form>
                     {uploadError && <div className="error-msg">{uploadError}</div>}
                     {uploadSuccess && <div className="success-msg">{uploadSuccess}</div>}
                 </section>
-                <section className="split-section">
-                    <h3>Start a New Split-Document</h3>
-                    <form onSubmit={handleSplitSubmit} className="new-page-form">
-                        <label className="new-page-label">
-                            Select a source document:
+                <section className="meta-section">
+                    <h3>Start a New Meta-Text</h3>
+                    <form onSubmit={handleMetaSubmit} className="meta-form">
+                        <label>
                             <select
                                 value={selectedDoc}
                                 onChange={e => setSelectedDoc(e.target.value)}
-                                className="new-page-select"
+                                className="meta-select"
                                 disabled={loadingDocs}
                             >
-                                <option value="">-- Choose --</option>
+                                <option value="">Choose source</option>
                                 {docs.map((doc, idx) => (
                                     <option key={idx} value={doc}>{doc}</option>
                                 ))}
                             </select>
                         </label>
-                        <label className="new-page-label">
-                            New split-document label:
+                        <label className="meta-label">
                             <input
                                 type="text"
+                                className="input-text"
                                 value={newLabel}
                                 onChange={e => setNewLabel(e.target.value)}
-                                placeholder="Enter new label"
-                                className="new-page-input"
+                                placeholder="Label"
                             />
                         </label>
-                        <button type="submit" disabled={splitLoading} className="new-page-submit">
-                            {splitLoading ? 'Creating...' : 'Create Split-Document'}
+                        <button type="submit" disabled={metaLoading} className>
+                            {metaLoading ? 'Creating...' : 'Create'}
                         </button>
                     </form>
-                    {splitError && <div className="new-page-error">{splitError}</div>}
-                    {splitSuccess && <div className="new-page-success">{splitSuccess}</div>}
+                    {metaError && <div className="meta-error">{metaError}</div>}
+                    {metaSuccess && <div className="meta-success">{metaSuccess}</div>}
                 </section>
             </div>
             <div className="labels-list">

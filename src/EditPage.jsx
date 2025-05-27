@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
+import './EditPage.css';
 
 export default function EditPage() {
     // --- State for split document selection and content ---
@@ -141,14 +141,14 @@ export default function EditPage() {
     };
 
     return (
-        <div className="app-root">
-            <div className="split-main-container">
-                <h1 className="main-header">Meta-Text Splitter</h1>
+        <div className="editpage-root">
+            <div>
+                <h1 className="editpage-main-header">Meta-Text Splitter</h1>
                 {/* Dropdown for split document selection */}
-                <div className="input-row">
-                    <h2 className="split-header">Select Split-Document</h2>
+                <div className="editpage-input-row">
+                    <h2 className="editpage-split-header">Select Split-Document</h2>
                     <select
-                        className="main-textarea"
+                        className="editpage-select"
                         value={selectedDoc}
                         onChange={e => setSelectedDoc(e.target.value)}
                     >
@@ -157,35 +157,35 @@ export default function EditPage() {
                             <option key={idx} value={name}>{name}</option>
                         ))}
                     </select>
-                    {loading && <div className="loading-message">Loading...</div>}
-                    {error && <div className="error-message">{error}</div>}
+                    {loading && <div className="editpage-loading-message">Loading...</div>}
+                    {error && <div className="editpage-error-message">{error}</div>}
                 </div>
                 {/* Show content if loaded */}
                 {sections.length > 0 && (
-                    <div className="split-columns-layout one-col">
+                    <div>
                         {/* Only Column: Interactive splitting */}
-                        <div className="split-col text-col">
-                            <h2 className="split-header">Split</h2>
-                            <div className="sections-list">
+                        <div>
+                            <h2 className="editpage-split-header">Split</h2>
+                            <div className="editpage-sections-list">
                                 {sections.map((section, sectionIdx) => {
                                     const words = section.content.split(/\s+/);
                                     return (
                                         <div
                                             key={sectionIdx}
-                                            className="text-block section"
+                                            className="editpage-text-block editpage-section"
                                         >
-                                            <div className="text-block-content">
+                                            <div className="editpage-text-block-content">
                                                 {words.map((word, wordIdx) => (
                                                     <span
                                                         key={wordIdx}
-                                                        className="word"
+                                                        className="editpage-word"
                                                         onClick={() => handleWordClick(sectionIdx, wordIdx)}
                                                     >
                                                         {word}{wordIdx < words.length - 1 && ' '}
                                                         {/* If this is the last word and not the last section, show the remove icon button inline */}
                                                         {wordIdx === words.length - 1 && sectionIdx < sections.length - 1 && (
                                                             <button
-                                                                className="remove-section-btn"
+                                                                className="editpage-remove-section-btn"
                                                                 onClick={e => { e.stopPropagation(); handleRemoveSection(sectionIdx); }}
                                                                 title="Undo split (merge with next section)"
                                                             >
@@ -207,9 +207,9 @@ export default function EditPage() {
                     </div>
                 )}
                 {/* Sticky Save Button */}
-                <div className="sticky-save-btn">
+                <div className="editpage-sticky-save-btn">
                     <button
-                        className="save-btn"
+                        className="editpage-save-btn"
                         onClick={handleSave}
                     >
                         Save

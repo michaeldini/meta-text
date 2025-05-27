@@ -1,0 +1,164 @@
+/* EditPage specific styles, refactored from App.css and styled to match DocumentManagePage */
+
+.editpage-root {
+    max-width: 700px;
+    margin: 2rem auto;
+    background: #181818;
+    border-radius: 12px;
+    color: #fff;
+    box-shadow: 0 2px 8px #4747c1;
+    padding: 2rem;
+}
+
+.editpage-main-header {
+    color: #fff;
+    font-size: 2.1rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    text-align: left;
+}
+
+.editpage-input-row {
+    width: 100%;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.editpage-select {
+    width: 100%;
+    padding: 0.7rem 1.2rem;
+    border-radius: 8px;
+    background: #23234a;
+    color: #fff;
+    border: 1.5px solid #4747c1;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    transition: background 0.2s, border 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px 0 rgba(100, 108, 255, 0.08);
+}
+
+.editpage-select:focus {
+    background: #23234a;
+    border: 1.5px solid #a18aff;
+    box-shadow: 0 0 0 2px #a18aff33;
+    outline: none;
+}
+
+.editpage-split-header {
+    color: #b8bfff;
+    font-size: 1.22rem;
+    font-weight: 600;
+    margin-bottom: 1.1rem;
+    letter-spacing: 0.01em;
+    font-family: inherit;
+}
+
+.editpage-sections-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-top: 24px;
+}
+
+.editpage-text-block {
+    font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 1.22rem;
+    line-height: 2.15;
+    word-break: break-word;
+    background: #23272f;
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    min-height: 90px;
+    color: #e3e6eb;
+    box-shadow: 0 2px 12px #0002;
+    border: 1.5px solid #2d323c;
+    letter-spacing: 0.01em;
+    transition: background 0.2s, color 0.2s;
+    text-align: left;
+    white-space: pre-wrap;
+}
+
+.editpage-section {
+    background: #22262e;
+}
+
+.editpage-word {
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+    border-radius: 6px;
+    color: #e3e6eb;
+    font-family: inherit;
+    font-size: 1.05em;
+    user-select: none;
+}
+
+.editpage-word:hover {
+    background: #3a3f4b;
+    color: #b8bfff;
+}
+
+.editpage-text-block-content {
+    background: none;
+    flex: 1;
+    padding: 8px 12px;
+    min-height: 36px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.editpage-remove-section-btn {
+    margin-left: 8px;
+    background: none;
+    color: #b8bfff;
+    border: none;
+    border-radius: 50%;
+    padding: 0;
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 20px;
+    transition: background 0.18s;
+    vertical-align: middle;
+}
+
+.editpage-sticky-save-btn {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    z-index: 1000;
+}
+
+.editpage-save-btn {
+    background: #6c63ff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 32px;
+    font-size: 18px;
+    font-weight: 600;
+    box-shadow: 0 1px 8px #e0e0ef;
+    cursor: pointer;
+}
+
+.editpage-loading-message {
+    color: #bbb;
+    margin-top: 8px;
+}
+
+.editpage-error-message {
+    color: #ff6b6b;
+    margin-top: 8px;
+}
+
+@media (max-width: 900px) {
+    .editpage-text-block {
+        padding: 1rem 0.7rem;
+        font-size: 1.08rem;
+    }
+}
