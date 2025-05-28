@@ -5,12 +5,14 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #000000;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
 }
 
 a {
@@ -41,22 +43,16 @@ h1 {
 button {
   display: inline-block;
   background: none;
-  color: #fff;
-  padding: 0.7rem 1.2rem;
-  border-radius: 8px;
+  color: #bebcbc;
+  border: none;
   cursor: pointer;
-  font-weight: 500;
   font-size: 1rem;
-  margin-bottom: 0.2rem;
-  transition: background 0.2s, border 0.2s, box-shadow 0.2s;
-  border: 1.5px solid #4747c1;
-  box-shadow: 0 2px 8px 0 rgba(100, 108, 255, 0.08);
+  font-weight: 200;
 }
 
 button:hover,
 button:focus-visible,
 button:focus {
-  background: #646cff;
-  border: 1.5px solid #a18aff;
-  box-shadow: 0 0 0 2px #a18aff33;
+  color: #eeeff1;
+  font-weight: 500;
 }

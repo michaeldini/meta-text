@@ -3,20 +3,36 @@ import DocumentManagePage from './DocumentManagePage';
 import EditPage from './EditPage'
 import DocumentViewer from './DocumentViewer';
 import DocumentListPage from './DocumentListPage';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import BrowsePage from './BrowsePage';
 
 function App() {
+  const location = useLocation();
+  const navLinks = [
+    { to: '/manage', label: 'Manage Docs' },
+    { to: '/edit', label: 'Edit' },
+    { to: '/viewer', label: 'View Docs' },
+    { to: '/browse', label: 'Browse' },
+  ];
   return (
     <>
       <nav>
         <div className="options-container" >
-          <Link to="/manage"><button>Manage Docs</button></Link>
-          <Link to="/edit"><button>Edit</button></Link>
-          <Link to="/viewer"><button>View Docs</button></Link>
-          <Link to="/browse"><button>Browse</button></Link>
+          {navLinks.map(link => (
+            <Link key={link.to} to={link.to}>
+              <button
+                className={
+                  location.pathname === link.to || (link.to === '/viewer' && location.pathname.startsWith('/viewer'))
+                    ? 'option-btn option-btn-active'
+                    : 'option-btn'
+                }
+              >
+                {link.label}
+              </button>
+            </Link>
+          ))}
+          <span style={{ textTransform: 'uppercase' }}>Meta-Text</span>
         </div>
-        <span style={{ textTransform: 'uppercase' }}>Meta-Text</span>
       </nav>
       <Routes>
         <Route path="/" element={<div>Welcome to Meta-Text</div>} />
