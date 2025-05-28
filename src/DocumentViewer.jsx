@@ -12,11 +12,11 @@ export default function DocumentViewer() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [visibleMeta, setVisibleMeta] = useState({
-        notes: true,
-        summary: true,
-        aiImageUrl: true,
-        aiSummary: true,
-        aiThemes: true,
+        notes: false,
+        summary: false,
+        aiImageUrl: false,
+        aiSummary: false,
+        aiThemes: false,
     });
     const [saveStatus, setSaveStatus] = useState(null);
     const [horizontalScroll, setHorizontalScroll] = useState(false);
@@ -75,7 +75,7 @@ export default function DocumentViewer() {
     };
 
     const handleSave = async () => {
-        setSaveStatus(null);
+        setSaveStatus("saving");
         try {
             const res = await fetch("/api/meta-text/save", {
                 method: "POST",
@@ -84,9 +84,11 @@ export default function DocumentViewer() {
             });
             if (!res.ok) throw new Error("Failed to save document");
             setSections(editSections.map(s => ({ ...s })));
-            setSaveStatus("success");
+            // Ensure 'Saving...' is visible for at least 250ms
+            setTimeout(() => setSaveStatus(null), 250);
         } catch {
             setSaveStatus("error");
+            setTimeout(() => setSaveStatus(null), 2000);
         }
     };
 
@@ -193,22 +195,27 @@ export default function DocumentViewer() {
     return (
         <div className="docviewer-container">
             <div className="docviewer-header">
-                <h2>Viewing: {name}</h2>
-                <button onClick={handleSave} className="docviewer-save-btn" style={{ marginTop: 16 }}>Save All</button>
-                {saveStatus === "success" && <span className="docviewer-save-success">Saved!</span>}
+                <h2>{name}</h2>
+                <button onClick={handleSave} className="docviewer-save-btn" style={{ marginTop: 16 }} disabled={saveStatus === "saving"}>
+                    {saveStatus === "saving" ? "Saving..." : "Save All"}
+                </button>
                 {saveStatus === "error" && <span className="docviewer-save-error">Save failed</span>}
-                <label className="docviewer-toggle-label">
-                    <span className="docviewer-toggle-text">Horizontal Scroll</span>
-                    <span className="docviewer-toggle-switch">
-                        <input
-                            type="checkbox"
-                            checked={horizontalScroll}
-                            onChange={() => setHorizontalScroll(v => !v)}
-                            className="docviewer-toggle-input"
-                        />
-                        <span className="docviewer-toggle-slider" />
-                    </span>
-                </label>
+                <span
+                    className={
+                        'docviewer-meta-toggle-label' +
+                        (horizontalScroll ? ' docviewer-meta-toggle-label--active' : '')
+                    }
+                    onClick={() => setHorizontalScroll(v => !v)}
+                    tabIndex={0}
+                    role="button"
+                    aria-pressed={horizontalScroll}
+                    onKeyDown={e => {
+                        if (e.key === 'Enter' || e.key === ' ') setHorizontalScroll(v => !v);
+                    }}
+                    style={{ marginLeft: 12 }}
+                >
+                    Horizontal Scroll
+                </span>
             </div>
             <div className="docviewer-meta-controls">
                 {META_FIELDS.map((field) => (
