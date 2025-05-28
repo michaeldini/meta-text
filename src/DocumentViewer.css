@@ -7,14 +7,9 @@
 }
 
 .docviewer-meta-controls {
-    margin-bottom: 1.5rem;
     display: flex;
-    gap: 1.5rem;
-}
-
-.docviewer-meta-controls label {
-    font-size: 1rem;
-    cursor: pointer;
+    gap: 2.2rem;
+    margin: 1.2rem 0 1.8rem 0;
 }
 
 .docviewer-table-wrapper {
@@ -78,7 +73,6 @@
 
 .docviewer-table th,
 .docviewer-table td {
-    /* border: 1px solid #e0e0e0;*/
     border: none;
     text-align: left;
     vertical-align: top;
@@ -126,7 +120,6 @@ td.docviewer-content {
     color: #888;
 }
 
-
 .docviewer-edit-textarea {
     width: 100%;
     resize: none;
@@ -160,85 +153,6 @@ td.docviewer-content {
     box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.08);
 }
 
-.docviewer-toggle-label {
-    display: flex;
-    align-items: center;
-    gap: 0.7em;
-    font-size: 1.08rem;
-    cursor: pointer;
-    user-select: none;
-    font-weight: 600;
-    color: #fff;
-    letter-spacing: 0.01em;
-    padding: 0.3em 1em 0.3em 0.5em;
-    border-radius: 8px;
-    border: 1.5px solid #6c63ff;
-    background: none;
-    box-shadow: none;
-    transition: border-color 0.2s, color 0.2s;
-}
-
-.docviewer-toggle-label:hover {
-    border-color: #857cff;
-    color: #b3aaff;
-}
-
-.docviewer-toggle-text {
-    margin-right: 0.2em;
-    text-transform: capitalize;
-    color: #fff;
-    font-weight: 700;
-    font-size: 1.08em;
-    letter-spacing: 0.02em;
-    text-shadow: none;
-}
-
-.docviewer-toggle-switch {
-    position: relative;
-    display: inline-block;
-    width: 38px;
-    height: 22px;
-}
-
-.docviewer-toggle-input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.docviewer-toggle-slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: #444;
-    border-radius: 22px;
-    transition: background 0.2s;
-}
-
-.docviewer-toggle-slider:before {
-    position: absolute;
-    content: "";
-    height: 16px;
-    width: 16px;
-    left: 3px;
-    bottom: 3px;
-    background: #fff;
-    border-radius: 50%;
-    transition: transform 0.2s;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
-}
-
-.docviewer-toggle-input:checked+.docviewer-toggle-slider {
-    background: #6c63ff;
-}
-
-.docviewer-toggle-input:checked+.docviewer-toggle-slider:before {
-    transform: translateX(16px);
-}
-
 .docviewer-save-btn {
     font-size: 1.08rem;
     font-weight: 600;
@@ -269,4 +183,37 @@ td.docviewer-content {
     border-bottom: 1px solid #333;
     max-height: 400px;
     overflow-y: auto;
+}
+
+.docviewer-meta-toggle-label {
+    cursor: pointer;
+    user-select: none;
+    font-size: 1.08rem;
+    font-weight: 300;
+    color: #e0e0e0;
+    transition: color 0.18s, font-weight 0.18s;
+    padding: 0.2em 0.7em;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    background: none;
+    margin-right: 0.5rem;
+    display: inline-block;
+}
+
+.docviewer-meta-toggle-label:focus {
+    /* background: #232323; */
+    color: #fff;
+}
+
+.docviewer-meta-toggle-label:hover {
+    color: #b3acac;
+    font-weight: 800;
+    /* background: #232323; */
+}
+
+.docviewer-meta-toggle-label--active {
+    font-weight: 800;
+    color: #fff;
+    /* background: #232323; */
 }

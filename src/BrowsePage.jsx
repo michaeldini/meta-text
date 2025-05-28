@@ -23,10 +23,10 @@ export default function BrowsePage() {
             setLoading(true);
             setError(null);
             try {
-                const res = await fetch("/api/list-texts");
+                const res = await fetch("/api/source-documents");
                 if (!res.ok) throw new Error("Failed to fetch documents");
                 const data = await res.json();
-                setDocs(data.texts || []);
+                setDocs(data.source_documents || []);
             } catch (e) {
                 setError(e.message);
             } finally {
@@ -63,7 +63,7 @@ export default function BrowsePage() {
         }));
         try {
             // Fetch document content
-            const docRes = await fetch(`/api/get-text/${encodeURIComponent(label)}`);
+            const docRes = await fetch(`/api/source-documents/${encodeURIComponent(label)}`);
             if (!docRes.ok) throw new Error("Failed to fetch document content");
             const docData = await docRes.json();
             // Call summary API (now saves to DB)

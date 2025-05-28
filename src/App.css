@@ -11,8 +11,6 @@ body {
   max-width: none;
   width: 100%;
   margin: 0;
-  padding: 2rem;
-  padding-top: 5.5rem;
   /* Add space for fixed navbar */
   text-align: center;
   background: none;
@@ -21,6 +19,7 @@ body {
 }
 
 nav {
+
   display: flex;
   align-items: center;
   justify-content: flex-end;

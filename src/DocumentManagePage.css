@@ -1,40 +1,9 @@
-.document-manage-page {
-    max-width: 600px;
-    margin: 2rem auto;
-    background: #181818;
-    border-radius: 12px;
-    color: #fff;
-    box-shadow: 0 2px 8px #4747c1;
-    padding: 2rem;
-}
-
-
-.manage-sections {
+.stacked-inputs {
     display: flex;
     flex-direction: column;
-    gap: 2.5rem;
-}
-
-.upload-form,
-.new-page-form,
-.meta-form {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-}
-
-.upload-form {
-    display: flex;
-    flex-direction: row;
     gap: 1rem;
     align-items: stretch;
-}
-
-.inline-inputs {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    align-items: stretch;
+    width: 100%;
 }
 
 .error-msg,
@@ -51,31 +20,22 @@
     margin-top: 0.5rem;
 }
 
-.input-text,
-.input-file-label {
-    display: inline-block;
-    background: none;
-    color: #fff;
-    padding: 0.7rem 1.2rem;
-    border-radius: 8px;
+.input-text {
+    background: transparent;
+    color: #222;
+    border: none;
+    border-bottom: 2px solid #888;
+    border-radius: 0;
+    padding: 0.5rem 0.25rem;
     font-size: 1rem;
-    border: 1.5px solid #4747c1;
-    box-shadow: 0 2px 8px 0 rgba(100, 108, 255, 0.08);
-    margin-bottom: 0.2rem;
-    transition: background 0.2s, border 0.2s, box-shadow 0.2s;
-    height: 44px;
-    /* Ensures all controls are the same height as the button */
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
+    transition: border-color 0.2s, color 0.2s;
+    outline: none;
+    box-shadow: none;
 }
 
-.input-text:focus,
-.input-text:focus-visible {
-    background: #23234a;
-    border: 1.5px solid #a18aff;
-    box-shadow: 0 0 0 2px #a18aff33;
-    outline: none;
+.input-text:focus {
+    border-bottom: 2px solid #ff5c5c;
+    color: #111;
 }
 
 .input-text::placeholder {
@@ -83,83 +43,93 @@
     opacity: 1;
 }
 
-.input-file-label {
-    cursor: pointer;
-    font-weight: 500;
-    margin-bottom: 0.2rem;
+.admin-table th,
+.admin-table td {
+    padding: 0.75rem 2.5rem;
+    text-align: left;
 }
 
-.input-file-label:hover,
-.input-file-label:focus-visible,
-.input-file-label:focus {
-    background: #646cff;
-    border: 1.5px solid #a18aff;
-    box-shadow: 0 0 0 2px #a18aff33;
+.admin-table th {
+    /* background: #f7f7f7; */
+    border-bottom: 1px solid #ddd;
+    font-weight: 600;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 2rem;
+}
+
+
+.danger-btn {
+    background: transparent;
+    color: #ff5c5c;
+    border: none;
+    padding: 0.35rem 0.7rem;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+    box-shadow: none;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.danger-btn:disabled {
+    color: #888;
+    background: transparent;
+    cursor: not-allowed;
+}
+
+.danger-btn:hover:not(:disabled),
+.danger-btn:focus-visible:not(:disabled) {
+    background: #ff5c5c22;
+    color: #ff5c5c;
 }
 
 .meta-select {
-    display: inline-block;
-    background: none;
-    color: #fff;
-    padding: 0.7rem 1.2rem;
-    border-radius: 8px;
-    font-size: 1rem;
-    border: 1.5px solid #4747c1;
-    box-shadow: 0 2px 8px 0 rgba(100, 108, 255, 0.08);
-    margin-bottom: 0.2rem;
-    transition: background 0.2s, border 0.2s, box-shadow 0.2s;
-}
-
-.meta-select:focus,
-.meta-select:focus-visible {
-    background: #23234a;
-    border: 1.5px solid #a18aff;
-    box-shadow: 0 0 0 2px #a18aff33;
+    background: #18191a;
+    color: #f3f3f3;
+    border: none;
+    border-bottom: 2px solid #888;
+    border-radius: 0;
+    padding: 0.7rem 2.2rem 0.7rem 1rem;
+    font-size: 1.15rem;
+    min-width: 220px;
+    appearance: none;
     outline: none;
+    transition: border-color 0.2s, color 0.2s;
+    position: relative;
+    margin-bottom: 0.2rem;
 }
 
-.file-name {
-    display: flex;
-    align-items: center;
-    height: 44px;
-    color: #b3b3b3;
-    font-size: 1rem;
-    padding: 0 0.5rem;
+.meta-select:focus {
+    border-bottom: 2px solid #ff5c5c;
+    color: #fff;
 }
 
-button[type="submit"] {
-    height: 44px;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
+/* Custom down arrow */
+.meta-select {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23b3b3b3" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 8l4.5 4.5L14.5 8" stroke="%23b3b3b3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.8rem center;
+    background-size: 1.2rem 1.2rem;
 }
 
-.meta-form {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    align-items: stretch;
-    justify-content: space-between;
-    width: 100%;
+.meta-select option {
+    background: #232526;
+    color: #f3f3f3;
+    font-size: 1.08rem;
+    padding: 0.7rem 1rem;
 }
 
-.meta-form label,
-.meta-form .meta-select,
-.meta-form .input-text,
-meta-form button[type="submit"] {
-    height: 44px;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-}
-
-.meta-form .meta-label {
-    display: flex;
-    align-items: center;
-}
-
-.meta-section {
-    border-top: 1px solid #4747c1;
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
+/* Remove default arrow in Firefox */
+.meta-select:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 #f3f3f3;
 }

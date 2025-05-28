@@ -10,15 +10,15 @@ export default function EditPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    // Fetch split document names on mount
+    // Fetch meta-text names on mount
     useEffect(() => {
-        fetch('/api/list-split-documents')
+        fetch('/api/meta-text')
             .then(res => res.json())
-            .then(data => setSplitDocs(data.split_documents || []))
+            .then(data => setSplitDocs(data.meta_texts || []))
             .catch(() => setSplitDocs([]));
     }, []);
 
-    // Fetch split document content when selectedDoc changes
+    // Fetch meta-text content when selectedDoc changes
     useEffect(() => {
         if (!selectedDoc) {
             setMainText('');
@@ -27,7 +27,7 @@ export default function EditPage() {
         }
         setLoading(true);
         setError('');
-        fetch(`/api/get-split-document/${encodeURIComponent(selectedDoc)}`)
+        fetch(`/api/meta-text/${encodeURIComponent(selectedDoc)}`)
             .then(res => {
                 if (!res.ok) throw new Error('Not found');
                 return res.json();
@@ -51,7 +51,7 @@ export default function EditPage() {
             })
             .catch(() => {
                 setMainText('');
-                setError('Failed to load split document.');
+                setError('Failed to load meta-text.');
             })
             .finally(() => setLoading(false));
     }, [selectedDoc]);
@@ -120,7 +120,7 @@ export default function EditPage() {
             alert('Section structure invalid. Please reload or contact support.');
             return;
         }
-        fetch('/api/save-split-document', {
+        fetch('/api/meta-text/save', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

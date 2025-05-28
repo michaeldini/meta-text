@@ -12,10 +12,10 @@ export default function DocumentListPage() {
             setLoading(true);
             setError(null);
             try {
-                const res = await fetch("/api/list-split-documents");
+                const res = await fetch("/api/meta-text");
                 if (!res.ok) throw new Error("Failed to fetch documents");
                 const data = await res.json();
-                setDocs(data.split_documents || []);
+                setDocs(data.meta_texts || []);
             } catch (e) {
                 setError(e.message);
             } finally {

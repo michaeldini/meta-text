@@ -31,7 +31,7 @@ export default function DocumentViewer() {
             setLoading(true);
             setError(null);
             try {
-                const res = await fetch(`/api/get-split-document/${name}`);
+                const res = await fetch(`/api/meta-text/${name}`);
                 if (!res.ok) throw new Error("Failed to fetch document");
                 const data = await res.json();
                 setSections(data.sections || []);
@@ -77,7 +77,7 @@ export default function DocumentViewer() {
     const handleSave = async () => {
         setSaveStatus(null);
         try {
-            const res = await fetch("/api/save-split-document", {
+            const res = await fetch("/api/meta-text/save", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name, sections: editSections }),
@@ -192,8 +192,8 @@ export default function DocumentViewer() {
 
     return (
         <div className="docviewer-container">
-            <h2>Viewing: {name}</h2>
-            <div className="docviewer-meta-controls">
+            <div className="docviewer-header">
+                <h2>Viewing: {name}</h2>
                 <button onClick={handleSave} className="docviewer-save-btn" style={{ marginTop: 16 }}>Save All</button>
                 {saveStatus === "success" && <span className="docviewer-save-success">Saved!</span>}
                 {saveStatus === "error" && <span className="docviewer-save-error">Save failed</span>}
@@ -209,19 +209,25 @@ export default function DocumentViewer() {
                         <span className="docviewer-toggle-slider" />
                     </span>
                 </label>
+            </div>
+            <div className="docviewer-meta-controls">
                 {META_FIELDS.map((field) => (
-                    <label key={field} className="docviewer-toggle-label">
-                        <span className="docviewer-toggle-text">{field}</span>
-                        <span className="docviewer-toggle-switch">
-                            <input
-                                type="checkbox"
-                                checked={visibleMeta[field]}
-                                onChange={() => handleToggleMeta(field)}
-                                className="docviewer-toggle-input"
-                            />
-                            <span className="docviewer-toggle-slider" />
-                        </span>
-                    </label>
+                    <span
+                        key={field}
+                        className={
+                            'docviewer-meta-toggle-label' +
+                            (visibleMeta[field] ? ' docviewer-meta-toggle-label--active' : '')
+                        }
+                        onClick={() => handleToggleMeta(field)}
+                        tabIndex={0}
+                        role="button"
+                        aria-pressed={visibleMeta[field]}
+                        onKeyDown={e => {
+                            if (e.key === 'Enter' || e.key === ' ') handleToggleMeta(field);
+                        }}
+                    >
+                        {field}
+                    </span>
                 ))}
             </div>
             <div className={"docviewer-table-outer-wrapper" + (horizontalScroll ? " docviewer-table-scroll" : "")}>
