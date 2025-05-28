@@ -1,0 +1,71 @@
+/* BrowsePage specific styles */
+
+.browse-root {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+    background: #181818;
+    color: #fff;
+}
+
+.browse-table-outer {
+    overflow-x: auto;
+}
+
+.browse-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.browse-th,
+.browse-td {
+    padding: 1rem;
+    text-align: left;
+}
+
+.browse-th-summary,
+.browse-td-summary {
+    min-width: 320px;
+    max-width: 600px;
+    width: 400px;
+}
+
+.browse-th-default,
+.browse-td-default {
+    min-width: 120px;
+    max-width: 220px;
+    width: 180px;
+}
+
+
+.browse-label {
+    font-weight: 600;
+}
+
+.browse-generate-btn {
+    min-width: 110px;
+    box-shadow: none;
+}
+
+.browse-error {
+    color: #ff6b6b;
+    margin-top: 6px;
+    font-size: 13px;
+}
+
+.browse-empty {
+    color: #bbb;
+}
+
+@media (max-width: 900px) {
+
+    .browse-th-summary,
+    .browse-td-summary {
+        min-width: 180px;
+        max-width: 350px;
+        width: 220px;
+    }
+}

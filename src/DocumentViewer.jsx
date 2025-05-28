@@ -56,7 +56,7 @@ export default function DocumentViewer() {
         if (autoSaveTimeout) clearTimeout(autoSaveTimeout);
         const timeout = setTimeout(() => {
             handleSave();
-        }, 800);
+        }, 2000); // 2 seconds debounce
         setAutoSaveTimeout(timeout);
         return () => clearTimeout(timeout);
         // eslint-disable-next-line react-hooks/exhaustive-deps

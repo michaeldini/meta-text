@@ -129,9 +129,6 @@ td.docviewer-content {
 
 .docviewer-edit-textarea {
     width: 100%;
-    min-width: 300px;
-    min-height: 4em;
-    max-height: 12em;
     resize: none;
     border: 1px solid #333;
     border-radius: 7px;
@@ -270,4 +267,6 @@ td.docviewer-content {
     color: #fff;
     padding: 0.5em 1em;
     border-bottom: 1px solid #333;
+    max-height: 400px;
+    overflow-y: auto;
 }

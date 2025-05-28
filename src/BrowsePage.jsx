@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import "./BrowsePage.css";
+import chatgptLogo from './assets/ChatGPT_logo.svg.png';
 
 // AiSummaryResponse schema fields
 const SUMMARY_FIELDS = [
@@ -88,29 +90,23 @@ export default function BrowsePage() {
     };
 
     return (
-        <div style={{ maxWidth: 1100, margin: "2rem auto", padding: "2rem", borderRadius: 12, boxShadow: "0 2px 16px rgba(0,0,0,0.07)", background: "#181818", color: "#fff" }}>
+        <div className="browse-root">
             <h2>Browse Documents</h2>
             {loading ? (
                 <div style={{ textAlign: "center" }}>Loading...</div>
             ) : error ? (
-                <div style={{ color: "#ff6b6b", textAlign: "center" }}>{error}</div>
+                <div className="browse-error" style={{ textAlign: "center" }}>{error}</div>
             ) : (
-                <div style={{ overflowX: "auto" }}>
-                    <table style={{ width: "100%", borderCollapse: "separate", borderSpacing: 0, background: "#23234a", borderRadius: 12, boxShadow: "0 2px 8px #4747c1" }}>
+                <div className="browse-table-outer">
+                    <table className="browse-table">
                         <thead>
                             <tr>
-                                <th style={{ padding: "1rem", textAlign: "left" }}>Label</th>
-                                <th style={{ padding: "1rem", textAlign: "left" }}>Generate</th>
+                                <th className="browse-th browse-th-default">Label</th>
+                                <th className="browse-th browse-th-default">Generate</th>
                                 {SUMMARY_FIELDS.map((f) => (
                                     <th
                                         key={f.key}
-                                        style={{
-                                            padding: "1rem",
-                                            textAlign: "left",
-                                            minWidth: f.key === "summary" ? 320 : 120,
-                                            maxWidth: f.key === "summary" ? 600 : 220,
-                                            width: f.key === "summary" ? 400 : 180,
-                                        }}
+                                        className={`browse-th ${f.key === "summary" ? "browse-th-summary" : "browse-th-default"}`}
                                     >
                                         {f.label}
                                     </th>
@@ -121,40 +117,39 @@ export default function BrowsePage() {
                             {docs.map((label) => {
                                 const result = results[label] || {};
                                 return (
-                                    <tr key={label} style={{ background: "#23234a", borderBottom: "1px solid #333" }}>
-                                        <td style={{ padding: "1rem", fontWeight: 600 }}>{label}</td>
-                                        <td style={{ padding: "1rem" }}>
+                                    <tr key={label} className="browse-tr">
+                                        <td className="browse-td browse-label browse-td-default">{label}</td>
+                                        <td className="browse-td browse-td-default">
                                             <button
+                                                className="browse-generate-btn"
                                                 onClick={() => handleGenerate(label)}
                                                 disabled={result.loading}
-                                                style={{ minWidth: 110 }}
+                                                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0, background: 'none', border: 'none' }}
                                             >
-                                                {result.loading ? "Generating..." : "Generate"}
+                                                <img
+                                                    src={chatgptLogo}
+                                                    alt="Generate"
+                                                    style={{ width: 32, height: 32, opacity: result.loading ? 0.5 : 1 }}
+                                                />
                                             </button>
                                             {result.error && (
-                                                <div style={{ color: "#ff6b6b", marginTop: 6, fontSize: 13 }}>{result.error}</div>
+                                                <div className="browse-error">{result.error}</div>
                                             )}
                                         </td>
                                         {SUMMARY_FIELDS.map((f) => (
                                             <td
                                                 key={f.key}
-                                                style={{
-                                                    padding: "1rem",
-                                                    verticalAlign: "top",
-                                                    whiteSpace: "pre-line",
-                                                    maxWidth: f.key === "summary" ? 600 : 220,
-                                                    minWidth: f.key === "summary" ? 320 : 120,
-                                                    width: f.key === "summary" ? 400 : 180,
-                                                }}
+                                                className={`browse-td ${f.key === "summary" ? "browse-td-summary" : "browse-td-default"}`}
+                                                style={{ verticalAlign: "top", whiteSpace: "pre-line" }}
                                             >
                                                 {result.data ? (
                                                     Array.isArray(result.data[f.key])
                                                         ? result.data[f.key].length > 0
                                                             ? result.data[f.key].join(", ")
-                                                            : <span style={{ color: "#bbb" }}>—</span>
-                                                        : result.data[f.key] || <span style={{ color: "#bbb" }}>—</span>
+                                                            : <span className="browse-empty">—</span>
+                                                        : result.data[f.key] || <span className="browse-empty">—</span>
                                                 ) : (
-                                                    <span style={{ color: "#bbb" }}>—</span>
+                                                    <span className="browse-empty">—</span>
                                                 )}
                                             </td>
                                         ))}
