@@ -20,29 +20,6 @@
     margin-top: 0.5rem;
 }
 
-.input-text {
-    background: transparent;
-    color: #222;
-    border: none;
-    border-bottom: 2px solid #888;
-    border-radius: 0;
-    padding: 0.5rem 0.25rem;
-    font-size: 1rem;
-    transition: border-color 0.2s, color 0.2s;
-    outline: none;
-    box-shadow: none;
-}
-
-.input-text:focus {
-    border-bottom: 2px solid #ff5c5c;
-    color: #111;
-}
-
-.input-text::placeholder {
-    color: #b3b3b3;
-    opacity: 1;
-}
-
 .admin-table th,
 .admin-table td {
     padding: 0.75rem 2.5rem;
@@ -50,7 +27,6 @@
 }
 
 .admin-table th {
-    /* background: #f7f7f7; */
     border-bottom: 1px solid #ddd;
     font-weight: 600;
 }
