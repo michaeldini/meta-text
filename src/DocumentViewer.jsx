@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ReactMarkdown from 'react-markdown';
 import "./DocumentViewer.css";
+import aiStars from './assets/ai-stars.png';
 
 const META_FIELDS = ["content", "summary", "aiSummary", "aiThemes", "notes", "aiImageUrl"];
 
@@ -285,7 +286,9 @@ export default function DocumentViewer() {
                                                                 disabled={aiSummaryLoading[idx]}
                                                                 style={{ marginBottom: 4 }}
                                                             >
-                                                                {aiSummaryLoading[idx] ? "Generating..." : "Generate"}
+                                                                {aiSummaryLoading[idx] ? "Generating..." : (
+                                                                    <img src={aiStars} alt="Generate" style={{ height: 22, verticalAlign: 'middle' }} />
+                                                                )}
                                                             </button>
                                                             {aiSummaryError[idx] && (
                                                                 <div className="docviewer-ai-summary-error">{aiSummaryError[idx]}</div>
@@ -302,7 +305,7 @@ export default function DocumentViewer() {
                                                                 disabled={aiThemesLoading[idx]}
                                                                 style={{ marginBottom: 4 }}
                                                             >
-                                                                {aiThemesLoading[idx] ? "Generating..." : "Generate"}
+                                                                {aiThemesLoading[idx] ? "Generating..." : <img src={aiStars} alt="Generate" style={{ height: 22, verticalAlign: 'middle' }} />}
                                                             </button>
                                                             {aiThemesError[idx] && (
                                                                 <div className="docviewer-ai-themes-error">{aiThemesError[idx]}</div>

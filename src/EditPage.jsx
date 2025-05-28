@@ -146,7 +146,7 @@ export default function EditPage() {
                 <h1 className="editpage-main-header">Meta-Text Splitter</h1>
                 {/* Dropdown for split document selection */}
                 <div className="editpage-input-row">
-                    <h2 className="editpage-split-header">Select Split-Document</h2>
+                    <h2 className="editpage-split-header">Select Meta-Text</h2>
                     <select
                         className="editpage-select"
                         value={selectedDoc}

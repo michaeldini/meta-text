@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./BrowsePage.css";
-import chatgptLogo from './assets/ChatGPT_logo.svg.png';
+import aiStars from './assets/ai-stars.png';
 
 // AiSummaryResponse schema fields
 const SUMMARY_FIELDS = [
@@ -127,7 +127,7 @@ export default function BrowsePage() {
                                                 style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0, background: 'none', border: 'none' }}
                                             >
                                                 <img
-                                                    src={chatgptLogo}
+                                                    src={aiStars}
                                                     alt="Generate"
                                                     style={{ width: 32, height: 32, opacity: result.loading ? 0.5 : 1 }}
                                                 />

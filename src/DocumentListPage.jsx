@@ -29,20 +29,19 @@ export default function DocumentListPage() {
     if (error) return <div style={{ color: 'red', textAlign: 'center' }}>{error}</div>;
 
     return (
-        <div style={{ maxWidth: 600, margin: '2rem auto', padding: '2rem', borderRadius: 12, boxShadow: '0 2px 16px rgba(0,0,0,0.07)' }}>
-            <h2>Choose a Document</h2>
-            <ul style={{ listStyle: 'none', padding: 0 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2rem', minHeight: '100vh', width: '100%' }}>
+            <h2 style={{ marginBottom: '2rem' }}>Choose a Meta-Text</h2>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'center', width: '100%', maxWidth: 900 }}>
                 {docs.map((name) => (
-                    <li key={name} style={{ margin: '1rem 0' }}>
-                        <button
-                            style={{ fontSize: '1.1rem', padding: '0.5rem 1.5rem', borderRadius: 8, border: '1px solid #ddd', cursor: 'pointer' }}
-                            onClick={() => navigate(`/viewer/${encodeURIComponent(name)}`)}
-                        >
-                            {name}
-                        </button>
-                    </li>
+                    <button
+                        key={name}
+                        style={{ fontSize: '1.1rem', padding: '0.5rem 1.5rem', borderRadius: 8, border: '1px solid #ddd', cursor: 'pointer', minWidth: 200, maxWidth: 320, margin: 0, boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}
+                        onClick={() => navigate(`/viewer/${encodeURIComponent(name)}`)}
+                    >
+                        {name}
+                    </button>
                 ))}
-            </ul>
+            </div>
         </div>
     );
 }
