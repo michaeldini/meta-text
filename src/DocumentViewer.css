@@ -8,10 +8,15 @@
 
 .docviewer-header {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
     justify-content: flex-start;
-    /* gap: 1.5rem; */
+    align-items: flex-end;
+    position: sticky;
+    top: 60px;
+    /* Adjust this value to match your navbar height */
+    z-index: 10;
+    background: black;
+    padding-bottom: 1rem;
 }
 
 .docviewer-header h2 {
@@ -56,6 +61,7 @@
 .docviewer-table-scroll .docviewer-content-header,
 .docviewer-table-scroll .docviewer-content {
     min-width: 600px;
+    background: black
 }
 
 .docviewer-table-scroll .docviewer-meta-header,
@@ -63,11 +69,11 @@
     min-width: 600px;
 }
 
-.docviewer-content-header,
 .docviewer-content {
     max-width: 320px;
     min-width: 120px;
     width: 320px;
+    background: #242424;
 }
 
 .docviewer-meta-header,
@@ -89,21 +95,20 @@
 
 .docviewer-table th {
     color: rgba(255, 255, 255, 0.87);
-    background-color: #242424;
     font-weight: 600;
 }
 
-td.docviewer-content {
+td.docviewer-meta.docviewer-content {
     min-width: 200px;
     font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-    background: #22262e;
+    background: #242424;
     font-size: 1.25rem;
+    border-radius: 8px;
 }
 
 .docviewer-meta {
     min-width: 120px;
     font-size: 0.98rem;
-    color: #444;
 }
 
 .docviewer-image {
@@ -159,30 +164,19 @@ td.docviewer-content {
     box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.08);
 }
 
-/* 
+
 .docviewer-save-btn {
-    font-size: 1.08rem;
-    font-weight: 600;
-    padding: 0.3em 1em 0.3em 0.5em;
-    border-radius: 8px;
-    border: 1.5px solid #6c63ff;
-    background: none;
-    color: #fff;
-    letter-spacing: 0.01em;
-    transition: border-color 0.2s, color 0.2s;
-    height: 38px;
-    display: flex;
-    align-items: center;
-    box-sizing: border-box;
+    margin: 0 0 0 1rem;
+    font-size: 1.1rem;
 }
 
+/* 
 .docviewer-save-btn:hover {
     border-color: #857cff;
     color: #b3aaff;
 } */
 
-
-.docviewer-ai-summary-text,
+*/ .docviewer-ai-summary-text,
 .docviewer-ai-themes-cell {
     font-size: 1.08rem;
     color: #fff;

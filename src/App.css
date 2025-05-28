@@ -23,12 +23,12 @@ nav {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  position: absolute;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
   max-width: none;
-
+  background: black;
   color: #fff;
   padding: 1rem;
   font-size: 1.3rem;

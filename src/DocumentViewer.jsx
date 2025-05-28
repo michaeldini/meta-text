@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import ReactMarkdown from 'react-markdown';
 import "./DocumentViewer.css";
 
-const META_FIELDS = ["summary", "aiSummary", "aiThemes", "notes", "aiImageUrl"];
+const META_FIELDS = ["content", "summary", "aiSummary", "aiThemes", "notes", "aiImageUrl"];
 
 export default function DocumentViewer() {
     const { name } = useParams();
@@ -12,6 +12,7 @@ export default function DocumentViewer() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [visibleMeta, setVisibleMeta] = useState({
+        content: true,
         notes: false,
         summary: false,
         aiImageUrl: false,
@@ -196,7 +197,7 @@ export default function DocumentViewer() {
         <div className="docviewer-container">
             <div className="docviewer-header">
                 <h2>{name}</h2>
-                <button onClick={handleSave} className="docviewer-save-btn" style={{ marginTop: 16 }} disabled={saveStatus === "saving"}>
+                <button onClick={handleSave} className="docviewer-save-btn" disabled={saveStatus === "saving"}>
                     {saveStatus === "saving" ? "Saving..." : "Save All"}
                 </button>
                 {saveStatus === "error" && <span className="docviewer-save-error">Save failed</span>}
@@ -216,33 +217,32 @@ export default function DocumentViewer() {
                 >
                     Horizontal Scroll
                 </span>
-            </div>
-            <div className="docviewer-meta-controls">
-                {META_FIELDS.map((field) => (
-                    <span
-                        key={field}
-                        className={
-                            'docviewer-meta-toggle-label' +
-                            (visibleMeta[field] ? ' docviewer-meta-toggle-label--active' : '')
-                        }
-                        onClick={() => handleToggleMeta(field)}
-                        tabIndex={0}
-                        role="button"
-                        aria-pressed={visibleMeta[field]}
-                        onKeyDown={e => {
-                            if (e.key === 'Enter' || e.key === ' ') handleToggleMeta(field);
-                        }}
-                    >
-                        {field}
-                    </span>
-                ))}
+                <div className="docviewer-meta-controls">
+                    {META_FIELDS.map((field) => (
+                        <span
+                            key={field}
+                            className={
+                                'docviewer-meta-toggle-label' +
+                                (visibleMeta[field] ? ' docviewer-meta-toggle-label--active' : '')
+                            }
+                            onClick={() => handleToggleMeta(field)}
+                            tabIndex={0}
+                            role="button"
+                            aria-pressed={visibleMeta[field]}
+                            onKeyDown={e => {
+                                if (e.key === 'Enter' || e.key === ' ') handleToggleMeta(field);
+                            }}
+                        >
+                            {field}
+                        </span>
+                    ))}
+                </div>
             </div>
             <div className={"docviewer-table-outer-wrapper" + (horizontalScroll ? " docviewer-table-scroll" : "")}>
                 <div className="docviewer-table-wrapper">
                     <table className="docviewer-table">
                         <thead>
                             <tr>
-                                <th className="docviewer-content-header">Content</th>
                                 {META_FIELDS.map(
                                     (field) =>
                                         visibleMeta[field] && <th key={field} className={`docviewer-meta-header docviewer-${field}-header`}>{field}</th>
@@ -252,12 +252,13 @@ export default function DocumentViewer() {
                         <tbody>
                             {sections.map((section, idx) => (
                                 <tr key={idx}>
-                                    <td className="docviewer-content">{section.content}</td>
                                     {META_FIELDS.map(
                                         (field) =>
                                             visibleMeta[field] && (
                                                 <td key={field} className={`docviewer-meta docviewer-${field}`}>
-                                                    {['notes', 'summary'].includes(field) ? (
+                                                    {field === "content" ? (
+                                                        section.content
+                                                    ) : ['notes', 'summary'].includes(field) ? (
                                                         <textarea
                                                             ref={el => {
                                                                 if (el) {
