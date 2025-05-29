@@ -1,6 +1,6 @@
 import './App.css'
 import DocumentManagePage from './pages/DocumentManagePage/DocumentManagePage';
-import EditPage from './EditPage'
+import EditPage from './pages/EditPage/EditPage';
 import DocumentViewer from './DocumentViewer';
 import DocumentListPage from './DocumentListPage';
 import { Routes, Route } from 'react-router-dom';
