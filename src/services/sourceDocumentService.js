@@ -28,3 +28,25 @@ export async function deleteSourceDocument(label) {
     if (!res.ok) throw new Error('Failed to delete source document');
     return true;
 }
+
+export async function fetchAiSummary(label) {
+    const res = await fetch(`/api/ai-summary/${encodeURIComponent(label)}`);
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data && data.result ? data.result : null;
+}
+
+export async function generateAiSummary(label, content) {
+    const res = await fetch("/api/ai-complete-summary", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: content, label }),
+    });
+    if (!res.ok) {
+        let err;
+        try { err = await res.json(); } catch { err = {}; }
+        throw new Error(err.detail || "Summary failed");
+    }
+    const data = await res.json();
+    return data.result;
+}
