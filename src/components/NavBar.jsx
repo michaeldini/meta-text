@@ -17,7 +17,7 @@ export default function NavBar() {
                     <Link key={link.to} to={link.to}>
                         <button
                             className={
-                                location.pathname === link.to || (link.to === '/viewer' && location.pathname.startsWith('/viewer'))
+                                location.pathname === link.to || location.pathname.startsWith(link.to)
                                     ? 'option-btn option-btn-active'
                                     : 'option-btn'
                             }

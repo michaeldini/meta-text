@@ -1,5 +1,5 @@
 import './App.css'
-import DocumentManagePage from './DocumentManagePage';
+import DocumentManagePage from './pages/DocumentManagePage/DocumentManagePage';
 import EditPage from './EditPage'
 import DocumentViewer from './DocumentViewer';
 import DocumentListPage from './DocumentListPage';
