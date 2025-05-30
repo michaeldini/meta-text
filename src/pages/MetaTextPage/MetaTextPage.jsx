@@ -1,8 +1,9 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
-import { fetchMetaTexts, createMetaText, fetchMetaTextContent } from '../../services/metaTextService';
+import { fetchMetaTexts, createMetaText, fetchMetaTextContent, updateMetaText } from '../../services/metaTextService';
 import { fetchSourceDocuments } from '../../services/sourceDocumentService';
 import { TextField, Paper, Typography, List, ListItem, ListItemButton, ListItemText, CircularProgress, Box, Divider, Button, MenuItem, Select, InputLabel, FormControl, Alert } from '@mui/material';
 import SectionSplitter from '../../components/SectionSplitter';
+import { useSimpleAutoSave } from '../../hooks/useAutoSave';
 
 export default function MetaTextPage() {
     const [metaTexts, setMetaTexts] = useState([]);
@@ -19,6 +20,7 @@ export default function MetaTextPage() {
     const [selectedMetaText, setSelectedMetaText] = useState('');
     const [sectionsLoading, setSectionsLoading] = useState(false);
     const [sectionsError, setSectionsError] = useState('');
+    const [autoSaveStatus, setAutoSaveStatus] = useState('Autosave'); // 'Autosave' | 'Saving...'
 
     // Fetch meta texts
     useEffect(() => {
@@ -140,11 +142,31 @@ export default function MetaTextPage() {
     // Replace handleMetaTextClick to set selectedMetaText
     const handleMetaTextClick = name => setSelectedMetaText(name);
 
+    // --- AUTOSAVE LOGIC ---
+    useSimpleAutoSave({
+        value: sections,
+        delay: 1500,
+        onSave: async () => {
+            if (!selectedMetaText) return;
+            setAutoSaveStatus('Saving...');
+            try {
+                await updateMetaText(selectedMetaText, sections);
+                setAutoSaveStatus('Autosave');
+            } catch {
+                setAutoSaveStatus('Autosave');
+            }
+        },
+        deps: [selectedMetaText]
+    });
+
     return (
         <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
             <Typography variant="h4" gutterBottom>Meta Texts</Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, gap: 2 }}>
+                <Typography variant="body2" color="text.secondary">{autoSaveStatus}</Typography>
+            </Box>
             <Paper sx={{ p: 2, mb: 3 }}>
-                <form onSubmit={handleCreate} style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'center' }}>
+                <Box component="form" onSubmit={handleCreate} sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', alignItems: 'center' }}>
                     <FormControl sx={{ minWidth: 200 }}>
                         <InputLabel id="source-doc-label">Source Document</InputLabel>
                         <Select
@@ -173,21 +195,18 @@ export default function MetaTextPage() {
                     </FormControl>
                     <TextField
                         label="Meta-text Name"
+                        variant="outlined"
                         value={newLabel}
                         onChange={e => setNewLabel(e.target.value)}
                         required
-                        sx={{
-                            '& .MuiInputBase-input': {
-                                color: 'white',
-                            }
-                        }}
+                        sx={{ flexGrow: 1, minWidth: 180 }}
                     />
-                    <Button type="submit" variant="contained" disabled={createLoading}>
+                    <Button type="submit" variant="contained" disabled={createLoading} sx={{ minWidth: 120 }}>
                         {createLoading ? 'Creating...' : 'Create'}
                     </Button>
                     {createError && <Alert severity="error" sx={{ ml: 2 }}>{createError}</Alert>}
                     {createSuccess && <Alert severity="success" sx={{ ml: 2 }}>{createSuccess}</Alert>}
-                </form>
+                </Box>
             </Paper>
             <TextField
                 label="Search Meta Texts"

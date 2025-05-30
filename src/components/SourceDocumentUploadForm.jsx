@@ -1,9 +1,9 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUpload } from '@fortawesome/free-solid-svg-icons';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import FileName from './FileName';
 import ErrorMessage from './ErrorMessage';
 import SuccessMessage from './SuccessMessage';
+import { TextField, Button, Box, Typography, Paper } from '@mui/material';
 
 export default function SourceDocumentUploadForm({
     file,
@@ -16,10 +16,10 @@ export default function SourceDocumentUploadForm({
     onSubmit
 }) {
     return (
-        <section>
-            <h4>New Source Document</h4>
-            <form onSubmit={onSubmit} className="upload-form">
-                <div className="stacked-inputs">
+        <Paper elevation={2} sx={{ p: 2, mb: 2 }}>
+            <Typography variant="h6" gutterBottom>New Source Document</Typography>
+            <Box component="form" onSubmit={onSubmit} sx={{ display: 'flex', flexDirection: 'row', gap: 2, alignItems: 'center' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                     <input
                         id="file-upload"
                         type="file"
@@ -27,25 +27,27 @@ export default function SourceDocumentUploadForm({
                         onChange={onFileChange}
                         style={{ display: 'none' }}
                     />
-                    <label htmlFor="file-upload" className="input-file-label">
-                        <FontAwesomeIcon icon={faUpload} style={{ marginRight: '0.5em' }} />
-                        {file ? 'Change File' : 'Upload File'}
+                    <label htmlFor="file-upload">
+                        <Button variant="outlined" component="span" startIcon={<CloudUploadIcon />}>
+                            {file ? 'Change File' : 'Upload File'}
+                        </Button>
                     </label>
                     <FileName name={file && file.name} />
-                    <input
-                        type="text"
-                        className="input-text"
-                        value={uploadLabel}
-                        onChange={onLabelChange}
-                        placeholder="Label"
-                    />
-                    <button type="submit" disabled={uploadLoading}>
-                        {uploadLoading ? 'Uploading...' : 'Upload'}
-                    </button>
-                </div>
-            </form>
-            <ErrorMessage>{uploadError}</ErrorMessage>
-            <SuccessMessage>{uploadSuccess}</SuccessMessage>
-        </section>
+                </Box>
+                <TextField
+                    label="Title"
+                    variant="outlined"
+                    value={uploadLabel}
+                    onChange={onLabelChange}
+                    size="small"
+                    sx={{ flexGrow: 1, minWidth: 180 }}
+                />
+                <Button type="submit" variant="contained" color="primary" disabled={uploadLoading}>
+                    {uploadLoading ? 'Uploading...' : 'Upload'}
+                </Button>
+                {uploadError && <ErrorMessage>{uploadError}</ErrorMessage>}
+                {uploadSuccess && <SuccessMessage>{uploadSuccess}</SuccessMessage>}
+            </Box>
+        </Paper>
     );
 }

@@ -140,7 +140,7 @@ async def update_meta_text(title: str, request: Request, session=Depends(get_ses
     meta_text = session.exec(select(MetaText).where(MetaText.title == title)).first()
     if not meta_text:
         raise HTTPException(status_code=404, detail="Meta-text not found.")
-    meta_text.content = body
+    meta_text.content = json.dumps(body)  # Ensure content is stored as JSON string
     session.add(meta_text)
     session.commit()
     return {"success": True}

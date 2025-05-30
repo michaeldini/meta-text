@@ -55,3 +55,17 @@ export async function deleteMetaText(title) {
     if (!res.ok) throw new Error('Failed to delete meta-text');
     return true;
 }
+
+export async function updateMetaText(title, content) {
+    const res = await fetch(`/api/meta-text/${encodeURIComponent(title)}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(content),
+    });
+    if (!res.ok) {
+        let data;
+        try { data = await res.json(); } catch { data = {}; }
+        throw new Error(data.detail || 'Failed to update meta-text');
+    }
+    return res.json();
+}

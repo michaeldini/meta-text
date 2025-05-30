@@ -1,10 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import { useSourceDocumentsWithDetails } from '../../hooks/useSourceDocuments';
-import { uploadSourceDocument, fetchSourceDocument, generateAiSummary } from '../../services/sourceDocumentService';
+import { uploadSourceDocument, fetchSourceDocument, generateAiSummary, deleteSourceDocument } from '../../services/sourceDocumentService';
 import SourceDocumentUploadForm from '../../components/SourceDocumentUploadForm';
 import { TextField, Paper, Typography, List, ListItem, ListItemText, CircularProgress, Box, Alert } from '@mui/material';
 import aiStars from '../../assets/ai-stars.png';
 import SourceDocDetails from '../../components/SourceDocDetails';
+import SourceDocumentDeleteButton from '../../components/SourceDocumentDeleteButton';
 
 export default function SourceDocsPage() {
     // const navigate = useNavigate();
@@ -17,6 +18,8 @@ export default function SourceDocsPage() {
     const [uploadLoading, setUploadLoading] = useState(false);
     const [summaryLoading, setSummaryLoading] = useState({}); // { [title]: boolean }
     const [summaryError, setSummaryError] = useState({}); // { [title]: string|null }
+    const [deleteLoading, setDeleteLoading] = useState({}); // { [title]: boolean }
+    const [deleteError, setDeleteError] = useState({}); // { [title]: string|null }
 
     // Filtered docs by search
     const filteredDocs = useMemo(() => {
@@ -65,6 +68,21 @@ export default function SourceDocsPage() {
         }
     };
 
+    const handleDelete = async (title) => {
+        if (!window.confirm(`Are you sure you want to delete "${title}"? This cannot be undone.`)) return;
+        setDeleteLoading(prev => ({ ...prev, [title]: true }));
+        setDeleteError(prev => ({ ...prev, [title]: null }));
+        try {
+            await deleteSourceDocument(title);
+            // Optionally, refetch docs or update UI to show new summary
+            window.location.reload();
+        } catch (e) {
+            setDeleteError(prev => ({ ...prev, [title]: e.message || 'Error deleting document' }));
+        } finally {
+            setDeleteLoading(prev => ({ ...prev, [title]: false }));
+        }
+    };
+
     return (
         <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
             <Typography variant="h4" gutterBottom>Source Documents</Typography>
@@ -105,14 +123,26 @@ export default function SourceDocsPage() {
                         {filteredDocs.map(doc => (
                             <React.Fragment key={doc.title}>
                                 <ListItem disablePadding>
-                                    <SourceDocDetails
-                                        doc={doc}
-                                        summaryError={summaryError[doc.title]}
-                                        onGenerateSummary={handleGenerateSummary}
-                                        summaryLoading={summaryLoading[doc.title]}
-                                        aiIcon={<img src={aiStars} alt="AI" style={{ height: 18 }} />}
-                                    />
+                                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                                        <SourceDocDetails
+                                            doc={doc}
+                                            summaryError={summaryError[doc.title]}
+                                            onGenerateSummary={handleGenerateSummary}
+                                            summaryLoading={summaryLoading[doc.title]}
+                                            aiIcon={<img src={aiStars} alt="AI" style={{ height: 18 }} />}
+                                        />
+                                        <SourceDocumentDeleteButton
+                                            onClick={e => { e.stopPropagation(); handleDelete(doc.title); }}
+                                            disabled={deleteLoading[doc.title]}
+                                            label="Delete Source Document"
+                                        />
+                                    </Box>
                                 </ListItem>
+                                {deleteError[doc.title] && (
+                                    <ListItem>
+                                        <Alert severity="error">{deleteError[doc.title]}</Alert>
+                                    </ListItem>
+                                )}
                             </React.Fragment>
                         ))}
                     </List>
