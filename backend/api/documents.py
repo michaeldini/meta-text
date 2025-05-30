@@ -24,7 +24,7 @@ async def create_source_document(label: str = Form(...), file: UploadFile = File
 
 @router.get("/source-documents", name="list_source_documents")
 def list_source_documents(session=Depends(get_session)):
-    docs = session.exec(select(Documents.label)).all()
+    docs = session.exec(select(Documents)).all()
     return {"source_documents": docs}
 
 @router.get("/source-documents/{label}", name="get_source_document")

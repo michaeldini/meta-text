@@ -7,6 +7,8 @@ import { Routes, Route } from 'react-router-dom';
 import BrowsePage from './pages/BrowsePage/BrowsePage';
 import NavBar from './components/NavBar';
 import DocumentDetailsPage from './pages/DocumentDetailsPage';
+import SourceDocsPage from './pages/SourceDocPage/SourceDocsPage';
+import SourceDocDetailPage from './pages/SourceDocPage/SourceDocDetailPage';
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
         <Route path="/viewer/:name" element={<DocumentViewer />} />
         <Route path="/browse" element={<BrowsePage />} />
         <Route path="/documents/:label" element={<DocumentDetailsPage />} />
+        <Route path="/sourceDocs" element={<SourceDocsPage />} />
+        <Route path="/sourceDocs/:label" element={<SourceDocDetailPage />} />
       </Routes>
     </>
   )

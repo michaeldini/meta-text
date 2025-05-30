@@ -50,3 +50,9 @@ export async function generateAiSummary(label, content) {
     const data = await res.json();
     return data.result;
 }
+
+export async function fetchSourceDocument(label) {
+    const res = await fetch(`/api/source-documents/${encodeURIComponent(label)}`);
+    if (!res.ok) throw new Error('Failed to fetch document');
+    return await res.json();
+}
