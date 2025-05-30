@@ -119,7 +119,7 @@ def get_meta_text(title: str, session=Depends(get_session)):
                 sections = [str(meta_text.content)]
         except Exception:
             sections = [str(meta_text.content)]
-        return {"title": title, "sections": sections}
+        return {"title": title, "content": sections}
     else:
         raise HTTPException(status_code=404, detail="Meta-text not found.")
 

@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchSourceDocuments } from '../../services/sourceDocumentService';
 import { fetchMetaTexts, createMetaText } from '../../services/metaTextService';
+import { fetchSourceDocuments } from '../../services/sourceDocumentService';
 import { TextField, Paper, Typography, List, ListItem, ListItemButton, ListItemText, CircularProgress, Box, Divider, Button, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 
 export default function MetaTextPage() {
@@ -11,8 +11,6 @@ export default function MetaTextPage() {
     const [metaTextsError, setMetaTextsError] = useState('');
     const [search, setSearch] = useState('');
     const [sourceDocs, setSourceDocs] = useState([]);
-    const [sourceDocsLoading, setSourceDocsLoading] = useState(true);
-    const [sourceDocsError, setSourceDocsError] = useState('');
     const [selectedSource, setSelectedSource] = useState('');
     const [newLabel, setNewLabel] = useState('');
     const [createError, setCreateError] = useState('');
@@ -29,14 +27,10 @@ export default function MetaTextPage() {
             .finally(() => setMetaTextsLoading(false));
     }, [createSuccess]);
 
-    // Fetch source docs
+    // Fetch source docs (for dropdown)
     useEffect(() => {
-        setSourceDocsLoading(true);
-        setSourceDocsError('');
         fetchSourceDocuments()
-            .then(data => setSourceDocs(data))
-            .catch(e => setSourceDocsError(e.message))
-            .finally(() => setSourceDocsLoading(false));
+            .then(data => setSourceDocs(data));
     }, []);
 
     const filteredMetaTexts = useMemo(() => {
@@ -77,9 +71,21 @@ export default function MetaTextPage() {
                             onChange={e => setSelectedSource(e.target.value)}
                             required
                         >
-                            {sourceDocs.map(doc => (
-                                <MenuItem key={doc.label || doc} value={doc.label || doc}>{doc.label || doc}</MenuItem>
-                            ))}
+                            {sourceDocs.map((doc, idx) => {
+                                let key, value, label;
+                                if (typeof doc === 'object' && doc !== null) {
+                                    key = doc.id || idx;
+                                    value = doc.title || String(idx); // use title as value
+                                    label = doc.title || String(idx);
+                                } else {
+                                    key = doc;
+                                    value = doc;
+                                    label = doc;
+                                }
+                                return (
+                                    <MenuItem key={key} value={value}>{label}</MenuItem>
+                                );
+                            })}
                         </Select>
                     </FormControl>
                     <TextField
