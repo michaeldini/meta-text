@@ -1,5 +1,5 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
-import { createMetaText, fetchMetaText, updateMetaText } from '../../services/metaTextService';
+import React, { useState, useMemo, useCallback } from 'react';
+import { createMetaText, updateMetaText } from '../../services/metaTextService';
 import { Typography, CircularProgress, Box, Alert } from '@mui/material';
 import MetaTextSections from '../../components/MetaTextSections';
 import { useAutoSave } from '../../hooks/useAutoSave';
@@ -8,6 +8,7 @@ import MetaTextCreateForm from '../../components/MetaTextCreateForm';
 import MetaTextList from '../../components/MetaTextList';
 import { useMetaTexts } from '../../hooks/useMetaTexts';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
+import { useMetaTextSections } from '../../hooks/useMetaTextSections';
 
 export default function MetaTextPage() {
     const [search, setSearch] = useState('');
@@ -16,17 +17,24 @@ export default function MetaTextPage() {
     const [createError, setCreateError] = useState('');
     const [createSuccess, setCreateSuccess] = useState('');
     const [createLoading, setCreateLoading] = useState(false);
-    const [sections, setSections] = useState([]); // Array of section objects
     const [selectedMetaText, setSelectedMetaText] = useState('');
-    const [sectionsLoading, setSectionsLoading] = useState(false);
-    const [sectionsError, setSectionsError] = useState('');
     const [autoSaveStatus, setAutoSaveStatus] = useState('Autosave');
     const { metaTexts, metaTextsLoading, metaTextsError } = useMetaTexts([createSuccess]);
     const { docs: sourceDocs, loading: sourceDocsLoading, error: sourceDocsError } = useSourceDocuments();
+    // Use custom hook for sections
+    const {
+        sections,
+        setSections,
+        sectionsLoading,
+        sectionsError
+    } = useMetaTextSections(selectedMetaText);
 
     const filteredMetaTexts = useMemo(() => {
         if (!search) return metaTexts;
-        return metaTexts.filter(obj => (obj.name || obj).toLowerCase().includes(search.toLowerCase()));
+        return metaTexts.filter(obj => {
+            const name = typeof obj === 'object' && obj !== null ? obj.name : obj;
+            return String(name).toLowerCase().includes(search.toLowerCase());
+        });
     }, [metaTexts, search]);
 
     const handleCreate = async e => {
@@ -45,35 +53,6 @@ export default function MetaTextPage() {
             setCreateLoading(false);
         }
     };
-
-    // Fetch sections when a meta-text is selected
-    useEffect(() => {
-        if (!selectedMetaText) {
-            setSections([]);
-            return;
-        }
-        setSectionsLoading(true);
-        setSectionsError('');
-        fetchMetaText(selectedMetaText)
-            .then(data => {
-                // Expect content to be an array of section objects
-                if (Array.isArray(data.content) && data.content.length > 0 && typeof data.content[0] === 'object') {
-                    setSections(data.content);
-                } else if (Array.isArray(data.content)) {
-                    // fallback for legacy string array
-                    setSections(data.content.map(content => ({ content, notes: '', summary: '', aiImageUrl: '' })));
-                } else if (typeof data.content === 'string') {
-                    setSections([{ content: data.content, notes: '', summary: '', aiImageUrl: '' }]);
-                } else {
-                    setSections([]);
-                }
-            })
-            .catch(() => {
-                setSectionsError('Failed to load meta-text.');
-                setSections([]);
-            })
-            .finally(() => setSectionsLoading(false));
-    }, [selectedMetaText]);
 
     // --- Handle word click: split section at word index ---
     const handleWordClick = useCallback((sectionIdx, wordIdx) => {
@@ -97,7 +76,7 @@ export default function MetaTextPage() {
             }
             return newSections;
         });
-    }, []);
+    }, [setSections]);
 
     // --- Remove a section and merge with the next ---
     const handleRemoveSection = useCallback((sectionIdx) => {
@@ -111,7 +90,7 @@ export default function MetaTextPage() {
             });
             return newSections;
         });
-    }, []);
+    }, [setSections]);
 
     // --- Handle summary/notes field change ---
     const handleSectionFieldChange = useCallback((sectionIdx, field, value) => {
@@ -123,7 +102,7 @@ export default function MetaTextPage() {
             };
             return newSections;
         });
-    }, []);
+    }, [setSections]);
 
     // Replace handleMetaTextClick to set selectedMetaText
     const handleMetaTextClick = name => setSelectedMetaText(name);
