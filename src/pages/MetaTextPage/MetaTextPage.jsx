@@ -1,11 +1,10 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { fetchMetaTexts, createMetaText } from '../../services/metaTextService';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import { fetchMetaTexts, createMetaText, fetchMetaTextContent } from '../../services/metaTextService';
 import { fetchSourceDocuments } from '../../services/sourceDocumentService';
 import { TextField, Paper, Typography, List, ListItem, ListItemButton, ListItemText, CircularProgress, Box, Divider, Button, MenuItem, Select, InputLabel, FormControl, Alert } from '@mui/material';
+import SectionSplitter from '../../components/SectionSplitter';
 
 export default function MetaTextPage() {
-    const navigate = useNavigate();
     const [metaTexts, setMetaTexts] = useState([]);
     const [metaTextsLoading, setMetaTextsLoading] = useState(true);
     const [metaTextsError, setMetaTextsError] = useState('');
@@ -16,6 +15,10 @@ export default function MetaTextPage() {
     const [createError, setCreateError] = useState('');
     const [createSuccess, setCreateSuccess] = useState('');
     const [createLoading, setCreateLoading] = useState(false);
+    const [sections, setSections] = useState([]); // Array of section objects
+    const [selectedMetaText, setSelectedMetaText] = useState('');
+    const [sectionsLoading, setSectionsLoading] = useState(false);
+    const [sectionsError, setSectionsError] = useState('');
 
     // Fetch meta texts
     useEffect(() => {
@@ -55,7 +58,87 @@ export default function MetaTextPage() {
         }
     };
 
-    const handleMetaTextClick = name => navigate(`/metaText/${encodeURIComponent(name)}`);
+    // Fetch sections when a meta-text is selected
+    useEffect(() => {
+        if (!selectedMetaText) {
+            setSections([]);
+            return;
+        }
+        setSectionsLoading(true);
+        setSectionsError('');
+        fetchMetaTextContent(selectedMetaText)
+            .then(data => {
+                // Expect content to be an array of section objects
+                if (Array.isArray(data.content) && data.content.length > 0 && typeof data.content[0] === 'object') {
+                    setSections(data.content);
+                } else if (Array.isArray(data.content)) {
+                    // fallback for legacy string array
+                    setSections(data.content.map(content => ({ content, notes: '', summary: '', aiImageUrl: '' })));
+                } else if (typeof data.content === 'string') {
+                    setSections([{ content: data.content, notes: '', summary: '', aiImageUrl: '' }]);
+                } else {
+                    setSections([]);
+                }
+            })
+            .catch(() => {
+                setSectionsError('Failed to load meta-text.');
+                setSections([]);
+            })
+            .finally(() => setSectionsLoading(false));
+    }, [selectedMetaText]);
+
+    // --- Handle word click: split section at word index ---
+    const handleWordClick = useCallback((sectionIdx, wordIdx) => {
+        setSections(prevSections => {
+            const current = prevSections[sectionIdx];
+            const words = current.content.split(/\s+/);
+            const before = words.slice(0, wordIdx + 1).join(' ');
+            const after = words.slice(wordIdx + 1).join(' ');
+            const newSections = [...prevSections];
+            newSections.splice(sectionIdx, 1, {
+                ...current,
+                content: before
+            });
+            if (after) {
+                newSections.splice(sectionIdx + 1, 0, {
+                    content: after,
+                    notes: '',
+                    summary: '',
+                    aiImageUrl: ''
+                });
+            }
+            return newSections;
+        });
+    }, []);
+
+    // --- Remove a section and merge with the next ---
+    const handleRemoveSection = useCallback((sectionIdx) => {
+        setSections(prevSections => {
+            if (sectionIdx >= prevSections.length - 1) return prevSections;
+            const mergedContent = prevSections[sectionIdx].content + ' ' + prevSections[sectionIdx + 1].content;
+            const newSections = [...prevSections];
+            newSections.splice(sectionIdx, 2, {
+                ...prevSections[sectionIdx],
+                content: mergedContent
+            });
+            return newSections;
+        });
+    }, []);
+
+    // --- Handle summary/notes field change ---
+    const handleSectionFieldChange = useCallback((sectionIdx, field, value) => {
+        setSections(prevSections => {
+            const newSections = [...prevSections];
+            newSections[sectionIdx] = {
+                ...newSections[sectionIdx],
+                [field]: value
+            };
+            return newSections;
+        });
+    }, []);
+
+    // Replace handleMetaTextClick to set selectedMetaText
+    const handleMetaTextClick = name => setSelectedMetaText(name);
 
     return (
         <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
@@ -130,7 +213,7 @@ export default function MetaTextPage() {
                             const name = obj.name || obj;
                             return (
                                 <React.Fragment key={name}>
-                                    <ListItemButton onClick={() => handleMetaTextClick(name)}>
+                                    <ListItemButton onClick={() => handleMetaTextClick(name)} selected={selectedMetaText === name}>
                                         <ListItemText primary={name} />
                                     </ListItemButton>
                                     <Divider />
@@ -139,6 +222,26 @@ export default function MetaTextPage() {
                         })}
                     </List>
                 </Paper>
+            )}
+            {/* Section Splitter UI */}
+            {selectedMetaText && (
+                <Box sx={{ mt: 4 }}>
+                    <Typography variant="h5" gutterBottom>{selectedMetaText}</Typography>
+                    {sectionsLoading ? (
+                        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                            <CircularProgress />
+                        </Box>
+                    ) : sectionsError ? (
+                        <Alert severity="error">{sectionsError}</Alert>
+                    ) : (
+                        <SectionSplitter
+                            sections={sections}
+                            handleWordClick={handleWordClick}
+                            handleRemoveSection={handleRemoveSection}
+                            handleSectionFieldChange={handleSectionFieldChange}
+                        />
+                    )}
+                </Box>
             )}
         </Box>
     );

@@ -20,8 +20,8 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 
 router = APIRouter()
 
-@router.post("/ai-complete")
-async def summarize_prompt(request: Request):
+@router.post("/ai-short-summary")
+async def generate_short_summary(request: Request):
     body = await request.json()
     prompt = body.get("prompt")
     if not prompt:

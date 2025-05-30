@@ -7,20 +7,16 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 const navLinks = [
-    { to: '/manage', label: 'Manage Docs' },
-    { to: '/edit', label: 'Edit' },
-    { to: '/viewer', label: 'View Docs' },
-    { to: '/browse', label: 'Browse' },
     { to: '/sourceDocs', label: 'Source Docs' },
-    { to: '/metaText', label: 'Meta Texts' }, // new link
+    { to: '/metaText', label: 'Meta Texts' },
 ];
 
 export default function NavBar() {
     const location = useLocation();
     return (
         <AppBar position="fixed" color="default" elevation={2} sx={{ bgcolor: 'background.paper', color: 'text.primary', zIndex: 1201 }}>
-            <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', minHeight: 64 }}>
-                <Box sx={{ display: 'flex', gap: 2 }}>
+            <Toolbar sx={{ display: 'flex', justifyContent: 'right', minHeight: 64 }}>
+                <Box sx={{ display: 'flex', gap: 2, }}>
                     {navLinks.map(link => (
                         <Button
                             key={link.to}
@@ -45,7 +41,7 @@ export default function NavBar() {
                         </Button>
                     ))}
                 </Box>
-                <Typography variant="h6" sx={{ textTransform: 'uppercase', fontWeight: 700, letterSpacing: 2, color: 'primary.main' }}>
+                <Typography variant="h6" sx={{ textTransform: 'uppercase', fontWeight: 700, letterSpacing: 2, color: 'primary.main', pl: 2 }}>
                     Meta-Text
                 </Typography>
             </Toolbar>
