@@ -1,9 +1,17 @@
 // src/services/sourceDocumentService.js
 
-export async function fetchSourceDocuments() {
-    const res = await fetch('/api/source-documents');
+export async function fetchSourceDocuments(full = false) {
+    const url = full ? '/api/source-documents?full=true' : '/api/source-documents';
+    const res = await fetch(url);
     if (!res.ok) throw new Error('Failed to fetch source documents');
     const data = await res.json();
+    if (full) {
+        return data.source_documents || [];
+    }
+    // Map array of strings to array of { label } objects if needed
+    if (Array.isArray(data.source_documents) && typeof data.source_documents[0] === 'string') {
+        return data.source_documents.map(label => ({ label }));
+    }
     return data.source_documents || [];
 }
 

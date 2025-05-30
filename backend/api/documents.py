@@ -23,9 +23,13 @@ async def create_source_document(label: str = Form(...), file: UploadFile = File
         raise HTTPException(status_code=500, detail="Failed to save to database.")
 
 @router.get("/source-documents", name="list_source_documents")
-def list_source_documents(session=Depends(get_session)):
-    docs = session.exec(select(Documents)).all()
-    return {"source_documents": docs}
+def list_source_documents(full: bool = False, session=Depends(get_session)):
+    if full:
+        docs = session.exec(select(Documents)).all()
+        return {"source_documents": [{"label": d.label, "content": d.content} for d in docs]}
+    else:
+        docs = session.exec(select(Documents.label)).all()
+        return {"source_documents": docs}
 
 @router.get("/source-documents/{label}", name="get_source_document")
 def get_source_document(label: str, session=Depends(get_session)):

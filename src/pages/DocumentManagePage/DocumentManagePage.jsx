@@ -34,7 +34,7 @@ export default function DocumentManagePage() {
     const fetchDocs = () => {
         setLoadingDocs(true);
         fetchSourceDocuments()
-            .then(setDocs)
+            .then(docsArr => setDocs(docsArr.map(doc => doc.label)))
             .catch(() => setDocs([]))
             .finally(() => setLoadingDocs(false));
     };
@@ -111,7 +111,7 @@ export default function DocumentManagePage() {
         setLoadingDocs(true);
         try {
             await deleteSourceDocument(label);
-            setDocs(docs.filter(doc => doc !== label));
+            setDocs(docs.filter(docLabel => docLabel !== label));
         } finally {
             setLoadingDocs(false);
         }
