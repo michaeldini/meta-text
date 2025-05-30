@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.db import init_db
-from backend.api import documents, ai
+from backend.api import ai, source_documents, meta_text
 
 app = FastAPI()
 
@@ -15,7 +15,8 @@ app.add_middleware(
 
 init_db()
 
-app.include_router(documents.router, prefix="/api")
+app.include_router(source_documents.router, prefix="/api")
+app.include_router(meta_text.router, prefix="/api")
 app.include_router(ai.router, prefix="/api")
 
 @app.get("/")

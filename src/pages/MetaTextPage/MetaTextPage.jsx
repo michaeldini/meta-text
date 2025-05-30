@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
-import { fetchMetaTexts, createMetaText, fetchMetaTextContent, updateMetaText } from '../../services/metaTextService';
+import { fetchMetaTexts, createMetaText, fetchMetaText, updateMetaText } from '../../services/metaTextService';
 import { fetchSourceDocuments } from '../../services/sourceDocumentService';
 import { TextField, Paper, Typography, CircularProgress, Box, Alert } from '@mui/material';
 import MetaTextSections from '../../components/MetaTextSections';
@@ -71,7 +71,7 @@ export default function MetaTextPage() {
         }
         setSectionsLoading(true);
         setSectionsError('');
-        fetchMetaTextContent(selectedMetaText)
+        fetchMetaText(selectedMetaText)
             .then(data => {
                 // Expect content to be an array of section objects
                 if (Array.isArray(data.content) && data.content.length > 0 && typeof data.content[0] === 'object') {
