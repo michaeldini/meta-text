@@ -20,7 +20,7 @@ export default function MetaTextDetailPage() {
 
     return (
         <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
-            <Typography variant="h4" gutterBottom>Meta Text: {title}</Typography>
+            <Typography variant="h4" gutterBottom>{title}</Typography>
             {loading ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
                     <CircularProgress />
@@ -32,7 +32,7 @@ export default function MetaTextDetailPage() {
                     <Typography variant="subtitle1" gutterBottom>Title: {metaText.title}</Typography>
                     {Array.isArray(metaText.content) ? (
                         metaText.content.map((section, idx) => (
-                            <Box key={idx} sx={{ mb: 3, p: 2, border: '1px solid #eee', borderRadius: 2, background: '#fafafa' }}>
+                            <Box key={idx} sx={{ mb: 3, p: 2 }}>
                                 <Typography variant="subtitle2" gutterBottom>Section {idx + 1}</Typography>
                                 {section.content && (
                                     <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap', mb: 1 }}><strong>Content:</strong> {section.content}</Typography>

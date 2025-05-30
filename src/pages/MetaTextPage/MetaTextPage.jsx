@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchMetaTexts, createMetaText } from '../../services/metaTextService';
 import { fetchSourceDocuments } from '../../services/sourceDocumentService';
-import { TextField, Paper, Typography, List, ListItem, ListItemButton, ListItemText, CircularProgress, Box, Divider, Button, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
+import { TextField, Paper, Typography, List, ListItem, ListItemButton, ListItemText, CircularProgress, Box, Divider, Button, MenuItem, Select, InputLabel, FormControl, Alert } from '@mui/material';
 
 export default function MetaTextPage() {
     const navigate = useNavigate();
@@ -93,12 +93,17 @@ export default function MetaTextPage() {
                         value={newLabel}
                         onChange={e => setNewLabel(e.target.value)}
                         required
+                        sx={{
+                            '& .MuiInputBase-input': {
+                                color: 'white',
+                            }
+                        }}
                     />
                     <Button type="submit" variant="contained" disabled={createLoading}>
                         {createLoading ? 'Creating...' : 'Create'}
                     </Button>
-                    {createError && <Typography color="error">{createError}</Typography>}
-                    {createSuccess && <Typography color="success.main">{createSuccess}</Typography>}
+                    {createError && <Alert severity="error" sx={{ ml: 2 }}>{createError}</Alert>}
+                    {createSuccess && <Alert severity="success" sx={{ ml: 2 }}>{createSuccess}</Alert>}
                 </form>
             </Paper>
             <TextField
@@ -114,7 +119,7 @@ export default function MetaTextPage() {
                     <CircularProgress />
                 </Box>
             ) : metaTextsError ? (
-                <Typography color="error">{metaTextsError}</Typography>
+                <Alert severity="error">{metaTextsError}</Alert>
             ) : (
                 <Paper>
                     <List>

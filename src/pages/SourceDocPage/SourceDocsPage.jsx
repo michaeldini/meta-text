@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useSourceDocumentsWithDetails } from '../../hooks/useSourceDocuments';
 import { uploadSourceDocument, fetchSourceDocument, generateAiSummary } from '../../services/sourceDocumentService';
 import SourceDocumentUploadForm from '../../components/SourceDocumentUploadForm';
-import { TextField, Paper, Typography, List, ListItem, ListItemText, CircularProgress, Box } from '@mui/material';
+import { TextField, Paper, Typography, List, ListItem, ListItemText, CircularProgress, Box, Alert } from '@mui/material';
 import aiStars from '../../assets/ai-stars.png';
 import SourceDocDetails from '../../components/SourceDocDetails';
 
@@ -79,6 +79,8 @@ export default function SourceDocsPage() {
                     onLabelChange={handleTitleChange}
                     onSubmit={handleSubmit}
                 />
+                {uploadError && <Alert severity="error" sx={{ mt: 2 }}>{uploadError}</Alert>}
+                {uploadSuccess && <Alert severity="success" sx={{ mt: 2 }}>{uploadSuccess}</Alert>}
             </Paper>
             <TextField
                 label="Search Source Documents"
@@ -93,7 +95,7 @@ export default function SourceDocsPage() {
                     <CircularProgress />
                 </Box>
             ) : error ? (
-                <Typography color="error">{error}</Typography>
+                <Alert severity="error">{error}</Alert>
             ) : (
                 <Paper>
                     <List>
