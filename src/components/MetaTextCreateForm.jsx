@@ -10,12 +10,14 @@ function MetaTextCreateForm({
     handleCreate,
     createLoading,
     createError,
-    createSuccess
+    createSuccess,
+    sourceDocsLoading = false,
+    sourceDocsError = null
 }) {
     return (
         <Paper sx={{ p: 2, mb: 3 }}>
             <Box component="form" onSubmit={handleCreate} sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', alignItems: 'center' }}>
-                <FormControl sx={{ minWidth: 200 }}>
+                <FormControl sx={{ minWidth: 200 }} disabled={sourceDocsLoading || !!sourceDocsError}>
                     <InputLabel id="source-doc-label">Source Document</InputLabel>
                     <Select
                         labelId="source-doc-label"
@@ -24,21 +26,29 @@ function MetaTextCreateForm({
                         onChange={e => setSelectedSource(e.target.value)}
                         required
                     >
-                        {sourceDocs.map((doc, idx) => {
-                            let key, value, label;
-                            if (typeof doc === 'object' && doc !== null) {
-                                key = doc.id || idx;
-                                value = doc.title || String(idx); // use title as value
-                                label = doc.title || String(idx);
-                            } else {
-                                key = doc;
-                                value = doc;
-                                label = doc;
-                            }
-                            return (
-                                <MenuItem key={key} value={value}>{label}</MenuItem>
-                            );
-                        })}
+                        {sourceDocsLoading ? (
+                            <MenuItem value="" disabled>Loading...</MenuItem>
+                        ) : sourceDocsError ? (
+                            <MenuItem value="" disabled>Error loading documents</MenuItem>
+                        ) : sourceDocs.length === 0 ? (
+                            <MenuItem value="" disabled>No documents found</MenuItem>
+                        ) : (
+                            sourceDocs.map((doc, idx) => {
+                                let key, value, label;
+                                if (typeof doc === 'object' && doc !== null) {
+                                    key = doc.id || idx;
+                                    value = doc.title || String(idx); // use title as value
+                                    label = doc.title || String(idx);
+                                } else {
+                                    key = doc;
+                                    value = doc;
+                                    label = doc;
+                                }
+                                return (
+                                    <MenuItem key={key} value={value}>{label}</MenuItem>
+                                );
+                            })
+                        )}
                     </Select>
                 </FormControl>
                 <TextField

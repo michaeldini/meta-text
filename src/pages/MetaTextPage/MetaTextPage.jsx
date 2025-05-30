@@ -1,19 +1,16 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
-import { fetchMetaTexts, createMetaText, fetchMetaText, updateMetaText } from '../../services/metaTextService';
-import { fetchSourceDocuments } from '../../services/sourceDocumentService';
-import { TextField, Paper, Typography, CircularProgress, Box, Alert } from '@mui/material';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import { createMetaText, fetchMetaText, updateMetaText } from '../../services/metaTextService';
+import { Typography, CircularProgress, Box, Alert } from '@mui/material';
 import MetaTextSections from '../../components/MetaTextSections';
-import { useSimpleAutoSave } from '../../hooks/useAutoSave';
+import { useAutoSave } from '../../hooks/useAutoSave';
 import SearchBar from '../../components/SearchBar';
 import MetaTextCreateForm from '../../components/MetaTextCreateForm';
 import MetaTextList from '../../components/MetaTextList';
+import { useMetaTexts } from '../../hooks/useMetaTexts';
+import { useSourceDocuments } from '../../hooks/useSourceDocuments';
 
 export default function MetaTextPage() {
-    const [metaTexts, setMetaTexts] = useState([]);
-    const [metaTextsLoading, setMetaTextsLoading] = useState(true);
-    const [metaTextsError, setMetaTextsError] = useState('');
     const [search, setSearch] = useState('');
-    const [sourceDocs, setSourceDocs] = useState([]);
     const [selectedSource, setSelectedSource] = useState('');
     const [newLabel, setNewLabel] = useState('');
     const [createError, setCreateError] = useState('');
@@ -23,23 +20,9 @@ export default function MetaTextPage() {
     const [selectedMetaText, setSelectedMetaText] = useState('');
     const [sectionsLoading, setSectionsLoading] = useState(false);
     const [sectionsError, setSectionsError] = useState('');
-    const [autoSaveStatus, setAutoSaveStatus] = useState('Autosave'); // 'Autosave' | 'Saving...'
-
-    // Fetch meta texts
-    useEffect(() => {
-        setMetaTextsLoading(true);
-        setMetaTextsError('');
-        fetchMetaTexts()
-            .then(data => setMetaTexts(data))
-            .catch(e => setMetaTextsError(e.message))
-            .finally(() => setMetaTextsLoading(false));
-    }, [createSuccess]);
-
-    // Fetch source docs (for dropdown)
-    useEffect(() => {
-        fetchSourceDocuments()
-            .then(data => setSourceDocs(data));
-    }, []);
+    const [autoSaveStatus, setAutoSaveStatus] = useState('Autosave');
+    const { metaTexts, metaTextsLoading, metaTextsError } = useMetaTexts([createSuccess]);
+    const { docs: sourceDocs, loading: sourceDocsLoading, error: sourceDocsError } = useSourceDocuments();
 
     const filteredMetaTexts = useMemo(() => {
         if (!search) return metaTexts;
@@ -146,7 +129,7 @@ export default function MetaTextPage() {
     const handleMetaTextClick = name => setSelectedMetaText(name);
 
     // --- AUTOSAVE LOGIC ---
-    useSimpleAutoSave({
+    useAutoSave({
         value: sections,
         delay: 1500,
         onSave: async () => {
@@ -178,6 +161,8 @@ export default function MetaTextPage() {
                 createLoading={createLoading}
                 createError={createError}
                 createSuccess={createSuccess}
+                sourceDocsLoading={sourceDocsLoading}
+                sourceDocsError={sourceDocsError}
             />
             <SearchBar
                 label="Search Meta Texts"
