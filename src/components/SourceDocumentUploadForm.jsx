@@ -1,9 +1,7 @@
 import React from 'react';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import FileName from './FileName';
-import ErrorMessage from './ErrorMessage';
-import SuccessMessage from './SuccessMessage';
-import { TextField, Button, Box, Typography, Paper } from '@mui/material';
+import { TextField, Button, Box, Typography, Paper, Alert } from '@mui/material';
 
 export default function SourceDocumentUploadForm({
     file,
@@ -45,8 +43,16 @@ export default function SourceDocumentUploadForm({
                 <Button type="submit" variant="contained" color="primary" disabled={uploadLoading}>
                     {uploadLoading ? 'Uploading...' : 'Upload'}
                 </Button>
-                {uploadError && <ErrorMessage>{uploadError}</ErrorMessage>}
-                {uploadSuccess && <SuccessMessage>{uploadSuccess}</SuccessMessage>}
+                {uploadError && (
+                    <Box sx={{ minWidth: 200 }}>
+                        <Alert severity="error" sx={{ py: 0.5, px: 2, fontSize: 14 }}>{uploadError}</Alert>
+                    </Box>
+                )}
+                {uploadSuccess && (
+                    <Box sx={{ minWidth: 200 }}>
+                        <Alert severity="success" sx={{ py: 0.5, px: 2, fontSize: 14 }}>{uploadSuccess}</Alert>
+                    </Box>
+                )}
             </Box>
         </Paper>
     );
