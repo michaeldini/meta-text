@@ -9,6 +9,8 @@ import NavBar from './components/NavBar';
 import DocumentDetailsPage from './pages/DocumentDetailsPage';
 import SourceDocsPage from './pages/SourceDocPage/SourceDocsPage';
 import SourceDocDetailPage from './pages/SourceDocPage/SourceDocDetailPage';
+import MetaTextPage from './pages/MetaTextPage/MetaTextPage';
+import MetaTextDetailPage from './pages/MetaTextPage/MetaTextDetailPage';
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
         <Route path="/documents/:label" element={<DocumentDetailsPage />} />
         <Route path="/sourceDocs" element={<SourceDocsPage />} />
         <Route path="/sourceDocs/:label" element={<SourceDocDetailPage />} />
+        <Route path="/metaText" element={<MetaTextPage />} />
+        <Route path="/metaText/:label" element={<MetaTextDetailPage />} />
       </Routes>
     </>
   )

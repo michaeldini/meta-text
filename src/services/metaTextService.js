@@ -25,7 +25,7 @@ export async function saveMetaText(name, sections) {
 
 export async function fetchMetaTexts() {
     const res = await fetch('/api/meta-text');
-    if (!res.ok) throw new Error('Failed to fetch meta-texts');
+    if (!res.ok) throw new Error('Failed to fetch meta texts');
     const data = await res.json();
     return data.meta_texts || [];
 }
@@ -34,14 +34,20 @@ export async function createMetaText(sourceLabel, newLabel) {
     const res = await fetch('/api/meta-text', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sourceLabel, newLabel }),
+        body: JSON.stringify({ sourceLabel, newLabel })
     });
     if (!res.ok) {
         let data;
         try { data = await res.json(); } catch { data = {}; }
-        throw new Error(data.detail || 'Failed to create meta-text.');
+        throw new Error(data.detail || 'Create failed.');
     }
     return true;
+}
+
+export async function fetchMetaText(name) {
+    const res = await fetch(`/api/meta-text/${encodeURIComponent(name)}`);
+    if (!res.ok) throw new Error('Failed to fetch meta text');
+    return await res.json();
 }
 
 export async function deleteMetaText(label) {

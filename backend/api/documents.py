@@ -44,7 +44,7 @@ def delete_source_document(label: str, session=Depends(get_session)):
     session.commit()
     return None
 
-# --- Meta-Text (was: Split Documents) ---
+# --- Meta-Text ---
 @router.post("/meta-text", name="create_meta_text")
 async def create_meta_text(request: Request, session=Depends(get_session)):
     body = await request.json()

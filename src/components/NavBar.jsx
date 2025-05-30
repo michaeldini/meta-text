@@ -6,6 +6,8 @@ const navLinks = [
     { to: '/edit', label: 'Edit' },
     { to: '/viewer', label: 'View Docs' },
     { to: '/browse', label: 'Browse' },
+    { to: '/sourceDocs', label: 'Source Docs' },
+    { to: '/metaText', label: 'Meta Texts' }, // new link
 ];
 
 export default function NavBar() {
