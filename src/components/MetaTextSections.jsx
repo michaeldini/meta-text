@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Box, TextField, IconButton, Paper, Button, CircularProgress } from '@mui/material';
+import UndoArrowIcon from './icons/UndoArrowIcon';
 
 function AISummaryBox({ sectionContent, aiSummary, onAISummaryUpdate }) {
     const [loading, setLoading] = useState(false);
@@ -41,7 +42,7 @@ function AISummaryBox({ sectionContent, aiSummary, onAISummaryUpdate }) {
 export default function MetaTextSections({ sections, handleWordClick, handleRemoveSection, handleSectionFieldChange }) {
     return (
         <Box>
-            <Box className="editpage-sections-list">
+            <Box>
                 {sections.map((section, sectionIdx) => {
                     const words = section.content.split(/\s+/);
                     // Handler to update aiSummary in parent state
@@ -50,12 +51,11 @@ export default function MetaTextSections({ sections, handleWordClick, handleRemo
                         <Paper key={sectionIdx} sx={{ p: 2, mb: 2 }}>
                             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2 }}>
                                 {/* Split text column */}
-                                <Box sx={{ flex: 2, minWidth: 0 }} className="editpage-text-block editpage-section">
-                                    <div className="editpage-text-block-content">
+                                <Box sx={{ flex: 2, minWidth: 0 }}>
+                                    <div>
                                         {words.map((word, wordIdx) => (
                                             <span
                                                 key={wordIdx}
-                                                className="editpage-word"
                                                 onClick={() => handleWordClick(sectionIdx, wordIdx)}
                                                 style={{ cursor: 'pointer' }}
                                             >
@@ -64,16 +64,11 @@ export default function MetaTextSections({ sections, handleWordClick, handleRemo
                                                 {wordIdx === words.length - 1 && sectionIdx < sections.length - 1 && (
                                                     <IconButton
                                                         size="small"
-                                                        className="editpage-remove-section-btn"
                                                         onClick={e => { e.stopPropagation(); handleRemoveSection(sectionIdx); }}
                                                         title="Undo split (merge with next section)"
                                                         sx={{ ml: 1 }}
                                                     >
-                                                        {/* Undo arrow SVG icon */}
-                                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8 4L3 9L8 14" stroke="#b8bfff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                            <path d="M3 9H13C15.7614 9 18 11.2386 18 14C18 16.7614 15.7614 19 13 19H11" stroke="#b8bfff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                        </svg>
+                                                        <UndoArrowIcon />
                                                     </IconButton>
                                                 )}
                                             </span>
