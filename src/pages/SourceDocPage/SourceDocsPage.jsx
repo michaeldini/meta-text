@@ -5,7 +5,7 @@ import SourceDocumentUploadForm from '../../components/SourceDocumentUploadForm'
 import { TextField, Paper, Typography, List, ListItem, ListItemText, CircularProgress, Box, Alert } from '@mui/material';
 import aiStars from '../../assets/ai-stars.png';
 import SourceDocDetails from '../../components/SourceDocDetails';
-import SourceDocumentDeleteButton from '../../components/SourceDocumentDeleteButton';
+import DeleteButton from '../../components/DeleteButton';
 
 export default function SourceDocsPage() {
     // const navigate = useNavigate();
@@ -131,7 +131,7 @@ export default function SourceDocsPage() {
                                             summaryLoading={summaryLoading[doc.title]}
                                             aiIcon={<img src={aiStars} alt="AI" style={{ height: 18 }} />}
                                         />
-                                        <SourceDocumentDeleteButton
+                                        <DeleteButton
                                             onClick={e => { e.stopPropagation(); handleDelete(doc.title); }}
                                             disabled={deleteLoading[doc.title]}
                                             label="Delete Source Document"

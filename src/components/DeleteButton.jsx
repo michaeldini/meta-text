@@ -3,7 +3,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-export default function SourceDocumentDeleteButton({ onClick, disabled, label = "Delete Source Document" }) {
+export default function DeleteButton({ onClick, disabled, label = "Delete", icon }) {
     return (
         <Tooltip title={label} placement="top">
             <span>
@@ -14,7 +14,7 @@ export default function SourceDocumentDeleteButton({ onClick, disabled, label = 
                     aria-label={label}
                     size="large"
                 >
-                    <DeleteIcon />
+                    {icon || <DeleteIcon />}
                 </IconButton>
             </span>
         </Tooltip>
