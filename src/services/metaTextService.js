@@ -1,33 +1,15 @@
-// src/services/metaTextService.js
-
 // Service for meta-text API calls
-export async function fetchMetaTextList() {
-    const res = await fetch('/api/meta-text');
-    if (!res.ok) throw new Error('Failed to fetch meta-text list');
-    return res.json();
-}
-
-export async function fetchMetaTextContent(title) {
-    const res = await fetch(`/api/meta-text/${encodeURIComponent(title)}`);
-    if (!res.ok) throw new Error('Not found');
-    return res.json();
-}
-
-export async function saveMetaText(title, sections) {
-    const res = await fetch('/api/meta-text/save', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, sections }),
-    });
-    if (!res.ok) throw new Error('Save failed');
-    return res.json();
-}
+import { handleApiResponse } from '../utils/api';
 
 export async function fetchMetaTexts() {
     const res = await fetch('/api/meta-text');
-    if (!res.ok) throw new Error('Failed to fetch meta texts');
-    const data = await res.json();
+    const data = await handleApiResponse(res, 'Failed to fetch meta texts');
     return data.meta_texts || [];
+}
+
+export async function fetchMetaText(title) {
+    const res = await fetch(`/api/meta-text/${encodeURIComponent(title)}`);
+    return handleApiResponse(res, 'Failed to fetch meta text');
 }
 
 export async function createMetaText(sourceTitle, newTitle) {
@@ -36,24 +18,7 @@ export async function createMetaText(sourceTitle, newTitle) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sourceTitle, newTitle })
     });
-    if (!res.ok) {
-        let data;
-        try { data = await res.json(); } catch { data = {}; }
-        throw new Error(data.detail || 'Create failed.');
-    }
-    return true;
-}
-
-export async function fetchMetaText(title) {
-    const res = await fetch(`/api/meta-text/${encodeURIComponent(title)}`);
-    if (!res.ok) throw new Error('Failed to fetch meta text');
-    return await res.json();
-}
-
-export async function deleteMetaText(title) {
-    const res = await fetch(`/api/meta-text/${encodeURIComponent(title)}`, { method: 'DELETE' });
-    if (!res.ok) throw new Error('Failed to delete meta-text');
-    return true;
+    return handleApiResponse(res, 'Create failed.');
 }
 
 export async function updateMetaText(title, content) {
@@ -62,10 +27,10 @@ export async function updateMetaText(title, content) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(content),
     });
-    if (!res.ok) {
-        let data;
-        try { data = await res.json(); } catch { data = {}; }
-        throw new Error(data.detail || 'Failed to update meta-text');
-    }
-    return res.json();
+    return handleApiResponse(res, 'Failed to update meta-text');
+}
+
+export async function deleteMetaText(title) {
+    const res = await fetch(`/api/meta-text/${encodeURIComponent(title)}`, { method: 'DELETE' });
+    return handleApiResponse(res, 'Failed to delete meta-text');
 }
