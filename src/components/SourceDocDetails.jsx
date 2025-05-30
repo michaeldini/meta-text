@@ -9,7 +9,7 @@ export default function SourceDocDetails({ doc, summaryError, onGenerateSummary,
     return (
         <>
             <Box sx={{ display: 'flex', alignItems: 'center', pl: 0 }}>
-                <ListItemButton sx={{ pl: 0, flex: 1 }} onClick={handleDocClick}>
+                <ListItemButton sx={{ pl: 2, flex: 1 }} onClick={handleDocClick}>
                     <ListItemText
                         primary={doc.title}
                         secondary={doc.details?.summary || 'No summary available.'}
@@ -18,7 +18,7 @@ export default function SourceDocDetails({ doc, summaryError, onGenerateSummary,
             </Box>
             {/* Display other attributes */}
             {doc.details && (
-                <Box sx={{ pl: 4, pb: 1 }}>
+                <Box sx={{ p: 2, gap: 1, display: 'flex', flexDirection: 'column' }}>
                     {Object.entries(doc.details)
                         .filter(([key]) => key !== 'summary')
                         .map(([key, value]) => (
