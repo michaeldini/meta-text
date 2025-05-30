@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './DocumentManagePage.css';
-import '../../DocumentManageSidebar.css';
+import './DocumentManageSidebar.css';
 import { fetchSourceDocuments, uploadSourceDocument, deleteSourceDocument } from '../../services/sourceDocumentService';
 import { fetchMetaTexts, createMetaText, deleteMetaText } from '../../services/metaTextService';
 import SourceDocumentUploadForm from '../../components/SourceDocumentUploadForm';

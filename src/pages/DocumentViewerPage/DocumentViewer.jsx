@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ReactMarkdown from 'react-markdown';
 import "./DocumentViewer.css";
-import aiStars from './assets/ai-stars.png';
+import aiStars from '../../assets/ai-stars.png';
 
 const META_FIELDS = ["content", "summary", "aiSummary", "aiThemes", "notes", "aiImageUrl"];
 

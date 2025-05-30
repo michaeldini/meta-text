@@ -1,11 +1,12 @@
 import './App.css'
 import DocumentManagePage from './pages/DocumentManagePage/DocumentManagePage';
 import EditPage from './pages/EditPage/EditPage';
-import DocumentViewer from './DocumentViewer';
-import DocumentListPage from './DocumentListPage';
+import DocumentViewer from './pages/DocumentViewerPage/DocumentViewer';
+import DocumentListPage from './pages/DocumentViewerPage/DocumentListPage';
 import { Routes, Route } from 'react-router-dom';
-import BrowsePage from './BrowsePage';
+import BrowsePage from './pages/BrowsePage/BrowsePage';
 import NavBar from './components/NavBar';
+import DocumentDetailsPage from './pages/DocumentDetailsPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/viewer" element={<DocumentListPage />} />
         <Route path="/viewer/:name" element={<DocumentViewer />} />
         <Route path="/browse" element={<BrowsePage />} />
+        <Route path="/documents/:label" element={<DocumentDetailsPage />} />
       </Routes>
     </>
   )
