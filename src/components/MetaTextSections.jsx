@@ -38,7 +38,7 @@ function AISummaryBox({ sectionContent, aiSummary, onAISummaryUpdate }) {
     );
 }
 
-export default function SectionSplitter({ sections, handleWordClick, handleRemoveSection, handleSectionFieldChange }) {
+export default function MetaTextSections({ sections, handleWordClick, handleRemoveSection, handleSectionFieldChange }) {
     return (
         <Box>
             <Box className="editpage-sections-list">

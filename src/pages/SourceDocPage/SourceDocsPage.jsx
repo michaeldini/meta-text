@@ -1,12 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import { useSourceDocumentsWithDetails } from '../../hooks/useSourceDocuments';
 import { uploadSourceDocument, fetchSourceDocument, generateAiSummary, deleteSourceDocument } from '../../services/sourceDocumentService';
-import SourceDocumentUploadForm from '../../components/SourceDocumentUploadForm';
-import { TextField, Paper, Typography, List, ListItem, ListItemText, CircularProgress, Box, Alert } from '@mui/material';
-import aiStars from '../../assets/ai-stars.png';
-import SourceDocDetails from '../../components/SourceDocDetails';
-import DeleteButton from '../../components/DeleteButton';
-
+import SourceDocUploadForm from '../../components/SourceDocUploadForm';
+import { TextField, Paper, Typography, CircularProgress, Box, Alert } from '@mui/material';
+import SourceDocList from '../../components/SourceDocList';
+import SearchBar from '../../components/SearchBar';
 export default function SourceDocsPage() {
     // const navigate = useNavigate();
     const { docs, loading, error } = useSourceDocumentsWithDetails();
@@ -87,7 +85,7 @@ export default function SourceDocsPage() {
         <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
             <Typography variant="h4" gutterBottom>Source Documents</Typography>
             <Paper sx={{ p: 2, mb: 3 }}>
-                <SourceDocumentUploadForm
+                <SourceDocUploadForm
                     file={file}
                     uploadLabel={uploadTitle}
                     uploadError={uploadError}
@@ -100,12 +98,10 @@ export default function SourceDocsPage() {
                 {uploadError && <Alert severity="error" sx={{ mt: 2 }}>{uploadError}</Alert>}
                 {uploadSuccess && <Alert severity="success" sx={{ mt: 2 }}>{uploadSuccess}</Alert>}
             </Paper>
-            <TextField
-                label="Search Source Documents"
-                variant="outlined"
-                fullWidth
+            <SearchBar
+                label="Search Documents"
                 value={search}
-                onChange={e => setSearch(e.target.value)}
+                onChange={setSearch}
                 sx={{ mb: 2 }}
             />
             {loading ? (
@@ -115,38 +111,15 @@ export default function SourceDocsPage() {
             ) : error ? (
                 <Alert severity="error">{error}</Alert>
             ) : (
-                <Paper>
-                    <List>
-                        {filteredDocs.length === 0 && (
-                            <ListItem><ListItemText primary="No documents found." /></ListItem>
-                        )}
-                        {filteredDocs.map(doc => (
-                            <React.Fragment key={doc.title}>
-                                <ListItem disablePadding>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                                        <SourceDocDetails
-                                            doc={doc}
-                                            summaryError={summaryError[doc.title]}
-                                            onGenerateSummary={handleGenerateSummary}
-                                            summaryLoading={summaryLoading[doc.title]}
-                                            aiIcon={<img src={aiStars} alt="AI" style={{ height: 18 }} />}
-                                        />
-                                        <DeleteButton
-                                            onClick={e => { e.stopPropagation(); handleDelete(doc.title); }}
-                                            disabled={deleteLoading[doc.title]}
-                                            label="Delete Source Document"
-                                        />
-                                    </Box>
-                                </ListItem>
-                                {deleteError[doc.title] && (
-                                    <ListItem>
-                                        <Alert severity="error">{deleteError[doc.title]}</Alert>
-                                    </ListItem>
-                                )}
-                            </React.Fragment>
-                        ))}
-                    </List>
-                </Paper>
+                <SourceDocList
+                    docs={filteredDocs}
+                    summaryError={summaryError}
+                    onGenerateSummary={handleGenerateSummary}
+                    summaryLoading={summaryLoading}
+                    deleteLoading={deleteLoading}
+                    deleteError={deleteError}
+                    onDelete={handleDelete}
+                />
             )}
         </Box>
     );

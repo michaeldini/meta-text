@@ -3,7 +3,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import FileName from './FileName';
 import { TextField, Button, Box, Typography, Paper, Alert } from '@mui/material';
 
-export default function SourceDocumentUploadForm({
+export default function SourceDocUploadForm({
     file,
     uploadLabel,
     uploadError,

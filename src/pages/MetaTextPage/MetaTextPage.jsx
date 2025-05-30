@@ -1,9 +1,12 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { fetchMetaTexts, createMetaText, fetchMetaTextContent, updateMetaText } from '../../services/metaTextService';
 import { fetchSourceDocuments } from '../../services/sourceDocumentService';
-import { TextField, Paper, Typography, List, ListItem, ListItemButton, ListItemText, CircularProgress, Box, Divider, Button, MenuItem, Select, InputLabel, FormControl, Alert } from '@mui/material';
-import SectionSplitter from '../../components/SectionSplitter';
+import { TextField, Paper, Typography, CircularProgress, Box, Alert } from '@mui/material';
+import MetaTextSections from '../../components/MetaTextSections';
 import { useSimpleAutoSave } from '../../hooks/useAutoSave';
+import SearchBar from '../../components/SearchBar';
+import MetaTextCreateForm from '../../components/MetaTextCreateForm';
+import MetaTextList from '../../components/MetaTextList';
 
 export default function MetaTextPage() {
     const [metaTexts, setMetaTexts] = useState([]);
@@ -165,55 +168,21 @@ export default function MetaTextPage() {
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, gap: 2 }}>
                 <Typography variant="body2" color="text.secondary">{autoSaveStatus}</Typography>
             </Box>
-            <Paper sx={{ p: 2, mb: 3 }}>
-                <Box component="form" onSubmit={handleCreate} sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', alignItems: 'center' }}>
-                    <FormControl sx={{ minWidth: 200 }}>
-                        <InputLabel id="source-doc-label">Source Document</InputLabel>
-                        <Select
-                            labelId="source-doc-label"
-                            value={selectedSource}
-                            label="Source Document"
-                            onChange={e => setSelectedSource(e.target.value)}
-                            required
-                        >
-                            {sourceDocs.map((doc, idx) => {
-                                let key, value, label;
-                                if (typeof doc === 'object' && doc !== null) {
-                                    key = doc.id || idx;
-                                    value = doc.title || String(idx); // use title as value
-                                    label = doc.title || String(idx);
-                                } else {
-                                    key = doc;
-                                    value = doc;
-                                    label = doc;
-                                }
-                                return (
-                                    <MenuItem key={key} value={value}>{label}</MenuItem>
-                                );
-                            })}
-                        </Select>
-                    </FormControl>
-                    <TextField
-                        label="Meta-text Name"
-                        variant="outlined"
-                        value={newLabel}
-                        onChange={e => setNewLabel(e.target.value)}
-                        required
-                        sx={{ flexGrow: 1, minWidth: 180 }}
-                    />
-                    <Button type="submit" variant="contained" disabled={createLoading} sx={{ minWidth: 120 }}>
-                        {createLoading ? 'Creating...' : 'Create'}
-                    </Button>
-                    {createError && <Alert severity="error" sx={{ ml: 2 }}>{createError}</Alert>}
-                    {createSuccess && <Alert severity="success" sx={{ ml: 2 }}>{createSuccess}</Alert>}
-                </Box>
-            </Paper>
-            <TextField
+            <MetaTextCreateForm
+                sourceDocs={sourceDocs}
+                selectedSource={selectedSource}
+                setSelectedSource={setSelectedSource}
+                newLabel={newLabel}
+                setNewLabel={setNewLabel}
+                handleCreate={handleCreate}
+                createLoading={createLoading}
+                createError={createError}
+                createSuccess={createSuccess}
+            />
+            <SearchBar
                 label="Search Meta Texts"
-                variant="outlined"
-                fullWidth
                 value={search}
-                onChange={e => setSearch(e.target.value)}
+                onChange={setSearch}
                 sx={{ mb: 2 }}
             />
             {metaTextsLoading ? (
@@ -223,24 +192,11 @@ export default function MetaTextPage() {
             ) : metaTextsError ? (
                 <Alert severity="error">{metaTextsError}</Alert>
             ) : (
-                <Paper>
-                    <List>
-                        {filteredMetaTexts.length === 0 && (
-                            <ListItem><ListItemText primary="No meta texts found." /></ListItem>
-                        )}
-                        {filteredMetaTexts.map(obj => {
-                            const name = obj.name || obj;
-                            return (
-                                <React.Fragment key={name}>
-                                    <ListItemButton onClick={() => handleMetaTextClick(name)} selected={selectedMetaText === name}>
-                                        <ListItemText primary={name} />
-                                    </ListItemButton>
-                                    <Divider />
-                                </React.Fragment>
-                            );
-                        })}
-                    </List>
-                </Paper>
+                <MetaTextList
+                    filteredMetaTexts={filteredMetaTexts}
+                    selectedMetaText={selectedMetaText}
+                    handleMetaTextClick={handleMetaTextClick}
+                />
             )}
             {/* Section Splitter UI */}
             {selectedMetaText && (
@@ -253,7 +209,7 @@ export default function MetaTextPage() {
                     ) : sectionsError ? (
                         <Alert severity="error">{sectionsError}</Alert>
                     ) : (
-                        <SectionSplitter
+                        <MetaTextSections
                             sections={sections}
                             handleWordClick={handleWordClick}
                             handleRemoveSection={handleRemoveSection}

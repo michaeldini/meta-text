@@ -35,3 +35,26 @@ The backend runs on [http://localhost:3001](http://localhost:3001).
 
 - Implement the meta-text interactive feature
 - Connect frontend to backend API
+
+## Notes
+
+### `SourceDocsPage`
+
+#### Components
+
+- `SourceDocUploadForm`
+- `SearchBar`
+- `SourceDocumentList`
+
+### `MetaTextPage`
+
+#### Components
+
+- `MetaTextCreateForm` component
+- `SearchBar` component
+- `MetaTextList` component
+- `MetaTextSections` component
+
+#### Hooks
+
+- `useAutoSave` hook
