@@ -7,17 +7,17 @@ export async function fetchMetaTextList() {
     return res.json();
 }
 
-export async function fetchMetaTextContent(name) {
-    const res = await fetch(`/api/meta-text/${encodeURIComponent(name)}`);
+export async function fetchMetaTextContent(title) {
+    const res = await fetch(`/api/meta-text/${encodeURIComponent(title)}`);
     if (!res.ok) throw new Error('Not found');
     return res.json();
 }
 
-export async function saveMetaText(name, sections) {
+export async function saveMetaText(title, sections) {
     const res = await fetch('/api/meta-text/save', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, sections }),
+        body: JSON.stringify({ title, sections }),
     });
     if (!res.ok) throw new Error('Save failed');
     return res.json();
@@ -30,11 +30,11 @@ export async function fetchMetaTexts() {
     return data.meta_texts || [];
 }
 
-export async function createMetaText(sourceLabel, newLabel) {
+export async function createMetaText(sourceTitle, newTitle) {
     const res = await fetch('/api/meta-text', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sourceLabel, newLabel })
+        body: JSON.stringify({ sourceTitle, newTitle })
     });
     if (!res.ok) {
         let data;
@@ -44,14 +44,14 @@ export async function createMetaText(sourceLabel, newLabel) {
     return true;
 }
 
-export async function fetchMetaText(name) {
-    const res = await fetch(`/api/meta-text/${encodeURIComponent(name)}`);
+export async function fetchMetaText(title) {
+    const res = await fetch(`/api/meta-text/${encodeURIComponent(title)}`);
     if (!res.ok) throw new Error('Failed to fetch meta text');
     return await res.json();
 }
 
-export async function deleteMetaText(label) {
-    const res = await fetch(`/api/meta-text/${encodeURIComponent(label)}`, { method: 'DELETE' });
+export async function deleteMetaText(title) {
+    const res = await fetch(`/api/meta-text/${encodeURIComponent(title)}`, { method: 'DELETE' });
     if (!res.ok) throw new Error('Failed to delete meta-text');
     return true;
 }

@@ -25,9 +25,9 @@ function App() {
         <Route path="/browse" element={<BrowsePage />} />
         <Route path="/documents/:label" element={<DocumentDetailsPage />} />
         <Route path="/sourceDocs" element={<SourceDocsPage />} />
-        <Route path="/sourceDocs/:label" element={<SourceDocDetailPage />} />
+        <Route path="/sourceDocs/:title" element={<SourceDocDetailPage />} />
         <Route path="/metaText" element={<MetaTextPage />} />
-        <Route path="/metaText/:label" element={<MetaTextDetailPage />} />
+        <Route path="/metaText/:title" element={<MetaTextDetailPage />} />
       </Routes>
     </>
   )

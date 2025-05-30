@@ -14,14 +14,14 @@ export default function DocumentManagePage() {
 
     // SourceDoc state
     const [file, setFile] = useState(null);
-    const [sourceDocLabel, setSourceDocLabel] = useState('');
+    const [sourceDocTitle, setSourceDocTitle] = useState('');
     const [sourceDocError, setSourceDocError] = useState('');
     const [sourceDocSuccess, setSourceDocSuccess] = useState('');
     const [sourceDocLoading, setSourceDocLoading] = useState(false);
 
     // Meta-text state
     const [selectedDoc, setSelectedDoc] = useState('');
-    const [newLabel, setNewLabel] = useState('');
+    const [newTitle, setNewTitle] = useState('');
     const [metaError, setMetaError] = useState('');
     const [metaSuccess, setMetaSuccess] = useState('');
     const [metaLoading, setMetaLoading] = useState(false);
@@ -34,7 +34,7 @@ export default function DocumentManagePage() {
     const fetchDocs = () => {
         setLoadingDocs(true);
         fetchSourceDocuments()
-            .then(docsArr => setDocs(docsArr.map(doc => doc.label)))
+            .then(docsArr => setDocs(docsArr.map(doc => doc.title)))
             .catch(() => setDocs([]))
             .finally(() => setLoadingDocs(false));
     };
@@ -59,25 +59,25 @@ export default function DocumentManagePage() {
         setSourceDocError('');
         setSourceDocSuccess('');
     };
-    const handleSourceDocLabelChange = (e) => {
-        setSourceDocLabel(e.target.value);
+    const handleSourceDocTitleChange = (e) => {
+        setSourceDocTitle(e.target.value);
         setSourceDocError('');
         setSourceDocSuccess('');
     };
     const handleSourceDocumentSubmit = async (e) => {
         e.preventDefault();
-        if (!file || !sourceDocLabel) {
-            setSourceDocError('Please select a file and enter a label.');
+        if (!file || !sourceDocTitle) {
+            setSourceDocError('Please select a file and enter a title.');
             return;
         }
         setSourceDocLoading(true);
         setSourceDocError('');
         setSourceDocSuccess('');
         try {
-            await uploadSourceDocument(sourceDocLabel, file);
+            await uploadSourceDocument(sourceDocTitle, file);
             setSourceDocSuccess('File uploaded successfully!');
             setFile(null);
-            setSourceDocLabel('');
+            setSourceDocTitle('');
         } catch (err) {
             setSourceDocError(err.message);
         }
@@ -89,15 +89,15 @@ export default function DocumentManagePage() {
         e.preventDefault();
         setMetaError('');
         setMetaSuccess('');
-        if (!selectedDoc || !newLabel) {
-            setMetaError('Please select a document and enter a label.');
+        if (!selectedDoc || !newTitle) {
+            setMetaError('Please select a document and enter a title.');
             return;
         }
         setMetaLoading(true);
         try {
-            await createMetaText(selectedDoc, newLabel);
+            await createMetaText(selectedDoc, newTitle);
             setMetaSuccess('Meta-text created!');
-            setNewLabel('');
+            setNewTitle('');
             setSelectedDoc('');
         } catch (err) {
             setMetaError(err.message);
@@ -106,23 +106,23 @@ export default function DocumentManagePage() {
     };
 
     // Delete a single source document
-    const handleDeleteSourceDoc = async (label) => {
-        if (!window.confirm(`Delete source document '${label}'?`)) return;
+    const handleDeleteSourceDoc = async (title) => {
+        if (!window.confirm(`Delete source document '${title}'?`)) return;
         setLoadingDocs(true);
         try {
-            await deleteSourceDocument(label);
-            setDocs(docs.filter(docLabel => docLabel !== label));
+            await deleteSourceDocument(title);
+            setDocs(docs.filter(docTitle => docTitle !== title));
         } finally {
             setLoadingDocs(false);
         }
     };
     // Delete a single meta-text
-    const handleDeleteMetaText = async (label) => {
-        if (!window.confirm(`Delete meta-text '${label}'?`)) return;
+    const handleDeleteMetaText = async (title) => {
+        if (!window.confirm(`Delete meta-text '${title}'?`)) return;
         setLoadingMetaTexts(true);
         try {
-            await deleteMetaText(label);
-            setMetaTexts(metaTexts.filter(meta => meta !== label));
+            await deleteMetaText(title);
+            setMetaTexts(metaTexts.filter(meta => meta !== title));
         } finally {
             setLoadingMetaTexts(false);
         }
@@ -133,24 +133,24 @@ export default function DocumentManagePage() {
             <aside className="sidebar">
                 <SourceDocumentUploadForm
                     file={file}
-                    uploadLabel={sourceDocLabel}
+                    uploadLabel={sourceDocTitle}
                     uploadError={sourceDocError}
                     uploadSuccess={sourceDocSuccess}
                     uploadLoading={sourceDocLoading}
                     onFileChange={handleSourceDocFileChange}
-                    onLabelChange={handleSourceDocLabelChange}
+                    onLabelChange={handleSourceDocTitleChange}
                     onSubmit={handleSourceDocumentSubmit}
                 />
                 <MetaTextCreateForm
                     docs={docs}
                     selectedDoc={selectedDoc}
-                    newLabel={newLabel}
+                    newLabel={newTitle}
                     metaError={metaError}
                     metaSuccess={metaSuccess}
                     metaLoading={metaLoading}
                     loadingDocs={loadingDocs}
                     onDocChange={e => setSelectedDoc(e.target.value)}
-                    onLabelChange={e => setNewLabel(e.target.value)}
+                    onLabelChange={e => setNewTitle(e.target.value)}
                     onSubmit={handleMetaSubmit}
                 />
             </aside>
