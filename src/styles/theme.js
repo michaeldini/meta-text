@@ -13,7 +13,7 @@ const theme = createTheme({
         success: { main: green[700] },
         text: {
             primary: grey[50],
-            secondary: grey[400],
+            secondary: grey[100],
         },
     },
     shape: {
@@ -26,6 +26,25 @@ const theme = createTheme({
             fontSize: '2.125rem',
             fontWeight: 500,
             lineHeight: 1.235,
+        },
+    },
+    components: {
+        MuiInputBase: {
+            styleOverrides: {
+                input: ({ theme }) => ({
+                    color: theme.palette.text.primary,
+                }),
+            },
+        },
+        MuiInputLabel: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    color: theme.palette.text.secondary,
+                    '&.Mui-focused': {
+                        color: theme.palette.primary.main,
+                    },
+                }),
+            },
         },
     },
 });

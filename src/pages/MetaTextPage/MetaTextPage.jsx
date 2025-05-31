@@ -37,6 +37,9 @@ export default function MetaTextPage() {
         });
     }, [metaTexts, search]);
 
+    // Extract options for Autocomplete
+    const metaTextOptions = useMemo(() => metaTexts.map(obj => (typeof obj === 'object' && obj !== null ? obj.name : obj)), [metaTexts]);
+
     const handleCreate = async e => {
         e.preventDefault();
         setCreateError('');
@@ -147,6 +150,7 @@ export default function MetaTextPage() {
                 label="Search Meta Texts"
                 value={search}
                 onChange={setSearch}
+                options={metaTextOptions}
                 sx={{ mb: 2 }}
             />
             {metaTextsLoading ? (

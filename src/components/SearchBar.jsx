@@ -18,7 +18,12 @@ export default function SearchBar({ label, value, onChange, sx, ...props }) {
             fullWidth
             value={value}
             onChange={e => onChange(e.target.value)}
-            sx={sx}
+            sx={{
+                ...sx,
+                '& .MuiInputBase-input': {
+                    color: '#fff', // Light text color
+                },
+            }}
             {...props}
         />
     );

@@ -25,6 +25,9 @@ export default function SourceDocsPage() {
         return docs.filter(doc => doc.title.toLowerCase().includes(search.toLowerCase()));
     }, [docs, search]);
 
+    // Extract options for Autocomplete
+    const docOptions = useMemo(() => docs.map(doc => doc.title), [docs]);
+
     const handleFileChange = e => {
         setFile(e.target.files[0]);
         setUploadError('');
@@ -102,6 +105,7 @@ export default function SourceDocsPage() {
                 label="Search Documents"
                 value={search}
                 onChange={setSearch}
+                options={docOptions}
                 sx={{ mb: 2 }}
             />
             {loading ? (
