@@ -1,13 +1,13 @@
 import React, { useState, useMemo } from 'react';
-import { useSourceDocumentsWithDetails } from '../../hooks/useSourceDocuments';
+import { useSourceDocuments } from '../../hooks/useSourceDocuments';
 import { uploadSourceDocument, fetchSourceDocument, generateAiSummary, deleteSourceDocument } from '../../services/sourceDocumentService';
 import SourceDocUploadForm from '../../components/SourceDocUploadForm';
-import { TextField, Paper, Typography, CircularProgress, Box, Alert } from '@mui/material';
+import { TextField, Paper, Typography, CircularProgress, Box, Alert, Slide } from '@mui/material';
 import SourceDocList from '../../components/SourceDocList';
 import SearchBar from '../../components/SearchBar';
 export default function SourceDocsPage() {
     // const navigate = useNavigate();
-    const { docs, loading, error } = useSourceDocumentsWithDetails();
+    const { docs, loading, error } = useSourceDocuments();
     const [search, setSearch] = useState('');
     const [file, setFile] = useState(null);
     const [uploadTitle, setUploadTitle] = useState('');
@@ -98,6 +98,7 @@ export default function SourceDocsPage() {
                     onLabelChange={handleTitleChange}
                     onSubmit={handleSubmit}
                 />
+
                 {uploadError && <Alert severity="error" sx={{ mt: 2 }}>{uploadError}</Alert>}
                 {uploadSuccess && <Alert severity="success" sx={{ mt: 2 }}>{uploadSuccess}</Alert>}
             </Paper>

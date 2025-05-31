@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { createMetaText, updateMetaText } from '../../services/metaTextService';
-import { Typography, CircularProgress, Box, Alert, Grow } from '@mui/material';
+import { Typography, CircularProgress, Box, Alert, Grow, Fade } from '@mui/material';
 import MetaTextSections from '../../components/MetaTextSections';
 import { useAutoSave } from '../../hooks/useAutoSave';
 import SearchBar from '../../components/SearchBar';
@@ -160,15 +160,13 @@ export default function MetaTextPage() {
             ) : metaTextsError ? (
                 <Alert severity="error">{metaTextsError}</Alert>
             ) : (
-                <Grow in={true}>
-                    <Box>
-                        <MetaTextList
-                            filteredMetaTexts={filteredMetaTexts}
-                            selectedMetaText={selectedMetaText}
-                            handleMetaTextClick={handleMetaTextClick}
-                        />
-                    </Box>
-                </Grow>
+                <Box>
+                    <MetaTextList
+                        filteredMetaTexts={filteredMetaTexts}
+                        selectedMetaText={selectedMetaText}
+                        handleMetaTextClick={handleMetaTextClick}
+                    />
+                </Box>
             )}
             {/* Section Splitter UI */}
             {selectedMetaText && (

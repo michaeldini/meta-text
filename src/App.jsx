@@ -24,7 +24,7 @@ function App() {
   return (
     <>
       <NavBar />
-      <Fade in={true} key={location.pathname} timeout={400}>
+      <Fade in={true} key={location.pathname} timeout={750}>
         <div>{routeElement}</div>
       </Fade>
     </>
