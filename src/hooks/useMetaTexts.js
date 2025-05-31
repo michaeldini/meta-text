@@ -13,7 +13,7 @@ export function useMetaTexts(deps = []) {
         setMetaTextsLoading(true);
         setMetaTextsError('');
         fetchMetaTexts()
-            .then(data => setMetaTexts(data))
+            .then(data => setMetaTexts(data)) // data is now [{id, title}]
             .catch(e => setMetaTextsError(e.message))
             .finally(() => setMetaTextsLoading(false));
     }, [...deps, refreshIndex]);

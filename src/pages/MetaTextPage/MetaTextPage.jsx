@@ -17,7 +17,7 @@ export default function MetaTextPage() {
     const [createError, setCreateError] = useState('');
     const [createSuccess, setCreateSuccess] = useState('');
     const [createLoading, setCreateLoading] = useState(false);
-    const [selectedMetaText, setSelectedMetaText] = useState('');
+    const [selectedMetaTextId, setSelectedMetaTextId] = useState(null);
     const [autoSaveStatus, setAutoSaveStatus] = useState('Autosave');
     const { metaTexts, metaTextsLoading, metaTextsError } = useMetaTexts([createSuccess]);
     const { docs: sourceDocs, loading: sourceDocsLoading, error: sourceDocsError } = useSourceDocuments();
@@ -27,18 +27,18 @@ export default function MetaTextPage() {
         setSections,
         sectionsLoading,
         sectionsError
-    } = useMetaTextSections(selectedMetaText);
+    } = useMetaTextSections(selectedMetaTextId);
 
     const filteredMetaTexts = useMemo(() => {
         if (!search) return metaTexts;
         return metaTexts.filter(obj => {
-            const name = typeof obj === 'object' && obj !== null ? obj.name : obj;
-            return String(name).toLowerCase().includes(search.toLowerCase());
+            const title = obj.title || '';
+            return String(title).toLowerCase().includes(search.toLowerCase());
         });
     }, [metaTexts, search]);
 
     // Extract options for Autocomplete
-    const metaTextOptions = useMemo(() => metaTexts.map(obj => (typeof obj === 'object' && obj !== null ? obj.name : obj)), [metaTexts]);
+    const metaTextOptions = useMemo(() => metaTexts.map(obj => obj.title), [metaTexts]);
 
     const handleCreate = async e => {
         e.preventDefault();
@@ -107,24 +107,24 @@ export default function MetaTextPage() {
         });
     }, [setSections]);
 
-    // Replace handleMetaTextClick to set selectedMetaText
-    const handleMetaTextClick = name => setSelectedMetaText(name);
+    // Replace handleMetaTextClick to set selectedMetaTextId
+    const handleMetaTextClick = id => setSelectedMetaTextId(id);
 
     // --- AUTOSAVE LOGIC ---
     useAutoSave({
         value: sections,
         delay: 1500,
         onSave: async () => {
-            if (!selectedMetaText) return;
+            if (!selectedMetaTextId) return;
             setAutoSaveStatus('Saving...');
             try {
-                await updateMetaText(selectedMetaText, sections);
+                await updateMetaText(selectedMetaTextId, sections);
                 setAutoSaveStatus('Autosave');
             } catch {
                 setAutoSaveStatus('Autosave');
             }
         },
-        deps: [selectedMetaText]
+        deps: [selectedMetaTextId]
     });
 
     return (
@@ -163,15 +163,17 @@ export default function MetaTextPage() {
                 <Box>
                     <MetaTextList
                         filteredMetaTexts={filteredMetaTexts}
-                        selectedMetaText={selectedMetaText}
+                        selectedMetaText={selectedMetaTextId}
                         handleMetaTextClick={handleMetaTextClick}
                     />
                 </Box>
             )}
             {/* Section Splitter UI */}
-            {selectedMetaText && (
+            {selectedMetaTextId && (
                 <Box sx={{ mt: 4 }}>
-                    <Typography variant="h5" gutterBottom>{selectedMetaText}</Typography>
+                    <Typography variant="h5" gutterBottom>
+                        {metaTexts.find(m => m.id === selectedMetaTextId)?.title || ''}
+                    </Typography>
                     {sectionsLoading ? (
                         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
                             <CircularProgress />

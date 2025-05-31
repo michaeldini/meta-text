@@ -17,7 +17,7 @@ function App() {
       <Route path="/sourceDocs" element={<SourceDocsPage />} />
       <Route path="/sourceDocs/:title" element={<SourceDocDetailPage />} />
       <Route path="/metaText" element={<MetaTextPage />} />
-      <Route path="/metaText/:title" element={<MetaTextDetailPage />} />
+      <Route path="/metaText/:id" element={<MetaTextDetailPage />} />
     </Routes>
   ), [location]);
 

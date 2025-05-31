@@ -4,7 +4,7 @@ import { fetchMetaText } from '../../services/metaTextService';
 import { Paper, Typography, Box, CircularProgress } from '@mui/material';
 
 export default function MetaTextDetailPage() {
-    const { title } = useParams(); // use 'title' param from route
+    const { id } = useParams(); // use 'id' param from route
     const [metaText, setMetaText] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -12,15 +12,15 @@ export default function MetaTextDetailPage() {
     useEffect(() => {
         setLoading(true);
         setError('');
-        fetchMetaText(title)
+        fetchMetaText(id)
             .then(data => setMetaText(data))
             .catch(e => setError(e.message || 'Failed to load meta text.'))
             .finally(() => setLoading(false));
-    }, [title]);
+    }, [id]);
 
     return (
         <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
-            <Typography variant="h4" gutterBottom>{title}</Typography>
+            <Typography variant="h4" gutterBottom>{metaText?.title || id}</Typography>
             {loading ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
                     <CircularProgress />
