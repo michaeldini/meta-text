@@ -20,26 +20,26 @@ export default function SourceDocList({
                     <ListItem><ListItemText primary="No documents found." /></ListItem>
                 )}
                 {docs.map(doc => (
-                    <React.Fragment key={doc.title}>
+                    <React.Fragment key={doc.id}>
                         <ListItem disablePadding>
                             <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                                 <SourceDocDetails
                                     doc={doc}
-                                    summaryError={summaryError[doc.title]}
+                                    summaryError={summaryError[doc.id]}
                                     onGenerateSummary={onGenerateSummary}
-                                    summaryLoading={summaryLoading[doc.title]}
+                                    summaryLoading={summaryLoading[doc.id]}
                                     aiIcon={<img src={aiStars} alt="AI" style={{ height: 18 }} />}
                                 />
                                 <DeleteButton
-                                    onClick={e => { e.stopPropagation(); onDelete(doc.title); }}
-                                    disabled={deleteLoading[doc.title]}
+                                    onClick={e => { e.stopPropagation(); onDelete(doc.id); }}
+                                    disabled={deleteLoading[doc.id]}
                                     label="Delete Source Document"
                                 />
                             </Box>
                         </ListItem>
-                        {deleteError[doc.title] && (
+                        {deleteError[doc.id] && (
                             <ListItem>
-                                <Alert severity="error">{deleteError[doc.title]}</Alert>
+                                <Alert severity="error">{deleteError[doc.id]}</Alert>
                             </ListItem>
                         )}
                     </React.Fragment>

@@ -5,7 +5,7 @@ import GenerateSummaryButton from './GenerateSummaryButton';
 
 export default function SourceDocDetails({ doc, summaryError, onGenerateSummary, summaryLoading, aiIcon }) {
     const navigate = useNavigate();
-    const handleDocClick = () => navigate(`/sourceDocs/${encodeURIComponent(doc.title)}`);
+    const handleDocClick = () => navigate(`/sourceDocs/${encodeURIComponent(doc.id)}`);
     return (
         <>
             <Box sx={{ display: 'flex', alignItems: 'center', pl: 0 }}>
@@ -28,7 +28,7 @@ export default function SourceDocDetails({ doc, summaryError, onGenerateSummary,
                         ))}
                     <GenerateSummaryButton
                         loading={summaryLoading}
-                        onClick={e => { e.stopPropagation(); onGenerateSummary(doc.title); }}
+                        onClick={e => { e.stopPropagation(); onGenerateSummary(doc.id); }}
                         icon={aiIcon}
                     >
                         Generate Summary

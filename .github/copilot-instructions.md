@@ -3,5 +3,5 @@
 - uv is used to manage python dependencies.
 - The frontend is structured to support a scalable and maintainable architecture. Separate folders for assets, components, features, hooks, layouts, pages, routes, services, store, styles, and utils.
 - Focus on clean, modern UI and efficient state management in the frontend.
+- Always use FastAPI best practices. Use the FastAPI test client for testing API endpoints.
 - The purpose of the app is to provide a user-friendly interface for managing and interacting with a document.
-

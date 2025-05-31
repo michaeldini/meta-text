@@ -6,25 +6,19 @@ export async function fetchSourceDocuments(full = false) {
     const url = full ? '/api/source-documents?full=true' : '/api/source-documents';
     const res = await fetch(url);
     const data = await handleApiResponse(res, 'Failed to fetch source documents');
-    if (full) {
-        return data.source_documents || [];
-    }
-    // Map array of strings to array of { title } objects if needed
-    if (Array.isArray(data.source_documents) && typeof data.source_documents[0] === 'string') {
-        return data.source_documents.map(title => ({ title }));
-    }
     return data.source_documents || [];
 }
 
-export async function fetchSourceDocument(title) {
-    const res = await fetch(`/api/source-documents/${encodeURIComponent(title)}`);
+export async function fetchSourceDocument(docId) {
+    const res = await fetch(`/api/source-documents/${encodeURIComponent(docId)}`);
     return handleApiResponse(res, 'Failed to fetch document');
 }
 
-export async function uploadSourceDocument(title, file) {
+export async function uploadSourceDocument(title, file, details = null) {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('file', file);
+    if (details !== null) formData.append('details', details);
     const res = await fetch('/api/source-documents', {
         method: 'POST',
         body: formData,
@@ -32,16 +26,18 @@ export async function uploadSourceDocument(title, file) {
     return handleApiResponse(res, 'Upload failed.');
 }
 
-export async function deleteSourceDocument(title) {
-    const res = await fetch(`/api/source-documents/${encodeURIComponent(title)}`, { method: 'DELETE' });
+export async function deleteSourceDocument(docId) {
+    const res = await fetch(`/api/source-documents/${encodeURIComponent(docId)}`, { method: 'DELETE' });
     return handleApiResponse(res, 'Failed to delete source document');
 }
 
-export async function updateSourceDocument(title, file) {
+export async function updateSourceDocument(docId, { title, text, details }) {
     const formData = new FormData();
-    formData.append('file', file);
-    const res = await fetch(`/api/source-documents/${encodeURIComponent(title)}`, {
-        method: 'PUT',
+    if (title !== undefined) formData.append('title', title);
+    if (text !== undefined) formData.append('text', text);
+    if (details !== undefined) formData.append('details', details);
+    const res = await fetch(`/api/source-documents/${encodeURIComponent(docId)}`, {
+        method: 'PATCH',
         body: formData,
     });
     return handleApiResponse(res, 'Update failed.');

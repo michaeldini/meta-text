@@ -2,11 +2,11 @@ import React, { useState, useMemo } from 'react';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
 import { uploadSourceDocument, fetchSourceDocument, generateAiSummary, deleteSourceDocument } from '../../services/sourceDocumentService';
 import SourceDocUploadForm from '../../components/SourceDocUploadForm';
-import { TextField, Paper, Typography, CircularProgress, Box, Alert, Slide } from '@mui/material';
+import { TextField, Paper, Typography, CircularProgress, Box, Alert } from '@mui/material';
 import SourceDocList from '../../components/SourceDocList';
 import SearchBar from '../../components/SearchBar';
+
 export default function SourceDocsPage() {
-    // const navigate = useNavigate();
     const { docs, loading, error } = useSourceDocuments();
     const [search, setSearch] = useState('');
     const [file, setFile] = useState(null);
@@ -14,10 +14,10 @@ export default function SourceDocsPage() {
     const [uploadError, setUploadError] = useState('');
     const [uploadSuccess, setUploadSuccess] = useState('');
     const [uploadLoading, setUploadLoading] = useState(false);
-    const [summaryLoading, setSummaryLoading] = useState({}); // { [title]: boolean }
-    const [summaryError, setSummaryError] = useState({}); // { [title]: string|null }
-    const [deleteLoading, setDeleteLoading] = useState({}); // { [title]: boolean }
-    const [deleteError, setDeleteError] = useState({}); // { [title]: string|null }
+    const [summaryLoading, setSummaryLoading] = useState({}); // { [id]: boolean }
+    const [summaryError, setSummaryError] = useState({}); // { [id]: string|null }
+    const [deleteLoading, setDeleteLoading] = useState({}); // { [id]: boolean }
+    const [deleteError, setDeleteError] = useState({}); // { [id]: string|null }
 
     // Filtered docs by search
     const filteredDocs = useMemo(() => {
@@ -50,37 +50,33 @@ export default function SourceDocsPage() {
             setUploadLoading(false);
         }
     };
-    // const handleDocClick = title => navigate(`/sourceDocs/${encodeURIComponent(title)}`);
 
     // Generate summary handler for a doc
-    const handleGenerateSummary = async (title) => {
-        setSummaryLoading(prev => ({ ...prev, [title]: true }));
-        setSummaryError(prev => ({ ...prev, [title]: null }));
+    const handleGenerateSummary = async (docId) => {
+        setSummaryLoading(prev => ({ ...prev, [docId]: true }));
+        setSummaryError(prev => ({ ...prev, [docId]: null }));
         try {
-            const doc = await fetchSourceDocument(title);
-            await generateAiSummary(title, doc.text || doc.content || '');
-            // Optionally, refetch docs or update UI to show new summary
-            // For now, just reload the page data
+            const doc = await fetchSourceDocument(docId);
+            await generateAiSummary(doc.title, doc.text || doc.content || '');
             window.location.reload();
         } catch (e) {
-            setSummaryError(prev => ({ ...prev, [title]: e.message || 'Error generating summary' }));
+            setSummaryError(prev => ({ ...prev, [docId]: e.message || 'Error generating summary' }));
         } finally {
-            setSummaryLoading(prev => ({ ...prev, [title]: false }));
+            setSummaryLoading(prev => ({ ...prev, [docId]: false }));
         }
     };
 
-    const handleDelete = async (title) => {
-        if (!window.confirm(`Are you sure you want to delete "${title}"? This cannot be undone.`)) return;
-        setDeleteLoading(prev => ({ ...prev, [title]: true }));
-        setDeleteError(prev => ({ ...prev, [title]: null }));
+    const handleDelete = async (docId) => {
+        if (!window.confirm('Are you sure you want to delete this document? This cannot be undone.')) return;
+        setDeleteLoading(prev => ({ ...prev, [docId]: true }));
+        setDeleteError(prev => ({ ...prev, [docId]: null }));
         try {
-            await deleteSourceDocument(title);
-            // Optionally, refetch docs or update UI to show new summary
+            await deleteSourceDocument(docId);
             window.location.reload();
         } catch (e) {
-            setDeleteError(prev => ({ ...prev, [title]: e.message || 'Error deleting document' }));
+            setDeleteError(prev => ({ ...prev, [docId]: e.message || 'Error deleting document' }));
         } finally {
-            setDeleteLoading(prev => ({ ...prev, [title]: false }));
+            setDeleteLoading(prev => ({ ...prev, [docId]: false }));
         }
     };
 
@@ -98,7 +94,6 @@ export default function SourceDocsPage() {
                     onLabelChange={handleTitleChange}
                     onSubmit={handleSubmit}
                 />
-
                 {uploadError && <Alert severity="error" sx={{ mt: 2 }}>{uploadError}</Alert>}
                 {uploadSuccess && <Alert severity="success" sx={{ mt: 2 }}>{uploadSuccess}</Alert>}
             </Paper>
