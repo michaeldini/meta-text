@@ -1,22 +1,32 @@
 import './App.css'
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import SourceDocsPage from './pages/SourceDocPage/SourceDocsPage';
 import SourceDocDetailPage from './pages/SourceDocPage/SourceDocDetailPage';
 import MetaTextPage from './pages/MetaTextPage/MetaTextPage';
 import MetaTextDetailPage from './pages/MetaTextPage/MetaTextDetailPage';
+import { Fade } from '@mui/material';
+import { useMemo } from 'react';
 
 function App() {
+  const location = useLocation();
+  // Use location.key as a unique key for transitions
+  const routeElement = useMemo(() => (
+    <Routes location={location} key={location.key}>
+      <Route path="/" element={<div>Welcome to Meta-Text</div>} />
+      <Route path="/sourceDocs" element={<SourceDocsPage />} />
+      <Route path="/sourceDocs/:title" element={<SourceDocDetailPage />} />
+      <Route path="/metaText" element={<MetaTextPage />} />
+      <Route path="/metaText/:title" element={<MetaTextDetailPage />} />
+    </Routes>
+  ), [location]);
+
   return (
     <>
       <NavBar />
-      <Routes>
-        <Route path="/" element={<div>Welcome to Meta-Text</div>} />
-        <Route path="/sourceDocs" element={<SourceDocsPage />} />
-        <Route path="/sourceDocs/:title" element={<SourceDocDetailPage />} />
-        <Route path="/metaText" element={<MetaTextPage />} />
-        <Route path="/metaText/:title" element={<MetaTextDetailPage />} />
-      </Routes>
+      <Fade in={true} key={location.pathname} timeout={400}>
+        <div>{routeElement}</div>
+      </Fade>
     </>
   )
 }

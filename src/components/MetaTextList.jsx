@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paper, List, ListItem, ListItemButton, ListItemText, Divider } from '@mui/material';
+import { Paper, List, ListItem, ListItemButton, ListItemText, Divider, Grow } from '@mui/material';
 
 function MetaTextList({ filteredMetaTexts, selectedMetaText, handleMetaTextClick }) {
     return (
@@ -8,15 +8,17 @@ function MetaTextList({ filteredMetaTexts, selectedMetaText, handleMetaTextClick
                 {filteredMetaTexts.length === 0 && (
                     <ListItem><ListItemText primary="No meta texts found." /></ListItem>
                 )}
-                {filteredMetaTexts.map(obj => {
+                {filteredMetaTexts.map((obj, idx) => {
                     const name = obj.name || obj;
                     return (
-                        <React.Fragment key={name}>
-                            <ListItemButton onClick={() => handleMetaTextClick(name)} selected={selectedMetaText === name}>
-                                <ListItemText primary={name} />
-                            </ListItemButton>
-                            <Divider />
-                        </React.Fragment>
+                        <Grow in={true} timeout={350 + idx * 80} key={name}>
+                            <div>
+                                <ListItemButton onClick={() => handleMetaTextClick(name)} selected={selectedMetaText === name}>
+                                    <ListItemText primary={name} />
+                                </ListItemButton>
+                                <Divider />
+                            </div>
+                        </Grow>
                     );
                 })}
             </List>
