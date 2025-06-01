@@ -13,7 +13,7 @@ function App() {
   // Use location.key as a unique key for transitions
   const routeElement = useMemo(() => (
     <Routes location={location} key={location.key}>
-      <Route path="/" element={<div>Welcome to Meta-Text</div>} />
+      <Route path="/" element={<h1>Welcome to Meta-Text</h1>} />
       <Route path="/sourceDocs" element={<SourceDocsPage />} />
       <Route path="/sourceDocs/:title" element={<SourceDocDetailPage />} />
       <Route path="/metaText" element={<MetaTextPage />} />

@@ -1,45 +1,86 @@
 import React from 'react';
-import { Box, Typography, ListItem, ListItemText, Divider, ListItemButton } from '@mui/material';
+import { Box, Typography, ListItem, ListItemText, Divider, ListItemButton, Chip, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import GenerateSummaryButton from './GenerateSummaryButton';
-
-export default function SourceDocDetails({ doc, summaryError, onGenerateSummary, summaryLoading, aiIcon }) {
+export default function SourceDocDetails({ doc, summaryError }) {
     const navigate = useNavigate();
     const handleDocClick = () => navigate(`/sourceDocs/${encodeURIComponent(doc.id)}`);
+
+    // Parse details JSON string safely
+    let details = undefined;
+    if (doc.details) {
+        try {
+            details = typeof doc.details === 'string' ? JSON.parse(doc.details) : doc.details;
+        } catch {
+            details = undefined;
+        }
+    }
+
     return (
         <>
-            <Box sx={{ display: 'flex', alignItems: 'center', pl: 0 }}>
-                <ListItemButton sx={{ pl: 2, flex: 1 }} onClick={handleDocClick}>
-                    <ListItemText
-                        primary={doc.title}
-                        secondary={doc.details?.summary || 'No summary available.'}
-                    />
-                </ListItemButton>
-            </Box>
-            {/* Display other attributes */}
-            {doc.details && (
-                <Box sx={{ p: 2, gap: 1, display: 'flex', flexDirection: 'column' }}>
-                    {Object.entries(doc.details)
-                        .filter(([key]) => key !== 'summary')
-                        .map(([key, value]) => (
-                            <Typography key={key} variant="body2" color="text.secondary">
-                                <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong> {String(value)}
-                            </Typography>
-                        ))}
-                    <GenerateSummaryButton
-                        loading={summaryLoading}
-                        onClick={e => { e.stopPropagation(); onGenerateSummary(doc.id); }}
-                        icon={aiIcon}
+            <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
+                {/* Top row: Title, Generate Summary, Delete Button */}
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Typography
+                        variant="h6"
+                        sx={{ flex: 1, cursor: 'pointer' }}
+                        onClick={handleDocClick}
+                        noWrap={false}
                     >
-                        Generate Summary
-                    </GenerateSummaryButton>
+                        {doc.title}
+                    </Typography>
                 </Box>
-            )}
-            {summaryError && (
-                <ListItem>
-                    <Typography color="error" variant="body2">{summaryError}</Typography>
-                </ListItem>
-            )}
+                {/* Summary row */}
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                    <strong>Summary:</strong> {details?.summary || 'No summary available.'}
+                </Typography>
+                {/* Details rows */}
+                {details && (
+                    <Box sx={{ gap: 1, display: 'flex', flexDirection: 'column' }}>
+                        {details.title && (
+                            <Typography variant="body2" color="text.secondary">
+                                <strong>Title:</strong> {details.title}
+                            </Typography>
+                        )}
+                        {details.characters && Array.isArray(details.characters) && details.characters.length > 0 && (
+                            <Stack direction="row" spacing={1} alignItems="center">
+                                <Typography variant="body2" color="text.secondary"><strong>Characters:</strong></Typography>
+                                {details.characters.map((c, i) => (
+                                    <Chip key={i} label={c} size="small" />
+                                ))}
+                            </Stack>
+                        )}
+                        {details.locations && Array.isArray(details.locations) && details.locations.length > 0 && (
+                            <Stack direction="row" spacing={1} alignItems="center">
+                                <Typography variant="body2" color="text.secondary"><strong>Locations:</strong></Typography>
+                                {details.locations.map((l, i) => (
+                                    <Chip key={i} label={l} size="small" />
+                                ))}
+                            </Stack>
+                        )}
+                        {details.themes && Array.isArray(details.themes) && details.themes.length > 0 && (
+                            <Stack direction="row" spacing={1} alignItems="center">
+                                <Typography variant="body2" color="text.secondary"><strong>Themes:</strong></Typography>
+                                {details.themes.map((t, i) => (
+                                    <Chip key={i} label={t} size="small" />
+                                ))}
+                            </Stack>
+                        )}
+                        {details.symbols && Array.isArray(details.symbols) && details.symbols.length > 0 && (
+                            <Stack direction="row" spacing={1} alignItems="center">
+                                <Typography variant="body2" color="text.secondary"><strong>Symbols:</strong></Typography>
+                                {details.symbols.map((s, i) => (
+                                    <Chip key={i} label={s} size="small" />
+                                ))}
+                            </Stack>
+                        )}
+                    </Box>
+                )}
+                {summaryError && (
+                    <ListItem>
+                        <Typography color="error" variant="body2">{summaryError}</Typography>
+                    </ListItem>
+                )}
+            </Box>
             <Divider />
         </>
     );

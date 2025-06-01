@@ -1,7 +1,8 @@
 import React from 'react';
-import { Paper, List, ListItem, ListItemText, Box, Alert } from '@mui/material';
+import { Paper, List, ListItem, ListItemText, Box, Alert, Tooltip } from '@mui/material';
 import SourceDocDetails from './SourceDocDetails';
 import DeleteButton from './DeleteButton';
+import GenerateSummaryButton from './GenerateSummaryButton';
 import aiStars from '../assets/ai-stars.png';
 
 export default function SourceDocList({
@@ -26,15 +27,25 @@ export default function SourceDocList({
                                 <SourceDocDetails
                                     doc={doc}
                                     summaryError={summaryError[doc.id]}
-                                    onGenerateSummary={onGenerateSummary}
-                                    summaryLoading={summaryLoading[doc.id]}
-                                    aiIcon={<img src={aiStars} alt="AI" style={{ height: 18 }} />}
                                 />
-                                <DeleteButton
-                                    onClick={e => { e.stopPropagation(); onDelete(doc.id); }}
-                                    disabled={deleteLoading[doc.id]}
-                                    label="Delete Source Document"
-                                />
+                                <Box sx={{ flexGrow: 1, flexDirection: 'column' }}>
+                                    <Tooltip title="Generate or update the summary for this document" arrow>
+                                        <span>
+                                            <GenerateSummaryButton
+                                                loading={summaryLoading[doc.id]}
+                                                onClick={e => { e.stopPropagation(); onGenerateSummary(doc.id); }}
+                                                icon={<img src={aiStars} alt="AI" />}
+                                                size="small"
+                                            />
+                                        </span>
+                                    </Tooltip>
+                                    <DeleteButton
+                                        onClick={e => { e.stopPropagation(); onDelete(doc.id); }}
+                                        disabled={deleteLoading[doc.id]}
+                                        label="Delete Source Document"
+                                    />
+                                </Box>
+
                             </Box>
                         </ListItem>
                         {deleteError[doc.id] && (

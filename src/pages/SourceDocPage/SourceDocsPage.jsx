@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
-import { uploadSourceDocument, fetchSourceDocument, generateAiSummary, deleteSourceDocument } from '../../services/sourceDocumentService';
+import { uploadSourceDocument, fetchSourceDocument, generateSourceDocInfo, deleteSourceDocument } from '../../services/sourceDocumentService';
 import SourceDocUploadForm from '../../components/SourceDocUploadForm';
 import { TextField, Paper, Typography, CircularProgress, Box, Alert } from '@mui/material';
 import SourceDocList from '../../components/SourceDocList';
@@ -28,6 +28,8 @@ export default function SourceDocsPage() {
     // Extract options for Autocomplete
     const docOptions = useMemo(() => docs.map(doc => doc.title), [docs]);
 
+
+    // Handlers for upload form
     const handleFileChange = e => {
         setFile(e.target.files[0]);
         setUploadError('');
@@ -52,20 +54,7 @@ export default function SourceDocsPage() {
     };
 
     // Generate summary handler for a doc
-    const handleGenerateSummary = async (docId) => {
-        setSummaryLoading(prev => ({ ...prev, [docId]: true }));
-        setSummaryError(prev => ({ ...prev, [docId]: null }));
-        try {
-            const doc = await fetchSourceDocument(docId);
-            await generateAiSummary(doc.title, doc.text || doc.content || '');
-            window.location.reload();
-        } catch (e) {
-            setSummaryError(prev => ({ ...prev, [docId]: e.message || 'Error generating summary' }));
-        } finally {
-            setSummaryLoading(prev => ({ ...prev, [docId]: false }));
-        }
-    };
-
+    // Delete document handler
     const handleDelete = async (docId) => {
         if (!window.confirm('Are you sure you want to delete this document? This cannot be undone.')) return;
         setDeleteLoading(prev => ({ ...prev, [docId]: true }));
@@ -79,6 +68,22 @@ export default function SourceDocsPage() {
             setDeleteLoading(prev => ({ ...prev, [docId]: false }));
         }
     };
+
+    // Generate summary for a document
+    const handleGenerateSourceDocInfo = async (docId) => {
+        setSummaryLoading(prev => ({ ...prev, [docId]: true }));
+        setSummaryError(prev => ({ ...prev, [docId]: null }));
+        try {
+            const doc = await fetchSourceDocument(docId);
+            await generateSourceDocInfo(doc.title, doc.text || doc.content || '');
+            window.location.reload();
+        } catch (e) {
+            setSummaryError(prev => ({ ...prev, [docId]: e.message || 'Error generating summary' }));
+        } finally {
+            setSummaryLoading(prev => ({ ...prev, [docId]: false }));
+        }
+    };
+
 
     return (
         <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
@@ -114,7 +119,7 @@ export default function SourceDocsPage() {
                 <SourceDocList
                     docs={filteredDocs}
                     summaryError={summaryError}
-                    onGenerateSummary={handleGenerateSummary}
+                    onGenerateSummary={handleGenerateSourceDocInfo}
                     summaryLoading={summaryLoading}
                     deleteLoading={deleteLoading}
                     deleteError={deleteError}

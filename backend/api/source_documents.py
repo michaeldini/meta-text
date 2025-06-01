@@ -34,7 +34,7 @@ def list_source_documents(full: bool = False, session=Depends(get_session)):
         ]}
     else:
         return {"source_documents": [
-            {"id": d.id, "title": d.title} for d in docs
+            {"id": d.id, "title": d.title, "details": d.details} for d in docs
         ]}
 
 @router.get("/source-documents/{doc_id}", name="get_source_document")

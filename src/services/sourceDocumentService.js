@@ -50,8 +50,8 @@ export async function fetchAiSummary(title) {
     return data && data.result ? data.result : null;
 }
 
-export async function generateAiSummary(title, text) {
-    const res = await fetch("/api/ai-complete-summary", {
+export async function generateSourceDocInfo(title, text) {
+    const res = await fetch("/api/source-doc-info", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: text, title }),
