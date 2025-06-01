@@ -2,7 +2,7 @@ import React from 'react';
 import { ListItem, Box, Typography, Divider, Collapse, Alert } from '@mui/material';
 import SourceDocDetails from './SourceDocDetails';
 import DeleteButton from './DeleteButton';
-import GenerateSourceDocInfoButton from './GenerateSummaryButton';
+import GenerateSourceDocInfoButton from './GenerateSourceDocInfoButton';
 import aiStars from '../assets/ai-stars.png';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,7 +21,7 @@ function SourceDocListItem({ doc, summaryError, onGenerateSummary, summaryLoadin
         <Collapse in={!deleteLoading[id] && !deleteError[id]} timeout={400}>
             <ListItem disablePadding>
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-                    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1, width: '100%' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
                         <Typography
                             variant="h6"
                             sx={{
