@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useRef, useEffect } from 'react';
 import { Box, TextField, IconButton, Paper, Button, CircularProgress } from '@mui/material';
 import UndoArrowIcon from './icons/UndoArrowIcon';
 
@@ -45,59 +45,104 @@ const SectionWords = memo(function SectionWords({
     sectionIdx,
     handleWordClick,
     handleRemoveSection,
-    isLastSection
+    isLastSection,
+    splitting,
+    splitAnim
 }) {
+    // For animation
+    const [grow, setGrow] = useState(0);
+    const animRef = useRef();
+
+    useEffect(() => {
+        if (splitting && splitAnim && splitting.sectionIdx === sectionIdx) {
+            setGrow(0);
+            let start;
+            function animate(ts) {
+                if (!start) start = ts;
+                const elapsed = ts - start;
+                const percent = Math.min(elapsed / 2000, 1);
+                setGrow(percent);
+                if (percent < 1) {
+                    animRef.current = requestAnimationFrame(animate);
+                }
+            }
+            animRef.current = requestAnimationFrame(animate);
+            return () => cancelAnimationFrame(animRef.current);
+        } else {
+            setGrow(0);
+        }
+    }, [splitting, splitAnim, sectionIdx]);
+
     return (
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
             {words.map((word, wordIdx) => (
-                <Box
-                    key={wordIdx}
-                    component="span"
-                    onClick={() => handleWordClick(sectionIdx, wordIdx)}
-                    sx={{
-                        cursor: 'pointer',
-                        borderRadius: 1,
-                        transition: 'background 0.2s, box-shadow 0.2s, transform 0.1s',
-                        boxShadow: 0,
-                        '&:hover': {
-                            bgcolor: 'primary.light',
-                            color: 'primary.contrastText',
-                            boxShadow: 2,
-                            transform: 'scale(1.08)',
-                            px: 1.2,
-                        },
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        fontSize: 16,
-                        fontWeight: 500,
-                        mr: wordIdx < words.length - 1 ? 0.5 : 0,
-                    }}
-                >
-                    {word}
-                    {/* Remove section button inline if not last section */}
-                    {wordIdx === words.length - 1 && !isLastSection && (
-                        <IconButton
-                            size="small"
-                            onClick={e => { e.stopPropagation(); handleRemoveSection(sectionIdx); }}
-                            title="Undo split (merge with next section)"
+                <React.Fragment key={wordIdx}>
+                    <Box
+                        component="span"
+                        onClick={() => !splitting && handleWordClick(sectionIdx, wordIdx)}
+                        sx={{
+                            cursor: splitting ? 'default' : 'pointer',
+                            borderRadius: 1,
+                            transition: 'background 0.2s, box-shadow 0.2s, transform 0.1s',
+                            boxShadow: 0,
+                            '&:hover': {
+                                bgcolor: 'primary.light',
+                                color: 'primary.contrastText',
+                                boxShadow: 2,
+                                transform: 'scale(1.08)',
+                                px: 1.2,
+                            },
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            fontSize: 16,
+                            fontWeight: 500,
+                            mr: wordIdx < words.length - 1 ? 0.5 : 0,
+                            position: 'relative',
+                        }}
+                    >
+                        {word}
+                        {/* Remove section button inline if not last section */}
+                        {wordIdx === words.length - 1 && !isLastSection && (
+                            <IconButton
+                                size="small"
+                                onClick={e => { e.stopPropagation(); handleRemoveSection(sectionIdx); }}
+                                title="Undo split (merge with next section)"
+                                sx={{
+                                    ml: 1,
+                                    borderRadius: '50%',
+                                    bgcolor: 'background.paper',
+                                    boxShadow: 1,
+                                    transition: 'box-shadow 0.2s, background 0.2s, transform 0.1s',
+                                    '&:hover': {
+                                        bgcolor: 'primary.main',
+                                        color: 'primary.contrastText',
+                                        boxShadow: 4,
+                                        transform: 'rotate(-10deg) scale(1.1)'
+                                    },
+                                }}
+                            >
+                                <UndoArrowIcon />
+                            </IconButton>
+                        )}
+                    </Box>
+                    {/* Animated split element */}
+                    {splitting && splitAnim && splitting.wordIdx === wordIdx && splitting.sectionIdx === sectionIdx && (
+                        <Box
                             sx={{
-                                ml: 1,
-                                borderRadius: '50%',
-                                bgcolor: 'background.paper',
-                                boxShadow: 1,
-                                transition: 'box-shadow 0.2s, background 0.2s, transform 0.1s',
-                                '&:hover': {
-                                    bgcolor: 'primary.main',
-                                    color: 'primary.contrastText',
-                                    boxShadow: 4,
-                                    transform: 'rotate(-10deg) scale(1.1)'
-                                },
+                                display: 'inline-block',
+                                width: `${16 + 64 * grow}px`,
+                                height: `${16 + 32 * grow}px`,
+                                mx: 1,
+                                borderRadius: 2,
+                                bgcolor: 'primary.main',
+                                boxShadow: 4,
+                                transition: 'width 0.2s, height 0.2s',
+                                verticalAlign: 'middle',
+                                opacity: 0.7,
                             }}
-                        >
-                            <UndoArrowIcon />
-                        </IconButton>
+                        />
                     )}
-                </Box>
+                </React.Fragment>
             ))}
         </Box>
     );
@@ -110,7 +155,9 @@ const MetaTextSection = memo(function MetaTextSection({
     isLastSection,
     handleWordClick,
     handleRemoveSection,
-    handleSectionFieldChange
+    handleSectionFieldChange,
+    splitting,
+    splitAnim
 }) {
     const words = section.content.split(/\s+/);
     const handleAISummaryUpdate = (newSummary) => handleSectionFieldChange(sectionIdx, 'aiSummary', newSummary);
@@ -138,6 +185,8 @@ const MetaTextSection = memo(function MetaTextSection({
                         handleWordClick={handleWordClick}
                         handleRemoveSection={handleRemoveSection}
                         isLastSection={isLastSection}
+                        splitting={splitting}
+                        splitAnim={splitAnim}
                     />
                 </Box>
                 {/* Details column */}
@@ -200,6 +249,28 @@ const MetaTextSection = memo(function MetaTextSection({
 });
 
 export default function MetaTextSections({ sections, handleWordClick, handleRemoveSection, handleSectionFieldChange }) {
+    // Track which section/word is being split animatedly
+    const [splitting, setSplitting] = useState(null); // { sectionIdx, wordIdx } or null
+    const [splitAnim, setSplitAnim] = useState(false);
+
+    // Handler for word click with animation
+    const handleWordClickWithAnim = (sectionIdx, wordIdx) => {
+        setSplitting({ sectionIdx, wordIdx });
+        setSplitAnim(true);
+    };
+
+    // Effect to run the animation and trigger split after 2s
+    useEffect(() => {
+        if (splitting && splitAnim) {
+            const timer = setTimeout(() => {
+                handleWordClick(splitting.sectionIdx, splitting.wordIdx);
+                setSplitting(null);
+                setSplitAnim(false);
+            }, 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [splitting, splitAnim, handleWordClick]);
+
     return (
         <Box>
             <Box>
@@ -209,9 +280,11 @@ export default function MetaTextSections({ sections, handleWordClick, handleRemo
                         section={section}
                         sectionIdx={sectionIdx}
                         isLastSection={sectionIdx === sections.length - 1}
-                        handleWordClick={handleWordClick}
+                        handleWordClick={handleWordClickWithAnim}
                         handleRemoveSection={handleRemoveSection}
                         handleSectionFieldChange={handleSectionFieldChange}
+                        splitting={splitting && splitting.sectionIdx === sectionIdx ? splitting : null}
+                        splitAnim={splitAnim}
                     />
                 ))}
             </Box>
