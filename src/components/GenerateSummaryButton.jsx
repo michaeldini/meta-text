@@ -1,18 +1,20 @@
 import React from 'react';
-import { Button, CircularProgress } from '@mui/material';
+import { Button, CircularProgress, Tooltip, IconButton } from '@mui/material';
 
-export default function GenerateSummaryButton({ loading, onClick, icon, children, ...props }) {
+export default function GenerateSourceDocInfoButton({ loading, onClick, icon, label }) {
     return (
-        <Button
-
-            size="small"
-            startIcon={loading ? <CircularProgress size={18} color="inherit" /> : icon}
-            onClick={onClick}
-            disabled={loading}
-
-            {...props}
-        >
-            {loading ? 'Generating...' : children}
-        </Button>
+        <Tooltip title={label || "Generate Summary"} placement="top">
+            <span>
+                <IconButton
+                    color="primary"
+                    size="large"
+                    onClick={onClick}
+                    disabled={loading}
+                    aria-label={label}
+                >
+                    {loading ? <CircularProgress size={24} /> : icon}
+                </IconButton>
+            </span>
+        </Tooltip>
     );
 }

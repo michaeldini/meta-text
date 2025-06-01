@@ -46,6 +46,7 @@ export default function SourceDocsPage() {
             setUploadSuccess('Upload successful!');
             setFile(null);
             setUploadTitle('');
+            window.location.reload();
         } catch (err) {
             setUploadError(err.message);
         } finally {
@@ -53,7 +54,7 @@ export default function SourceDocsPage() {
         }
     };
 
-    // Generate summary handler for a doc
+
     // Delete document handler
     const handleDelete = async (docId) => {
         if (!window.confirm('Are you sure you want to delete this document? This cannot be undone.')) return;

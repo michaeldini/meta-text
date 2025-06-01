@@ -1,9 +1,7 @@
 import React from 'react';
 import { Box, Typography, ListItem, ListItemText, Divider, ListItemButton, Chip, Stack } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 export default function SourceDocDetails({ doc, summaryError }) {
-    const navigate = useNavigate();
-    const handleDocClick = () => navigate(`/sourceDocs/${encodeURIComponent(doc.id)}`);
+
 
     // Parse details JSON string safely
     let details = undefined;
@@ -18,17 +16,6 @@ export default function SourceDocDetails({ doc, summaryError }) {
     return (
         <>
             <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
-                {/* Top row: Title, Generate Summary, Delete Button */}
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Typography
-                        variant="h6"
-                        sx={{ flex: 1, cursor: 'pointer' }}
-                        onClick={handleDocClick}
-                        noWrap={false}
-                    >
-                        {doc.title}
-                    </Typography>
-                </Box>
                 {/* Summary row */}
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                     <strong>Summary:</strong> {details?.summary || 'No summary available.'}
@@ -36,11 +23,7 @@ export default function SourceDocDetails({ doc, summaryError }) {
                 {/* Details rows */}
                 {details && (
                     <Box sx={{ gap: 1, display: 'flex', flexDirection: 'column' }}>
-                        {details.title && (
-                            <Typography variant="body2" color="text.secondary">
-                                <strong>Title:</strong> {details.title}
-                            </Typography>
-                        )}
+
                         {details.characters && Array.isArray(details.characters) && details.characters.length > 0 && (
                             <Stack direction="row" spacing={1} alignItems="center">
                                 <Typography variant="body2" color="text.secondary"><strong>Characters:</strong></Typography>
