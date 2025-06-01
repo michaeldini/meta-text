@@ -1,8 +1,7 @@
 import React from 'react';
-import { Box, Typography, ListItem, ListItemText, Divider, ListItemButton, Chip, Stack } from '@mui/material';
+import { Box, Typography, ListItem, Divider, Chip, Stack } from '@mui/material';
+
 export default function SourceDocDetails({ doc, summaryError }) {
-
-
     // Parse details JSON string safely
     let details = undefined;
     if (doc.details) {
@@ -13,54 +12,38 @@ export default function SourceDocDetails({ doc, summaryError }) {
         }
     }
 
+    // List of detail keys to display (excluding summary)
+    const detailKeys = details ? Object.keys(details).filter(key => key !== 'summary') : [];
+
     return (
         <>
-            <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 1, overflow: 'hidden', width: '100%', boxSizing: 'border-box' }}>
                 {/* Summary row */}
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 1, p: 3, pl: 0, pr: 0, wordBreak: 'break-word', width: '100%', boxSizing: 'border-box' }}>
                     <strong>Summary:</strong> {details?.summary || 'No summary available.'}
                 </Typography>
-                {/* Details rows */}
+                {/* Details rows (dynamic) */}
                 {details && (
-                    <Box sx={{ gap: 1, display: 'flex', flexDirection: 'column' }}>
-
-                        {details.characters && Array.isArray(details.characters) && details.characters.length > 0 && (
-                            <Stack direction="row" spacing={1} alignItems="center">
-                                <Typography variant="body2" color="text.secondary"><strong>Characters:</strong></Typography>
-                                {details.characters.map((c, i) => (
-                                    <Chip key={i} label={c} size="small" />
-                                ))}
-                            </Stack>
-                        )}
-                        {details.locations && Array.isArray(details.locations) && details.locations.length > 0 && (
-                            <Stack direction="row" spacing={1} alignItems="center">
-                                <Typography variant="body2" color="text.secondary"><strong>Locations:</strong></Typography>
-                                {details.locations.map((l, i) => (
-                                    <Chip key={i} label={l} size="small" />
-                                ))}
-                            </Stack>
-                        )}
-                        {details.themes && Array.isArray(details.themes) && details.themes.length > 0 && (
-                            <Stack direction="row" spacing={1} alignItems="center">
-                                <Typography variant="body2" color="text.secondary"><strong>Themes:</strong></Typography>
-                                {details.themes.map((t, i) => (
-                                    <Chip key={i} label={t} size="small" />
-                                ))}
-                            </Stack>
-                        )}
-                        {details.symbols && Array.isArray(details.symbols) && details.symbols.length > 0 && (
-                            <Stack direction="row" spacing={1} alignItems="center">
-                                <Typography variant="body2" color="text.secondary"><strong>Symbols:</strong></Typography>
-                                {details.symbols.map((s, i) => (
-                                    <Chip key={i} label={s} size="small" />
-                                ))}
-                            </Stack>
-                        )}
+                    <Box sx={{ gap: 1, display: 'flex', flexDirection: 'column', width: '100%', boxSizing: 'border-box', overflow: 'hidden' }}>
+                        {detailKeys.map((key) => {
+                            const value = details[key];
+                            if (Array.isArray(value) && value.length > 0) {
+                                return (
+                                    <Stack key={key} direction="row" spacing={1} alignItems="center" sx={{ flexWrap: 'wrap', width: '100%', boxSizing: 'border-box', overflow: 'hidden', rowGap: 1.5 }}>
+                                        <Typography variant="body2" color="text.secondary" sx={{ wordBreak: 'break-word' }}><strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong></Typography>
+                                        {value.map((item, i) => (
+                                            <Chip key={i} label={item} size="small" />
+                                        ))}
+                                    </Stack>
+                                );
+                            }
+                            return null;
+                        })}
                     </Box>
                 )}
                 {summaryError && (
                     <ListItem>
-                        <Typography color="error" variant="body2">{summaryError}</Typography>
+                        <Typography color="error" variant="body2" sx={{ wordBreak: 'break-word', width: '100%' }}>{summaryError}</Typography>
                     </ListItem>
                 )}
             </Box>

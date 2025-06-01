@@ -1,10 +1,6 @@
 import React from 'react';
-import { Paper, List, ListItem, ListItemText, Box, Alert, Tooltip, Typography, Collapse, Divider } from '@mui/material';
-import SourceDocDetails from './SourceDocDetails';
-import DeleteButton from './DeleteButton';
-import GenerateSourceDocInfoButton from './GenerateSummaryButton';
-import aiStars from '../assets/ai-stars.png';
-import { useNavigate } from 'react-router-dom';
+import { Paper, List, ListItem, ListItemText } from '@mui/material';
+import SourceDocListItem from './SourceDocListItem';
 
 export default function SourceDocList({
     docs,
@@ -15,71 +11,25 @@ export default function SourceDocList({
     deleteError,
     onDelete
 }) {
-    const navigate = useNavigate();
     return (
         <Paper>
             <List>
                 {docs.length === 0 && (
                     <ListItem><ListItemText primary="No documents found." /></ListItem>
                 )}
-                {docs.map((doc) => {
-                    const id = doc.id;
-                    const title = doc.title;
-                    return (
-                        <Collapse in={!deleteLoading[id] && !deleteError[id]} timeout={400} key={id}>
-                            <div>
-                                <ListItem disablePadding>
-                                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
-                                            <Typography
-                                                variant="h6"
-                                                sx={{
-                                                    flex: 1,
-                                                    cursor: 'pointer',
-                                                    transition: 'color 0.2s, transform 0.2s',
-                                                    '&:hover': {
-                                                        color: 'primary.main',
-                                                        transform: 'translateY(-2px) scale(1.03)',
-                                                        textDecoration: 'underline',
-                                                    },
-                                                }}
-                                                onClick={() => navigate(`/sourceDocs/${encodeURIComponent(doc.id)}`)}
-                                                noWrap={false}
-                                            >
-                                                {title}
-                                            </Typography>
-                                            <GenerateSourceDocInfoButton
-                                                loading={summaryLoading[doc.id]}
-                                                onClick={e => { e.stopPropagation(); onGenerateSummary(doc.id); }}
-                                                icon={<img src={aiStars} alt="AI" />}
-                                                label="Generate Summary"
-                                            />
-                                            <DeleteButton
-                                                onClick={e => { e.stopPropagation(); onDelete(doc.id); }}
-                                                disabled={deleteLoading[doc.id]}
-                                                label="Delete Source Document"
-                                            />
-                                        </Box>
-                                        <SourceDocDetails
-                                            doc={doc}
-                                            summaryError={summaryError[doc.id]}
-                                        />
-
-                                    </Box>
-                                </ListItem>
-                                {
-                                    deleteError[doc.id] && (
-                                        <ListItem>
-                                            <Alert severity="error">{deleteError[doc.id]}</Alert>
-                                        </ListItem>
-                                    )
-                                }
-                                <Divider />
-                            </div>
-                        </Collapse>
-                    );
-                })}
+                {docs.map((doc) => (
+                    <SourceDocListItem
+                        key={doc.id}
+                        doc={doc}
+                        summaryError={summaryError}
+                        onGenerateSummary={onGenerateSummary}
+                        summaryLoading={summaryLoading}
+                        deleteLoading={deleteLoading}
+                        deleteError={deleteError}
+                        onDelete={onDelete}
+                    />
+                ))}
             </List>
-        </Paper >
+        </Paper>
     );
 }
