@@ -18,8 +18,9 @@ async def create_meta_text(
     doc = session.exec(select(SourceDocument).where(SourceDocument.title == req.sourceTitle)).first()
     if not doc:
         raise HTTPException(status_code=404, detail="Source document not found.")
-    initial_section = SectionSchema(content=doc.text)
-    content_json = json.dumps([initial_section.dict()])
+    # Split the document into sections by paragraph (robust to all line endings)
+    sections = [SectionSchema(content=doc.text)]
+    content_json = json.dumps([s.model_dump() for s in sections])
     meta_text = MetaText(title=req.newTitle, source_document_id=doc.id, content=content_json, text=doc.text)
     session.add(meta_text)
     try:
@@ -70,7 +71,7 @@ async def update_meta_text(meta_text_id: int, req: List[SectionSchema], session=
     meta_text = session.get(MetaText, meta_text_id)
     if not meta_text:
         raise HTTPException(status_code=404, detail="Meta-text not found.")
-    meta_text.content = json.dumps([s.dict() for s in req])
+    meta_text.content = json.dumps([s.model_dump() for s in req])
     session.add(meta_text)
     session.commit()
     return {"success": True}

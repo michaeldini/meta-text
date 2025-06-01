@@ -1,12 +1,9 @@
 import React from 'react';
 import { Paper, List, ListItem, ListItemButton, ListItemText, Divider, Grow } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 
 function MetaTextList({ filteredMetaTexts, selectedMetaText, handleMetaTextClick }) {
-    const navigate = useNavigate();
     const handleClick = (id) => {
         handleMetaTextClick(id);
-        navigate(`/metaText/${id}`);
     };
     return (
         <Paper>

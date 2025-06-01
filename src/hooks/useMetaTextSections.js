@@ -23,15 +23,25 @@ export function useMetaTextSections(selectedMetaTextId) {
         setSectionsError('');
         fetchMetaText(selectedMetaTextId)
             .then(data => {
-                if (Array.isArray(data.content) && data.content.length > 0 && typeof data.content[0] === 'object') {
-                    setSections(data.content);
-                } else if (Array.isArray(data.content)) {
-                    setSections(data.content.map(content => ({ content, notes: '', summary: '', aiImageUrl: '' })));
+                console.log('Fetched data.content:', data.content);
+                let normalizedSections = [];
+                if (Array.isArray(data.content)) {
+                    normalizedSections = data.content.map(item =>
+                        typeof item === 'object'
+                            ? {
+                                content: item.content || '',
+                                notes: item.notes || '',
+                                summary: item.summary || '',
+                                aiImageUrl: item.aiImageUrl || '',
+                                aiSummary: item.aiSummary || ''
+                            }
+                            : { content: item, notes: '', summary: '', aiImageUrl: '', aiSummary: '' }
+                    );
                 } else if (typeof data.content === 'string') {
-                    setSections([{ content: data.content, notes: '', summary: '', aiImageUrl: '' }]);
-                } else {
-                    setSections([]);
+                    normalizedSections = [{ content: data.content, notes: '', summary: '', aiImageUrl: '', aiSummary: '' }];
                 }
+                setSections(normalizedSections);
+                console.log('Set sections:', normalizedSections);
             })
             .catch(() => {
                 setSectionsError('Failed to load meta-text.');

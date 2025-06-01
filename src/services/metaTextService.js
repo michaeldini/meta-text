@@ -9,6 +9,7 @@ export async function fetchMetaTexts() {
 
 export async function fetchMetaText(id) {
     const res = await fetch(`/api/meta-text/${id}`);
+    console.log('fetchMetaText response:', res);
     return handleApiResponse(res, 'Failed to fetch meta text');
 }
 

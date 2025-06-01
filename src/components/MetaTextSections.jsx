@@ -141,7 +141,7 @@ const MetaTextSection = memo(function MetaTextSection({
                     />
                 </Box>
                 {/* Details column */}
-                <Box sx={{ flex: 1, minWidth: 220, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <Box sx={{ flex: 1, minWidth: 220, maxWidth: 400, width: 350, display: 'flex', flexDirection: 'column', gap: 2, zIndex: 10 }}>
                     <TextField
                         label="Summary"
                         value={section.summary || ''}

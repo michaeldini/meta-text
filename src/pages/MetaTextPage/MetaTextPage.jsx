@@ -60,23 +60,26 @@ export default function MetaTextPage() {
     // --- Handle word click: split section at word index ---
     const handleWordClick = useCallback((sectionIdx, wordIdx) => {
         setSections(prevSections => {
-            const current = prevSections[sectionIdx];
-            const words = current.content.split(/\s+/);
+            const currentSection = prevSections[sectionIdx];
+            if (!currentSection || !currentSection.content) return prevSections;
+            const words = currentSection.content.split(/\s+/);
+            if (wordIdx < 0 || wordIdx >= words.length - 1) return prevSections; // Don't split at last word or out of bounds
             const before = words.slice(0, wordIdx + 1).join(' ');
             const after = words.slice(wordIdx + 1).join(' ');
+            if (!before || !after) return prevSections; // Prevent empty sections
             const newSections = [...prevSections];
-            newSections.splice(sectionIdx, 1, {
-                ...current,
+            // Replace current section with the first part
+            newSections[sectionIdx] = {
+                ...currentSection,
                 content: before
+            };
+            // Insert the second part as a new section after the current
+            newSections.splice(sectionIdx + 1, 0, {
+                content: after,
+                notes: '',
+                summary: '',
+                aiImageUrl: ''
             });
-            if (after) {
-                newSections.splice(sectionIdx + 1, 0, {
-                    content: after,
-                    notes: '',
-                    summary: '',
-                    aiImageUrl: ''
-                });
-            }
             return newSections;
         });
     }, [setSections]);
