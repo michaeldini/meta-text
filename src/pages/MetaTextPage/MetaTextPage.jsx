@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { createMetaText, updateMetaText } from '../../services/metaTextService';
+import { createMetaText, updateMetaText, deleteMetaText } from '../../services/metaTextService';
 import { Typography, CircularProgress, Box, Alert, Grow, Fade } from '@mui/material';
 import MetaTextSections from '../../components/MetaTextSections';
 import { useAutoSave } from '../../hooks/useAutoSave';
@@ -19,6 +19,8 @@ export default function MetaTextPage() {
     const [createLoading, setCreateLoading] = useState(false);
     const [selectedMetaTextId, setSelectedMetaTextId] = useState(null);
     const [autoSaveStatus, setAutoSaveStatus] = useState('Autosave');
+    const [deleteLoading, setDeleteLoading] = useState({});
+    const [deleteError, setDeleteError] = useState({});
     const { metaTexts, metaTextsLoading, metaTextsError } = useMetaTexts([createSuccess]);
     const { docs: sourceDocs, loading: sourceDocsLoading, error: sourceDocsError } = useSourceDocuments();
     // Use custom hook for sections
@@ -130,6 +132,22 @@ export default function MetaTextPage() {
         deps: [selectedMetaTextId]
     });
 
+    // --- Delete MetaText handler ---
+    const handleDeleteMetaText = async (id) => {
+        setDeleteLoading(prev => ({ ...prev, [id]: true }));
+        setDeleteError(prev => ({ ...prev, [id]: '' }));
+        try {
+            await deleteMetaText(id);
+            setDeleteLoading(prev => ({ ...prev, [id]: false }));
+            setDeleteError(prev => ({ ...prev, [id]: '' }));
+            // If the deleted metatext is selected, clear selection
+            if (selectedMetaTextId === id) setSelectedMetaTextId(null);
+        } catch (err) {
+            setDeleteLoading(prev => ({ ...prev, [id]: false }));
+            setDeleteError(prev => ({ ...prev, [id]: err.message || 'Delete failed' }));
+        }
+    };
+
     return (
         <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
             <Typography variant="h4" gutterBottom>Meta Texts</Typography>
@@ -168,6 +186,9 @@ export default function MetaTextPage() {
                         filteredMetaTexts={filteredMetaTexts}
                         selectedMetaText={selectedMetaTextId}
                         handleMetaTextClick={handleMetaTextClick}
+                        handleDeleteMetaText={handleDeleteMetaText}
+                        deleteLoading={deleteLoading}
+                        deleteError={deleteError}
                     />
                 </Box>
             )}
