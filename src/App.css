@@ -250,7 +250,7 @@ select.main-textarea option {
   color: #fff;
   border: none;
   border-radius: 6px;
-  padding: 10px 32px;
+  /* padding: 10px 32px; */
   font-size: 18px;
   font-weight: 600;
   box-shadow: 0 1px 8px #e0e0ef;

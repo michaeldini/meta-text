@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
 // Simple value-based autosave hook for MetaTextPage
-export function useAutoSave({ value, delay = 1500, onSave, deps = [] }) {
+export function useAutoSave({ value, delay = 3000, onSave, deps = [] }) {
     const timeout = useRef();
     const prevValue = useRef(value);
     useEffect(() => {

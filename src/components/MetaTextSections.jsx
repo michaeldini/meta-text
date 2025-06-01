@@ -1,5 +1,5 @@
 import React, { useState, memo, useRef, useEffect } from 'react';
-import { Box, TextField, IconButton, Paper, Button, CircularProgress } from '@mui/material';
+import { Box, TextField, IconButton, Paper, Button, CircularProgress, Divider } from '@mui/material';
 import UndoArrowIcon from './icons/UndoArrowIcon';
 
 function AISummaryBox({ sectionContent, aiSummary, onAISummaryUpdate }) {
@@ -98,6 +98,8 @@ const SectionWords = memo(function SectionWords({
                             fontWeight: 500,
                             mr: wordIdx < words.length - 1 ? 0.5 : 0,
                             position: 'relative',
+
+
                         }}
                     >
                         {word}
@@ -164,8 +166,7 @@ const MetaTextSection = memo(function MetaTextSection({
     return (
         <Paper
             sx={{
-                p: 2,
-                mb: 2,
+                p: 4,
                 borderRadius: 4,
                 boxShadow: 3,
                 transition: 'box-shadow 0.2s, transform 0.2s',
@@ -178,7 +179,7 @@ const MetaTextSection = memo(function MetaTextSection({
         >
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2 }}>
                 {/* Split text column */}
-                <Box sx={{ flex: 2, minWidth: 0 }}>
+                <Box sx={{ flex: 2, minWidth: 0, p: 2 }}>
                     <SectionWords
                         words={words}
                         sectionIdx={sectionIdx}
@@ -249,6 +250,7 @@ const MetaTextSection = memo(function MetaTextSection({
 });
 
 export default function MetaTextSections({ sections, handleWordClick, handleRemoveSection, handleSectionFieldChange }) {
+
     // Track which section/word is being split animatedly
     const [splitting, setSplitting] = useState(null); // { sectionIdx, wordIdx } or null
     const [splitAnim, setSplitAnim] = useState(false);
@@ -272,22 +274,20 @@ export default function MetaTextSections({ sections, handleWordClick, handleRemo
     }, [splitting, splitAnim, handleWordClick]);
 
     return (
-        <Box>
-            <Box>
-                {sections.map((section, sectionIdx) => (
-                    <MetaTextSection
-                        key={sectionIdx}
-                        section={section}
-                        sectionIdx={sectionIdx}
-                        isLastSection={sectionIdx === sections.length - 1}
-                        handleWordClick={handleWordClickWithAnim}
-                        handleRemoveSection={handleRemoveSection}
-                        handleSectionFieldChange={handleSectionFieldChange}
-                        splitting={splitting && splitting.sectionIdx === sectionIdx ? splitting : null}
-                        splitAnim={splitAnim}
-                    />
-                ))}
-            </Box>
+        <Box >
+            {sections.map((section, sectionIdx) => (
+                <MetaTextSection
+                    key={sectionIdx}
+                    section={section}
+                    sectionIdx={sectionIdx}
+                    isLastSection={sectionIdx === sections.length - 1}
+                    handleWordClick={handleWordClickWithAnim}
+                    handleRemoveSection={handleRemoveSection}
+                    handleSectionFieldChange={handleSectionFieldChange}
+                    splitting={splitting && splitting.sectionIdx === sectionIdx ? splitting : null}
+                    splitAnim={splitAnim}
+                />
+            ))}
         </Box>
     );
 }

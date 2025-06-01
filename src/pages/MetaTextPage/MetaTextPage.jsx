@@ -1,14 +1,11 @@
-import React, { useState, useMemo, useCallback } from 'react';
-import { createMetaText, updateMetaText, deleteMetaText } from '../../services/metaTextService';
-import { Typography, CircularProgress, Box, Alert, Grow, Fade } from '@mui/material';
-import MetaTextSections from '../../components/MetaTextSections';
-import { useAutoSave } from '../../hooks/useAutoSave';
-import SearchBar from '../../components/SearchBar';
+import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Typography, CircularProgress, Box, Alert } from '@mui/material';
 import MetaTextCreateForm from '../../components/MetaTextCreateForm';
+import SearchBar from '../../components/SearchBar';
 import MetaTextList from '../../components/MetaTextList';
 import { useMetaTexts } from '../../hooks/useMetaTexts';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
-import { useMetaTextSections } from '../../hooks/useMetaTextSections';
 
 export default function MetaTextPage() {
     const [search, setSearch] = useState('');
@@ -17,19 +14,11 @@ export default function MetaTextPage() {
     const [createError, setCreateError] = useState('');
     const [createSuccess, setCreateSuccess] = useState('');
     const [createLoading, setCreateLoading] = useState(false);
-    const [selectedMetaTextId, setSelectedMetaTextId] = useState(null);
-    const [autoSaveStatus, setAutoSaveStatus] = useState('Autosave');
     const [deleteLoading, setDeleteLoading] = useState({});
     const [deleteError, setDeleteError] = useState({});
     const { metaTexts, metaTextsLoading, metaTextsError } = useMetaTexts([createSuccess]);
     const { docs: sourceDocs, loading: sourceDocsLoading, error: sourceDocsError } = useSourceDocuments();
-    // Use custom hook for sections
-    const {
-        sections,
-        setSections,
-        sectionsLoading,
-        sectionsError
-    } = useMetaTextSections(selectedMetaTextId);
+    const navigate = useNavigate();
 
     const filteredMetaTexts = useMemo(() => {
         if (!search) return metaTexts;
@@ -48,6 +37,8 @@ export default function MetaTextPage() {
         setCreateSuccess('');
         setCreateLoading(true);
         try {
+            // createMetaText is imported in the old version, but not used here. You may want to move it to a service or keep as is.
+            const { createMetaText } = await import('../../services/metaTextService');
             await createMetaText(selectedSource, newLabel);
             setCreateSuccess('Meta-text created!');
             setSelectedSource('');
@@ -59,101 +50,27 @@ export default function MetaTextPage() {
         }
     };
 
-    // --- Handle word click: split section at word index ---
-    const handleWordClick = useCallback((sectionIdx, wordIdx) => {
-        setSections(prevSections => {
-            const currentSection = prevSections[sectionIdx];
-            if (!currentSection || !currentSection.content) return prevSections;
-            const words = currentSection.content.split(/\s+/);
-            if (wordIdx < 0 || wordIdx >= words.length - 1) return prevSections; // Don't split at last word or out of bounds
-            const before = words.slice(0, wordIdx + 1).join(' ');
-            const after = words.slice(wordIdx + 1).join(' ');
-            if (!before || !after) return prevSections; // Prevent empty sections
-            const newSections = [...prevSections];
-            // Replace current section with the first part
-            newSections[sectionIdx] = {
-                ...currentSection,
-                content: before
-            };
-            // Insert the second part as a new section after the current
-            newSections.splice(sectionIdx + 1, 0, {
-                content: after,
-                notes: '',
-                summary: '',
-                aiImageUrl: ''
-            });
-            return newSections;
-        });
-    }, [setSections]);
-
-    // --- Remove a section and merge with the next ---
-    const handleRemoveSection = useCallback((sectionIdx) => {
-        setSections(prevSections => {
-            if (sectionIdx >= prevSections.length - 1) return prevSections;
-            const mergedContent = prevSections[sectionIdx].content + ' ' + prevSections[sectionIdx + 1].content;
-            const newSections = [...prevSections];
-            newSections.splice(sectionIdx, 2, {
-                ...prevSections[sectionIdx],
-                content: mergedContent
-            });
-            return newSections;
-        });
-    }, [setSections]);
-
-    // --- Handle summary/notes field change ---
-    const handleSectionFieldChange = useCallback((sectionIdx, field, value) => {
-        setSections(prevSections => {
-            const newSections = [...prevSections];
-            newSections[sectionIdx] = {
-                ...newSections[sectionIdx],
-                [field]: value
-            };
-            return newSections;
-        });
-    }, [setSections]);
-
-    // Replace handleMetaTextClick to set selectedMetaTextId
-    const handleMetaTextClick = id => setSelectedMetaTextId(id);
-
-    // --- AUTOSAVE LOGIC ---
-    useAutoSave({
-        value: sections,
-        delay: 1500,
-        onSave: async () => {
-            if (!selectedMetaTextId) return;
-            setAutoSaveStatus('Saving...');
-            try {
-                await updateMetaText(selectedMetaTextId, sections);
-                setAutoSaveStatus('Autosave');
-            } catch {
-                setAutoSaveStatus('Autosave');
-            }
-        },
-        deps: [selectedMetaTextId]
-    });
-
-    // --- Delete MetaText handler ---
+    // Delete MetaText handler
     const handleDeleteMetaText = async (id) => {
         setDeleteLoading(prev => ({ ...prev, [id]: true }));
         setDeleteError(prev => ({ ...prev, [id]: '' }));
         try {
+            const { deleteMetaText } = await import('../../services/metaTextService');
             await deleteMetaText(id);
             setDeleteLoading(prev => ({ ...prev, [id]: false }));
             setDeleteError(prev => ({ ...prev, [id]: '' }));
-            // If the deleted metatext is selected, clear selection
-            if (selectedMetaTextId === id) setSelectedMetaTextId(null);
         } catch (err) {
             setDeleteLoading(prev => ({ ...prev, [id]: false }));
             setDeleteError(prev => ({ ...prev, [id]: err.message || 'Delete failed' }));
         }
     };
 
+    // Navigate to detail page on click
+    const handleMetaTextClick = id => navigate(`/metaText/${id}`);
+
     return (
         <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
             <Typography variant="h4" gutterBottom>Meta Texts</Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, gap: 2 }}>
-                <Typography variant="body2" color="text.secondary">{autoSaveStatus}</Typography>
-            </Box>
             <MetaTextCreateForm
                 sourceDocs={sourceDocs}
                 selectedSource={selectedSource}
@@ -184,34 +101,12 @@ export default function MetaTextPage() {
                 <Box>
                     <MetaTextList
                         filteredMetaTexts={filteredMetaTexts}
-                        selectedMetaText={selectedMetaTextId}
+                        selectedMetaText={null}
                         handleMetaTextClick={handleMetaTextClick}
                         handleDeleteMetaText={handleDeleteMetaText}
                         deleteLoading={deleteLoading}
                         deleteError={deleteError}
                     />
-                </Box>
-            )}
-            {/* Section Splitter UI */}
-            {selectedMetaTextId && (
-                <Box sx={{ mt: 4 }}>
-                    <Typography variant="h5" gutterBottom>
-                        {metaTexts.find(m => m.id === selectedMetaTextId)?.title || ''}
-                    </Typography>
-                    {sectionsLoading ? (
-                        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                            <CircularProgress />
-                        </Box>
-                    ) : sectionsError ? (
-                        <Alert severity="error">{sectionsError}</Alert>
-                    ) : (
-                        <MetaTextSections
-                            sections={sections}
-                            handleWordClick={handleWordClick}
-                            handleRemoveSection={handleRemoveSection}
-                            handleSectionFieldChange={handleSectionFieldChange}
-                        />
-                    )}
                 </Box>
             )}
         </Box>

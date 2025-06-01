@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material/styles';
-import { grey, cyan, red, green, teal } from '@mui/material/colors';
+import { grey, cyan, red, green } from '@mui/material/colors';
 const theme = createTheme({
     palette: {
         mode: 'dark',
@@ -29,21 +29,12 @@ const theme = createTheme({
         },
     },
     components: {
-        MuiInputBase: {
-            styleOverrides: {
-                input: ({ theme }) => ({
-                    color: theme.palette.text.primary,
-                }),
-            },
-        },
-        MuiInputLabel: {
-            styleOverrides: {
-                root: ({ theme }) => ({
-                    color: theme.palette.text.secondary,
-                    '&.Mui-focused': {
-                        color: theme.palette.primary.main,
-                    },
-                }),
+        MuiTextField: {
+            defaultProps: {
+                variant: 'outlined',
+                inputProps: {
+                    style: { color: grey[200] },
+                },
             },
         },
     },

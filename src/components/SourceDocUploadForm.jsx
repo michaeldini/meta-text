@@ -34,11 +34,11 @@ export default function SourceDocUploadForm({
                 </Box>
                 <TextField
                     label="Title"
-                    variant="outlined"
                     value={uploadLabel}
                     onChange={onLabelChange}
                     size="small"
                     sx={{ flexGrow: 1, minWidth: 180 }}
+
                 />
                 <Button type="submit" variant="contained" color="primary" disabled={uploadLoading}>
                     {uploadLoading ? 'Uploading...' : 'Upload'}

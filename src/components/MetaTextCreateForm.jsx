@@ -53,7 +53,6 @@ function MetaTextCreateForm({
                 </FormControl>
                 <TextField
                     label="Meta-text Name"
-                    variant="outlined"
                     value={newLabel}
                     onChange={e => setNewLabel(e.target.value)}
                     required
