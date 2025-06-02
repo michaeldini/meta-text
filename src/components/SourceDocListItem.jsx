@@ -2,8 +2,7 @@ import React from 'react';
 import { ListItem, Box, Typography, Divider, Collapse, Alert } from '@mui/material';
 import SourceDocDetails from './SourceDocDetails';
 import DeleteButton from './DeleteButton';
-import GenerateSourceDocInfoButton from './GenerateSourceDocInfoButton';
-import aiStars from '../assets/ai-stars.png';
+import AiStarsButton from './AiStarsButton';
 import { useNavigate } from 'react-router-dom';
 
 /**
@@ -40,10 +39,9 @@ function SourceDocListItem({ doc, summaryError, onGenerateSummary, summaryLoadin
                         >
                             {title}
                         </Typography>
-                        <GenerateSourceDocInfoButton
+                        <AiStarsButton
                             loading={summaryLoading[id]}
                             onClick={handleGenerateSummary}
-                            icon={<img src={aiStars} alt="AI" />}
                             label="Generate Summary"
                         />
                         <DeleteButton

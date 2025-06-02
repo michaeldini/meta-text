@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Box, CircularProgress, IconButton, Tooltip } from '@mui/material';
-import aiIcon from '../assets/ai-stars.png';
+import { Box } from '@mui/material';
+import AiStarsButton from './AiStarsButton';
+
 function SectionAiSummary({ sectionContent, aiSummary, onAISummaryUpdate }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -28,13 +29,13 @@ function SectionAiSummary({ sectionContent, aiSummary, onAISummaryUpdate }) {
         <Box sx={{ mt: 1, p: 1, border: theme => `1px solid ${theme.palette.divider}`, borderRadius: 1, bgcolor: theme => theme.palette.background.paper }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1, color: theme => theme.palette.text.primary }}>
                 <p>AI Summary:</p>
-                <Tooltip title="Generate AI Summary">
-                    <span>
-                        <IconButton onClick={handleGenerate} disabled={loading} sx={{ ml: 1 }} size="small">
-                            {loading ? <CircularProgress size={16} /> : <img src={aiIcon} alt="AI" style={{ width: 20, height: 20 }} />}
-                        </IconButton>
-                    </span>
-                </Tooltip>
+                <AiStarsButton
+                    loading={loading}
+                    onClick={handleGenerate}
+                    label="Generate AI Summary"
+                    size="small"
+                    sx={{ ml: 1 }}
+                />
             </Box>
             <Box sx={{ whiteSpace: 'pre-line', minHeight: 24, color: theme => theme.palette.text.secondary }}>
                 {aiSummary || <span style={{ color: '#aaa' }}>No summary yet.</span>}
