@@ -2,8 +2,9 @@ import React, { useState, useMemo } from 'react';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
 import { uploadSourceDocument, fetchSourceDocument, generateSourceDocInfo, deleteSourceDocument } from '../../services/sourceDocumentService';
 import SourceDocUploadForm from '../../components/SourceDocUploadForm';
-import { TextField, Paper, Typography, CircularProgress, Box, Alert } from '@mui/material';
-import SourceDocList from '../../components/SourceDocList';
+import { Paper, Typography, CircularProgress, Box, Alert } from '@mui/material';
+import ModernList from '../../components/ModernList';
+import SourceDocListItem from '../../components/SourceDocListItem';
 import SearchBar from '../../components/SearchBar';
 
 export default function SourceDocsPage() {
@@ -14,22 +15,17 @@ export default function SourceDocsPage() {
     const [uploadError, setUploadError] = useState('');
     const [uploadSuccess, setUploadSuccess] = useState('');
     const [uploadLoading, setUploadLoading] = useState(false);
-    const [summaryLoading, setSummaryLoading] = useState({}); // { [id]: boolean }
-    const [summaryError, setSummaryError] = useState({}); // { [id]: string|null }
-    const [deleteLoading, setDeleteLoading] = useState({}); // { [id]: boolean }
-    const [deleteError, setDeleteError] = useState({}); // { [id]: string|null }
+    const [summaryLoading, setSummaryLoading] = useState({});
+    const [summaryError, setSummaryError] = useState({});
+    const [deleteLoading, setDeleteLoading] = useState({});
+    const [deleteError, setDeleteError] = useState({});
 
-    // Filtered docs by search
+    const docOptions = useMemo(() => docs.map(doc => doc.title), [docs]);
     const filteredDocs = useMemo(() => {
         if (!search) return docs;
-        return docs.filter(doc => doc.title.toLowerCase().includes(search.toLowerCase()));
+        return docs.filter(doc => (doc.title || '').toLowerCase().includes(search.toLowerCase()));
     }, [docs, search]);
 
-    // Extract options for Autocomplete
-    const docOptions = useMemo(() => docs.map(doc => doc.title), [docs]);
-
-
-    // Handlers for upload form
     const handleFileChange = e => {
         setFile(e.target.files[0]);
         setUploadError('');
@@ -54,8 +50,6 @@ export default function SourceDocsPage() {
         }
     };
 
-
-    // Delete document handler
     const handleDelete = async (docId) => {
         if (!window.confirm('Are you sure you want to delete this document? This cannot be undone.')) return;
         setDeleteLoading(prev => ({ ...prev, [docId]: true }));
@@ -70,7 +64,6 @@ export default function SourceDocsPage() {
         }
     };
 
-    // Generate summary for a document
     const handleGenerateSourceDocInfo = async (docId) => {
         setSummaryLoading(prev => ({ ...prev, [docId]: true }));
         setSummaryError(prev => ({ ...prev, [docId]: null }));
@@ -84,7 +77,6 @@ export default function SourceDocsPage() {
             setSummaryLoading(prev => ({ ...prev, [docId]: false }));
         }
     };
-
 
     return (
         <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
@@ -117,14 +109,21 @@ export default function SourceDocsPage() {
             ) : error ? (
                 <Alert severity="error">{error}</Alert>
             ) : (
-                <SourceDocList
-                    docs={filteredDocs}
-                    summaryError={summaryError}
-                    onGenerateSummary={handleGenerateSourceDocInfo}
-                    summaryLoading={summaryLoading}
-                    deleteLoading={deleteLoading}
-                    deleteError={deleteError}
-                    onDelete={handleDelete}
+                <ModernList
+                    items={filteredDocs}
+                    emptyMessage="No documents found."
+                    renderItem={doc => (
+                        <SourceDocListItem
+                            key={doc.id}
+                            doc={doc}
+                            summaryError={summaryError}
+                            onGenerateSummary={handleGenerateSourceDocInfo}
+                            summaryLoading={summaryLoading}
+                            deleteLoading={deleteLoading}
+                            deleteError={deleteError}
+                            onDelete={handleDelete}
+                        />
+                    )}
                 />
             )}
         </Box>

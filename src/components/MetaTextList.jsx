@@ -1,10 +1,12 @@
+// This file has been replaced by ModernList. Use ModernList directly or see MetaTextListModern usage pattern.
+
 import React, { useState } from 'react';
-import { Paper, List, ListItem, ListItemButton, ListItemText, Divider, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Collapse, CircularProgress } from '@mui/material';
+import { ListItem, ListItemButton, ListItemText, Divider, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Collapse, CircularProgress } from '@mui/material';
 import DeleteButton from './DeleteButton';
+import ModernList from './ModernList';
 
-function MetaTextList({ filteredMetaTexts, selectedMetaText, handleMetaTextClick, handleDeleteMetaText, deleteLoading = {}, deleteError = {} }) {
-
-    // State for confirmation dialog for deletion
+// Usage: <MetaTextListModern filteredMetaTexts={...} ...otherProps />
+function MetaTextListModern({ filteredMetaTexts, selectedMetaText, handleMetaTextClick, handleDeleteMetaText, deleteLoading = {}, deleteError = {} }) {
     const [confirmOpen, setConfirmOpen] = useState(false);
     const [pendingDeleteId, setPendingDeleteId] = useState(null);
     const [deletedIds, setDeletedIds] = useState([]);
@@ -26,7 +28,7 @@ function MetaTextList({ filteredMetaTexts, selectedMetaText, handleMetaTextClick
 
     const handleConfirmDelete = () => {
         if (pendingDeleteId) {
-            setDeletedIds(ids => [...ids, pendingDeleteId]); // trigger collapse
+            setDeletedIds(ids => [...ids, pendingDeleteId]);
             handleDeleteMetaText(pendingDeleteId);
         }
         setConfirmOpen(false);
@@ -34,12 +36,11 @@ function MetaTextList({ filteredMetaTexts, selectedMetaText, handleMetaTextClick
     };
 
     return (
-        <Paper>
-            <List>
-                {filteredMetaTexts.length === 0 && (
-                    <ListItem><ListItemText primary="No meta texts found." /></ListItem>
-                )}
-                {filteredMetaTexts.map((obj) => {
+        <>
+            <ModernList
+                items={filteredMetaTexts}
+                emptyMessage="No meta texts found."
+                renderItem={(obj) => {
                     const id = obj.id;
                     const title = obj.title;
                     return (
@@ -63,8 +64,8 @@ function MetaTextList({ filteredMetaTexts, selectedMetaText, handleMetaTextClick
                             </div>
                         </Collapse>
                     );
-                })}
-            </List>
+                }}
+            />
             <Dialog open={confirmOpen} onClose={handleConfirmClose}>
                 <DialogTitle>Delete Meta Text?</DialogTitle>
                 <DialogContent>
@@ -77,8 +78,8 @@ function MetaTextList({ filteredMetaTexts, selectedMetaText, handleMetaTextClick
                     <Button onClick={handleConfirmDelete} color="error" variant="contained" autoFocus>Delete</Button>
                 </DialogActions>
             </Dialog>
-        </Paper>
+        </>
     );
 }
 
-export default MetaTextList;
+export default MetaTextListModern;

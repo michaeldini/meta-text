@@ -1,32 +1,25 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Typography, CircularProgress, Box, Alert } from '@mui/material';
+import { Typography, CircularProgress, Box, Alert, ListItem, ListItemButton, ListItemText, Divider, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Collapse } from '@mui/material';
 import MetaTextCreateForm from '../../components/MetaTextCreateForm';
 import SearchBar from '../../components/SearchBar';
-import MetaTextList from '../../components/MetaTextList';
+import ModernList from '../../components/ModernList';
+import DeleteButton from '../../components/DeleteButton';
 import { useMetaTexts } from '../../hooks/useMetaTexts';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
 
 export default function MetaTextPage() {
-
-    // signal to trigger re-fetching of meta texts after creation
     const [createSuccess, setCreateSuccess] = useState('');
-    
-    // Fetch source documents for selecting in create form
     const { docs: sourceDocs, loading: sourceDocsLoading, error: sourceDocsError } = useSourceDocuments();
-
-    // Fetch meta texts, passing the createSuccess signal to re-fetch when a new meta text is created
     const { metaTexts, metaTextsLoading, metaTextsError } = useMetaTexts([createSuccess]);
-    
-    // Local state for search and delete operations
     const [search, setSearch] = useState('');
     const [deleteLoading, setDeleteLoading] = useState({});
     const [deleteError, setDeleteError] = useState({});
-
-    // Use React Router's useNavigate hook for navigation
+    const [confirmOpen, setConfirmOpen] = useState(false);
+    const [pendingDeleteId, setPendingDeleteId] = useState(null);
+    const [deletedIds, setDeletedIds] = useState([]);
     const navigate = useNavigate();
 
-    // Filter meta texts based on search input
     const filteredMetaTexts = useMemo(() => {
         if (!search) return metaTexts;
         return metaTexts.filter(obj => {
@@ -35,16 +28,15 @@ export default function MetaTextPage() {
         });
     }, [metaTexts, search]);
 
-    // Extract options for Autocomplete
     const metaTextOptions = useMemo(() => metaTexts.map(obj => obj.title), [metaTexts]);
 
-    // Delete MetaText handler
     const handleDeleteMetaText = async (id) => {
         setDeleteLoading(prev => ({ ...prev, [id]: true }));
         setDeleteError(prev => ({ ...prev, [id]: '' }));
         try {
             const { deleteMetaText } = await import('../../services/metaTextService');
             await deleteMetaText(id);
+            setDeletedIds(ids => [...ids, id]);
             setDeleteLoading(prev => ({ ...prev, [id]: false }));
             setDeleteError(prev => ({ ...prev, [id]: '' }));
         } catch (err) {
@@ -53,32 +45,24 @@ export default function MetaTextPage() {
         }
     };
 
-    // Navigate to detail page on click
     const handleMetaTextClick = id => navigate(`/metaText/${id}`);
 
-    // Helper function for rendering meta text content
-    function renderMetaTextsContent() {
-        if (metaTextsLoading) {
-            return (
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-                    <CircularProgress />
-                </Box>
-            );
+    const handleDeleteClick = (id, e) => {
+        e.stopPropagation();
+        setPendingDeleteId(id);
+        setConfirmOpen(true);
+    };
+    const handleConfirmClose = () => {
+        setConfirmOpen(false);
+        setPendingDeleteId(null);
+    };
+    const handleConfirmDelete = () => {
+        if (pendingDeleteId) {
+            handleDeleteMetaText(pendingDeleteId);
         }
-        if (metaTextsError) {
-            return <Alert severity="error">{metaTextsError}</Alert>;
-        }
-        return (
-            <MetaTextList
-                filteredMetaTexts={filteredMetaTexts}
-                selectedMetaText={null}
-                handleMetaTextClick={handleMetaTextClick}
-                handleDeleteMetaText={handleDeleteMetaText}
-                deleteLoading={deleteLoading}
-                deleteError={deleteError}
-            />
-        );
-    }
+        setConfirmOpen(false);
+        setPendingDeleteId(null);
+    };
 
     return (
         <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
@@ -96,7 +80,54 @@ export default function MetaTextPage() {
                 options={metaTextOptions}
                 sx={{ mb: 2 }}
             />
-            {renderMetaTextsContent()}
+            {metaTextsLoading ? (
+                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+                    <CircularProgress />
+                </Box>
+            ) : metaTextsError ? (
+                <Alert severity="error">{metaTextsError}</Alert>
+            ) : (
+                <ModernList
+                    items={filteredMetaTexts}
+                    emptyMessage="No meta texts found."
+                    renderItem={obj => {
+                        const id = obj.id;
+                        const title = obj.title;
+                        return (
+                            <Collapse in={!deletedIds.includes(id) && deleteLoading[id] !== false} timeout={750} key={id}>
+                                <div>
+                                    <ListItemButton onClick={() => handleMetaTextClick(id)}>
+                                        <ListItemText primary={title} />
+                                        <DeleteButton
+                                            onClick={e => handleDeleteClick(id, e)}
+                                            disabled={!!deleteLoading[id]}
+                                            label="Delete Meta Text"
+                                        />
+                                    </ListItemButton>
+                                    {deleteError[id] && (
+                                        <ListItem>
+                                            <ListItemText primary={deleteError[id]} primaryTypographyProps={{ color: 'error', variant: 'body2' }} />
+                                        </ListItem>
+                                    )}
+                                    <Divider />
+                                </div>
+                            </Collapse>
+                        );
+                    }}
+                />
+            )}
+            <Dialog open={confirmOpen} onClose={handleConfirmClose}>
+                <DialogTitle>Delete Meta Text?</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Are you sure you want to delete this meta text? This action cannot be undone.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleConfirmClose} color="primary">Cancel</Button>
+                    <Button onClick={handleConfirmDelete} color="error" variant="contained" autoFocus>Delete</Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 }

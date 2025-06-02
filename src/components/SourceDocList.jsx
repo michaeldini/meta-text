@@ -1,8 +1,11 @@
+// This file has been replaced by ModernList. Use ModernList directly or see SourceDocListModern usage pattern.
+
 import React from 'react';
-import { Paper, List, ListItem, ListItemText } from '@mui/material';
+import ModernList from './ModernList';
 import SourceDocListItem from './SourceDocListItem';
 
-export default function SourceDocList({
+// Usage: <SourceDocListModern docs={...} ...otherProps />
+export default function SourceDocListModern({
     docs,
     summaryError,
     onGenerateSummary,
@@ -12,24 +15,21 @@ export default function SourceDocList({
     onDelete
 }) {
     return (
-        <Paper>
-            <List>
-                {docs.length === 0 && (
-                    <ListItem><ListItemText primary="No documents found." /></ListItem>
-                )}
-                {docs.map((doc) => (
-                    <SourceDocListItem
-                        key={doc.id}
-                        doc={doc}
-                        summaryError={summaryError}
-                        onGenerateSummary={onGenerateSummary}
-                        summaryLoading={summaryLoading}
-                        deleteLoading={deleteLoading}
-                        deleteError={deleteError}
-                        onDelete={onDelete}
-                    />
-                ))}
-            </List>
-        </Paper>
+        <ModernList
+            items={docs}
+            emptyMessage="No documents found."
+            renderItem={(doc) => (
+                <SourceDocListItem
+                    key={doc.id}
+                    doc={doc}
+                    summaryError={summaryError}
+                    onGenerateSummary={onGenerateSummary}
+                    summaryLoading={summaryLoading}
+                    deleteLoading={deleteLoading}
+                    deleteError={deleteError}
+                    onDelete={onDelete}
+                />
+            )}
+        />
     );
 }
