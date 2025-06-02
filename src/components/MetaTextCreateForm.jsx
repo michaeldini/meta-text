@@ -1,60 +1,69 @@
-import React from 'react';
-import { Box, FormControl, InputLabel, Select, MenuItem, TextField, Button, Alert, Paper, Typography } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, TextField, Button, Alert, Paper } from '@mui/material';
+import { createMetaText } from '../services/metaTextService';
+import SourceDocSelect from './SourceDocSelect';
 
 function MetaTextCreateForm({
     sourceDocs,
-    selectedSource,
-    setSelectedSource,
-    newLabel,
-    setNewLabel,
-    handleCreate,
-    createLoading,
-    createError,
-    createSuccess,
     sourceDocsLoading = false,
-    sourceDocsError = null
+    sourceDocsError = null,
+    setCreateSuccess
 }) {
+    const [selectedSourceDocId, setSelectedSourceDocId] = useState('');
+    const [title, setTitle] = useState('');
+    const [createLoading, setCreateLoading] = useState(false);
+    const [createError, setCreateError] = useState('');
+    const [localSuccess, setLocalSuccess] = useState('');
+
+    const handleCreate = async (e) => {
+        e.preventDefault();
+        setCreateError('');
+        setLocalSuccess('');
+        setCreateLoading(true);
+
+        try {
+            console.log('Creating meta-text with payload:', { sourceDocId: selectedSourceDocId, title });
+            await createMetaText(selectedSourceDocId, title);
+            setLocalSuccess('Meta-text created!');
+            setCreateSuccess && setCreateSuccess(Date.now()); // Use timestamp for uniqueness
+            setSelectedSourceDocId('');
+            setTitle('');
+        } catch (err) {
+            let errorMsg = 'Failed to create meta text';
+            if (err) {
+                if (typeof err === 'string') {
+                    errorMsg = err;
+                } else if (err.message) {
+                    errorMsg = err.message;
+                } else if (err.response && err.response.data && err.response.data.detail) {
+                    errorMsg = err.response.data.detail;
+                } else if (err.response && err.response.data) {
+                    errorMsg = JSON.stringify(err.response.data);
+                } else {
+                    errorMsg = JSON.stringify(err);
+                }
+            }
+            setCreateError(errorMsg);
+        } finally {
+            setCreateLoading(false);
+        }
+    };
+
     return (
         <Paper sx={{ p: 2, mb: 3 }}>
             <Box component="form" onSubmit={handleCreate} sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', alignItems: 'center' }}>
-                <FormControl sx={{ minWidth: 200 }} disabled={sourceDocsLoading || !!sourceDocsError}>
-                    <InputLabel id="source-doc-label">Source Document</InputLabel>
-                    <Select
-                        labelId="source-doc-label"
-                        value={selectedSource}
-                        label="Source Document"
-                        onChange={e => setSelectedSource(e.target.value)}
-                        required
-                    >
-                        {sourceDocsLoading ? (
-                            <MenuItem value="" disabled>Loading...</MenuItem>
-                        ) : sourceDocsError ? (
-                            <MenuItem value="" disabled>Error loading documents</MenuItem>
-                        ) : sourceDocs.length === 0 ? (
-                            <MenuItem value="" disabled>No documents found</MenuItem>
-                        ) : (
-                            sourceDocs.map((doc, idx) => {
-                                let key, value, label;
-                                if (typeof doc === 'object' && doc !== null) {
-                                    key = doc.id || idx;
-                                    value = doc.title || String(idx); // use title as value
-                                    label = doc.title || String(idx);
-                                } else {
-                                    key = doc;
-                                    value = doc;
-                                    label = doc;
-                                }
-                                return (
-                                    <MenuItem key={key} value={value}>{label}</MenuItem>
-                                );
-                            })
-                        )}
-                    </Select>
-                </FormControl>
+                <SourceDocSelect
+                    value={selectedSourceDocId}
+                    onChange={e => setSelectedSourceDocId(e.target.value)}
+                    sourceDocs={sourceDocs}
+                    loading={sourceDocsLoading}
+                    error={sourceDocsError}
+                    required
+                />
                 <TextField
                     label="Meta-text Name"
-                    value={newLabel}
-                    onChange={e => setNewLabel(e.target.value)}
+                    value={title}
+                    onChange={e => setTitle(e.target.value)}
                     required
                     sx={{ flexGrow: 1, minWidth: 180 }}
                 />
@@ -62,7 +71,7 @@ function MetaTextCreateForm({
                     {createLoading ? 'Creating...' : 'Create'}
                 </Button>
                 {createError && <Alert severity="error" sx={{ ml: 2 }}>{createError}</Alert>}
-                {createSuccess && <Alert severity="success" sx={{ ml: 2 }}>{createSuccess}</Alert>}
+                {localSuccess && <Alert severity="success" sx={{ ml: 2 }}>{localSuccess}</Alert>}
             </Box>
         </Paper>
     );

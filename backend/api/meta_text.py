@@ -15,18 +15,17 @@ async def create_meta_text(
     req: CreateMetaTextRequest, session=Depends(get_session)
 ):
     """Create a new meta-text from a source document."""
-    doc = session.exec(select(SourceDocument).where(SourceDocument.title == req.sourceTitle)).first()
+    doc = session.exec(select(SourceDocument).where(SourceDocument.id == req.sourceDocId)).first()
     if not doc:
         raise HTTPException(status_code=404, detail="Source document not found.")
-    # Split the document into sections by paragraph (robust to all line endings)
     sections = [SectionSchema(content=doc.text)]
     content_json = json.dumps([s.model_dump() for s in sections])
-    meta_text = MetaText(title=req.newTitle, source_document_id=doc.id, content=content_json, text=doc.text)
+    meta_text = MetaText(title=req.title, source_document_id=doc.id, content=content_json, text=doc.text)
     session.add(meta_text)
     try:
         session.commit()
         session.refresh(meta_text)
-        return {"success": True, "id": meta_text.id, "title": req.newTitle}
+        return {"success": True, "id": meta_text.id, "title": req.title}
     except Exception as e:
         session.rollback()
         if 'UNIQUE constraint failed' in str(e):

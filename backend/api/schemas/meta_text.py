@@ -9,8 +9,8 @@ class SectionSchema(BaseModel):
     aiImageUrl: str = ""
 
 class CreateMetaTextRequest(BaseModel):
-    sourceTitle: str
-    newTitle: str
+    sourceDocId: int
+    title: str
 
 class UpdateMetaTextRequest(BaseModel):
     sections: List[SectionSchema]

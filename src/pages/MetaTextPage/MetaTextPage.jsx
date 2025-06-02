@@ -8,16 +8,12 @@ import { useMetaTexts } from '../../hooks/useMetaTexts';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
 
 export default function MetaTextPage() {
+    const [createSuccess, setCreateSuccess] = useState('');
+    const { docs: sourceDocs, loading: sourceDocsLoading, error: sourceDocsError } = useSourceDocuments();
     const { metaTexts, metaTextsLoading, metaTextsError } = useMetaTexts([createSuccess]);
     const [search, setSearch] = useState('');
-    const [selectedSource, setSelectedSource] = useState('');
-    const [newLabel, setNewTitle] = useState('');
-    const [createError, setCreateError] = useState('');
-    const [createSuccess, setCreateSuccess] = useState('');
-    const [createLoading, setCreateLoading] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState({});
     const [deleteError, setDeleteError] = useState({});
-    const { docs: sourceDocs, loading: sourceDocsLoading, error: sourceDocsError } = useSourceDocuments();
     const navigate = useNavigate();
 
     const filteredMetaTexts = useMemo(() => {
@@ -30,25 +26,6 @@ export default function MetaTextPage() {
 
     // Extract options for Autocomplete
     const metaTextOptions = useMemo(() => metaTexts.map(obj => obj.title), [metaTexts]);
-
-    const handleCreate = async e => {
-        e.preventDefault();
-        setCreateError('');
-        setCreateSuccess('');
-        setCreateLoading(true);
-        try {
-            // createMetaText is imported in the old version, but not used here. You may want to move it to a service or keep as is.
-            const { createMetaText } = await import('../../services/metaTextService');
-            await createMetaText(selectedSource, newLabel);
-            setCreateSuccess('Meta-text created!');
-            setSelectedSource('');
-            setNewTitle('');
-        } catch (err) {
-            setCreateError(err.message);
-        } finally {
-            setCreateLoading(false);
-        }
-    };
 
     // Delete MetaText handler
     const handleDeleteMetaText = async (id) => {
@@ -73,16 +50,9 @@ export default function MetaTextPage() {
             <Typography variant="h4" gutterBottom>Meta Texts</Typography>
             <MetaTextCreateForm
                 sourceDocs={sourceDocs}
-                selectedSource={selectedSource}
-                setSelectedSource={setSelectedSource}
-                newLabel={newLabel}
-                setNewLabel={setNewTitle}
-                handleCreate={handleCreate}
-                createLoading={createLoading}
-                createError={createError}
-                createSuccess={createSuccess}
                 sourceDocsLoading={sourceDocsLoading}
                 sourceDocsError={sourceDocsError}
+                setCreateSuccess={setCreateSuccess}
             />
             <SearchBar
                 label="Search Meta Texts"

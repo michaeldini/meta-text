@@ -13,11 +13,11 @@ export async function fetchMetaText(id) {
     return handleApiResponse(res, 'Failed to fetch meta text');
 }
 
-export async function createMetaText(sourceTitle, newTitle) {
+export async function createMetaText(sourceDocId, title) {
     const res = await fetch('/api/meta-text', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sourceTitle, newTitle })
+        body: JSON.stringify({ sourceDocId, title })
     });
     return handleApiResponse(res, 'Create failed.');
 }
