@@ -3,6 +3,8 @@ import { Paper, List, ListItem, ListItemButton, ListItemText, Divider, IconButto
 import DeleteIcon from '@mui/icons-material/Delete';
 
 function MetaTextList({ filteredMetaTexts, selectedMetaText, handleMetaTextClick, handleDeleteMetaText, deleteLoading = {}, deleteError = {} }) {
+
+    // State for confirmation dialog for deletion
     const [confirmOpen, setConfirmOpen] = useState(false);
     const [pendingDeleteId, setPendingDeleteId] = useState(null);
     const [deletedIds, setDeletedIds] = useState([]);

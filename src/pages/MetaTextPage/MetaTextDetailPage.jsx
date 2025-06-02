@@ -6,9 +6,18 @@ import MetaTextSections from '../../components/MetaTextSections';
 import { useAutoSave } from '../../hooks/useAutoSave';
 
 export default function MetaTextDetailPage() {
+
+    // Extract ID from URL parameters
+    // This ID is used to fetch the specific meta text details
     const { id } = useParams();
+
+    // the meta text response from the server
     const [metaText, setMetaText] = useState(null);
+
+    // the sections of the meta text, initialized as an empty array
     const [sections, setSections] = useState([]);
+
+    // Local state for loading, error, and autosave status
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [autoSaveStatus, setAutoSaveStatus] = useState('Autosave');
@@ -123,16 +132,16 @@ export default function MetaTextDetailPage() {
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 2 }}>
                 <Typography variant="body2" color="text.secondary">{autoSaveStatus}</Typography>
             </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <Box
+
+            >
                 {sections.map((section, idx) => (
-                    <Paper key={idx} elevation={3} sx={{ p: { xs: 2, md: 4 }, borderRadius: 4, boxShadow: 3 }}>
-                        <MetaTextSections
-                            sections={[section]}
-                            handleWordClick={(sectionIdx, wordIdx) => handleWordClick(idx, wordIdx)}
-                            handleRemoveSection={() => handleRemoveSection(idx)}
-                            handleSectionFieldChange={(sectionIdx, field, value) => handleSectionFieldChange(idx, field, value)}
-                        />
-                    </Paper>
+                    <MetaTextSections
+                        sections={[section]}
+                        handleWordClick={(sectionIdx, wordIdx) => handleWordClick(idx, wordIdx)}
+                        handleRemoveSection={() => handleRemoveSection(idx)}
+                        handleSectionFieldChange={(sectionIdx, field, value) => handleSectionFieldChange(idx, field, value)}
+                    />
                 ))}
             </Box>
         </Container>

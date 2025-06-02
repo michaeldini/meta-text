@@ -2,7 +2,7 @@ import React, { useState, memo } from 'react';
 import { Box, TextField, IconButton, Paper, Button, CircularProgress, Divider } from '@mui/material';
 import UndoArrowIcon from './icons/UndoArrowIcon';
 
-function AISummaryBox({ sectionContent, aiSummary, onAISummaryUpdate }) {
+function SectionAiSummary({ sectionContent, aiSummary, onAISummaryUpdate }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -128,9 +128,10 @@ const MetaTextSection = memo(function MetaTextSection({
                     transform: 'scale(1.01)'
                 },
                 bgcolor: 'background.paper',
+
             }}
         >
-            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2 }}>
+            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2, bgcolor: 'background.default', borderRadius: 2, p: 2 }}>
                 {/* Split text column */}
                 <Box sx={{ flex: 2, minWidth: 0, p: 2 }}>
                     <SectionWords
@@ -189,7 +190,7 @@ const MetaTextSection = memo(function MetaTextSection({
                             }
                         }}
                     />
-                    <AISummaryBox
+                    <SectionAiSummary
                         sectionContent={section.content}
                         aiSummary={section.aiSummary}
                         onAISummaryUpdate={handleAISummaryUpdate}
@@ -202,7 +203,7 @@ const MetaTextSection = memo(function MetaTextSection({
 
 export default function MetaTextSections({ sections, handleWordClick, handleRemoveSection, handleSectionFieldChange }) {
     return (
-        <Box >
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 4 }}>
             {sections.map((section, sectionIdx) => (
                 <MetaTextSection
                     key={sectionIdx}
