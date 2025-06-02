@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { fetchMetaText, updateMetaText } from '../../services/metaTextService';
 import { Typography, CircularProgress, Box, Alert, Container } from '@mui/material';
 import MetaTextSections from '../../components/MetaTextSections';
-import { useAutoSave } from '../../hooks/useAutoSave';
+import AutoSaveControl from '../../components/AutoSaveControl';
 import { useMetaTextSectionHandlers } from '../../hooks/useMetaTextSectionHandlers';
 import { autoSplitSections } from '../../hooks/useMetaTextSections';
 
@@ -18,7 +18,6 @@ export default function MetaTextDetailPage() {
     } = useMetaTextSectionHandlers(setSections);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const [autoSaveStatus, setAutoSaveStatus] = useState('Autosave');
 
     useEffect(() => {
         setLoading(true);
@@ -32,23 +31,6 @@ export default function MetaTextDetailPage() {
             .catch(e => setError(e.message || 'Failed to load meta text.'))
             .finally(() => setLoading(false));
     }, [id]);
-
-    useAutoSave({
-        value: sections,
-        delay: 3000,
-        onSave: async () => {
-            if (!id) return;
-            setAutoSaveStatus('Saving...');
-            try {
-                const splitSections = autoSplitSections(sections, 500);
-                await updateMetaText(id, splitSections);
-                setAutoSaveStatus('Autosave');
-            } catch {
-                setAutoSaveStatus('Autosave');
-            }
-        },
-        deps: [id]
-    });
 
     if (loading) {
         return (
@@ -72,7 +54,16 @@ export default function MetaTextDetailPage() {
         <Container maxWidth="lg" sx={{ mt: 4, mb: 6 }}>
             <Typography variant="h4" gutterBottom>{metaText?.title || id}</Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 2 }}>
-                <Typography variant="body2" color="text.secondary">{autoSaveStatus}</Typography>
+                <AutoSaveControl
+                    value={sections}
+                    delay={1000 * 60 * 3}
+                    onSave={async () => {
+                        if (!id) return;
+                        const splitSections = autoSplitSections(sections, 500);
+                        await updateMetaText(id, splitSections);
+                    }}
+                    deps={[id]}
+                />
             </Box>
             <Box>
                 <MetaTextSections
