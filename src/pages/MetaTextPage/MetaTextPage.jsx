@@ -8,15 +8,15 @@ import { useMetaTexts } from '../../hooks/useMetaTexts';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
 
 export default function MetaTextPage() {
+    const { metaTexts, metaTextsLoading, metaTextsError } = useMetaTexts([createSuccess]);
     const [search, setSearch] = useState('');
     const [selectedSource, setSelectedSource] = useState('');
-    const [newLabel, setNewLabel] = useState('');
+    const [newLabel, setNewTitle] = useState('');
     const [createError, setCreateError] = useState('');
     const [createSuccess, setCreateSuccess] = useState('');
     const [createLoading, setCreateLoading] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState({});
     const [deleteError, setDeleteError] = useState({});
-    const { metaTexts, metaTextsLoading, metaTextsError } = useMetaTexts([createSuccess]);
     const { docs: sourceDocs, loading: sourceDocsLoading, error: sourceDocsError } = useSourceDocuments();
     const navigate = useNavigate();
 
@@ -42,7 +42,7 @@ export default function MetaTextPage() {
             await createMetaText(selectedSource, newLabel);
             setCreateSuccess('Meta-text created!');
             setSelectedSource('');
-            setNewLabel('');
+            setNewTitle('');
         } catch (err) {
             setCreateError(err.message);
         } finally {
@@ -76,7 +76,7 @@ export default function MetaTextPage() {
                 selectedSource={selectedSource}
                 setSelectedSource={setSelectedSource}
                 newLabel={newLabel}
-                setNewLabel={setNewLabel}
+                setNewLabel={setNewTitle}
                 handleCreate={handleCreate}
                 createLoading={createLoading}
                 createError={createError}
@@ -98,16 +98,14 @@ export default function MetaTextPage() {
             ) : metaTextsError ? (
                 <Alert severity="error">{metaTextsError}</Alert>
             ) : (
-                <Box>
-                    <MetaTextList
-                        filteredMetaTexts={filteredMetaTexts}
-                        selectedMetaText={null}
-                        handleMetaTextClick={handleMetaTextClick}
-                        handleDeleteMetaText={handleDeleteMetaText}
-                        deleteLoading={deleteLoading}
-                        deleteError={deleteError}
-                    />
-                </Box>
+                <MetaTextList
+                    filteredMetaTexts={filteredMetaTexts}
+                    selectedMetaText={null}
+                    handleMetaTextClick={handleMetaTextClick}
+                    handleDeleteMetaText={handleDeleteMetaText}
+                    deleteLoading={deleteLoading}
+                    deleteError={deleteError}
+                />
             )}
         </Box>
     );

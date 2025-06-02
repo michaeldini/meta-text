@@ -41,7 +41,7 @@ function MetaTextList({ filteredMetaTexts, selectedMetaText, handleMetaTextClick
                     const id = obj.id;
                     const title = obj.title;
                     return (
-                        <Collapse in={!deletedIds.includes(id) && deleteLoading[id] !== false} timeout={400} key={id}>
+                        <Collapse in={!deletedIds.includes(id) && deleteLoading[id] !== false} timeout={750} key={id}>
                             <div>
                                 <ListItemButton onClick={() => handleClick(id)} selected={selectedMetaText === id}>
                                     <ListItemText primary={title} />
