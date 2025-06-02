@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Paper, List, ListItem, ListItemButton, ListItemText, Divider, IconButton, CircularProgress, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Collapse } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Paper, List, ListItem, ListItemButton, ListItemText, Divider, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Collapse, CircularProgress } from '@mui/material';
+import DeleteButton from './DeleteButton';
 
 function MetaTextList({ filteredMetaTexts, selectedMetaText, handleMetaTextClick, handleDeleteMetaText, deleteLoading = {}, deleteError = {} }) {
 
@@ -47,16 +47,12 @@ function MetaTextList({ filteredMetaTexts, selectedMetaText, handleMetaTextClick
                             <div>
                                 <ListItemButton onClick={() => handleClick(id)} selected={selectedMetaText === id}>
                                     <ListItemText primary={title} />
-                                    <IconButton
-                                        edge="end"
-                                        aria-label="delete"
+                                    <DeleteButton
                                         onClick={e => handleDeleteClick(id, e)}
                                         disabled={!!deleteLoading[id]}
-                                        size="small"
-                                        sx={{ ml: 1 }}
-                                    >
-                                        {deleteLoading[id] ? <CircularProgress size={20} /> : <DeleteIcon />}
-                                    </IconButton>
+                                        label="Delete Meta Text"
+                                        icon={deleteLoading[id] ? <CircularProgress size={20} /> : undefined}
+                                    />
                                 </ListItemButton>
                                 {deleteError[id] && (
                                     <ListItem>

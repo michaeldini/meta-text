@@ -10,7 +10,7 @@ export default function DeleteButton({ onClick, disabled, label = "Delete", icon
                 <IconButton
                     onClick={onClick}
                     disabled={disabled}
-                    color="error"
+                    color="primary"
                     aria-label={label}
                     size="large"
                 >
