@@ -56,7 +56,7 @@ export default function MetaTextDetailPage() {
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 2 }}>
                 <AutoSaveControl
                     value={sections}
-                    delay={1000 * 60 * 3}
+                    delay={1000 * 60 * 2} // 2 minutes
                     onSave={async () => {
                         if (!id) return;
                         const splitSections = autoSplitSections(sections, 500);

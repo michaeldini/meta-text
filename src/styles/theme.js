@@ -4,16 +4,16 @@ const theme = createTheme({
     palette: {
         mode: 'dark',
         primary: { main: cyan[900] },
-        secondary: { main: cyan[700] },
+        secondary: { main: cyan[800] },
         background: {
-            default: '#000000',
+            default: '#181a1b', // slightly lighter than #000000
             paper: grey[900],
         },
         error: { main: red[400] },
         success: { main: green[700] },
         text: {
-            primary: grey[50],
-            secondary: grey[100],
+            primary: grey[100], // lighter than grey[50]
+            secondary: grey[200],
         },
     },
     shape: {
