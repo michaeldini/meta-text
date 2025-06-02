@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchMetaText, updateMetaText } from '../../services/metaTextService';
 import { Typography, CircularProgress, Box, Alert, Paper, Container } from '@mui/material';
 import MetaTextSections from '../../components/MetaTextSections';
 import { useAutoSave } from '../../hooks/useAutoSave';
+import { useMetaTextSectionHandlers } from '../../hooks/useMetaTextSectionHandlers';
 
 export default function MetaTextDetailPage() {
 
@@ -16,6 +17,13 @@ export default function MetaTextDetailPage() {
 
     // the sections of the meta text, initialized as an empty array
     const [sections, setSections] = useState([]);
+
+    // Use custom hook for section handlers
+    const {
+        handleWordClick,
+        handleRemoveSection,
+        handleSectionFieldChange
+    } = useMetaTextSectionHandlers(setSections);
 
     // Local state for loading, error, and autosave status
     const [loading, setLoading] = useState(true);
@@ -34,59 +42,6 @@ export default function MetaTextDetailPage() {
             .catch(e => setError(e.message || 'Failed to load meta text.'))
             .finally(() => setLoading(false));
     }, [id]);
-
-    // --- Handle word click: split section at word index ---
-    const handleWordClick = useCallback((sectionIdx, wordIdx) => {
-        setSections(prevSections => {
-            const currentSection = prevSections[sectionIdx];
-            if (!currentSection || !currentSection.content) return prevSections;
-            const words = currentSection.content.split(/\s+/);
-            if (wordIdx < 0 || wordIdx >= words.length - 1) return prevSections; // Don't split at last word or out of bounds
-            const before = words.slice(0, wordIdx + 1).join(' ');
-            const after = words.slice(wordIdx + 1).join(' ');
-            if (!before || !after) return prevSections; // Prevent empty sections
-            const newSections = [...prevSections];
-            // Replace current section with the first part
-            newSections[sectionIdx] = {
-                ...currentSection,
-                content: before
-            };
-            // Insert the second part as a new section after the current
-            newSections.splice(sectionIdx + 1, 0, {
-                content: after,
-                notes: '',
-                summary: '',
-                aiImageUrl: ''
-            });
-            return newSections;
-        });
-    }, []);
-
-    // --- Remove a section and merge with the next ---
-    const handleRemoveSection = useCallback((sectionIdx) => {
-        setSections(prevSections => {
-            if (sectionIdx >= prevSections.length - 1) return prevSections;
-            const mergedContent = prevSections[sectionIdx].content + ' ' + prevSections[sectionIdx + 1].content;
-            const newSections = [...prevSections];
-            newSections.splice(sectionIdx, 2, {
-                ...prevSections[sectionIdx],
-                content: mergedContent
-            });
-            return newSections;
-        });
-    }, []);
-
-    // --- Handle summary/notes/aiSummary field change ---
-    const handleSectionFieldChange = useCallback((sectionIdx, field, value) => {
-        setSections(prevSections => {
-            const newSections = [...prevSections];
-            newSections[sectionIdx] = {
-                ...newSections[sectionIdx],
-                [field]: value
-            };
-            return newSections;
-        });
-    }, []);
 
     // --- AUTOSAVE LOGIC ---
     useAutoSave({
@@ -133,10 +88,10 @@ export default function MetaTextDetailPage() {
                 <Typography variant="body2" color="text.secondary">{autoSaveStatus}</Typography>
             </Box>
             <Box
-
             >
                 {sections.map((section, idx) => (
                     <MetaTextSections
+                        key={idx}
                         sections={[section]}
                         handleWordClick={(sectionIdx, wordIdx) => handleWordClick(idx, wordIdx)}
                         handleRemoveSection={() => handleRemoveSection(idx)}
