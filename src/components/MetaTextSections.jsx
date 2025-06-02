@@ -10,7 +10,6 @@ export default function MetaTextSections({ sections, handleWordClick, handleRemo
                     key={sectionIdx}
                     section={section}
                     sectionIdx={sectionIdx}
-                    isLastSection={sectionIdx === sections.length - 1}
                     handleWordClick={handleWordClick}
                     handleRemoveSection={handleRemoveSection}
                     handleSectionFieldChange={handleSectionFieldChange}

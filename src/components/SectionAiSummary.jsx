@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Box, Button, CircularProgress } from '@mui/material';
-
+import { Box, CircularProgress, IconButton, Tooltip } from '@mui/material';
+import aiIcon from '../assets/ai-stars.png';
 function SectionAiSummary({ sectionContent, aiSummary, onAISummaryUpdate }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -25,15 +25,21 @@ function SectionAiSummary({ sectionContent, aiSummary, onAISummaryUpdate }) {
     };
 
     return (
-        <Box sx={{ mt: 1, p: 1, bgcolor: '#f5f5fa', borderRadius: 1, fontSize: 14, color: '#555' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                <strong>AI Summary:</strong>
-                <Button size="small" variant="outlined" onClick={handleGenerate} disabled={loading} sx={{ ml: 1 }}>
-                    {loading ? <CircularProgress size={16} /> : 'Generate'}
-                </Button>
+        <Box sx={{ mt: 1, p: 1, border: theme => `1px solid ${theme.palette.divider}`, borderRadius: 1, bgcolor: theme => theme.palette.background.paper }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1, color: theme => theme.palette.text.primary }}>
+                <p>AI Summary:</p>
+                <Tooltip title="Generate AI Summary">
+                    <span>
+                        <IconButton onClick={handleGenerate} disabled={loading} sx={{ ml: 1 }} size="small">
+                            {loading ? <CircularProgress size={16} /> : <img src={aiIcon} alt="AI" style={{ width: 20, height: 20 }} />}
+                        </IconButton>
+                    </span>
+                </Tooltip>
             </Box>
-            <Box sx={{ whiteSpace: 'pre-line', minHeight: 24 }}>{aiSummary || <span style={{ color: '#aaa' }}>No summary yet.</span>}</Box>
-            {error && <Box sx={{ color: 'red', fontSize: 12 }}>{error}</Box>}
+            <Box sx={{ whiteSpace: 'pre-line', minHeight: 24, color: theme => theme.palette.text.secondary }}>
+                {aiSummary || <span style={{ color: '#aaa' }}>No summary yet.</span>}
+            </Box>
+            {error && <Box sx={{ color: 'error.main', fontSize: 12 }}>{error}</Box>}
         </Box>
     );
 }

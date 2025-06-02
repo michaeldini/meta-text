@@ -6,7 +6,6 @@ import SectionAiSummary from './SectionAiSummary';
 const MetaTextSection = memo(function MetaTextSection({
     section,
     sectionIdx,
-    isLastSection,
     handleWordClick,
     handleRemoveSection,
     handleSectionFieldChange
@@ -16,18 +15,14 @@ const MetaTextSection = memo(function MetaTextSection({
     return (
         <Paper
             sx={{
-                p: 4,
+                p: 1,
                 borderRadius: 4,
-                boxShadow: 3,
-                transition: 'box-shadow 0.2s, transform 0.2s',
                 '&:hover': {
-                    boxShadow: 8,
-                    transform: 'scale(1.01)'
+                    backgroundColor: 'secondary.main',
                 },
-                bgcolor: 'background.paper',
             }}
         >
-            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2, bgcolor: 'background.default', borderRadius: 2, p: 2 }}>
+            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2, bgcolor: 'background.default', borderRadius: 4, p: 2 }}>
                 {/* Split text column */}
                 <Box sx={{ flex: 2, minWidth: 0, p: 2 }}>
                     <SectionWords
@@ -35,7 +30,6 @@ const MetaTextSection = memo(function MetaTextSection({
                         sectionIdx={sectionIdx}
                         handleWordClick={handleWordClick}
                         handleRemoveSection={handleRemoveSection}
-                        isLastSection={isLastSection}
                     />
                 </Box>
                 {/* Details column */}

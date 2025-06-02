@@ -7,7 +7,6 @@ const SectionWords = memo(function SectionWords({
     sectionIdx,
     handleWordClick,
     handleRemoveSection,
-    isLastSection
 }) {
     return (
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
@@ -15,6 +14,9 @@ const SectionWords = memo(function SectionWords({
                 <React.Fragment key={wordIdx}>
                     <Box
                         component="span"
+
+                        // pass the click handler to each word
+                        // the index is used to identify which word was clicked
                         onClick={() => handleWordClick(sectionIdx, wordIdx)}
                         sx={{
                             cursor: 'pointer',
@@ -35,8 +37,8 @@ const SectionWords = memo(function SectionWords({
                         }}
                     >
                         {word}
-                        {/* Remove section button inline if not last section */}
-                        {wordIdx === words.length - 1 && !isLastSection && (
+                        {/* Show Undo icon only after the last word in a section, if not the last section */}
+                        {wordIdx === words.length - 1 && (
                             <IconButton
                                 size="small"
                                 onClick={e => { e.stopPropagation(); handleRemoveSection(sectionIdx); }}
