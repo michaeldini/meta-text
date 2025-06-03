@@ -1,9 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Typography, CircularProgress, Box, Alert, ListItem, ListItemButton, ListItemText, Divider, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Collapse, List } from '@mui/material';
+import { Typography, CircularProgress, Box, Alert, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
 import GeneralCreateForm from '../../components/GeneralCreateForm';
 import SourceDocSelect from '../../components/SourceDocSelect';
 import SearchBar from '../../components/SearchBar';
+import GeneralizedList from '../../components/GeneralizedList';
 import DeleteButton from '../../components/DeleteButton';
 import { useMetaTexts } from '../../hooks/useMetaTexts';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
@@ -133,7 +134,6 @@ export default function MetaTextPage() {
                 options={metaTextOptions}
                 sx={{ mb: 2 }}
             />
-
             {metaTextsLoading ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
                     <CircularProgress />
@@ -143,38 +143,14 @@ export default function MetaTextPage() {
             ) : (
                 <Box sx={{ width: '100%', bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1, mb: 2 }}>
                     <nav aria-label="Meta Texts list">
-                        <List>
-                            {filteredMetaTexts.length === 0 ? (
-                                <ListItem>
-                                    <ListItemText primary="No meta texts found." />
-                                </ListItem>
-                            ) : (
-                                filteredMetaTexts.map(obj => {
-                                    return (
-                                        <React.Fragment key={obj.id}>
-                                            <ListItem disablePadding alignItems="flex-start">
-                                                <ListItemButton onClick={() => handleMetaTextClick(obj.id)}>
-                                                    <ListItemText primary={obj.title} />
-                                                    <DeleteButton
-                                                        onClick={e => handleDeleteClick(obj.id, e)}
-                                                        disabled={!!deleteLoading[obj.id]}
-                                                        label="Delete Meta Text"
-                                                    />
-                                                </ListItemButton>
-                                            </ListItem>
-                                            {deleteError[obj.id] && (
-                                                <ListItem>
-                                                    <ListItemText
-                                                        primary={deleteError[obj.id]}
-                                                        slotProps={{ primary: { color: 'error', variant: 'body2' } }}
-                                                    />
-                                                </ListItem>
-                                            )}
-                                        </React.Fragment>
-                                    );
-                                })
-                            )}
-                        </List>
+                        <GeneralizedList
+                            items={filteredMetaTexts}
+                            onItemClick={handleMetaTextClick}
+                            onDeleteClick={handleDeleteClick}
+                            deleteLoading={deleteLoading}
+                            deleteError={deleteError}
+                            emptyMessage="No meta texts found."
+                        />
                     </nav>
                 </Box>
             )}

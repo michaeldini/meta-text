@@ -1,10 +1,11 @@
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
 import { uploadSourceDocument, fetchSourceDocument, generateSourceDocInfo, deleteSourceDocument } from '../../services/sourceDocumentService';
 import GeneralCreateForm from '../../components/GeneralCreateForm';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { Button, Paper, Typography, CircularProgress, Box, Alert, List, ListItem, ListItemText, ListItemButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
-import SourceDocListItem from '../../components/SourceDocListItem';
+import { Button, Paper, Typography, CircularProgress, Box, Alert, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import GeneralizedList from '../../components/GeneralizedList';
 import SearchBar from '../../components/SearchBar';
 import DeleteButton from '../../components/DeleteButton';
 
@@ -20,7 +21,7 @@ export default function SourceDocsPage() {
     const [deleteError, setDeleteError] = useState({});
     const [confirmOpen, setConfirmOpen] = useState(false);
     const [pendingDeleteId, setPendingDeleteId] = useState(null);
-
+    const navigate = useNavigate();
     const docOptions = useMemo(() => docs.map(doc => doc.title), [docs]);
     const filteredDocs = useMemo(() => {
         if (!search) return docs;
@@ -66,6 +67,8 @@ export default function SourceDocsPage() {
         }
     };
 
+
+    const handleSourceDocClick = id => navigate(`/sourceDocs/${encodeURIComponent(id)}`);
 
     const handleDeleteClick = (id, e) => {
         e.stopPropagation();
@@ -133,36 +136,14 @@ export default function SourceDocsPage() {
             ) : (
                 <Box sx={{ width: '100%', bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1, mb: 2 }}>
                     <nav aria-label="Source Documents list">
-                        <List>
-                            {filteredDocs.length === 0 ? (
-                                <ListItem>
-                                    <ListItemText primary="No documents found." />
-                                </ListItem>
-                            ) : (
-                                filteredDocs.map(doc => (
-                                    <React.Fragment key={doc.id}>
-                                        <ListItem disablePadding alignItems="flex-start">
-                                            <ListItemButton onClick={() => window.location.href = `/sourceDocs/${encodeURIComponent(doc.id)}`}>
-                                                <ListItemText primary={doc.title} />
-                                                <DeleteButton
-                                                    onClick={e => handleDeleteClick(doc.id, e)}
-                                                    disabled={deleteLoading[doc.id]}
-                                                    label="Delete Source Document"
-                                                />
-                                            </ListItemButton>
-                                        </ListItem>
-                                        {deleteError[doc.id] && (
-                                            <ListItem>
-                                                <ListItemText
-                                                    primary={deleteError[doc.id]}
-                                                    slotProps={{ primary: { color: 'error', variant: 'body2' } }}
-                                                />
-                                            </ListItem>
-                                        )}
-                                    </React.Fragment>
-                                ))
-                            )}
-                        </List>
+                        <GeneralizedList
+                            items={filteredDocs}
+                            onItemClick={handleSourceDocClick}
+                            onDeleteClick={handleDeleteClick}
+                            deleteLoading={deleteLoading}
+                            deleteError={deleteError}
+                            emptyMessage="No documents found."
+                        />
                     </nav>
                 </Box>
             )}
