@@ -12,3 +12,8 @@
 Example:
 `model.model_dump()`
 
+## uv Guidelines
+- always install new packages in the uv environment: `source .venv/bin/activate &&`
+- use `uv add package_name` to add a new package.
+
+

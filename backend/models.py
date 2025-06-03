@@ -16,3 +16,9 @@ class MetaText(SQLModel, table=True):
     content: str  # JSON string of sections
     text: str # Original text of the meta text
     source_document: Optional[SourceDocument] = Relationship(back_populates="meta_texts")
+
+
+class WordLookup(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    word: str = Field(index=True, unique=True)
+    definition: str

@@ -6,7 +6,8 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi[standard]",
- "sqlmodel",
- "fastapi-cors",
- "openai>=1.82.0",
+    "sqlmodel",
+    "fastapi-cors",
+    "openai>=1.82.0",
+    "python-freedictionaryapi[async-client]>=0.9.10",
 ]
