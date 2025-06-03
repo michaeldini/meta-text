@@ -31,7 +31,12 @@ export default function SourceDocDetailPage() {
         <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
             <Typography variant="h4" gutterBottom>{doc?.title}</Typography>
             {/* Show SourceDocInfo under the title if doc is loaded */}
-            {doc && <SourceDocInfo doc={doc} />}
+            {doc && (
+                <SourceDocInfo
+                    doc={doc}
+                    onInfoUpdate={aiInfo => setDoc(prev => ({ ...prev, details: JSON.stringify(aiInfo) }))}
+                />
+            )}
             {loading ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
                     <CircularProgress />
