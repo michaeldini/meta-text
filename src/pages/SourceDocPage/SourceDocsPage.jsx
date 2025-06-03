@@ -3,9 +3,10 @@ import { useSourceDocuments } from '../../hooks/useSourceDocuments';
 import { uploadSourceDocument, fetchSourceDocument, generateSourceDocInfo, deleteSourceDocument } from '../../services/sourceDocumentService';
 import GeneralCreateForm from '../../components/GeneralCreateForm';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { Button, Paper, Typography, CircularProgress, Box, Alert, List, ListItem, ListItemText } from '@mui/material';
+import { Button, Paper, Typography, CircularProgress, Box, Alert, List, ListItem, ListItemText, ListItemButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import SourceDocListItem from '../../components/SourceDocListItem';
 import SearchBar from '../../components/SearchBar';
+import DeleteButton from '../../components/DeleteButton';
 
 export default function SourceDocsPage() {
     const { docs, loading, error } = useSourceDocuments();
@@ -15,10 +16,10 @@ export default function SourceDocsPage() {
     const [uploadError, setUploadError] = useState('');
     const [uploadSuccess, setUploadSuccess] = useState('');
     const [uploadLoading, setUploadLoading] = useState(false);
-    const [summaryLoading, setSummaryLoading] = useState({});
-    const [summaryError, setSummaryError] = useState({});
     const [deleteLoading, setDeleteLoading] = useState({});
     const [deleteError, setDeleteError] = useState({});
+    const [confirmOpen, setConfirmOpen] = useState(false);
+    const [pendingDeleteId, setPendingDeleteId] = useState(null);
 
     const docOptions = useMemo(() => docs.map(doc => doc.title), [docs]);
     const filteredDocs = useMemo(() => {
@@ -51,10 +52,11 @@ export default function SourceDocsPage() {
     };
 
     const handleDelete = async (docId) => {
-        if (!window.confirm('Are you sure you want to delete this document? This cannot be undone.')) return;
         setDeleteLoading(prev => ({ ...prev, [docId]: true }));
         setDeleteError(prev => ({ ...prev, [docId]: null }));
         try {
+            // Pass the correct argument: docId (should be the document's id, not undefined/null)
+            if (!docId) throw new Error('No document ID provided for deletion.');
             await deleteSourceDocument(docId);
             window.location.reload();
         } catch (e) {
@@ -64,18 +66,22 @@ export default function SourceDocsPage() {
         }
     };
 
-    const handleGenerateSourceDocInfo = async (docId) => {
-        setSummaryLoading(prev => ({ ...prev, [docId]: true }));
-        setSummaryError(prev => ({ ...prev, [docId]: null }));
-        try {
-            const doc = await fetchSourceDocument(docId);
-            await generateSourceDocInfo(doc.title, doc.text || doc.content || '');
-            window.location.reload();
-        } catch (e) {
-            setSummaryError(prev => ({ ...prev, [docId]: e.message || 'Error generating summary' }));
-        } finally {
-            setSummaryLoading(prev => ({ ...prev, [docId]: false }));
+
+    const handleDeleteClick = (id, e) => {
+        e.stopPropagation();
+        setPendingDeleteId(id);
+        setConfirmOpen(true);
+    };
+    const handleConfirmClose = () => {
+        setConfirmOpen(false);
+        setPendingDeleteId(null);
+    };
+    const handleConfirmDelete = () => {
+        if (pendingDeleteId) {
+            handleDelete(pendingDeleteId);
         }
+        setConfirmOpen(false);
+        setPendingDeleteId(null);
     };
 
     return (
@@ -136,15 +142,14 @@ export default function SourceDocsPage() {
                                 filteredDocs.map(doc => (
                                     <React.Fragment key={doc.id}>
                                         <ListItem disablePadding alignItems="flex-start">
-                                            <SourceDocListItem
-                                                doc={doc}
-                                                summaryError={summaryError}
-                                                onGenerateSummary={handleGenerateSourceDocInfo}
-                                                summaryLoading={summaryLoading}
-                                                deleteLoading={deleteLoading}
-                                                deleteError={deleteError}
-                                                onDelete={handleDelete}
-                                            />
+                                            <ListItemButton onClick={() => window.location.href = `/sourceDocs/${encodeURIComponent(doc.id)}`}>
+                                                <ListItemText primary={doc.title} />
+                                                <DeleteButton
+                                                    onClick={e => handleDeleteClick(doc.id, e)}
+                                                    disabled={deleteLoading[doc.id]}
+                                                    label="Delete Source Document"
+                                                />
+                                            </ListItemButton>
                                         </ListItem>
                                         {deleteError[doc.id] && (
                                             <ListItem>
@@ -161,6 +166,18 @@ export default function SourceDocsPage() {
                     </nav>
                 </Box>
             )}
+            <Dialog open={confirmOpen} onClose={handleConfirmClose}>
+                <DialogTitle>Delete Source Document?</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Are you sure you want to delete this source document? This action cannot be undone.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleConfirmClose} color="primary">Cancel</Button>
+                    <Button onClick={handleConfirmDelete} color="error" variant="contained" autoFocus>Delete</Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 }

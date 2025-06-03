@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Form, File, UploadFile
 from sqlmodel import select
-from backend.models import SourceDocument
+from backend.models import SourceDocument, MetaText
 from backend.db import get_session
 
 router = APIRouter()
@@ -50,6 +50,10 @@ def delete_source_document(doc_id: int, session=Depends(get_session)):
     doc = session.get(SourceDocument, doc_id)
     if not doc:
         raise HTTPException(status_code=404, detail="Source document not found.")
+    # Check for related MetaText
+    meta_texts = session.exec(select(MetaText).where(MetaText.source_document_id == doc_id)).all()
+    if meta_texts:
+        raise HTTPException(status_code=400, detail="Cannot delete: MetaText records exist for this document.")
     session.delete(doc)
     session.commit()
     return {"success": True}

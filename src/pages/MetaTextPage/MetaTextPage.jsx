@@ -150,24 +150,22 @@ export default function MetaTextPage() {
                                 </ListItem>
                             ) : (
                                 filteredMetaTexts.map(obj => {
-                                    const id = obj.id;
-                                    const title = obj.title;
                                     return (
-                                        <React.Fragment key={id}>
+                                        <React.Fragment key={obj.id}>
                                             <ListItem disablePadding alignItems="flex-start">
-                                                <ListItemButton onClick={() => handleMetaTextClick(id)}>
-                                                    <ListItemText primary={title} />
+                                                <ListItemButton onClick={() => handleMetaTextClick(obj.id)}>
+                                                    <ListItemText primary={obj.title} />
                                                     <DeleteButton
-                                                        onClick={e => handleDeleteClick(id, e)}
-                                                        disabled={!!deleteLoading[id]}
+                                                        onClick={e => handleDeleteClick(obj.id, e)}
+                                                        disabled={!!deleteLoading[obj.id]}
                                                         label="Delete Meta Text"
                                                     />
                                                 </ListItemButton>
                                             </ListItem>
-                                            {deleteError[id] && (
+                                            {deleteError[obj.id] && (
                                                 <ListItem>
                                                     <ListItemText
-                                                        primary={deleteError[id]}
+                                                        primary={deleteError[obj.id]}
                                                         slotProps={{ primary: { color: 'error', variant: 'body2' } }}
                                                     />
                                                 </ListItem>
