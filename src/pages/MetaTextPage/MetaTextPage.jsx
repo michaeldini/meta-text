@@ -1,9 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Typography, CircularProgress, Box, Alert, ListItem, ListItemButton, ListItemText, Divider, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Collapse } from '@mui/material';
+import { Typography, CircularProgress, Box, Alert, ListItem, ListItemButton, ListItemText, Divider, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Collapse, List } from '@mui/material';
 import MetaTextCreateForm from '../../components/MetaTextCreateForm';
 import SearchBar from '../../components/SearchBar';
-import ModernList from '../../components/ModernList';
 import DeleteButton from '../../components/DeleteButton';
 import { useMetaTexts } from '../../hooks/useMetaTexts';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
@@ -17,7 +16,6 @@ export default function MetaTextPage() {
     const [deleteError, setDeleteError] = useState({});
     const [confirmOpen, setConfirmOpen] = useState(false);
     const [pendingDeleteId, setPendingDeleteId] = useState(null);
-    const [deletedIds, setDeletedIds] = useState([]);
     const navigate = useNavigate();
 
     const filteredMetaTexts = useMemo(() => {
@@ -36,7 +34,6 @@ export default function MetaTextPage() {
         try {
             const { deleteMetaText } = await import('../../services/metaTextService');
             await deleteMetaText(id);
-            setDeletedIds(ids => [...ids, id]);
             setDeleteLoading(prev => ({ ...prev, [id]: false }));
             setDeleteError(prev => ({ ...prev, [id]: '' }));
         } catch (err) {
@@ -87,34 +84,44 @@ export default function MetaTextPage() {
             ) : metaTextsError ? (
                 <Alert severity="error">{metaTextsError}</Alert>
             ) : (
-                <ModernList
-                    items={filteredMetaTexts}
-                    emptyMessage="No meta texts found."
-                    renderItem={obj => {
-                        const id = obj.id;
-                        const title = obj.title;
-                        return (
-                            <Collapse in={!deletedIds.includes(id) && deleteLoading[id] !== false} timeout={750} key={id}>
-                                <div>
-                                    <ListItemButton onClick={() => handleMetaTextClick(id)}>
-                                        <ListItemText primary={title} />
-                                        <DeleteButton
-                                            onClick={e => handleDeleteClick(id, e)}
-                                            disabled={!!deleteLoading[id]}
-                                            label="Delete Meta Text"
-                                        />
-                                    </ListItemButton>
-                                    {deleteError[id] && (
-                                        <ListItem>
-                                            <ListItemText primary={deleteError[id]} primaryTypographyProps={{ color: 'error', variant: 'body2' }} />
-                                        </ListItem>
-                                    )}
-                                    <Divider />
-                                </div>
-                            </Collapse>
-                        );
-                    }}
-                />
+                <Box sx={{ width: '100%', bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1, mb: 2 }}>
+                    <nav aria-label="Meta Texts list">
+                        <List>
+                            {filteredMetaTexts.length === 0 ? (
+                                <ListItem>
+                                    <ListItemText primary="No meta texts found." />
+                                </ListItem>
+                            ) : (
+                                filteredMetaTexts.map(obj => {
+                                    const id = obj.id;
+                                    const title = obj.title;
+                                    return (
+                                        <React.Fragment key={id}>
+                                            <ListItem disablePadding alignItems="flex-start">
+                                                <ListItemButton onClick={() => handleMetaTextClick(id)}>
+                                                    <ListItemText primary={title} />
+                                                    <DeleteButton
+                                                        onClick={e => handleDeleteClick(id, e)}
+                                                        disabled={!!deleteLoading[id]}
+                                                        label="Delete Meta Text"
+                                                    />
+                                                </ListItemButton>
+                                            </ListItem>
+                                            {deleteError[id] && (
+                                                <ListItem>
+                                                    <ListItemText
+                                                        primary={deleteError[id]}
+                                                        slotProps={{ primary: { color: 'error', variant: 'body2' } }}
+                                                    />
+                                                </ListItem>
+                                            )}
+                                        </React.Fragment>
+                                    );
+                                })
+                            )}
+                        </List>
+                    </nav>
+                </Box>
             )}
             <Dialog open={confirmOpen} onClose={handleConfirmClose}>
                 <DialogTitle>Delete Meta Text?</DialogTitle>

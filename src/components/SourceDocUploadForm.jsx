@@ -1,6 +1,5 @@
 import React from 'react';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import FileName from './FileName';
 import { TextField, Button, Box, Typography, Paper, Alert } from '@mui/material';
 
 export default function SourceDocUploadForm({
@@ -13,6 +12,11 @@ export default function SourceDocUploadForm({
     onLabelChange,
     onSubmit
 }) {
+    const FileName = ({ name }) => {
+        if (!name) return null;
+        return <span className="file-name">{name}</span>;
+    };
+
     return (
         <Paper elevation={2} sx={{ p: 2, mb: 2 }}>
             <Typography variant="h6" gutterBottom>New Source Document</Typography>
@@ -38,7 +42,6 @@ export default function SourceDocUploadForm({
                     onChange={onLabelChange}
                     size="small"
                     sx={{ flexGrow: 1, minWidth: 180 }}
-
                 />
                 <Button type="submit" variant="contained" color="primary" disabled={uploadLoading}>
                     {uploadLoading ? 'Uploading...' : 'Upload'}
