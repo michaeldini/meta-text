@@ -50,7 +50,12 @@ def get_meta_text(meta_text_id: int, session=Depends(get_session)):
         except Exception:
             sections = [str(meta_text.content)]
         section_objs = [SectionSchema(**s) if isinstance(s, dict) else SectionSchema(content=str(s)) for s in sections]
-        return MetaTextResponse(id=meta_text.id, title=meta_text.title, content=section_objs)
+        return MetaTextResponse(
+            id=meta_text.id,
+            title=meta_text.title,
+            content=section_objs,
+            source_document_id=meta_text.source_document_id  # Include this field
+        )
     else:
         raise HTTPException(status_code=404, detail="Meta-text not found.")
 

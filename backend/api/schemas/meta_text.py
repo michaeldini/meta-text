@@ -19,6 +19,7 @@ class MetaTextResponse(BaseModel):
     id: int
     title: str
     content: List[SectionSchema]
+    source_document_id: int  # Add this field
 
 class MetaTextListItem(BaseModel):
     id: int

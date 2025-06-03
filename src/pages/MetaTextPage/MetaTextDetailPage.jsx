@@ -6,6 +6,8 @@ import MetaTextSections from '../../features/MetaTextSections';
 import AutoSaveControl from '../../components/AutoSaveControl';
 import { useMetaTextSectionHandlers } from '../../hooks/useMetaTextSectionHandlers';
 import { autoSplitSections } from '../../hooks/useMetaTextSections';
+import SourceDocInfo from '../../components/SourceDocInfo';
+import { fetchSourceDocument } from '../../services/sourceDocumentService';
 
 export default function MetaTextDetailPage() {
     const { id } = useParams();
@@ -18,6 +20,9 @@ export default function MetaTextDetailPage() {
     } = useMetaTextSectionHandlers(setSections);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [sourceDoc, setSourceDoc] = useState(null);
+    const [sourceDocLoading, setSourceDocLoading] = useState(false);
+    const [sourceDocError, setSourceDocError] = useState('');
 
     useEffect(() => {
         setLoading(true);
@@ -27,6 +32,17 @@ export default function MetaTextDetailPage() {
                 setMetaText(data);
                 const initialSections = Array.isArray(data.content) ? data.content : [{ content: data.content, notes: '', summary: '', aiImageUrl: '', aiSummary: '' }];
                 setSections(autoSplitSections(initialSections, 500));
+                // Fetch source document if possible
+                if (data.source_document_id) {
+                    setSourceDocLoading(true);
+                    setSourceDocError('');
+                    fetchSourceDocument(data.source_document_id)
+                        .then(doc => setSourceDoc(doc))
+                        .catch(e => setSourceDocError(e.message || 'Failed to load source document.'))
+                        .finally(() => setSourceDocLoading(false));
+                } else {
+                    setSourceDoc(null);
+                }
             })
             .catch(e => setError(e.message || 'Failed to load meta text.'))
             .finally(() => setLoading(false));
@@ -53,6 +69,16 @@ export default function MetaTextDetailPage() {
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 6 }}>
             <Typography variant="h4" gutterBottom>{metaText?.title || id}</Typography>
+            {sourceDocLoading ? (
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <CircularProgress size={20} sx={{ mr: 2 }} />
+                    <Typography variant="body2">Loading source document...</Typography>
+                </Box>
+            ) : sourceDocError ? (
+                <Alert severity="error" sx={{ mb: 2 }}>{sourceDocError}</Alert>
+            ) : sourceDoc ? (
+                <SourceDocInfo doc={sourceDoc} />
+            ) : null}
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 2 }}>
                 <AutoSaveControl
                     value={sections}
