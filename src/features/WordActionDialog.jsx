@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, List, ListItem, ListItemButton, ListItemText, Typography, CircularProgress, Alert } from '@mui/material';
+import { Popover, Button, List, ListItem, ListItemButton, ListItemText, Typography, CircularProgress, Alert, Box, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import ContentCutIcon from '@mui/icons-material/ContentCut';
+import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import SavedSearchIcon from '@mui/icons-material/SavedSearch';
 import { lookupWord } from '../services/dictionaryService';
 
-export default function WordActionDialog({ open, onClose, word, onSplit, onLookupDefinition, onLookupContext }) {
+export default function WordActionDialog({ anchorEl, onClose, word, onSplit, onLookupContext }) {
     const [loading, setLoading] = useState(false);
     const [definition, setDefinition] = useState(null);
     const [error, setError] = useState('');
     const [showDefinition, setShowDefinition] = useState(false);
+
+    const open = Boolean(anchorEl);
 
     const handleLookupDefinition = async () => {
         setLoading(true);
@@ -32,46 +38,40 @@ export default function WordActionDialog({ open, onClose, word, onSplit, onLooku
     };
 
     return (
-        <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth>
-            <DialogTitle>Word Actions</DialogTitle>
-            <DialogContent>
-                <Typography variant="subtitle1" sx={{ mb: 2 }}>
-                    What would you like to do with <b>{word}</b>?
-                </Typography>
-                <List>
-                    <ListItem disablePadding>
-                        <ListItemButton onClick={onSplit} disabled={loading}>
-                            <ListItemText primary="Split text here" />
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding>
-                        <ListItemButton onClick={handleLookupDefinition} disabled={loading}>
-                            <ListItemText primary="Look up word definition" />
-                            {loading && <CircularProgress size={20} sx={{ ml: 2 }} />}
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding>
-                        <ListItemButton onClick={onLookupContext} disabled>
-                            <ListItemText primary="Look up word in context" secondary="Coming soon" />
-                        </ListItemButton>
-                    </ListItem>
-                </List>
-                {showDefinition && (
-                    <>
-                        {error ? (
-                            <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>
-                        ) : (
-                            <Alert severity="info" sx={{ mt: 2 }}>
-                                <b>Definition of {word}:</b><br />
-                                {definition}
-                            </Alert>
-                        )}
-                    </>
-                )}
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={handleClose} color="primary">Close</Button>
-            </DialogActions>
-        </Dialog>
+        <Popover
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{ vertical: 'center', horizontal: 'right' }}
+            transformOrigin={{ vertical: 'center', horizontal: 'left' }}
+
+        >
+            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: 1 }}>
+                <IconButton onClick={onSplit} disabled={loading} title="Split text here" color="primary">
+                    <ContentCutIcon fontSize="medium" />
+                </IconButton>
+                <IconButton onClick={handleLookupDefinition} disabled={loading} title="Look up word definition" color="primary">
+                    <AutoStoriesIcon fontSize="medium" />
+                    {loading && <CircularProgress size={18} sx={{ position: 'absolute', top: 8, left: 8 }} />}
+                </IconButton>
+                <IconButton onClick={onLookupContext} disabled title="Look up word in context" color="primary">
+                    <SavedSearchIcon fontSize="medium" />
+                </IconButton>
+                <IconButton size="small" onClick={handleClose}>
+                    <CloseIcon fontSize="small" />
+                </IconButton>
+            </Box>
+            {showDefinition && (
+                <Box sx={{ mt: 1 }}>
+                    {error ? (
+                        <Alert severity="error">{error}</Alert>
+                    ) : (
+                        <Alert severity="info">
+                            {definition}
+                        </Alert>
+                    )}
+                </Box>
+            )}
+        </Popover>
     );
 }

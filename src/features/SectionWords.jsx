@@ -9,15 +9,15 @@ const SectionWords = memo(function SectionWords({
     handleWordClick,
     handleRemoveSection,
 }) {
-    const [dialogOpen, setDialogOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
     const [selectedWordIdx, setSelectedWordIdx] = useState(null);
 
-    const handleWordDialogOpen = (idx) => {
+    const handleWordDialogOpen = (idx, event) => {
         setSelectedWordIdx(idx);
-        setDialogOpen(true);
+        setAnchorEl(event.currentTarget);
     };
     const handleDialogClose = () => {
-        setDialogOpen(false);
+        setAnchorEl(null);
         setSelectedWordIdx(null);
     };
     const handleSplit = () => {
@@ -34,7 +34,7 @@ const SectionWords = memo(function SectionWords({
                     <React.Fragment key={wordIdx}>
                         <Box
                             component="span"
-                            onClick={() => handleWordDialogOpen(wordIdx)}
+                            onClick={e => handleWordDialogOpen(wordIdx, e)}
                             sx={{
                                 cursor: 'pointer',
                                 borderRadius: 1,
@@ -82,7 +82,7 @@ const SectionWords = memo(function SectionWords({
                 ))}
             </Box>
             <WordActionDialog
-                open={dialogOpen}
+                anchorEl={anchorEl}
                 onClose={handleDialogClose}
                 word={selectedWordIdx !== null ? words[selectedWordIdx] : ''}
                 onSplit={handleSplit}
