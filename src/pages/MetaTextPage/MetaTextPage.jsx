@@ -1,12 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Typography, CircularProgress, Box, Alert, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
-import GeneralCreateForm from '../../components/GeneralCreateForm';
 import SourceDocSelect from '../../components/SourceDocSelect';
-import SearchBar from '../../components/SearchBar';
-import GeneralizedList from '../../components/GeneralizedList';
 import { useMetaTexts } from '../../hooks/useMetaTexts';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
+import EntityManagerPage from '../../components/EntityManagerPage';
 
 export default function MetaTextPage() {
     const [createSuccess, setCreateSuccess] = useState('');
@@ -101,11 +98,11 @@ export default function MetaTextPage() {
     };
 
     return (
-        <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
-            <Typography variant="h4" gutterBottom>Meta Texts</Typography>
-            <GeneralCreateForm
-                titleLabel="New Meta Text"
-                widget={
+        <EntityManagerPage
+            title="Meta Texts"
+            createFormProps={{
+                titleLabel: 'New Meta Text',
+                widget: (
                     <SourceDocSelect
                         value={selectedSourceDocId}
                         onChange={e => setSelectedSourceDocId(e.target.value)}
@@ -114,57 +111,39 @@ export default function MetaTextPage() {
                         error={sourceDocsError}
                         required
                     />
-                }
-                textLabel="Meta-text Name"
-                textValue={metaTextTitle}
-                onTextChange={e => setMetaTextTitle(e.target.value)}
-                buttonLabel="Create"
-                buttonLoadingLabel="Creating..."
-                loading={createLoading}
-                onSubmit={handleCreateMetaText}
-                error={createError}
-                success={createSuccessMsg}
-                buttonProps={{ sx: { minWidth: 120 } }}
-            />
-            <SearchBar
-                label="Search Meta Texts"
-                value={search}
-                onChange={setSearch}
-                options={metaTextOptions}
-                sx={{ mb: 2 }}
-            />
-            {metaTextsLoading ? (
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-                    <CircularProgress />
-                </Box>
-            ) : metaTextsError ? (
-                <Alert severity="error">{metaTextsError}</Alert>
-            ) : (
-                <Box sx={{ width: '100%', bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1, mb: 2 }}>
-                    <nav aria-label="Meta Texts list">
-                        <GeneralizedList
-                            items={filteredMetaTexts}
-                            onItemClick={handleMetaTextClick}
-                            onDeleteClick={handleDeleteClick}
-                            deleteLoading={deleteLoading}
-                            deleteError={deleteError}
-                            emptyMessage="No meta texts found."
-                        />
-                    </nav>
-                </Box>
-            )}
-            <Dialog open={confirmOpen} onClose={handleConfirmClose}>
-                <DialogTitle>Delete Meta Text?</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Are you sure you want to delete this meta text? This action cannot be undone.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleConfirmClose} color="primary">Cancel</Button>
-                    <Button onClick={handleConfirmDelete} color="error" variant="contained" autoFocus>Delete</Button>
-                </DialogActions>
-            </Dialog>
-        </Box>
+                ),
+                textLabel: 'Meta-text Name',
+                textValue: metaTextTitle,
+                onTextChange: e => setMetaTextTitle(e.target.value),
+                buttonLabel: 'Create',
+                buttonLoadingLabel: 'Creating...',
+                loading: createLoading,
+                onSubmit: handleCreateMetaText,
+                error: createError,
+                success: createSuccessMsg,
+                buttonProps: { sx: { minWidth: 120 } }
+            }}
+            searchBarProps={{
+                label: 'Search Meta Texts',
+                value: search,
+                onChange: setSearch,
+                options: metaTextOptions
+            }}
+            list={filteredMetaTexts}
+            listLoading={metaTextsLoading}
+            listError={metaTextsError}
+            onItemClick={handleMetaTextClick}
+            onDeleteClick={handleDeleteClick}
+            deleteLoading={deleteLoading}
+            deleteError={deleteError}
+            emptyMessage="No meta texts found."
+            confirmDialog={{
+                open: confirmOpen,
+                onClose: handleConfirmClose,
+                onConfirm: handleConfirmDelete,
+                title: 'Delete Meta Text?',
+                content: 'Are you sure you want to delete this meta text? This action cannot be undone.'
+            }}
+        />
     );
 }
