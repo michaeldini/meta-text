@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Box, TextField, Paper } from '@mui/material';
-import SectionWords from './SectionWords';
-import SectionAiSummary from './SectionAiSummary';
+import SectionWords from '../features/SectionWords';
+import SectionAiSummary from '../features/SectionAiSummary';
 
 const MetaTextSection = memo(function MetaTextSection({
     section,

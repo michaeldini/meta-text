@@ -10,7 +10,9 @@ export async function fetchSourceDocuments(full = false) {
 }
 
 export async function fetchSourceDocument(docId) {
+    console.log('fetchSourceDocument called with docId:', docId);
     const res = await fetch(`/api/source-documents/${encodeURIComponent(docId)}`);
+    console.log('fetchSourceDocument response:', res);
     return handleApiResponse(res, 'Failed to fetch document');
 }
 

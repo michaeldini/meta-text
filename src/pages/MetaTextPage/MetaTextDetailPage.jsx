@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchMetaText, updateMetaText } from '../../services/metaTextService';
 import { Typography, CircularProgress, Box, Alert, Container } from '@mui/material';
-import MetaTextSections from '../../components/MetaTextSections';
+import MetaTextSections from '../../features/MetaTextSections';
 import AutoSaveControl from '../../components/AutoSaveControl';
 import { useMetaTextSectionHandlers } from '../../hooks/useMetaTextSectionHandlers';
 import { autoSplitSections } from '../../hooks/useMetaTextSections';

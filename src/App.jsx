@@ -15,7 +15,7 @@ function App() {
     <Routes location={location} key={location.key}>
       <Route path="/" element={<h1>Welcome to Meta-Text</h1>} />
       <Route path="/sourceDocs" element={<SourceDocsPage />} />
-      <Route path="/sourceDocs/:title" element={<SourceDocDetailPage />} />
+      <Route path="/sourceDocs/:id" element={<SourceDocDetailPage />} />
       <Route path="/metaText" element={<MetaTextPage />} />
       <Route path="/metaText/:id" element={<MetaTextDetailPage />} />
     </Routes>

@@ -69,7 +69,8 @@ export default function SourceDocsPage() {
         }
     };
 
-    const handleSourceDocClick = id => navigate(`/sourceDocs/${encodeURIComponent(id)}`);
+    // Use doc.id for navigation, not doc.title
+    const handleSourceDocClick = id => navigate(`/sourceDocs/${id}`);
 
     const handleDeleteClick = (id, e) => {
         e.stopPropagation();
@@ -89,6 +90,7 @@ export default function SourceDocsPage() {
     };
 
     return (
+        // Pass the full doc object to the click handler
         <EntityManagerPage
             title="Source Documents"
             createFormProps={{

@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 import { Box, IconButton } from '@mui/material';
-import UndoArrowIcon from './icons/UndoArrowIcon';
+import UndoArrowIcon from '../components/icons/UndoArrowIcon';
 import WordActionDialog from './WordActionDialog';
 
 const SectionWords = memo(function SectionWords({

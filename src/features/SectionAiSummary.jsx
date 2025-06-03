@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import AiStarsButton from './AiStarsButton';
+import AiStarsButton from '../components/AiStarsButton';
 
 function SectionAiSummary({ sectionContent, aiSummary, onAISummaryUpdate }) {
     const [loading, setLoading] = useState(false);
