@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography, CircularProgress, Box, Alert, ListItem, ListItemButton, ListItemText, Divider, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Collapse, List } from '@mui/material';
-import MetaTextCreateForm from '../../components/MetaTextCreateForm';
+import GeneralCreateForm from '../../components/GeneralCreateForm';
+import SourceDocSelect from '../../components/SourceDocSelect';
 import SearchBar from '../../components/SearchBar';
 import DeleteButton from '../../components/DeleteButton';
 import { useMetaTexts } from '../../hooks/useMetaTexts';
@@ -16,6 +17,11 @@ export default function MetaTextPage() {
     const [deleteError, setDeleteError] = useState({});
     const [confirmOpen, setConfirmOpen] = useState(false);
     const [pendingDeleteId, setPendingDeleteId] = useState(null);
+    const [selectedSourceDocId, setSelectedSourceDocId] = useState('');
+    const [metaTextTitle, setMetaTextTitle] = useState('');
+    const [createLoading, setCreateLoading] = useState(false);
+    const [createError, setCreateError] = useState('');
+    const [createSuccessMsg, setCreateSuccessMsg] = useState('');
     const navigate = useNavigate();
 
     const filteredMetaTexts = useMemo(() => {
@@ -61,14 +67,64 @@ export default function MetaTextPage() {
         setPendingDeleteId(null);
     };
 
+    const handleCreateMetaText = async (e) => {
+        e.preventDefault();
+        setCreateError('');
+        setCreateSuccessMsg('');
+        setCreateLoading(true);
+        try {
+            const { createMetaText } = await import('../../services/metaTextService');
+            await createMetaText(selectedSourceDocId, metaTextTitle);
+            setCreateSuccess(Date.now());
+            setSelectedSourceDocId('');
+            setMetaTextTitle('');
+            setCreateSuccessMsg('Meta-text created!');
+        } catch (err) {
+            let errorMsg = 'Failed to create meta text';
+            if (err) {
+                if (typeof err === 'string') {
+                    errorMsg = err;
+                } else if (err.message) {
+                    errorMsg = err.message;
+                } else if (err.response && err.response.data && err.response.data.detail) {
+                    errorMsg = err.response.data.detail;
+                } else if (err.response && err.response.data) {
+                    errorMsg = JSON.stringify(err.response.data);
+                } else {
+                    errorMsg = JSON.stringify(err);
+                }
+            }
+            setCreateError(errorMsg);
+        } finally {
+            setCreateLoading(false);
+        }
+    };
+
     return (
         <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
             <Typography variant="h4" gutterBottom>Meta Texts</Typography>
-            <MetaTextCreateForm
-                sourceDocs={sourceDocs}
-                sourceDocsLoading={sourceDocsLoading}
-                sourceDocsError={sourceDocsError}
-                setCreateSuccess={setCreateSuccess}
+            <GeneralCreateForm
+                titleLabel="New Meta Text"
+                widget={
+                    <SourceDocSelect
+                        value={selectedSourceDocId}
+                        onChange={e => setSelectedSourceDocId(e.target.value)}
+                        sourceDocs={sourceDocs}
+                        loading={sourceDocsLoading}
+                        error={sourceDocsError}
+                        required
+                    />
+                }
+                textLabel="Meta-text Name"
+                textValue={metaTextTitle}
+                onTextChange={e => setMetaTextTitle(e.target.value)}
+                buttonLabel="Create"
+                buttonLoadingLabel="Creating..."
+                loading={createLoading}
+                onSubmit={handleCreateMetaText}
+                error={createError}
+                success={createSuccessMsg}
+                buttonProps={{ sx: { minWidth: 120 } }}
             />
             <SearchBar
                 label="Search Meta Texts"
@@ -77,6 +133,7 @@ export default function MetaTextPage() {
                 options={metaTextOptions}
                 sx={{ mb: 2 }}
             />
+
             {metaTextsLoading ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
                     <CircularProgress />

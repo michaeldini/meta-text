@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
 import { uploadSourceDocument, fetchSourceDocument, generateSourceDocInfo, deleteSourceDocument } from '../../services/sourceDocumentService';
-import SourceDocUploadForm from '../../components/SourceDocUploadForm';
-import { Paper, Typography, CircularProgress, Box, Alert } from '@mui/material';
-import ModernList from '../../components/ModernList';
+import GeneralCreateForm from '../../components/GeneralCreateForm';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { Button, Paper, Typography, CircularProgress, Box, Alert, List, ListItem, ListItemText } from '@mui/material';
 import SourceDocListItem from '../../components/SourceDocListItem';
 import SearchBar from '../../components/SearchBar';
 
@@ -81,20 +81,36 @@ export default function SourceDocsPage() {
     return (
         <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
             <Typography variant="h4" gutterBottom>Source Documents</Typography>
-            <Paper sx={{ p: 2, mb: 3 }}>
-                <SourceDocUploadForm
-                    file={file}
-                    uploadLabel={uploadTitle}
-                    uploadError={uploadError}
-                    uploadSuccess={uploadSuccess}
-                    uploadLoading={uploadLoading}
-                    onFileChange={handleFileChange}
-                    onLabelChange={handleTitleChange}
-                    onSubmit={handleSubmit}
-                />
-                {uploadError && <Alert severity="error" sx={{ mt: 2 }}>{uploadError}</Alert>}
-                {uploadSuccess && <Alert severity="success" sx={{ mt: 2 }}>{uploadSuccess}</Alert>}
-            </Paper>
+            <GeneralCreateForm
+                titleLabel="New Source Document"
+                widget={
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <input
+                            id="file-upload"
+                            type="file"
+                            accept=".txt"
+                            onChange={handleFileChange}
+                            style={{ display: 'none' }}
+                        />
+                        <label htmlFor="file-upload">
+                            <Button variant="outlined" component="span" startIcon={<CloudUploadIcon />}>
+                                {file ? 'Change File' : 'Upload File'}
+                            </Button>
+                        </label>
+                        {file && <span className="file-name">{file.name}</span>}
+                    </Box>
+                }
+                textLabel="Title"
+                textValue={uploadTitle}
+                onTextChange={handleTitleChange}
+                buttonLabel="Upload"
+                buttonLoadingLabel="Uploading..."
+                loading={uploadLoading}
+                onSubmit={handleSubmit}
+                error={uploadError}
+                success={uploadSuccess}
+                buttonProps={{ color: 'primary' }}
+            />
             <SearchBar
                 label="Search Documents"
                 value={search}
@@ -109,22 +125,41 @@ export default function SourceDocsPage() {
             ) : error ? (
                 <Alert severity="error">{error}</Alert>
             ) : (
-                <ModernList
-                    items={filteredDocs}
-                    emptyMessage="No documents found."
-                    renderItem={doc => (
-                        <SourceDocListItem
-                            key={doc.id}
-                            doc={doc}
-                            summaryError={summaryError}
-                            onGenerateSummary={handleGenerateSourceDocInfo}
-                            summaryLoading={summaryLoading}
-                            deleteLoading={deleteLoading}
-                            deleteError={deleteError}
-                            onDelete={handleDelete}
-                        />
-                    )}
-                />
+                <Box sx={{ width: '100%', bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1, mb: 2 }}>
+                    <nav aria-label="Source Documents list">
+                        <List>
+                            {filteredDocs.length === 0 ? (
+                                <ListItem>
+                                    <ListItemText primary="No documents found." />
+                                </ListItem>
+                            ) : (
+                                filteredDocs.map(doc => (
+                                    <React.Fragment key={doc.id}>
+                                        <ListItem disablePadding alignItems="flex-start">
+                                            <SourceDocListItem
+                                                doc={doc}
+                                                summaryError={summaryError}
+                                                onGenerateSummary={handleGenerateSourceDocInfo}
+                                                summaryLoading={summaryLoading}
+                                                deleteLoading={deleteLoading}
+                                                deleteError={deleteError}
+                                                onDelete={handleDelete}
+                                            />
+                                        </ListItem>
+                                        {deleteError[doc.id] && (
+                                            <ListItem>
+                                                <ListItemText
+                                                    primary={deleteError[doc.id]}
+                                                    slotProps={{ primary: { color: 'error', variant: 'body2' } }}
+                                                />
+                                            </ListItem>
+                                        )}
+                                    </React.Fragment>
+                                ))
+                            )}
+                        </List>
+                    </nav>
+                </Box>
             )}
         </Box>
     );

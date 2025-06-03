@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListItem, Box, Typography, Divider, Collapse, Alert } from '@mui/material';
+import { Box, Typography, Divider, Collapse, Alert } from '@mui/material';
 import SourceDocDetails from './SourceDocDetails';
 import DeleteButton from './DeleteButton';
 import AiStarsButton from './AiStarsButton';
@@ -18,46 +18,42 @@ function SourceDocListItem({ doc, summaryError, onGenerateSummary, summaryLoadin
 
     return (
         <Collapse in={!deleteLoading[id] && !deleteError[id]} timeout={400}>
-            <ListItem disablePadding>
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-                    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
-                        <Typography
-                            variant="h6"
-                            sx={{
-                                p: 2,
-                                flex: 1,
-                                cursor: 'pointer',
-                                transition: 'color 0.2s, transform 0.2s',
-                                '&:hover': {
-                                    color: 'primary.main',
-                                    transform: 'translateY(-2px) scale(1.03)',
-                                    textDecoration: 'underline',
-                                },
-                            }}
-                            onClick={handleNavigate}
-                            noWrap={false}
-                        >
-                            {title}
-                        </Typography>
-                        <AiStarsButton
-                            loading={summaryLoading[id]}
-                            onClick={handleGenerateSummary}
-                            label="Generate Summary"
-                        />
-                        <DeleteButton
-                            onClick={handleDelete}
-                            disabled={deleteLoading[id]}
-                            label="Delete Source Document"
-                        />
-                    </Box>
-                    <SourceDocDetails doc={doc} summaryError={summaryError[id]} />
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
+                    <Typography
+                        variant="h6"
+                        sx={{
+                            p: 2,
+                            flex: 1,
+                            cursor: 'pointer',
+                            transition: 'color 0.2s, transform 0.2s',
+                            '&:hover': {
+                                color: 'primary.main',
+                                transform: 'translateY(-2px) scale(1.03)',
+                                textDecoration: 'underline',
+                            },
+                        }}
+                        onClick={handleNavigate}
+                        noWrap={false}
+                    >
+                        {title}
+                    </Typography>
+                    <AiStarsButton
+                        loading={summaryLoading[id]}
+                        onClick={handleGenerateSummary}
+                        label="Generate Summary"
+                    />
+                    <DeleteButton
+                        onClick={handleDelete}
+                        disabled={deleteLoading[id]}
+                        label="Delete Source Document"
+                    />
                 </Box>
-            </ListItem>
-            {deleteError[id] && (
-                <ListItem>
-                    <Alert severity="error">{deleteError[id]}</Alert>
-                </ListItem>
-            )}
+                <SourceDocDetails doc={doc} summaryError={summaryError[id]} />
+                {deleteError[id] && (
+                    <Alert severity="error" sx={{ width: '100%' }}>{deleteError[id]}</Alert>
+                )}
+            </Box>
             <Divider />
         </Collapse>
     );
