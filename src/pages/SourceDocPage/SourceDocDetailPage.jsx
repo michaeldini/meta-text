@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchSourceDocument } from '../../services/sourceDocumentService';
 import { Paper, Typography, Box, CircularProgress } from '@mui/material';
+import SourceDocInfo from '../../components/SourceDocInfo';
 
 export default function SourceDocDetailPage() {
     const { id } = useParams();
@@ -28,7 +29,9 @@ export default function SourceDocDetailPage() {
 
     return (
         <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
-            <Typography variant="h4" gutterBottom>Source Document: {id}</Typography>
+            <Typography variant="h4" gutterBottom>{doc?.title}</Typography>
+            {/* Show SourceDocInfo under the title if doc is loaded */}
+            {doc && <SourceDocInfo doc={doc} />}
             {loading ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
                     <CircularProgress />
@@ -37,7 +40,6 @@ export default function SourceDocDetailPage() {
                 <Typography color="error">{error}</Typography>
             ) : doc ? (
                 <Paper sx={{ p: 3 }}>
-                    <Typography variant="subtitle1" gutterBottom>Title: {doc.title}</Typography>
                     <Typography variant="body1" style={{ whiteSpace: 'pre-wrap', fontFamily: 'monospace' }}>
                         {doc.text}
                     </Typography>
