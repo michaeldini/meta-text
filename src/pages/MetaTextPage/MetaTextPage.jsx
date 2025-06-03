@@ -5,7 +5,6 @@ import GeneralCreateForm from '../../components/GeneralCreateForm';
 import SourceDocSelect from '../../components/SourceDocSelect';
 import SearchBar from '../../components/SearchBar';
 import GeneralizedList from '../../components/GeneralizedList';
-import DeleteButton from '../../components/DeleteButton';
 import { useMetaTexts } from '../../hooks/useMetaTexts';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
 
