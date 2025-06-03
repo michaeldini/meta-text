@@ -86,7 +86,6 @@ const SectionWords = memo(function SectionWords({
                 onClose={handleDialogClose}
                 word={selectedWordIdx !== null ? words[selectedWordIdx] : ''}
                 onSplit={handleSplit}
-                onLookupDefinition={() => { }}
                 onLookupContext={() => { }}
             />
         </>
