@@ -109,4 +109,25 @@ class GetResponse(BaseModel):
 # generic response for listing items (GET requests) (outer) 
 class GetListResponse(BaseModel):
     data: List[GetResponse]
-    
+
+
+class SourceDocInfoAiResponse(BaseModel):
+    summary: str
+    characters: list[str]
+    locations: list[str]
+    themes: list[str]
+    symbols: list[str]
+
+class ShortSummaryRequest(BaseModel):
+    prompt: str
+
+class ShortSummaryResponse(BaseModel):
+    result: str
+
+class SourceDocInfoRequest(BaseModel):
+    prompt: str
+    title: str | None = None
+
+class SourceDocInfoResponse(BaseModel):
+    result: SourceDocInfoAiResponse
+
