@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 # --- SourceDocument Schemas ---
 class SourceDocumentBase(SQLModel):
-    title: str
+    title: str = Field(index=True, unique=True)
     text: str
     summary: Optional[str] = None
     characters: Optional[str] = None
@@ -33,15 +33,25 @@ class SourceDocumentUpdate(SQLModel):
     @classmethod
     def as_form(cls):
         from fastapi import Form
-        return cls(
-            title=Form(None),
-            text=Form(None),
-            summary=Form(None),
-            characters=Form(None),
-            locations=Form(None),
-            themes=Form(None),
-            symbols=Form(None),
-        )
+        def _as_form(
+            title: str = Form(None),
+            text: str = Form(None),
+            summary: str = Form(None),
+            characters: str = Form(None),
+            locations: str = Form(None),
+            themes: str = Form(None),
+            symbols: str = Form(None),
+        ):
+            return cls(
+                title=title,
+                text=text,
+                summary=summary,
+                characters=characters,
+                locations=locations,
+                themes=themes,
+                symbols=symbols,
+            )
+        return _as_form
 
 class SourceDocumentDeleteResponse(SQLModel):
     success: bool

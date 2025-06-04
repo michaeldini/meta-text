@@ -40,7 +40,8 @@ def test_create_source_document_success(client):
     )
     assert response.status_code == 200
     data = response.json()
-    assert data["success"] is True
+    assert data["title"] == "Doc1"
+    assert data["text"] == "This is a test document."
     assert "id" in data
 
 def test_create_source_document_duplicate_title(client):
@@ -59,24 +60,18 @@ def test_create_source_document_duplicate_title(client):
     assert response.json()["detail"] == "Title already exists."
 
 def test_list_source_documents(client, session):
-    # Add two docs
     session.add(SourceDocument(title="Doc3", text="A"))
     session.add(SourceDocument(title="Doc4", text="B"))
     session.commit()
     response = client.get("/api/source-documents")
     assert response.status_code == 200
     data = response.json()
-    assert "source_documents" in data
-    titles = [d["title"] for d in data["source_documents"]]
+    assert isinstance(data, list)
+    titles = [d["title"] for d in data]
     assert set(titles) >= {"Doc3", "Doc4"}
-    # Test full=True
-    response = client.get("/api/source-documents?full=true")
-    assert response.status_code == 200
-    data = response.json()
-    assert all("text" in d for d in data["source_documents"])
 
 def test_get_source_document_success(client, session):
-    doc = SourceDocument(title="Doc5", text="Hello", details="{}")
+    doc = SourceDocument(title="Doc5", text="Hello")
     session.add(doc)
     session.commit()
     session.refresh(doc)
@@ -86,7 +81,6 @@ def test_get_source_document_success(client, session):
     assert data["id"] == doc.id
     assert data["title"] == "Doc5"
     assert data["text"] == "Hello"
-    assert data["details"] == "{}"
 
 def test_get_source_document_not_found(client):
     response = client.get("/api/source-documents/9999")
@@ -111,24 +105,28 @@ def test_delete_source_document_not_found(client):
     assert response.json()["detail"] == "Source document not found."
 
 def test_update_source_document_success(client, session):
-    doc = SourceDocument(title="Doc7", text="Old text", details="old")
+    doc = SourceDocument(title="Doc7", text="Old text")
     session.add(doc)
     session.commit()
     session.refresh(doc)
     response = client.patch(
         f"/api/source-documents/{doc.id}",
-        data={"title": "Doc7-updated", "text": "New text", "details": "new details"},
+        data={
+            "title": "Doc7-updated",
+            "text": "New text",
+            "summary": "",
+            "characters": "",
+            "locations": "",
+            "themes": "",
+            "symbols": "",
+        },
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
     )
     assert response.status_code == 200
     data = response.json()
-    assert data["success"] is True
     assert data["id"] == doc.id
-    # Confirm update
-    get_resp = client.get(f"/api/source-documents/{doc.id}")
-    updated = get_resp.json()
-    assert updated["title"] == "Doc7-updated"
-    assert updated["text"] == "New text"
-    assert updated["details"] == "new details"
+    assert data["title"] == "Doc7-updated"
+    assert data["text"] == "New text"
 
 def test_update_source_document_not_found(client):
     response = client.patch(

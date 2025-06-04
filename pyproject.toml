@@ -10,4 +10,5 @@ dependencies = [
     "fastapi-cors",
     "openai>=1.82.0",
     "python-freedictionaryapi[async-client]>=0.9.10",
+    "pytest>=8.4.0",
 ]
