@@ -35,6 +35,7 @@ function SourceDocSelect({
                     <MenuItem value="" disabled>No documents found</MenuItem>
                 ) : (
                     sourceDocs.map((doc, idx) => {
+                        // doc: {id, title}
                         let key, value, label;
                         if (typeof doc === 'object' && doc !== null) {
                             key = doc.id || idx;

@@ -3,11 +3,11 @@ import { Box, IconButton } from '@mui/material';
 import UndoArrowIcon from '../components/icons/UndoArrowIcon';
 import WordActionDialog from './WordActionDialog';
 
-const SectionWords = memo(function SectionWords({
+const ChunkWords = memo(function SectionWords({
     words,
-    sectionIdx,
+    chunkIdx,
     handleWordClick,
-    handleRemoveSection,
+    handleRemoveChunk,
 }) {
     const [anchorEl, setAnchorEl] = useState(null);
     const [selectedWordIdx, setSelectedWordIdx] = useState(null);
@@ -22,7 +22,7 @@ const SectionWords = memo(function SectionWords({
     };
     const handleSplit = () => {
         if (selectedWordIdx !== null) {
-            handleWordClick(sectionIdx, selectedWordIdx);
+            handleWordClick(chunkIdx, selectedWordIdx);
         }
         handleDialogClose();
     };
@@ -54,12 +54,12 @@ const SectionWords = memo(function SectionWords({
                             }}
                         >
                             {word}
-                            {/* Show Undo icon only after the last word in a section, if not the last section */}
+                            {/* Show Undo icon only after the last word in a chunk, if not the last chunk */}
                             {wordIdx === words.length - 1 && (
                                 <IconButton
                                     size="small"
-                                    onClick={e => { e.stopPropagation(); handleRemoveSection(sectionIdx); }}
-                                    title="Undo split (merge with next section)"
+                                    onClick={e => { e.stopPropagation(); handleRemoveChunk(chunkIdx); }}
+                                    title="Undo split (merge with next chunk)"
                                     sx={{
                                         ml: 1,
                                         borderRadius: '50%',
@@ -92,4 +92,4 @@ const SectionWords = memo(function SectionWords({
     );
 });
 
-export default SectionWords;
+export default ChunkWords;

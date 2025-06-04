@@ -14,3 +14,7 @@ export async function handleApiResponse(res, defaultErrorMsg = 'Request failed')
         return true;
     }
 }
+
+export default handleApiResponse;
+
+

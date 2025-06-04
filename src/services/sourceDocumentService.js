@@ -2,47 +2,64 @@
 import { handleApiResponse } from '../utils/api';
 
 
-export async function fetchSourceDocuments(full = false) {
-    const url = full ? '/api/source-documents?full=true' : '/api/source-documents';
-    const res = await fetch(url);
+export async function fetchSourceDocuments() {
+    const res = await fetch('/api/source-documents');
     const data = await handleApiResponse(res, 'Failed to fetch source documents');
-    return data.source_documents || [];
+    // Backend now returns a flat array of docs
+    return Array.isArray(data) ? data : [];
 }
 
 export async function fetchSourceDocument(docId) {
-    console.log('fetchSourceDocument called with docId:', docId);
     const res = await fetch(`/api/source-documents/${encodeURIComponent(docId)}`);
-    console.log('fetchSourceDocument response:', res);
-    return handleApiResponse(res, 'Failed to fetch document');
+    const data = await handleApiResponse(res, 'Failed to fetch document');
+    return data;
 }
 
-export async function uploadSourceDocument(title, file, details = null) {
+export async function createSourceDocument(title, file) {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('file', file);
-    if (details !== null) formData.append('details', details);
     const res = await fetch('/api/source-documents', {
         method: 'POST',
         body: formData,
     });
-    return handleApiResponse(res, 'Upload failed.');
+    const data = await handleApiResponse(res, 'Upload failed.');
+    // Backend returns { success, id, title }
+    return { id: data.id, title: data.title };
 }
 
 export async function deleteSourceDocument(docId) {
     const res = await fetch(`/api/source-documents/${encodeURIComponent(docId)}`, { method: 'DELETE' });
-    return handleApiResponse(res, 'Failed to delete source document');
+    const data = await handleApiResponse(res, 'Failed to delete source document');
+    // Backend returns { success: true }
+    return data;
 }
 
-export async function updateSourceDocument(docId, { title, text, details }) {
-    const formData = new FormData();
-    if (title !== undefined) formData.append('title', title);
-    if (text !== undefined) formData.append('text', text);
-    if (details !== undefined) formData.append('details', details);
+export async function updateSourceDocument(docId, {
+    title,
+    text,
+    summary,
+    characters,
+    locations,
+    themes,
+    symbols
+}) {
+    const payload = {};
+    if (title !== undefined) payload.title = title;
+    if (text !== undefined) payload.text = text;
+    if (summary !== undefined) payload.summary = summary;
+    if (characters !== undefined) payload.characters = characters;
+    if (locations !== undefined) payload.locations = locations;
+    if (themes !== undefined) payload.themes = themes;
+    if (symbols !== undefined) payload.symbols = symbols;
     const res = await fetch(`/api/source-documents/${encodeURIComponent(docId)}`, {
         method: 'PATCH',
-        body: formData,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
     });
-    return handleApiResponse(res, 'Update failed.');
+    const data = await handleApiResponse(res, 'Update failed.');
+    // Backend returns { success, id }
+    return data;
 }
 
 

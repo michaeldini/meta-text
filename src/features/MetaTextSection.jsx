@@ -1,17 +1,17 @@
 import React, { memo } from 'react';
 import { Box, TextField, Paper } from '@mui/material';
-import SectionWords from '../features/SectionWords';
+import ChunkWords from './ChunkWords';
 import SectionAiSummary from '../features/SectionAiSummary';
 
-const MetaTextSection = memo(function MetaTextSection({
-    section,
-    sectionIdx,
+const Chunk = memo(function Chunk({
+    chunk,
+    chunkIdx,
     handleWordClick,
-    handleRemoveSection,
-    handleSectionFieldChange
+    handleRemoveChunk,
+    handleChunkFieldChange
 }) {
-    const words = section.content.split(/\s+/);
-    const handleAISummaryUpdate = (newSummary) => handleSectionFieldChange(sectionIdx, 'aiSummary', newSummary);
+    const words = chunk.content ? chunk.content.split(/\s+/) : [];
+    const handleAISummaryUpdate = (newSummary) => handleChunkFieldChange(chunkIdx, 'aiSummary', newSummary);
     return (
         <Paper
             sx={{
@@ -25,19 +25,19 @@ const MetaTextSection = memo(function MetaTextSection({
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2, bgcolor: 'background.default', borderRadius: 4, p: 2 }}>
                 {/* Split text column */}
                 <Box sx={{ flex: 2, minWidth: 0, p: 2 }}>
-                    <SectionWords
+                    <ChunkWords
                         words={words}
-                        sectionIdx={sectionIdx}
+                        chunkIdx={chunkIdx}
                         handleWordClick={handleWordClick}
-                        handleRemoveSection={handleRemoveSection}
+                        handleRemoveChunk={handleRemoveChunk}
                     />
                 </Box>
                 {/* Details column */}
                 <Box sx={{ flex: 1, minWidth: 220, maxWidth: 400, width: 350, display: 'flex', flexDirection: 'column', gap: 2, zIndex: 10 }}>
                     <TextField
                         label="Summary"
-                        value={section.summary || ''}
-                        onChange={e => handleSectionFieldChange(sectionIdx, 'summary', e.target.value)}
+                        value={chunk.summary || ''}
+                        onChange={e => handleChunkFieldChange(chunkIdx, 'summary', e.target.value)}
                         multiline
                         minRows={2}
                         variant="outlined"
@@ -59,8 +59,8 @@ const MetaTextSection = memo(function MetaTextSection({
                     />
                     <TextField
                         label="Notes"
-                        value={section.notes || ''}
-                        onChange={e => handleSectionFieldChange(sectionIdx, 'notes', e.target.value)}
+                        value={chunk.notes || ''}
+                        onChange={e => handleChunkFieldChange(chunkIdx, 'notes', e.target.value)}
                         multiline
                         minRows={2}
                         variant="outlined"
@@ -81,8 +81,8 @@ const MetaTextSection = memo(function MetaTextSection({
                         }}
                     />
                     <SectionAiSummary
-                        sectionContent={section.content}
-                        aiSummary={section.aiSummary}
+                        sectionContent={chunk.content}
+                        aiSummary={chunk.aiSummary}
                         onAISummaryUpdate={handleAISummaryUpdate}
                     />
                 </Box>
@@ -91,4 +91,4 @@ const MetaTextSection = memo(function MetaTextSection({
     );
 });
 
-export default MetaTextSection;
+export default Chunk;

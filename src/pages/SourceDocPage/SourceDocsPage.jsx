@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import EntityManagerPage from '../../components/EntityManagerPage';
 import FileUploadWidget from '../../components/FileUploadWidget';
-import { uploadSourceDocument, deleteSourceDocument } from '../../services/sourceDocumentService';
+import { createSourceDocument, deleteSourceDocument } from '../../services/sourceDocumentService';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
 
 export default function SourceDocsPage() {
@@ -25,36 +25,48 @@ export default function SourceDocsPage() {
         setDocs(initialDocs);
     }, [initialDocs]);
 
+    // Create options for the search bar from document titles
     const docOptions = useMemo(() => docs.map(doc => doc.title), [docs]);
+
+    // Filter documents based on search input
     const filteredDocs = useMemo(() => {
         if (!search) return docs;
         return docs.filter(doc => (doc.title || '').toLowerCase().includes(search.toLowerCase()));
     }, [docs, search]);
 
+    // Handle file upload and title input changes
     const handleFileChange = e => {
         setFile(e.target.files[0]);
         setUploadError('');
         setUploadSuccess('');
     };
     const handleTitleChange = e => setUploadTitle(e.target.value);
+
+    // Handle document upload
     const handleSubmit = async e => {
         e.preventDefault();
         setUploadError('');
         setUploadSuccess('');
         setUploadLoading(true);
         try {
-            const newDoc = await uploadSourceDocument(uploadTitle, file);
+            const newDoc = await createSourceDocument(uploadTitle, file);
             setUploadSuccess('Upload successful!');
             setFile(null);
             setUploadTitle('');
             setDocs(prev => [...prev, newDoc]);
         } catch (err) {
-            setUploadError(err.message);
+            // Handle duplicate title error (409)
+            if (err.message === 'Title already exists.') {
+                setUploadError('A document with this title already exists.');
+            } else {
+                setUploadError(err.message);
+            }
         } finally {
             setUploadLoading(false);
         }
     };
 
+    // Handle document deletion
     const handleDelete = async (docId) => {
         setDeleteLoading(prev => ({ ...prev, [docId]: true }));
         setDeleteError(prev => ({ ...prev, [docId]: null }));
@@ -63,15 +75,21 @@ export default function SourceDocsPage() {
             await deleteSourceDocument(docId);
             setDocs(prev => prev.filter(doc => doc.id !== docId));
         } catch (e) {
-            setDeleteError(prev => ({ ...prev, [docId]: e.message || 'Error deleting document' }));
+            // Handle cannot delete if MetaText exists (400)
+            if (e.message.includes('MetaText records exist')) {
+                setDeleteError(prev => ({ ...prev, [docId]: 'Cannot delete: MetaText records exist for this document.' }));
+            } else {
+                setDeleteError(prev => ({ ...prev, [docId]: e.message || 'Error deleting document' }));
+            }
         } finally {
             setDeleteLoading(prev => ({ ...prev, [docId]: false }));
         }
     };
 
-    // Use doc.id for navigation, not doc.title
+    // Use doc.id for navigation
     const handleSourceDocClick = id => navigate(`/sourceDocs/${id}`);
 
+    // Handle delete confirmation dialog
     const handleDeleteClick = (id, e) => {
         e.stopPropagation();
         setPendingDeleteId(id);

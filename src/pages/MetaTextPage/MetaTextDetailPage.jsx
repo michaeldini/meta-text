@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchMetaText, updateMetaText } from '../../services/metaTextService';
+import { fetchMetaText } from '../../services/metaTextService';
 import { Typography, CircularProgress, Box, Alert, Container } from '@mui/material';
-import MetaTextSections from '../../features/MetaTextSections';
-import AutoSaveControl from '../../components/AutoSaveControl';
-import { useMetaTextSectionHandlers } from '../../hooks/useMetaTextSectionHandlers';
-import { autoSplitSections } from '../../hooks/useMetaTextSections';
 import SourceDocInfo from '../../components/SourceDocInfo';
 import { fetchSourceDocument } from '../../services/sourceDocumentService';
+import AutoSaveControl from '../../components/AutoSaveControl';
+import Chunks from '../../features/Chunks';
+import { useChunkHandlers } from '../../hooks/useMetaTextSectionHandlers';
 
 export default function MetaTextDetailPage() {
     const { id } = useParams();
     const [metaText, setMetaText] = useState(null);
-    const [sections, setSections] = useState([]);
-    const {
-        handleWordClick,
-        handleRemoveSection,
-        handleSectionFieldChange
-    } = useMetaTextSectionHandlers(setSections);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [sourceDoc, setSourceDoc] = useState(null);
     const [sourceDocLoading, setSourceDocLoading] = useState(false);
     const [sourceDocError, setSourceDocError] = useState('');
+    const [chunks, setChunks] = useState([]);
+    const {
+        handleWordClick,
+        handleRemoveChunk,
+        handleChunkFieldChange,
+        saveAll
+    } = useChunkHandlers(id, setChunks);
 
     useEffect(() => {
         setLoading(true);
@@ -30,8 +30,14 @@ export default function MetaTextDetailPage() {
         fetchMetaText(id)
             .then(data => {
                 setMetaText(data);
-                const initialSections = Array.isArray(data.content) ? data.content : [{ content: data.content, notes: '', summary: '', aiImageUrl: '', aiSummary: '' }];
-                setSections(autoSplitSections(initialSections, 500));
+                // Convert backend chunks (array of strings or objects) to chunk objects
+                const initialChunks = (data.chunks || []).map((chunk, idx) =>
+                    typeof chunk === 'object'
+                        ? { ...chunk, content: chunk.text }
+                        : { id: idx, content: chunk }
+                );
+                setChunks(initialChunks);
+                // Chunks are now provided by the backend as an array of strings in data.chunks
                 // Fetch source document if possible
                 if (data.source_document_id) {
                     setSourceDocLoading(true);
@@ -81,24 +87,20 @@ export default function MetaTextDetailPage() {
             ) : null}
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 2 }}>
                 <AutoSaveControl
-                    value={sections}
+                    value={chunks}
                     delay={1000 * 60 * 2} // 2 minutes
                     onSave={async () => {
-                        if (!id) return;
-                        const splitSections = autoSplitSections(sections, 500);
-                        await updateMetaText(id, splitSections);
+                        await saveAll(chunks);
                     }}
-                    deps={[id]}
+                    deps={[id, chunks]}
                 />
             </Box>
-            <Box>
-                <MetaTextSections
-                    sections={sections}
-                    handleWordClick={handleWordClick}
-                    handleRemoveSection={handleRemoveSection}
-                    handleSectionFieldChange={handleSectionFieldChange}
-                />
-            </Box>
+            <Chunks
+                chunks={chunks}
+                handleWordClick={handleWordClick}
+                handleRemoveSection={(chunkIdx) => handleRemoveChunk(chunkIdx, chunks)}
+                handleSectionFieldChange={handleChunkFieldChange}
+            />
         </Container>
     );
 }

@@ -79,8 +79,12 @@ async def source_doc_info(request: Request, session=Depends(get_session)):
             doc = session.exec(select(SourceDocument).where(SourceDocument.title == title)).first()
             if not doc:
                 raise HTTPException(status_code=404, detail="Source document not found.")
-            # Store the entire ai_data as a JSON string in details
-            doc.details = json.dumps(ai_data.model_dump()) 
+            # Store each field directly in the model (convert lists to comma-separated strings)
+            doc.summary = ai_data.summary
+            doc.characters = ", ".join(ai_data.characters) if ai_data.characters else None
+            doc.locations = ", ".join(ai_data.locations) if ai_data.locations else None
+            doc.themes = ", ".join(ai_data.themes) if ai_data.themes else None
+            doc.symbols = ", ".join(ai_data.symbols) if ai_data.symbols else None
             session.add(doc)
             session.commit()
         return {"result": ai_data}

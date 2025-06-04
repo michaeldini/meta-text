@@ -7,13 +7,11 @@ import SourceDocInfo from '../../src/components/SourceDocInfo';
 const mockDoc = {
     id: 1,
     title: 'Test Document',
-    details: JSON.stringify({
-        summary: 'A test document for unit testing.',
-    })
+    summary: 'A test document for unit testing.'
 };
 
 describe('SourceDocInfo', () => {
-    it('renders summary from details with prefix', () => {
+    it('renders summary from doc with prefix', () => {
         render(<SourceDocInfo doc={mockDoc} />);
         expect(screen.getByText('Summary:', { exact: false })).toBeInTheDocument();
         expect(screen.getByText('A test document for unit testing.', { exact: false })).toBeInTheDocument();

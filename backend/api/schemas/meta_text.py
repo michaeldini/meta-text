@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List
 
 class SectionSchema(BaseModel):
@@ -8,6 +8,21 @@ class SectionSchema(BaseModel):
     aiSummary: str = ""
     aiImageUrl: str = ""
 
+# generic response for creation success
+class CreateSuccessResponse(BaseModel):
+    success: bool
+    id: int
+    title: str
+
+# generic response for listing items (GET requests) (inner) 
+class GetResponse(BaseModel):
+    id: int
+    title: str
+
+# generic response for listing items (GET requests) (outer) 
+class GetListResponse(BaseModel):
+    data: List[GetResponse]
+    
 class CreateMetaTextRequest(BaseModel):
     sourceDocId: int
     title: str
@@ -18,8 +33,9 @@ class UpdateMetaTextRequest(BaseModel):
 class MetaTextResponse(BaseModel):
     id: int
     title: str
-    content: List[SectionSchema]
-    source_document_id: int  # Add this field
+    text: str
+    chunks: List[str] = Field(default_factory=list)
+    source_document_id: int
 
 class MetaTextListItem(BaseModel):
     id: int

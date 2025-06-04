@@ -10,10 +10,10 @@ export default function SourceDocDetailPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
+    // Fetch document details by ID when component mounts or id changes
     useEffect(() => {
         setLoading(true);
         setError('');
-        console.log(`Fetching document with ID: ${id}`);
         // Parse id as integer for backend call
         const docId = parseInt(id, 10);
         if (isNaN(docId)) {
@@ -22,10 +22,17 @@ export default function SourceDocDetailPage() {
             return;
         }
         fetchSourceDocument(docId)
-            .then(data => setDoc(data))
+            .then(data => {
+                setDoc(data);
+            })
             .catch(e => setError(e.message || 'Failed to load document.'))
             .finally(() => setLoading(false));
     }, [id]);
+
+    // Handler to update doc fields from AI info
+    const handleInfoUpdate = aiInfo => {
+        setDoc(prev => ({ ...prev, ...aiInfo }));
+    };
 
     return (
         <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
@@ -34,7 +41,7 @@ export default function SourceDocDetailPage() {
             {doc && (
                 <SourceDocInfo
                     doc={doc}
-                    onInfoUpdate={aiInfo => setDoc(prev => ({ ...prev, details: JSON.stringify(aiInfo) }))}
+                    onInfoUpdate={handleInfoUpdate}
                 />
             )}
             {loading ? (
