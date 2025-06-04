@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box } from '@mui/material';
 import AiStarsButton from '../components/AiStarsButton';
 
-function SectionAiSummary({ sectionContent, aiSummary, onAISummaryUpdate }) {
+function ChunkAiSummary({ sectionContent, aiSummary, onAISummaryUpdate }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -45,4 +45,4 @@ function SectionAiSummary({ sectionContent, aiSummary, onAISummaryUpdate }) {
     );
 }
 
-export default SectionAiSummary;
+export default ChunkAiSummary;

@@ -1,7 +1,7 @@
 import React, { memo, useState, useEffect } from 'react';
 import { Box, TextField, Paper } from '@mui/material';
 import ChunkWords from './ChunkWords';
-import SectionAiSummary from './SectionAiSummary';
+import ChunkAiSummary from './ChunkAiSummary';
 
 const Chunk = memo(function Chunk({
     chunk,
@@ -56,7 +56,7 @@ const Chunk = memo(function Chunk({
             }}
         >
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2, bgcolor: 'background.default', borderRadius: 4, p: 2 }}>
-                {/* Split text column */}
+                {/* chunk text */}
                 <Box sx={{ flex: 2, minWidth: 0, p: 2 }}>
                     <ChunkWords
                         words={words}
@@ -65,7 +65,7 @@ const Chunk = memo(function Chunk({
                         handleRemoveChunk={handleRemoveChunk}
                     />
                 </Box>
-                {/* Details column */}
+                {/* Chunk details column */}
                 <Box sx={{ flex: 1, minWidth: 220, maxWidth: 400, width: 350, display: 'flex', flexDirection: 'column', gap: 2, zIndex: 10 }}>
                     <TextField
                         label="Summary"
@@ -115,7 +115,7 @@ const Chunk = memo(function Chunk({
                             }
                         }}
                     />
-                    <SectionAiSummary
+                    <ChunkAiSummary
                         sectionContent={chunk.content}
                         aiSummary={chunk.aiSummary}
                         onAISummaryUpdate={handleAISummaryUpdate}
