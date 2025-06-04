@@ -96,38 +96,38 @@ class WordLookupResponse(SQLModel):
     definition: str
     
 # --- Generic Response Schemas ---
-class CreateSuccessResponse(BaseModel):
+class CreateSuccessResponse(SQLModel):
     success: bool
     id: int
     title: str
 
 # generic response for listing items (GET requests) (inner) 
-class GetResponse(BaseModel):
+class GetResponse(SQLModel):
     id: int
     title: str
 
 # generic response for listing items (GET requests) (outer) 
-class GetListResponse(BaseModel):
+class GetListResponse(SQLModel):
     data: List[GetResponse]
 
-
-class SourceDocInfoAiResponse(BaseModel):
+# AI Response Schemas
+class SourceDocInfoAiResponse(SQLModel):
     summary: str
     characters: list[str]
     locations: list[str]
     themes: list[str]
     symbols: list[str]
 
-class ShortSummaryRequest(BaseModel):
+class SourceDocInfoRequest(SQLModel):
     prompt: str
+    id: int | None = None
 
-class ShortSummaryResponse(BaseModel):
-    result: str
-
-class SourceDocInfoRequest(BaseModel):
-    prompt: str
-    title: str | None = None
-
-class SourceDocInfoResponse(BaseModel):
+class SourceDocInfoResponse(SQLModel):
     result: SourceDocInfoAiResponse
+
+class ChunkAiSummaryRequest(SQLModel):
+    prompt: str
+
+class ChunkAiSummaryResponse(SQLModel):
+    result: str
 

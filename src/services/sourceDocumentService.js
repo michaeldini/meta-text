@@ -61,11 +61,11 @@ export async function updateSourceDocument(docId, {
     return data;
 }
 
-export async function generateSourceDocInfo(title, text) {
+export async function generateSourceDocInfo(id, text) {
     const res = await fetch("/api/source-doc-info", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: text, title }),
+        body: JSON.stringify({ prompt: text, id }),
     });
     const data = await handleApiResponse(res, 'Summary failed');
     return data.result;

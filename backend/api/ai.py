@@ -2,10 +2,8 @@ from fastapi import APIRouter, HTTPException, Depends
 from backend.models import SourceDocument
 from backend.db import get_session
 import os
-import json
 from openai import OpenAI
-from sqlmodel import select
-from backend.models import SourceDocInfoAiResponse, ShortSummaryRequest, ShortSummaryResponse, SourceDocInfoRequest, SourceDocInfoResponse
+from backend.models import SourceDocInfoAiResponse, SourceDocInfoRequest, SourceDocInfoResponse, ChunkAiSummaryRequest, ChunkAiSummaryResponse
 
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -13,8 +11,8 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 
 router = APIRouter()
 
-@router.post("/ai-short-summary", response_model=ShortSummaryResponse)
-async def generate_short_summary(request: ShortSummaryRequest):
+@router.post("/generate-chunk-ai-summary", response_model=ChunkAiSummaryResponse)
+async def generate_chunk_ai_summary(request: ChunkAiSummaryRequest):
     prompt = request.prompt
     if not prompt:
         raise HTTPException(status_code=400, detail="Missing prompt.")
@@ -26,14 +24,14 @@ async def generate_short_summary(request: ShortSummaryRequest):
             max_output_tokens=1024,
         )
         ai_text = response.output_text
-        return ShortSummaryResponse(result=ai_text)
+        return ChunkAiSummaryResponse(result=ai_text)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")
 
 @router.post("/source-doc-info", response_model=SourceDocInfoResponse)
 async def source_doc_info(request: SourceDocInfoRequest, session=Depends(get_session)):
     prompt = request.prompt
-    title = request.title
+    doc_id = request.id
     if not prompt:
         raise HTTPException(status_code=400, detail="Missing prompt.")
     try:
@@ -49,8 +47,8 @@ async def source_doc_info(request: SourceDocInfoRequest, session=Depends(get_ses
         ai_data = response.output_parsed
         if ai_data is None:
             raise HTTPException(status_code=500, detail="Failed to parse AI response.")
-        if title:
-            doc = session.exec(select(SourceDocument).where(SourceDocument.title == title)).first()
+        if doc_id is not None:
+            doc = session.get(SourceDocument, doc_id)
             if not doc:
                 raise HTTPException(status_code=404, detail="Source document not found.")
             doc.summary = ai_data.summary

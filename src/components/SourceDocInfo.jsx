@@ -19,7 +19,7 @@ export default function SourceDocInfo({ doc, summaryError, onInfoUpdate }) {
         setLoading(true);
         setError('');
         try {
-            const aiInfo = await generateSourceDocInfo(doc.title, doc.text);
+            const aiInfo = await generateSourceDocInfo(doc.id, doc.text); // use id instead of title
             // aiInfo: { summary, characters, locations, themes, symbols }
             if (onInfoUpdate) onInfoUpdate(aiInfo);
         } catch (e) {

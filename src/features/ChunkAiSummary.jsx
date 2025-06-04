@@ -10,7 +10,7 @@ function ChunkAiSummary({ sectionContent, aiSummary, onAISummaryUpdate }) {
         setLoading(true);
         setError('');
         try {
-            const res = await fetch('/api/ai-short-summary', {
+            const res = await fetch('/api/generate-chunk-ai-summary', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ prompt: sectionContent })
