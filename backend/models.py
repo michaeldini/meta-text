@@ -1,6 +1,6 @@
 from typing import Optional, List
 from sqlmodel import SQLModel, Field, Relationship
-
+from pydantic import BaseModel
 # --- Base Schemas ---
 class SourceDocumentBase(SQLModel):
     title: str
@@ -111,3 +111,53 @@ class WordLookup(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     word: str = Field(index=True, unique=True)
     definition: str
+
+
+class WordLookupResponse(SQLModel):
+    id: int | None = None
+    word: str
+    definition: str
+    
+
+class SectionSchema(BaseModel):
+    content: str
+    notes: str = ""
+    summary: str = ""
+    aiSummary: str = ""
+    aiImageUrl: str = ""
+
+# generic response for creation success
+class CreateSuccessResponse(BaseModel):
+    success: bool
+    id: int
+    title: str
+
+# generic response for listing items (GET requests) (inner) 
+class GetResponse(BaseModel):
+    id: int
+    title: str
+
+# generic response for listing items (GET requests) (outer) 
+class GetListResponse(BaseModel):
+    data: List[GetResponse]
+    
+class CreateMetaTextRequest(BaseModel):
+    sourceDocId: int
+    title: str
+
+class UpdateMetaTextRequest(BaseModel):
+    sections: List[SectionSchema]
+
+class MetaTextResponse(BaseModel):
+    id: int
+    title: str
+    text: str
+    chunks: List[str] = Field(default_factory=list)
+    source_document_id: int
+
+class MetaTextListItem(BaseModel):
+    id: int
+    title: str
+
+class MetaTextListResponse(BaseModel):
+    meta_texts: List[MetaTextListItem]

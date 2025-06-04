@@ -2,13 +2,13 @@ from fastapi import APIRouter, HTTPException, Depends
 from sqlmodel import Session, select
 from backend.db import get_session
 from backend import models
-from backend.api.schemas import word_lookup
+from backend.models import WordLookupResponse
 from freedictionaryapi.clients.async_client import AsyncDictionaryApiClient
 from freedictionaryapi.errors import DictionaryApiError
 
 router = APIRouter()
 
-@router.post("/lookup", response_model=word_lookup.WordLookupResponse)
+@router.post("/lookup", response_model=WordLookupResponse, name="lookup_word")
 async def lookup_word(word: str, session: Session = Depends(get_session)):
     # Check if word already exists in DB
     statement = select(models.WordLookup).where(models.WordLookup.word == word)

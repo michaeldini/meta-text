@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import select, Session
-from backend.models import MetaText, SourceDocument, Chunk
 from backend.db import get_session
-from backend.api.schemas.meta_text import (
-     CreateMetaTextRequest, CreateSuccessResponse, GetListResponse, GetResponse, MetaTextResponse
+from backend.models import (
+     CreateMetaTextRequest, CreateSuccessResponse, GetListResponse, GetResponse, MetaTextResponse,  MetaText, SourceDocument, Chunk
 )
 
 
@@ -75,12 +74,6 @@ def get_meta_text(meta_text_id: int, session: Session = Depends(get_session)):
 
 @router.get("/metatext/{meta_text_id}/chunks")
 def get_chunks_api(meta_text_id: int, session: Session = Depends(get_session)):
-    chunks = session.exec(
-        select(Chunk).where(Chunk.meta_text_id == meta_text_id).order_by(getattr(Chunk, "position"))
-    ).all()
-    return [chunk.model_dump() for chunk in chunks]
-
-def get_chunks(meta_text_id: int, session: Session = Depends(get_session)):
     chunks = session.exec(
         select(Chunk).where(Chunk.meta_text_id == meta_text_id).order_by(getattr(Chunk, "position"))
     ).all()
