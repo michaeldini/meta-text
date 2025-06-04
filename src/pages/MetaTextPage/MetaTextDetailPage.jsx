@@ -4,9 +4,8 @@ import { fetchMetaText } from '../../services/metaTextService';
 import { Typography, CircularProgress, Box, Alert, Container } from '@mui/material';
 import SourceDocInfo from '../../components/SourceDocInfo';
 import { fetchSourceDocument } from '../../services/sourceDocumentService';
-import AutoSaveControl from '../../components/AutoSaveControl';
 import Chunks from '../../features/Chunks';
-import { useChunkHandlers } from '../../hooks/useMetaTextSectionHandlers';
+import { useChunkHandlers } from '../../hooks/useChunkHandlers';
 
 export default function MetaTextDetailPage() {
     const { id } = useParams();
@@ -20,8 +19,7 @@ export default function MetaTextDetailPage() {
     const {
         handleWordClick,
         handleRemoveChunk,
-        handleChunkFieldChange,
-        saveAll
+        handleChunkFieldChange
     } = useChunkHandlers(id, setChunks);
 
     useEffect(() => {
@@ -85,16 +83,6 @@ export default function MetaTextDetailPage() {
             ) : sourceDoc ? (
                 <SourceDocInfo doc={sourceDoc} />
             ) : null}
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 2 }}>
-                <AutoSaveControl
-                    value={chunks}
-                    delay={1000 * 60 * 2} // 2 minutes
-                    onSave={async () => {
-                        await saveAll(chunks);
-                    }}
-                    deps={[id, chunks]}
-                />
-            </Box>
             <Chunks
                 chunks={chunks}
                 handleWordClick={handleWordClick}

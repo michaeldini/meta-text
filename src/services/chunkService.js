@@ -16,12 +16,12 @@ export const combineChunks = async (firstChunkId, secondChunkId) => {
     return handleApiResponse(res);
 };
 
-export const updateChunk = async (chunkId, text) => {
-    // Backend expects a plain string, not an object
+export const updateChunk = async (chunkId, chunkData) => {
+    // Backend expects a full chunk object (text, summary, notes, aiSummary, etc)
     const res = await fetch(`/api/chunk/${chunkId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(text) // send as a plain string
+        body: JSON.stringify(chunkData)
     });
     return handleApiResponse(res);
 };

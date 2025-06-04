@@ -23,9 +23,8 @@ export async function createSourceDocument(title, file) {
         method: 'POST',
         body: formData,
     });
-    const data = await handleApiResponse(res, 'Upload failed.');
-    // Backend returns { success, id, title }
-    return { id: data.id, title: data.title };
+    // Return the full document object from the backend
+    return handleApiResponse(res, 'Upload failed.');
 }
 
 export async function deleteSourceDocument(docId) {
@@ -62,13 +61,6 @@ export async function updateSourceDocument(docId, {
     return data;
 }
 
-
-export async function fetchAiSummary(title) {
-    const res = await fetch(`/api/ai-summary/${encodeURIComponent(title)}`);
-    const data = await handleApiResponse(res, 'Failed to fetch AI summary');
-    return data && data.result ? data.result : null;
-}
-
 export async function generateSourceDocInfo(title, text) {
     const res = await fetch("/api/source-doc-info", {
         method: "POST",
@@ -77,11 +69,4 @@ export async function generateSourceDocInfo(title, text) {
     });
     const data = await handleApiResponse(res, 'Summary failed');
     return data.result;
-}
-
-
-export async function fetchSourceDocumentsWithDetails() {
-    const res = await fetch('/api/source-documents-with-details');
-    const data = await handleApiResponse(res, 'Failed to fetch source documents with details');
-    return data.source_documents || [];
 }

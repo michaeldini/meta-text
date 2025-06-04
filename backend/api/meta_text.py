@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Body
 from sqlmodel import select, Session
 from backend.db import get_session
 from backend.models import (
@@ -58,17 +58,16 @@ def get_meta_text(meta_text_id: int, session: Session = Depends(get_session)):
     meta_text = session.get(MetaText, meta_text_id)
     if not meta_text:
         raise HTTPException(status_code=404, detail="Meta-text not found.")
-    
     # Fetch all chunks for this meta-text
     chunks = session.exec(
         select(Chunk).where(Chunk.meta_text_id == meta_text.id).order_by(getattr(Chunk, "position"))
     ).all()
-    
     return MetaTextResponse(
         id=meta_text.id,
         title=meta_text.title,
         text=meta_text.text,
-        chunks=[chunk.text for chunk in chunks],
+        # Return full chunk dicts, not just text
+        chunks=[chunk.model_dump() for chunk in chunks],
         source_document_id=meta_text.source_document_id
     )
 
@@ -129,11 +128,19 @@ def combine_chunks(first_chunk_id: int, second_chunk_id: int, session: Session =
     return {"chunk": first.model_dump()}
 
 @router.put("/chunk/{chunk_id}")
-def update_chunk(chunk_id: int, text: str, session: Session = Depends(get_session)):
+def update_chunk(chunk_id: int, chunk_data: dict = Body(...), session: Session = Depends(get_session)):
     chunk = session.get(Chunk, chunk_id)
     if not chunk:
         raise HTTPException(status_code=404, detail="Chunk not found")
-    chunk.text = text
+    # Update all editable fields
+    if 'text' in chunk_data:
+        chunk.text = chunk_data['text']
+    if 'summary' in chunk_data:
+        chunk.summary = chunk_data['summary']
+    if 'notes' in chunk_data:
+        chunk.notes = chunk_data['notes']
+    if 'aiSummary' in chunk_data:
+        chunk.aiSummary = chunk_data['aiSummary']
     session.add(chunk)
     session.commit()
     session.refresh(chunk)

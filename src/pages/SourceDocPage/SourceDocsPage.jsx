@@ -6,8 +6,7 @@ import { createSourceDocument, deleteSourceDocument } from '../../services/sourc
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
 
 export default function SourceDocsPage() {
-    const { docs: initialDocs, loading, error } = useSourceDocuments();
-    const [docs, setDocs] = useState(initialDocs);
+    const { docs: initialDocs = [], loading, error, refresh } = useSourceDocuments();
     const [search, setSearch] = useState('');
     const [file, setFile] = useState(null);
     const [uploadTitle, setUploadTitle] = useState('');
@@ -20,19 +19,14 @@ export default function SourceDocsPage() {
     const [pendingDeleteId, setPendingDeleteId] = useState(null);
     const navigate = useNavigate();
 
-    // Keep docs in sync with hook if it changes (e.g. on mount)
-    React.useEffect(() => {
-        setDocs(initialDocs);
-    }, [initialDocs]);
-
     // Create options for the search bar from document titles
-    const docOptions = useMemo(() => docs.map(doc => doc.title), [docs]);
+    const docOptions = useMemo(() => initialDocs.map(doc => doc.title), [initialDocs]);
 
     // Filter documents based on search input
     const filteredDocs = useMemo(() => {
-        if (!search) return docs;
-        return docs.filter(doc => (doc.title || '').toLowerCase().includes(search.toLowerCase()));
-    }, [docs, search]);
+        if (!search) return initialDocs;
+        return initialDocs.filter(doc => (doc.title || '').toLowerCase().includes(search.toLowerCase()));
+    }, [initialDocs, search]);
 
     // Handle file upload and title input changes
     const handleFileChange = e => {
@@ -49,11 +43,11 @@ export default function SourceDocsPage() {
         setUploadSuccess('');
         setUploadLoading(true);
         try {
-            const newDoc = await createSourceDocument(uploadTitle, file);
+            await createSourceDocument(uploadTitle, file);
             setUploadSuccess('Upload successful!');
             setFile(null);
             setUploadTitle('');
-            setDocs(prev => [...prev, newDoc]);
+            refresh(); // Refresh the docs list from backend
         } catch (err) {
             // Handle duplicate title error (409)
             if (err.message === 'Title already exists.') {
@@ -73,7 +67,7 @@ export default function SourceDocsPage() {
         try {
             if (!docId) throw new Error('No document ID provided for deletion.');
             await deleteSourceDocument(docId);
-            setDocs(prev => prev.filter(doc => doc.id !== docId));
+            refresh(); // Refresh the docs list from backend
         } catch (e) {
             // Handle cannot delete if MetaText exists (400)
             if (e.message.includes('MetaText records exist')) {

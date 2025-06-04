@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Pagination } from '@mui/material';
-import Chunk from './MetaTextSection';
+import Chunk from './Chunk';
 
 export default function Chunks({ chunks, handleWordClick, handleRemoveSection, handleSectionFieldChange }) {
     // Defensive: always treat chunks as array

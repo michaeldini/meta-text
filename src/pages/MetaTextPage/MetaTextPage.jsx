@@ -8,7 +8,7 @@ import EntityManagerPage from '../../components/EntityManagerPage';
 export default function MetaTextPage() {
     const [createSuccess, setCreateSuccess] = useState('');
     const { docs: sourceDocs, loading: sourceDocsLoading, error: sourceDocsError } = useSourceDocuments();
-    const { metaTexts, metaTextsLoading, metaTextsError } = useMetaTexts([createSuccess]);
+    const { data: metaTexts, loading: metaTextsLoading, error: metaTextsError } = useMetaTexts([createSuccess]);
     const [search, setSearch] = useState('');
     const [deleteLoading, setDeleteLoading] = useState({});
     const [deleteError, setDeleteError] = useState({});

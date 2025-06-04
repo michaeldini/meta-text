@@ -1,7 +1,7 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { Box, TextField, Paper } from '@mui/material';
 import ChunkWords from './ChunkWords';
-import SectionAiSummary from '../features/SectionAiSummary';
+import SectionAiSummary from './SectionAiSummary';
 
 const Chunk = memo(function Chunk({
     chunk,
@@ -12,6 +12,39 @@ const Chunk = memo(function Chunk({
 }) {
     const words = chunk.content ? chunk.content.split(/\s+/) : [];
     const handleAISummaryUpdate = (newSummary) => handleChunkFieldChange(chunkIdx, 'aiSummary', newSummary);
+
+    // Local state for summary and notes for smooth typing
+    const [summary, setSummary] = useState(chunk.summary || '');
+    const [notes, setNotes] = useState(chunk.notes || '');
+
+    // Keep local state in sync with chunk prop changes
+    useEffect(() => {
+        setSummary(chunk.summary || '');
+    }, [chunk.summary]);
+    useEffect(() => {
+        setNotes(chunk.notes || '');
+    }, [chunk.notes]);
+
+    // Debounce save for summary
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            if (summary !== chunk.summary) {
+                handleChunkFieldChange(chunkIdx, 'summary', summary);
+            }
+        }, 800);
+        return () => clearTimeout(handler);
+    }, [summary, chunk.summary, chunkIdx, handleChunkFieldChange]);
+
+    // Debounce save for notes
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            if (notes !== chunk.notes) {
+                handleChunkFieldChange(chunkIdx, 'notes', notes);
+            }
+        }, 800);
+        return () => clearTimeout(handler);
+    }, [notes, chunk.notes, chunkIdx, handleChunkFieldChange]);
+
     return (
         <Paper
             sx={{
@@ -36,8 +69,9 @@ const Chunk = memo(function Chunk({
                 <Box sx={{ flex: 1, minWidth: 220, maxWidth: 400, width: 350, display: 'flex', flexDirection: 'column', gap: 2, zIndex: 10 }}>
                     <TextField
                         label="Summary"
-                        value={chunk.summary || ''}
-                        onChange={e => handleChunkFieldChange(chunkIdx, 'summary', e.target.value)}
+                        value={summary}
+                        onChange={e => setSummary(e.target.value)}
+                        onBlur={() => handleChunkFieldChange(chunkIdx, 'summary', summary)}
                         multiline
                         minRows={2}
                         variant="outlined"
@@ -59,8 +93,9 @@ const Chunk = memo(function Chunk({
                     />
                     <TextField
                         label="Notes"
-                        value={chunk.notes || ''}
-                        onChange={e => handleChunkFieldChange(chunkIdx, 'notes', e.target.value)}
+                        value={notes}
+                        onChange={e => setNotes(e.target.value)}
+                        onBlur={() => handleChunkFieldChange(chunkIdx, 'notes', notes)}
                         multiline
                         minRows={2}
                         variant="outlined"

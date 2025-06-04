@@ -1,27 +1,22 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { fetchSourceDocuments } from "../services/sourceDocumentService";
 
-export function useSourceDocuments() {
+export function useSourceDocuments(deps = []) {
     const [docs, setDocs] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState("");
+    const [refreshIndex, setRefreshIndex] = useState(0);
+
+    const refresh = useCallback(() => setRefreshIndex(i => i + 1), []);
 
     useEffect(() => {
-        async function loadDocs() {
-            setLoading(true);
-            setError(null);
-            try {
-                // Service returns an array of docs
-                const data = await fetchSourceDocuments();
-                setDocs(data);
-            } catch (e) {
-                setError(e.message);
-            } finally {
-                setLoading(false);
-            }
-        }
-        loadDocs();
-    }, []);
+        setLoading(true);
+        setError("");
+        fetchSourceDocuments()
+            .then(docs => setDocs(docs))
+            .catch(e => setError(e.message))
+            .finally(() => setLoading(false));
+    }, [...deps, refreshIndex]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    return { docs, loading, error };
+    return { docs, loading, error, refresh };
 }

@@ -152,7 +152,7 @@ class MetaTextResponse(BaseModel):
     id: int
     title: str
     text: str
-    chunks: List[str] = Field(default_factory=list)
+    chunks: list[dict] = Field(default_factory=list)
     source_document_id: int
 
 class MetaTextListItem(BaseModel):
