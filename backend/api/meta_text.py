@@ -81,11 +81,11 @@ def delete_meta_text(meta_text_id: int, session: Session = Depends(get_session))
     return {"success": True, "id": meta_text_id, "title": title}
 
 @router.get("/metatext/{meta_text_id}/chunks")
-def get_chunks_api(meta_text_id: int, session: Session = Depends(get_session)):
+def get_chunks_api(meta_text_id: int, session: Session = Depends(get_session)) -> list[Chunk]:
     chunks = session.exec(
         select(Chunk).where(Chunk.meta_text_id == meta_text_id).order_by(getattr(Chunk, "position"))
     ).all()
-    return [chunk.model_dump() for chunk in chunks]
+    return chunks # type: ignore
 
 @router.post("/chunk/{chunk_id}/split")
 def split_chunk(chunk_id: int, word_index: int, session: Session = Depends(get_session)):
