@@ -83,3 +83,20 @@ def test_get_meta_text_not_found(client: TestClient):
     response = client.get("/api/meta-text/9999")
     assert response.status_code == 404
     assert response.json()["detail"] == "Meta-text not found."
+
+def test_delete_meta_text_success(client: TestClient, session):
+    doc = create_source_document(session)
+    # Create a meta-text
+    post_resp = client.post("/api/meta-text", json={"sourceDocId": doc.id, "title": "Meta Delete"})
+    meta_id = post_resp.json()["id"]
+    # Delete the meta-text
+    del_resp = client.delete(f"/api/meta-text/{meta_id}")
+    assert del_resp.status_code == 200
+    del_data = del_resp.json()
+    assert del_data["success"] is True
+    assert del_data["id"] == meta_id
+    assert del_data["title"] == "Meta Delete"
+    # Ensure it is deleted
+    get_resp = client.get(f"/api/meta-text/{meta_id}")
+    assert get_resp.status_code == 404
+    assert get_resp.json()["detail"] == "Meta-text not found."

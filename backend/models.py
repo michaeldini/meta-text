@@ -64,7 +64,7 @@ class MetaTextBase(SQLModel):
 
 class MetaText(MetaTextBase, table=True):
     id: int = Field(default=None, primary_key=True)
-    chunks: List["Chunk"] = Relationship(back_populates="meta_text")
+    chunks: List["Chunk"] = Relationship(back_populates="meta_text", cascade_delete=True)
     source_document: Optional[SourceDocument] = Relationship(back_populates="meta_texts")
 
 

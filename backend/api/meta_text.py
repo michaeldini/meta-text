@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Body
-from sqlmodel import select, Session
+from sqlmodel import select, Session, delete
 from backend.db import get_session
 from backend.models import (
      CreateMetaTextRequest, CreateSuccessResponse, GetListResponse, GetResponse, MetaTextResponse,  MetaText, SourceDocument, Chunk
@@ -70,6 +70,16 @@ def get_meta_text(meta_text_id: int, session: Session = Depends(get_session)):
         chunks=[chunk.model_dump() for chunk in chunks],
         source_document_id=meta_text.source_document_id
     )
+    
+@router.delete("/meta-text/{meta_text_id}", name="delete_meta_text")
+def delete_meta_text(meta_text_id: int, session: Session = Depends(get_session)):
+    meta_text = session.get(MetaText, meta_text_id)
+    if not meta_text:
+        raise HTTPException(status_code=404, detail="Meta-text not found.")
+    title = meta_text.title # Store title for response
+    session.delete(meta_text)
+    session.commit()
+    return {"success": True, "id": meta_text_id, "title": title}
 
 @router.get("/metatext/{meta_text_id}/chunks")
 def get_chunks_api(meta_text_id: int, session: Session = Depends(get_session)):
