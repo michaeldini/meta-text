@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Form, File, UploadFile
 from sqlmodel import select
-from sqlalchemy.exc import IntegrityError
 from backend.models import (
-    SourceDocument, MetaText, SourceDocumentRead, SourceDocumentUpdate
+    SourceDocument, MetaText, SourceDocumentRead
 )
 from backend.db import get_session
 from typing import List
@@ -71,37 +70,3 @@ def delete_source_document(doc_id: int, session=Depends(get_session)) -> dict:
     session.delete(doc)
     session.commit()
     return {"success": True}
-
-@router.patch("/source-documents/{doc_id}",name="update_source_document")
-def update_source_document(
-    doc_id: int,
-    update: SourceDocumentUpdate = Depends(SourceDocumentUpdate.as_form()),
-    session=Depends(get_session),
-) -> SourceDocumentRead:
-    """
-    Update fields of a source document.
-    """
-    doc = session.get(SourceDocument, doc_id)
-    if not doc:
-        raise HTTPException(status_code=404, detail="Source document not found.")
-    for field, value in update.model_dump(exclude_unset=True).items():
-        if value is not None:
-            setattr(doc, field, value)
-    try:
-        session.add(doc)
-        session.commit()
-        session.refresh(doc)
-        return doc
-    except IntegrityError as e:
-        session.rollback()
-        # Restore original logic: check for UNIQUE constraint, else 500
-        if (
-            'UNIQUE constraint' in str(e)
-            or (hasattr(e, 'orig') and 'UNIQUE constraint' in str(e.orig))
-            or (hasattr(e, 'args') and any('UNIQUE constraint' in str(arg) for arg in e.args))
-        ):
-            raise HTTPException(status_code=409, detail="Title already exists.")
-        raise HTTPException(status_code=500, detail="Failed to update document.")
-    except Exception:
-        session.rollback()
-        raise HTTPException(status_code=500, detail="Failed to update document.")

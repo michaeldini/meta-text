@@ -34,33 +34,6 @@ export async function deleteSourceDocument(docId) {
     return data;
 }
 
-export async function updateSourceDocument(docId, {
-    title,
-    text,
-    summary,
-    characters,
-    locations,
-    themes,
-    symbols
-}) {
-    const payload = {};
-    if (title !== undefined) payload.title = title;
-    if (text !== undefined) payload.text = text;
-    if (summary !== undefined) payload.summary = summary;
-    if (characters !== undefined) payload.characters = characters;
-    if (locations !== undefined) payload.locations = locations;
-    if (themes !== undefined) payload.themes = themes;
-    if (symbols !== undefined) payload.symbols = symbols;
-    const res = await fetch(`/api/source-documents/${encodeURIComponent(docId)}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-    });
-    const data = await handleApiResponse(res, 'Update failed.');
-    // Backend returns { success, id }
-    return data;
-}
-
 export async function generateSourceDocInfo(id, text) {
     const res = await fetch("/api/source-doc-info", {
         method: "POST",
