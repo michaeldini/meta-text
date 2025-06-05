@@ -15,7 +15,6 @@ export default function MetaTextDetailPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [sourceDoc, setSourceDoc] = useState(null);
-    const [sourceDocLoading, setSourceDocLoading] = useState(false);
     const [sourceDocError, setSourceDocError] = useState('');
     const [chunks, setChunks] = useState([]);
     const {
@@ -26,34 +25,45 @@ export default function MetaTextDetailPage() {
     } = useChunkHandlers(id, setChunks);
 
     useEffect(() => {
+        let isMounted = true;
         setLoading(true);
         setError('');
+        setSourceDocError('');
+        setMetaText(null);
+        setSourceDoc(null);
+        setChunks([]);
         fetchMetaText(id)
-            .then(data => {
+            .then(async data => {
+                if (!isMounted) return;
                 setMetaText(data);
                 if (data.source_document_id) {
-                    setSourceDocLoading(true);
-                    setSourceDocError('');
-                    fetchSourceDocumentInfo(data.source_document_id)
-                        .then(doc => setSourceDoc(doc))
-                        .catch(e => setSourceDocError(e.message || 'Failed to load source document.'))
-                        .finally(() => setSourceDocLoading(false));
-                    fetchChunks(data.id)
-                        .then(data => {
-                            setChunks(data.map(chunk => ({
-                                ...chunk,
-                                content: chunk.text // Ensure content is available for Chunks component
-                            })));
-                        })
-                        .catch(e => setError(e.message || 'Failed to load chunks.'));
-                } else {
-                    setSourceDoc(null);
+                    try {
+                        const [doc, chunkData] = await Promise.all([
+                            fetchSourceDocumentInfo(data.source_document_id),
+                            fetchChunks(data.id)
+                        ]);
+                        if (!isMounted) return;
+                        setSourceDoc(doc);
+                        setChunks(chunkData.map(chunk => ({
+                            ...chunk,
+                            content: chunk.text
+                        })));
+                    } catch (e) {
+                        if (!isMounted) return;
+                        setSourceDocError(e.message || 'Failed to load source document or chunks.');
+                    }
                 }
             })
-            .catch(e => setError(e.message || 'Failed to load meta text.'))
-            .finally(() => setLoading(false));
+            .catch(e => {
+                if (!isMounted) return;
+                setError(e.message || 'Failed to load meta text.');
+            })
+            .finally(() => {
+                if (!isMounted) return;
+                setLoading(false);
+            });
+        return () => { isMounted = false; };
     }, [id]);
-
 
     if (loading) {
         return (
@@ -77,12 +87,7 @@ export default function MetaTextDetailPage() {
         <Fade in={true} key={id} timeout={750}>
             <Container maxWidth="lg" sx={{ mt: 4, mb: 6 }}>
                 <Typography variant="h4" gutterBottom>{metaText?.title || id}</Typography>
-                {sourceDocLoading ? (
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                        <CircularProgress size={20} sx={{ mr: 2 }} />
-                        <Typography variant="body2">Loading source document...</Typography>
-                    </Box>
-                ) : sourceDocError ? (
+                {sourceDocError ? (
                     <Alert severity="error" sx={{ mb: 2 }}>{sourceDocError}</Alert>
                 ) : sourceDoc ? (
                     <SourceDocInfo doc={sourceDoc} />
