@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Pagination } from '@mui/material';
 import Chunk from './Chunk';
 
-export default function Chunks({ chunks, handleWordClick, handleRemoveSection, handleSectionFieldChange }) {
+export default function Chunks({ chunks, handleWordClick, handleRemoveChunk, handleChunkFieldChange }) {
     // Defensive: always treat chunks as array
     const safeChunks = Array.isArray(chunks) ? chunks : [];
     const [page, setPage] = useState(1);
@@ -24,8 +24,8 @@ export default function Chunks({ chunks, handleWordClick, handleRemoveSection, h
                     chunk={chunk}
                     chunkIdx={startIdx + chunkIdx}
                     handleWordClick={handleWordClick}
-                    handleRemoveChunk={handleRemoveSection}
-                    handleChunkFieldChange={handleSectionFieldChange}
+                    handleRemoveChunk={handleRemoveChunk}
+                    handleChunkFieldChange={handleChunkFieldChange}
                 />
             ))}
             {pageCount > 1 && (

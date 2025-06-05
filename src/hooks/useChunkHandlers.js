@@ -25,22 +25,8 @@ export function useChunkHandlers(metaTextId, setChunks) {
         setChunks(prevChunks => {
             const currentChunk = prevChunks[chunkIdx];
             if (!currentChunk || !currentChunk.id) return prevChunks;
-            // Optimistically update UI or show loading if desired
             return prevChunks;
         });
-        // Get the chunk id directly from the latest state (not inside setChunks)
-        // You should pass the current chunks as an argument to this handler for reliability
-        // For now, let's assume you can access the latest chunks via a closure or prop
-        // If not, refactor the component to pass the current chunks to this handler
-        // Example fix:
-        // (Assuming you can pass the current chunks as an argument)
-        // const handleWordClick = useCallback(async (chunkIdx, wordIdx, chunks) => {
-        //     const chunkId = chunks[chunkIdx]?.id;
-        //     if (chunkId == null) return;
-        //     ...
-        // }, [split, fetchChunks, setChunks]);
-        //
-        // For now, fetch the latest chunks after the optimistic update
         const updatedChunks = await fetchChunks();
         const chunkId = updatedChunks[chunkIdx]?.id;
         if (chunkId == null) return;
@@ -87,20 +73,11 @@ export function useChunkHandlers(metaTextId, setChunks) {
         });
     }, [setChunks, update]);
 
-    // Save all changed chunks to backend
-    const saveAll = useCallback(async (chunks) => {
-        // Save each chunk's text (future: also notes, summary, etc.)
-        await Promise.all(
-            chunks.map(chunk => update(chunk.id, chunk.content))
-        );
-        const updated = await fetchChunks();
-        setChunks(updated.map(chunk => ({ ...chunk, content: chunk.text })));
-    }, [update, fetchChunks, setChunks]);
 
     return {
         handleWordClick,
         handleRemoveChunk,
         handleChunkFieldChange,
-        saveAll
+
     };
 }

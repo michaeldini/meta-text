@@ -5,7 +5,6 @@ import { Typography, CircularProgress, Box, Alert, Container, Fade } from '@mui/
 import SourceDocInfo from '../../components/SourceDocInfo';
 import { fetchSourceDocumentInfo } from '../../services/sourceDocumentService';
 import { fetchChunks } from '../../services/chunkService';
-import AutoSaveControl from '../../components/AutoSaveControl';
 import Chunks from '../../features/Chunks';
 import { useChunkHandlers } from '../../hooks/useChunkHandlers';
 
@@ -13,22 +12,19 @@ export default function MetaTextDetailPage() {
     const { id } = useParams();
     const [metaText, setMetaText] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
+    const [errors, setErrors] = useState({ metaText: '', sourceDoc: '' });
     const [sourceDoc, setSourceDoc] = useState(null);
-    const [sourceDocError, setSourceDocError] = useState('');
     const [chunks, setChunks] = useState([]);
     const {
         handleWordClick,
         handleRemoveChunk,
         handleChunkFieldChange,
-        saveAll
     } = useChunkHandlers(id, setChunks);
 
     useEffect(() => {
         let isMounted = true;
         setLoading(true);
-        setError('');
-        setSourceDocError('');
+        setErrors({ metaText: '', sourceDoc: '' });
         setMetaText(null);
         setSourceDoc(null);
         setChunks([]);
@@ -50,13 +46,13 @@ export default function MetaTextDetailPage() {
                         })));
                     } catch (e) {
                         if (!isMounted) return;
-                        setSourceDocError(e.message || 'Failed to load source document or chunks.');
+                        setErrors(prev => ({ ...prev, sourceDoc: e.message || 'Failed to load source document or chunks.' }));
                     }
                 }
             })
             .catch(e => {
                 if (!isMounted) return;
-                setError(e.message || 'Failed to load meta text.');
+                setErrors(prev => ({ ...prev, metaText: e.message || 'Failed to load meta text.' }));
             })
             .finally(() => {
                 if (!isMounted) return;
@@ -64,6 +60,9 @@ export default function MetaTextDetailPage() {
             });
         return () => { isMounted = false; };
     }, [id]);
+
+    // Destructure metaText fields early for clarity
+    const title = metaText?.title;
 
     if (loading) {
         return (
@@ -75,38 +74,29 @@ export default function MetaTextDetailPage() {
             </Box>
         );
     }
-    if (error) {
+    if (errors.metaText) {
         return (
             <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
                 <Typography variant="h4" gutterBottom>Meta Text</Typography>
-                <Alert severity="error">{error}</Alert>
+                <Alert severity="error">{errors.metaText}</Alert>
             </Box>
         );
     }
     return (
         <Fade in={true} key={id} timeout={750}>
             <Container maxWidth="lg" sx={{ mt: 4, mb: 6 }}>
-                <Typography variant="h4" gutterBottom>{metaText?.title || id}</Typography>
-                {sourceDocError ? (
-                    <Alert severity="error" sx={{ mb: 2 }}>{sourceDocError}</Alert>
+                <Typography variant="h4" gutterBottom>{title || id}</Typography>
+                {errors.sourceDoc ? (
+                    <Alert severity="error" sx={{ mb: 2 }}>{errors.sourceDoc}</Alert>
                 ) : sourceDoc ? (
                     <SourceDocInfo doc={sourceDoc} />
                 ) : null}
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 2 }}>
-                    <AutoSaveControl
-                        value={chunks}
-                        delay={1000 * 60 * 2} // 2 minutes
-                        onSave={async () => {
-                            await saveAll(chunks);
-                        }}
-                        deps={[id, chunks]}
-                    />
-                </Box>
+
                 <Chunks
                     chunks={chunks}
                     handleWordClick={handleWordClick}
-                    handleRemoveSection={(chunkIdx) => handleRemoveChunk(chunkIdx, chunks)}
-                    handleSectionFieldChange={handleChunkFieldChange}
+                    handleRemoveChunk={(chunkIdx) => handleRemoveChunk(chunkIdx, chunks)}
+                    handleChunkFieldChange={handleChunkFieldChange}
                 />
             </Container>
         </Fade>
