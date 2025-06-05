@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchMetaText } from '../../services/metaTextService';
-import { Typography, CircularProgress, Box, Alert, Container } from '@mui/material';
+import { Typography, CircularProgress, Box, Alert, Container, Fade } from '@mui/material';
 import SourceDocInfo from '../../components/SourceDocInfo';
-import { fetchSourceDocument } from '../../services/sourceDocumentService';
+import { fetchSourceDocumentInfo } from '../../services/sourceDocumentService';
+import { fetchChunks } from '../../services/chunkService';
+import AutoSaveControl from '../../components/AutoSaveControl';
 import Chunks from '../../features/Chunks';
 import { useChunkHandlers } from '../../hooks/useChunkHandlers';
 
@@ -19,7 +21,8 @@ export default function MetaTextDetailPage() {
     const {
         handleWordClick,
         handleRemoveChunk,
-        handleChunkFieldChange
+        handleChunkFieldChange,
+        saveAll
     } = useChunkHandlers(id, setChunks);
 
     useEffect(() => {
@@ -28,22 +31,21 @@ export default function MetaTextDetailPage() {
         fetchMetaText(id)
             .then(data => {
                 setMetaText(data);
-                // Convert backend chunks (array of strings or objects) to chunk objects
-                const initialChunks = (data.chunks || []).map((chunk, idx) =>
-                    typeof chunk === 'object'
-                        ? { ...chunk, content: chunk.text }
-                        : { id: idx, content: chunk }
-                );
-                setChunks(initialChunks);
-                // Chunks are now provided by the backend as an array of strings in data.chunks
-                // Fetch source document if possible
                 if (data.source_document_id) {
                     setSourceDocLoading(true);
                     setSourceDocError('');
-                    fetchSourceDocument(data.source_document_id)
+                    fetchSourceDocumentInfo(data.source_document_id)
                         .then(doc => setSourceDoc(doc))
                         .catch(e => setSourceDocError(e.message || 'Failed to load source document.'))
                         .finally(() => setSourceDocLoading(false));
+                    fetchChunks(data.id)
+                        .then(data => {
+                            setChunks(data.map(chunk => ({
+                                ...chunk,
+                                content: chunk.text // Ensure content is available for Chunks component
+                            })));
+                        })
+                        .catch(e => setError(e.message || 'Failed to load chunks.'));
                 } else {
                     setSourceDoc(null);
                 }
@@ -51,6 +53,7 @@ export default function MetaTextDetailPage() {
             .catch(e => setError(e.message || 'Failed to load meta text.'))
             .finally(() => setLoading(false));
     }, [id]);
+
 
     if (loading) {
         return (
@@ -71,24 +74,36 @@ export default function MetaTextDetailPage() {
         );
     }
     return (
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 6 }}>
-            <Typography variant="h4" gutterBottom>{metaText?.title || id}</Typography>
-            {sourceDocLoading ? (
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                    <CircularProgress size={20} sx={{ mr: 2 }} />
-                    <Typography variant="body2">Loading source document...</Typography>
+        <Fade in={true} key={id} timeout={750}>
+            <Container maxWidth="lg" sx={{ mt: 4, mb: 6 }}>
+                <Typography variant="h4" gutterBottom>{metaText?.title || id}</Typography>
+                {sourceDocLoading ? (
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                        <CircularProgress size={20} sx={{ mr: 2 }} />
+                        <Typography variant="body2">Loading source document...</Typography>
+                    </Box>
+                ) : sourceDocError ? (
+                    <Alert severity="error" sx={{ mb: 2 }}>{sourceDocError}</Alert>
+                ) : sourceDoc ? (
+                    <SourceDocInfo doc={sourceDoc} />
+                ) : null}
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 2 }}>
+                    <AutoSaveControl
+                        value={chunks}
+                        delay={1000 * 60 * 2} // 2 minutes
+                        onSave={async () => {
+                            await saveAll(chunks);
+                        }}
+                        deps={[id, chunks]}
+                    />
                 </Box>
-            ) : sourceDocError ? (
-                <Alert severity="error" sx={{ mb: 2 }}>{sourceDocError}</Alert>
-            ) : sourceDoc ? (
-                <SourceDocInfo doc={sourceDoc} />
-            ) : null}
-            <Chunks
-                chunks={chunks}
-                handleWordClick={handleWordClick}
-                handleRemoveSection={(chunkIdx) => handleRemoveChunk(chunkIdx, chunks)}
-                handleSectionFieldChange={handleChunkFieldChange}
-            />
-        </Container>
+                <Chunks
+                    chunks={chunks}
+                    handleWordClick={handleWordClick}
+                    handleRemoveSection={(chunkIdx) => handleRemoveChunk(chunkIdx, chunks)}
+                    handleSectionFieldChange={handleChunkFieldChange}
+                />
+            </Container>
+        </Fade>
     );
 }

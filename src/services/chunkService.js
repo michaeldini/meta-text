@@ -1,6 +1,6 @@
 import handleApiResponse from '../utils/api';
 
-export const getChunks = async (metaTextId) => {
+export const fetchChunks = async (metaTextId) => {
     const res = await fetch(`/api/metatext/${metaTextId}/chunks`);
     return handleApiResponse(res);
 };

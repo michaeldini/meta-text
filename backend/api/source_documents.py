@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, Form, File, UploadFile
 from sqlmodel import select
 from backend.models import (
-    SourceDocument, MetaText, SourceDocumentListRead, SourceDocumentRead
+    SourceDocument, MetaText, SourceDocumentBase, SourceDocumentListRead, SourceDocumentRead
 )
 from backend.db import get_session
-from typing import List
+
 
 router = APIRouter()
 
@@ -55,6 +55,15 @@ def get_source_document(doc_id: int, session=Depends(get_session)) -> SourceDocu
     else:
         raise HTTPException(status_code=404, detail="Source document not found.")
 
+@router.get("/source-documents/{doc_id}/info", name="get_source_document_info")
+def get_source_document_info(doc_id: int, session=Depends(get_session)) -> SourceDocumentBase:
+    """
+    Retrieve basic info for a source document by ID.
+    """
+    doc = session.get(SourceDocument, doc_id)
+    if not doc:
+        raise HTTPException(status_code=404, detail="Source document not found.")
+    return doc
 
 @router.delete("/source-documents/{doc_id}", name="delete_source_document")
 def delete_source_document(doc_id: int, session=Depends(get_session)) -> dict:

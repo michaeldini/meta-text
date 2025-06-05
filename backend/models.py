@@ -35,21 +35,13 @@ class MetaText(MetaTextBase, table=True):
     chunks: List["Chunk"] = Relationship(back_populates="meta_text", cascade_delete=True)
     source_document: Optional[SourceDocument] = Relationship(back_populates="meta_texts")
 
-class MetaTextListRead(MetaTextBase):
+class MetaTextRead(MetaTextBase):
     id: int
-    text: str
-
-
-class MetaTextRead(BaseModel):
-    id: int
-    title: str
-    text: str
-    chunks: list[dict] = Field(default_factory=list)
-    source_document_id: int
 
 class CreateMetaTextRequest(BaseModel):
     sourceDocId: int
     title: str
+    
 # --- Chunk Schemas ---
 class ChunkBase(SQLModel):
     text: str

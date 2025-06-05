@@ -3,7 +3,7 @@ from sqlmodel import select, Session
 from sqlalchemy.orm import selectinload
 from backend.db import get_session
 from backend.models import (
-     CreateMetaTextRequest, CreateSuccessResponse, MetaTextRead,  MetaText, SourceDocument, Chunk, MetaTextListRead
+     CreateMetaTextRequest, CreateSuccessResponse, MetaTextRead,  MetaText, SourceDocument, Chunk
 )
 
 
@@ -48,10 +48,10 @@ async def create_meta_text(req: CreateMetaTextRequest, session: Session = Depend
         raise HTTPException(status_code=500, detail="Failed to create meta-text.")
 
 @router.get("/meta-text", name="list_meta_texts")
-def list_meta_texts(session: Session = Depends(get_session)) -> list[MetaTextListRead]:
+def list_meta_texts(session: Session = Depends(get_session)) -> list[MetaTextRead]:
     """List all meta-texts."""
     meta_texts = session.exec(select(MetaText)).all()
-    return meta_texts # type: ignore
+    return meta_texts   # type: ignore
 
 @router.get("/meta-text/{meta_text_id}", name="get_meta_text")
 def get_meta_text(meta_text_id: int, session: Session = Depends(get_session)) -> MetaTextRead:
@@ -61,14 +61,7 @@ def get_meta_text(meta_text_id: int, session: Session = Depends(get_session)) ->
     ).first()
     if not meta_text:
         raise HTTPException(status_code=404, detail="Meta-text not found.")
-    res = MetaTextRead(
-        id=meta_text.id,
-        title=meta_text.title,
-        text=meta_text.text,
-        chunks=[chunk.model_dump() for chunk in meta_text.chunks],
-        source_document_id=meta_text.source_document_id,
-    )
-    return res
+    return meta_text  # type: ignore
 
 @router.delete("/meta-text/{meta_text_id}", name="delete_meta_text")
 def delete_meta_text(meta_text_id: int, session: Session = Depends(get_session)) -> dict:
