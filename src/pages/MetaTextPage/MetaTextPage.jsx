@@ -39,6 +39,7 @@ export default function MetaTextPage() {
             await deleteMetaText(id);
             setDeleteLoading(prev => ({ ...prev, [id]: false }));
             setDeleteError(prev => ({ ...prev, [id]: '' }));
+            setCreateSuccess(Date.now()); // Trigger list refresh after delete
         } catch (err) {
             setDeleteLoading(prev => ({ ...prev, [id]: false }));
             setDeleteError(prev => ({ ...prev, [id]: err.message || 'Delete failed' }));

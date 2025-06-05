@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Body
-from sqlmodel import select, Session, delete
+from sqlmodel import select, Session
 from backend.db import get_session
 from backend.models import (
      CreateMetaTextRequest, CreateSuccessResponse, GetListResponse, GetResponse, MetaTextResponse,  MetaText, SourceDocument, Chunk
