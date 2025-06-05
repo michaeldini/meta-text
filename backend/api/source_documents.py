@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Form, File, UploadFile
 from sqlmodel import select
 from sqlalchemy.exc import IntegrityError
 from backend.models import (
-    SourceDocument, MetaText, SourceDocumentRead, SourceDocumentUpdate, SourceDocumentDeleteResponse
+    SourceDocument, MetaText, SourceDocumentRead, SourceDocumentUpdate
 )
 from backend.db import get_session
 from typing import List
@@ -35,39 +35,30 @@ async def create_source_document(
             raise HTTPException(status_code=409, detail="Title already exists.")
         raise HTTPException(status_code=500, detail="Failed to save to database.")
 
-@router.get(
-    "/source-documents",
-    response_model=List[SourceDocumentRead],
-    name="list_source_documents"
-)
-def list_source_documents(session=Depends(get_session)):
+
+@router.get("/source-documents", name="list_source_documents")
+def list_source_documents(session=Depends(get_session)) -> List[SourceDocumentRead]:
     """
     List all source documents with all fields.
     """
     docs = session.exec(select(SourceDocument)).all()
-    return [doc.model_dump() for doc in docs]
+    return docs
 
-@router.get(
-    "/source-documents/{doc_id}",
-    response_model=SourceDocumentRead,
-    name="get_source_document"
-)
-def get_source_document(doc_id: int, session=Depends(get_session)):
+
+@router.get("/source-documents/{doc_id}", name="get_source_document")
+def get_source_document(doc_id: int, session=Depends(get_session)) -> SourceDocumentRead:
     """
     Retrieve a source document by ID.
     """
     doc = session.get(SourceDocument, doc_id)
     if doc:
-        return doc.model_dump()
+        return doc
     else:
         raise HTTPException(status_code=404, detail="Source document not found.")
 
-@router.delete(
-    "/source-documents/{doc_id}",
-    response_model=SourceDocumentDeleteResponse,
-    name="delete_source_document"
-)
-def delete_source_document(doc_id: int, session=Depends(get_session)):
+
+@router.delete("/source-documents/{doc_id}", name="delete_source_document")
+def delete_source_document(doc_id: int, session=Depends(get_session)) -> dict:
     """
     Delete a source document if no related MetaText records exist.
     """
@@ -81,16 +72,12 @@ def delete_source_document(doc_id: int, session=Depends(get_session)):
     session.commit()
     return {"success": True}
 
-@router.patch(
-    "/source-documents/{doc_id}",
-    response_model=SourceDocumentRead,
-    name="update_source_document"
-)
+@router.patch("/source-documents/{doc_id}",name="update_source_document")
 def update_source_document(
     doc_id: int,
     update: SourceDocumentUpdate = Depends(SourceDocumentUpdate.as_form()),
     session=Depends(get_session),
-):
+) -> SourceDocumentRead:
     """
     Update fields of a source document.
     """
@@ -104,7 +91,7 @@ def update_source_document(
         session.add(doc)
         session.commit()
         session.refresh(doc)
-        return doc.model_dump()
+        return doc
     except IntegrityError as e:
         session.rollback()
         # Restore original logic: check for UNIQUE constraint, else 500

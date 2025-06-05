@@ -53,8 +53,6 @@ class SourceDocumentUpdate(SQLModel):
             )
         return _as_form
 
-class SourceDocumentDeleteResponse(SQLModel):
-    success: bool
 
 # --- MetaText Schemas ---
 class MetaTextBase(SQLModel):
