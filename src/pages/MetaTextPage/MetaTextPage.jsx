@@ -84,10 +84,10 @@ export default function MetaTextPage() {
                     errorMsg = err;
                 } else if (err.message) {
                     errorMsg = err.message;
-                } else if (err.response && err.response.data && err.response.data.detail) {
-                    errorMsg = err.response.data.detail;
-                } else if (err.response && err.response.data) {
-                    errorMsg = JSON.stringify(err.response.data);
+                } else if (err.response && err.response && err.response.detail) {
+                    errorMsg = err.response.detail;
+                } else if (err.response && err.response) {
+                    errorMsg = JSON.stringify(err.response);
                 } else {
                     errorMsg = JSON.stringify(err);
                 }

@@ -4,8 +4,8 @@ from pydantic import BaseModel
 
 # --- SourceDocument Schemas ---
 class SourceDocumentBase(SQLModel):
+    id: int = Field(default=None, primary_key=True)
     title: str = Field(index=True, unique=True)
-    text: str
     summary: Optional[str] = None
     characters: Optional[str] = None
     locations: Optional[str] = None
@@ -13,70 +13,43 @@ class SourceDocumentBase(SQLModel):
     symbols: Optional[str] = None
 
 class SourceDocument(SourceDocumentBase, table=True):
-    id: int = Field(default=None, primary_key=True)
+    text: str
     meta_texts: List["MetaText"] = Relationship(back_populates="source_document")
 
 
 class SourceDocumentRead(SourceDocumentBase):
-    id: int
+    text: str
 
-
-class SourceDocumentUpdate(SQLModel):
-    title: Optional[str] = None
-    text: Optional[str] = None
-    summary: Optional[str] = None
-    characters: Optional[str] = None
-    locations: Optional[str] = None
-    themes: Optional[str] = None
-    symbols: Optional[str] = None
-
-    @classmethod
-    def as_form(cls):
-        from fastapi import Form
-        def _as_form(
-            title: str = Form(None),
-            text: str = Form(None),
-            summary: str = Form(None),
-            characters: str = Form(None),
-            locations: str = Form(None),
-            themes: str = Form(None),
-            symbols: str = Form(None),
-        ):
-            return cls(
-                title=title,
-                text=text,
-                summary=summary,
-                characters=characters,
-                locations=locations,
-                themes=themes,
-                symbols=symbols,
-            )
-        return _as_form
+class SourceDocumentListRead(SourceDocumentBase):
+    pass
 
 
 # --- MetaText Schemas ---
 class MetaTextBase(SQLModel):
     title: str
-    text: str
     source_document_id: int = Field(foreign_key="sourcedocument.id")
 
 class MetaText(MetaTextBase, table=True):
     id: int = Field(default=None, primary_key=True)
+    text: str
     chunks: List["Chunk"] = Relationship(back_populates="meta_text", cascade_delete=True)
     source_document: Optional[SourceDocument] = Relationship(back_populates="meta_texts")
 
+class MetaTextListRead(MetaTextBase):
+    id: int
+    text: str
 
-class CreateMetaTextRequest(BaseModel):
-    sourceDocId: int
-    title: str
-    
-class MetaTextResponse(BaseModel):
+
+class MetaTextRead(BaseModel):
     id: int
     title: str
     text: str
     chunks: list[dict] = Field(default_factory=list)
     source_document_id: int
 
+class CreateMetaTextRequest(BaseModel):
+    sourceDocId: int
+    title: str
 # --- Chunk Schemas ---
 class ChunkBase(SQLModel):
     text: str

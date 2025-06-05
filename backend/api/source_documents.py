@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Form, File, UploadFile
 from sqlmodel import select
 from backend.models import (
-    SourceDocument, MetaText, SourceDocumentRead
+    SourceDocument, MetaText, SourceDocumentListRead, SourceDocumentRead
 )
 from backend.db import get_session
 from typing import List
@@ -36,12 +36,12 @@ async def create_source_document(
 
 
 @router.get("/source-documents", name="list_source_documents")
-def list_source_documents(session=Depends(get_session)) -> List[SourceDocumentRead]:
+def list_source_documents(session=Depends(get_session)) -> list[SourceDocumentListRead]:
     """
     List all source documents with all fields.
     """
     docs = session.exec(select(SourceDocument)).all()
-    return docs
+    return [SourceDocumentListRead(**doc.model_dump()) for doc in docs]
 
 
 @router.get("/source-documents/{doc_id}", name="get_source_document")

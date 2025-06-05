@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, Body
 from sqlmodel import select, Session
+from sqlalchemy.orm import selectinload
 from backend.db import get_session
 from backend.models import (
-     CreateMetaTextRequest, CreateSuccessResponse, GetListResponse, GetResponse, MetaTextResponse,  MetaText, SourceDocument, Chunk
+     CreateMetaTextRequest, CreateSuccessResponse, MetaTextRead,  MetaText, SourceDocument, Chunk, MetaTextListRead
 )
 
 
@@ -46,33 +47,31 @@ async def create_meta_text(req: CreateMetaTextRequest, session: Session = Depend
             raise HTTPException(status_code=409, detail="Meta-text title already exists.")
         raise HTTPException(status_code=500, detail="Failed to create meta-text.")
 
-@router.get("/meta-text", response_model=GetListResponse, name="list_meta_texts")
-def list_meta_texts(session: Session = Depends(get_session)):
+@router.get("/meta-text", name="list_meta_texts")
+def list_meta_texts(session: Session = Depends(get_session)) -> list[MetaTextListRead]:
+    """List all meta-texts."""
     meta_texts = session.exec(select(MetaText)).all()
-    return GetListResponse(
-        data=[GetResponse(id=meta_text.id, title=meta_text.title) for meta_text in meta_texts]
-    )
+    return meta_texts # type: ignore
 
-@router.get("/meta-text/{meta_text_id}", response_model=MetaTextResponse, name="get_meta_text")
-def get_meta_text(meta_text_id: int, session: Session = Depends(get_session)):
-    meta_text = session.get(MetaText, meta_text_id)
+@router.get("/meta-text/{meta_text_id}", name="get_meta_text")
+def get_meta_text(meta_text_id: int, session: Session = Depends(get_session)) -> MetaTextRead:
+    meta_text = session.exec(
+        select(MetaText)
+        .where(MetaText.id == meta_text_id)
+    ).first()
     if not meta_text:
         raise HTTPException(status_code=404, detail="Meta-text not found.")
-    # Fetch all chunks for this meta-text
-    chunks = session.exec(
-        select(Chunk).where(Chunk.meta_text_id == meta_text.id).order_by(getattr(Chunk, "position"))
-    ).all()
-    return MetaTextResponse(
+    res = MetaTextRead(
         id=meta_text.id,
         title=meta_text.title,
         text=meta_text.text,
-        # Return full chunk dicts, not just text
-        chunks=[chunk.model_dump() for chunk in chunks],
-        source_document_id=meta_text.source_document_id
+        chunks=[chunk.model_dump() for chunk in meta_text.chunks],
+        source_document_id=meta_text.source_document_id,
     )
-    
+    return res
+
 @router.delete("/meta-text/{meta_text_id}", name="delete_meta_text")
-def delete_meta_text(meta_text_id: int, session: Session = Depends(get_session)):
+def delete_meta_text(meta_text_id: int, session: Session = Depends(get_session)) -> dict:
     meta_text = session.get(MetaText, meta_text_id)
     if not meta_text:
         raise HTTPException(status_code=404, detail="Meta-text not found.")
