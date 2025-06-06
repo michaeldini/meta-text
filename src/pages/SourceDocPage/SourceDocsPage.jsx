@@ -6,15 +6,13 @@ import { deleteSourceDocument } from '../../services/sourceDocumentService';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
 import SearchBar from '../../components/SearchBar';
 import GeneralizedList from '../../components/GeneralizedList';
-import { CircularProgress, Alert, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Box } from '@mui/material';
+import { CircularProgress, Alert, Box } from '@mui/material';
+import useDeleteWithConfirmation from '../../hooks/useDeleteWithConfirmation';
+import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
 
 export default function SourceDocsPage() {
     const { docs = [], loading, error, refresh } = useSourceDocuments();
     const [search, setSearch] = useState('');
-    const [deleteLoading, setDeleteLoading] = useState({});
-    const [deleteError, setDeleteError] = useState({});
-    const [confirmOpen, setConfirmOpen] = useState(false);
-    const [pendingDeleteId, setPendingDeleteId] = useState(null);
     const navigate = useNavigate();
 
     // Create options for the search bar from document titles
@@ -26,46 +24,32 @@ export default function SourceDocsPage() {
         return docs.filter(doc => (doc.title || '').toLowerCase().includes(search.toLowerCase()));
     }, [docs, search]);
 
-    // Handle document deletion
-    const handleDelete = async (docId) => {
-        setDeleteLoading(prev => ({ ...prev, [docId]: true }));
-        setDeleteError(prev => ({ ...prev, [docId]: null }));
-        try {
-            if (!docId) throw new Error('No document ID provided for deletion.');
-            await deleteSourceDocument(docId);
-            refresh(); // Refresh the docs list from backend
-        } catch (e) {
-            // Handle cannot delete if MetaText exists (400)
-            if (e.message.includes('MetaText records exist')) {
-                setDeleteError(prev => ({ ...prev, [docId]: 'Cannot delete: MetaText records exist for this document.' }));
-            } else {
-                setDeleteError(prev => ({ ...prev, [docId]: e.message || 'Error deleting document' }));
-            }
-        } finally {
-            setDeleteLoading(prev => ({ ...prev, [docId]: false }));
-        }
-    };
-
     // Use doc.id for navigation
     const handleSourceDocClick = id => navigate(`/sourceDocs/${id}`);
 
-    // Handle delete confirmation dialog
-    const handleDeleteClick = (id, e) => {
-        e.stopPropagation();
-        setPendingDeleteId(id);
-        setConfirmOpen(true);
-    };
-    const handleConfirmClose = () => {
-        setConfirmOpen(false);
-        setPendingDeleteId(null);
-    };
-    const handleConfirmDelete = () => {
-        if (pendingDeleteId) {
-            handleDelete(pendingDeleteId);
+    // Use generic delete hook (omit unused pendingDeleteId)
+    const {
+        deleteLoading,
+        deleteError,
+        confirmOpen,
+        handleDeleteClick,
+        handleConfirmClose,
+        handleConfirmDelete,
+    } = useDeleteWithConfirmation(
+        async (docId) => {
+            if (!docId) throw new Error('No document ID provided for deletion.');
+            try {
+                await deleteSourceDocument(docId);
+                refresh();
+            } catch (e) {
+                // Custom error for MetaText records
+                if (e.message.includes('MetaText records exist')) {
+                    throw new Error('Cannot delete: MetaText records exist for this document.');
+                }
+                throw e;
+            }
         }
-        setConfirmOpen(false);
-        setPendingDeleteId(null);
-    };
+    );
 
     return (
         <EntityManagerPage>
@@ -97,16 +81,15 @@ export default function SourceDocsPage() {
                     </nav>
                 </Box>
             )}
-            <Dialog open={confirmOpen} onClose={handleConfirmClose}>
-                <DialogTitle>Delete Source Document?</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>Are you sure you want to delete this source document? This action cannot be undone.</DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleConfirmClose} color="primary">Cancel</Button>
-                    <Button onClick={handleConfirmDelete} color="error" variant="contained" autoFocus>Delete</Button>
-                </DialogActions>
-            </Dialog>
+            <DeleteConfirmationDialog
+                open={confirmOpen}
+                onClose={handleConfirmClose}
+                onConfirm={handleConfirmDelete}
+                title="Delete Source Document?"
+                text="Are you sure you want to delete this source document? This action cannot be undone."
+                confirmLabel="Delete"
+                cancelLabel="Cancel"
+            />
         </EntityManagerPage>
     );
 }

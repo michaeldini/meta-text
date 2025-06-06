@@ -6,18 +6,31 @@ import EntityManagerPage from '../../components/EntityManagerPage';
 import MetaTextCreateForm from './MetaTextCreateForm';
 import SearchBar from '../../components/SearchBar';
 import GeneralizedList from '../../components/GeneralizedList';
-import { CircularProgress, Alert, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Box } from '@mui/material';
+import { CircularProgress, Alert, Box } from '@mui/material';
+import useDeleteWithConfirmation from '../../hooks/useDeleteWithConfirmation';
+import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
 
 export default function MetaTextPage() {
     const [createSuccess, setCreateSuccess] = useState('');
     const { docs: sourceDocs, loading: sourceDocsLoading, error: sourceDocsError } = useSourceDocuments();
     const { data: metaTexts, loading: metaTextsLoading, error: metaTextsError } = useMetaTexts([createSuccess]);
     const [search, setSearch] = useState('');
-    const [deleteLoading, setDeleteLoading] = useState({});
-    const [deleteError, setDeleteError] = useState({});
-    const [confirmOpen, setConfirmOpen] = useState(false);
-    const [pendingDeleteId, setPendingDeleteId] = useState(null);
     const navigate = useNavigate();
+
+    const {
+        deleteLoading,
+        deleteError,
+        confirmOpen,
+        handleDeleteClick,
+        handleConfirmClose,
+        handleConfirmDelete,
+    } = useDeleteWithConfirmation(
+        async (id) => {
+            const { deleteMetaText } = await import('../../services/metaTextService');
+            await deleteMetaText(id);
+            setCreateSuccess(Date.now());
+        }
+    );
 
     const filteredMetaTexts = useMemo(() => {
         if (!search) return metaTexts;
@@ -29,38 +42,7 @@ export default function MetaTextPage() {
 
     const metaTextOptions = useMemo(() => metaTexts.map(obj => obj.title), [metaTexts]);
 
-    const handleDeleteMetaText = async (id) => {
-        setDeleteLoading(prev => ({ ...prev, [id]: true }));
-        setDeleteError(prev => ({ ...prev, [id]: '' }));
-        try {
-            const { deleteMetaText } = await import('../../services/metaTextService');
-            await deleteMetaText(id);
-            setDeleteLoading(prev => ({ ...prev, [id]: false }));
-            setDeleteError(prev => ({ ...prev, [id]: '' }));
-            setCreateSuccess(Date.now());
-        } catch (err) {
-            setDeleteLoading(prev => ({ ...prev, [id]: false }));
-            setDeleteError(prev => ({ ...prev, [id]: err.message || 'Delete failed' }));
-        }
-    };
-
     const handleMetaTextClick = id => navigate(`/metaText/${id}`);
-    const handleDeleteClick = (id, e) => {
-        e.stopPropagation();
-        setPendingDeleteId(id);
-        setConfirmOpen(true);
-    };
-    const handleConfirmClose = () => {
-        setConfirmOpen(false);
-        setPendingDeleteId(null);
-    };
-    const handleConfirmDelete = () => {
-        if (pendingDeleteId) {
-            handleDeleteMetaText(pendingDeleteId);
-        }
-        setConfirmOpen(false);
-        setPendingDeleteId(null);
-    };
 
     return (
         <EntityManagerPage>
@@ -97,16 +79,15 @@ export default function MetaTextPage() {
                     </nav>
                 </Box>
             )}
-            <Dialog open={confirmOpen} onClose={handleConfirmClose}>
-                <DialogTitle>Delete Meta Text?</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>Are you sure you want to delete this meta text? This action cannot be undone.</DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleConfirmClose} color="primary">Cancel</Button>
-                    <Button onClick={handleConfirmDelete} color="error" variant="contained" autoFocus>Delete</Button>
-                </DialogActions>
-            </Dialog>
+            <DeleteConfirmationDialog
+                open={confirmOpen}
+                onClose={handleConfirmClose}
+                onConfirm={handleConfirmDelete}
+                title="Delete Meta Text?"
+                text="Are you sure you want to delete this meta text? This action cannot be undone."
+                confirmLabel="Delete"
+                cancelLabel="Cancel"
+            />
         </EntityManagerPage>
     );
 }
