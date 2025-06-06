@@ -15,6 +15,7 @@ export default function MetaTextDetailPage() {
         sourceDoc,
         chunks,
         setChunks,
+        setSourceDoc, // Add setSourceDoc from useMetaTextDetail
     } = useMetaTextDetail(id);
     const {
         handleWordClick,
@@ -24,6 +25,13 @@ export default function MetaTextDetailPage() {
 
     // Destructure metaText fields early for clarity
     const title = metaText?.title;
+
+    // Handler to update sourceDoc fields from AI info
+    const handleSourceDocInfoUpdate = aiInfo => {
+        if (setSourceDoc) {
+            setSourceDoc(prev => ({ ...prev, ...aiInfo }));
+        }
+    };
 
     if (loading) {
         return (
@@ -48,7 +56,7 @@ export default function MetaTextDetailPage() {
                 {errors.sourceDoc ? (
                     <Alert severity="error" sx={{ mb: 2 }}>{errors.sourceDoc}</Alert>
                 ) : sourceDoc ? (
-                    <SourceDocInfo doc={sourceDoc} />
+                    <SourceDocInfo doc={sourceDoc} onInfoUpdate={handleSourceDocInfoUpdate} />
                 ) : null}
 
                 {errors.chunks && (

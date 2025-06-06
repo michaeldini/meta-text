@@ -36,7 +36,8 @@ export async function deleteSourceDocument(docId) {
 
 
 export async function fetchSourceDocumentInfo(docId) {
-    const res = await fetch(`/source-documents/${docId}/info`);
+    // Use the correct API path for FastAPI backend
+    const res = await fetch(`/api/source-documents/${docId}/info`);
     return handleApiResponse(res, 'Failed to fetch source document info');
 }
 

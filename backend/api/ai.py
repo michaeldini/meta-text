@@ -28,8 +28,8 @@ async def generate_chunk_ai_summary(request: ChunkAiSummaryRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")
 
-@router.post("/source-doc-info", response_model=SourceDocInfoResponse)
-async def source_doc_info(request: SourceDocInfoRequest, session=Depends(get_session)):
+@router.post("/source-doc-info")
+async def source_doc_info(request: SourceDocInfoRequest, session=Depends(get_session)) -> SourceDocInfoResponse:
     prompt = request.prompt
     doc_id = request.id
     if not prompt:
