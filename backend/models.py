@@ -108,3 +108,9 @@ class ChunkAiSummaryRequest(SQLModel):
 class ChunkAiSummaryResponse(SQLModel):
     result: str
 
+class WordDefinitionWithContextRequest(SQLModel):
+    word: str
+    context: str
+class WordDefinitionResponse(SQLModel):
+    definition: str
+    definitionWithContext: str
