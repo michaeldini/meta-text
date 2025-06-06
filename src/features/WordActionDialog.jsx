@@ -7,12 +7,11 @@ import SavedSearchIcon from '@mui/icons-material/SavedSearch';
 import { lookupWord } from '../services/dictionaryService';
 import { fetchDefinitionInContext } from '../services/aiService';
 
-export default function WordActionDialog({ anchorEl, onClose, word, onSplit, onLookupContext }) {
+export default function WordActionDialog({ anchorEl, onClose, word, onSplit, onLookupContext, context }) {
     const [loading, setLoading] = useState(false);
     const [definition, setDefinition] = useState(null);
     const [error, setError] = useState('');
     const [showDefinition, setShowDefinition] = useState(false);
-    const [context] = useState(''); // Context for the word (to be provided by parent in future)
     const [definitionWithContext, setDefinitionWithContext] = useState(null);
 
     const open = Boolean(anchorEl);
@@ -40,7 +39,7 @@ export default function WordActionDialog({ anchorEl, onClose, word, onSplit, onL
         setDefinition(null);
         setDefinitionWithContext(null);
         try {
-            // For now, use empty string for context. In future, pass real context from parent.
+            // Use context prop from parent
             const result = await fetchDefinitionInContext(word, context);
             setDefinition(result.definition);
             setDefinitionWithContext(result.definitionWithContext);

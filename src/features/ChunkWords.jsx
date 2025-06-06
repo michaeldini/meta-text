@@ -87,6 +87,7 @@ const ChunkWords = memo(function SectionWords({
                 word={selectedWordIdx !== null ? words[selectedWordIdx] : ''}
                 onSplit={handleSplit}
                 onLookupContext={() => { }}
+                context={words.join(' ')}
             />
         </>
     );

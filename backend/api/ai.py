@@ -41,7 +41,7 @@ async def generate_definition_in_context(request: WordDefinitionWithContextReque
         response = client.responses.parse(
             model="gpt-4o-mini-2024-07-18",
             instructions=instructions,
-            input=f"{word} {context}",
+            input=f"word='{word}' context='{context}'",
             text_format=WordDefinitionResponse,
         )
         ai_data = response.output_parsed
