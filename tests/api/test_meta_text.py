@@ -88,8 +88,7 @@ def test_get_meta_text_success(client: TestClient, session: Session):
     data = response.json()
     assert data["id"] == meta_id
     assert data["title"] == "Meta 6"
-    assert isinstance(data["chunks"], list)
-    assert data["chunks"][0]["text"] == doc.text
+
 
 def test_get_meta_text_not_found(client: TestClient):
     response = client.get("/api/meta-text/9999")

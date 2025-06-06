@@ -51,6 +51,10 @@ export default function MetaTextDetailPage() {
                     <SourceDocInfo doc={sourceDoc} />
                 ) : null}
 
+                {errors.chunks && (
+                    <Alert severity="error" sx={{ mb: 2 }}>{errors.chunks}</Alert>
+                )}
+
                 <Chunks
                     chunks={chunks}
                     handleWordClick={handleWordClick}

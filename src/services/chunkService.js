@@ -1,7 +1,7 @@
 import handleApiResponse from '../utils/api';
 
 export const fetchChunks = async (metaTextId) => {
-    const res = await fetch(`/api/metatext/${metaTextId}/chunks`);
+    const res = await fetch(`/api/chunks/all/${metaTextId}`);
     return handleApiResponse(res);
 };
 

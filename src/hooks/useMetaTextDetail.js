@@ -6,14 +6,14 @@ import { fetchChunks } from '../services/chunkService';
 export function useMetaTextDetail(id) {
     const [metaText, setMetaText] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [errors, setErrors] = useState({ metaText: '', sourceDoc: '' });
+    const [errors, setErrors] = useState({ metaText: '', sourceDoc: '', chunks: '' });
     const [sourceDoc, setSourceDoc] = useState(null);
     const [chunks, setChunks] = useState([]);
 
     useEffect(() => {
         let isMounted = true;
         setLoading(true);
-        setErrors({ metaText: '', sourceDoc: '' });
+        setErrors({ metaText: '', sourceDoc: '', chunks: '' });
         setMetaText(null);
         setSourceDoc(null);
         setChunks([]);
@@ -35,7 +35,12 @@ export function useMetaTextDetail(id) {
                         })));
                     } catch (e) {
                         if (!isMounted) return;
-                        setErrors(prev => ({ ...prev, sourceDoc: e.message || 'Failed to load source document or chunks.' }));
+                        // Check if error is from chunk fetching or doc fetching
+                        setErrors(prev => ({
+                            ...prev,
+                            sourceDoc: e.message?.includes('document') ? (e.message || 'Failed to load source document.') : prev.sourceDoc,
+                            chunks: e.message?.includes('chunk') ? (e.message || 'Failed to load chunks.') : prev.chunks
+                        }));
                     }
                 }
             })
