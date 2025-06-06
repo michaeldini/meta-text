@@ -16,7 +16,6 @@ export default function SourceDocDetailPage() {
     return (
         <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
             <Typography variant="h4" gutterBottom>{doc?.title}</Typography>
-            {/* Show SourceDocInfo under the title if doc is loaded */}
             {doc && (
                 <SourceDocInfo
                     doc={doc}
