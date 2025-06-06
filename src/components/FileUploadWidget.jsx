@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Button } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 /**
  * FileUploadWidget
  * Props:
@@ -21,7 +21,7 @@ export default function FileUploadWidget({ file, onFileChange, accept = ".txt", 
                 style={{ display: 'none' }}
             />
             <label htmlFor={id}>
-                <Button variant="outlined" component="span" startIcon={<CloudUploadIcon />} sx={{ fontWeight: 'bold' }}>
+                <Button component="span" startIcon={<FileUploadIcon />} sx={{ fontWeight: 'bold', backgroundColor: 'primary.main', color: 'text.primary', '&:hover': { backgroundColor: 'secondary.main' } }}>
                     {file ? 'Change File' : 'Upload File'}
                 </Button>
             </label>

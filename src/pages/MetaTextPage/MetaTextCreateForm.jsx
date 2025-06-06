@@ -50,7 +50,7 @@ export default function MetaTextCreateForm({
     return (
         <Box sx={{ width: '100%', mb: 2 }}>
             <Typography variant="h5" gutterBottom>New Meta Text</Typography>
-            <Box component="form" onSubmit={handleCreateMetaText} sx={{ width: '100%' }}>
+            <Box component="form" onSubmit={handleCreateMetaText} sx={{ width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, justifyContent: 'center' }}>
                 <SourceDocSelect
                     value={selectedSourceDocId}
                     onChange={e => setSelectedSourceDocId(e.target.value)}
@@ -65,14 +65,13 @@ export default function MetaTextCreateForm({
                     onChange={e => setMetaTextTitle(e.target.value)}
                     fullWidth
                     required
-                    sx={{ mt: 2 }}
                 />
                 <Button
                     type="submit"
                     variant="contained"
                     color="primary"
                     disabled={createLoading}
-                    sx={{ mt: 2, minWidth: 120 }}
+                    sx={{ minWidth: 120 }}
                 >
                     {createLoading ? 'Creating...' : 'Create'}
                 </Button>

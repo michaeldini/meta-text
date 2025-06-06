@@ -45,11 +45,9 @@ export default function SourceDocUploadForm({ onUploadSuccess, refresh }) {
             <Typography variant="h5" gutterBottom>New Source Document</Typography>
             <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, justifyContent: 'center' }}>
                 <FileUploadWidget file={file} onFileChange={handleFileChange} />
-                <Typography variant="subtitle1" component="label" htmlFor="upload-title">
-                    Title
-                </Typography>
                 <TextField
                     id="upload-title"
+                    label="Title"
                     type="text"
                     value={uploadTitle}
                     onChange={handleTitleChange}
