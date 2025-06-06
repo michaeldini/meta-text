@@ -56,6 +56,10 @@ class Chunk(ChunkBase, table=True):
     id: int = Field(default=None, primary_key=True)
     meta_text: Optional[MetaText] = Relationship(back_populates="chunks")
 
+class ChunkRead(ChunkBase):
+    id: int
+
+
 # --- Word Lookup Schemas ---
 class WordLookup(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)

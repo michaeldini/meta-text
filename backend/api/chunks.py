@@ -1,19 +1,20 @@
 from fastapi import APIRouter, Depends, HTTPException, Body
 from sqlmodel import select, Session
+from typing import List
 from backend.db import get_session
-from backend.models import Chunk
+from backend.models import Chunk, ChunkRead
 
 router = APIRouter()
 
 @router.get("/chunks/all/{meta_text_id}", name="get_chunks")
-def get_chunks_api(meta_text_id: int, session: Session = Depends(get_session)) -> list[Chunk]:
+def get_chunks_api(meta_text_id: int, session: Session = Depends(get_session)) -> List[ChunkRead]:
     chunks = session.exec(
         select(Chunk).where(Chunk.meta_text_id == meta_text_id).order_by(getattr(Chunk, "position"))
     ).all()
     return chunks # type: ignore
 
-@router.post("/chunk/{chunk_id}/split" , name="split_chunk")
-def split_chunk(chunk_id: int, word_index: int, session: Session = Depends(get_session)):
+@router.post("/chunk/{chunk_id}/split", name="split_chunk")
+def split_chunk(chunk_id: int, word_index: int, session: Session = Depends(get_session)) -> List[ChunkRead]:
     chunk = session.get(Chunk, chunk_id)
     if not chunk:
         raise HTTPException(status_code=404, detail="Chunk not found")
@@ -45,10 +46,10 @@ def split_chunk(chunk_id: int, word_index: int, session: Session = Depends(get_s
     session.commit()
     session.refresh(chunk)
     session.refresh(new_chunk)
-    return {"chunks": [chunk.model_dump(), new_chunk.model_dump()]}
+    return [chunk, new_chunk] # type: ignore
 
-@router.post("/chunk/combine" , name="combine_chunks")
-def combine_chunks(first_chunk_id: int, second_chunk_id: int, session: Session = Depends(get_session)):
+@router.post("/chunk/combine", name="combine_chunks")
+def combine_chunks(first_chunk_id: int, second_chunk_id: int, session: Session = Depends(get_session)) -> ChunkRead:
     first = session.get(Chunk, first_chunk_id)
     second = session.get(Chunk, second_chunk_id)
     if not first or not second:
@@ -59,10 +60,10 @@ def combine_chunks(first_chunk_id: int, second_chunk_id: int, session: Session =
     session.delete(second)
     session.commit()
     session.refresh(first)
-    return {"chunk": first.model_dump()}
+    return first # type: ignore
 
-@router.put("/chunk/{chunk_id}" , name="update_chunk")
-def update_chunk(chunk_id: int, chunk_data: dict = Body(...), session: Session = Depends(get_session)):
+@router.put("/chunk/{chunk_id}", name="update_chunk")
+def update_chunk(chunk_id: int, chunk_data: dict = Body(...), session: Session = Depends(get_session)) -> ChunkRead:
     chunk = session.get(Chunk, chunk_id)
     if not chunk:
         raise HTTPException(status_code=404, detail="Chunk not found")
@@ -78,4 +79,4 @@ def update_chunk(chunk_id: int, chunk_data: dict = Body(...), session: Session =
     session.add(chunk)
     session.commit()
     session.refresh(chunk)
-    return {"chunk": chunk.model_dump()}
+    return chunk # type: ignore
