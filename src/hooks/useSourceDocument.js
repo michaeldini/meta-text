@@ -11,6 +11,10 @@ export function useSourceDocument(id) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
+    // Add a refreshIndex to trigger refetch
+    const [refreshIndex, setRefreshIndex] = useState(0);
+    const refetch = () => setRefreshIndex(i => i + 1);
+
     useEffect(() => {
         if (id === undefined || id === null) {
             setError("No document ID provided.");
@@ -30,7 +34,7 @@ export function useSourceDocument(id) {
             .then(data => setDoc(data))
             .catch(e => setError(e.message || "Failed to load document."))
             .finally(() => setLoading(false));
-    }, [id]);
+    }, [id, refreshIndex]);
 
-    return { doc, loading, error, setDoc };
+    return { doc, loading, error, setDoc, refetch };
 }

@@ -6,12 +6,7 @@ import { useSourceDocument } from '../../hooks/useSourceDocument';
 
 export default function SourceDocDetailPage() {
     const { id } = useParams();
-    const { doc, loading, error, setDoc } = useSourceDocument(id);
-
-    // Handler to update doc fields from AI info
-    const handleInfoUpdate = aiInfo => {
-        setDoc(prev => ({ ...prev, ...aiInfo }));
-    };
+    const { doc, loading, error, refetch } = useSourceDocument(id);
 
     return (
         <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
@@ -19,7 +14,7 @@ export default function SourceDocDetailPage() {
             {doc && (
                 <SourceDocInfo
                     doc={doc}
-                    onInfoUpdate={handleInfoUpdate}
+                    onInfoUpdate={refetch}
                 />
             )}
             {loading ? (

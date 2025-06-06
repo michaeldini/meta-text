@@ -18,8 +18,8 @@ export default function SourceDocInfo({ doc, summaryError, onInfoUpdate }) {
         setLoading(true);
         setError('');
         try {
-            const aiInfo = await generateSourceDocInfo(doc.id, doc.text);
-            if (onInfoUpdate) onInfoUpdate(aiInfo);
+            await generateSourceDocInfo(doc.id, doc.text);
+            if (onInfoUpdate) onInfoUpdate(); // just trigger refetch
         } catch (e) {
             setError(e.message || 'Failed to download info');
         } finally {

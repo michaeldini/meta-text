@@ -22,7 +22,7 @@ export default function SourceDocsPage() {
     // Use doc.id for navigation
     const handleSourceDocClick = id => navigate(`/sourceDocs/${id}`);
 
-    // Use generic delete hook (omit unused pendingDeleteId)
+    // Use generic delete hook
     const {
         deleteLoading,
         deleteError,

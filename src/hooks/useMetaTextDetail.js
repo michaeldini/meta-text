@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { fetchMetaText } from '../services/metaTextService';
-import { fetchSourceDocumentInfo } from '../services/sourceDocumentService';
+import { fetchSourceDocument } from '../services/sourceDocumentService';
 import { fetchChunks } from '../services/chunkService';
 
 export function useMetaTextDetail(id) {
     const [metaText, setMetaText] = useState(null);
     const [loading, setLoading] = useState(true);
     const [errors, setErrors] = useState({ metaText: '', sourceDoc: '', chunks: '' });
-    const [sourceDoc, setSourceDoc] = useState(null);
+    const [sourceDocInfo, setSourceDocInfo] = useState(null);
     const [chunks, setChunks] = useState([]);
 
     useEffect(() => {
@@ -15,7 +15,7 @@ export function useMetaTextDetail(id) {
         setLoading(true);
         setErrors({ metaText: '', sourceDoc: '', chunks: '' });
         setMetaText(null);
-        setSourceDoc(null);
+        setSourceDocInfo(null);
         setChunks([]);
         fetchMetaText(id)
             .then(async data => {
@@ -24,18 +24,17 @@ export function useMetaTextDetail(id) {
                 if (data.source_document_id) {
                     try {
                         const [doc, chunkData] = await Promise.all([
-                            fetchSourceDocumentInfo(data.source_document_id),
+                            fetchSourceDocument(data.source_document_id),
                             fetchChunks(data.id)
                         ]);
                         if (!isMounted) return;
-                        setSourceDoc(doc);
+                        setSourceDocInfo(doc);
                         setChunks(chunkData.map(chunk => ({
                             ...chunk,
                             content: chunk.text
                         })));
                     } catch (e) {
                         if (!isMounted) return;
-                        // Check if error is from chunk fetching or doc fetching
                         setErrors(prev => ({
                             ...prev,
                             sourceDoc: e.message?.includes('document') ? (e.message || 'Failed to load source document.') : prev.sourceDoc,
@@ -55,12 +54,26 @@ export function useMetaTextDetail(id) {
         return () => { isMounted = false; };
     }, [id]);
 
+    // Add a refetchSourceDoc function
+    const refetchSourceDoc = async () => {
+        if (!metaText?.source_document_id) return;
+        setErrors(prev => ({ ...prev, sourceDoc: '' }));
+        try {
+            const doc = await fetchSourceDocument(metaText.source_document_id);
+            setSourceDocInfo(doc);
+        } catch (e) {
+            setErrors(prev => ({ ...prev, sourceDoc: e.message || 'Failed to reload source document.' }));
+        }
+    };
+
     return {
         metaText,
         loading,
         errors,
-        sourceDoc,
+        sourceDocInfo,
         chunks,
         setChunks,
+        setSourceDocInfo,
+        refetchSourceDoc,
     };
 }
