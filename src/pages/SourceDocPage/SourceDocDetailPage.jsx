@@ -1,33 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchSourceDocument } from '../../services/sourceDocumentService';
 import { Paper, Typography, Box, CircularProgress } from '@mui/material';
 import SourceDocInfo from '../../components/SourceDocInfo';
+import { useSourceDocument } from '../../hooks/useSourceDocument';
 
 export default function SourceDocDetailPage() {
     const { id } = useParams();
-    const [doc, setDoc] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
-
-    // Fetch document details by ID when component mounts or id changes
-    useEffect(() => {
-        setLoading(true);
-        setError('');
-        // Parse id as integer for backend call
-        const docId = parseInt(id, 10);
-        if (isNaN(docId)) {
-            setError('Invalid document ID.');
-            setLoading(false);
-            return;
-        }
-        fetchSourceDocument(docId)
-            .then(data => {
-                setDoc(data);
-            })
-            .catch(e => setError(e.message || 'Failed to load document.'))
-            .finally(() => setLoading(false));
-    }, [id]);
+    const { doc, loading, error, setDoc } = useSourceDocument(id);
 
     // Handler to update doc fields from AI info
     const handleInfoUpdate = aiInfo => {
