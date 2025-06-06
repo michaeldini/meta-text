@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import EntityManagerPage from '../../components/EntityManagerPage';
 import SourceDocUploadForm from './SourceDocUploadForm';
@@ -9,20 +9,15 @@ import GeneralizedList from '../../components/GeneralizedList';
 import { CircularProgress, Alert, Box } from '@mui/material';
 import useDeleteWithConfirmation from '../../hooks/useDeleteWithConfirmation';
 import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
+import { useFilteredList } from '../../hooks/useFilteredList';
 
 export default function SourceDocsPage() {
     const { docs = [], loading, error, refresh } = useSourceDocuments();
     const [search, setSearch] = useState('');
     const navigate = useNavigate();
 
-    // Create options for the search bar from document titles
-    const docOptions = useMemo(() => docs.map(doc => doc.title), [docs]);
-
     // Filter documents based on search input
-    const filteredDocs = useMemo(() => {
-        if (!search) return docs;
-        return docs.filter(doc => (doc.title || '').toLowerCase().includes(search.toLowerCase()));
-    }, [docs, search]);
+    const filteredDocs = useFilteredList(docs, search, 'title');
 
     // Use doc.id for navigation
     const handleSourceDocClick = id => navigate(`/sourceDocs/${id}`);
@@ -58,7 +53,6 @@ export default function SourceDocsPage() {
                 label="Search Documents"
                 value={search}
                 onChange={setSearch}
-                options={docOptions}
                 sx={{ mb: 2 }}
             />
             {loading ? (

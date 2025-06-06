@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMetaTexts } from '../../hooks/useMetaTexts';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
@@ -9,6 +9,7 @@ import GeneralizedList from '../../components/GeneralizedList';
 import { CircularProgress, Alert, Box } from '@mui/material';
 import useDeleteWithConfirmation from '../../hooks/useDeleteWithConfirmation';
 import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
+import { useFilteredList } from '../../hooks/useFilteredList';
 
 export default function MetaTextPage() {
     const [createSuccess, setCreateSuccess] = useState('');
@@ -32,15 +33,7 @@ export default function MetaTextPage() {
         }
     );
 
-    const filteredMetaTexts = useMemo(() => {
-        if (!search) return metaTexts;
-        return metaTexts.filter(obj => {
-            const title = obj.title || '';
-            return String(title).toLowerCase().includes(search.toLowerCase());
-        });
-    }, [metaTexts, search]);
-
-    const metaTextOptions = useMemo(() => metaTexts.map(obj => obj.title), [metaTexts]);
+    const filteredMetaTexts = useFilteredList(metaTexts, search, 'title');
 
     const handleMetaTextClick = id => navigate(`/metaText/${id}`);
 
@@ -56,7 +49,6 @@ export default function MetaTextPage() {
                 label="Search Meta Texts"
                 value={search}
                 onChange={setSearch}
-                options={metaTextOptions}
                 sx={{ mb: 2 }}
             />
             {metaTextsLoading ? (
