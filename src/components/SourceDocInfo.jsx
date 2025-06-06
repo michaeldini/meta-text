@@ -10,7 +10,6 @@ function splitToArray(str) {
 }
 
 export default function SourceDocInfo({ doc, summaryError, onInfoUpdate }) {
-    // doc: {id, title, text, summary, characters, locations, themes, symbols}
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -19,8 +18,7 @@ export default function SourceDocInfo({ doc, summaryError, onInfoUpdate }) {
         setLoading(true);
         setError('');
         try {
-            const aiInfo = await generateSourceDocInfo(doc.id, doc.text); // use id instead of title
-            // aiInfo: { summary, characters, locations, themes, symbols }
+            const aiInfo = await generateSourceDocInfo(doc.id, doc.text);
             if (onInfoUpdate) onInfoUpdate(aiInfo);
         } catch (e) {
             setError(e.message || 'Failed to download info');

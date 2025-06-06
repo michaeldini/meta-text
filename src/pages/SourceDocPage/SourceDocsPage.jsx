@@ -1,18 +1,16 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import EntityManagerPage from '../../components/EntityManagerPage';
-import FileUploadWidget from '../../components/FileUploadWidget';
-import { createSourceDocument, deleteSourceDocument } from '../../services/sourceDocumentService';
+import SourceDocUploadForm from './SourceDocUploadForm';
+import { deleteSourceDocument } from '../../services/sourceDocumentService';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
+import SearchBar from '../../components/SearchBar';
+import GeneralizedList from '../../components/GeneralizedList';
+import { CircularProgress, Alert, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Box } from '@mui/material';
 
 export default function SourceDocsPage() {
-    const { docs: initialDocs = [], loading, error, refresh } = useSourceDocuments();
+    const { docs = [], loading, error, refresh } = useSourceDocuments();
     const [search, setSearch] = useState('');
-    const [file, setFile] = useState(null);
-    const [uploadTitle, setUploadTitle] = useState('');
-    const [uploadError, setUploadError] = useState('');
-    const [uploadSuccess, setUploadSuccess] = useState('');
-    const [uploadLoading, setUploadLoading] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState({});
     const [deleteError, setDeleteError] = useState({});
     const [confirmOpen, setConfirmOpen] = useState(false);
@@ -20,45 +18,13 @@ export default function SourceDocsPage() {
     const navigate = useNavigate();
 
     // Create options for the search bar from document titles
-    const docOptions = useMemo(() => initialDocs.map(doc => doc.title), [initialDocs]);
+    const docOptions = useMemo(() => docs.map(doc => doc.title), [docs]);
 
     // Filter documents based on search input
     const filteredDocs = useMemo(() => {
-        if (!search) return initialDocs;
-        return initialDocs.filter(doc => (doc.title || '').toLowerCase().includes(search.toLowerCase()));
-    }, [initialDocs, search]);
-
-    // Handle file upload and title input changes
-    const handleFileChange = e => {
-        setFile(e.target.files[0]);
-        setUploadError('');
-        setUploadSuccess('');
-    };
-    const handleTitleChange = e => setUploadTitle(e.target.value);
-
-    // Handle document upload
-    const handleSubmit = async e => {
-        e.preventDefault();
-        setUploadError('');
-        setUploadSuccess('');
-        setUploadLoading(true);
-        try {
-            await createSourceDocument(uploadTitle, file);
-            setUploadSuccess('Upload successful!');
-            setFile(null);
-            setUploadTitle('');
-            refresh(); // Refresh the docs list from backend
-        } catch (err) {
-            // Handle duplicate title error (409)
-            if (err.message === 'Title already exists.') {
-                setUploadError('A document with this title already exists.');
-            } else {
-                setUploadError(err.message);
-            }
-        } finally {
-            setUploadLoading(false);
-        }
-    };
+        if (!search) return docs;
+        return docs.filter(doc => (doc.title || '').toLowerCase().includes(search.toLowerCase()));
+    }, [docs, search]);
 
     // Handle document deletion
     const handleDelete = async (docId) => {
@@ -102,46 +68,45 @@ export default function SourceDocsPage() {
     };
 
     return (
-        // Pass the full doc object to the click handler
-        <EntityManagerPage
-            title="Source Documents"
-            createFormProps={{
-                titleLabel: 'New Source Document',
-                widget: (
-                    <FileUploadWidget file={file} onFileChange={handleFileChange} />
-                ),
-                textLabel: 'Title',
-                textValue: uploadTitle,
-                onTextChange: handleTitleChange,
-                buttonLabel: 'Upload',
-                buttonLoadingLabel: 'Uploading...',
-                loading: uploadLoading,
-                onSubmit: handleSubmit,
-                error: uploadError,
-                success: uploadSuccess,
-                buttonProps: { color: 'primary' }
-            }}
-            searchBarProps={{
-                label: 'Search Documents',
-                value: search,
-                onChange: setSearch,
-                options: docOptions
-            }}
-            list={filteredDocs}
-            listLoading={loading}
-            listError={error}
-            onItemClick={handleSourceDocClick}
-            onDeleteClick={handleDeleteClick}
-            deleteLoading={deleteLoading}
-            deleteError={deleteError}
-            emptyMessage="No documents found."
-            confirmDialog={{
-                open: confirmOpen,
-                onClose: handleConfirmClose,
-                onConfirm: handleConfirmDelete,
-                title: 'Delete Source Document?',
-                content: 'Are you sure you want to delete this source document? This action cannot be undone.'
-            }}
-        />
+        <EntityManagerPage>
+            <SourceDocUploadForm refresh={refresh} />
+            <SearchBar
+                label="Search Documents"
+                value={search}
+                onChange={setSearch}
+                options={docOptions}
+                sx={{ mb: 2 }}
+            />
+            {loading ? (
+                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+                    <CircularProgress />
+                </Box>
+            ) : error ? (
+                <Alert severity="error">{error}</Alert>
+            ) : (
+                <Box sx={{ width: '100%', bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1, mb: 2 }}>
+                    <nav aria-label="entity list">
+                        <GeneralizedList
+                            items={filteredDocs}
+                            onItemClick={handleSourceDocClick}
+                            onDeleteClick={handleDeleteClick}
+                            deleteLoading={deleteLoading}
+                            deleteError={deleteError}
+                            emptyMessage="No documents found."
+                        />
+                    </nav>
+                </Box>
+            )}
+            <Dialog open={confirmOpen} onClose={handleConfirmClose}>
+                <DialogTitle>Delete Source Document?</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>Are you sure you want to delete this source document? This action cannot be undone.</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleConfirmClose} color="primary">Cancel</Button>
+                    <Button onClick={handleConfirmDelete} color="error" variant="contained" autoFocus>Delete</Button>
+                </DialogActions>
+            </Dialog>
+        </EntityManagerPage>
     );
 }

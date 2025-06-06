@@ -21,7 +21,7 @@ export default function FileUploadWidget({ file, onFileChange, accept = ".txt", 
                 style={{ display: 'none' }}
             />
             <label htmlFor={id}>
-                <Button variant="outlined" component="span" startIcon={<CloudUploadIcon />}>
+                <Button variant="outlined" component="span" startIcon={<CloudUploadIcon />} sx={{ fontWeight: 'bold' }}>
                     {file ? 'Change File' : 'Upload File'}
                 </Button>
             </label>

@@ -1,9 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SourceDocSelect from '../../components/SourceDocSelect';
 import { useMetaTexts } from '../../hooks/useMetaTexts';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
 import EntityManagerPage from '../../components/EntityManagerPage';
+import MetaTextCreateForm from './MetaTextCreateForm';
+import SearchBar from '../../components/SearchBar';
+import GeneralizedList from '../../components/GeneralizedList';
+import { CircularProgress, Alert, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Box } from '@mui/material';
 
 export default function MetaTextPage() {
     const [createSuccess, setCreateSuccess] = useState('');
@@ -14,11 +17,6 @@ export default function MetaTextPage() {
     const [deleteError, setDeleteError] = useState({});
     const [confirmOpen, setConfirmOpen] = useState(false);
     const [pendingDeleteId, setPendingDeleteId] = useState(null);
-    const [selectedSourceDocId, setSelectedSourceDocId] = useState('');
-    const [metaTextTitle, setMetaTextTitle] = useState('');
-    const [createLoading, setCreateLoading] = useState(false);
-    const [createError, setCreateError] = useState('');
-    const [createSuccessMsg, setCreateSuccessMsg] = useState('');
     const navigate = useNavigate();
 
     const filteredMetaTexts = useMemo(() => {
@@ -39,7 +37,7 @@ export default function MetaTextPage() {
             await deleteMetaText(id);
             setDeleteLoading(prev => ({ ...prev, [id]: false }));
             setDeleteError(prev => ({ ...prev, [id]: '' }));
-            setCreateSuccess(Date.now()); // Trigger list refresh after delete
+            setCreateSuccess(Date.now());
         } catch (err) {
             setDeleteLoading(prev => ({ ...prev, [id]: false }));
             setDeleteError(prev => ({ ...prev, [id]: err.message || 'Delete failed' }));
@@ -47,7 +45,6 @@ export default function MetaTextPage() {
     };
 
     const handleMetaTextClick = id => navigate(`/metaText/${id}`);
-
     const handleDeleteClick = (id, e) => {
         e.stopPropagation();
         setPendingDeleteId(id);
@@ -65,86 +62,51 @@ export default function MetaTextPage() {
         setPendingDeleteId(null);
     };
 
-    const handleCreateMetaText = async (e) => {
-        e.preventDefault();
-        setCreateError('');
-        setCreateSuccessMsg('');
-        setCreateLoading(true);
-        try {
-            const { createMetaText } = await import('../../services/metaTextService');
-            await createMetaText(selectedSourceDocId, metaTextTitle);
-            setCreateSuccess(Date.now());
-            setSelectedSourceDocId('');
-            setMetaTextTitle('');
-            setCreateSuccessMsg('Meta-text created!');
-        } catch (err) {
-            let errorMsg = 'Failed to create meta text';
-            if (err) {
-                if (typeof err === 'string') {
-                    errorMsg = err;
-                } else if (err.message) {
-                    errorMsg = err.message;
-                } else if (err.response && err.response && err.response.detail) {
-                    errorMsg = err.response.detail;
-                } else if (err.response && err.response) {
-                    errorMsg = JSON.stringify(err.response);
-                } else {
-                    errorMsg = JSON.stringify(err);
-                }
-            }
-            setCreateError(errorMsg);
-        } finally {
-            setCreateLoading(false);
-        }
-    };
-
     return (
-        <EntityManagerPage
-            title="Meta Texts"
-            createFormProps={{
-                titleLabel: 'New Meta Text',
-                widget: (
-                    <SourceDocSelect
-                        value={selectedSourceDocId}
-                        onChange={e => setSelectedSourceDocId(e.target.value)}
-                        sourceDocs={sourceDocs}
-                        loading={sourceDocsLoading}
-                        error={sourceDocsError}
-                        required
-                    />
-                ),
-                textLabel: 'Meta-text Name',
-                textValue: metaTextTitle,
-                onTextChange: e => setMetaTextTitle(e.target.value),
-                buttonLabel: 'Create',
-                buttonLoadingLabel: 'Creating...',
-                loading: createLoading,
-                onSubmit: handleCreateMetaText,
-                error: createError,
-                success: createSuccessMsg,
-                buttonProps: { sx: { minWidth: 120 } }
-            }}
-            searchBarProps={{
-                label: 'Search Meta Texts',
-                value: search,
-                onChange: setSearch,
-                options: metaTextOptions
-            }}
-            list={filteredMetaTexts}
-            listLoading={metaTextsLoading}
-            listError={metaTextsError}
-            onItemClick={handleMetaTextClick}
-            onDeleteClick={handleDeleteClick}
-            deleteLoading={deleteLoading}
-            deleteError={deleteError}
-            emptyMessage="No meta texts found."
-            confirmDialog={{
-                open: confirmOpen,
-                onClose: handleConfirmClose,
-                onConfirm: handleConfirmDelete,
-                title: 'Delete Meta Text?',
-                content: 'Are you sure you want to delete this meta text? This action cannot be undone.'
-            }}
-        />
+        <EntityManagerPage>
+            <MetaTextCreateForm
+                sourceDocs={sourceDocs}
+                sourceDocsLoading={sourceDocsLoading}
+                sourceDocsError={sourceDocsError}
+                onCreateSuccess={() => setCreateSuccess(Date.now())}
+            />
+            <SearchBar
+                label="Search Meta Texts"
+                value={search}
+                onChange={setSearch}
+                options={metaTextOptions}
+                sx={{ mb: 2 }}
+            />
+            {metaTextsLoading ? (
+                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+                    <CircularProgress />
+                </Box>
+            ) : metaTextsError ? (
+                <Alert severity="error">{metaTextsError}</Alert>
+            ) : (
+                <Box sx={{ width: '100%', bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1, mb: 2 }}>
+                    <nav aria-label="entity list">
+                        <GeneralizedList
+                            items={filteredMetaTexts}
+                            onItemClick={handleMetaTextClick}
+                            onDeleteClick={handleDeleteClick}
+                            deleteLoading={deleteLoading}
+                            deleteError={deleteError}
+                            emptyMessage="No meta texts found."
+                        />
+                    </nav>
+                </Box>
+            )}
+            <Dialog open={confirmOpen} onClose={handleConfirmClose}>
+                <DialogTitle>Delete Meta Text?</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>Are you sure you want to delete this meta text? This action cannot be undone.</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleConfirmClose} color="primary">Cancel</Button>
+                    <Button onClick={handleConfirmDelete} color="error" variant="contained" autoFocus>Delete</Button>
+                </DialogActions>
+            </Dialog>
+        </EntityManagerPage>
     );
 }
