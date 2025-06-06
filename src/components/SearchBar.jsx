@@ -10,7 +10,7 @@ import { TextField } from '@mui/material';
  * - sx: style overrides (optional)
  * - other TextField props
  */
-export default function SearchBar({ label, value, onChange, sx, ...props }) {
+export default function SearchBar({ label, value, onChange, ...props }) {
     return (
         <TextField
             label={label}
@@ -18,12 +18,6 @@ export default function SearchBar({ label, value, onChange, sx, ...props }) {
             fullWidth
             value={value}
             onChange={e => onChange(e.target.value)}
-            sx={{
-                ...sx,
-                '& .MuiInputBase-input': {
-                    color: '#fff', // Light text color
-                },
-            }}
             {...props}
         />
     );

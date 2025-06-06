@@ -13,7 +13,7 @@ const navLinks = [
 export default function NavBar() {
     const location = useLocation();
     return (
-        <AppBar position="fixed" color="default" elevation={2} sx={{ bgcolor: 'background.paper', color: 'text.primary', zIndex: 1201 }}>
+        <AppBar position="fixed" elevation={2} sx={{ bgcolor: 'background.paper', color: 'text.primary', zIndex: 1201 }}>
             <Toolbar sx={{ display: 'flex', justifyContent: 'right', minHeight: 64 }}>
                 <Box sx={{ display: 'flex', gap: 2, }}>
                     {navLinks.map(link => (
