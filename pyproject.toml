@@ -11,4 +11,5 @@ dependencies = [
     "openai>=1.82.0",
     "python-freedictionaryapi[async-client]>=0.9.10",
     "pytest>=8.4.0",
+    "python-dotenv>=1.1.0",
 ]

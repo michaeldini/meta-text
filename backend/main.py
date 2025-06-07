@@ -1,3 +1,4 @@
+import backend.env_setup  # loads .env if present
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.db import init_db

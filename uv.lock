@@ -544,6 +544,7 @@ dependencies = [
     { name = "fastapi-cors" },
     { name = "openai" },
     { name = "pytest" },
+    { name = "python-dotenv" },
     { name = "python-freedictionaryapi", extra = ["async-client"] },
     { name = "sqlmodel" },
 ]
@@ -554,6 +555,7 @@ requires-dist = [
     { name = "fastapi-cors" },
     { name = "openai", specifier = ">=1.82.0" },
     { name = "pytest", specifier = ">=8.4.0" },
+    { name = "python-dotenv", specifier = ">=1.1.0" },
     { name = "python-freedictionaryapi", extras = ["async-client"], specifier = ">=0.9.10" },
     { name = "sqlmodel" },
 ]
