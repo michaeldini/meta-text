@@ -28,3 +28,5 @@ __pycache__
 certs
 .venv
 .pytest_cache
+
+Notes.md
