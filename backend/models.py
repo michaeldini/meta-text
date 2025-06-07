@@ -76,18 +76,6 @@ class ChunkRead(ChunkBase):
     id: int
 
 
-# --- Word Lookup Schemas ---
-class WordLookup(SQLModel, table=True):
-    id: int = Field(default=None, primary_key=True)
-    word: str = Field(index=True, unique=True)
-    definition: str
-
-
-class WordLookupResponse(SQLModel):
-    id: int | None = None
-    word: str
-    definition: str
-    
 # --- Generic Response Schemas ---
 class CreateSuccessResponse(SQLModel):
     success: bool
