@@ -4,6 +4,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import { useAuth } from '../store/authStore';
 
 const navLinks = [
     { to: '/sourceDocs', label: 'Source Docs' },
@@ -12,6 +13,7 @@ const navLinks = [
 
 export default function NavBar() {
     const location = useLocation();
+    const { user, logout } = useAuth();
     return (
         <AppBar position="fixed" elevation={2} sx={{ bgcolor: 'background.paper', color: 'text.primary', zIndex: 1201 }}>
             <Toolbar sx={{ display: 'flex', justifyContent: 'right', minHeight: 64 }}>
@@ -40,6 +42,20 @@ export default function NavBar() {
                         </Button>
                     ))}
                 </Box>
+                {user ? (
+                    <Button color="secondary" variant="outlined" sx={{ ml: 2 }} onClick={logout}>
+                        Logout
+                    </Button>
+                ) : (
+                    <>
+                        <Button component={Link} to="/login" color="secondary" variant="outlined" sx={{ ml: 2 }}>
+                            Login
+                        </Button>
+                        <Button component={Link} to="/register" color="secondary" variant="contained" sx={{ ml: 1 }}>
+                            Register
+                        </Button>
+                    </>
+                )}
                 <Typography variant="h6" sx={{ textTransform: 'uppercase', fontWeight: 700, letterSpacing: 2, color: 'primary.main', pl: 2 }}>
                     Meta-Text
                 </Typography>

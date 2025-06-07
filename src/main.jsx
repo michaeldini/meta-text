@@ -5,14 +5,17 @@ import { ThemeProvider, CssBaseline } from '@mui/material';
 import './index.css';
 import App from './App.jsx';
 import theme from './styles/theme';
+import { AuthProvider } from './store/authStore.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AuthProvider>
     </ThemeProvider>
   </StrictMode>,
 );

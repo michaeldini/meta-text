@@ -12,4 +12,7 @@ dependencies = [
     "python-freedictionaryapi[async-client]>=0.9.10",
     "pytest>=8.4.0",
     "python-dotenv>=1.1.0",
+    "passlib[bcrypt]>=1.7.4",
+    "python-jose[cryptography]>=3.5.0",
+    "bcrypt>=4.3.0",
 ]

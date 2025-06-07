@@ -5,6 +5,9 @@ import SourceDocsPage from './pages/SourceDocPage/SourceDocsPage';
 import SourceDocDetailPage from './pages/SourceDocPage/SourceDocDetailPage';
 import MetaTextPage from './pages/MetaTextPage/MetaTextPage';
 import MetaTextDetailPage from './pages/MetaTextPage/MetaTextDetailPage';
+import LoginPage from './pages/Auth/LoginPage';
+import RegisterPage from './pages/Auth/RegisterPage';
+import AuthGate from './pages/Auth/AuthGate';
 import { Fade } from '@mui/material';
 import { useMemo } from 'react';
 
@@ -14,10 +17,28 @@ function App() {
   const routeElement = useMemo(() => (
     <Routes location={location} key={location.key}>
       <Route path="/" element={<h1>Welcome to Meta-Text</h1>} />
-      <Route path="/sourceDocs" element={<SourceDocsPage />} />
-      <Route path="/sourceDocs/:id" element={<SourceDocDetailPage />} />
-      <Route path="/metaText" element={<MetaTextPage />} />
-      <Route path="/metaText/:id" element={<MetaTextDetailPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route path="/sourceDocs" element={
+        <AuthGate>
+          <SourceDocsPage />
+        </AuthGate>
+      } />
+      <Route path="/sourceDocs/:id" element={
+        <AuthGate>
+          <SourceDocDetailPage />
+        </AuthGate>
+      } />
+      <Route path="/metaText" element={
+        <AuthGate>
+          <MetaTextPage />
+        </AuthGate>
+      } />
+      <Route path="/metaText/:id" element={
+        <AuthGate>
+          <MetaTextDetailPage />
+        </AuthGate>
+      } />
     </Routes>
   ), [location]);
 
