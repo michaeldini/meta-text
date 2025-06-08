@@ -1,7 +1,7 @@
 import React, { memo, useState, useEffect } from 'react';
-import { Box, TextField, Paper, LinearProgress, CircularProgress, Modal, Fade } from '@mui/material';
+import { Box, TextField, Paper, LinearProgress, CircularProgress, Modal, Fade, Button } from '@mui/material';
 import ChunkWords from './ChunkWords';
-import ChunkAiSummary from './ChunkAiSummary';
+import ChunkComparison from './ChunkComparison';
 import GenerateImageDialog from '../components/GenerateImageDialog';
 import { generateAiImage } from '../services/aiService';
 import { fetchChunk } from '../services/chunkService';
@@ -14,7 +14,7 @@ const Chunk = memo(function Chunk({
     handleChunkFieldChange
 }) {
     const words = chunk.content ? chunk.content.split(/\s+/) : [];
-    const handleAISummaryUpdate = (newSummary) => handleChunkFieldChange(chunkIdx, 'aiSummary', newSummary);
+    const handleComparisonUpdate = (newComparison) => handleChunkFieldChange(chunkIdx, 'comparison', newComparison);
 
     // Local state for summary and notes for smooth typing
     const [summary, setSummary] = useState(chunk.summary || '');
@@ -76,6 +76,10 @@ const Chunk = memo(function Chunk({
         setImgLoaded(false);
     }, [imgData]);
 
+    // Helper to get image src and key (no cache busting)
+    const getImgSrc = () => imgData ? `/${imgData}` : '';
+    const getImgKey = () => imgData ? imgData : '';
+
     const handleGenerateImageClick = () => {
         setImgDialogOpen(true);
         setImgError(null);
@@ -93,14 +97,22 @@ const Chunk = memo(function Chunk({
         setImgDialogOpen(false); // Close dialog immediately on submit
         try {
             const result = await generateAiImage(prompt, chunk.id); // Pass chunk.id to associate image
+            // Debug: log result
+            console.log('AI image generation result:', result);
             // Fetch updated chunk from backend to sync ai_image
             const updatedChunk = await fetchChunk(chunk.id);
+            let imagePath = null;
             if (updatedChunk && updatedChunk.ai_image && updatedChunk.ai_image.path) {
-                setImgData(updatedChunk.ai_image.path);
+                imagePath = updatedChunk.ai_image.path;
                 setImgPrompt(updatedChunk.ai_image.prompt || '');
-            } else {
-                setImgData(result.path); // fallback
+            } else if (result && result.path) {
+                imagePath = result.path;
             }
+            // Ensure path is relative to public/ for frontend
+            if (imagePath && imagePath.startsWith('/')) {
+                imagePath = imagePath.slice(1);
+            }
+            setImgData(imagePath);
         } catch (err) {
             setImgError(err?.message || 'Failed to generate image');
         } finally {
@@ -178,37 +190,34 @@ const Chunk = memo(function Chunk({
                             }
                         }}
                     />
-                    <ChunkAiSummary
+                    <ChunkComparison
                         chunkId={chunk.id}
-                        aiSummary={chunk.aiSummary}
-                        onAISummaryUpdate={handleAISummaryUpdate}
+                        comparisonText={chunk.comparison}
+                        onComparisonUpdate={handleComparisonUpdate}
                     />
                     {/* Generate Image Button */}
                     <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 2 }}>
-                        <button
-                            style={{
-                                background: '#1976d2',
-                                color: '#fff',
-                                border: 'none',
-                                borderRadius: 8,
-                                padding: '10px 20px',
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            sx={{
+                                borderRadius: 2,
                                 fontWeight: 600,
                                 fontSize: 16,
-                                cursor: imgLoading ? 'wait' : 'pointer',
-                                boxShadow: '0 2px 8px rgba(25, 118, 210, 0.15)',
-                                transition: 'background 0.2s, box-shadow 0.2s',
-                                opacity: imgLoading ? 0.7 : 1,
                                 minWidth: 160,
                                 minHeight: 40,
+                                boxShadow: '0 2px 8px rgba(25, 118, 210, 0.15)',
+                                opacity: imgLoading ? 0.7 : 1,
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
+                                textTransform: 'none',
                             }}
                             onClick={handleGenerateImageClick}
                             disabled={imgLoading}
                         >
                             {imgLoading ? <LinearProgress sx={{ width: 120, color: '#fff' }} /> : 'Generate Image'}
-                        </button>
+                        </Button>
                         {imgData && (
                             <>
                                 <Box sx={{ mt: 2, width: 300, height: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #eee', borderRadius: 2, overflow: 'hidden', background: '#fafafa', position: 'relative', cursor: 'pointer' }}
@@ -222,7 +231,8 @@ const Chunk = memo(function Chunk({
                                         </Box>
                                     )}
                                     <img
-                                        src={`/${imgData}`}
+                                        src={getImgSrc()}
+                                        key={getImgKey()}
                                         alt={imgPrompt}
                                         style={{ width: 400, height: 400, objectFit: 'cover', display: imgLoaded ? 'block' : 'none' }}
                                         onLoad={() => setImgLoaded(true)}
@@ -278,7 +288,8 @@ const Chunk = memo(function Chunk({
                                                 }}
                                             >
                                                 <img
-                                                    src={`/${imgData}`}
+                                                    src={getImgSrc()}
+                                                    key={getImgKey()}
                                                     alt={imgPrompt}
                                                     style={{
                                                         maxWidth: '80vw',

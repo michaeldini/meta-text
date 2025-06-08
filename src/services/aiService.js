@@ -33,3 +33,13 @@ export async function generateAiImage(prompt, chunkId) {
     });
     return handleApiResponse(res, 'Failed to generate image');
 }
+
+/**
+ * Generates an AI comparison summary between chunk text, summary, and notes.
+ * @param {number} chunkId - The chunk id to compare.
+ * @returns {Promise<{result: string}>}
+ */
+export async function generateChunkNoteSummaryTextComparison(chunkId) {
+    const res = await fetch(`/api/generate-chunk-note-summary-text-comparison/${chunkId}`);
+    return handleApiResponse(res, 'Failed to generate AI comparison summary');
+}

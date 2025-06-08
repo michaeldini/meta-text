@@ -3,9 +3,8 @@ from backend.models import SourceDocument, WordDefinitionResponse, WordDefinitio
 from backend.db import get_session
 import os
 from openai import OpenAI
-from backend.models import SourceDocInfoAiResponse, SourceDocInfoRequest, SourceDocInfoResponse, ChunkAiSummaryRequest, ChunkAiSummaryResponse, ChunkAiComparisonSummaryRequest, ChunkAiComparisonSummaryResponse
+from backend.models import SourceDocInfoAiResponse, SourceDocInfoRequest, SourceDocInfoResponse,AiImage, AiImageRead, Chunk
 from sqlmodel import Session
-from backend.models import AiImage, AiImageCreate, AiImageRead, Chunk
 import base64
 from datetime import datetime
 
@@ -14,9 +13,8 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 
 router = APIRouter()
 
-@router.post("/generate-chunk-ai-comparison-summary")
-async def generate_chunk_ai_comparison_summary(request: ChunkAiComparisonSummaryRequest, session: Session = Depends(get_session)) -> ChunkAiComparisonSummaryResponse:
-    chunk_id = request.chunk_id
+@router.get("/generate-chunk-note-summary-text-comparison/{chunk_id}")
+async def generate_chunk_note_summary_text_comparison(chunk_id: int, session: Session = Depends(get_session)) -> dict:
     chunk = session.get(Chunk, chunk_id)
     if not chunk:
         raise HTTPException(status_code=404, detail="Chunk not found.")
@@ -34,10 +32,10 @@ async def generate_chunk_ai_comparison_summary(request: ChunkAiComparisonSummary
         )
         ai_text = response.output_text
         # Save to DB
-        chunk.aiSummary = ai_text
+        chunk.comparison = ai_text
         session.add(chunk)
         session.commit()
-        return ChunkAiComparisonSummaryResponse(result=ai_text)
+        return {"result": ai_text}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")
     
@@ -135,16 +133,10 @@ async def generate_image(prompt: str = Form(...), chunk_id: int = Form(None), se
         ai_image = AiImage(prompt=prompt, path=rel_path, chunk_id=chunk_id)
         session.add(ai_image)
         session.commit()
-        session.refresh(ai_image)
-        # Return the most recent image for this chunk
-        from sqlmodel import select, desc
-        latest_image = session.exec(
-            select(AiImage).where(AiImage.chunk_id == chunk_id).order_by(desc(AiImage.id))
-        ).first()
-        if latest_image:
-            return AiImageRead(id=latest_image.id, prompt=latest_image.prompt, path=latest_image.path, chunk_id=latest_image.chunk_id)
-        else:
-            # fallback: return the just-created image (should not happen, but safe)
-            return AiImageRead(id=ai_image.id, prompt=ai_image.prompt, path=ai_image.path, chunk_id=ai_image.chunk_id)
+        return ai_image
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")
+        import traceback
+        print('AI image generation error:', str(e))
+        traceback.print_exc()
+        # Bubble up the OpenAI/content moderation error to the frontend
+        raise HTTPException(status_code=500, detail=str(e))

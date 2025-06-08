@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
 import AiStarsButton from '../components/AiStarsButton';
+import { generateChunkNoteSummaryTextComparison } from '../services/aiService';
 
-function ChunkAiSummary({ chunkId, aiSummary, onAISummaryUpdate }) {
+function ChunkComparison({ chunkId, comparisonText, onComparisonUpdate }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -10,14 +11,8 @@ function ChunkAiSummary({ chunkId, aiSummary, onAISummaryUpdate }) {
         setLoading(true);
         setError('');
         try {
-            const res = await fetch('/api/generate-chunk-ai-comparison-summary', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chunk_id: chunkId })
-            });
-            if (!res.ok) throw new Error('Failed to generate summary');
-            const data = await res.json();
-            onAISummaryUpdate(data.result || '');
+            const data = await generateChunkNoteSummaryTextComparison(chunkId);
+            onComparisonUpdate(data.result || '');
         } catch {
             setError('Error generating summary');
         } finally {
@@ -38,11 +33,11 @@ function ChunkAiSummary({ chunkId, aiSummary, onAISummaryUpdate }) {
                 />
             </Box>
             <Box sx={{ whiteSpace: 'pre-line', minHeight: 24, color: theme => theme.palette.text.secondary }}>
-                {aiSummary || <span style={{ color: '#aaa' }}>No summary yet.</span>}
+                {comparisonText || <span style={{ color: '#aaa' }}>No summary yet.</span>}
             </Box>
             {error && <Box sx={{ color: 'error.main', fontSize: 12 }}>{error}</Box>}
         </Box>
     );
 }
 
-export default ChunkAiSummary;
+export default ChunkComparison;

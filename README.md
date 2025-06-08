@@ -17,6 +17,7 @@ coming soon
 - Read an uploaded document.
 - Delete an uploaded document
 - search for a document by title.
+- Generate a summary of the document using an Ai.
 
 #### Create a Meta-Text
 
@@ -33,6 +34,7 @@ coming soon
 - Read a chunk of a Meta-Text.
 - Split the text of a chunk to create a new chunk.
 - Combine two chunks into one chunk.
+- Create an image from a prompt and add it to a chunk.
 
 #### Manipulate Chunks
 

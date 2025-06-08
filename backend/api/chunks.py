@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, Body
-from sqlmodel import select, Session
+from sqlmodel import select, Session, desc
 from typing import List
 from backend.db import get_session
 from backend.models import Chunk, ChunkRead, ChunkWithImageRead, AiImage
-from sqlmodel import select, desc
+
 
 router = APIRouter()
 
@@ -20,6 +20,18 @@ def get_chunks_api(meta_text_id: int, session: Session = Depends(get_session)) -
         ).first()
         result.append(ChunkWithImageRead.model_validate(chunk, update={"ai_image": ai_image}))
     return result # type: ignore
+
+
+@router.get("/chunk/{chunk_id}", name="get_chunk")
+def get_chunk(chunk_id: int, session: Session = Depends(get_session)) -> ChunkWithImageRead:
+    chunk = session.get(Chunk, chunk_id)
+    if not chunk:
+        raise HTTPException(status_code=404, detail="Chunk not found")
+    ai_image = session.exec(
+        select(AiImage).where(AiImage.chunk_id == chunk.id).order_by(desc(AiImage.id))
+    ).first()
+    return ChunkWithImageRead.model_validate(chunk, update={"ai_image": ai_image})
+
 
 @router.post("/chunk/{chunk_id}/split", name="split_chunk")
 def split_chunk(chunk_id: int, word_index: int, session: Session = Depends(get_session)) -> List[ChunkRead]:
@@ -82,19 +94,9 @@ def update_chunk(chunk_id: int, chunk_data: dict = Body(...), session: Session =
         chunk.summary = chunk_data['summary']
     if 'notes' in chunk_data:
         chunk.notes = chunk_data['notes']
-    if 'aiSummary' in chunk_data:
-        chunk.aiSummary = chunk_data['aiSummary']
+    if 'comparison' in chunk_data:
+        chunk.comparison = chunk_data['comparison']
     session.add(chunk)
     session.commit()
     session.refresh(chunk)
     return chunk # type: ignore
-
-@router.get("/chunk/{chunk_id}", name="get_chunk")
-def get_chunk(chunk_id: int, session: Session = Depends(get_session)) -> ChunkWithImageRead:
-    chunk = session.get(Chunk, chunk_id)
-    if not chunk:
-        raise HTTPException(status_code=404, detail="Chunk not found")
-    ai_image = session.exec(
-        select(AiImage).where(AiImage.chunk_id == chunk.id).order_by(desc(AiImage.id))
-    ).first()
-    return ChunkWithImageRead.model_validate(chunk, update={"ai_image": ai_image})

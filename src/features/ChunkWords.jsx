@@ -3,7 +3,7 @@ import { Box, IconButton } from '@mui/material';
 import UndoArrowIcon from '../components/icons/UndoArrowIcon';
 import WordActionDialog from './WordActionDialog';
 
-const ChunkWords = memo(function SectionWords({
+const ChunkWords = memo(function ChunkWords({
     words,
     chunkIdx,
     handleWordClick,

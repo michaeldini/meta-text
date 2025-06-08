@@ -2,7 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Form, File, UploadFile
 from sqlmodel import select
 from backend.models import (
-    SourceDocument, MetaText, SourceDocumentBase, SourceDocumentListRead, SourceDocumentRead, 
+    SourceDocument, MetaText, SourceDocumentListRead, SourceDocumentRead, 
 )
 from backend.db import get_session
 

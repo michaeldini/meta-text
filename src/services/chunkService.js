@@ -17,7 +17,7 @@ export const combineChunks = async (firstChunkId, secondChunkId) => {
 };
 
 export const updateChunk = async (chunkId, chunkData) => {
-    // Backend expects a full chunk object (text, summary, notes, aiSummary, etc)
+    // Backend expects a full chunk object (text, summary, notes, comparison, etc)
     const res = await fetch(`/api/chunk/${chunkId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },

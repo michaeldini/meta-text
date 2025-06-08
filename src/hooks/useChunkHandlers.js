@@ -30,7 +30,6 @@ export function useChunkHandlers(metaTextId, setChunks) {
         const updatedChunks = await fetchChunks();
         const chunkId = updatedChunks[chunkIdx]?.id;
         if (chunkId == null) return;
-        console.log(`UseMetaTextSectionHandlers: Calling split for chunk ${chunkId} at word index ${wordIdx}`);
         await split(chunkId, wordIdx + 1);
         const updated = await fetchChunks();
         setChunks(updated.map(chunk => ({

@@ -66,7 +66,7 @@ class ChunkBase(SQLModel):
     position: float = 0.0
     notes: str = ""
     summary: str = ""
-    aiSummary: str = ""
+    comparison: str = ""
     meta_text_id: int = Field(foreign_key="metatext.id")
 
 class Chunk(ChunkBase, table=True):
@@ -98,13 +98,6 @@ class SourceDocInfoRequest(SQLModel):
 class SourceDocInfoResponse(SQLModel):
     result: SourceDocInfoAiResponse
 
-# --- Chunk AI Summary Schemas ---
-class ChunkAiSummaryRequest(SQLModel):
-    prompt: str
-
-class ChunkAiSummaryResponse(SQLModel):
-    result: str
-
 # --- Word Definition Schemas ---
 class WordDefinitionWithContextRequest(SQLModel):
     word: str
@@ -113,6 +106,16 @@ class WordDefinitionResponse(SQLModel):
     definition: str
     definitionWithContext: str
 
+# --- Word Definition Log Schemas ---
+class WordDefinitionLog(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    word: str
+    context: str
+    definition: str
+    definition_with_context: str
+    created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
+    
+    
 # --- AI Image Schemas ---
 class AiImage(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
@@ -131,20 +134,3 @@ class AiImageRead(SQLModel):
     prompt: str
     path: str
     chunk_id: Optional[int] = None
-
-# --- Chunk AI Comparison Schemas ---
-class ChunkAiComparisonSummaryRequest(SQLModel):
-    chunk_id: int
-
-class ChunkAiComparisonSummaryResponse(SQLModel):
-    result: str
-
-# --- Word Definition Log Schemas ---
-class WordDefinitionLog(SQLModel, table=True):
-    id: int = Field(default=None, primary_key=True)
-    word: str
-    context: str
-    definition: str
-    definition_with_context: str
-    created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
-    
