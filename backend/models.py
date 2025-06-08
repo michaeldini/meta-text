@@ -70,7 +70,7 @@ class ChunkBase(SQLModel):
 class Chunk(ChunkBase, table=True):
     id: int = Field(default=None, primary_key=True)
     meta_text: Optional[MetaText] = Relationship(back_populates="chunks")
-    ai_image: Optional["AiImage"] = Relationship(back_populates="chunk")  # One-to-one relationship
+    ai_images: List["AiImage"] = Relationship(back_populates="chunk")  # One-to-many relationship
 
 class ChunkRead(ChunkBase):
     id: int
@@ -127,8 +127,8 @@ class AiImage(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     prompt: str
     path: str  # relative path to the saved image file
-    chunk_id: Optional[int] = Field(default=None, foreign_key="chunk.id", unique=True)  # One-to-one FK to Chunk
-    chunk: Optional["Chunk"] = Relationship(back_populates="ai_image")  # One-to-one relationship
+    chunk_id: Optional[int] = Field(default=None, foreign_key="chunk.id")  # Many-to-one FK to Chunk
+    chunk: Optional["Chunk"] = Relationship(back_populates="ai_images")  # Many-to-one relationship
 
 class AiImageCreate(SQLModel):
     prompt: str

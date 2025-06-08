@@ -3,6 +3,7 @@ from sqlmodel import select, Session
 from typing import List
 from backend.db import get_session
 from backend.models import Chunk, ChunkRead, ChunkWithImageRead, AiImage
+from sqlmodel import select, desc
 
 router = APIRouter()
 
@@ -10,12 +11,12 @@ router = APIRouter()
 def get_chunks_api(meta_text_id: int, session: Session = Depends(get_session)) -> List[ChunkWithImageRead]:
     chunks = session.exec(
         select(Chunk).where(Chunk.meta_text_id == meta_text_id).order_by(getattr(Chunk, "position"))
-    ).all()
+).all()
     # Manually fetch ai_image for each chunk
     result = []
     for chunk in chunks:
         ai_image = session.exec(
-            select(AiImage).where(AiImage.chunk_id == chunk.id)
+            select(AiImage).where(AiImage.chunk_id == chunk.id).order_by(desc(AiImage.id))
         ).first()
         result.append(ChunkWithImageRead.model_validate(chunk, update={"ai_image": ai_image}))
     return result # type: ignore

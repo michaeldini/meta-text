@@ -112,11 +112,20 @@ async def generate_image(prompt: str = Form(...), chunk_id: int = Form(None), se
         os.makedirs(os.path.dirname(abs_path), exist_ok=True)
         with open(abs_path, "wb") as f:
             f.write(image_data)
-        # Save record to DB
+        # Save new record to DB (allow multiple images per chunk)
         ai_image = AiImage(prompt=prompt, path=rel_path, chunk_id=chunk_id)
         session.add(ai_image)
         session.commit()
         session.refresh(ai_image)
-        return AiImageRead(id=ai_image.id, prompt=ai_image.prompt, path=ai_image.path, chunk_id=ai_image.chunk_id)
+        # Return the most recent image for this chunk
+        from sqlmodel import select, desc
+        latest_image = session.exec(
+            select(AiImage).where(AiImage.chunk_id == chunk_id).order_by(desc(AiImage.id))
+        ).first()
+        if latest_image:
+            return AiImageRead(id=latest_image.id, prompt=latest_image.prompt, path=latest_image.path, chunk_id=latest_image.chunk_id)
+        else:
+            # fallback: return the just-created image (should not happen, but safe)
+            return AiImageRead(id=ai_image.id, prompt=ai_image.prompt, path=ai_image.path, chunk_id=ai_image.chunk_id)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")

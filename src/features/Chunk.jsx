@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
-import { Box, TextField, Paper, LinearProgress, CircularProgress } from '@mui/material';
+import { Box, TextField, Paper, LinearProgress, CircularProgress, Modal, Fade } from '@mui/material';
 import ChunkWords from './ChunkWords';
 import ChunkAiSummary from './ChunkAiSummary';
 import GenerateImageDialog from '../components/GenerateImageDialog';
@@ -27,6 +27,9 @@ const Chunk = memo(function Chunk({
     const [imgData, setImgData] = useState(null);
     const [imgPrompt, setImgPrompt] = useState('');
     const [imgLoaded, setImgLoaded] = useState(false);
+
+    // Image lightbox state
+    const [imgLightboxOpen, setImgLightboxOpen] = useState(false);
 
     // Keep local state in sync with chunk prop changes
     useEffect(() => {
@@ -61,12 +64,17 @@ const Chunk = memo(function Chunk({
         if (chunk.ai_image && chunk.ai_image.path) {
             setImgData(chunk.ai_image.path);
             setImgPrompt(chunk.ai_image.prompt || '');
-            setImgLoaded(false);
+            // setImgLoaded(false); // moved to imgData effect below
         } else {
             setImgData(null);
-            setImgLoaded(false);
+            // setImgLoaded(false); // moved to imgData effect below
         }
     }, [chunk.ai_image]);
+
+    // Reset imgLoaded whenever imgData changes
+    useEffect(() => {
+        setImgLoaded(false);
+    }, [imgData]);
 
     const handleGenerateImageClick = () => {
         setImgDialogOpen(true);
@@ -202,27 +210,95 @@ const Chunk = memo(function Chunk({
                             {imgLoading ? <LinearProgress sx={{ width: 120, color: '#fff' }} /> : 'Generate Image'}
                         </button>
                         {imgData && (
-                            <Box sx={{ mt: 2, width: 300, height: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #eee', borderRadius: 2, overflow: 'hidden', background: '#fafafa', position: 'relative' }}>
-                                {!imgLoaded && (
-                                    <Box sx={{ position: 'absolute', top: 0, left: 0, width: 400, height: 400, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2, background: 'rgba(255,255,255,0.7)' }}>
-                                        <CircularProgress size={48} />
-                                    </Box>
-                                )}
-                                <img
-                                    src={`/${imgData}`}
-                                    alt={imgPrompt}
-                                    style={{ width: 400, height: 400, objectFit: 'cover', display: imgLoaded ? 'block' : 'none' }}
-                                    onLoad={() => setImgLoaded(true)}
-                                    onError={() => setImgLoaded(true)}
-                                />
-                                {/* Show prompt and date if available */}
-                                <Box sx={{ mt: 1, width: '100%', textAlign: 'left', fontSize: 14, color: '#555', position: 'absolute', bottom: 0, left: 0, background: 'rgba(255,255,255,0.85)', p: 1 }}>
-                                    {imgPrompt && <div><b>Prompt:</b> {imgPrompt}</div>}
-                                    {chunk.ai_image && chunk.ai_image.created_at && (
-                                        <div><b>Generated:</b> {new Date(chunk.ai_image.created_at).toLocaleString()}</div>
+                            <>
+                                <Box sx={{ mt: 2, width: 300, height: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #eee', borderRadius: 2, overflow: 'hidden', background: '#fafafa', position: 'relative', cursor: 'pointer' }}
+                                    onClick={() => setImgLightboxOpen(true)}
+                                    tabIndex={0}
+                                    aria-label="Expand image"
+                                >
+                                    {!imgLoaded && (
+                                        <Box sx={{ position: 'absolute', top: 0, left: 0, width: 400, height: 400, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2, background: 'rgba(255,255,255,0.7)' }}>
+                                            <CircularProgress size={48} />
+                                        </Box>
                                     )}
+                                    <img
+                                        src={`/${imgData}`}
+                                        alt={imgPrompt}
+                                        style={{ width: 400, height: 400, objectFit: 'cover', display: imgLoaded ? 'block' : 'none' }}
+                                        onLoad={() => setImgLoaded(true)}
+                                        onError={() => setImgLoaded(true)}
+                                    />
+                                    {/* Show prompt and date if available */}
+                                    <Box sx={{ mt: 1, width: '100%', textAlign: 'left', fontSize: 14, color: '#555', position: 'absolute', bottom: 0, left: 0, background: 'rgba(255,255,255,0.85)', p: 1 }}>
+                                        {imgPrompt && <div><b>Prompt:</b> {imgPrompt}</div>}
+                                        {chunk.ai_image && chunk.ai_image.created_at && (
+                                            <div><b>Generated:</b> {new Date(chunk.ai_image.created_at).toLocaleString()}</div>
+                                        )}
+                                    </Box>
                                 </Box>
-                            </Box>
+                                {/* Lightbox Modal */}
+                                <Modal
+                                    open={imgLightboxOpen}
+                                    onClose={() => setImgLightboxOpen(false)}
+                                    closeAfterTransition
+                                    aria-labelledby="image-lightbox-title"
+                                    aria-describedby="image-lightbox-description"
+                                >
+                                    <Fade in={imgLightboxOpen}>
+                                        <Box
+                                            onClick={() => setImgLightboxOpen(false)}
+                                            sx={{
+                                                position: 'fixed',
+                                                top: 0,
+                                                left: 0,
+                                                width: '100vw',
+                                                height: '100vh',
+                                                bgcolor: 'rgba(0,0,0,0.85)',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                zIndex: 2000,
+                                                cursor: 'zoom-out',
+                                            }}
+                                        >
+                                            <Box
+                                                onClick={e => e.stopPropagation()}
+                                                sx={{
+                                                    outline: 'none',
+                                                    boxShadow: 8,
+                                                    borderRadius: 3,
+                                                    overflow: 'hidden',
+                                                    bgcolor: '#fff',
+                                                    p: 2,
+                                                    maxWidth: '90vw',
+                                                    maxHeight: '90vh',
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    alignItems: 'center',
+                                                }}
+                                            >
+                                                <img
+                                                    src={`/${imgData}`}
+                                                    alt={imgPrompt}
+                                                    style={{
+                                                        maxWidth: '80vw',
+                                                        maxHeight: '70vh',
+                                                        objectFit: 'contain',
+                                                        borderRadius: 8,
+                                                        background: '#fafafa',
+                                                    }}
+                                                />
+                                                <Box sx={{ mt: 2, color: '#333', fontSize: 16, textAlign: 'center', width: '100%' }}>
+                                                    {imgPrompt && <div><b>Prompt:</b> {imgPrompt}</div>}
+                                                    {chunk.ai_image && chunk.ai_image.created_at && (
+                                                        <div><b>Generated:</b> {new Date(chunk.ai_image.created_at).toLocaleString()}</div>
+                                                    )}
+                                                </Box>
+                                            </Box>
+                                        </Box>
+                                    </Fade>
+                                </Modal>
+                            </>
                         )}
                     </Box>
                 </Box>
