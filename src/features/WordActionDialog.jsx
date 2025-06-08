@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Popover, Box, IconButton, Alert } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
 import ContentCutIcon from '@mui/icons-material/ContentCut';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import { fetchDefinitionInContext } from '../services/aiService';
@@ -68,9 +67,9 @@ export default function WordActionDialog({ anchorEl, onClose, word, onSplit, con
                         <Alert severity="error">{error}</Alert>
                     ) : (
                         <>
-                            {definition && <Alert severity="info">{definition}</Alert>}
+                            {definition && <Alert sx={{ maxWidth: 400 }} severity="info">{definition}</Alert>}
                             {definitionWithContext && (
-                                <Alert severity="success" sx={{ mt: 1 }}>{definitionWithContext}</Alert>
+                                <Alert severity="success" sx={{ mt: 1, maxWidth: 400 }}>{definitionWithContext}</Alert>
                             )}
                         </>
                     )}
