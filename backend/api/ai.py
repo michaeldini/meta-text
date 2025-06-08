@@ -1,10 +1,13 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Form
 from backend.models import SourceDocument, WordDefinitionResponse, WordDefinitionWithContextRequest
 from backend.db import get_session
 import os
 from openai import OpenAI
 from backend.models import SourceDocInfoAiResponse, SourceDocInfoRequest, SourceDocInfoResponse, ChunkAiSummaryRequest, ChunkAiSummaryResponse
-
+from sqlmodel import Session
+from backend.models import AiImage, AiImageCreate, AiImageRead, Chunk
+import base64
+from datetime import datetime
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=OPENAI_API_KEY)
@@ -82,5 +85,38 @@ async def source_doc_info(request: SourceDocInfoRequest, session=Depends(get_ses
             session.add(doc)
             session.commit()
         return SourceDocInfoResponse(result=ai_data)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")
+
+@router.post("/generate-image", response_model=AiImageRead)
+async def generate_image(prompt: str = Form(...), chunk_id: int = Form(None), session: Session = Depends(get_session)):
+    if not prompt:
+        raise HTTPException(status_code=400, detail="Missing prompt.")
+    try:
+        img = client.images.generate(
+            model="dall-e-3",
+            prompt=prompt,
+            n=1,
+            size="1024x1024",
+            response_format="b64_json",
+            style="natural", # for DALL-E 3 only
+        )
+        if not img.data or not hasattr(img.data[0], "b64_json") or not img.data[0].b64_json:
+            raise HTTPException(status_code=500, detail="No image data returned from OpenAI.")
+        # Save image to public/generated_images
+        image_data = base64.b64decode(img.data[0].b64_json)
+        timestamp = datetime.utcnow().strftime("%Y%m%d%H%M%S%f")
+        filename = f"ai_image_{timestamp}.png"
+        rel_path = f"generated_images/{filename}"
+        abs_path = os.path.join(os.path.dirname(__file__), '../../public', rel_path)
+        os.makedirs(os.path.dirname(abs_path), exist_ok=True)
+        with open(abs_path, "wb") as f:
+            f.write(image_data)
+        # Save record to DB
+        ai_image = AiImage(prompt=prompt, path=rel_path, chunk_id=chunk_id)
+        session.add(ai_image)
+        session.commit()
+        session.refresh(ai_image)
+        return AiImageRead(id=ai_image.id, prompt=ai_image.prompt, path=ai_image.path, chunk_id=ai_image.chunk_id)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")

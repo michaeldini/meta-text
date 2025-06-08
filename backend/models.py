@@ -65,15 +65,18 @@ class ChunkBase(SQLModel):
     notes: str = ""
     summary: str = ""
     aiSummary: str = ""
-    aiImageUrl: str = ""
     meta_text_id: int = Field(foreign_key="metatext.id")
 
 class Chunk(ChunkBase, table=True):
     id: int = Field(default=None, primary_key=True)
     meta_text: Optional[MetaText] = Relationship(back_populates="chunks")
+    ai_image: Optional["AiImage"] = Relationship(back_populates="chunk")  # One-to-one relationship
 
 class ChunkRead(ChunkBase):
     id: int
+
+class ChunkWithImageRead(ChunkRead):
+    ai_image: Optional["AiImageRead"] = None
 
 
 # --- Generic Response Schemas ---
@@ -118,3 +121,22 @@ class WordDefinitionWithContextRequest(SQLModel):
 class WordDefinitionResponse(SQLModel):
     definition: str
     definitionWithContext: str
+
+# --- AI Image Schemas ---
+class AiImage(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    prompt: str
+    path: str  # relative path to the saved image file
+    chunk_id: Optional[int] = Field(default=None, foreign_key="chunk.id", unique=True)  # One-to-one FK to Chunk
+    chunk: Optional["Chunk"] = Relationship(back_populates="ai_image")  # One-to-one relationship
+
+class AiImageCreate(SQLModel):
+    prompt: str
+    path: str
+    chunk_id: Optional[int] = None
+
+class AiImageRead(SQLModel):
+    id: int
+    prompt: str
+    path: str
+    chunk_id: Optional[int] = None

@@ -25,3 +25,8 @@ export const updateChunk = async (chunkId, chunkData) => {
     });
     return handleApiResponse(res);
 };
+
+export const fetchChunk = async (chunkId) => {
+    const res = await fetch(`/api/chunk/${chunkId}`);
+    return handleApiResponse(res);
+};

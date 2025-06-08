@@ -1,7 +1,10 @@
 import React, { memo, useState, useEffect } from 'react';
-import { Box, TextField, Paper } from '@mui/material';
+import { Box, TextField, Paper, LinearProgress, CircularProgress } from '@mui/material';
 import ChunkWords from './ChunkWords';
 import ChunkAiSummary from './ChunkAiSummary';
+import GenerateImageDialog from '../components/GenerateImageDialog';
+import { generateAiImage } from '../services/aiService';
+import { fetchChunk } from '../services/chunkService';
 
 const Chunk = memo(function Chunk({
     chunk,
@@ -16,6 +19,14 @@ const Chunk = memo(function Chunk({
     // Local state for summary and notes for smooth typing
     const [summary, setSummary] = useState(chunk.summary || '');
     const [notes, setNotes] = useState(chunk.notes || '');
+
+    // Image generation state
+    const [imgDialogOpen, setImgDialogOpen] = useState(false);
+    const [imgLoading, setImgLoading] = useState(false);
+    const [imgError, setImgError] = useState(null);
+    const [imgData, setImgData] = useState(null);
+    const [imgPrompt, setImgPrompt] = useState('');
+    const [imgLoaded, setImgLoaded] = useState(false);
 
     // Keep local state in sync with chunk prop changes
     useEffect(() => {
@@ -44,6 +55,50 @@ const Chunk = memo(function Chunk({
         }, 800);
         return () => clearTimeout(handler);
     }, [notes, chunk.notes, chunkIdx, handleChunkFieldChange]);
+
+    // Show image if chunk already has one (on mount or chunk change)
+    useEffect(() => {
+        if (chunk.ai_image && chunk.ai_image.path) {
+            setImgData(chunk.ai_image.path);
+            setImgPrompt(chunk.ai_image.prompt || '');
+            setImgLoaded(false);
+        } else {
+            setImgData(null);
+            setImgLoaded(false);
+        }
+    }, [chunk.ai_image]);
+
+    const handleGenerateImageClick = () => {
+        setImgDialogOpen(true);
+        setImgError(null);
+    };
+
+    const handleImageDialogClose = () => {
+        setImgDialogOpen(false);
+        setImgError(null);
+    };
+
+    const handleImageGenerate = async (prompt) => {
+        setImgLoading(true);
+        setImgError(null);
+        setImgPrompt(prompt);
+        setImgDialogOpen(false); // Close dialog immediately on submit
+        try {
+            const result = await generateAiImage(prompt, chunk.id); // Pass chunk.id to associate image
+            // Fetch updated chunk from backend to sync ai_image
+            const updatedChunk = await fetchChunk(chunk.id);
+            if (updatedChunk && updatedChunk.ai_image && updatedChunk.ai_image.path) {
+                setImgData(updatedChunk.ai_image.path);
+                setImgPrompt(updatedChunk.ai_image.prompt || '');
+            } else {
+                setImgData(result.path); // fallback
+            }
+        } catch (err) {
+            setImgError(err?.message || 'Failed to generate image');
+        } finally {
+            setImgLoading(false);
+        }
+    };
 
     return (
         <Paper
@@ -120,8 +175,65 @@ const Chunk = memo(function Chunk({
                         aiSummary={chunk.aiSummary}
                         onAISummaryUpdate={handleAISummaryUpdate}
                     />
+                    {/* Generate Image Button */}
+                    <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 2 }}>
+                        <button
+                            style={{
+                                background: '#1976d2',
+                                color: '#fff',
+                                border: 'none',
+                                borderRadius: 8,
+                                padding: '10px 20px',
+                                fontWeight: 600,
+                                fontSize: 16,
+                                cursor: imgLoading ? 'wait' : 'pointer',
+                                boxShadow: '0 2px 8px rgba(25, 118, 210, 0.15)',
+                                transition: 'background 0.2s, box-shadow 0.2s',
+                                opacity: imgLoading ? 0.7 : 1,
+                                minWidth: 160,
+                                minHeight: 40,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}
+                            onClick={handleGenerateImageClick}
+                            disabled={imgLoading}
+                        >
+                            {imgLoading ? <LinearProgress sx={{ width: 120, color: '#fff' }} /> : 'Generate Image'}
+                        </button>
+                        {imgData && (
+                            <Box sx={{ mt: 2, width: 300, height: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #eee', borderRadius: 2, overflow: 'hidden', background: '#fafafa', position: 'relative' }}>
+                                {!imgLoaded && (
+                                    <Box sx={{ position: 'absolute', top: 0, left: 0, width: 400, height: 400, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2, background: 'rgba(255,255,255,0.7)' }}>
+                                        <CircularProgress size={48} />
+                                    </Box>
+                                )}
+                                <img
+                                    src={`/${imgData}`}
+                                    alt={imgPrompt}
+                                    style={{ width: 400, height: 400, objectFit: 'cover', display: imgLoaded ? 'block' : 'none' }}
+                                    onLoad={() => setImgLoaded(true)}
+                                    onError={() => setImgLoaded(true)}
+                                />
+                                {/* Show prompt and date if available */}
+                                <Box sx={{ mt: 1, width: '100%', textAlign: 'left', fontSize: 14, color: '#555', position: 'absolute', bottom: 0, left: 0, background: 'rgba(255,255,255,0.85)', p: 1 }}>
+                                    {imgPrompt && <div><b>Prompt:</b> {imgPrompt}</div>}
+                                    {chunk.ai_image && chunk.ai_image.created_at && (
+                                        <div><b>Generated:</b> {new Date(chunk.ai_image.created_at).toLocaleString()}</div>
+                                    )}
+                                </Box>
+                            </Box>
+                        )}
+                    </Box>
                 </Box>
             </Box>
+            <GenerateImageDialog
+                open={imgDialogOpen}
+                onClose={handleImageDialogClose}
+                onSubmit={handleImageGenerate}
+                loading={false}
+                error={imgError}
+            />
         </Paper>
     );
 });

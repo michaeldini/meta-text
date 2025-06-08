@@ -34,3 +34,5 @@ certs
 .pytest_cache
 
 Notes.md
+
+public/generated_images/

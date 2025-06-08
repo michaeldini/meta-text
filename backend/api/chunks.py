@@ -2,16 +2,23 @@ from fastapi import APIRouter, Depends, HTTPException, Body
 from sqlmodel import select, Session
 from typing import List
 from backend.db import get_session
-from backend.models import Chunk, ChunkRead
+from backend.models import Chunk, ChunkRead, ChunkWithImageRead, AiImage
 
 router = APIRouter()
 
 @router.get("/chunks/all/{meta_text_id}", name="get_chunks")
-def get_chunks_api(meta_text_id: int, session: Session = Depends(get_session)) -> List[ChunkRead]:
+def get_chunks_api(meta_text_id: int, session: Session = Depends(get_session)) -> List[ChunkWithImageRead]:
     chunks = session.exec(
         select(Chunk).where(Chunk.meta_text_id == meta_text_id).order_by(getattr(Chunk, "position"))
     ).all()
-    return chunks # type: ignore
+    # Manually fetch ai_image for each chunk
+    result = []
+    for chunk in chunks:
+        ai_image = session.exec(
+            select(AiImage).where(AiImage.chunk_id == chunk.id)
+        ).first()
+        result.append(ChunkWithImageRead.model_validate(chunk, update={"ai_image": ai_image}))
+    return result # type: ignore
 
 @router.post("/chunk/{chunk_id}/split", name="split_chunk")
 def split_chunk(chunk_id: int, word_index: int, session: Session = Depends(get_session)) -> List[ChunkRead]:
