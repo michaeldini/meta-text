@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Button, TextField, Alert, Typography } from '@mui/material';
 import SourceDocSelect from '../../components/SourceDocSelect';
+import { createMetaText } from '../../services/metaTextService';
 
 export default function MetaTextCreateForm({
     sourceDocs,
@@ -20,7 +21,6 @@ export default function MetaTextCreateForm({
         setCreateSuccessMsg('');
         setCreateLoading(true);
         try {
-            const { createMetaText } = await import('../../services/metaTextService');
             await createMetaText(selectedSourceDocId, metaTextTitle);
             setSelectedSourceDocId('');
             setMetaTextTitle('');

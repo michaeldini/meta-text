@@ -10,6 +10,7 @@ import { CircularProgress, Alert, Box } from '@mui/material';
 import useDeleteWithConfirmation from '../../hooks/useDeleteWithConfirmation';
 import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
 import { useFilteredList } from '../../hooks/useFilteredList';
+import { deleteMetaText } from '../../services/metaTextService';
 
 export default function MetaTextPage() {
     const [createSuccess, setCreateSuccess] = useState('');
@@ -27,7 +28,6 @@ export default function MetaTextPage() {
         handleConfirmDelete,
     } = useDeleteWithConfirmation(
         async (id) => {
-            const { deleteMetaText } = await import('../../services/metaTextService');
             await deleteMetaText(id);
             setCreateSuccess(Date.now());
         }
