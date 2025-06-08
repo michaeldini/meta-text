@@ -56,7 +56,20 @@ const ChunkImageDisplay = ({
             <Fade in={lightboxOpen}>
                 <Box
                     onClick={() => setLightboxOpen(false)}
-                    sx={styles.lightboxModal}
+                    sx={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100vw',
+                        height: '100vh',
+                        bgcolor: 'rgba(0,0,0,0.7)',
+                        zIndex: 1300,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        outline: 'none',
+                        ...styles.lightboxModal
+                    }}
                 >
                     <Box
                         onClick={e => e.stopPropagation()}
