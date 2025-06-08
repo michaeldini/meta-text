@@ -1,10 +1,74 @@
 import React, { memo } from 'react';
-import { Box, TextField, Paper, LinearProgress, CircularProgress, Modal, Fade, Button } from '@mui/material';
+import { Box, Paper, LinearProgress, Button } from '@mui/material';
 import ChunkWords from './ChunkWords';
 import ChunkComparison from './ChunkComparison';
 import GenerateImageDialog from '../components/GenerateImageDialog';
+import ChunkImageDisplay from '../components/ChunkImageDisplay';
 import { useDebouncedField } from '../hooks/useDebouncedField';
 import { useImageGeneration } from '../hooks/useImageGeneration';
+import ChunkTextField from '../components/ChunkTextField';
+import GenerateImageButton from '../components/GenerateImageButton';
+
+// Material UI sx style object for Chunk
+const chunkStyles = {
+    paper: {
+        p: 1,
+        borderRadius: 4,
+        '&:hover': { backgroundColor: 'secondary.main' },
+    },
+    mainBox: {
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
+        gap: 2,
+        bgcolor: 'background.default',
+        borderRadius: 4,
+        p: 2,
+    },
+    chunkTextBox: { flex: 2, minWidth: 0, p: 2 },
+    chunkDetailsCol: {
+        flex: 1,
+        minWidth: 220,
+        maxWidth: 400,
+        width: 350,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+        zIndex: 10,
+    },
+    textField: {
+        borderRadius: 2,
+        transition: 'box-shadow 0.2s, transform 0.2s',
+        boxShadow: 0,
+        '& .MuiOutlinedInput-root': {
+            borderRadius: 2,
+            transition: 'box-shadow 0.2s, transform 0.2s',
+            boxShadow: 0,
+            '&.Mui-focused': {
+                boxShadow: 6,
+                transform: 'scale(1.02)'
+            }
+        }
+    },
+    imageBtnBox: {
+        mt: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-end',
+        gap: 2,
+    },
+    generateImageBtn: {
+        borderRadius: 2,
+        fontWeight: 600,
+        fontSize: 16,
+        minWidth: 160,
+        minHeight: 40,
+        boxShadow: '0 2px 8px rgba(25, 118, 210, 0.15)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textTransform: 'none',
+    },
+};
 
 const Chunk = memo(function Chunk({
     chunk,
@@ -41,18 +105,10 @@ const Chunk = memo(function Chunk({
     } = useImageGeneration(chunk);
 
     return (
-        <Paper
-            sx={{
-                p: 1,
-                borderRadius: 4,
-                '&:hover': {
-                    backgroundColor: 'secondary.main',
-                },
-            }}
-        >
-            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2, bgcolor: 'background.default', borderRadius: 4, p: 2 }}>
+        <Paper sx={chunkStyles.paper}>
+            <Box sx={chunkStyles.mainBox}>
                 {/* chunk text */}
-                <Box sx={{ flex: 2, minWidth: 0, p: 2 }}>
+                <Box sx={chunkStyles.chunkTextBox}>
                     <ChunkWords
                         words={words}
                         chunkIdx={chunkIdx}
@@ -61,54 +117,20 @@ const Chunk = memo(function Chunk({
                     />
                 </Box>
                 {/* Chunk details column */}
-                <Box sx={{ flex: 1, minWidth: 220, maxWidth: 400, width: 350, display: 'flex', flexDirection: 'column', gap: 2, zIndex: 10 }}>
-                    <TextField
+                <Box sx={chunkStyles.chunkDetailsCol}>
+                    <ChunkTextField
                         label="Summary"
                         value={summary}
                         onChange={e => setSummary(e.target.value)}
                         onBlur={() => handleChunkFieldChange(chunkIdx, 'summary', summary)}
-                        multiline
-                        minRows={2}
-                        variant="outlined"
-                        fullWidth
-                        sx={{
-                            borderRadius: 2,
-                            transition: 'box-shadow 0.2s, transform 0.2s',
-                            boxShadow: 0,
-                            '& .MuiOutlinedInput-root': {
-                                borderRadius: 2,
-                                transition: 'box-shadow 0.2s, transform 0.2s',
-                                boxShadow: 0,
-                                '&.Mui-focused': {
-                                    boxShadow: 6,
-                                    transform: 'scale(1.02)'
-                                }
-                            }
-                        }}
+                        sx={chunkStyles.textField}
                     />
-                    <TextField
+                    <ChunkTextField
                         label="Notes"
                         value={notes}
                         onChange={e => setNotes(e.target.value)}
                         onBlur={() => handleChunkFieldChange(chunkIdx, 'notes', notes)}
-                        multiline
-                        minRows={2}
-                        variant="outlined"
-                        fullWidth
-                        sx={{
-                            borderRadius: 2,
-                            transition: 'box-shadow 0.2s, transform 0.2s',
-                            boxShadow: 0,
-                            '& .MuiOutlinedInput-root': {
-                                borderRadius: 2,
-                                transition: 'box-shadow 0.2s, transform 0.2s',
-                                boxShadow: 0,
-                                '&.Mui-focused': {
-                                    boxShadow: 6,
-                                    transform: 'scale(1.02)'
-                                }
-                            }
-                        }}
+                        sx={chunkStyles.textField}
                     />
                     <ChunkComparison
                         chunkId={chunk.id}
@@ -116,120 +138,26 @@ const Chunk = memo(function Chunk({
                         onComparisonUpdate={handleComparisonUpdate}
                     />
                     {/* Generate Image Button */}
-                    <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 2 }}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            sx={{
-                                borderRadius: 2,
-                                fontWeight: 600,
-                                fontSize: 16,
-                                minWidth: 160,
-                                minHeight: 40,
-                                boxShadow: '0 2px 8px rgba(25, 118, 210, 0.15)',
-                                opacity: imageState.loading ? 0.7 : 1,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                textTransform: 'none',
-                            }}
+                    <Box sx={chunkStyles.imageBtnBox}>
+                        <GenerateImageButton
+                            loading={imageState.loading}
                             onClick={openDialog}
                             disabled={imageState.loading}
-                        >
-                            {imageState.loading ? <LinearProgress sx={{ width: 120, color: '#fff' }} /> : 'Generate Image'}
-                        </Button>
+                            sx={{ ...chunkStyles.generateImageBtn, opacity: imageState.loading ? 0.7 : 1 }}
+                        />
                         {imageState.data && (
-                            <>
-                                <Box sx={{ mt: 2, width: 300, height: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #eee', borderRadius: 2, overflow: 'hidden', background: '#fafafa', position: 'relative', cursor: 'pointer' }}
-                                    onClick={() => setLightboxOpen(true)}
-                                    tabIndex={0}
-                                    aria-label="Expand image"
-                                >
-                                    {!imageState.loaded && (
-                                        <Box sx={{ position: 'absolute', top: 0, left: 0, width: 400, height: 400, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2, background: 'rgba(255,255,255,0.7)' }}>
-                                            <CircularProgress size={48} />
-                                        </Box>
-                                    )}
-                                    <img
-                                        src={getImgSrc()}
-                                        key={getImgKey()}
-                                        alt={imageState.prompt}
-                                        style={{ width: 400, height: 400, objectFit: 'cover', display: imageState.loaded ? 'block' : 'none' }}
-                                        onLoad={() => setImageLoaded(true)}
-                                        onError={() => setImageLoaded(true)}
-                                    />
-                                    {/* Show prompt and date if available */}
-                                    <Box sx={{ mt: 1, width: '100%', textAlign: 'left', fontSize: 14, color: '#555', position: 'absolute', bottom: 0, left: 0, background: 'rgba(255,255,255,0.85)', p: 1 }}>
-                                        {imageState.prompt && <div><b>Prompt:</b> {imageState.prompt}</div>}
-                                        {chunk.ai_image && chunk.ai_image.created_at && (
-                                            <div><b>Generated:</b> {new Date(chunk.ai_image.created_at).toLocaleString()}</div>
-                                        )}
-                                    </Box>
-                                </Box>
-                                {/* Lightbox Modal */}
-                                <Modal
-                                    open={imageState.lightboxOpen}
-                                    onClose={() => setLightboxOpen(false)}
-                                    closeAfterTransition
-                                    aria-labelledby="image-lightbox-title"
-                                    aria-describedby="image-lightbox-description"
-                                >
-                                    <Fade in={imageState.lightboxOpen}>
-                                        <Box
-                                            onClick={() => setLightboxOpen(false)}
-                                            sx={{
-                                                position: 'fixed',
-                                                top: 0,
-                                                left: 0,
-                                                width: '100vw',
-                                                height: '100vh',
-                                                bgcolor: 'rgba(0,0,0,0.85)',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                zIndex: 2000,
-                                                cursor: 'zoom-out',
-                                            }}
-                                        >
-                                            <Box
-                                                onClick={e => e.stopPropagation()}
-                                                sx={{
-                                                    outline: 'none',
-                                                    boxShadow: 8,
-                                                    borderRadius: 3,
-                                                    overflow: 'hidden',
-                                                    bgcolor: '#fff',
-                                                    p: 2,
-                                                    maxWidth: '90vw',
-                                                    maxHeight: '90vh',
-                                                    display: 'flex',
-                                                    flexDirection: 'column',
-                                                    alignItems: 'center',
-                                                }}
-                                            >
-                                                <img
-                                                    src={getImgSrc()}
-                                                    key={getImgKey()}
-                                                    alt={imageState.prompt}
-                                                    style={{
-                                                        maxWidth: '80vw',
-                                                        maxHeight: '70vh',
-                                                        objectFit: 'contain',
-                                                        borderRadius: 8,
-                                                        background: '#fafafa',
-                                                    }}
-                                                />
-                                                <Box sx={{ mt: 2, color: '#333', fontSize: 16, textAlign: 'center', width: '100%' }}>
-                                                    {imageState.prompt && <div><b>Prompt:</b> {imageState.prompt}</div>}
-                                                    {chunk.ai_image && chunk.ai_image.created_at && (
-                                                        <div><b>Generated:</b> {new Date(chunk.ai_image.created_at).toLocaleString()}</div>
-                                                    )}
-                                                </Box>
-                                            </Box>
-                                        </Box>
-                                    </Fade>
-                                </Modal>
-                            </>
+                            <ChunkImageDisplay
+                                imgSrc={getImgSrc()}
+                                imgKey={getImgKey()}
+                                imgPrompt={imageState.prompt}
+                                imgLoaded={imageState.loaded}
+                                onLoad={() => setImageLoaded(true)}
+                                onError={() => setImageLoaded(true)}
+                                lightboxOpen={imageState.lightboxOpen}
+                                setLightboxOpen={setLightboxOpen}
+                                createdAt={chunk.ai_image && chunk.ai_image.created_at}
+                                styles={chunkStyles}
+                            />
                         )}
                     </Box>
                 </Box>
