@@ -3,7 +3,7 @@ from backend.models import SourceDocument, WordDefinitionResponse, WordDefinitio
 from backend.db import get_session
 import os
 from openai import OpenAI
-from backend.models import SourceDocInfoAiResponse, SourceDocInfoRequest, SourceDocInfoResponse, ChunkAiSummaryRequest, ChunkAiSummaryResponse
+from backend.models import SourceDocInfoAiResponse, SourceDocInfoRequest, SourceDocInfoResponse, ChunkAiSummaryRequest, ChunkAiSummaryResponse, ChunkAiComparisonSummaryRequest, ChunkAiComparisonSummaryResponse
 from sqlmodel import Session
 from backend.models import AiImage, AiImageCreate, AiImageRead, Chunk
 import base64
@@ -14,20 +14,30 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 
 router = APIRouter()
 
-@router.post("/generate-chunk-ai-summary")
-async def generate_chunk_ai_summary(request: ChunkAiSummaryRequest) -> ChunkAiSummaryResponse:
-    prompt = request.prompt
-    if not prompt:
-        raise HTTPException(status_code=400, detail="Missing prompt.")
+@router.post("/generate-chunk-ai-comparison-summary")
+async def generate_chunk_ai_comparison_summary(request: ChunkAiComparisonSummaryRequest, session: Session = Depends(get_session)) -> ChunkAiComparisonSummaryResponse:
+    chunk_id = request.chunk_id
+    chunk = session.get(Chunk, chunk_id)
+    if not chunk:
+        raise HTTPException(status_code=404, detail="Chunk not found.")
+    # Compose prompt for AI
+    prompt = (
+        f"CHUNK TEXT:\n{chunk.text}\n\n"
+        f"SUMMARY FIELD:\n{chunk.summary}\n\n"
+        f"NOTES FIELD:\n{chunk.notes}\n\n"
+    )
     try:
         response = client.responses.create(
             model="gpt-4o-mini-2024-07-18",
-            instructions="Write a helpful and extremely concise one sentence summary.",
+            instructions="Compare the summary and notes fields to the chunk text. Return a single, concise paragraph summarizing your comparison. Example response: 'You correctly identified the symbolism of the rose in the text, it also means passion, but missed the significance of the river. The river represents the passage of time and the flow of life, which is a key theme in the story. Also, the old man and the boy are not just characters, they symbolize the passage of time and the cycle of life.'",
             input=prompt,
-            max_output_tokens=1024,
         )
         ai_text = response.output_text
-        return ChunkAiSummaryResponse(result=ai_text)
+        # Save to DB
+        chunk.aiSummary = ai_text
+        session.add(chunk)
+        session.commit()
+        return ChunkAiComparisonSummaryResponse(result=ai_text)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")
     

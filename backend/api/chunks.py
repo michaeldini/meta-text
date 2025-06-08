@@ -88,3 +88,13 @@ def update_chunk(chunk_id: int, chunk_data: dict = Body(...), session: Session =
     session.commit()
     session.refresh(chunk)
     return chunk # type: ignore
+
+@router.get("/chunk/{chunk_id}", name="get_chunk")
+def get_chunk(chunk_id: int, session: Session = Depends(get_session)) -> ChunkWithImageRead:
+    chunk = session.get(Chunk, chunk_id)
+    if not chunk:
+        raise HTTPException(status_code=404, detail="Chunk not found")
+    ai_image = session.exec(
+        select(AiImage).where(AiImage.chunk_id == chunk.id).order_by(desc(AiImage.id))
+    ).first()
+    return ChunkWithImageRead.model_validate(chunk, update={"ai_image": ai_image})

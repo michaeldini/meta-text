@@ -179,7 +179,7 @@ const Chunk = memo(function Chunk({
                         }}
                     />
                     <ChunkAiSummary
-                        sectionContent={chunk.content}
+                        chunkId={chunk.id}
                         aiSummary={chunk.aiSummary}
                         onAISummaryUpdate={handleAISummaryUpdate}
                     />

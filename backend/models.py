@@ -140,3 +140,9 @@ class AiImageRead(SQLModel):
     prompt: str
     path: str
     chunk_id: Optional[int] = None
+
+class ChunkAiComparisonSummaryRequest(SQLModel):
+    chunk_id: int
+
+class ChunkAiComparisonSummaryResponse(SQLModel):
+    result: str
