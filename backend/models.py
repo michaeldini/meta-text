@@ -2,6 +2,7 @@ from typing import Optional, List
 from sqlmodel import SQLModel, Field, Relationship
 from pydantic import BaseModel
 from passlib.context import CryptContext
+from datetime import datetime
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -146,3 +147,11 @@ class ChunkAiComparisonSummaryRequest(SQLModel):
 
 class ChunkAiComparisonSummaryResponse(SQLModel):
     result: str
+
+class WordDefinitionLog(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    word: str
+    context: str
+    definition: str
+    definition_with_context: str
+    created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)

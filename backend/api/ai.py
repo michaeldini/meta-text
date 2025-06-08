@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends, Form
-from backend.models import SourceDocument, WordDefinitionResponse, WordDefinitionWithContextRequest
+from backend.models import SourceDocument, WordDefinitionResponse, WordDefinitionWithContextRequest, WordDefinitionLog
 from backend.db import get_session
 import os
 from openai import OpenAI
@@ -42,7 +42,7 @@ async def generate_chunk_ai_comparison_summary(request: ChunkAiComparisonSummary
         raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")
     
 @router.post("/generate-definition-in-context")
-async def generate_definition_in_context(request: WordDefinitionWithContextRequest) -> WordDefinitionResponse:
+async def generate_definition_in_context(request: WordDefinitionWithContextRequest, session: Session = Depends(get_session)) -> WordDefinitionResponse:
     word = request.word
     context = request.context
     if not word:
@@ -60,6 +60,15 @@ async def generate_definition_in_context(request: WordDefinitionWithContextReque
         ai_data = response.output_parsed
         if ai_data is None:
             raise HTTPException(status_code=500, detail="Failed to parse AI response.")
+        # Save to DB
+        log_entry = WordDefinitionLog(
+            word=word,
+            context=context,
+            definition=ai_data.definition,
+            definition_with_context=ai_data.definitionWithContext
+        )
+        session.add(log_entry)
+        session.commit()
         return WordDefinitionResponse(definition=ai_data.definition, definitionWithContext=ai_data.definitionWithContext)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")
