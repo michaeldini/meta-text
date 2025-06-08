@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, LinearProgress } from '@mui/material';
+import { Button } from '@mui/material';
+import LoadingIndicator from './LoadingIndicator';
 
 /**
  * GenerateImageButton - reusable button for image generation with loading state
@@ -18,7 +19,7 @@ const GenerateImageButton = ({ loading, onClick, disabled, sx, children }) => (
         onClick={onClick}
         disabled={disabled || loading}
     >
-        {loading ? <LinearProgress sx={{ width: 120, color: '#fff' }} /> : (children || 'Generate Image')}
+        {loading ? <LoadingIndicator loading={true} /> : (children || 'Generate Image')}
     </Button>
 );
 

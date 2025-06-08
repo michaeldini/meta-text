@@ -1,5 +1,6 @@
 import React from 'react';
-import { IconButton, Tooltip, CircularProgress } from '@mui/material';
+import { IconButton, Tooltip } from '@mui/material';
+import LoadingIndicator from './LoadingIndicator';
 import aiStars from '../assets/ai-stars.png';
 
 /**
@@ -25,7 +26,9 @@ export default function AiStarsButton({ loading, onClick, label = 'AI Action', s
                     sx={sx}
                     {...props}
                 >
-                    {loading ? <CircularProgress size={size === 'small' ? 16 : 24} /> : (
+                    {loading ? (
+                        <LoadingIndicator loading={true} />
+                    ) : (
                         <img src={aiStars} alt="AI" style={{ width: size === 'small' ? 20 : 28, height: size === 'small' ? 20 : 28 }} />
                     )}
                 </IconButton>
