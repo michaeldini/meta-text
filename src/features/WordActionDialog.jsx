@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Popover, Box, IconButton, CircularProgress, Alert } from '@mui/material';
+import { Popover, Box, IconButton, Alert } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import ContentCutIcon from '@mui/icons-material/ContentCut';
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import { fetchDefinitionInContext } from '../services/aiService';
+import loadingGif from '../assets/logo-gif.gif';
 
 export default function WordActionDialog({ anchorEl, onClose, word, onSplit, context }) {
     const [loading, setLoading] = useState(false);
@@ -50,14 +52,14 @@ export default function WordActionDialog({ anchorEl, onClose, word, onSplit, con
         >
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: 1, p: 1 }}>
                 <IconButton onClick={onSplit} disabled={loading} title="Split text here" color="primary">
-                    <ContentCutIcon fontSize="medium" />
+                    <ContentCutIcon fontSize="small" />
                 </IconButton>
                 <IconButton onClick={handleFetchDefinitionInContext} disabled={loading} title="AI: Definition in context" color="secondary">
-                    <Box component="span" sx={{ fontWeight: 700, fontSize: 18 }}>API</Box>
-                    {loading && <CircularProgress size={18} sx={{ position: 'absolute', top: 8, left: 8 }} />}
-                </IconButton>
-                <IconButton size="small" onClick={handleClose}>
-                    <CloseIcon fontSize="small" />
+                    {loading ? (
+                        <img src={loadingGif} alt="Loading..." />
+                    ) : (
+                        <QuestionMarkIcon fontSize="small" />
+                    )}
                 </IconButton>
             </Box>
             {showDefinition && (
