@@ -73,7 +73,7 @@ async def generate_definition_in_context(request: WordDefinitionWithContextReque
 
 @router.post("/source-doc-info")
 async def source_doc_info(request: SourceDocInfoRequest, session=Depends(get_session)) -> SourceDocInfoResponse:
-    prompt = request.prompt
+    prompt = request.prompt[:10_000] #FUTURE get the title from the document and just use the title as the prompt
     doc_id = request.id
     if not prompt:
         raise HTTPException(status_code=400, detail="Missing prompt.")
