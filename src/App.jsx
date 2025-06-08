@@ -1,45 +1,49 @@
 import './App.css'
 import { Routes, Route, useLocation } from 'react-router-dom';
 import NavBar from './components/NavBar';
-import SourceDocsPage from './pages/SourceDocPage/SourceDocsPage';
-import SourceDocDetailPage from './pages/SourceDocPage/SourceDocDetailPage';
-import MetaTextPage from './pages/MetaTextPage/MetaTextPage';
-import MetaTextDetailPage from './pages/MetaTextPage/MetaTextDetailPage';
-import LoginPage from './pages/Auth/LoginPage';
-import RegisterPage from './pages/Auth/RegisterPage';
-import AuthGate from './pages/Auth/AuthGate';
-import { Fade } from '@mui/material';
-import { useMemo } from 'react';
+import { Fade, CircularProgress } from '@mui/material';
+import { useMemo, Suspense, lazy } from 'react';
+
+// Dynamically import pages for code splitting
+const SourceDocsPage = lazy(() => import('./pages/SourceDocPage/SourceDocsPage'));
+const SourceDocDetailPage = lazy(() => import('./pages/SourceDocPage/SourceDocDetailPage'));
+const MetaTextPage = lazy(() => import('./pages/MetaTextPage/MetaTextPage'));
+const MetaTextDetailPage = lazy(() => import('./pages/MetaTextPage/MetaTextDetailPage'));
+const LoginPage = lazy(() => import('./pages/Auth/LoginPage'));
+const RegisterPage = lazy(() => import('./pages/Auth/RegisterPage'));
+const AuthGate = lazy(() => import('./pages/Auth/AuthGate'));
 
 function App() {
   const location = useLocation();
   // Use location.key as a unique key for transitions
   const routeElement = useMemo(() => (
-    <Routes location={location} key={location.key}>
-      <Route path="/" element={<h1>Welcome to Meta-Text</h1>} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/sourceDocs" element={
-        <AuthGate>
-          <SourceDocsPage />
-        </AuthGate>
-      } />
-      <Route path="/sourceDocs/:id" element={
-        <AuthGate>
-          <SourceDocDetailPage />
-        </AuthGate>
-      } />
-      <Route path="/metaText" element={
-        <AuthGate>
-          <MetaTextPage />
-        </AuthGate>
-      } />
-      <Route path="/metaText/:id" element={
-        <AuthGate>
-          <MetaTextDetailPage />
-        </AuthGate>
-      } />
-    </Routes>
+    <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', marginTop: 64 }}><CircularProgress /></div>}>
+      <Routes location={location} key={location.key}>
+        <Route path="/" element={<h1>Welcome to Meta-Text</h1>} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/sourceDocs" element={
+          <AuthGate>
+            <SourceDocsPage />
+          </AuthGate>
+        } />
+        <Route path="/sourceDocs/:id" element={
+          <AuthGate>
+            <SourceDocDetailPage />
+          </AuthGate>
+        } />
+        <Route path="/metaText" element={
+          <AuthGate>
+            <MetaTextPage />
+          </AuthGate>
+        } />
+        <Route path="/metaText/:id" element={
+          <AuthGate>
+            <MetaTextDetailPage />
+          </AuthGate>
+        } />
+      </Routes>
+    </Suspense>
   ), [location]);
 
   return (
