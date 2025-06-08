@@ -1,7 +1,8 @@
+from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Form, File, UploadFile
 from sqlmodel import select
 from backend.models import (
-    SourceDocument, MetaText, SourceDocumentBase, SourceDocumentListRead, SourceDocumentRead
+    SourceDocument, MetaText, SourceDocumentBase, SourceDocumentListRead, SourceDocumentRead, 
 )
 from backend.db import get_session
 
@@ -14,8 +15,8 @@ router = APIRouter()
     name="create_source_document"
 )
 async def create_source_document(
-    title: str = Form(...),
-    file: UploadFile = File(...),
+    title: Annotated[str, Form()],
+    file: Annotated[UploadFile, File()],
     session=Depends(get_session),
 ):
     """

@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from passlib.context import CryptContext
 from datetime import datetime
 
+# --- Password Hashing ---
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def hash_password(password: str) -> str:
@@ -23,11 +24,11 @@ class User(SQLModel, table=True):
 class SourceDocumentBase(SQLModel):
     id: int = Field(default=None, primary_key=True)
     title: str = Field(index=True, unique=True)
-    summary: Optional[str] = None
-    characters: Optional[str] = None
-    locations: Optional[str] = None
-    themes: Optional[str] = None
-    symbols: Optional[str] = None
+    summary: str | None = None
+    characters: str | None = None
+    locations: str | None = None
+    themes: str | None = None
+    symbols: str | None = None
 
 class SourceDocument(SourceDocumentBase, table=True):
     text: str
@@ -80,22 +81,9 @@ class ChunkWithImageRead(ChunkRead):
     ai_image: Optional["AiImageRead"] = None
 
 
-# --- Generic Response Schemas ---
-class CreateSuccessResponse(SQLModel):
-    success: bool
-    id: int
-    title: str
 
-# generic response for listing items (GET requests) (inner) 
-class GetResponse(SQLModel):
-    id: int
-    title: str
-
-# generic response for listing items (GET requests) (outer) 
-class GetListResponse(SQLModel):
-    data: List[GetResponse]
-
-# AI Response Schemas
+# --- AI Response Schemas ---
+# --- SourceDocInfo Schemas ---
 class SourceDocInfoAiResponse(SQLModel):
     summary: str
     characters: list[str]
@@ -110,12 +98,14 @@ class SourceDocInfoRequest(SQLModel):
 class SourceDocInfoResponse(SQLModel):
     result: SourceDocInfoAiResponse
 
+# --- Chunk AI Summary Schemas ---
 class ChunkAiSummaryRequest(SQLModel):
     prompt: str
 
 class ChunkAiSummaryResponse(SQLModel):
     result: str
 
+# --- Word Definition Schemas ---
 class WordDefinitionWithContextRequest(SQLModel):
     word: str
     context: str
@@ -142,12 +132,14 @@ class AiImageRead(SQLModel):
     path: str
     chunk_id: Optional[int] = None
 
+# --- Chunk AI Comparison Schemas ---
 class ChunkAiComparisonSummaryRequest(SQLModel):
     chunk_id: int
 
 class ChunkAiComparisonSummaryResponse(SQLModel):
     result: str
 
+# --- Word Definition Log Schemas ---
 class WordDefinitionLog(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     word: str
@@ -155,3 +147,4 @@ class WordDefinitionLog(SQLModel, table=True):
     definition: str
     definition_with_context: str
     created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
+    

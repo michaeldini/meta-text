@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import select, Session
 from backend.db import get_session
 from backend.models import (
-     CreateMetaTextRequest, CreateSuccessResponse, MetaTextRead,  MetaText, SourceDocument
+     CreateMetaTextRequest, MetaTextRead,  MetaText, SourceDocument
 )
 from backend.models import Chunk  # Needed for chunk creation in create_meta_text
 
@@ -10,8 +10,8 @@ from backend.models import Chunk  # Needed for chunk creation in create_meta_tex
 router = APIRouter()
 
 
-@router.post("/meta-text", response_model=CreateSuccessResponse, name="create_meta_text")
-async def create_meta_text(req: CreateMetaTextRequest, session: Session = Depends(get_session)):
+@router.post("/meta-text", name="create_meta_text")
+async def create_meta_text(req: CreateMetaTextRequest, session: Session = Depends(get_session)) -> dict:
     """Create a new meta-text from a source document."""
     # get the source document from which to create the meta-text
     doc = session.exec(select(SourceDocument).where(SourceDocument.id == req.sourceDocId)).first()
