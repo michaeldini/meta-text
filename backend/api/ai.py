@@ -107,6 +107,7 @@ async def source_doc_info(request: SourceDocInfoRequest, session=Depends(get_ses
 
 @router.post("/generate-image", response_model=AiImageRead)
 async def generate_image(prompt: str = Form(...), chunk_id: int = Form(None), session: Session = Depends(get_session)):
+    print('Generating AI image for prompt:', prompt)
     if not prompt:
         raise HTTPException(status_code=400, detail="Missing prompt.")
     try:
@@ -138,5 +139,22 @@ async def generate_image(prompt: str = Form(...), chunk_id: int = Form(None), se
         import traceback
         print('AI image generation error:', str(e))
         traceback.print_exc()
-        # Bubble up the OpenAI/content moderation error to the frontend
-        raise HTTPException(status_code=500, detail=str(e))
+        # Try to extract OpenAI error message if present
+        error_message = None
+        # Try to extract from args if possible (OpenAI python client often puts error JSON in args[0])
+        if hasattr(e, 'args') and e.args:
+            try:
+                import json
+                arg0 = e.args[0]
+                if isinstance(arg0, dict):
+                    error_json = arg0
+                elif isinstance(arg0, str):
+                    error_json = json.loads(arg0)
+                else:
+                    error_json = None
+                if error_json and 'error' in error_json and error_json['error'].get('message'):
+                    error_message = error_json['error']['message']
+            except Exception:
+                pass
+        # Prefer OpenAI error message, else fallback to str(e)
+        raise HTTPException(status_code=500, detail=error_message or str(e) or 'Unknown error')

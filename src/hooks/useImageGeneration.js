@@ -46,6 +46,7 @@ export function useImageGeneration(chunk) {
     const handleGenerate = useCallback(async (prompt, chunkId) => {
         setState(s => ({ ...s, loading: true, error: null, prompt, dialogOpen: false }));
         try {
+            console.log('Generating image with prompt:', prompt, 'for chunk ID:', chunkId);
             const result = await generateAiImage(prompt, chunkId);
             const updatedChunk = await fetchChunk(chunkId);
             let imagePath = null;
