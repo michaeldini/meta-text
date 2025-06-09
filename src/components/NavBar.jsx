@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useAuth } from '../store/authStore';
+import { navBarAppBar, navBarToolbar, navBarButton, navBarTitle } from '../styles/pageStyles';
 
 function NavBarButton({ to, children, onClick, active, ml = 0 }) {
     return (
@@ -14,19 +15,7 @@ function NavBarButton({ to, children, onClick, active, ml = 0 }) {
             onClick={onClick}
             color={active ? 'primary' : 'inherit'}
             variant={active ? 'contained' : 'text'}
-            sx={{
-                fontWeight: active ? 600 : 400,
-                borderRadius: 2,
-                textTransform: 'none',
-                px: 2,
-                boxShadow: active ? 2 : 0,
-                bgcolor: active ? 'primary.main' : 'transparent',
-                color: active ? 'background.paper' : 'text.primary',
-                '&:hover': {
-                    bgcolor: active ? 'primary.dark' : 'action.hover',
-                },
-                ml,
-            }}
+            sx={navBarButton(active, ml)}
         >
             {children}
         </Button>
@@ -38,8 +27,8 @@ export default function NavBar() {
     const { user, logout } = useAuth();
     const isActive = (path) => location.pathname === path || location.pathname.startsWith(path);
     return (
-        <AppBar position="fixed" elevation={2} sx={{ bgcolor: 'background.paper', color: 'text.primary', zIndex: 1201 }}>
-            <Toolbar sx={{ display: 'flex', justifyContent: 'right', minHeight: 64 }}>
+        <AppBar position="fixed" elevation={2} sx={navBarAppBar}>
+            <Toolbar sx={navBarToolbar}>
                 <Box sx={{ display: 'flex', gap: 2 }}>
                     <NavBarButton to="/sourceDocs" active={isActive('/sourceDocs')}>Source Docs</NavBarButton>
                     <NavBarButton to="/metaText" active={isActive('/metaText')}>Meta Texts</NavBarButton>
@@ -53,7 +42,7 @@ export default function NavBar() {
                         <NavBarButton onClick={logout} ml={2}>Logout</NavBarButton>
                     )}
                 </Box>
-                <Typography variant="h6" sx={{ textTransform: 'uppercase', fontWeight: 700, letterSpacing: 2, color: 'primary.main', pl: 2 }}>
+                <Typography variant="h6" sx={navBarTitle}>
                     Meta-Text
                 </Typography>
             </Toolbar>
