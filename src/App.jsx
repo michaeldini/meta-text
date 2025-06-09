@@ -3,7 +3,6 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import { Fade, CircularProgress } from '@mui/material';
 import { useMemo, Suspense, lazy } from 'react';
-import LoadingIndicator from './components/LoadingIndicator';
 import { appSuspenseFallback } from './styles/pageStyles';
 
 // Dynamically import pages for code splitting
@@ -19,7 +18,7 @@ function App() {
   const location = useLocation();
   // Use location.key as a unique key for transitions
   const routeElement = useMemo(() => (
-    <Suspense fallback={<div style={appSuspenseFallback}><LoadingIndicator loading={true} size={48} /></div>}>
+    <Suspense fallback={<div style={appSuspenseFallback}><CircularProgress /></div>}>
       <Routes location={location} key={location.key}>
         <Route path="/" element={<h1>Welcome to Meta-Text</h1>} />
         <Route path="/login" element={<LoginPage />} />

@@ -14,7 +14,7 @@ export const uploadFormContainer = {
 };
 
 export const uploadFormInner = {
-    width: '50%',
+    width: '75%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'start',

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Popover, Box, IconButton, Alert } from '@mui/material';
+import { Popover, Box, IconButton, Alert, CircularProgress } from '@mui/material';
 import ContentCutIcon from '@mui/icons-material/ContentCut';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import { fetchDefinitionInContext } from '../services/aiService';
-import loadingGif from '../assets/logo-gif.gif';
 
 export default function WordActionDialog({ anchorEl, onClose, word, onSplit, context }) {
     const [loading, setLoading] = useState(false);
@@ -55,7 +54,7 @@ export default function WordActionDialog({ anchorEl, onClose, word, onSplit, con
                 </IconButton>
                 <IconButton onClick={handleFetchDefinitionInContext} disabled={loading} title="AI: Definition in context" color="secondary">
                     {loading ? (
-                        <img src={loadingGif} alt="Loading..." />
+                        <CircularProgress size={20} />
                     ) : (
                         <QuestionMarkIcon fontSize="small" />
                     )}
