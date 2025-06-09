@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Pagination } from '@mui/material';
 import Chunk from './Chunk';
+import { chunksContainer, chunksPaginationBox } from '../styles/pageStyles';
 
 export default function Chunks({ chunks, handleWordClick, handleRemoveChunk, handleChunkFieldChange }) {
     // Defensive: always treat chunks as array
@@ -17,7 +18,7 @@ export default function Chunks({ chunks, handleWordClick, handleRemoveChunk, han
     };
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 4 }}>
+        <Box sx={chunksContainer}>
             {paginatedChunks.map((chunk, chunkIdx) => (
                 <Chunk
                     key={startIdx + chunkIdx}
@@ -29,7 +30,7 @@ export default function Chunks({ chunks, handleWordClick, handleRemoveChunk, han
                 />
             ))}
             {pageCount > 1 && (
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                <Box sx={chunksPaginationBox}>
                     <Pagination count={pageCount} page={page} onChange={handleChange} color="primary" />
                 </Box>
             )}

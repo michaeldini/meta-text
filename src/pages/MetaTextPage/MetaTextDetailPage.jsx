@@ -5,6 +5,12 @@ import SourceDocInfo from '../../components/SourceDocInfo';
 import Chunks from '../../features/Chunks';
 import { useChunkHandlers } from '../../hooks/useChunkHandlers';
 import { useMetaTextDetail } from '../../hooks/useMetaTextDetail';
+import {
+    metaTextDetailContainer,
+    metaTextDetailLoadingContainer,
+    metaTextDetailLoadingBox,
+    metaTextDetailAlert
+} from '../../styles/pageStyles';
 
 export default function MetaTextDetailPage() {
     const { id } = useParams();
@@ -28,8 +34,8 @@ export default function MetaTextDetailPage() {
 
     if (loading) {
         return (
-            <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+            <Box sx={metaTextDetailLoadingContainer}>
+                <Box sx={metaTextDetailLoadingBox}>
                     <CircularProgress />
                 </Box>
             </Box>
@@ -37,23 +43,23 @@ export default function MetaTextDetailPage() {
     }
     if (errors.metaText) {
         return (
-            <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
+            <Box sx={metaTextDetailLoadingContainer}>
                 <Alert severity="error">{errors.metaText}</Alert>
             </Box>
         );
     }
     return (
         <Fade in={true} key={id} timeout={750}>
-            <Container maxWidth="lg" sx={{ mt: 4, mb: 6 }}>
+            <Container maxWidth="lg" sx={metaTextDetailContainer}>
                 <Typography variant="h4" gutterBottom>{title || id}</Typography>
                 {errors.sourceDoc ? (
-                    <Alert severity="error" sx={{ mb: 2 }}>{errors.sourceDoc}</Alert>
+                    <Alert severity="error" sx={metaTextDetailAlert}>{errors.sourceDoc}</Alert>
                 ) : sourceDocInfo ? (
                     <SourceDocInfo doc={sourceDocInfo} onInfoUpdate={refetchSourceDoc} />
                 ) : null}
 
                 {errors.chunks && (
-                    <Alert severity="error" sx={{ mb: 2 }}>{errors.chunks}</Alert>
+                    <Alert severity="error" sx={metaTextDetailAlert}>{errors.chunks}</Alert>
                 )}
 
                 <Chunks

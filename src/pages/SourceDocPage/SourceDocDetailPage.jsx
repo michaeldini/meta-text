@@ -3,13 +3,19 @@ import { useParams } from 'react-router-dom';
 import { Paper, Typography, Box, CircularProgress } from '@mui/material';
 import SourceDocInfo from '../../components/SourceDocInfo';
 import { useSourceDocument } from '../../hooks/useSourceDocument';
+import {
+    sourceDocDetailContainer,
+    sourceDocDetailLoading,
+    sourceDocDetailPaper,
+    sourceDocDetailText
+} from '../../styles/pageStyles';
 
 export default function SourceDocDetailPage() {
     const { id } = useParams();
     const { doc, loading, error, refetch } = useSourceDocument(id);
 
     return (
-        <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
+        <Box sx={sourceDocDetailContainer}>
             <Typography variant="h4" gutterBottom>{doc?.title}</Typography>
             {doc && (
                 <SourceDocInfo
@@ -18,14 +24,14 @@ export default function SourceDocDetailPage() {
                 />
             )}
             {loading ? (
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+                <Box sx={sourceDocDetailLoading}>
                     <CircularProgress />
                 </Box>
             ) : error ? (
                 <Typography color="error">{error}</Typography>
             ) : doc ? (
-                <Paper sx={{ p: 3 }}>
-                    <Typography variant="body1" style={{ whiteSpace: 'pre-wrap', fontFamily: 'monospace' }}>
+                <Paper sx={sourceDocDetailPaper}>
+                    <Typography variant="body1" style={sourceDocDetailText}>
                         {doc.text}
                     </Typography>
                 </Paper>

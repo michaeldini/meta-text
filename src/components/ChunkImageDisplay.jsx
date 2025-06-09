@@ -1,5 +1,13 @@
 import React from 'react';
 import { Box, CircularProgress, Modal, Fade } from '@mui/material';
+import {
+    chunkImageBox,
+    chunkImageLoadingOverlay,
+    chunkImagePromptBox,
+    chunkLightboxModal,
+    chunkLightboxImgBox,
+    chunkLightboxPromptBox
+} from '../styles/pageStyles';
 
 /**
  * ChunkImageDisplay - handles image display, loading overlay, prompt/date, and lightbox modal
@@ -15,17 +23,16 @@ const ChunkImageDisplay = ({
     onError,
     lightboxOpen,
     setLightboxOpen,
-    createdAt,
-    styles
+    createdAt
 }) => (
     <>
-        <Box sx={styles.imageBox}
+        <Box sx={chunkImageBox}
             onClick={() => setLightboxOpen(true)}
             tabIndex={0}
             aria-label="Expand image"
         >
             {!imgLoaded && (
-                <Box sx={styles.imageLoadingOverlay}>
+                <Box sx={chunkImageLoadingOverlay}>
                     <CircularProgress size={48} />
                 </Box>
             )}
@@ -38,11 +45,8 @@ const ChunkImageDisplay = ({
                 onError={onError}
             />
             {/* Show prompt and date if available */}
-            <Box sx={styles.imagePromptBox}>
+            <Box sx={chunkImagePromptBox}>
                 {imgPrompt && <div><b>Prompt:</b> {imgPrompt}</div>}
-                {createdAt && (
-                    <div><b>Generated:</b> {new Date(createdAt).toLocaleString()}</div>
-                )}
             </Box>
         </Box>
         {/* Lightbox Modal */}
@@ -68,12 +72,12 @@ const ChunkImageDisplay = ({
                         alignItems: 'center',
                         justifyContent: 'center',
                         outline: 'none',
-                        ...styles.lightboxModal
+                        ...chunkLightboxModal
                     }}
                 >
                     <Box
                         onClick={e => e.stopPropagation()}
-                        sx={styles.lightboxImgBox}
+                        sx={chunkLightboxImgBox}
                     >
                         <img
                             src={imgSrc}
@@ -87,7 +91,7 @@ const ChunkImageDisplay = ({
                                 background: '#fafafa',
                             }}
                         />
-                        <Box sx={styles.lightboxPromptBox}>
+                        <Box sx={chunkLightboxPromptBox}>
                             {imgPrompt && <div><b>Prompt:</b> {imgPrompt}</div>}
                             {createdAt && (
                                 <div><b>Generated:</b> {new Date(createdAt).toLocaleString()}</div>

@@ -25,7 +25,7 @@ const LoadingIndicator = ({ loading, size = 48, sx }) => {
             <img
                 src={loadingGif}
                 alt="Loading..."
-                style={{ width: size, height: size, borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}
+                style={{ width: size, height: size, borderRadius: 8 }}
             />
         </Box>
     );
