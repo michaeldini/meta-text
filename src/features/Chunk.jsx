@@ -44,7 +44,6 @@ const Chunk = memo(function Chunk({
     const {
         imageState,
         getImgSrc,
-        getImgKey,
         openDialog,
         closeDialog,
         handleGenerate,
@@ -95,7 +94,6 @@ const Chunk = memo(function Chunk({
                     {imageState.data && (
                         <ChunkImageDisplay
                             imgSrc={getImgSrc()}
-                            imgKey={getImgKey()}
                             imgPrompt={imageState.prompt}
                             imgLoaded={imageState.loaded}
                             onLoad={() => setImageLoaded(true)}
@@ -115,14 +113,14 @@ const Chunk = memo(function Chunk({
                         />
                     )}
                 </Box>
+                <GenerateImageDialog
+                    open={imageState.dialogOpen}
+                    onClose={closeDialog}
+                    onSubmit={prompt => handleGenerate(prompt, chunk.id)}
+                    loading={imageState.loading}
+                    error={imageState.error}
+                />
             </Box>
-            <GenerateImageDialog
-                open={imageState.dialogOpen}
-                onClose={closeDialog}
-                onSubmit={prompt => handleGenerate(prompt, chunk.id)}
-                loading={imageState.loading}
-                error={imageState.error}
-            />
         </Paper>
     );
 });

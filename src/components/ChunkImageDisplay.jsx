@@ -12,11 +12,10 @@ import {
 /**
  * ChunkImageDisplay - handles image display, loading overlay, prompt/date, and lightbox modal
  * Props:
- *   imgSrc, imgKey, imgPrompt, imgLoaded, onLoad, onError, lightboxOpen, setLightboxOpen, createdAt, styles
+ *   imgSrc, imgPrompt, imgLoaded, onLoad, onError, lightboxOpen, setLightboxOpen, createdAt, styles
  */
 const ChunkImageDisplay = ({
     imgSrc,
-    imgKey,
     imgPrompt,
     imgLoaded,
     onLoad,
@@ -38,9 +37,8 @@ const ChunkImageDisplay = ({
             )}
             <img
                 src={imgSrc}
-                key={imgKey}
                 alt={imgPrompt}
-                style={{ width: 400, height: 400, objectFit: 'cover', display: imgLoaded ? 'block' : 'none' }}
+                style={{ height: '400px', objectFit: 'cover', display: imgLoaded ? 'block' : 'none' }}
                 onLoad={onLoad}
                 onError={onError}
             />
@@ -81,7 +79,6 @@ const ChunkImageDisplay = ({
                     >
                         <img
                             src={imgSrc}
-                            key={imgKey}
                             alt={imgPrompt}
                             style={{
                                 maxWidth: '80vw',
