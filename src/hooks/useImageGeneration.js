@@ -36,7 +36,6 @@ export function useImageGeneration(chunk) {
     }, [state.data]);
 
     const getImgSrc = useCallback(() => (state.data ? `/${state.data}` : ''), [state.data]);
-    const getImgKey = useCallback(() => (state.data ? state.data : ''), [state.data]);
 
     const openDialog = useCallback(() => setState(s => ({ ...s, dialogOpen: true, error: null })), []);
     const closeDialog = useCallback(() => setState(s => ({ ...s, dialogOpen: false, error: null })), []);
@@ -60,13 +59,25 @@ export function useImageGeneration(chunk) {
             if (imagePath && imagePath.startsWith('/')) {
                 imagePath = imagePath.slice(1);
             }
-            setState(s => ({
-                ...s,
-                data: imagePath,
-                prompt: imagePrompt,
-                loading: false,
-                error: null,
-            }));
+            if (imagePath) {
+                setTimeout(() => {
+                    setState(s => ({
+                        ...s,
+                        data: imagePath,
+                        prompt: imagePrompt,
+                        loading: false,
+                        error: null,
+                    }));
+                }, 300); // 300ms delay to allow image to be available
+            } else {
+                setState(s => ({
+                    ...s,
+                    data: imagePath,
+                    prompt: imagePrompt,
+                    loading: false,
+                    error: null,
+                }));
+            }
         } catch (err) {
             setState(s => ({ ...s, error: err?.message || 'Failed to generate image', loading: false }));
         }
@@ -75,7 +86,6 @@ export function useImageGeneration(chunk) {
     return {
         imageState: state,
         getImgSrc,
-        getImgKey,
         openDialog,
         closeDialog,
         handleGenerate,

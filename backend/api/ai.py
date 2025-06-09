@@ -1,3 +1,4 @@
+
 from fastapi import APIRouter, HTTPException, Depends, Form
 from backend.models import SourceDocument, WordDefinitionResponse, WordDefinitionWithContextRequest, WordDefinitionLog
 from backend.db import get_session
@@ -8,9 +9,7 @@ from sqlmodel import Session
 import base64
 from datetime import datetime
 
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-client = OpenAI(api_key=OPENAI_API_KEY)
-
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 router = APIRouter()
 
 @router.get("/generate-chunk-note-summary-text-comparison/{chunk_id}")
