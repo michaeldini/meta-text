@@ -33,7 +33,7 @@ const ChunkImageDisplay = ({
         >
             {!imgLoaded && (
                 <Box sx={chunkImageLoadingOverlay}>
-                    <CircularProgress size={48} />
+                    <CircularProgress />
                 </Box>
             )}
             <img
