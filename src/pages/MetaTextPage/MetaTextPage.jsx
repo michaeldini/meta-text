@@ -11,6 +11,7 @@ import useDeleteWithConfirmation from '../../hooks/useDeleteWithConfirmation';
 import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
 import { useFilteredList } from '../../hooks/useFilteredList';
 import { deleteMetaText } from '../../services/metaTextService';
+import { outerList } from '../../styles/pageStyles';
 
 export default function MetaTextPage() {
     const [createSuccess, setCreateSuccess] = useState('');
@@ -49,16 +50,15 @@ export default function MetaTextPage() {
                 label="Search Meta Texts"
                 value={search}
                 onChange={setSearch}
-                sx={{ mb: 2 }}
             />
             {metaTextsLoading ? (
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+                <Box>
                     <CircularProgress />
                 </Box>
             ) : metaTextsError ? (
                 <Alert severity="error">{metaTextsError}</Alert>
             ) : (
-                <Box sx={{ width: '100%', bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1, mb: 2 }}>
+                <Box sx={outerList}>
                     <nav aria-label="entity list">
                         <GeneralizedList
                             items={filteredMetaTexts}

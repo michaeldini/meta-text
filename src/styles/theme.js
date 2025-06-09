@@ -1,6 +1,7 @@
 import { createTheme } from '@mui/material/styles';
 import { grey, cyan, red, green } from '@mui/material/colors';
 const theme = createTheme({
+
     palette: {
         mode: 'dark',
         primary: { main: cyan[900] },

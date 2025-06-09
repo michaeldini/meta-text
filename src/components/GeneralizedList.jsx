@@ -28,9 +28,10 @@ export default function GeneralizedList({
             ) : (
                 items.map(obj => (
                     <React.Fragment key={obj.id}>
-                        <ListItem disablePadding alignItems="flex-start">
-                            <ListItemButton onClick={() => onItemClick(obj.id)}>
-                                <ListItemText primary={obj.title} />
+                        <ListItem disablePadding >
+                            <ListItemButton onClick={() => onItemClick(obj.id)} >
+                                <ListItemText primary={obj.title}
+                                    slotProps={{ primary: { typography: 'h5' } }} />
                                 <DeleteButton
                                     onClick={e => onDeleteClick(obj.id, e)}
                                     disabled={!!deleteLoading[obj.id]}

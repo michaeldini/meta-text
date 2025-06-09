@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, Button, TextField, Alert, Typography } from '@mui/material';
 import SourceDocSelect from '../../components/SourceDocSelect';
 import { createMetaText } from '../../services/metaTextService';
+import { uploadFormContainer, uploadFormInner } from '../../styles/pageStyles';
 
 export default function MetaTextCreateForm({
     sourceDocs,
@@ -48,9 +49,9 @@ export default function MetaTextCreateForm({
     };
 
     return (
-        <Box sx={{ width: '100%', mb: 2 }}>
+        <Box sx={uploadFormContainer}>
             <Typography variant="h5" gutterBottom>New Meta Text</Typography>
-            <Box component="form" onSubmit={handleCreateMetaText} sx={{ width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, justifyContent: 'center' }}>
+            <Box component="form" onSubmit={handleCreateMetaText} sx={uploadFormInner}>
                 <SourceDocSelect
                     value={selectedSourceDocId}
                     onChange={e => setSelectedSourceDocId(e.target.value)}

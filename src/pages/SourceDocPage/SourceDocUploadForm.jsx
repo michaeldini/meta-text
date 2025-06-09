@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, Typography, TextField, Button, Alert } from '@mui/material';
 import FileUploadWidget from '../../components/FileUploadWidget';
 import { createSourceDocument } from '../../services/sourceDocumentService';
+import { uploadFormContainer, uploadFormInner } from '../../styles/pageStyles';
 
 export default function SourceDocUploadForm({ onUploadSuccess, refresh }) {
     const [file, setFile] = useState(null);
@@ -41,9 +42,9 @@ export default function SourceDocUploadForm({ onUploadSuccess, refresh }) {
     };
 
     return (
-        <Box sx={{ width: '100%', mb: 2 }}>
+        <Box sx={uploadFormContainer}>
             <Typography variant="h5" gutterBottom>New Source Document</Typography>
-            <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, justifyContent: 'center' }}>
+            <Box component="form" onSubmit={handleSubmit} sx={uploadFormInner}>
                 <FileUploadWidget file={file} onFileChange={handleFileChange} />
                 <TextField
                     id="upload-title"
@@ -55,7 +56,7 @@ export default function SourceDocUploadForm({ onUploadSuccess, refresh }) {
                     size="small"
                     margin="dense"
                     required
-                    sx={{ mt: 1 }}
+
                 />
                 <Button
                     type="submit"
@@ -67,10 +68,10 @@ export default function SourceDocUploadForm({ onUploadSuccess, refresh }) {
                     {uploadLoading ? 'Uploading...' : 'Upload'}
                 </Button>
                 {uploadError && (
-                    <Alert severity="error" sx={{ mt: 2 }}>{uploadError}</Alert>
+                    <Alert severity="error" m={2}>{uploadError}</Alert>
                 )}
                 {uploadSuccess && (
-                    <Alert severity="success" sx={{ mt: 2 }}>{uploadSuccess}</Alert>
+                    <Alert severity="success" m={2}>{uploadSuccess}</Alert>
                 )}
             </Box>
         </Box>

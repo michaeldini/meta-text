@@ -12,7 +12,7 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
  */
 export default function FileUploadWidget({ file, onFileChange, accept = ".txt", id = "file-upload" }) {
     return (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box sx={{ gap: 2, display: 'flex', flexDirection: 'row', alignItems: 'end' }}>
             <input
                 id={id}
                 type="file"
@@ -21,8 +21,8 @@ export default function FileUploadWidget({ file, onFileChange, accept = ".txt", 
                 style={{ display: 'none' }}
             />
             <label htmlFor={id}>
-                <Button component="span" startIcon={<FileUploadIcon />} sx={{ fontWeight: 'bold', backgroundColor: 'primary.main', color: 'text.primary', minWidth: 250, '&:hover': { backgroundColor: 'secondary.main' } }}>
-                    {file ? 'Change File' : 'Upload File'}
+                <Button component="span" startIcon={<FileUploadIcon />} sx={{ fontWeight: 'bold', backgroundColor: 'primary.main', color: 'text.primary', '&:hover': { backgroundColor: 'secondary.main' } }}>
+                    {file ? 'Change File' : 'Choose File'}
                 </Button>
             </label>
             {file && <span className="file-name">{file.name}</span>}

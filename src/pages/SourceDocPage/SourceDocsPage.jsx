@@ -10,6 +10,7 @@ import { CircularProgress, Alert, Box } from '@mui/material';
 import useDeleteWithConfirmation from '../../hooks/useDeleteWithConfirmation';
 import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
 import { useFilteredList } from '../../hooks/useFilteredList';
+import { outerList } from '../../styles/pageStyles';
 
 export default function SourceDocsPage() {
     const { docs = [], loading, error, refresh } = useSourceDocuments();
@@ -53,16 +54,16 @@ export default function SourceDocsPage() {
                 label="Search Documents"
                 value={search}
                 onChange={setSearch}
-                sx={{ mb: 2 }}
             />
             {loading ? (
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+                <Box>
                     <CircularProgress />
                 </Box>
             ) : error ? (
                 <Alert severity="error">{error}</Alert>
             ) : (
-                <Box sx={{ width: '100%', bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1, mb: 2 }}>
+
+                <Box sx={outerList}>
                     <nav aria-label="entity list">
                         <GeneralizedList
                             items={filteredDocs}
