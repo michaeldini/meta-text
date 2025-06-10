@@ -17,6 +17,7 @@ import {
     chunkImageBtnBox,
     chunkGenerateImageBtn
 } from '../styles/pageStyles';
+import log from '../utils/logger';
 
 const Chunk = memo(function Chunk({
     chunk,
@@ -50,6 +51,19 @@ const Chunk = memo(function Chunk({
         setLightboxOpen,
         setImageLoaded,
     } = useImageGeneration(chunk);
+
+    // Log mount/unmount
+    React.useEffect(() => {
+        log.info(`Chunk component mounted (id: ${chunk.id})`);
+        return () => log.info(`Chunk component unmounted (id: ${chunk.id})`);
+    }, [chunk.id]);
+
+    // Log image generation events
+    React.useEffect(() => {
+        if (imageState.loading) log.info(`Image generation started for chunk id: ${chunk.id}`);
+        if (imageState.error) log.error(`Image generation error for chunk id: ${chunk.id}:`, imageState.error);
+        if (imageState.data) log.info(`Image retrieved for chunk id: ${chunk.id}`);
+    }, [imageState.loading, imageState.error, imageState.data, chunk.id]);
 
     return (
         <Paper sx={chunkPaper}>
