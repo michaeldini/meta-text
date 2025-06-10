@@ -9,10 +9,16 @@ import {
     sourceDocDetailPaper,
     sourceDocDetailText
 } from '../../styles/pageStyles';
+import log from '../../utils/logger';
 
 export default function SourceDocDetailPage() {
     const { id } = useParams();
     const { doc, loading, error, refetch } = useSourceDocument(id);
+
+    React.useEffect(() => {
+        log.info('SourceDocDetailPage mounted');
+        return () => log.info('SourceDocDetailPage unmounted');
+    }, []);
 
     return (
         <Box sx={sourceDocDetailContainer}>

@@ -11,17 +11,34 @@ import useDeleteWithConfirmation from '../../hooks/useDeleteWithConfirmation';
 import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
 import { useFilteredList } from '../../hooks/useFilteredList';
 import { outerList } from '../../styles/pageStyles';
+import log from '../../utils/logger';
 
 export default function SourceDocsPage() {
     const { docs = [], loading, error, refresh } = useSourceDocuments();
     const [search, setSearch] = useState('');
     const navigate = useNavigate();
 
+    // Log when the page loads
+    React.useEffect(() => {
+        log.info('SourceDocsPage mounted');
+        return () => log.info('SourceDocsPage unmounted');
+    }, []);
+
+    // Log when documents are loaded or error occurs
+    React.useEffect(() => {
+        if (loading) log.info('Loading source documents...');
+        if (error) log.error('Error loading source documents:', error);
+        if (!loading && docs.length > 0) log.info(`Loaded ${docs.length} source documents`);
+    }, [loading, error, docs]);
+
     // Filter documents based on search input
     const filteredDocs = useFilteredList(docs, search, 'title');
 
     // Use doc.id for navigation
-    const handleSourceDocClick = id => navigate(`/sourceDocs/${id}`);
+    const handleSourceDocClick = id => {
+        log.info(`Navigating to source document with id: ${id}`);
+        navigate(`/sourceDocs/${id}`);
+    };
 
     // Use generic delete hook
     const {
@@ -33,13 +50,20 @@ export default function SourceDocsPage() {
         handleConfirmDelete,
     } = useDeleteWithConfirmation(
         async (docId) => {
-            if (!docId) throw new Error('No document ID provided for deletion.');
+            if (!docId) {
+                log.error('No document ID provided for deletion.');
+                throw new Error('No document ID provided for deletion.');
+            }
             try {
+                log.info(`Attempting to delete source document with id: ${docId}`);
                 await deleteSourceDocument(docId);
+                log.info(`Successfully deleted source document with id: ${docId}`);
                 refresh();
             } catch (e) {
+                log.error('Error deleting source document:', e.message);
                 // Custom error for MetaText records
                 if (e.message.includes('MetaText records exist')) {
+                    log.warn('Cannot delete: MetaText records exist for this document.');
                     throw new Error('Cannot delete: MetaText records exist for this document.');
                 }
                 throw e;

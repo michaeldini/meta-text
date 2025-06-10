@@ -3,6 +3,7 @@ import { Box, Typography, TextField, Button, Alert } from '@mui/material';
 import FileUploadWidget from '../../components/FileUploadWidget';
 import { createSourceDocument } from '../../services/sourceDocumentService';
 import { uploadFormContainer, uploadFormInner } from '../../styles/pageStyles';
+import log from '../../utils/logger';
 
 export default function SourceDocUploadForm({ onUploadSuccess, refresh }) {
     const [file, setFile] = useState(null);
@@ -40,6 +41,11 @@ export default function SourceDocUploadForm({ onUploadSuccess, refresh }) {
             setUploadLoading(false);
         }
     };
+
+    React.useEffect(() => {
+        log.info('SourceDocUploadForm mounted');
+        return () => log.info('SourceDocUploadForm unmounted');
+    }, []);
 
     return (
         <Box sx={uploadFormContainer}>

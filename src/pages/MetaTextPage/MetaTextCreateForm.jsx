@@ -3,6 +3,7 @@ import { Box, Button, TextField, Alert, Typography } from '@mui/material';
 import SourceDocSelect from '../../components/SourceDocSelect';
 import { createMetaText } from '../../services/metaTextService';
 import { uploadFormContainer, uploadFormInner } from '../../styles/pageStyles';
+import log from '../../utils/logger';
 
 export default function MetaTextCreateForm({
     sourceDocs,
@@ -15,6 +16,11 @@ export default function MetaTextCreateForm({
     const [createLoading, setCreateLoading] = useState(false);
     const [createError, setCreateError] = useState('');
     const [createSuccessMsg, setCreateSuccessMsg] = useState('');
+
+    React.useEffect(() => {
+        log.info('MetaTextCreateForm mounted');
+        return () => log.info('MetaTextCreateForm unmounted');
+    }, []);
 
     const handleCreateMetaText = async (e) => {
         e.preventDefault();

@@ -3,12 +3,18 @@ import React, { useState } from 'react';
 import { useAuth } from '../../store/authStore';
 import { Button, TextField, Box, Typography, Alert, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import log from '../../utils/logger';
 
 export default function LoginPage({ onLoginSuccess }) {
     const { login, loading, error } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+
+    React.useEffect(() => {
+        log.info('LoginPage mounted');
+        return () => log.info('LoginPage unmounted');
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

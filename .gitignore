@@ -36,3 +36,5 @@ certs
 Notes.md
 
 public/generated_images/
+*.log
+*/logs/

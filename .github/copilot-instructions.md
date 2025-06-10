@@ -6,7 +6,8 @@
 - Always use FastAPI + SQLModel best practices to create a robust and easy to maintain backend.
 - Use the FastAPI test client for testing API endpoints.
 - The purpose of the app is to provide a user-friendly interface for managing and interacting with a document.
-- loguru is used for logging in the backend. 
+- loguru is used for logging in the backend.
+- src/utils/logger.js is used for logging in the frontend.
 
 ## uv Guidelines
 - use `source .venv/bin/activate` before installing new python packages.

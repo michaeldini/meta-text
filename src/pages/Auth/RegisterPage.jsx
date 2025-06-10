@@ -3,12 +3,18 @@ import React, { useState } from 'react';
 import { useAuth } from '../../store/authStore';
 import { Button, TextField, Box, Typography, Alert, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import log from '../../utils/logger';
 
 export default function RegisterPage({ onRegisterSuccess }) {
     const { register, loading, error } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+
+    React.useEffect(() => {
+        log.info('RegisterPage mounted');
+        return () => log.info('RegisterPage unmounted');
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

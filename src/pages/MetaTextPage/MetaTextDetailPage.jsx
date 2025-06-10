@@ -11,6 +11,7 @@ import {
     metaTextDetailLoadingBox,
     metaTextDetailAlert
 } from '../../styles/pageStyles';
+import log from '../../utils/logger';
 
 export default function MetaTextDetailPage() {
     const { id } = useParams();
@@ -31,6 +32,11 @@ export default function MetaTextDetailPage() {
 
     // Destructure metaText fields early for clarity
     const title = metaText?.title;
+
+    React.useEffect(() => {
+        log.info('MetaTextDetailPage mounted');
+        return () => log.info('MetaTextDetailPage unmounted');
+    }, []);
 
     if (loading) {
         return (
