@@ -1,6 +1,7 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Form, File, UploadFile
 from sqlmodel import select
+from loguru import logger
 from backend.models import (
     SourceDocument, MetaText, SourceDocumentListRead, SourceDocumentRead, 
 )
@@ -22,15 +23,18 @@ async def create_source_document(
     """
     Create a new source document from an uploaded file.
     """
+    logger.info(f"Received request to create source document with title: {title}")
     text = (await file.read()).decode("utf-8")
     doc = SourceDocument(title=title, text=text)
     session.add(doc)
     try:
         session.commit()
         session.refresh(doc)
+        logger.info(f"Source document created successfully: id={doc.id}, title={doc.title}")
         return doc.model_dump()
     except Exception as e:
         session.rollback()
+        logger.error(f"Error creating source document: {e}")
         if 'UNIQUE constraint failed' in str(e):
             raise HTTPException(status_code=409, detail="Title already exists.")
         raise HTTPException(status_code=500, detail="Failed to save to database.")
@@ -41,7 +45,9 @@ def list_source_documents(session=Depends(get_session)) -> list[SourceDocumentLi
     """
     List all source documents with all fields.
     """
+    logger.info("Listing all source documents")
     docs = session.exec(select(SourceDocument)).all()
+    logger.info(f"Found {len(docs)} source documents")
     return [SourceDocumentListRead(**doc.model_dump()) for doc in docs]
 
 
@@ -50,10 +56,13 @@ def get_source_document(doc_id: int, session=Depends(get_session)) -> SourceDocu
     """
     Retrieve a source document by ID.
     """
+    logger.info(f"Retrieving source document with id: {doc_id}")
     doc = session.get(SourceDocument, doc_id)
     if doc:
+        logger.info(f"Source document found: id={doc.id}, title={doc.title}")
         return doc
     else:
+        logger.warning(f"Source document not found: id={doc_id}")
         raise HTTPException(status_code=404, detail="Source document not found.")
 
 
@@ -62,12 +71,16 @@ def delete_source_document(doc_id: int, session=Depends(get_session)) -> dict:
     """
     Delete a source document if no related MetaText records exist.
     """
+    logger.info(f"Attempting to delete source document with id: {doc_id}")
     doc = session.get(SourceDocument, doc_id)
     if not doc:
+        logger.warning(f"Source document not found for deletion: id={doc_id}")
         raise HTTPException(status_code=404, detail="Source document not found.")
     meta_texts = session.exec(select(MetaText).where(MetaText.source_document_id == doc_id)).all()
     if meta_texts:
+        logger.warning(f"Cannot delete source document id={doc_id}: MetaText records exist")
         raise HTTPException(status_code=400, detail="Cannot delete: MetaText records exist for this document.")
     session.delete(doc)
     session.commit()
+    logger.info(f"Source document deleted successfully: id={doc_id}")
     return {"success": True}

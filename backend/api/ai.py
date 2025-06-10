@@ -1,4 +1,3 @@
-
 from fastapi import APIRouter, HTTPException, Depends, Form
 from backend.models import SourceDocument, WordDefinitionResponse, WordDefinitionWithContextRequest, WordDefinitionLog
 from backend.db import get_session
@@ -8,14 +7,17 @@ from backend.models import SourceDocInfoAiResponse, SourceDocInfoRequest, Source
 from sqlmodel import Session
 import base64
 from datetime import datetime
+from loguru import logger
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 router = APIRouter()
 
 @router.get("/generate-chunk-note-summary-text-comparison/{chunk_id}")
 async def generate_chunk_note_summary_text_comparison(chunk_id: int, session: Session = Depends(get_session)) -> dict:
+    logger.info(f"Generating chunk note/summary/comparison for chunk_id: {chunk_id}")
     chunk = session.get(Chunk, chunk_id)
     if not chunk:
+        logger.warning(f"Chunk not found: id={chunk_id}")
         raise HTTPException(status_code=404, detail="Chunk not found.")
     # Compose prompt for AI
     prompt = (
@@ -34,15 +36,19 @@ async def generate_chunk_note_summary_text_comparison(chunk_id: int, session: Se
         chunk.comparison = ai_text
         session.add(chunk)
         session.commit()
+        logger.info(f"AI comparison generated and saved for chunk_id: {chunk_id}")
         return {"result": ai_text}
     except Exception as e:
+        logger.error(f"OpenAI error during chunk comparison for chunk_id={chunk_id}: {e}")
         raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")
     
 @router.post("/generate-definition-in-context")
 async def generate_definition_in_context(request: WordDefinitionWithContextRequest, session: Session = Depends(get_session)) -> WordDefinitionResponse:
+    logger.info(f"Generating definition in context for word: '{request.word}'")
     word = request.word
     context = request.context
     if not word:
+        logger.warning("Missing word in definition request")
         raise HTTPException(status_code=400, detail="Missing word.")
     try:
         instructions_path = os.path.join(os.path.dirname(__file__), "../definition_with_context_instructions.txt")
@@ -56,6 +62,7 @@ async def generate_definition_in_context(request: WordDefinitionWithContextReque
         )
         ai_data = response.output_parsed
         if ai_data is None:
+            logger.error(f"Failed to parse AI response for word: '{word}'")
             raise HTTPException(status_code=500, detail="Failed to parse AI response.")
         # Save to DB
         log_entry = WordDefinitionLog(
@@ -66,15 +73,19 @@ async def generate_definition_in_context(request: WordDefinitionWithContextReque
         )
         session.add(log_entry)
         session.commit()
+        logger.info(f"Definition in context generated and saved for word: '{word}'")
         return WordDefinitionResponse(definition=ai_data.definition, definitionWithContext=ai_data.definitionWithContext)
     except Exception as e:
+        logger.error(f"OpenAI error during definition in context for word='{word}': {e}")
         raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")
 
 @router.post("/source-doc-info")
 async def source_doc_info(request: SourceDocInfoRequest, session=Depends(get_session)) -> SourceDocInfoResponse:
+    logger.info(f"Generating source doc info for doc_id: {request.id}")
     prompt = request.prompt[:10_000] #FUTURE get the title from the document and just use the title as the prompt
     doc_id = request.id
     if not prompt:
+        logger.warning("Missing prompt in source doc info request")
         raise HTTPException(status_code=400, detail="Missing prompt.")
     try:
         instructions_path = os.path.join(os.path.dirname(__file__), "../instructions.txt")
@@ -88,10 +99,12 @@ async def source_doc_info(request: SourceDocInfoRequest, session=Depends(get_ses
         )
         ai_data = response.output_parsed
         if ai_data is None:
+            logger.error("Failed to parse AI response for source doc info")
             raise HTTPException(status_code=500, detail="Failed to parse AI response.")
         if doc_id is not None:
             doc = session.get(SourceDocument, doc_id)
             if not doc:
+                logger.warning(f"Source document not found for doc_id: {doc_id}")
                 raise HTTPException(status_code=404, detail="Source document not found.")
             doc.summary = ai_data.summary
             doc.characters = ", ".join(ai_data.characters) if ai_data.characters else None
@@ -100,14 +113,17 @@ async def source_doc_info(request: SourceDocInfoRequest, session=Depends(get_ses
             doc.symbols = ", ".join(ai_data.symbols) if ai_data.symbols else None
             session.add(doc)
             session.commit()
+            logger.info(f"Source doc info updated in DB for doc_id: {doc_id}")
         return SourceDocInfoResponse(result=ai_data)
     except Exception as e:
+        logger.error(f"OpenAI error during source doc info for doc_id={doc_id}: {e}")
         raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")
 
 @router.post("/generate-image", response_model=AiImageRead)
 async def generate_image(prompt: str = Form(...), chunk_id: int = Form(None), session: Session = Depends(get_session)):
-    print('Generating AI image for prompt:', prompt)
+    logger.info(f"Generating AI image for prompt: '{prompt}' and chunk_id: {chunk_id}")
     if not prompt:
+        logger.warning("Missing prompt in generate image request")
         raise HTTPException(status_code=400, detail="Missing prompt.")
     try:
         img = client.images.generate(
@@ -119,6 +135,7 @@ async def generate_image(prompt: str = Form(...), chunk_id: int = Form(None), se
             style="natural", # for DALL-E 3 only
         )
         if not img.data or not hasattr(img.data[0], "b64_json") or not img.data[0].b64_json:
+            logger.error("No image data returned from OpenAI.")
             raise HTTPException(status_code=500, detail="No image data returned from OpenAI.")
         # Save image to public/generated_images
         image_data = base64.b64decode(img.data[0].b64_json)
@@ -133,10 +150,11 @@ async def generate_image(prompt: str = Form(...), chunk_id: int = Form(None), se
         ai_image = AiImage(prompt=prompt, path=rel_path, chunk_id=chunk_id)
         session.add(ai_image)
         session.commit()
+        logger.info(f"AI image generated and saved: {rel_path} (chunk_id={chunk_id})")
         return ai_image
     except Exception as e:
         import traceback
-        print('AI image generation error:', str(e))
+        logger.error(f"AI image generation error for prompt='{prompt}': {e}")
         traceback.print_exc()
         # Try to extract OpenAI error message if present
         error_message = None

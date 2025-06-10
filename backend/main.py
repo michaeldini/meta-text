@@ -5,7 +5,18 @@ from backend.db import init_db
 from backend.api import ai, source_documents, meta_text, chunks, auth
 from fastapi.staticfiles import StaticFiles
 import os
+from loguru import logger
 
+# Initialize logger
+logger.add("backend/logs/app.log", rotation="1 MB", level="INFO", backtrace=True, diagnose=True)
+# Ensure the logs directory exists
+if not os.path.exists("backend/logs"):
+    os.makedirs("backend/logs")
+# Ensure the public directory exists for static files
+if not os.path.exists("public/generated_images"):
+    os.makedirs("public/generated_images")
+
+# FastAPI application setup
 app = FastAPI()
 
 app.add_middleware(
