@@ -2,8 +2,7 @@ from typing import Optional, List
 from sqlmodel import SQLModel, Field, Relationship
 from pydantic import BaseModel
 from passlib.context import CryptContext
-from datetime import datetime
-
+from datetime import datetime, timezone
 # --- Password Hashing ---
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -113,8 +112,7 @@ class WordDefinitionLog(SQLModel, table=True):
     context: str
     definition: str
     definition_with_context: str
-    created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
-    
+    created_at: datetime = Field(default_factory=datetime.now(timezone.utc), nullable=False)
     
 # --- AI Image Schemas ---
 class AiImage(SQLModel, table=True):

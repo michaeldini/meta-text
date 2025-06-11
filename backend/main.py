@@ -2,7 +2,7 @@ import backend.env_setup  # noqa: F401
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.db import init_db
-from backend.api import ai, source_documents, meta_text, chunks, auth, logs
+from backend.api import ai, source_documents, meta_text, chunks, auth, logs, wordlist
 from fastapi.staticfiles import StaticFiles
 import os
 from loguru import logger
@@ -34,8 +34,8 @@ app.include_router(meta_text.router, prefix="/api", tags=["meta_text"])
 app.include_router(chunks.router, prefix="/api", tags=["chunks"])
 app.include_router(ai.router, prefix="/api", tags=["ai"])
 app.include_router(auth.router, prefix="/api", tags=["auth"])
+app.include_router(wordlist.router, prefix="/api", tags=["wordlist"])
 app.include_router(logs.router, prefix="/api", tags=["logs"])
-
 # Mount static files for generated images
 public_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../public'))
 app.mount("/generated_images", StaticFiles(directory=os.path.join(public_dir, "generated_images")), name="generated_images")
