@@ -26,8 +26,8 @@ def get_wordlist(metatext_id: int, session: Session = Depends(get_session)):
 def get_chunk_summaries_notes(metatext_id: int, session: Session = Depends(get_session)):
     logger.info(f"Retrieving chunk summaries and notes for metatext_id={metatext_id}")
     chunks = session.exec(
-        select(Chunk).where(Chunk.meta_text_id == metatext_id).order_by(Chunk.position)
-    ).all()
+        select(Chunk).where(Chunk.meta_text_id == metatext_id).order_by(Chunk.position) # type: ignore
+    ).all()  
     if not chunks:
         logger.warning(f"No chunks found for metatext_id={metatext_id}")
         raise HTTPException(status_code=404, detail="No chunks found for this metatext")
