@@ -66,7 +66,7 @@ export default function MetaTextDetailPage() {
                         onClick={() => navigate(metaTextReviewRoute(id))}
                         sx={{ ml: 2 }}
                     >
-                        View Wordlist
+                        Review
                     </Button>
                 </Box>
                 {errors.sourceDoc ? (

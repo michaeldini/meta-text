@@ -54,8 +54,9 @@ export default function MetaTextReviewPage() {
                         </IconButton>
                     </Tooltip>
                 )}
-                <Typography variant="h4" gutterBottom sx={{ ml: metatextId ? 1 : 0 }}>Wordlist</Typography>
+                <Typography variant="h4" gutterBottom sx={{ ml: metatextId ? 1 : 0 }}>Review</Typography>
             </Box>
+            <Typography variant="h5" gutterBottom>Wordlist</Typography>
             {loading && <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}><CircularProgress /></Box>}
             {error && <Alert severity="error">{error}</Alert>}
             {!loading && !error && (
