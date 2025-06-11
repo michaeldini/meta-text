@@ -101,7 +101,7 @@ class SourceDocInfoResponse(SQLModel):
 class WordDefinitionWithContextRequest(SQLModel):
     word: str
     context: str
-    meta_text_id: int
+    meta_text_id: int | None = None
 
 class WordDefinitionResponse(SQLModel):
     definition: str

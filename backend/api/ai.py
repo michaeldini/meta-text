@@ -84,11 +84,11 @@ async def generate_definition_in_context(request: WordDefinitionWithContextReque
     logger.info(f"Generating definition in context for word: '{request.word}'")
     word = request.word
     context = request.context
-    meta_text_id = getattr(request, 'meta_text_id', None)
+    meta_text_id = request.meta_text_id
     if not word:
         logger.warning("Missing word in definition request")
         raise HTTPException(status_code=400, detail="Missing word.")
-    if not meta_text_id:
+    if meta_text_id is None:
         logger.warning("Missing meta_text_id in definition request")
         raise HTTPException(status_code=400, detail="Missing meta_text_id.")
     try:
@@ -123,7 +123,7 @@ async def generate_definition_in_context(request: WordDefinitionWithContextReque
 @router.post("/source-doc-info")
 async def source_doc_info(request: SourceDocInfoRequest, session=Depends(get_session)) -> SourceDocInfoResponse:
     logger.info(f"Generating source doc info for doc_id: {request.id}")
-    prompt = request.prompt[:10_000] #FUTURE get the title from the document and just use the title as the prompt
+    prompt = request.prompt[:10_000]
     doc_id = request.id
     if not prompt:
         logger.warning("Missing prompt in source doc info request")
@@ -154,6 +154,8 @@ async def source_doc_info(request: SourceDocInfoRequest, session=Depends(get_ses
             session.commit()
             logger.info(f"Source doc info updated in DB for doc_id: {doc_id}")
         return SourceDocInfoResponse(result=ai_data)
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"OpenAI error during source doc info for doc_id={doc_id}: {e}")
         raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")
