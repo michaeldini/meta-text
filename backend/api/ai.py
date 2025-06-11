@@ -1,16 +1,53 @@
 from fastapi import APIRouter, HTTPException, Depends, Form
 from backend.models import SourceDocument, WordDefinitionResponse, WordDefinitionWithContextRequest, WordDefinitionLog
 from backend.db import get_session
-import os
 from openai import OpenAI
 from backend.models import SourceDocInfoAiResponse, SourceDocInfoRequest, SourceDocInfoResponse,AiImage, AiImageRead, Chunk
 from sqlmodel import Session
+import os
+import json
 import base64
-from datetime import datetime
+import datetime
 from loguru import logger
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 router = APIRouter()
+
+def save_base64_image(b64_data: str, output_dir: str = '../../public/generated_images') -> str:
+    """Decode base64 image data, save to output_dir, and return relative path."""
+    timestamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%d%H%M%S%f")
+    filename = f"ai_image_{timestamp}.png"
+    rel_path = f"generated_images/{filename}"
+    abs_path = os.path.join(os.path.dirname(__file__), output_dir, filename)
+    os.makedirs(os.path.dirname(abs_path), exist_ok=True)
+    image_data = base64.b64decode(b64_data)
+    with open(abs_path, "wb") as f:
+        f.write(image_data)
+    return rel_path
+
+def extract_openai_error_message(e: Exception) -> str | None:
+    """Try to extract a detailed error message from an OpenAI exception."""
+    if hasattr(e, 'args') and e.args:
+        arg0 = e.args[0]
+        try:
+            if isinstance(arg0, dict):
+                error_json = arg0
+            elif isinstance(arg0, str):
+                error_json = json.loads(arg0)
+            else:
+                error_json = None
+            if error_json and 'error' in error_json and error_json['error'].get('message'):
+                return error_json['error']['message']
+        except Exception:
+            pass
+    return None
+
+
+def read_instructions_file(filename: str) -> str:
+    """Read and return the contents of an instructions file relative to this file."""
+    instructions_path = os.path.join(os.path.dirname(__file__), filename)
+    with open(instructions_path, "r", encoding="utf-8") as f:
+        return f.read()
 
 @router.get("/generate-chunk-note-summary-text-comparison/{chunk_id}")
 async def generate_chunk_note_summary_text_comparison(chunk_id: int, session: Session = Depends(get_session)) -> dict:
@@ -51,9 +88,7 @@ async def generate_definition_in_context(request: WordDefinitionWithContextReque
         logger.warning("Missing word in definition request")
         raise HTTPException(status_code=400, detail="Missing word.")
     try:
-        instructions_path = os.path.join(os.path.dirname(__file__), "../definition_with_context_instructions.txt")
-        with open(instructions_path, "r", encoding="utf-8") as f:
-            instructions = f.read()
+        instructions = read_instructions_file("../definition_with_context_instructions.txt")
         response = client.responses.parse(
             model="gpt-4o-mini-2024-07-18",
             instructions=instructions,
@@ -79,6 +114,7 @@ async def generate_definition_in_context(request: WordDefinitionWithContextReque
         logger.error(f"OpenAI error during definition in context for word='{word}': {e}")
         raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")
 
+
 @router.post("/source-doc-info")
 async def source_doc_info(request: SourceDocInfoRequest, session=Depends(get_session)) -> SourceDocInfoResponse:
     logger.info(f"Generating source doc info for doc_id: {request.id}")
@@ -88,9 +124,7 @@ async def source_doc_info(request: SourceDocInfoRequest, session=Depends(get_ses
         logger.warning("Missing prompt in source doc info request")
         raise HTTPException(status_code=400, detail="Missing prompt.")
     try:
-        instructions_path = os.path.join(os.path.dirname(__file__), "../instructions.txt")
-        with open(instructions_path, "r", encoding="utf-8") as f:
-            instructions = f.read()
+        instructions = read_instructions_file("../instructions.txt")
         response = client.responses.parse(
             model="gpt-4o-mini-2024-07-18",
             instructions=instructions,
@@ -137,15 +171,7 @@ async def generate_image(prompt: str = Form(...), chunk_id: int = Form(None), se
         if not img.data or not hasattr(img.data[0], "b64_json") or not img.data[0].b64_json:
             logger.error("No image data returned from OpenAI.")
             raise HTTPException(status_code=500, detail="No image data returned from OpenAI.")
-        # Save image to public/generated_images
-        image_data = base64.b64decode(img.data[0].b64_json)
-        timestamp = datetime.utcnow().strftime("%Y%m%d%H%M%S%f")
-        filename = f"ai_image_{timestamp}.png"
-        rel_path = f"generated_images/{filename}"
-        abs_path = os.path.join(os.path.dirname(__file__), '../../public', rel_path)
-        os.makedirs(os.path.dirname(abs_path), exist_ok=True)
-        with open(abs_path, "wb") as f:
-            f.write(image_data)
+        rel_path = save_base64_image(img.data[0].b64_json)
         # Save new record to DB (allow multiple images per chunk)
         ai_image = AiImage(prompt=prompt, path=rel_path, chunk_id=chunk_id)
         session.add(ai_image)
@@ -156,22 +182,5 @@ async def generate_image(prompt: str = Form(...), chunk_id: int = Form(None), se
         import traceback
         logger.error(f"AI image generation error for prompt='{prompt}': {e}")
         traceback.print_exc()
-        # Try to extract OpenAI error message if present
-        error_message = None
-        # Try to extract from args if possible (OpenAI python client often puts error JSON in args[0])
-        if hasattr(e, 'args') and e.args:
-            try:
-                import json
-                arg0 = e.args[0]
-                if isinstance(arg0, dict):
-                    error_json = arg0
-                elif isinstance(arg0, str):
-                    error_json = json.loads(arg0)
-                else:
-                    error_json = None
-                if error_json and 'error' in error_json and error_json['error'].get('message'):
-                    error_message = error_json['error']['message']
-            except Exception:
-                pass
-        # Prefer OpenAI error message, else fallback to str(e)
+        error_message = extract_openai_error_message(e)
         raise HTTPException(status_code=500, detail=error_message or str(e) or 'Unknown error')

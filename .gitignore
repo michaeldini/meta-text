@@ -38,3 +38,4 @@ Notes.md
 public/generated_images/
 *.log
 */logs/
+backend/erd_from_sqlite.pdf

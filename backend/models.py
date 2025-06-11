@@ -35,10 +35,10 @@ class SourceDocument(SourceDocumentBase, table=True):
     meta_texts: List["MetaText"] = Relationship(back_populates="source_document")
 
 
-class SourceDocumentRead(SourceDocumentBase):
+class SourceDocumentWithText(SourceDocumentBase):
     text: str
 
-class SourceDocumentListRead(SourceDocumentBase):
+class SourceDocumentRead(SourceDocumentBase):
     pass
 
 

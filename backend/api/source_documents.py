@@ -1,9 +1,9 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends, HTTPException, Form, File, UploadFile
-from sqlmodel import select
+from fastapi import APIRouter, Depends, HTTPException, Form, File, UploadFile, status
+from sqlmodel import Session, select
 from loguru import logger
 from backend.models import (
-    SourceDocument, MetaText, SourceDocumentListRead, SourceDocumentRead, 
+    SourceDocument, MetaText, SourceDocumentRead, SourceDocumentWithText, 
 )
 from backend.db import get_session
 
@@ -12,13 +12,13 @@ router = APIRouter()
 
 @router.post(
     "/source-documents",
-    response_model=SourceDocumentRead,
+    response_model=SourceDocumentWithText,
     name="create_source_document"
 )
 async def create_source_document(
     title: Annotated[str, Form()],
     file: Annotated[UploadFile, File()],
-    session=Depends(get_session),
+    session: Session =Depends(get_session),
 ):
     """
     Create a new source document from an uploaded file.
@@ -31,28 +31,28 @@ async def create_source_document(
         session.commit()
         session.refresh(doc)
         logger.info(f"Source document created successfully: id={doc.id}, title={doc.title}")
-        return doc.model_dump()
+        return doc
     except Exception as e:
         session.rollback()
         logger.error(f"Error creating source document: {e}")
         if 'UNIQUE constraint failed' in str(e):
-            raise HTTPException(status_code=409, detail="Title already exists.")
-        raise HTTPException(status_code=500, detail="Failed to save to database.")
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Title already exists.")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to save to database.")
 
 
-@router.get("/source-documents", name="list_source_documents")
-def list_source_documents(session=Depends(get_session)) -> list[SourceDocumentListRead]:
+@router.get("/source-documents", response_model=list[SourceDocumentRead], name="list_source_documents")
+def list_source_documents(session=Depends(get_session)):
     """
     List all source documents with all fields.
     """
     logger.info("Listing all source documents")
     docs = session.exec(select(SourceDocument)).all()
     logger.info(f"Found {len(docs)} source documents")
-    return [SourceDocumentListRead(**doc.model_dump()) for doc in docs]
+    return [doc for doc in docs]
 
 
-@router.get("/source-documents/{doc_id}", name="get_source_document")
-def get_source_document(doc_id: int, session=Depends(get_session)) -> SourceDocumentRead:
+@router.get("/source-documents/{doc_id}",response_model= SourceDocumentWithText, name="get_source_document")
+def get_source_document(doc_id: int, session: Session =Depends(get_session)):
     """
     Retrieve a source document by ID.
     """
@@ -63,7 +63,7 @@ def get_source_document(doc_id: int, session=Depends(get_session)) -> SourceDocu
         return doc
     else:
         logger.warning(f"Source document not found: id={doc_id}")
-        raise HTTPException(status_code=404, detail="Source document not found.")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Source document not found.")
 
 
 @router.delete("/source-documents/{doc_id}", name="delete_source_document")
@@ -75,11 +75,11 @@ def delete_source_document(doc_id: int, session=Depends(get_session)) -> dict:
     doc = session.get(SourceDocument, doc_id)
     if not doc:
         logger.warning(f"Source document not found for deletion: id={doc_id}")
-        raise HTTPException(status_code=404, detail="Source document not found.")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Source document not found.")
     meta_texts = session.exec(select(MetaText).where(MetaText.source_document_id == doc_id)).all()
     if meta_texts:
         logger.warning(f"Cannot delete source document id={doc_id}: MetaText records exist")
-        raise HTTPException(status_code=400, detail="Cannot delete: MetaText records exist for this document.")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Cannot delete: MetaText records exist for this document.")
     session.delete(doc)
     session.commit()
     logger.info(f"Source document deleted successfully: id={doc_id}")
