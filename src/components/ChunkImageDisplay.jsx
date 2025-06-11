@@ -22,7 +22,8 @@ const ChunkImageDisplay = ({
     onError,
     lightboxOpen,
     setLightboxOpen,
-    createdAt
+    createdAt,
+    height = '400px', // new prop with default
 }) => (
     <>
         <Box sx={chunkImageBox}
@@ -38,14 +39,11 @@ const ChunkImageDisplay = ({
             <img
                 src={imgSrc}
                 alt={imgPrompt}
-                style={{ height: '400px', objectFit: 'cover', display: imgLoaded ? 'block' : 'none' }}
+                style={{ height, objectFit: 'cover', display: imgLoaded ? 'block' : 'none' }}
                 onLoad={onLoad}
                 onError={onError}
             />
-            {/* Show prompt and date if available */}
-            <Box sx={chunkImagePromptBox}>
-                {imgPrompt && <div><b>Prompt:</b> {imgPrompt}</div>}
-            </Box>
+            {/* Do not show prompt in small mode */}
         </Box>
         {/* Lightbox Modal */}
         <Modal

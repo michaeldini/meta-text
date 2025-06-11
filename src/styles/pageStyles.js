@@ -182,7 +182,7 @@ export const chunkGenerateImageBtn = {
 
 export const chunkImageBox = {
     cursor: 'pointer',
-    borderRadius: 4,
+    borderRadius: 2,
     overflow: 'hidden',
 };
 
