@@ -4,7 +4,7 @@ import ContentCutIcon from '@mui/icons-material/ContentCut';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import { fetchDefinitionInContext } from '../services/aiService';
 
-export default function WordActionDialog({ anchorEl, onClose, word, onSplit, context }) {
+export default function WordActionDialog({ anchorEl, onClose, word, onSplit, context, metaTextId }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [showDefinition, setShowDefinition] = useState(false);
@@ -20,7 +20,7 @@ export default function WordActionDialog({ anchorEl, onClose, word, onSplit, con
         setDefinition(null);
         setDefinitionWithContext(null);
         try {
-            const result = await fetchDefinitionInContext(word, context);
+            const result = await fetchDefinitionInContext(word, context, metaTextId);
             setDefinition(result.definition);
             setDefinitionWithContext(result.definitionWithContext);
             setShowDefinition(true);

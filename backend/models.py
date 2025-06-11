@@ -101,18 +101,20 @@ class SourceDocInfoResponse(SQLModel):
 class WordDefinitionWithContextRequest(SQLModel):
     word: str
     context: str
+    meta_text_id: int
+
 class WordDefinitionResponse(SQLModel):
     definition: str
     definitionWithContext: str
 
-# --- Word Definition Log Schemas ---
-class WordDefinitionLog(SQLModel, table=True):
+class WordDefinition(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     word: str
     context: str
     definition: str
     definition_with_context: str
-    created_at: datetime = Field(default_factory=datetime.now(timezone.utc), nullable=False)
+    created_at: datetime = Field(default_factory=datetime.now, nullable=False)
+    meta_text_id: int = Field(foreign_key="metatext.id")
     
 # --- AI Image Schemas ---
 class AiImage(SQLModel, table=True):

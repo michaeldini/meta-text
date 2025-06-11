@@ -8,6 +8,7 @@ const ChunkWords = memo(function ChunkWords({
     chunkIdx,
     handleWordClick,
     handleRemoveChunk,
+    chunk
 }) {
     const [anchorEl, setAnchorEl] = useState(null);
     const [selectedWordIdx, setSelectedWordIdx] = useState(null);
@@ -88,6 +89,7 @@ const ChunkWords = memo(function ChunkWords({
                 onSplit={handleSplit}
                 onLookupContext={() => { }}
                 context={words.join(' ')}
+                metaTextId={chunk?.meta_text_id}
             />
         </>
     );

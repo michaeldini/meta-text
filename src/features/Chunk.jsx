@@ -75,6 +75,7 @@ const Chunk = memo(function Chunk({
                         chunkIdx={chunkIdx}
                         handleWordClick={handleWordClick}
                         handleRemoveChunk={handleRemoveChunk}
+                        chunk={chunk}
                     />
                 </Box>
                 {/* Chunk details column */}

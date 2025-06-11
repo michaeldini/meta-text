@@ -1,6 +1,6 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import { Typography, CircularProgress, Box, Alert, Container, Fade } from '@mui/material';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Typography, CircularProgress, Box, Alert, Container, Fade, Button } from '@mui/material';
 import SourceDocInfo from '../../components/SourceDocInfo';
 import Chunks from '../../features/Chunks';
 import { useChunkHandlers } from '../../hooks/useChunkHandlers';
@@ -12,9 +12,11 @@ import {
     metaTextDetailAlert
 } from '../../styles/pageStyles';
 import log from '../../utils/logger';
+import { metaTextReviewRoute } from '../../routes';
 
 export default function MetaTextDetailPage() {
     const { id } = useParams();
+    const navigate = useNavigate();
     const {
         metaText,
         loading,
@@ -57,7 +59,16 @@ export default function MetaTextDetailPage() {
     return (
         <Fade in={true} key={id} timeout={750}>
             <Container maxWidth="lg" sx={metaTextDetailContainer}>
-                <Typography variant="h4" gutterBottom>{title || id}</Typography>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                    <Typography variant="h4" gutterBottom>{title || id}</Typography>
+                    <Button
+                        variant="outlined"
+                        onClick={() => navigate(metaTextReviewRoute(id))}
+                        sx={{ ml: 2 }}
+                    >
+                        View Wordlist
+                    </Button>
+                </Box>
                 {errors.sourceDoc ? (
                     <Alert severity="error" sx={metaTextDetailAlert}>{errors.sourceDoc}</Alert>
                 ) : sourceDocInfo ? (

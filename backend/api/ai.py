@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends, Form
-from backend.models import SourceDocument, WordDefinitionResponse, WordDefinitionWithContextRequest, WordDefinitionLog
+from backend.models import SourceDocument, WordDefinitionResponse, WordDefinitionWithContextRequest, WordDefinition
 from backend.db import get_session
 from openai import OpenAI
 from backend.models import SourceDocInfoAiResponse, SourceDocInfoRequest, SourceDocInfoResponse,AiImage, AiImageRead, Chunk
@@ -84,9 +84,13 @@ async def generate_definition_in_context(request: WordDefinitionWithContextReque
     logger.info(f"Generating definition in context for word: '{request.word}'")
     word = request.word
     context = request.context
+    meta_text_id = getattr(request, 'meta_text_id', None)
     if not word:
         logger.warning("Missing word in definition request")
         raise HTTPException(status_code=400, detail="Missing word.")
+    if not meta_text_id:
+        logger.warning("Missing meta_text_id in definition request")
+        raise HTTPException(status_code=400, detail="Missing meta_text_id.")
     try:
         instructions = read_instructions_file("../definition_with_context_instructions.txt")
         response = client.responses.parse(
@@ -100,11 +104,12 @@ async def generate_definition_in_context(request: WordDefinitionWithContextReque
             logger.error(f"Failed to parse AI response for word: '{word}'")
             raise HTTPException(status_code=500, detail="Failed to parse AI response.")
         # Save to DB
-        log_entry = WordDefinitionLog(
+        log_entry = WordDefinition(
             word=word,
             context=context,
             definition=ai_data.definition,
-            definition_with_context=ai_data.definitionWithContext
+            definition_with_context=ai_data.definitionWithContext,
+            meta_text_id=meta_text_id
         )
         session.add(log_entry)
         session.commit()

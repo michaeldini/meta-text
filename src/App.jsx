@@ -10,6 +10,7 @@ const SourceDocsPage = lazy(() => import('./pages/SourceDocPage/SourceDocsPage')
 const SourceDocDetailPage = lazy(() => import('./pages/SourceDocPage/SourceDocDetailPage'));
 const MetaTextPage = lazy(() => import('./pages/MetaTextPage/MetaTextPage'));
 const MetaTextDetailPage = lazy(() => import('./pages/MetaTextPage/MetaTextDetailPage'));
+const MetaTextReviewPage = lazy(() => import('./pages/MetaTextPage/MetaTextReviewPage'));
 const LoginPage = lazy(() => import('./pages/Auth/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/Auth/RegisterPage'));
 const AuthGate = lazy(() => import('./pages/Auth/AuthGate'));
@@ -41,6 +42,11 @@ function App() {
         <Route path="/metaText/:id" element={
           <AuthGate>
             <MetaTextDetailPage />
+          </AuthGate>
+        } />
+        <Route path="/metaText/:id/review" element={
+          <AuthGate>
+            <MetaTextReviewPage />
           </AuthGate>
         } />
       </Routes>
