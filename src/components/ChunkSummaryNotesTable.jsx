@@ -12,6 +12,7 @@ export default function ChunkSummaryNotesTable({ chunks }) {
     if (!chunks || chunks.length === 0) {
         return (
             <Box sx={{ mt: 3 }}>
+                <Typography variant="h5" gutterBottom>Summaries & Notes</Typography>
                 <Typography variant="body2" color="text.secondary">No chunk summaries or notes found.</Typography>
             </Box>
         );
@@ -19,7 +20,7 @@ export default function ChunkSummaryNotesTable({ chunks }) {
 
     return (
         <Box sx={{ mt: 4 }}>
-            <Typography variant="h5" gutterBottom>Chunk Summaries & Notes</Typography>
+            <Typography variant="h5" gutterBottom>Summaries & Notes</Typography>
             <TableContainer component={Paper} sx={{ borderRadius: 3, boxShadow: 2 }}>
                 <Table>
                     <TableHead>

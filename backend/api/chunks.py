@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Body
+from fastapi import APIRouter, Depends, HTTPException, Body, status
 from sqlmodel import select, Session, desc
 from typing import List
 from backend.db import get_session
@@ -46,7 +46,7 @@ def get_chunk(chunk_id: int, session: Session = Depends(get_session)):
     chunk = session.get(Chunk, chunk_id)
     if not chunk:
         logger.warning(f"Chunk not found: id={chunk_id}")
-        raise HTTPException(status_code=404, detail="Chunk not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Chunk not found")
     ai_image = get_latest_ai_image_for_chunk(session, chunk.id)
     logger.info(f"Chunk found: id={chunk.id}, meta_text_id={chunk.meta_text_id}")
     return ChunkWithImageRead.model_validate(chunk, update={"ai_image": ai_image})
@@ -58,10 +58,10 @@ def split_chunk(chunk_id: int, word_index: int, session: Session = Depends(get_s
     chunk = session.get(Chunk, chunk_id)
     if not chunk:
         logger.warning(f"Chunk not found for split: id={chunk_id}")
-        raise HTTPException(status_code=404, detail="Chunk not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Chunk not found")
     if word_index <= 0 or word_index >= len(chunk.text.split()):
         logger.warning(f"Invalid split index {word_index} for chunk id={chunk_id}")
-        raise HTTPException(status_code=400, detail="Invalid split index")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid split index")
     before, after = split_chunk_text(chunk.text, word_index)
     chunk.text = before
     next_chunk = session.exec(
@@ -95,7 +95,7 @@ def combine_chunks(first_chunk_id: int, second_chunk_id: int, session: Session =
     second = session.get(Chunk, second_chunk_id)
     if not first or not second:
         logger.warning(f"Chunk(s) not found for combine: first={first_chunk_id}, second={second_chunk_id}")
-        raise HTTPException(status_code=404, detail="Chunk(s) not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Chunk(s) not found")
     if first.position > second.position:
         first, second = second, first
     first.text = f"{first.text} {second.text}"
@@ -111,7 +111,7 @@ def update_chunk(chunk_id: int, chunk_data: dict = Body(...), session: Session =
     chunk = session.get(Chunk, chunk_id)
     if not chunk:
         logger.warning(f"Chunk not found for update: id={chunk_id}")
-        raise HTTPException(status_code=404, detail="Chunk not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Chunk not found")
     update_chunk_fields(chunk, chunk_data)
     session.add(chunk)
     session.commit()

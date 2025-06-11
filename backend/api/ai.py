@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends, Form
+from fastapi import APIRouter, HTTPException, Depends, Form, status
 from backend.models import SourceDocument, WordDefinitionResponse, WordDefinitionWithContextRequest, WordDefinition
 from backend.db import get_session
 from openai import OpenAI
@@ -55,7 +55,7 @@ async def generate_chunk_note_summary_text_comparison(chunk_id: int, session: Se
     chunk = session.get(Chunk, chunk_id)
     if not chunk:
         logger.warning(f"Chunk not found: id={chunk_id}")
-        raise HTTPException(status_code=404, detail="Chunk not found.")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Chunk not found.")
     # Compose prompt for AI
     prompt = (
         f"CHUNK TEXT:\n{chunk.text}\n\n"
@@ -77,7 +77,7 @@ async def generate_chunk_note_summary_text_comparison(chunk_id: int, session: Se
         return {"result": ai_text}
     except Exception as e:
         logger.error(f"OpenAI error during chunk comparison for chunk_id={chunk_id}: {e}")
-        raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"OpenAI error: {str(e)}")
     
 @router.post("/generate-definition-in-context")
 async def generate_definition_in_context(request: WordDefinitionWithContextRequest, session: Session = Depends(get_session)) -> WordDefinitionResponse:
@@ -87,10 +87,10 @@ async def generate_definition_in_context(request: WordDefinitionWithContextReque
     meta_text_id = request.meta_text_id
     if not word:
         logger.warning("Missing word in definition request")
-        raise HTTPException(status_code=400, detail="Missing word.")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Missing word.")
     if meta_text_id is None:
         logger.warning("Missing meta_text_id in definition request")
-        raise HTTPException(status_code=400, detail="Missing meta_text_id.")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Missing meta_text_id.")
     try:
         instructions = read_instructions_file("../definition_with_context_instructions.txt")
         response = client.responses.parse(
@@ -102,7 +102,7 @@ async def generate_definition_in_context(request: WordDefinitionWithContextReque
         ai_data = response.output_parsed
         if ai_data is None:
             logger.error(f"Failed to parse AI response for word: '{word}'")
-            raise HTTPException(status_code=500, detail="Failed to parse AI response.")
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to parse AI response.")
         # Save to DB
         log_entry = WordDefinition(
             word=word,
@@ -117,7 +117,7 @@ async def generate_definition_in_context(request: WordDefinitionWithContextReque
         return WordDefinitionResponse(definition=ai_data.definition, definitionWithContext=ai_data.definitionWithContext)
     except Exception as e:
         logger.error(f"OpenAI error during definition in context for word='{word}': {e}")
-        raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"OpenAI error: {str(e)}")
 
 
 @router.post("/source-doc-info")
@@ -127,7 +127,7 @@ async def source_doc_info(request: SourceDocInfoRequest, session=Depends(get_ses
     doc_id = request.id
     if not prompt:
         logger.warning("Missing prompt in source doc info request")
-        raise HTTPException(status_code=400, detail="Missing prompt.")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Missing prompt.")
     try:
         instructions = read_instructions_file("../instructions.txt")
         response = client.responses.parse(
@@ -139,12 +139,12 @@ async def source_doc_info(request: SourceDocInfoRequest, session=Depends(get_ses
         ai_data = response.output_parsed
         if ai_data is None:
             logger.error("Failed to parse AI response for source doc info")
-            raise HTTPException(status_code=500, detail="Failed to parse AI response.")
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to parse AI response.")
         if doc_id is not None:
             doc = session.get(SourceDocument, doc_id)
             if not doc:
                 logger.warning(f"Source document not found for doc_id: {doc_id}")
-                raise HTTPException(status_code=404, detail="Source document not found.")
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Source document not found.")
             doc.summary = ai_data.summary
             doc.characters = ", ".join(ai_data.characters) if ai_data.characters else None
             doc.locations = ", ".join(ai_data.locations) if ai_data.locations else None
@@ -158,14 +158,14 @@ async def source_doc_info(request: SourceDocInfoRequest, session=Depends(get_ses
         raise
     except Exception as e:
         logger.error(f"OpenAI error during source doc info for doc_id={doc_id}: {e}")
-        raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"OpenAI error: {str(e)}")
 
 @router.post("/generate-image", response_model=AiImageRead)
 async def generate_image(prompt: str = Form(...), chunk_id: int = Form(None), session: Session = Depends(get_session)):
     logger.info(f"Generating AI image for prompt: '{prompt}' and chunk_id: {chunk_id}")
     if not prompt:
         logger.warning("Missing prompt in generate image request")
-        raise HTTPException(status_code=400, detail="Missing prompt.")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Missing prompt.")
     try:
         img = client.images.generate(
             model="dall-e-3",
@@ -177,7 +177,7 @@ async def generate_image(prompt: str = Form(...), chunk_id: int = Form(None), se
         )
         if not img.data or not hasattr(img.data[0], "b64_json") or not img.data[0].b64_json:
             logger.error("No image data returned from OpenAI.")
-            raise HTTPException(status_code=500, detail="No image data returned from OpenAI.")
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="No image data returned from OpenAI.")
         rel_path = save_base64_image(img.data[0].b64_json)
         # Save new record to DB (allow multiple images per chunk)
         ai_image = AiImage(prompt=prompt, path=rel_path, chunk_id=chunk_id)
@@ -190,4 +190,4 @@ async def generate_image(prompt: str = Form(...), chunk_id: int = Form(None), se
         logger.error(f"AI image generation error for prompt='{prompt}': {e}")
         traceback.print_exc()
         error_message = extract_openai_error_message(e)
-        raise HTTPException(status_code=500, detail=error_message or str(e) or 'Unknown error')
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=error_message or str(e) or 'Unknown error')

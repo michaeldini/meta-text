@@ -9,10 +9,8 @@ import ChunkSummaryNotesTable from '../../components/ChunkSummaryNotesTable';
 
 const columns = [
     { id: 'word', label: 'Word' },
-    // { id: 'context', label: 'Context' },
     { id: 'definition', label: 'Definition' },
     { id: 'definition_with_context', label: 'Definition (with Context)' },
-    // { id: 'created_at', label: 'Created At' },
 ];
 
 export default function MetaTextReviewPage() {
@@ -56,6 +54,7 @@ export default function MetaTextReviewPage() {
                 )}
                 <Typography variant="h4" gutterBottom sx={{ ml: metatextId ? 1 : 0 }}>Review</Typography>
             </Box>
+
             <Typography variant="h5" gutterBottom>Wordlist</Typography>
             {loading && <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}><CircularProgress /></Box>}
             {error && <Alert severity="error">{error}</Alert>}
@@ -63,6 +62,8 @@ export default function MetaTextReviewPage() {
                 wordlist.length === 0 ? (
                     <Alert severity="info">No words found in the wordlist.</Alert>
                 ) : (
+
+                    // Wordlist table
                     <TableContainer component={Paper} sx={{ mt: 2 }}>
                         <Table>
                             <TableHead>
@@ -86,7 +87,8 @@ export default function MetaTextReviewPage() {
                     </TableContainer>
                 )
             )}
-            {/* Chunk summaries/notes table below wordlist */}
+
+            {/* summaries/notes table */}
             {!loading && !error && (
                 <ChunkSummaryNotesTable chunks={chunkSummariesNotes} />
             )}
