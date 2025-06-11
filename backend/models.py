@@ -23,6 +23,7 @@ class User(SQLModel, table=True):
 class SourceDocumentBase(SQLModel):
     id: int = Field(default=None, primary_key=True)
     title: str = Field(index=True, unique=True)
+    author: str | None = None
     summary: str | None = None
     characters: str | None = None
     locations: str | None = None
