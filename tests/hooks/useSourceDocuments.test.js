@@ -1,7 +1,7 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { useSourceDocuments } from '../../src/hooks/useSourceDocuments';
-import { act } from 'react-dom/test-utils';
+import { act } from 'react';
 
 // Mock the service function
 vi.mock('../../src/services/sourceDocumentService', () => ({

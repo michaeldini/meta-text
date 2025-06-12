@@ -40,3 +40,4 @@ public/generated_images/
 */logs/
 backend/erd_from_sqlite.pdf
 /graphs
+/coverage
