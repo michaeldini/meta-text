@@ -6,16 +6,26 @@ import './index.css';
 import App from './App.jsx';
 import theme from './styles/theme';
 import { AuthProvider } from './store/authStore.jsx';
+import ErrorBoundary from './components/ErrorBoundary.jsx';
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <AuthProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </AuthProvider>
-    </ThemeProvider>
-  </StrictMode>,
-);
+if (typeof document !== 'undefined' && document.getElementById('root')) {
+  createRoot(document.getElementById('root')).render(<AppRoot />);
+}
+
+// For testing: export the root element
+export function AppRoot() {
+  return (
+    <StrictMode>
+      <ErrorBoundary>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <AuthProvider>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </AuthProvider>
+        </ThemeProvider>
+      </ErrorBoundary>
+    </StrictMode>
+  );
+}
