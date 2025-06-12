@@ -1,5 +1,5 @@
-import { vi } from 'vitest';
-import { render, screen, describe, it, expect } from '@testing-library/react';
+import { vi, describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
 import ChunkImageDisplay from '../../src/components/ChunkImageDisplay.jsx';
 
 describe('ChunkImageDisplay', () => {
