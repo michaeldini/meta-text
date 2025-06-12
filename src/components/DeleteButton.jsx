@@ -8,6 +8,7 @@ export default function DeleteButton({ onClick, disabled, label = "Delete", icon
         <Tooltip title={label} placement="top">
             <span>
                 <IconButton
+                    data-testid="delete-button"
                     onClick={onClick}
                     disabled={disabled}
                     color="primary"

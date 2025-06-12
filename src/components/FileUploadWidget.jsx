@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, Button } from '@mui/material';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 /**
  * FileUploadWidget
@@ -11,10 +10,12 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
  * - id: string (optional, default: "file-upload")
  */
 export default function FileUploadWidget({ file, onFileChange, accept = ".txt", id = "file-upload" }) {
+
     return (
         <Box sx={{ gap: 2, display: 'flex', flexDirection: 'row', alignItems: 'end' }}>
             <input
                 id={id}
+                data-testid="file-upload-input"
                 type="file"
                 accept={accept}
                 onChange={onFileChange}
