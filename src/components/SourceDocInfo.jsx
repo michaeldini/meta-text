@@ -45,7 +45,8 @@ export default function SourceDocInfo({ doc, summaryError, onInfoUpdate }) {
                         <strong>Summary:</strong> {doc.summary || 'No summary available.'}
                     </Typography>
                     <AiGenerationButton
-                        label="Text Info"
+                        label="Info"
+                        toolTip="Use AI to generate info about this document"
                         loading={loading}
                         onClick={handleDownloadInfo}
                         data-testid="generate-text-info-btn"

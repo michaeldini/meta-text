@@ -26,6 +26,7 @@ function ChunkComparison({ chunkId, comparisonText, onComparisonUpdate }) {
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                 <AiGenerationButton
                     label="What Did I Miss?"
+                    toolTip="Generate a summary of what you might have missed in this chunk based on your notes and summary."
                     loading={loading}
                     onClick={handleGenerate}
                     sx={{ ml: 1 }}

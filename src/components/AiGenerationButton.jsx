@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, CircularProgress } from '@mui/material';
+import { Button, CircularProgress, Tooltip } from '@mui/material';
 import aiStars from '../assets/ai-stars.png';
 import { AiGenerationBtn } from '../styles/pageStyles';
 /**
@@ -13,23 +13,27 @@ import { AiGenerationBtn } from '../styles/pageStyles';
  * - ariaLabel: string (for accessibility)
  * - sx: object (MUI style overrides)
  */
-const AiGenerationButton = ({ label, onClick, loading, disabled, dataTestid, ariaLabel, sx }) => (
-    <Button
-        variant="contained"
-        color="primary"
-        sx={{ ...sx, textTransform: 'none', ...AiGenerationBtn, opacity: loading ? 0.7 : 1 }}
-        onClick={onClick}
-        disabled={disabled || loading}
-        data-testid={dataTestid}
-        aria-label={ariaLabel}
-    >
-        {loading ? <CircularProgress /> :
-            <>
-                {label}
-                <img src={aiStars} alt="AI" style={{ width: 20, height: 20, marginLeft: 8 }} />
-            </>
-        }
-    </Button>
+const AiGenerationButton = ({ label, toolTip, onClick, loading, disabled, dataTestid, ariaLabel, sx }) => (
+    <Tooltip title={toolTip || ''} arrow disableHoverListener={!toolTip}>
+        <span>
+            <Button
+                variant="contained"
+                color="primary"
+                sx={{ ...sx, textTransform: 'none', ...AiGenerationBtn, opacity: loading ? 0.7 : 1 }}
+                onClick={onClick}
+                disabled={disabled || loading}
+                data-testid={dataTestid}
+                aria-label={ariaLabel}
+            >
+                {loading ? <CircularProgress /> :
+                    <>
+                        {label}
+                        <img src={aiStars} alt="AI" style={{ width: 20, height: 20, marginLeft: 8 }} />
+                    </>
+                }
+            </Button>
+        </span>
+    </Tooltip>
 );
 
 export default AiGenerationButton;

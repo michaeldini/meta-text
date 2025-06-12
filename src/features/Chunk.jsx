@@ -102,6 +102,7 @@ const Chunk = memo(function Chunk({
 
                     <AiGenerationButton
                         label="Generate Image"
+                        toolTip="Generate an image for this chunk using AI"
                         loading={imageState.loading}
                         onClick={openDialog}
                         disabled={imageState.loading}
