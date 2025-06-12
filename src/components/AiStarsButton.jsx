@@ -17,6 +17,7 @@ export default function AiStarsButton({ loading, onClick, label = 'AI Action', s
         <Tooltip title={label} placement="top">
             <span>
                 <IconButton
+                    data-testid="ai-stars-btn"
                     color="primary"
                     size={size}
                     onClick={onClick}
