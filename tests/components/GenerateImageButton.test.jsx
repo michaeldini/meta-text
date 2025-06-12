@@ -1,5 +1,5 @@
-import { render, screen, fireEvent, describe, it, expect } from '@testing-library/react';
-import { vi } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { vi, describe, it, expect } from 'vitest';
 import GenerateImageButton from '../../src/components/GenerateImageButton.jsx';
 
 describe('GenerateImageButton', () => {

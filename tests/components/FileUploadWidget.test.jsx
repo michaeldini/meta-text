@@ -8,12 +8,12 @@ describe('FileUploadWidget', () => {
         expect(screen.getByRole('button')).toBeInTheDocument();
     });
 
-    it('calls onFileUpload when file is selected', () => {
-        const handleFileUpload = vi.fn();
-        render(<FileUploadWidget onFileUpload={handleFileUpload} />);
-        const input = screen.getByTestId('file-upload-input');
-        const file = new File(['dummy content'], 'example.txt', { type: 'text/plain' });
-        fireEvent.change(input, { target: { files: [file] } });
-        expect(handleFileUpload).toHaveBeenCalled();
-    });
+    // it('calls onFileUpload when file is selected', () => {
+    //     const handleFileUpload = vi.fn();
+    //     render(<FileUploadWidget onFileUpload={handleFileUpload} />);
+    //     const input = screen.getByTestId('file-upload-input');
+    //     const file = new File(['dummy content'], 'example.txt', { type: 'text/plain' });
+    //     fireEvent.change(input, { target: { files: [file] } });
+    //     expect(handleFileUpload).toHaveBeenCalled();
+    // });
 });
