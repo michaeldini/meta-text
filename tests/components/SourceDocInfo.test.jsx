@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import SourceDocInfo from '../../src/components/SourceDocInfo';
+import '@testing-library/jest-dom';
 
 // Mock props for the component
 const mockDoc = {

@@ -61,6 +61,7 @@ const ChunkWords = memo(function ChunkWords({
                                     size="small"
                                     onClick={e => { e.stopPropagation(); handleRemoveChunk(chunkIdx); }}
                                     title="Undo split (merge with next chunk)"
+                                    aria-label="Undo split (merge with next chunk)"
                                     sx={{
                                         ml: 1,
                                         borderRadius: '50%',

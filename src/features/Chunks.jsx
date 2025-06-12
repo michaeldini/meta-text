@@ -37,7 +37,7 @@ export default function Chunks({ chunks, handleWordClick, handleRemoveChunk, han
     };
 
     return (
-        <Box ref={containerRef} sx={chunksContainer}>
+        <Box ref={containerRef} sx={chunksContainer} data-testid="chunks-container">
             <ChunksPagination pageCount={pageCount} page={page} handleChange={handleChange} />
             {paginatedChunks.map((chunk, chunkIdx) => (
                 <Chunk

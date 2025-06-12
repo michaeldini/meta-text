@@ -25,7 +25,8 @@ async def create_source_document(
     """
     logger.info(f"Received request to create source document with title: {title}")
     text = (await file.read()).decode("utf-8")
-    doc = SourceDocument(title=title, text=text)
+    trimmed_text = extract_between_stars(text)
+    doc = SourceDocument(title=title, text=trimmed_text)
     session.add(doc)
     try:
         session.commit()
@@ -84,3 +85,23 @@ def delete_source_document(doc_id: int, session=Depends(get_session)) -> dict:
     session.commit()
     logger.info(f"Source document deleted successfully: id={doc_id}")
     return {"success": True}
+
+
+def extract_between_stars(text: str) -> str:
+    """
+    Extracts the text between the first two lines that start with '***'.
+    Returns the trimmed text, or the original text if not found.
+    """
+    lines = text.splitlines()
+    start_idx = end_idx = None
+    for idx, line in enumerate(lines):
+        if line.strip().startswith('***'):
+            if start_idx is None:
+                start_idx = idx
+            elif end_idx is None:
+                end_idx = idx
+                break
+    if start_idx is not None and end_idx is not None and end_idx > start_idx:
+        # Extract lines between the two markers (exclusive)
+        return '\n'.join(lines[start_idx + 1:end_idx]).strip()
+    return text

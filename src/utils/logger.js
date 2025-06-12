@@ -1,7 +1,15 @@
 import log from 'loglevel';
 
 // Set log level based on environment
-if (import.meta.env.MODE === 'production') {
+let mode = 'development';
+try {
+    if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.MODE) {
+        mode = import.meta.env.MODE;
+    }
+} catch {
+    // fallback to 'development'
+}
+if (mode === 'production') {
     log.setLevel('warn'); // Only warnings and errors in production
 } else {
     log.setLevel('info'); // Info, warn, error, debug in dev
