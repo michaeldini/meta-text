@@ -24,6 +24,7 @@ const AiGenerationButton = ({ label, toolTip, onClick, loading, disabled, dataTe
                 disabled={disabled || loading}
                 data-testid={dataTestid}
                 aria-label={ariaLabel}
+                className={dataTestid}
             >
                 {loading ? <CircularProgress /> :
                     <>

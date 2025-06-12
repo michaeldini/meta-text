@@ -23,20 +23,20 @@ describe('SourceDocInfo', () => {
         expect(screen.getByText('No summary available.')).toBeInTheDocument();
         expect(screen.queryByText('A test document for unit testing.')).not.toBeInTheDocument();
     });
-    it('calls onClick when AiStarsButton is clicked', () => {
+    it('calls onClick when AiGenerationButton is clicked', () => {
         const docWithSummary = { ...mockDoc };
         const onInfoUpdate = vi.fn();
-        // Mock AiStarsButton to expose onClick
-        vi.doMock('../../src/components/AiStarsButton', () => ({
+        // Mock AiGenerationButton to expose onClick
+        vi.doMock('../../src/components/AiGenerationButton', () => ({
             __esModule: true,
             default: ({ onClick }) => (
-                <button data-testid="ai-stars-btn" onClick={onClick}>AI</button>
+                <button data-testid="ai-generation-btn" onClick={onClick}>AI</button>
             ),
         }));
         // Re-import after mocking
         return import('../../src/components/SourceDocInfo').then(({ default: SourceDocInfoWithMock }) => {
             render(<SourceDocInfoWithMock doc={docWithSummary} onInfoUpdate={onInfoUpdate} />);
-            const btn = screen.getByTestId('ai-stars-btn');
+            const btn = screen.getByText('Info');
             btn.click();
             expect(btn).toBeInTheDocument();
         });

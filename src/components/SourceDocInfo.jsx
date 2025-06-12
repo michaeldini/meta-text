@@ -49,8 +49,8 @@ export default function SourceDocInfo({ doc, summaryError, onInfoUpdate }) {
                         toolTip="Use AI to generate info about this document"
                         loading={loading}
                         onClick={handleDownloadInfo}
-                        data-testid="generate-text-info-btn"
-                        aria-label="Generate text info"
+                        data-testid="generate-source-doc-info-btn"
+                        aria-label="Generate source doc info"
                         disabled={loading || !doc.text}
                     />
                 </Box>

@@ -90,7 +90,7 @@ describe('Chunk component', () => {
 
     it('renders generate image button and dialog', () => {
         render(<Chunk {...baseProps} />);
-        expect(screen.getByTestId('generate-image-btn')).toBeInTheDocument();
+        expect(screen.getByText('Generate Image')).toBeInTheDocument();
         // Dialog should not be open by default
         expect(screen.queryByTestId('generate-image-dialog')).toBeNull();
     });

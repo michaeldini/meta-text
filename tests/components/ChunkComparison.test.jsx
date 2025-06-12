@@ -4,8 +4,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import ChunkComparison from '../../src/features/ChunkComparison';
 import '@testing-library/jest-dom';
 
-// Mock AiStarsButton to isolate tests
-vi.mock('../../src/components/AiStarsButton', () => ({
+// Mock AiGenerationButton to isolate tests
+vi.mock('../../src/components/AiGenerationButton', () => ({
     __esModule: true,
     default: ({ loading, onClick, label }) => (
         <button onClick={onClick} disabled={loading} aria-label={label} data-testid="ai-stars-btn">
@@ -34,8 +34,8 @@ describe('ChunkComparison', () => {
         render(
             <ChunkComparison chunkId={chunkId} comparisonText={defaultText} onComparisonUpdate={onComparisonUpdate} />
         );
-        expect(screen.getByText('What did I miss?')).toBeInTheDocument();
-        expect(screen.getByText('Compare Summary/Notes to Text')).toBeInTheDocument();
+        expect(screen.getByText('What Did I Miss?')).toBeInTheDocument();
+
         expect(screen.getByText(defaultText)).toBeInTheDocument();
     });
 
@@ -51,7 +51,7 @@ describe('ChunkComparison', () => {
         render(
             <ChunkComparison chunkId={chunkId} comparisonText={''} onComparisonUpdate={onComparisonUpdate} />
         );
-        fireEvent.click(screen.getByTestId('ai-stars-btn'));
+        fireEvent.click(screen.getByRole('button', { name: /What Did I Miss/i }));
         expect(mockGenerate).toHaveBeenCalledWith(chunkId);
         await waitFor(() => {
             expect(onComparisonUpdate).toHaveBeenCalledWith('AI comparison result');
@@ -63,7 +63,7 @@ describe('ChunkComparison', () => {
         render(
             <ChunkComparison chunkId={chunkId} comparisonText={''} onComparisonUpdate={onComparisonUpdate} />
         );
-        fireEvent.click(screen.getByTestId('ai-stars-btn'));
+        fireEvent.click(screen.getByRole('button', { name: /What Did I Miss/i }));
         await waitFor(() => {
             expect(screen.getByText('Error generating summary')).toBeInTheDocument();
         });
@@ -75,12 +75,12 @@ describe('ChunkComparison', () => {
         render(
             <ChunkComparison chunkId={chunkId} comparisonText={''} onComparisonUpdate={onComparisonUpdate} />
         );
-        fireEvent.click(screen.getByTestId('ai-stars-btn'));
+        fireEvent.click(screen.getByRole('button', { name: /What Did I Miss/i }));
         expect(screen.getByText('Loading...')).toBeInTheDocument();
-        expect(screen.getByTestId('ai-stars-btn')).toBeDisabled();
+        expect(screen.getByRole('button', { name: /What Did I Miss/i })).toBeDisabled();
         resolve({ result: 'done' });
         await waitFor(() => {
-            expect(screen.getByTestId('ai-stars-btn')).not.toBeDisabled();
+            expect(screen.getByRole('button', { name: /What Did I Miss/i })).not.toBeDisabled();
         });
     });
 });
