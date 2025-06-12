@@ -31,8 +31,6 @@ function ChunkComparison({ chunkId, comparisonText, onComparisonUpdate }) {
                     onClick={handleGenerate}
                     sx={{ ml: 1 }}
                     disabled={loading || !chunkId}
-                    data-testid="generate-comparison-btn"
-                    aria-label="Generate comparison summary"
                 />
             </Box>
             <Box sx={{ whiteSpace: 'pre-line', minHeight: 24, color: theme => theme.palette.text.secondary }}>

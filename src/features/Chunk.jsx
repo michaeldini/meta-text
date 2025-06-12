@@ -107,8 +107,6 @@ const Chunk = memo(function Chunk({
                         onClick={openDialog}
                         disabled={imageState.loading}
                         sx={{ ...AiGenerationBtn, opacity: imageState.loading ? 0.7 : 1 }}
-                        data-testid={`generate-image-btn-${chunk.id}`}
-                        aria-label={`Generate image for chunk ${chunk.id}`}
                     />
                     {imageState.data && (
                         <ChunkImageDisplay

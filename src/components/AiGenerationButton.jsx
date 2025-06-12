@@ -13,7 +13,7 @@ import { AiGenerationBtn } from '../styles/pageStyles';
  * - ariaLabel: string (for accessibility)
  * - sx: object (MUI style overrides)
  */
-const AiGenerationButton = ({ label, toolTip, onClick, loading, disabled, dataTestid, ariaLabel, sx }) => (
+const AiGenerationButton = ({ label, toolTip, onClick, loading, disabled, sx }) => (
     <Tooltip title={toolTip || ''} arrow disableHoverListener={!toolTip}>
         <span>
             <Button
@@ -22,9 +22,7 @@ const AiGenerationButton = ({ label, toolTip, onClick, loading, disabled, dataTe
                 sx={{ ...sx, textTransform: 'none', ...AiGenerationBtn, opacity: loading ? 0.7 : 1 }}
                 onClick={onClick}
                 disabled={disabled || loading}
-                data-testid={dataTestid}
-                aria-label={ariaLabel}
-                className={dataTestid}
+                aria-label={toolTip || 'AI Generation Button'}
             >
                 {loading ? <CircularProgress /> :
                     <>
