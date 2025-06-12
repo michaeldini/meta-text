@@ -167,7 +167,7 @@ export const chunkImageBtnBox = {
     gap: 2,
 };
 
-export const chunkGenerateImageBtn = {
+export const AiGenerationBtn = {
     borderRadius: 2,
     fontWeight: 600,
     fontSize: 16,

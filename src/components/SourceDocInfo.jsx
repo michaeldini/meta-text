@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Paper, Box, Typography, ListItem, Divider, Chip, Stack } from '@mui/material';
-import AiStarsButton from './AiStarsButton';
+
+import AiGenerationButton from './AiGenerationButton';
 import { generateSourceDocInfo } from '../services/sourceDocumentService';
 
 // Helper to split comma-separated string into array, trimming whitespace
@@ -43,12 +44,13 @@ export default function SourceDocInfo({ doc, summaryError, onInfoUpdate }) {
                     <Typography variant="body2" color="text.secondary" sx={{ p: 3, pl: 0, pr: 0, wordBreak: 'break-word', width: '100%', boxSizing: 'border-box' }}>
                         <strong>Summary:</strong> {doc.summary || 'No summary available.'}
                     </Typography>
-                    <AiStarsButton
+                    <AiGenerationButton
+                        label="Text Info"
                         loading={loading}
                         onClick={handleDownloadInfo}
-                        label="Download AI Info"
-                        size="small"
-                        sx={{ ml: 1 }}
+                        data-testid="generate-text-info-btn"
+                        aria-label="Generate text info"
+                        disabled={loading || !doc.text}
                     />
                 </Box>
                 {/* Details rows (dynamic) */}

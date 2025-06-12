@@ -7,7 +7,7 @@ import ChunkImageDisplay from '../components/ChunkImageDisplay';
 import { useDebouncedField } from '../hooks/useDebouncedField';
 import { useImageGeneration } from '../hooks/useImageGeneration';
 import ChunkTextField from '../components/ChunkTextField';
-import GenerateImageButton from '../components/GenerateImageButton';
+import AiGenerationButton from '../components/AiGenerationButton';
 import {
     chunkPaper,
     chunkMainBox,
@@ -15,7 +15,7 @@ import {
     chunkDetailsCol,
     chunkTextField,
     chunkImageBtnBox,
-    chunkGenerateImageBtn
+    AiGenerationBtn
 } from '../styles/pageStyles';
 import log from '../utils/logger';
 
@@ -100,11 +100,14 @@ const Chunk = memo(function Chunk({
                         onComparisonUpdate={handleComparisonUpdate}
                     />
 
-                    <GenerateImageButton
+                    <AiGenerationButton
+                        label="Generate Image"
                         loading={imageState.loading}
                         onClick={openDialog}
                         disabled={imageState.loading}
-                        sx={{ ...chunkGenerateImageBtn, opacity: imageState.loading ? 0.7 : 1 }}
+                        sx={{ ...AiGenerationBtn, opacity: imageState.loading ? 0.7 : 1 }}
+                        data-testid={`generate-image-btn-${chunk.id}`}
+                        aria-label={`Generate image for chunk ${chunk.id}`}
                     />
                     {imageState.data && (
                         <ChunkImageDisplay
@@ -123,7 +126,7 @@ const Chunk = memo(function Chunk({
                                 chunkDetailsCol,
                                 textField: chunkTextField,
                                 imageBtnBox: chunkImageBtnBox,
-                                generateImageBtn: chunkGenerateImageBtn
+                                generateImageBtn: AiGenerationBtn
                             }}
                         />
                     )}

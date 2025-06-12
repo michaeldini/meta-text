@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import AiStarsButton from '../components/AiStarsButton';
+
+import AiGenerationButton from '../components/AiGenerationButton';
 import { generateChunkNoteSummaryTextComparison } from '../services/aiService';
 
 function ChunkComparison({ chunkId, comparisonText, onComparisonUpdate }) {
@@ -22,14 +23,15 @@ function ChunkComparison({ chunkId, comparisonText, onComparisonUpdate }) {
 
     return (
         <Box sx={{ mt: 1, p: 1, border: theme => `1px solid ${theme.palette.divider}`, borderRadius: 1, bgcolor: theme => theme.palette.background.paper }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1, color: theme => theme.palette.text.primary }}>
-                <p>What did I miss?</p>
-                <AiStarsButton
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                <AiGenerationButton
+                    label="What Did I Miss?"
                     loading={loading}
                     onClick={handleGenerate}
-                    label="Compare Summary/Notes to Text"
-                    size="small"
                     sx={{ ml: 1 }}
+                    disabled={loading || !chunkId}
+                    data-testid="generate-comparison-btn"
+                    aria-label="Generate comparison summary"
                 />
             </Box>
             <Box sx={{ whiteSpace: 'pre-line', minHeight: 24, color: theme => theme.palette.text.secondary }}>
