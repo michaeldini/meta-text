@@ -11,6 +11,42 @@ function splitToArray(str) {
     return str.split(',').map(s => s.trim()).filter(Boolean);
 }
 
+// Helper to render a detail row
+function renderDetailRow({ key, label, value }) {
+    if (label === 'Summary') {
+        return (
+            <Stack key={key} direction="row" spacing={2} alignItems="center">
+                <Chip label={label} size="medium"
+                    sx={{ fontWeight: 'bold' }}
+                    variant="outlined"
+                    color="secondary"
+                />
+                <Typography>
+                    {value || 'No summary available.'}
+                </Typography>
+            </Stack>
+        );
+    }
+    const arr = splitToArray(value);
+    if (arr.length === 0) return null;
+    return (
+        <Stack key={key} direction="row" spacing={2} alignItems="center">
+            <Chip label={label} size="medium"
+                sx={{ fontWeight: 'bold', p: 2 }}
+                variant="outlined"
+                color="secondary"
+            />
+            {arr.map((item, i) => (
+                <Chip key={i} label={item} size="small"
+                    sx={{ p: 1 }}
+                    variant="outlined"
+                    color="primary"
+                />
+            ))}
+        </Stack>
+    );
+}
+
 export default function SourceDocInfo({ doc, summaryError, onInfoUpdate }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -57,43 +93,7 @@ export default function SourceDocInfo({ doc, summaryError, onInfoUpdate }) {
                 />
                 <Divider sx={{ width: '100%', my: 2 }} />
                 <Box sx={sourceDocInfoDetailsBox}>
-                    {/* Details rows (dynamic) */}
-                    {detailRows.map(({ key, label, value }) => {
-                        if (label === 'Summary') {
-                            return (
-                                <Stack key={key} direction="row">
-                                    <Chip label={label} size="medium"
-                                        sx={{ fontWeight: 'bold' }}
-                                        variant="outlined"
-                                        color="secondary"
-                                    />
-                                    <Typography p={2} >
-                                        {value || 'No summary available.'}
-                                    </Typography>
-                                </Stack>
-                            );
-                        }
-                        const arr = splitToArray(value);
-                        if (arr.length === 0) return null;
-                        return (
-                            <Stack key={key} direction="row" spacing={2} alignItems="center">
-                                <Chip label={label} size="medium"
-                                    sx={{ fontWeight: 'bold' }}
-                                    variant="outlined"
-                                    color="secondary"
-                                />
-
-                                {arr.map((item, i) => (
-                                    <Chip key={i} label={item} size="small"
-                                        sx={{ p: 2 }}
-                                        variant="outlined"
-                                        color="primary"
-
-                                    />
-                                ))}
-                            </Stack>
-                        );
-                    })}
+                    {detailRows.map(renderDetailRow)}
                 </Box>
                 {summaryError && (
                     <ListItem>

@@ -1,24 +1,24 @@
 import { createTheme } from '@mui/material/styles';
-import { grey, cyan, orange } from '@mui/material/colors';
+import { grey, orange, blue, cyan } from '@mui/material/colors';
 const theme = createTheme({
     palette: {
         mode: 'dark',
         primary: {
-            main: cyan[300], // #40c4ff
-            light: cyan[200], // #80deea
-            dark: cyan[400], // #00bcd4
+            main: blue[300],
+            light: blue[200],
+            dark: blue[400],
         },
         secondary: {
-            main: orange[400], // #ff9100
-            light: orange[300], // #ffab40
-            dark: orange[500], // #ff6d00
+            main: cyan[600],
+            light: cyan[500],
+            dark: cyan[700],
         },
         text: {
-            primary: grey[200], // #eeeeee
-            secondary: grey[400], // #bdbdbd
-            disabled: grey[700], // #616161
+            primary: grey[200],
+            secondary: grey[400],
+            disabled: grey[700],
         },
-        divider: grey[700], // #616161
+        divider: grey[700],
 
     },
     typography: {
