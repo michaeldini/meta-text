@@ -106,8 +106,6 @@ export default function SourceDocsPage() {
                 onConfirm={handleConfirmDelete}
                 title="Delete Source Document?"
                 text="Are you sure you want to delete this source document? This action cannot be undone."
-                confirmLabel="Delete"
-                cancelLabel="Cancel"
             />
         </EntityManagerPage>
     );

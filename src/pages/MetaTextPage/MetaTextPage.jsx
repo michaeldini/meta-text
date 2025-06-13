@@ -103,8 +103,6 @@ export default function MetaTextPage() {
                 onConfirm={handleConfirmDelete}
                 title="Delete Meta Text?"
                 text="Are you sure you want to delete this meta text? This action cannot be undone."
-                confirmLabel="Delete"
-                cancelLabel="Cancel"
             />
         </EntityManagerPage>
     );

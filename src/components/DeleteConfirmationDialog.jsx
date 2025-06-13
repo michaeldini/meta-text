@@ -9,10 +9,11 @@ import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, B
  * @param {function} props.onConfirm - Handler to confirm delete
  * @param {string} props.title - Dialog title
  * @param {string} props.text - Dialog content text
- * @param {string} [props.confirmLabel] - Confirm button label
- * @param {string} [props.cancelLabel] - Cancel button label
  */
-export default function DeleteConfirmationDialog({ open, onClose, onConfirm, title, text, confirmLabel = 'Delete', cancelLabel = 'Cancel' }) {
+const DEFAULT_CONFIRM_LABEL = 'Delete';
+const DEFAULT_CANCEL_LABEL = 'Cancel';
+
+export default function DeleteConfirmationDialog({ open, onClose, onConfirm, title, text, confirmLabel = DEFAULT_CONFIRM_LABEL, cancelLabel = DEFAULT_CANCEL_LABEL }) {
     return (
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>{title}</DialogTitle>
