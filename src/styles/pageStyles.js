@@ -238,3 +238,13 @@ export const appSuspenseFallback = {
     justifyContent: 'center',
     marginTop: 64,
 };
+
+export const toolStyles = {
+    m: 1,
+    p: 1,
+    bgcolor: 'background.paper',
+    borderRadius: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+};

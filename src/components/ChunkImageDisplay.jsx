@@ -23,7 +23,7 @@ const ChunkImageDisplay = ({
     lightboxOpen,
     setLightboxOpen,
     createdAt,
-    height = '400px', // new prop with default
+    height = '200px', // new prop with default
 }) => (
     <>
         <Box sx={chunkImageBox}
@@ -79,8 +79,8 @@ const ChunkImageDisplay = ({
                             src={imgSrc}
                             alt={imgPrompt}
                             style={{
-                                maxWidth: '80vw',
-                                maxHeight: '70vh',
+                                maxWidth: '90vw',
+                                maxHeight: '80vh',
                                 objectFit: 'contain',
                                 borderRadius: 8,
                                 background: '#fafafa',
