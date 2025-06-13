@@ -63,9 +63,10 @@ async def generate_chunk_note_summary_text_comparison(chunk_id: int, session: Se
         f"NOTES FIELD:\n{chunk.notes}\n\n"
     )
     try:
+        instructions = read_instructions_file("../note_summary_comparison_instructions.txt")
         response = client.responses.create(
             model="gpt-4o-mini-2024-07-18",
-            instructions="Compare the summary and notes fields to the chunk text. Return a single, concise paragraph summarizing your comparison. Example response: 'You correctly identified the symbolism of the rose in the text, it also means passion, but missed the significance of the river. The river represents the passage of time and the flow of life, which is a key theme in the story. Also, the old man and the boy are not just characters, they symbolize the passage of time and the cycle of life.'",
+            instructions=instructions,
             input=prompt,
         )
         ai_text = response.output_text
@@ -129,7 +130,7 @@ async def source_doc_info(request: SourceDocInfoRequest, session=Depends(get_ses
         logger.warning("Missing prompt in source doc info request")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Missing prompt.")
     try:
-        instructions = read_instructions_file("../instructions.txt")
+        instructions = read_instructions_file("../source_doc_info_instructions.txt")
         response = client.responses.parse(
             model="gpt-4o-mini-2024-07-18",
             instructions=instructions,
