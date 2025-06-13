@@ -22,8 +22,9 @@ export default function FileUploadWidget({ file, onFileChange, accept = ".txt", 
                 style={{ display: 'none' }}
             />
             <label htmlFor={id}>
-                <Button component="span" startIcon={<FileUploadIcon />} sx={{ fontWeight: 'bold', backgroundColor: 'primary.main', color: 'text.primary', '&:hover': { backgroundColor: 'secondary.main' } }}>
+                <Button component="span" startIcon={<FileUploadIcon />}>
                     {file ? 'Change File' : 'Choose File'}
+
                 </Button>
             </label>
             {file && <span className="file-name">{file.name}</span>}

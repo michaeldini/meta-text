@@ -17,8 +17,8 @@ const AiGenerationButton = ({ label, toolTip, onClick, loading, disabled, sx }) 
     <Tooltip title={toolTip || ''} arrow disableHoverListener={!toolTip}>
         <span>
             <Button
-                variant="contained"
-                color="primary"
+                variant="outlined"
+                color="secondary"
                 sx={{ ...sx, ...AiGenerationBtn, opacity: loading ? 0.7 : 1 }}
                 onClick={onClick}
                 disabled={disabled || loading}

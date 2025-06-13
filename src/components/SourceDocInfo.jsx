@@ -3,6 +3,7 @@ import { Paper, Box, Typography, ListItem, Divider, Chip, Stack } from '@mui/mat
 
 import AiGenerationButton from './AiGenerationButton';
 import { generateSourceDocInfo } from '../services/sourceDocumentService';
+import { sourceDocInfoDetailsBox } from '../styles/pageStyles';
 
 // Helper to split comma-separated string into array, trimming whitespace
 function splitToArray(str) {
@@ -40,7 +41,13 @@ export default function SourceDocInfo({ doc, summaryError, onInfoUpdate }) {
 
     return (
         <>
-            <Paper elevation={1} sx={{ p: 2, mb: 2, borderRadius: 4, alignItems: 'start', display: 'flex', flexDirection: 'column' }}>
+            <Box sx={{
+                alignItems: 'start',
+                borderRadius: 2,
+                border: '1px solid',
+                borderColor: 'secondary.main',
+                textAlign: 'left',
+            }}>
                 <AiGenerationButton
                     label="Info"
                     toolTip="Use AI to generate info about this document"
@@ -49,16 +56,18 @@ export default function SourceDocInfo({ doc, summaryError, onInfoUpdate }) {
                     disabled={loading || !doc.text}
                 />
                 <Divider sx={{ width: '100%', my: 2 }} />
-                <Box sx={{ gap: 3, display: 'flex', flexDirection: 'column', width: '100%', boxSizing: 'border-box', overflow: 'hidden' }}>
+                <Box sx={sourceDocInfoDetailsBox}>
                     {/* Details rows (dynamic) */}
                     {detailRows.map(({ key, label, value }) => {
                         if (label === 'Summary') {
                             return (
                                 <Stack key={key} direction="row">
-                                    <Chip label={label} size="small"
-                                        sx={{ bgcolor: 'background.default', color: 'text.chunk_text', fontWeight: 'bold' }}
+                                    <Chip label={label} size="medium"
+                                        sx={{ fontWeight: 'bold' }}
+                                        variant="outlined"
+                                        color="secondary"
                                     />
-                                    <Typography variant="body2" color="text.primary" sx={{ p: 3, pl: 0, pr: 0, wordBreak: 'break-word', width: '100%', boxSizing: 'border-box' }}>
+                                    <Typography p={2} >
                                         {value || 'No summary available.'}
                                     </Typography>
                                 </Stack>
@@ -68,13 +77,18 @@ export default function SourceDocInfo({ doc, summaryError, onInfoUpdate }) {
                         if (arr.length === 0) return null;
                         return (
                             <Stack key={key} direction="row" spacing={2} alignItems="center">
-                                <Chip label={label} size="small"
-                                    sx={{ bgcolor: 'background.default', color: 'text.chunk_text', fontWeight: 'bold' }}
+                                <Chip label={label} size="medium"
+                                    sx={{ fontWeight: 'bold' }}
+                                    variant="outlined"
+                                    color="secondary"
                                 />
 
                                 {arr.map((item, i) => (
                                     <Chip key={i} label={item} size="small"
-                                        sx={{ bgcolor: 'background.default', color: 'text.chunk_text' }}
+                                        sx={{ p: 2 }}
+                                        variant="outlined"
+                                        color="primary"
+
                                     />
                                 ))}
                             </Stack>
@@ -91,8 +105,7 @@ export default function SourceDocInfo({ doc, summaryError, onInfoUpdate }) {
                         <Typography color="error" variant="body2" sx={{ wordBreak: 'break-word', width: '100%' }}>{error}</Typography>
                     </ListItem>
                 )}
-            </Paper>
-            <Divider />
+            </Box >
         </>
     );
 }

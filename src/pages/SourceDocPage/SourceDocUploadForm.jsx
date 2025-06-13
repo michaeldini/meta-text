@@ -60,14 +60,10 @@ export default function SourceDocUploadForm({ onUploadSuccess, refresh }) {
                     onChange={handleTitleChange}
                     fullWidth
                     size="small"
-                    margin="dense"
                     required
-
                 />
                 <Button
                     type="submit"
-                    variant="contained"
-                    color="primary"
                     disabled={uploadLoading}
                     fullWidth
                 >

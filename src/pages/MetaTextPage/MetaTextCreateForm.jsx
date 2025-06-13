@@ -70,15 +70,15 @@ export default function MetaTextCreateForm({
                     label="Meta-text Name"
                     value={metaTextTitle}
                     onChange={e => setMetaTextTitle(e.target.value)}
+                    size="small"
+
                     fullWidth
                     required
                 />
                 <Button
                     type="submit"
-                    variant="contained"
-                    color="primary"
                     disabled={createLoading}
-                    sx={{ minWidth: 120 }}
+                    fullWidth
                 >
                     {createLoading ? 'Creating...' : 'Create'}
                 </Button>

@@ -116,12 +116,6 @@ export const chunksPaginationBox = {
     mt: 2,
 };
 
-export const chunkPaper = {
-    p: 1,
-    borderRadius: 4,
-    '&:hover': { backgroundColor: 'secondary.main' },
-};
-
 export const chunkMainBox = {
     display: 'flex',
     flexDirection: { xs: 'column', md: 'row' },
@@ -129,6 +123,12 @@ export const chunkMainBox = {
     bgcolor: 'background.default',
     borderRadius: 4,
     p: 2,
+    border: '1px solid black',
+    '&:hover': {
+        borderColor: 'secondary.main',
+        borderWidth: 1,
+        borderStyle: 'solid',
+    }
 };
 
 export const chunkTextBox = { flex: 2, minWidth: 0, p: 2 };
@@ -170,16 +170,10 @@ export const chunkImageBtnBox = {
 };
 
 export const AiGenerationBtn = {
-    borderRadius: 2,
     fontWeight: 600,
     minWidth: 50,
-    // boxShadow: '0 2px 8px rgba(25, 118, 210, 0.15)',
-    // display: 'flex',
-    // alignItems: 'center',
-    // justifyContent: 'center',
     textTransform: 'none',
-    backgroundColor: 'background.default',
-    marginBottom: 2,
+    margin: 2,
 };
 
 export const chunkImageBox = {
@@ -249,4 +243,14 @@ export const toolStyles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+};
+
+export const sourceDocInfoDetailsBox = {
+    p: 2,
+    gap: 2,
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    boxSizing: 'border-box',
+    overflow: 'hidden',
 };

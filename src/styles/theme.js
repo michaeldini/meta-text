@@ -1,25 +1,25 @@
 import { createTheme } from '@mui/material/styles';
-import { grey, cyan, red, green } from '@mui/material/colors';
+import { grey, cyan, orange } from '@mui/material/colors';
 const theme = createTheme({
-
     palette: {
         mode: 'dark',
-        primary: { main: cyan[900] },
-        secondary: { main: cyan[800] },
-        background: {
-            default: grey[900],
-            paper: grey[800],
+        primary: {
+            main: cyan[300], // #40c4ff
+            light: cyan[200], // #80deea
+            dark: cyan[400], // #00bcd4
         },
-        error: { main: red[400] },
-        success: { main: green[700] },
+        secondary: {
+            main: orange[400], // #ff9100
+            light: orange[300], // #ffab40
+            dark: orange[500], // #ff6d00
+        },
         text: {
-            primary: grey[200], // lighter than grey[50]
-            secondary: grey[600],
-            chunk_text: grey[400],
+            primary: grey[200], // #eeeeee
+            secondary: grey[400], // #bdbdbd
+            disabled: grey[700], // #616161
         },
-    },
-    shape: {
-        borderRadius: 8,
+        divider: grey[700], // #616161
+
     },
     typography: {
         fontFamily: 'Arial, sans-serif, system-ui',
@@ -30,7 +30,16 @@ const theme = createTheme({
             lineHeight: 1.235,
         },
     },
+    shape: {
+        borderRadius: 15,
+    },
     components: {
+        // MuiButtonBase: {
+        //     defaultProps: {
+        //         variant: 'text',
+        //         borderRadius: 20,
+        //     },
+        // },
         MuiTextField: {
             defaultProps: {
                 variant: 'outlined',

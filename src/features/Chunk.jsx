@@ -12,7 +12,6 @@ import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import PhotoFilterIcon from '@mui/icons-material/PhotoFilter';
 import { toolStyles } from '../styles/pageStyles';
 import {
-    chunkPaper,
     chunkMainBox,
     chunkTextBox,
     chunkDetailsCol,
@@ -73,102 +72,99 @@ const Chunk = memo(function Chunk({
     const [activeTab, setActiveTab] = useState('comparison'); // 'comparison' or 'ai-image'
 
     return (
-        <Paper sx={chunkPaper}>
-            <Box sx={chunkMainBox}>
-                {/* chunk text */}
-                <Box sx={chunkTextBox}>
-                    <ChunkWords
-                        words={words}
-                        chunkIdx={chunkIdx}
-                        handleWordClick={handleWordClick}
-                        handleRemoveChunk={handleRemoveChunk}
-                        chunk={chunk}
-                    />
-                </Box>
-                {/* Summary and Notes */}
-                <Box sx={chunkDetailsCol}>
-                    <ChunkTextField
-                        label="Summary"
-                        value={summary}
-                        onChange={e => setSummary(e.target.value)}
-                        onBlur={() => handleChunkFieldChange(chunkIdx, 'summary', summary)}
-                        sx={chunkTextField}
-                    />
-                    <ChunkTextField
-                        label="Notes"
-                        value={notes}
-                        onChange={e => setNotes(e.target.value)}
-                        onBlur={() => handleChunkFieldChange(chunkIdx, 'notes', notes)}
-                        sx={chunkTextField}
-                    />
-                    {/* Icon toggle buttons */}
-                    <Box sx={{ display: 'flex', gap: 1, mb: 1, borderBottom: 1 }}>
-                        <ToolIconButton
-                            title="Show Comparison"
-                            icon={<CompareArrowsIcon />}
-                            color={activeTab === 'comparison' ? 'primary' : 'default'}
-                            ariaLabel="Show Comparison"
-                            onClick={() => setActiveTab('comparison')}
-                        />
-                        <ToolIconButton
-                            title="Show AI Image"
-                            icon={<PhotoFilterIcon />}
-                            color={activeTab === 'ai-image' ? 'primary' : 'default'}
-                            ariaLabel="Show AI Image"
-                            onClick={() => setActiveTab('ai-image')}
-                        />
-                    </Box>
-                    {/* Conditional content below icons */}
-                    {activeTab === 'comparison' && (
-                        <ChunkComparison
-                            chunkId={chunk.id}
-                            comparisonText={chunk.comparison}
-                            onComparisonUpdate={handleComparisonUpdate}
-                        />
-                    )}
-                    {activeTab === 'ai-image' && (
-                        <Paper sx={toolStyles}>
-                            <AiGenerationButton
-                                label="Generate Image"
-                                toolTip="Generate an image for this chunk using AI"
-                                loading={imageState.loading}
-                                onClick={openDialog}
-                                disabled={imageState.loading}
-                                sx={{ ...AiGenerationBtn, opacity: imageState.loading ? 0.7 : 1 }}
-                            />
-                            {imageState.data && (
-                                <ChunkImageDisplay
-                                    imgSrc={getImgSrc()}
-                                    imgPrompt={imageState.prompt}
-                                    imgLoaded={imageState.loaded}
-                                    onLoad={() => setImageLoaded(true)}
-                                    onError={() => setImageLoaded(true)}
-                                    lightboxOpen={imageState.lightboxOpen}
-                                    setLightboxOpen={setLightboxOpen}
-                                    createdAt={chunk.ai_image && chunk.ai_image.created_at}
-                                    styles={{
-                                        paper: chunkPaper,
-                                        mainBox: chunkMainBox,
-                                        chunkTextBox,
-                                        chunkDetailsCol,
-                                        textField: chunkTextField,
-                                        imageBtnBox: chunkImageBtnBox,
-                                        generateImageBtn: AiGenerationBtn
-                                    }}
-                                />
-                            )}
-                        </Paper>
-                    )}
-                    <GenerateImageDialog
-                        open={imageState.dialogOpen}
-                        onClose={closeDialog}
-                        onSubmit={prompt => handleGenerate(prompt, chunk.id)}
-                        loading={imageState.loading}
-                        error={imageState.error}
-                    />
-                </Box>
+        <Box sx={chunkMainBox}>
+            {/* chunk text */}
+            <Box sx={chunkTextBox}>
+                <ChunkWords
+                    words={words}
+                    chunkIdx={chunkIdx}
+                    handleWordClick={handleWordClick}
+                    handleRemoveChunk={handleRemoveChunk}
+                    chunk={chunk}
+                />
             </Box>
-        </Paper>
+            {/* Summary and Notes */}
+            <Box sx={chunkDetailsCol}>
+                <ChunkTextField
+                    label="Summary"
+                    value={summary}
+                    onChange={e => setSummary(e.target.value)}
+                    onBlur={() => handleChunkFieldChange(chunkIdx, 'summary', summary)}
+                    sx={chunkTextField}
+                />
+                <ChunkTextField
+                    label="Notes"
+                    value={notes}
+                    onChange={e => setNotes(e.target.value)}
+                    onBlur={() => handleChunkFieldChange(chunkIdx, 'notes', notes)}
+                    sx={chunkTextField}
+                />
+                {/* Icon toggle buttons */}
+                <Box sx={{ display: 'flex', gap: 1, mb: 1, borderBottom: 1 }}>
+                    <ToolIconButton
+                        title="Show Comparison"
+                        icon={<CompareArrowsIcon />}
+                        color={activeTab === 'comparison' ? 'primary' : 'default'}
+                        ariaLabel="Show Comparison"
+                        onClick={() => setActiveTab('comparison')}
+                    />
+                    <ToolIconButton
+                        title="Show AI Image"
+                        icon={<PhotoFilterIcon />}
+                        color={activeTab === 'ai-image' ? 'primary' : 'default'}
+                        ariaLabel="Show AI Image"
+                        onClick={() => setActiveTab('ai-image')}
+                    />
+                </Box>
+                {/* Conditional content below icons */}
+                {activeTab === 'comparison' && (
+                    <ChunkComparison
+                        chunkId={chunk.id}
+                        comparisonText={chunk.comparison}
+                        onComparisonUpdate={handleComparisonUpdate}
+                    />
+                )}
+                {activeTab === 'ai-image' && (
+                    <Paper sx={toolStyles}>
+                        <AiGenerationButton
+                            label="Generate Image"
+                            toolTip="Generate an image for this chunk using AI"
+                            loading={imageState.loading}
+                            onClick={openDialog}
+                            disabled={imageState.loading}
+                            sx={{ ...AiGenerationBtn, opacity: imageState.loading ? 0.7 : 1 }}
+                        />
+                        {imageState.data && (
+                            <ChunkImageDisplay
+                                imgSrc={getImgSrc()}
+                                imgPrompt={imageState.prompt}
+                                imgLoaded={imageState.loaded}
+                                onLoad={() => setImageLoaded(true)}
+                                onError={() => setImageLoaded(true)}
+                                lightboxOpen={imageState.lightboxOpen}
+                                setLightboxOpen={setLightboxOpen}
+                                createdAt={chunk.ai_image && chunk.ai_image.created_at}
+                                styles={{
+                                    mainBox: chunkMainBox,
+                                    chunkTextBox,
+                                    chunkDetailsCol,
+                                    textField: chunkTextField,
+                                    imageBtnBox: chunkImageBtnBox,
+                                    generateImageBtn: AiGenerationBtn
+                                }}
+                            />
+                        )}
+                    </Paper>
+                )}
+                <GenerateImageDialog
+                    open={imageState.dialogOpen}
+                    onClose={closeDialog}
+                    onSubmit={prompt => handleGenerate(prompt, chunk.id)}
+                    loading={imageState.loading}
+                    error={imageState.error}
+                />
+            </Box>
+        </Box>
     );
 });
 

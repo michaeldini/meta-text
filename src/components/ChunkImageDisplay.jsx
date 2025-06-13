@@ -3,7 +3,6 @@ import { Box, CircularProgress, Modal, Fade } from '@mui/material';
 import {
     chunkImageBox,
     chunkImageLoadingOverlay,
-    chunkImagePromptBox,
     chunkLightboxModal,
     chunkLightboxImgBox,
     chunkLightboxPromptBox
