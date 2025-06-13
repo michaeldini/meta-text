@@ -19,7 +19,7 @@ const AiGenerationButton = ({ label, toolTip, onClick, loading, disabled, sx }) 
             <Button
                 variant="contained"
                 color="primary"
-                sx={{ ...sx, textTransform: 'none', ...AiGenerationBtn, opacity: loading ? 0.7 : 1 }}
+                sx={{ ...sx, ...AiGenerationBtn, opacity: loading ? 0.7 : 1 }}
                 onClick={onClick}
                 disabled={disabled || loading}
                 aria-label={toolTip || 'AI Generation Button'}

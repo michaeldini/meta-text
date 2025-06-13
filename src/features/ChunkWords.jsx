@@ -52,6 +52,8 @@ const ChunkWords = memo(function ChunkWords({
                                 fontWeight: 500,
                                 mr: wordIdx < words.length - 1 ? 0.5 : 0,
                                 position: 'relative',
+                                color: 'text.chunk_text',
+
                             }}
                         >
                             {word}

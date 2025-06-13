@@ -142,9 +142,11 @@ export const chunkDetailsCol = {
     flexDirection: 'column',
     gap: 2,
     zIndex: 10,
+    color: 'text.chunk_text',
 };
 
 export const chunkTextField = {
+    color: 'text.chunk_text',
     borderRadius: 2,
     transition: 'box-shadow 0.2s, transform 0.2s',
     boxShadow: 0,
@@ -170,14 +172,14 @@ export const chunkImageBtnBox = {
 export const AiGenerationBtn = {
     borderRadius: 2,
     fontWeight: 600,
-    fontSize: 16,
-    minWidth: 160,
-    minHeight: 40,
-    boxShadow: '0 2px 8px rgba(25, 118, 210, 0.15)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    minWidth: 50,
+    // boxShadow: '0 2px 8px rgba(25, 118, 210, 0.15)',
+    // display: 'flex',
+    // alignItems: 'center',
+    // justifyContent: 'center',
     textTransform: 'none',
+    backgroundColor: 'background.default',
+    marginBottom: 2,
 };
 
 export const chunkImageBox = {
@@ -240,7 +242,7 @@ export const appSuspenseFallback = {
 };
 
 export const toolStyles = {
-    m: 1,
+    ml: 1,
     p: 1,
     bgcolor: 'background.paper',
     borderRadius: 1,

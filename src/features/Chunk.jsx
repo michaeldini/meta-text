@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-import { Box, Paper, IconButton } from '@mui/material';
+import { Box, Paper } from '@mui/material';
 import ChunkWords from './ChunkWords';
 import ChunkComparison from './ChunkComparison';
 import GenerateImageDialog from '../components/GenerateImageDialog';
@@ -21,6 +21,7 @@ import {
     AiGenerationBtn
 } from '../styles/pageStyles';
 import log from '../utils/logger';
+import ToolIconButton from '../components/ToolIconButton';
 
 const Chunk = memo(function Chunk({
     chunk,
@@ -101,21 +102,21 @@ const Chunk = memo(function Chunk({
                         sx={chunkTextField}
                     />
                     {/* Icon toggle buttons */}
-                    <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
-                        <IconButton
+                    <Box sx={{ display: 'flex', gap: 1, mb: 1, borderBottom: 1 }}>
+                        <ToolIconButton
+                            title="Show Comparison"
+                            icon={<CompareArrowsIcon />}
                             color={activeTab === 'comparison' ? 'primary' : 'default'}
+                            ariaLabel="Show Comparison"
                             onClick={() => setActiveTab('comparison')}
-                            aria-label="Show Comparison"
-                        >
-                            <CompareArrowsIcon />
-                        </IconButton>
-                        <IconButton
+                        />
+                        <ToolIconButton
+                            title="Show AI Image"
+                            icon={<PhotoFilterIcon />}
                             color={activeTab === 'ai-image' ? 'primary' : 'default'}
+                            ariaLabel="Show AI Image"
                             onClick={() => setActiveTab('ai-image')}
-                            aria-label="Show AI Image"
-                        >
-                            <PhotoFilterIcon />
-                        </IconButton>
+                        />
                     </Box>
                     {/* Conditional content below icons */}
                     {activeTab === 'comparison' && (

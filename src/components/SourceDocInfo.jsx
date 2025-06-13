@@ -30,38 +30,52 @@ export default function SourceDocInfo({ doc, summaryError, onInfoUpdate }) {
 
     // Prepare detail rows (excluding summary)
     const detailRows = [
+        { key: 'title', label: 'Title', value: doc.title },
         { key: 'characters', label: 'Characters', value: doc.characters },
         { key: 'locations', label: 'Locations', value: doc.locations },
         { key: 'themes', label: 'Themes', value: doc.themes },
         { key: 'symbols', label: 'Symbols', value: doc.symbols },
+        { key: 'summary', label: 'Summary', value: doc.summary },
     ];
 
     return (
         <>
-            <Paper elevation={1} sx={{ p: 2, mb: 2, borderRadius: 4 }}>
-                {/* Summary row with AI info download button */}
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                    <Typography variant="body2" color="text.secondary" sx={{ p: 3, pl: 0, pr: 0, wordBreak: 'break-word', width: '100%', boxSizing: 'border-box' }}>
-                        <strong>Summary:</strong> {doc.summary || 'No summary available.'}
-                    </Typography>
-                    <AiGenerationButton
-                        label="Info"
-                        toolTip="Use AI to generate info about this document"
-                        loading={loading}
-                        onClick={handleDownloadInfo}
-                        disabled={loading || !doc.text}
-                    />
-                </Box>
-                {/* Details rows (dynamic) */}
+            <Paper elevation={1} sx={{ p: 2, mb: 2, borderRadius: 4, alignItems: 'start', display: 'flex', flexDirection: 'column' }}>
+                <AiGenerationButton
+                    label="Info"
+                    toolTip="Use AI to generate info about this document"
+                    loading={loading}
+                    onClick={handleDownloadInfo}
+                    disabled={loading || !doc.text}
+                />
+                <Divider sx={{ width: '100%', my: 2 }} />
                 <Box sx={{ gap: 3, display: 'flex', flexDirection: 'column', width: '100%', boxSizing: 'border-box', overflow: 'hidden' }}>
+                    {/* Details rows (dynamic) */}
                     {detailRows.map(({ key, label, value }) => {
+                        if (label === 'Summary') {
+                            return (
+                                <Stack key={key} direction="row">
+                                    <Chip label={label} size="small"
+                                        sx={{ bgcolor: 'background.default', color: 'text.chunk_text', fontWeight: 'bold' }}
+                                    />
+                                    <Typography variant="body2" color="text.primary" sx={{ p: 3, pl: 0, pr: 0, wordBreak: 'break-word', width: '100%', boxSizing: 'border-box' }}>
+                                        {value || 'No summary available.'}
+                                    </Typography>
+                                </Stack>
+                            );
+                        }
                         const arr = splitToArray(value);
                         if (arr.length === 0) return null;
                         return (
-                            <Stack key={key} direction="row" spacing={2} alignItems="center" sx={{ flexWrap: 'wrap', rowGap: 1.5 }}>
-                                <Typography variant="body2" color="text.secondary" sx={{ wordBreak: 'break-word' }}><strong>{label}:</strong></Typography>
+                            <Stack key={key} direction="row" spacing={2} alignItems="center">
+                                <Chip label={label} size="small"
+                                    sx={{ bgcolor: 'background.default', color: 'text.chunk_text', fontWeight: 'bold' }}
+                                />
+
                                 {arr.map((item, i) => (
-                                    <Chip key={i} label={item} size="small" />
+                                    <Chip key={i} label={item} size="small"
+                                        sx={{ bgcolor: 'background.default', color: 'text.chunk_text' }}
+                                    />
                                 ))}
                             </Stack>
                         );

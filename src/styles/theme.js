@@ -7,14 +7,15 @@ const theme = createTheme({
         primary: { main: cyan[900] },
         secondary: { main: cyan[800] },
         background: {
-            default: '#181a1b', // slightly lighter than #000000
-            paper: grey[900],
+            default: grey[900],
+            paper: grey[800],
         },
         error: { main: red[400] },
         success: { main: green[700] },
         text: {
-            primary: grey[100], // lighter than grey[50]
-            secondary: grey[200],
+            primary: grey[200], // lighter than grey[50]
+            secondary: grey[600],
+            chunk_text: grey[400],
         },
     },
     shape: {
