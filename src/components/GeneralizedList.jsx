@@ -20,7 +20,10 @@ export default function GeneralizedList({
     emptyMessage = 'No items found.'
 }) {
     return (
-        <List>
+        <List
+            data-testid="generalized-list"
+        >
+
             {items.length === 0 ? (
                 <ListItem>
                     <ListItemText primary={emptyMessage} />

@@ -1,12 +1,14 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, beforeEach, vi, expect } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
-import SourceDocsPage from '../../src/pages/SourceDocPage/SourceDocsPage';
 
+// Mock the useSourceDocuments hook before importing the component
 vi.mock('../../src/hooks/useSourceDocuments', () => ({
-    useSourceDocuments: () => ({ docs: [{ id: 1, title: 'Doc 1' }], loading: false, error: '', refresh: vi.fn() })
+    useSourceDocuments: vi.fn()
 }));
+import { useSourceDocuments } from '../../src/hooks/useSourceDocuments';
+
 vi.mock('../../src/hooks/useDeleteWithConfirmation', () => ({
     default: () => ({
         deleteLoading: false,
@@ -17,15 +19,16 @@ vi.mock('../../src/hooks/useDeleteWithConfirmation', () => ({
         handleConfirmDelete: vi.fn(),
     })
 }));
-vi.mock('../../src/hooks/useFilteredList', () => ({
-    useFilteredList: (items) => items
-}));
-vi.mock('../../src/components/GeneralizedList', () => ({ default: ({ items }) => <div data-testid="generalized-list">{items.map(i => i.title)}</div> }));
-vi.mock('../../src/components/EntityManagerPage', () => ({ default: ({ children }) => <div>{children}</div> }));
-vi.mock('../../src/pages/SourceDocPage/SourceDocUploadForm', () => ({ default: () => <div data-testid="upload-form" /> }));
-vi.mock('../../src/components/SearchBar', () => ({ default: ({ onChange }) => <input data-testid="search-bar" onChange={e => onChange(e.target.value)} /> }));
-vi.mock('../../src/components/DeleteConfirmationDialog', () => ({ default: () => null }));
 
+import SourceDocsPage from '../../src/pages/SourceDocPage/SourceDocsPage';
+
+beforeEach(() => {
+    useSourceDocuments.mockImplementation(() => ({
+        docs: [{ id: 1, title: 'Doc 1' }],
+        loading: false,
+        error: ''
+    }));
+});
 
 describe('SourceDocsPage', () => {
     it('renders the source docs page components correctly', () => {
@@ -34,9 +37,49 @@ describe('SourceDocsPage', () => {
                 <SourceDocsPage />
             </MemoryRouter>
         );
+        expect(screen.getByTestId('upload-title')).toBeInTheDocument();
         expect(screen.getByTestId('generalized-list')).toBeInTheDocument();
         expect(screen.getByTestId('search-bar')).toBeInTheDocument();
-        expect(screen.getByTestId('upload-form')).toBeInTheDocument();
         expect(screen.getByText('Doc 1')).toBeInTheDocument();
+    });
+
+    it('handles search input', () => {
+        render(
+            <MemoryRouter>
+                <SourceDocsPage />
+            </MemoryRouter>
+        );
+        const searchBar = screen.getByTestId('search-bar');
+        searchBar.value = 'Test';
+        searchBar.dispatchEvent(new Event('input', { bubbles: true }));
+        expect(screen.getByText('Doc 1')).toBeInTheDocument();
+    });
+
+    it('shows message when no source docs are available', () => {
+        useSourceDocuments.mockImplementation(() => ({
+            docs: [],
+            loading: false,
+            error: ''
+        }));
+        render(
+            <MemoryRouter>
+                <SourceDocsPage />
+            </MemoryRouter>
+        );
+        expect(screen.getByText('No documents found.')).toBeInTheDocument();
+    });
+
+    it('renders error message when error occurs', () => {
+        useSourceDocuments.mockImplementation(() => ({
+            docs: [],
+            loading: false,
+            error: 'Something went wrong'
+        }));
+        render(
+            <MemoryRouter>
+                <SourceDocsPage />
+            </MemoryRouter>
+        );
+        expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
     });
 });

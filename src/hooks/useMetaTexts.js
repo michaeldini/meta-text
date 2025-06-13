@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { fetchMetaTexts } from '../services/metaTextService';
 
 export function useMetaTexts(deps = []) {
-    const [data, setData] = useState([]);
+    const [metaTexts, setMetaTexts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [refreshIndex, setRefreshIndex] = useState(0);
@@ -13,10 +13,12 @@ export function useMetaTexts(deps = []) {
         setLoading(true);
         setError('');
         fetchMetaTexts()
-            .then(data => setData(data))
+            .then(data => setMetaTexts(data))
             .catch(e => setError(e.message))
             .finally(() => setLoading(false));
     }, [...deps, refreshIndex]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    return { data, loading, error, refresh };
+    return {
+        metaTexts, loading, error, refresh
+    };
 }

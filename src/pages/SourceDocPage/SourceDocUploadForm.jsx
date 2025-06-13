@@ -53,6 +53,7 @@ export default function SourceDocUploadForm({ onUploadSuccess, refresh }) {
             <Box component="form" onSubmit={handleSubmit} sx={uploadFormInner}>
                 <FileUploadWidget file={file} onFileChange={handleFileChange} />
                 <TextField
+                    data-testid="upload-title"
                     id="upload-title"
                     label="Title"
                     type="text"

@@ -62,7 +62,7 @@ export const navBarTitle = {
 };
 
 export const sourceDocDetailContainer = {
-    maxWidth: 900,
+    maxWidth: '90vw',
     mx: 'auto',
     mt: 4,
 };
@@ -74,6 +74,7 @@ export const sourceDocDetailLoading = {
 };
 
 export const sourceDocDetailPaper = {
+    mt: 10,
     p: 3,
 };
 

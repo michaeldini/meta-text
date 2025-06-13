@@ -12,12 +12,7 @@ vi.mock('../../src/hooks/useSourceDocument', () => ({
     })
 }));
 vi.mock('../../src/components/SourceDocInfo', () => ({ default: () => <div data-testid="source-doc-info" /> }));
-vi.mock('../../src/styles/pageStyles', () => ({
-    sourceDocDetailContainer: {},
-    sourceDocDetailLoading: {},
-    sourceDocDetailPaper: {},
-    sourceDocDetailText: {}
-}));
+
 
 
 describe('SourceDocDetailPage', () => {

@@ -13,6 +13,8 @@ import { TextField } from '@mui/material';
 export default function SearchBar({ label, value, onChange, ...props }) {
     return (
         <TextField
+            data-testid="search-bar"
+
             label={label}
             variant="outlined"
             fullWidth

@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMetaTexts } from '../../hooks/useMetaTexts';
-import { useSourceDocuments } from '../../hooks/useSourceDocuments';
+import { CircularProgress, Alert, Box } from '@mui/material';
+import log from '../../utils/logger';
+import MetaTextCreateForm from '../../components/MetaTextCreateForm';
 import EntityManagerPage from '../../components/EntityManagerPage';
-import MetaTextCreateForm from './MetaTextCreateForm';
 import SearchBar from '../../components/SearchBar';
 import GeneralizedList from '../../components/GeneralizedList';
-import { CircularProgress, Alert, Box } from '@mui/material';
-import useDeleteWithConfirmation from '../../hooks/useDeleteWithConfirmation';
 import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
+import useDeleteWithConfirmation from '../../hooks/useDeleteWithConfirmation';
+import { useMetaTexts } from '../../hooks/useMetaTexts';
+import { useSourceDocuments } from '../../hooks/useSourceDocuments';
 import { useFilteredList } from '../../hooks/useFilteredList';
 import { deleteMetaText } from '../../services/metaTextService';
 import { outerList } from '../../styles/pageStyles';
-import log from '../../utils/logger';
 
 export default function MetaTextPage() {
     const [createSuccess, setCreateSuccess] = useState('');
     const { docs: sourceDocs, loading: sourceDocsLoading, error: sourceDocsError } = useSourceDocuments();
-    const { data: metaTexts, loading: metaTextsLoading, error: metaTextsError } = useMetaTexts([createSuccess]);
+    const { metaTexts, metaTextsLoading, metaTextsError } = useMetaTexts([createSuccess]);
     const [search, setSearch] = useState('');
     const navigate = useNavigate();
 
@@ -87,6 +87,7 @@ export default function MetaTextPage() {
                 <Box sx={outerList}>
                     <nav aria-label="entity list">
                         <GeneralizedList
+
                             items={filteredMetaTexts}
                             onItemClick={handleMetaTextClick}
                             onDeleteClick={handleDeleteClick}

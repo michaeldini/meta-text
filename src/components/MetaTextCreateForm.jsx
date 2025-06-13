@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Box, Button, TextField, Alert, Typography } from '@mui/material';
-import SourceDocSelect from '../../components/SourceDocSelect';
-import { createMetaText } from '../../services/metaTextService';
-import { uploadFormContainer, uploadFormInner } from '../../styles/pageStyles';
-import log from '../../utils/logger';
+import SourceDocSelect from './SourceDocSelect';
+import { createMetaText } from '../services/metaTextService';
+import { uploadFormContainer, uploadFormInner } from '../styles/pageStyles';
+import log from '../utils/logger';
 
 export default function MetaTextCreateForm({
     sourceDocs,

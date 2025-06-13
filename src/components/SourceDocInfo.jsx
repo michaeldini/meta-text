@@ -47,7 +47,7 @@ function renderDetailRow({ key, label, value }) {
     );
 }
 
-export default function SourceDocInfo({ doc, summaryError, onInfoUpdate }) {
+export default function SourceDocInfo({ doc, onInfoUpdate }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -92,14 +92,18 @@ export default function SourceDocInfo({ doc, summaryError, onInfoUpdate }) {
                     disabled={loading || !doc.text}
                 />
                 <Divider sx={{ width: '100%', my: 2 }} />
-                <Box sx={sourceDocInfoDetailsBox}>
-                    {detailRows.map(renderDetailRow)}
-                </Box>
-                {summaryError && (
+                {!doc && (
                     <ListItem>
-                        <Typography color="error" variant="body2" sx={{ wordBreak: 'break-word', width: '100%' }}>{summaryError}</Typography>
+                        <Typography variant="body2" color="textSecondary">No document data available.</Typography>
                     </ListItem>
                 )}
+                <Box sx={sourceDocInfoDetailsBox}>
+                    {!doc.summary ? (
+                        <Typography>No Info</Typography>
+                    ) : detailRows.map(renderDetailRow)}
+
+                </Box>
+
                 {error && (
                     <ListItem>
                         <Typography color="error" variant="body2" sx={{ wordBreak: 'break-word', width: '100%' }}>{error}</Typography>
