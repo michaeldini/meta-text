@@ -2,16 +2,16 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, it, beforeEach, vi, expect } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
+import { useMetaTexts } from '../../src/hooks/useMetaTexts';
 
-// Mock the useMetaTexts hook before importing the component
 vi.mock('../../src/hooks/useMetaTexts', () => ({
     useMetaTexts: vi.fn()
 }));
-import { useMetaTexts } from '../../src/hooks/useMetaTexts';
 
 vi.mock('../../src/hooks/useSourceDocuments', () => ({
     useSourceDocuments: () => ({ docs: [{ id: 1, title: 'Doc 1' }], loading: false, error: '' })
 }));
+
 vi.mock('../../src/hooks/useDeleteWithConfirmation', () => ({
     default: () => ({
         deleteLoading: false,
