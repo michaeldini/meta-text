@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField } from '@mui/material';
+import { Paper, TextField } from '@mui/material';
 
 /**
  * Reusable search bar component for consistent search UI.
@@ -12,15 +12,17 @@ import { TextField } from '@mui/material';
  */
 export default function SearchBar({ label, value, onChange, ...props }) {
     return (
-        <TextField
-            data-testid="search-bar"
-
-            label={label}
-            variant="outlined"
-            fullWidth
-            value={value}
-            onChange={e => onChange(e.target.value)}
-            {...props}
-        />
+        <Paper
+            elevation={3}
+        >
+            <TextField
+                data-testid="search-bar"
+                label={label}
+                fullWidth
+                value={value}
+                onChange={e => onChange(e.target.value)}
+                {...props}
+            />
+        </Paper >
     );
 }

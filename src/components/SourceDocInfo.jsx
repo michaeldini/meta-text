@@ -77,13 +77,12 @@ export default function SourceDocInfo({ doc, onInfoUpdate }) {
 
     return (
         <>
-            <Box sx={{
-                alignItems: 'start',
-                borderRadius: 2,
-                border: '1px solid',
-                borderColor: 'secondary.main',
-                textAlign: 'left',
-            }}>
+            <Paper
+                elevation={5}
+                sx={{
+                    alignItems: 'start',
+                    textAlign: 'left',
+                }}>
                 <AiGenerationButton
                     label="Info"
                     toolTip="Use AI to generate info about this document"
@@ -109,7 +108,7 @@ export default function SourceDocInfo({ doc, onInfoUpdate }) {
                         <Typography color="error" variant="body2" sx={{ wordBreak: 'break-word', width: '100%' }}>{error}</Typography>
                     </ListItem>
                 )}
-            </Box >
+            </Paper>
         </>
     );
 }

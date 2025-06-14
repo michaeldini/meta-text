@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, TextField, Button, Alert } from '@mui/material';
+import { Box, Typography, TextField, Button, Alert, Paper } from '@mui/material';
 import FileUploadWidget from '../../components/FileUploadWidget';
 import { createSourceDocument } from '../../services/sourceDocumentService';
 import { uploadFormContainer, uploadFormInner } from '../../styles/pageStyles';
@@ -48,7 +48,9 @@ export default function SourceDocUploadForm({ onUploadSuccess, refresh }) {
     }, []);
 
     return (
-        <Box sx={uploadFormContainer}>
+        <Paper
+            elevation={3}
+            sx={uploadFormContainer}>
             <Typography variant="h5" gutterBottom>New Source Document</Typography>
             <Box component="form" onSubmit={handleSubmit} sx={uploadFormInner}>
                 <FileUploadWidget file={file} onFileChange={handleFileChange} />
@@ -77,6 +79,6 @@ export default function SourceDocUploadForm({ onUploadSuccess, refresh }) {
                     <Alert severity="success" m={2}>{uploadSuccess}</Alert>
                 )}
             </Box>
-        </Box>
+        </Paper>
     );
 }

@@ -6,7 +6,7 @@ import { deleteSourceDocument } from '../../services/sourceDocumentService';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
 import SearchBar from '../../components/SearchBar';
 import GeneralizedList from '../../components/GeneralizedList';
-import { CircularProgress, Alert, Box } from '@mui/material';
+import { CircularProgress, Alert, Box, Divider, Paper } from '@mui/material';
 import useDeleteWithConfirmation from '../../hooks/useDeleteWithConfirmation';
 import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
 import { useFilteredList } from '../../hooks/useFilteredList';
@@ -87,7 +87,7 @@ export default function SourceDocsPage() {
                 <Alert severity="error">{error}</Alert>
             ) : (
 
-                <Box sx={outerList}>
+                <Paper elevation={3} sx={outerList}>
                     <nav aria-label="entity list">
                         <GeneralizedList
                             items={filteredDocs}
@@ -98,7 +98,7 @@ export default function SourceDocsPage() {
                             emptyMessage="No documents found."
                         />
                     </nav>
-                </Box>
+                </Paper>
             )}
             <DeleteConfirmationDialog
                 open={confirmOpen}

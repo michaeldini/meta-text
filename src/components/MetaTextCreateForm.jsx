@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, TextField, Alert, Typography } from '@mui/material';
+import { Box, Button, TextField, Alert, Typography, Paper } from '@mui/material';
 import SourceDocSelect from './SourceDocSelect';
 import { createMetaText } from '../services/metaTextService';
 import { uploadFormContainer, uploadFormInner } from '../styles/pageStyles';
@@ -55,7 +55,7 @@ export default function MetaTextCreateForm({
     };
 
     return (
-        <Box sx={uploadFormContainer}>
+        <Paper elevation={3} sx={uploadFormContainer}>
             <Typography variant="h5" gutterBottom>New Meta Text</Typography>
             <Box component="form" onSubmit={handleCreateMetaText} sx={uploadFormInner}>
                 <SourceDocSelect
@@ -85,6 +85,6 @@ export default function MetaTextCreateForm({
                 {createError && <Alert severity="error" sx={{ mt: 2 }}>{createError}</Alert>}
                 {createSuccessMsg && <Alert severity="success" sx={{ mt: 2 }}>{createSuccessMsg}</Alert>}
             </Box>
-        </Box>
+        </Paper>
     );
 }

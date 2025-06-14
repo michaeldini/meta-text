@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Box, Pagination } from '@mui/material';
+import { Box, Pagination, Paper } from '@mui/material';
 import Chunk from './Chunk';
-import { chunksContainer, chunksPaginationBox } from '../styles/pageStyles';
+import { chunksContainer } from '../styles/pageStyles';
 
 function ChunksPagination({ pageCount, page, handleChange }) {
     if (pageCount <= 1) return null;
     return (
-        <Box sx={chunksPaginationBox}>
+        <Paper elevation={5} >
             <Pagination count={pageCount} page={page} onChange={handleChange} color="primary" />
-        </Box>
+        </Paper>
     );
 }
 

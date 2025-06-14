@@ -72,7 +72,7 @@ const Chunk = memo(function Chunk({
     const [activeTab, setActiveTab] = useState('comparison'); // 'comparison' or 'ai-image'
 
     return (
-        <Box sx={chunkMainBox}>
+        <Paper elevation={3} sx={chunkMainBox}>
             {/* chunk text */}
             <Box sx={chunkTextBox}>
                 <ChunkWords
@@ -164,7 +164,7 @@ const Chunk = memo(function Chunk({
                     error={imageState.error}
                 />
             </Box>
-        </Box>
+        </Paper>
     );
 });
 

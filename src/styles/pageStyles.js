@@ -5,11 +5,8 @@ export const uploadFormContainer = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    border: '1px solid',
-    borderColor: 'divider',
-    borderRadius: 2,
     p: 4,
-    mb: 16,
+    mb: 8,
     bgcolor: 'background.paper',
 };
 
@@ -107,24 +104,19 @@ export const metaTextDetailAlert = {
 export const chunksContainer = {
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'center',
     gap: 2,
     mt: 4,
-};
-
-export const chunksPaginationBox = {
-    display: 'flex',
-    justifyContent: 'center',
-    mt: 2,
 };
 
 export const chunkMainBox = {
     display: 'flex',
     flexDirection: { xs: 'column', md: 'row' },
     gap: 2,
-    bgcolor: 'background.default',
-    borderRadius: 4,
     p: 2,
-    border: '1px solid black',
+    mb: 8,
+    border: '1px solid transparent',
+    borderRadius: 2,
     '&:hover': {
         borderColor: 'secondary.main',
         borderWidth: 1,

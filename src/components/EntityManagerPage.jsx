@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from '@mui/material';
+import { Container } from '@mui/material';
 
 /**
  * Generic entity manager page for list/create/delete/search pattern.
@@ -8,8 +8,8 @@ import { Box } from '@mui/material';
  */
 export default function EntityManagerPage({ children }) {
     return (
-        <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
+        <Container sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
             {children}
-        </Box>
+        </Container>
     );
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CircularProgress, Alert, Box } from '@mui/material';
+import { CircularProgress, Alert, Box, Paper } from '@mui/material';
 import log from '../../utils/logger';
 import MetaTextCreateForm from '../../components/MetaTextCreateForm';
 import EntityManagerPage from '../../components/EntityManagerPage';
@@ -84,7 +84,7 @@ export default function MetaTextPage() {
             ) : metaTextsError ? (
                 <Alert severity="error">{metaTextsError}</Alert>
             ) : (
-                <Box sx={outerList}>
+                <Paper elevation={3} sx={outerList}>
                     <nav aria-label="entity list">
                         <GeneralizedList
 
@@ -96,7 +96,7 @@ export default function MetaTextPage() {
                             emptyMessage="No meta texts found."
                         />
                     </nav>
-                </Box>
+                </Paper>
             )}
             <DeleteConfirmationDialog
                 open={confirmOpen}
