@@ -13,6 +13,7 @@ import log from '../../utils/logger';
 
 
 async function handleMetaTextDelete(id, refresh, log) {
+
     if (!id) {
         log.error('No meta text ID provided for deletion.');
         throw new Error('No meta text ID provided for deletion.');
@@ -87,14 +88,14 @@ export default function MetaTextPage() {
                     <CircularProgress />
                 </Box>
             ) : metaTextsError ? (
-                <Alert severity="error">{metaTextsError}</Alert>
+                <Alert severity="error">{typeof metaTextsError === 'string' ? metaTextsError : metaTextsError?.message || JSON.stringify(metaTextsError)}</Alert>
             ) : (
                 <SearchableList
                     items={metaTexts}
                     onItemClick={handleMetaTextClick}
                     onDeleteClick={handleDeleteClick}
                     deleteLoading={deleteLoading}
-                    deleteError={deleteError}
+                    deleteError={typeof deleteError === 'string' ? deleteError : deleteError?.message || JSON.stringify(deleteError)}
                     filterKey="title"
                 />
             )}

@@ -74,14 +74,14 @@ export default function SourceDocsPage() {
                     <CircularProgress />
                 </Box>
             ) : error ? (
-                <Alert severity="error">{error}</Alert>
+                <Alert severity="error">{typeof error === 'string' ? error : error?.message || JSON.stringify(error)}</Alert>
             ) : (
                 <SearchableList
                     items={docs}
                     onItemClick={handleSourceDocClick}
                     onDeleteClick={handleDeleteClick}
                     deleteLoading={deleteLoading}
-                    deleteError={deleteError}
+                    deleteError={typeof deleteError === 'string' ? deleteError : deleteError?.message || JSON.stringify(deleteError)}
                     filterKey="title"
                 />
             )}

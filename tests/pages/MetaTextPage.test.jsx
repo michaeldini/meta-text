@@ -1,76 +1,137 @@
+// @vitest-environment jsdom
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { describe, it, beforeEach, vi, expect } from 'vitest';
-import { MemoryRouter } from 'react-router-dom';
-import { useMetaTexts } from '../../src/hooks/useMetaTexts';
-
-vi.mock('../../src/hooks/useMetaTexts', () => ({
-    useMetaTexts: vi.fn()
-}));
-
-vi.mock('../../src/hooks/useSourceDocuments', () => ({
-    useSourceDocuments: () => ({ docs: [{ id: 1, title: 'Doc 1' }], loading: false, error: '' })
-}));
-
-vi.mock('../../src/hooks/useDeleteWithConfirmation', () => ({
-    default: () => ({
-        deleteLoading: false,
-        deleteError: '',
-        confirmOpen: false,
-        handleDeleteClick: vi.fn(),
-        handleConfirmClose: vi.fn(),
-        handleConfirmDelete: vi.fn(),
-    })
-}));
-
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import MetaTextPage from '../../src/pages/MetaTextPage/MetaTextPage';
+import { useSourceDocuments } from '../../src/hooks/useSourceDocuments';
+import { useMetaTexts } from '../../src/hooks/useMetaTexts';
+import useListDeleteWithConfirmation from '../../src/hooks/useListDeleteWithConfirmation';
 
-// Reset mocks before each test
-beforeEach(() => {
-    useMetaTexts.mockImplementation(() => ({
-        metaTexts: [{ id: 1, title: 'Test MetaText' }],
-        loading: false,
-        error: ''
-    }));
+// Mocks
+vi.mock('../../src/hooks/useSourceDocuments', () => ({
+    useSourceDocuments: vi.fn(),
+}));
+vi.mock('../../src/hooks/useMetaTexts', () => ({
+    useMetaTexts: vi.fn(),
+}));
+vi.mock('../../src/hooks/useListDeleteWithConfirmation', () => ({
+    __esModule: true,
+    default: vi.fn(),
+}));
+vi.mock('../../src/services/metaTextService', () => ({
+    deleteMetaText: vi.fn(),
+}));
+vi.mock('../../src/components/PageContainer', () => ({
+    __esModule: true,
+    default: ({ children }) => <div data-testid="PageContainer">{children}</div>,
+}));
+vi.mock('../../src/components/MetaTextCreateForm', () => ({
+    __esModule: true,
+    default: () => <div data-testid="MetaTextCreateForm">CreateForm</div>,
+}));
+vi.mock('../../src/components/SearchableList', () => ({
+    __esModule: true,
+    default: ({ items, onItemClick, onDeleteClick, deleteLoading, deleteError }) => (
+        <div data-testid="SearchableList">
+            {items && items.map((item) => (
+                <div key={item.id}>
+                    <span>{item.title}</span>
+                    <button onClick={() => onItemClick(item.id)}>View</button>
+                    <button onClick={() => onDeleteClick(item.id)}>Delete</button>
+                </div>
+            ))}
+            {deleteLoading && <span>Deleting...</span>}
+            {deleteError && <span>{deleteError}</span>}
+        </div>
+    ),
+}));
+vi.mock('../../src/components/DeleteConfirmationDialog', () => ({
+    __esModule: true,
+    default: () => <div data-testid="DeleteConfirmationDialog">Dialog</div>,
+}));
+vi.mock('../../src/utils/logger', () => ({
+    __esModule: true,
+    default: {
+        info: vi.fn(),
+        error: vi.fn(),
+        warn: vi.fn(),
+    },
+}));
+vi.mock('react-router-dom', async (importOriginal) => {
+    const actual = await importOriginal();
+    return {
+        ...actual,
+        useNavigate: () => vi.fn(),
+    };
 });
 
 describe('MetaTextPage', () => {
-    it('renders meta texts and search bar', () => {
-        render(
-            <MemoryRouter>
-                <MetaTextPage />
-            </MemoryRouter>
-        );
-        expect(screen.getByText('New Meta Text')).toBeInTheDocument();
-        expect(screen.getByTestId('search-bar')).toBeInTheDocument();
-        expect(screen.getByTestId('generalized-list')).toBeInTheDocument();
-        expect(screen.getByText('Test MetaText')).toBeInTheDocument();
+    beforeEach(() => {
+        vi.clearAllMocks();
     });
 
-    it('handles search input', () => {
-        render(
-            <MemoryRouter>
-                <MetaTextPage />
-            </MemoryRouter>
-        );
-        const searchBar = screen.getByTestId('search-bar');
-        searchBar.value = 'Test';
-        searchBar.dispatchEvent(new Event('input', { bubbles: true }));
-        expect(screen.getByText('Test MetaText')).toBeInTheDocument();
-    });
-
-    it('renders message when no meta texts', () => {
-        useMetaTexts.mockImplementation(() => ({
-            metaTexts: [],
+    it('renders loading state', () => {
+        useSourceDocuments.mockReturnValue({ docs: [], loading: false, error: null });
+        useMetaTexts.mockReturnValue({ metaTexts: [], metaTextsLoading: true, metaTextsError: null, refresh: vi.fn() });
+        useListDeleteWithConfirmation.mockReturnValue({
+            dialogOpen: false,
+            targetId: null,
             loading: false,
-            error: ''
-        }));
-        render(
-            <MemoryRouter>
-                <MetaTextPage />
-            </MemoryRouter>
-        );
-        expect(screen.getByText('No meta texts found.')).toBeInTheDocument();
+            error: null,
+            handleDeleteClick: vi.fn(),
+            handleDialogClose: vi.fn(),
+            handleDialogConfirm: vi.fn(),
+        });
+        render(<MetaTextPage />);
+        expect(screen.getByRole('progressbar')).toBeInTheDocument();
     });
 
+    it('renders error state', () => {
+        useSourceDocuments.mockReturnValue({ docs: [], loading: false, error: null });
+        useMetaTexts.mockReturnValue({ metaTexts: [], metaTextsLoading: false, metaTextsError: 'Failed to load', refresh: vi.fn() });
+        useListDeleteWithConfirmation.mockReturnValue({
+            dialogOpen: false,
+            targetId: null,
+            loading: false,
+            error: null,
+            handleDeleteClick: vi.fn(),
+            handleDialogClose: vi.fn(),
+            handleDialogConfirm: vi.fn(),
+        });
+        render(<MetaTextPage />);
+        expect(screen.getByText('Failed to load')).toBeInTheDocument();
+    });
+
+    it('renders list of meta texts', () => {
+        useSourceDocuments.mockReturnValue({ docs: [], loading: false, error: null });
+        useMetaTexts.mockReturnValue({ metaTexts: [{ id: 1, title: 'Meta 1' }], metaTextsLoading: false, metaTextsError: null, refresh: vi.fn() });
+        useListDeleteWithConfirmation.mockReturnValue({
+            dialogOpen: false,
+            targetId: null,
+            loading: false,
+            error: null,
+            handleDeleteClick: vi.fn(),
+            handleDialogClose: vi.fn(),
+            handleDialogConfirm: vi.fn(),
+        });
+        render(<MetaTextPage />);
+        expect(screen.getByText('Meta 1')).toBeInTheDocument();
+        expect(screen.getByTestId('SearchableList')).toBeInTheDocument();
+    });
+
+    it('shows delete error if present', () => {
+        useSourceDocuments.mockReturnValue({ docs: [], loading: false, error: null });
+        useMetaTexts.mockReturnValue({ metaTexts: [{ id: 1, title: 'Meta 1' }], metaTextsLoading: false, metaTextsError: null, refresh: vi.fn() });
+        useListDeleteWithConfirmation.mockReturnValue({
+            dialogOpen: false,
+            targetId: null,
+            loading: false,
+            error: 'Cannot delete',
+            handleDeleteClick: vi.fn(),
+            handleDialogClose: vi.fn(),
+            handleDialogConfirm: vi.fn(),
+        });
+        render(<MetaTextPage />);
+        expect(screen.getByText('Cannot delete')).toBeInTheDocument();
+    });
 });
