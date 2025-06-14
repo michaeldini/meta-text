@@ -2,63 +2,69 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CircularProgress, Alert, Box } from '@mui/material';
 import PageContainer from '../../components/PageContainer';
+import SearchableList from '../../components/SearchableList';
+import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
+import useListDeleteWithConfirmation from '../../hooks/useListDeleteWithConfirmation';
 import SourceDocUploadForm from './SourceDocUploadForm';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
 import { deleteSourceDocument } from '../../services/sourceDocumentService';
-import SearchableList from '../../components/SearchableList';
-import useDeleteWithConfirmation from '../../hooks/useDeleteWithConfirmation';
 import log from '../../utils/logger';
+
+async function handleSourceDocDelete(docId, refresh, log) {
+    if (!docId) {
+        log.error('No document ID provided for deletion.');
+        throw new Error('No document ID provided for deletion.');
+    }
+    try {
+        log.info(`Attempting to delete source document with id: ${docId}`);
+        await deleteSourceDocument(docId);
+        log.info(`Successfully deleted source document with id: ${docId}`);
+        refresh();
+    } catch (e) {
+        log.error('Error deleting source document:', e.message);
+        // Custom error for MetaText records
+        if (e.message.includes('MetaText records exist')) {
+            log.warn('Cannot delete: MetaText records exist for this document.');
+            throw new Error('Cannot delete: MetaText records exist for this document.');
+        }
+        throw e;
+    }
+}
 
 export default function SourceDocsPage() {
     const { docs = [], loading, error, refresh } = useSourceDocuments();
     const navigate = useNavigate();
 
-    // Log when the page loads
     React.useEffect(() => {
         log.info('SourceDocsPage mounted');
         return () => log.info('SourceDocsPage unmounted');
     }, []);
 
-    // Log when documents are loaded or error occurs
     React.useEffect(() => {
         if (loading) log.info('Loading source documents...');
         if (error) log.error('Error loading source documents:', error);
         if (!loading && docs.length > 0) log.info(`Loaded ${docs.length} source documents`);
     }, [loading, error, docs]);
 
-    // Use doc.id for navigation
     const handleSourceDocClick = id => {
         log.info(`Navigating to source document with id: ${id}`);
         navigate(`/sourceDocs/${id}`);
     };
 
-    // Use generic delete hook (no dialog state needed)
+    // Use new centralized delete-with-confirmation hook
     const {
-        deleteLoading,
-        deleteError,
+        dialogOpen,
+        targetId,
+        loading: deleteLoading,
+        error: deleteError,
         handleDeleteClick,
-    } = useDeleteWithConfirmation(
-        async (docId) => {
-            if (!docId) {
-                log.error('No document ID provided for deletion.');
-                throw new Error('No document ID provided for deletion.');
-            }
-            try {
-                log.info(`Attempting to delete source document with id: ${docId}`);
-                await deleteSourceDocument(docId);
-                log.info(`Successfully deleted source document with id: ${docId}`);
-                refresh();
-            } catch (e) {
-                log.error('Error deleting source document:', e.message);
-                // Custom error for MetaText records
-                if (e.message.includes('MetaText records exist')) {
-                    log.warn('Cannot delete: MetaText records exist for this document.');
-                    throw new Error('Cannot delete: MetaText records exist for this document.');
-                }
-                throw e;
-            }
-        }
-    );
+        handleDialogClose,
+        handleDialogConfirm,
+    } = useListDeleteWithConfirmation((docId) => handleSourceDocDelete(docId, refresh, log));
+
+    const deleteItemName = targetId
+        ? (docs.find(item => item.id === targetId)?.title || 'this item')
+        : '';
 
     return (
         <PageContainer>
@@ -79,6 +85,13 @@ export default function SourceDocsPage() {
                     filterKey="title"
                 />
             )}
+            <DeleteConfirmationDialog
+                open={dialogOpen}
+                onClose={handleDialogClose}
+                onConfirm={handleDialogConfirm}
+                title={`Delete "${deleteItemName}"?`}
+                text={`Are you sure you want to delete "${deleteItemName}"? This action cannot be undone.`}
+            />
         </PageContainer>
     );
 }

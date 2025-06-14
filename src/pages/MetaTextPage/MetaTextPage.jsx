@@ -1,24 +1,36 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CircularProgress, Alert, Box, Paper } from '@mui/material';
-import log from '../../utils/logger';
-import MetaTextCreateForm from '../../components/MetaTextCreateForm';
+import { CircularProgress, Alert, Box } from '@mui/material';
 import PageContainer from '../../components/PageContainer';
-import SearchBar from '../../components/SearchBar';
-import GeneralizedList from '../../components/GeneralizedList';
+import SearchableList from '../../components/SearchableList';
 import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
-import useDeleteWithConfirmation from '../../hooks/useDeleteWithConfirmation';
-import { useMetaTexts } from '../../hooks/useMetaTexts';
+import useListDeleteWithConfirmation from '../../hooks/useListDeleteWithConfirmation';
+import MetaTextCreateForm from '../../components/MetaTextCreateForm';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
-import { useFilteredList } from '../../hooks/useFilteredList';
+import { useMetaTexts } from '../../hooks/useMetaTexts';
 import { deleteMetaText } from '../../services/metaTextService';
-import { outerList } from '../../styles/pageStyles';
+import log from '../../utils/logger';
+
+
+async function handleMetaTextDelete(id, refresh, log) {
+    if (!id) {
+        log.error('No meta text ID provided for deletion.');
+        throw new Error('No meta text ID provided for deletion.');
+    }
+    try {
+        log.info(`Attempting to delete meta text with id: ${id}`);
+        await deleteMetaText(id);
+        log.info(`Successfully deleted meta text with id: ${id}`);
+        refresh();
+    } catch (e) {
+        log.error('Error deleting meta text:', e.message);
+        throw e;
+    }
+}
 
 export default function MetaTextPage() {
-    const [createSuccess, setCreateSuccess] = useState('');
     const { docs: sourceDocs, loading: sourceDocsLoading, error: sourceDocsError } = useSourceDocuments();
-    const { metaTexts, metaTextsLoading, metaTextsError } = useMetaTexts([createSuccess]);
-    const [search, setSearch] = useState('');
+    const { metaTexts, metaTextsLoading, metaTextsError, refresh } = useMetaTexts();
     const navigate = useNavigate();
 
     // Log when the page loads
@@ -46,23 +58,21 @@ export default function MetaTextPage() {
         navigate(`/metaText/${id}`);
     };
 
+    // Use new centralized delete-with-confirmation hook
     const {
-        deleteLoading,
-        deleteError,
-        confirmOpen,
+        dialogOpen,
+        targetId,
+        loading: deleteLoading,
+        error: deleteError,
         handleDeleteClick,
-        handleConfirmClose,
-        handleConfirmDelete,
-    } = useDeleteWithConfirmation(
-        async (id) => {
-            log.info(`Attempting to delete meta text with id: ${id}`);
-            await deleteMetaText(id);
-            log.info(`Successfully deleted meta text with id: ${id}`);
-            setCreateSuccess(Date.now());
-        }
-    );
+        handleDialogClose,
+        handleDialogConfirm,
+    } = useListDeleteWithConfirmation((id) => handleMetaTextDelete(id, refresh, log));
 
-    const filteredMetaTexts = useFilteredList(metaTexts, search, 'title');
+    // Get the name of the item to delete for dialog
+    const deleteItemName = targetId
+        ? (metaTexts?.find(item => item.id === targetId)?.title || 'this item')
+        : '';
 
     return (
         <PageContainer>
@@ -70,12 +80,7 @@ export default function MetaTextPage() {
                 sourceDocs={sourceDocs}
                 sourceDocsLoading={sourceDocsLoading}
                 sourceDocsError={sourceDocsError}
-                onCreateSuccess={() => setCreateSuccess(Date.now())}
-            />
-            <SearchBar
-                label="Search Meta Texts"
-                value={search}
-                onChange={setSearch}
+                onCreateSuccess={refresh}
             />
             {metaTextsLoading ? (
                 <Box>
@@ -84,26 +89,21 @@ export default function MetaTextPage() {
             ) : metaTextsError ? (
                 <Alert severity="error">{metaTextsError}</Alert>
             ) : (
-                <Paper elevation={3} sx={outerList}>
-                    <nav aria-label="entity list">
-                        <GeneralizedList
-
-                            items={filteredMetaTexts}
-                            onItemClick={handleMetaTextClick}
-                            onDeleteClick={handleDeleteClick}
-                            deleteLoading={deleteLoading}
-                            deleteError={deleteError}
-                            emptyMessage="No meta texts found."
-                        />
-                    </nav>
-                </Paper>
+                <SearchableList
+                    items={metaTexts}
+                    onItemClick={handleMetaTextClick}
+                    onDeleteClick={handleDeleteClick}
+                    deleteLoading={deleteLoading}
+                    deleteError={deleteError}
+                    filterKey="title"
+                />
             )}
             <DeleteConfirmationDialog
-                open={confirmOpen}
-                onClose={handleConfirmClose}
-                onConfirm={handleConfirmDelete}
-                title="Delete Meta Text?"
-                text="Are you sure you want to delete this meta text? This action cannot be undone."
+                open={dialogOpen}
+                onClose={handleDialogClose}
+                onConfirm={handleDialogConfirm}
+                title={`Delete "${deleteItemName}"?`}
+                text={`Are you sure you want to delete "${deleteItemName}"? This action cannot be undone.`}
             />
         </PageContainer>
     );
