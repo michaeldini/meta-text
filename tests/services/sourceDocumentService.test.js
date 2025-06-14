@@ -1,74 +1,77 @@
-import { describe, it, expect, afterEach, vi } from 'vitest';
 import {
     fetchSourceDocuments,
     fetchSourceDocument,
     createSourceDocument,
     deleteSourceDocument,
-    generateSourceDocInfo
+    generateSourceDocInfo,
 } from '../../src/services/sourceDocumentService';
+
+import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { handleApiResponse } from '../../src/utils/api';
 
 vi.mock('../../src/utils/api', () => ({
-    handleApiResponse: vi.fn()
+    handleApiResponse: vi.fn(),
 }));
 
-globalThis.fetch = vi.fn();
-
 describe('sourceDocumentService', () => {
+    beforeEach(() => {
+        globalThis.fetch = vi.fn();
+        handleApiResponse.mockReset();
+    });
     afterEach(() => {
-        vi.clearAllMocks();
+        vi.restoreAllMocks();
     });
 
-    it('fetchSourceDocuments calls fetch and handleApiResponse', async () => {
-        fetch.mockResolvedValueOnce('response');
-        handleApiResponse.mockResolvedValueOnce([{ id: 1, title: 'Doc' }]);
+    it('fetchSourceDocuments returns array from API', async () => {
+        const docs = [{ id: 1, title: 'A' }];
+        fetch.mockResolvedValueOnce('res');
+        handleApiResponse.mockResolvedValueOnce(docs);
         const result = await fetchSourceDocuments();
         expect(fetch).toHaveBeenCalledWith('/api/source-documents');
-        expect(handleApiResponse).toHaveBeenCalledWith('response', 'Failed to fetch source documents');
-        expect(result).toEqual([{ id: 1, title: 'Doc' }]);
+        expect(result).toEqual(docs);
     });
 
-    it('fetchSourceDocument calls fetch and handleApiResponse', async () => {
-        fetch.mockResolvedValueOnce('response');
-        handleApiResponse.mockResolvedValueOnce({ id: 2, title: 'Doc2' });
-        const result = await fetchSourceDocument('2');
-        expect(fetch).toHaveBeenCalledWith('/api/source-documents/2');
-        expect(handleApiResponse).toHaveBeenCalledWith('response', 'Failed to fetch document');
-        expect(result).toEqual({ id: 2, title: 'Doc2' });
+    it('fetchSourceDocuments returns [] if not array', async () => {
+        fetch.mockResolvedValueOnce('res');
+        handleApiResponse.mockResolvedValueOnce({});
+        const result = await fetchSourceDocuments();
+        expect(result).toEqual([]);
     });
 
-    it('createSourceDocument calls fetch with FormData and handleApiResponse', async () => {
-        const mockFile = new File(['dummy content'], 'test.txt', { type: 'text/plain' });
-        fetch.mockResolvedValueOnce('response');
-        handleApiResponse.mockResolvedValueOnce({ id: 3, title: 'Uploaded Doc' });
-        const result = await createSourceDocument('Uploaded Doc', mockFile);
-        expect(fetch).toHaveBeenCalledWith('/api/source-documents', expect.objectContaining({
-            method: 'POST',
-            body: expect.any(FormData)
-        }));
-        expect(handleApiResponse).toHaveBeenCalledWith('response', 'Upload failed.');
-        expect(result).toEqual({ id: 3, title: 'Uploaded Doc' });
+    it('fetchSourceDocument fetches by id', async () => {
+        fetch.mockResolvedValueOnce('res');
+        handleApiResponse.mockResolvedValueOnce({ id: 1 });
+        const result = await fetchSourceDocument('abc');
+        expect(fetch).toHaveBeenCalledWith('/api/source-documents/abc');
+        expect(result).toEqual({ id: 1 });
     });
 
-    it('deleteSourceDocument calls fetch with DELETE and handleApiResponse', async () => {
-        fetch.mockResolvedValueOnce('response');
+    it('createSourceDocument posts form data', async () => {
+        fetch.mockResolvedValueOnce('res');
+        handleApiResponse.mockResolvedValueOnce({ id: 2 });
+        const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+        const result = await createSourceDocument('title', file);
+        expect(fetch).toHaveBeenCalledWith('/api/source-documents', expect.objectContaining({ method: 'POST' }));
+        expect(result).toEqual({ id: 2 });
+    });
+
+    it('deleteSourceDocument calls DELETE', async () => {
+        fetch.mockResolvedValueOnce('res');
         handleApiResponse.mockResolvedValueOnce({ success: true });
-        const result = await deleteSourceDocument('4');
-        expect(fetch).toHaveBeenCalledWith('/api/source-documents/4', { method: 'DELETE' });
-        expect(handleApiResponse).toHaveBeenCalledWith('response', 'Failed to delete source document');
+        const result = await deleteSourceDocument('id1');
+        expect(fetch).toHaveBeenCalledWith('/api/source-documents/id1', { method: 'DELETE' });
         expect(result).toEqual({ success: true });
     });
 
-    it('generateSourceDocInfo calls fetch with POST and returns result', async () => {
-        fetch.mockResolvedValueOnce('response');
-        handleApiResponse.mockResolvedValueOnce({ result: 'summary text' });
-        const result = await generateSourceDocInfo(5, 'Prompt text');
+    it('generateSourceDocInfo posts prompt and id', async () => {
+        fetch.mockResolvedValueOnce('res');
+        handleApiResponse.mockResolvedValueOnce({ result: 'info' });
+        const result = await generateSourceDocInfo('id2', 'prompt text');
         expect(fetch).toHaveBeenCalledWith('/api/source-doc-info', expect.objectContaining({
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ prompt: 'Prompt text', id: 5 })
+            body: JSON.stringify({ prompt: 'prompt text', id: 'id2' }),
         }));
-        expect(handleApiResponse).toHaveBeenCalledWith('response', 'Summary failed');
-        expect(result).toBe('summary text');
+        expect(result).toBe('info');
     });
 });

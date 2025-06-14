@@ -37,15 +37,15 @@ export default function MetaTextCreateForm({
             let errorMsg = 'Failed to create meta text';
             if (err) {
                 if (typeof err === 'string') {
-                    errorMsg = err;
+                    errorMsg = `Failed to create meta text: ${err}`;
                 } else if (err.message) {
-                    errorMsg = err.message;
+                    errorMsg = `Failed to create meta text: ${err.message}`;
                 } else if (err.response && err.response.detail) {
-                    errorMsg = err.response.detail;
+                    errorMsg = `Failed to create meta text: ${err.response.detail}`;
                 } else if (err.response) {
-                    errorMsg = JSON.stringify(err.response);
+                    errorMsg = `Failed to create meta text: ${JSON.stringify(err.response)}`;
                 } else {
-                    errorMsg = JSON.stringify(err);
+                    errorMsg = `Failed to create meta text: ${JSON.stringify(err)}`;
                 }
             }
             setCreateError(errorMsg);
@@ -65,15 +65,16 @@ export default function MetaTextCreateForm({
                     loading={sourceDocsLoading}
                     error={sourceDocsError}
                     required
+                    data-testid="source-doc-select"
                 />
                 <TextField
                     label="Meta-text Name"
                     value={metaTextTitle}
                     onChange={e => setMetaTextTitle(e.target.value)}
                     size="small"
-
                     fullWidth
                     required
+                    data-testid="upload-title"
                 />
                 <Button
                     type="submit"
