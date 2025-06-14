@@ -18,12 +18,6 @@ export const uploadFormInner = {
     gap: 2,
 };
 
-export const outerList = {
-    margin: 4,
-    bgcolor: 'background.paper',
-    borderRadius: 2,
-};
-
 export const navBarAppBar = {
     bgcolor: 'background.paper',
     color: 'text.primary',

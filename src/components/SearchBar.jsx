@@ -7,21 +7,18 @@ import { Paper, TextField } from '@mui/material';
  * - label: string (label for the search bar)
  * - value: string (current search value)
  * - onChange: function (called with new value)
- * - sx: style overrides (optional)
- * - other TextField props
  */
-export default function SearchBar({ label, value, onChange, ...props }) {
+export default function SearchBar({ label, value, onChange, }) {
     return (
         <Paper
             elevation={3}
         >
             <TextField
                 data-testid="search-bar"
-                label={label}
                 fullWidth
+                label={label}
                 value={value}
                 onChange={e => onChange(e.target.value)}
-                {...props}
             />
         </Paper >
     );

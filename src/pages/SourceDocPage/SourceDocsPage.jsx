@@ -1,21 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import EntityManagerPage from '../../components/EntityManagerPage';
+import { CircularProgress, Alert, Box } from '@mui/material';
+import PageContainer from '../../components/PageContainer';
 import SourceDocUploadForm from './SourceDocUploadForm';
-import { deleteSourceDocument } from '../../services/sourceDocumentService';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
-import SearchBar from '../../components/SearchBar';
-import GeneralizedList from '../../components/GeneralizedList';
-import { CircularProgress, Alert, Box, Divider, Paper } from '@mui/material';
+import { deleteSourceDocument } from '../../services/sourceDocumentService';
+import SearchableList from '../../components/SearchableList';
 import useDeleteWithConfirmation from '../../hooks/useDeleteWithConfirmation';
-import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
-import { useFilteredList } from '../../hooks/useFilteredList';
-import { outerList } from '../../styles/pageStyles';
 import log from '../../utils/logger';
 
 export default function SourceDocsPage() {
     const { docs = [], loading, error, refresh } = useSourceDocuments();
-    const [search, setSearch] = useState('');
     const navigate = useNavigate();
 
     // Log when the page loads
@@ -31,23 +26,17 @@ export default function SourceDocsPage() {
         if (!loading && docs.length > 0) log.info(`Loaded ${docs.length} source documents`);
     }, [loading, error, docs]);
 
-    // Filter documents based on search input
-    const filteredDocs = useFilteredList(docs, search, 'title');
-
     // Use doc.id for navigation
     const handleSourceDocClick = id => {
         log.info(`Navigating to source document with id: ${id}`);
         navigate(`/sourceDocs/${id}`);
     };
 
-    // Use generic delete hook
+    // Use generic delete hook (no dialog state needed)
     const {
         deleteLoading,
         deleteError,
-        confirmOpen,
         handleDeleteClick,
-        handleConfirmClose,
-        handleConfirmDelete,
     } = useDeleteWithConfirmation(
         async (docId) => {
             if (!docId) {
@@ -72,13 +61,8 @@ export default function SourceDocsPage() {
     );
 
     return (
-        <EntityManagerPage>
+        <PageContainer>
             <SourceDocUploadForm refresh={refresh} />
-            <SearchBar
-                label="Search Documents"
-                value={search}
-                onChange={setSearch}
-            />
             {loading ? (
                 <Box>
                     <CircularProgress />
@@ -86,27 +70,15 @@ export default function SourceDocsPage() {
             ) : error ? (
                 <Alert severity="error">{error}</Alert>
             ) : (
-
-                <Paper elevation={3} sx={outerList}>
-                    <nav aria-label="entity list">
-                        <GeneralizedList
-                            items={filteredDocs}
-                            onItemClick={handleSourceDocClick}
-                            onDeleteClick={handleDeleteClick}
-                            deleteLoading={deleteLoading}
-                            deleteError={deleteError}
-                            emptyMessage="No documents found."
-                        />
-                    </nav>
-                </Paper>
+                <SearchableList
+                    items={docs}
+                    onItemClick={handleSourceDocClick}
+                    onDeleteClick={handleDeleteClick}
+                    deleteLoading={deleteLoading}
+                    deleteError={deleteError}
+                    filterKey="title"
+                />
             )}
-            <DeleteConfirmationDialog
-                open={confirmOpen}
-                onClose={handleConfirmClose}
-                onConfirm={handleConfirmDelete}
-                title="Delete Source Document?"
-                text="Are you sure you want to delete this source document? This action cannot be undone."
-            />
-        </EntityManagerPage>
+        </PageContainer>
     );
 }

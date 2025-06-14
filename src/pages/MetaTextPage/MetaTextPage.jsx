@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { CircularProgress, Alert, Box, Paper } from '@mui/material';
 import log from '../../utils/logger';
 import MetaTextCreateForm from '../../components/MetaTextCreateForm';
-import EntityManagerPage from '../../components/EntityManagerPage';
+import PageContainer from '../../components/PageContainer';
 import SearchBar from '../../components/SearchBar';
 import GeneralizedList from '../../components/GeneralizedList';
 import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
@@ -65,7 +65,7 @@ export default function MetaTextPage() {
     const filteredMetaTexts = useFilteredList(metaTexts, search, 'title');
 
     return (
-        <EntityManagerPage>
+        <PageContainer>
             <MetaTextCreateForm
                 sourceDocs={sourceDocs}
                 sourceDocsLoading={sourceDocsLoading}
@@ -105,6 +105,6 @@ export default function MetaTextPage() {
                 title="Delete Meta Text?"
                 text="Are you sure you want to delete this meta text? This action cannot be undone."
             />
-        </EntityManagerPage>
+        </PageContainer>
     );
 }
