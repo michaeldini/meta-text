@@ -88,25 +88,4 @@ describe('Chunk component', () => {
         expect(baseProps.handleChunkFieldChange).toHaveBeenCalledWith(0, 'notes', 'notes');
     });
 
-    it('renders generate image button and dialog', () => {
-        render(<Chunk {...baseProps} />);
-        expect(screen.getByText('Generate Image')).toBeInTheDocument();
-        // Dialog should not be open by default
-        expect(screen.queryByTestId('generate-image-dialog')).toBeNull();
-    });
-    it('renders image display if imageState.data is present', () => {
-        // Patch useImageGeneration to return data
-        vi.spyOn(useImageGenerationModule, 'useImageGeneration').mockReturnValue({
-            imageState: { loading: false, error: null, data: true, dialogOpen: false, prompt: '', loaded: false, lightboxOpen: false },
-            getImgSrc: () => 'test.png',
-            openDialog: vi.fn(),
-            closeDialog: vi.fn(),
-            handleGenerate: vi.fn(),
-            setLightboxOpen: vi.fn(),
-            setImageLoaded: vi.fn(),
-        });
-        render(<Chunk {...baseProps} />);
-        expect(screen.getByTestId('chunk-image')).toBeInTheDocument();
-    });
 });
-

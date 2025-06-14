@@ -53,7 +53,7 @@ describe('MetaTextPage', () => {
                 <MetaTextPage />
             </MemoryRouter>
         );
-        const searchBar = screen.getByTestId('meta-text-search');
+        const searchBar = screen.getByTestId('search-bar');
         searchBar.value = 'Test';
         searchBar.dispatchEvent(new Event('input', { bubbles: true }));
         expect(screen.getByText('Test MetaText')).toBeInTheDocument();

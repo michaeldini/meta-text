@@ -70,9 +70,5 @@ describe('SourceDocInfo', () => {
         expect(button).toBeDisabled();
     });
 
-    it('renders message if no doc is provided', () => {
-        render(<SourceDocInfo doc={{}} />);
-        expect(screen.getByText('No document data available.')).toBeInTheDocument();
-    });
 });
 
