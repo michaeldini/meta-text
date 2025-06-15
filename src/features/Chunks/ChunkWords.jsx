@@ -2,7 +2,7 @@ import React, { memo, useState } from 'react';
 import { Box, IconButton } from '@mui/material';
 import UndoArrowIcon from '../../components/icons/UndoArrowIcon';
 import WordActionDialog from './WordActionDialog';
-import { chunkWordBox, chunkUndoIconButton, wordsContainer } from '../../styles/pageStyles';
+import { chunkWordBox, chunkUndoIconButton, wordsContainer } from './Chunks.styles';
 
 const ChunkWords = memo(function ChunkWords({
     words,

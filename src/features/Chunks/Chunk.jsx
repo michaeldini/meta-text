@@ -10,15 +10,15 @@ import ChunkTextField from '../../components/ChunkTextField';
 import AiGenerationButton from '../../components/AiGenerationButton';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import PhotoFilterIcon from '@mui/icons-material/PhotoFilter';
-import { toolStyles } from '../../styles/pageStyles';
 import {
     chunkMainBox,
     chunkTextBox,
     chunkDetailsCol,
     chunkTextField,
     chunkImageBtnBox,
-    AiGenerationBtn
-} from '../../styles/pageStyles';
+    AiGenerationBtn,
+    toolStyles
+} from './Chunks.styles';
 import log from '../../utils/logger';
 import ToolIconButton from '../../components/ToolIconButton';
 
