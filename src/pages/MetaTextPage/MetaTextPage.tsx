@@ -38,23 +38,24 @@ export default function MetaTextPage() {
         if (!sourceDocsLoading && sourceDocs && sourceDocs.length > 0) log.info(`Loaded ${sourceDocs.length} source documents for MetaTextPage`);
     }, [sourceDocsLoading, sourceDocsError, sourceDocs]);
 
-    const handleMetaTextClick = (id: number) => {
+    // Memoized handler for navigating to a meta text
+    const handleMetaTextClick = React.useCallback((id: number) => {
         log.info(`Navigating to meta text with id: ${id}`);
         navigate(`/metaText/${id}`);
-    };
+    }, [navigate]);
 
-    // Simple delete handler (no confirmation)
-    const handleDeleteClick = (id: number, e: React.MouseEvent) => {
+    // Memoized delete handler
+    const handleDeleteClick = React.useCallback((id: number, e: React.MouseEvent) => {
         if (e && e.stopPropagation) e.stopPropagation();
         deleteMetaText(id)
             .then(() => refresh())
             .catch(err => log.error('Delete failed', err));
-    };
+    }, [refresh]);
 
     return (
         <PageContainer>
             <MetaTextCreateForm
-                sourceDocs={sourceDocs as SourceDocument[]}
+                sourceDocs={sourceDocs}
                 sourceDocsLoading={sourceDocsLoading}
                 sourceDocsError={sourceDocsError}
                 onCreateSuccess={refresh}
@@ -62,7 +63,7 @@ export default function MetaTextPage() {
             <ErrorBoundary>
                 <LoadingBoundary loading={metaTextsLoading}>
                     <SearchableList
-                        items={metaTexts as MetaText[]}
+                        items={metaTexts}
                         onItemClick={handleMetaTextClick}
                         onDeleteClick={handleDeleteClick}
                         filterKey="title"
