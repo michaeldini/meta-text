@@ -3,13 +3,13 @@
 import { CircularProgress, Box, Button } from '@mui/material';
 
 export const uploadFormContainer = {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column' as const,
-    alignItems: 'center' as const,
-    p: 4,
-    mb: 8,
-    bgcolor: 'background.paper',
+    // width: '100%',
+    // display: 'flex',
+    // flexDirection: 'column' as const,
+    // alignItems: 'center' as const,
+    // p: 4,
+    // mb: 8,
+    // bgcolor: 'background.paper',
 };
 
 export const uploadFormInner = {
@@ -86,9 +86,7 @@ export const sourceDocInfoDetailsBox = {
     display: 'flex',
     flexDirection: 'column',
     gap: 2,
-    p: 2,
-    bgcolor: 'background.default',
-    borderRadius: 2,
+    padding: 5,
 };
 
 export const chunkImageBox = {
