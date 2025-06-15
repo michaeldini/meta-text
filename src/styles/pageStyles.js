@@ -241,3 +241,41 @@ export const sourceDocInfoDetailsBox = {
     boxSizing: 'border-box',
     overflow: 'hidden',
 };
+
+
+export const chunkWordBox = (wordIdx, wordsLength) => ({
+    cursor: 'pointer',
+    borderRadius: 1,
+    transition: 'background 0.2s, box-shadow 0.2s, transform 0.1s',
+    boxShadow: 0,
+    '&:hover': {
+        bgcolor: 'primary.light',
+        color: 'primary.contrastText',
+        boxShadow: 1,
+    },
+    display: 'inline-flex',
+    alignItems: 'center',
+    fontSize: 16,
+    fontWeight: 500,
+    mr: wordIdx < wordsLength - 1 ? 0.5 : 0,
+    position: 'relative',
+    color: 'text.chunk_text',
+});
+
+export const chunkUndoIconButton = {
+    ml: 1,
+    borderRadius: '50%',
+    bgcolor: 'background.paper',
+    boxShadow: 1,
+    transition: 'box-shadow 0.2s, background 0.2s, transform 0.1s',
+    '&:hover': {
+        bgcolor: 'primary.main',
+        color: 'primary.contrastText',
+        boxShadow: 4,
+        transform: 'rotate(-10deg) scale(1.1)'
+    },
+};
+
+export const wordsContainer = {
+    textAlign: 'left',
+};
