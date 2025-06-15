@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
 
-import { describe, it, beforeEach, expect, vi } from 'vitest';
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import MetaTextCreateForm from '../../src/components/MetaTextCreateForm';
 
 // Mock the createMetaText service
@@ -26,32 +26,32 @@ const sourceDocs = [
     { id: '2', title: 'Doc 2' },
 ];
 
+const setup = (props = {}) => {
+    return render(
+        <MetaTextCreateForm
+            sourceDocs={sourceDocs}
+            sourceDocsLoading={false}
+            sourceDocsError={null}
+            onCreateSuccess={props.onCreateSuccess || vi.fn()}
+        />
+    );
+};
+
 describe('MetaTextCreateForm', () => {
     beforeEach(() => {
         vi.clearAllMocks();
     });
 
-    it('renders form fields and submit button', () => {
-        render(
-            <MetaTextCreateForm
-                sourceDocs={sourceDocs}
-                sourceDocsLoading={false}
-                sourceDocsError={null}
-            />
-        );
+    it('renders form fields and button', () => {
+        setup();
         expect(screen.getByLabelText(/Meta-text Name/i)).toBeInTheDocument();
+        expect(screen.getByTestId('source-doc-select')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /Create/i })).toBeInTheDocument();
     });
 
     it('shows loading state in button', async () => {
         createMetaText.mockImplementation(() => new Promise(() => { })); // never resolves
-        render(
-            <MetaTextCreateForm
-                sourceDocs={sourceDocs}
-                sourceDocsLoading={false}
-                sourceDocsError={null}
-            />
-        );
+        setup();
         fireEvent.change(screen.getByTestId('upload-title').querySelector('input'), { target: { value: 'Test Title' } });
         fireEvent.change(screen.getByTestId('source-doc-select').querySelector('input'), { target: { value: '1' } });
         fireEvent.click(screen.getByRole('button', { name: /Create/i }));
@@ -61,14 +61,7 @@ describe('MetaTextCreateForm', () => {
     it('calls createMetaText and shows success', async () => {
         createMetaText.mockResolvedValueOnce({});
         const onCreateSuccess = vi.fn();
-        render(
-            <MetaTextCreateForm
-                sourceDocs={sourceDocs}
-                sourceDocsLoading={false}
-                sourceDocsError={null}
-                onCreateSuccess={onCreateSuccess}
-            />
-        );
+        setup({ onCreateSuccess });
         fireEvent.change(screen.getByTestId('upload-title').querySelector('input'), { target: { value: 'Test Title' } });
         fireEvent.change(screen.getByTestId('source-doc-select').querySelector('input'), { target: { value: '1' } });
         fireEvent.click(screen.getByRole('button', { name: /Create/i }));
@@ -78,13 +71,7 @@ describe('MetaTextCreateForm', () => {
 
     it('shows error message on failure', async () => {
         createMetaText.mockRejectedValueOnce(new Error('API failed'));
-        render(
-            <MetaTextCreateForm
-                sourceDocs={sourceDocs}
-                sourceDocsLoading={false}
-                sourceDocsError={null}
-            />
-        );
+        setup();
         fireEvent.change(screen.getByTestId('upload-title').querySelector('input'), { target: { value: 'Test Title' } });
         fireEvent.change(screen.getByTestId('source-doc-select').querySelector('input'), { target: { value: '1' } });
         fireEvent.click(screen.getByRole('button', { name: /Create/i }));
@@ -94,13 +81,7 @@ describe('MetaTextCreateForm', () => {
 
     it('disables submit button while loading', async () => {
         createMetaText.mockImplementation(() => new Promise(() => { }));
-        render(
-            <MetaTextCreateForm
-                sourceDocs={sourceDocs}
-                sourceDocsLoading={false}
-                sourceDocsError={null}
-            />
-        );
+        setup();
         fireEvent.change(screen.getByTestId('upload-title').querySelector('input'), { target: { value: 'Test Title' } });
         fireEvent.change(screen.getByTestId('source-doc-select').querySelector('input'), { target: { value: '1' } });
         fireEvent.click(screen.getByRole('button', { name: /Create/i }));
