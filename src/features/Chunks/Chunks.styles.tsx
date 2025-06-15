@@ -71,3 +71,33 @@ export const toolStyles = {
     borderRadius: 2,
     boxShadow: 1,
 };
+
+export const chunkWordBox = (wordIdx: number, totalWords: number) => ({
+    display: 'inline-block',
+    borderRadius: 1,
+    position: 'relative',
+    cursor: 'pointer',
+    transition: 'background 0.2s',
+    '&:hover': {
+        bgcolor: 'secondary.main',
+        color: 'background.paper',
+    },
+});
+
+export const wordsContainer = {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: 1,
+}
+
+export const chunkUndoIconButton = {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    bgcolor: 'background.paper',
+    borderRadius: 1,
+    boxShadow: 1,
+    '&:hover': {
+        boxShadow: 2,
+    }
+}

@@ -62,9 +62,6 @@ const ChunkImageDisplay: React.FC<ChunkImageDisplayProps> = ({
                         height: '100vh',
                         bgcolor: 'rgba(0,0,0,0.7)',
                         zIndex: 1300,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
                         outline: 'none',
                         ...chunkLightboxModal
                     }}

@@ -49,7 +49,8 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
                 {Object.entries(FIELD_LABELS).map(([key, label]) => {
                     const value = (doc as any)[key];
                     if (key === 'id' || value == null || value === '') return null;
-                    if (key === 'summary' || key === 'text') {
+                    if (key === 'text') return null;
+                    if (key === 'summary') {
                         return (
                             <Box key={key} sx={{ mb: 2 }}>
                                 <Typography variant="subtitle2" color="secondary">{label}</Typography>

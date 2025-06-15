@@ -15,7 +15,7 @@ import {
     chunkTextBox,
     chunkDetailsCol,
     chunkTextField,
-    chunkImageBtnBox,
+    // chunkImageBtnBox,
     toolStyles
 } from './Chunks.styles';
 import log from '../../utils/logger';
@@ -151,13 +151,13 @@ const Chunk = memo(function Chunk({
                         )}
                     </Paper>
                 )}
-                <GenerateImageDialog
+                {/* <GenerateImageDialog
                     open={imageState.dialogOpen}
                     onClose={closeDialog}
                     onSubmit={prompt => handleGenerate(prompt, chunk.id)}
                     loading={imageState.loading}
                     error={imageState.error}
-                />
+                /> */}
             </Box>
         </Paper>
     );
