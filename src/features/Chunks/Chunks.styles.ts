@@ -1,4 +1,6 @@
 // Chunks feature-specific styles using Material UI's sx prop style objects
+import { Button } from '@mui/material';
+import React from 'react';
 
 export const chunksContainer = {
     display: 'flex',
@@ -59,4 +61,13 @@ export const chunkImageBtnBox = {
     flexDirection: 'column',
     alignItems: 'flex-end',
 };
-// ...rest of the style objects...
+
+export const toolStyles = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 1,
+    p: 1,
+    bgcolor: 'background.paper',
+    borderRadius: 2,
+    boxShadow: 1,
+};

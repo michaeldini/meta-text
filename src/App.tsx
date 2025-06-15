@@ -1,9 +1,9 @@
 import './App.css';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import NavBar from './components/NavBar';
-import { Fade, CircularProgress } from '@mui/material';
+import { Fade } from '@mui/material';
 import { useMemo, Suspense, lazy } from 'react';
-import { appSuspenseFallback } from './styles/pageStyles';
+import { AppSuspenseFallback } from './components/AppSuspenseFallback';
 
 // Dynamically import pages for code splitting
 const SourceDocsPage = lazy(() => import('./pages/SourceDocPage/SourceDocsPage'));
@@ -19,7 +19,7 @@ function App() {
     const location = useLocation();
     // Use location.key as a unique key for transitions
     const routeElement = useMemo(() => (
-        <Suspense fallback={<div style={appSuspenseFallback}><CircularProgress /></div>}>
+        <Suspense fallback={<AppSuspenseFallback />}>
             <Routes location={location} key={location.key}>
                 <Route path="/" element={<h1>Welcome to Meta-Text</h1>} />
                 <Route path="/login" element={<LoginPage />} />

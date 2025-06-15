@@ -1,4 +1,4 @@
-- This project is a monorepo with a Vite + React + Material UI frontend with a FastApi + SQLModel + sqlite backend. 
+- This project is a monorepo with a Vite + typescript + React + Material UI frontend with a FastApi + SQLModel + sqlite backend. 
 - the frontend uses Material UI when possible for a consistent and modern design.
 - uv is used to manage python dependencies.
 - The frontend is structured to support a scalable and maintainable architecture. Separate folders for assets, components, features, hooks, layouts, pages, routes, services, store, styles, and utils.
@@ -7,7 +7,7 @@
 - Use the FastAPI test client for testing API endpoints.
 - The purpose of the app is to provide a user-friendly interface for managing and interacting with a document.
 - loguru is used for logging in the backend.
-- src/utils/logger.js is used for logging in the frontend.
+- src/utils/logger.ts is used for logging in the frontend.
 - pytest is used for testing in the backend.
 - vitetest is used for testing in the frontend.
 ## uv Guidelines

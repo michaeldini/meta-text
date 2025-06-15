@@ -16,11 +16,11 @@ import {
     chunkDetailsCol,
     chunkTextField,
     chunkImageBtnBox,
-    AiGenerationBtn,
     toolStyles
 } from './Chunks.styles';
 import log from '../../utils/logger';
 import ToolIconButton from './ToolIconButton';
+import { AiGenerationBtn } from '../../components/AiGenerationBtn';
 
 export interface ChunkProps {
     chunk: any;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, CircularProgress, Tooltip } from '@mui/material';
 import aiStars from '../assets/ai-stars.png';
-import { AiGenerationBtn } from '../styles/pageStyles';
+import { AiGenerationBtn } from './AiGenerationBtn';
 
 export interface AiGenerationButtonProps {
     label: string;

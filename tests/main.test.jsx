@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
 import theme from '../src/styles/theme';
 import { StrictMode } from 'react';
-import { AppRoot } from '../src/main.jsx';
+import { AppRoot } from '../src/main.tsx';
 import { describe, it, expect } from 'vitest';
 
 describe('main.jsx', () => {
