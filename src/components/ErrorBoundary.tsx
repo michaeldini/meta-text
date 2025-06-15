@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, Button, Alert } from '@mui/material';
 
 interface ErrorBoundaryState {
     hasError: boolean;
@@ -37,12 +37,16 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
         if (this.state.hasError) {
             return (
                 <Box sx={{ p: 4, textAlign: 'center' }}>
-                    <Typography variant="h4" color="error" gutterBottom>
-                        Something went wrong.
-                    </Typography>
-                    <Typography variant="body1" sx={{ mb: 2 }}>
-                        {this.state.error && this.state.error.toString()}
-                    </Typography>
+                    <Alert severity="error" sx={{ mb: 2 }}>
+                        <Typography variant="h6" color="error" gutterBottom>
+                            Something went wrong.
+                        </Typography>
+                        {this.state.error && (
+                            <Typography variant="body2" sx={{ mt: 1 }}>
+                                {this.state.error.toString()}
+                            </Typography>
+                        )}
+                    </Alert>
                     <Button variant="contained" color="primary" onClick={this.handleReload}>
                         Reload Page
                     </Button>

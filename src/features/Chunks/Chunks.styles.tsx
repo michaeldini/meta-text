@@ -91,13 +91,8 @@ export const wordsContainer = {
 }
 
 export const chunkUndoIconButton = {
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    bgcolor: 'background.paper',
-    borderRadius: 1,
-    boxShadow: 1,
+    transition: 'transform 0.2s',
     '&:hover': {
-        boxShadow: 2,
-    }
+        transform: 'rotate(-45deg)',
+    },
 }

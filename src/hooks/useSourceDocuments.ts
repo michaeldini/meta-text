@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { fetchSourceDocuments } from "../services/sourceDocumentService";
 import type { SourceDocument } from '../types/sourceDocument';
 
-export function useSourceDocuments(deps: any[] = []) {
+export function useSourceDocuments() {
     const [sourceDocs, setSourceDocs] = useState<SourceDocument[]>([]);
     const [sourceDocsLoading, setSourceDocsLoading] = useState(true);
     const [sourceDocsError, setSourceDocsError] = useState("");
@@ -17,7 +17,7 @@ export function useSourceDocuments(deps: any[] = []) {
             .then((docs: SourceDocument[]) => setSourceDocs(docs))
             .catch(e => setSourceDocsError(e.message))
             .finally(() => setSourceDocsLoading(false));
-    }, [...deps, refreshIndex]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [refreshIndex]);
 
     return { sourceDocs, sourceDocsLoading, sourceDocsError, refresh };
 }

@@ -8,11 +8,15 @@ import { deleteSourceDocument } from '../../services/sourceDocumentService';
 import log from '../../utils/logger';
 import ErrorBoundary from '../../components/ErrorBoundary';
 import LoadingBoundary from '../../components/LoadingBoundary';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 import type { SourceDocument } from '../../types/sourceDocument';
 
 export default function SourceDocsPage() {
     const { sourceDocs, sourceDocsLoading, sourceDocsError, refresh } = useSourceDocuments();
     const navigate = useNavigate();
+    const [deleteError, setDeleteError] = React.useState<string | null>(null);
+    const [snackbarOpen, setSnackbarOpen] = React.useState(false);
 
     React.useEffect(() => {
         log.info('SourceDocsPage mounted');
@@ -35,7 +39,16 @@ export default function SourceDocsPage() {
         if (e && e.stopPropagation) e.stopPropagation();
         deleteSourceDocument(id)
             .then(() => refresh())
-            .catch(err => log.error('Delete failed', err));
+            .catch(err => {
+                log.error('Delete failed', err);
+                setDeleteError('Failed to delete the document. Please try again.');
+                setSnackbarOpen(true);
+            });
+    };
+
+    const handleSnackbarClose = (_event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') return;
+        setSnackbarOpen(false);
     };
 
     return (
@@ -44,13 +57,18 @@ export default function SourceDocsPage() {
             <ErrorBoundary>
                 <LoadingBoundary loading={sourceDocsLoading}>
                     <SearchableList
-                        items={sourceDocs as any}
+                        items={sourceDocs}
                         onItemClick={handleSourceDocClick}
                         onDeleteClick={handleDeleteClick}
                         filterKey="title"
                     />
                 </LoadingBoundary>
             </ErrorBoundary>
+            <Snackbar open={snackbarOpen} autoHideDuration={4000} onClose={handleSnackbarClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+                <Alert onClose={handleSnackbarClose} severity="error" sx={{ width: '100%' }}>
+                    {deleteError}
+                </Alert>
+            </Snackbar>
         </PageContainer>
     );
 }
