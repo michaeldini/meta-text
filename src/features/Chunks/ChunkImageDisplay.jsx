@@ -6,7 +6,7 @@ import {
     chunkLightboxModal,
     chunkLightboxImgBox,
     chunkLightboxPromptBox
-} from '../styles/pageStyles';
+} from '../../styles/pageStyles';
 
 /**
  * ChunkImageDisplay - handles image display, loading overlay, prompt/date, and lightbox modal

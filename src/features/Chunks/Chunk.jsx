@@ -3,10 +3,10 @@ import { Box, Paper } from '@mui/material';
 import ChunkWords from './ChunkWords';
 import ChunkComparison from './ChunkComparison';
 import GenerateImageDialog from '../../components/GenerateImageDialog';
-import ChunkImageDisplay from '../../components/ChunkImageDisplay';
+import ChunkImageDisplay from './ChunkImageDisplay';
 import { useDebouncedField } from '../../hooks/useDebouncedField';
 import { useImageGeneration } from '../../hooks/useImageGeneration';
-import ChunkTextField from '../../components/ChunkTextField';
+import ChunkTextField from './ChunkTextField';
 import AiGenerationButton from '../../components/AiGenerationButton';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import PhotoFilterIcon from '@mui/icons-material/PhotoFilter';
@@ -20,7 +20,7 @@ import {
     toolStyles
 } from './Chunks.styles';
 import log from '../../utils/logger';
-import ToolIconButton from '../../components/ToolIconButton';
+import ToolIconButton from './ToolIconButton';
 
 const Chunk = memo(function Chunk({
     chunk,
