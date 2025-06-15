@@ -13,41 +13,32 @@ import ErrorBoundary from '../../components/ErrorBoundary';
 import LoadingBoundary from '../../components/LoadingBoundary';
 
 export default function SourceDocDetailPage() {
-    const { id } = useParams();
-    const { doc, loading, error, refetch } = useSourceDocument(id);
+    const { sourceDocId } = useParams();
+    const { doc, loading, refetch } = useSourceDocument(sourceDocId);
 
     React.useEffect(() => {
         log.info('SourceDocDetailPage mounted');
         return () => log.info('SourceDocDetailPage unmounted');
     }, []);
 
-    let renderDocContent;
-    renderDocContent = (
-        <ErrorBoundary>
-            <LoadingBoundary loading={loading}>
-                {error ? (
-                    <Typography color="error">{error}</Typography>
-                ) : doc ? (
-                    <Paper sx={sourceDocDetailPaper}>
-                        <Typography variant="body1" style={sourceDocDetailText}>
-                            {doc.text}
-                        </Typography>
-                    </Paper>
-                ) : null}
-            </LoadingBoundary>
-        </ErrorBoundary>
-    );
-
     return (
         <Box sx={sourceDocDetailContainer}>
-            <Typography variant="h4" gutterBottom>{doc?.title}</Typography>
-            {doc && (
-                <SourceDocInfo
-                    doc={doc}
-                    onInfoUpdate={refetch}
-                />
-            )}
-            {renderDocContent}
+            <ErrorBoundary>
+                <LoadingBoundary loading={loading}>
+                    {/* Only render if doc exists */}
+                    {doc ? (
+                        <>
+                            <Typography variant="h4" gutterBottom>{doc.title}</Typography>
+                            <SourceDocInfo doc={doc} onInfoUpdate={refetch} />
+                            <Paper sx={sourceDocDetailPaper}>
+                                <Typography variant="body1" style={sourceDocDetailText}>
+                                    {doc.text}
+                                </Typography>
+                            </Paper>
+                        </>
+                    ) : null}
+                </LoadingBoundary>
+            </ErrorBoundary>
         </Box>
     );
 }

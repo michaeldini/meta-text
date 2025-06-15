@@ -5,10 +5,7 @@ import SourceDocInfo from '../../components/SourceDocInfo';
 import Chunks from '../../features/Chunks';
 import { useMetaTextDetail } from '../../hooks/useMetaTextDetail';
 import {
-    metaTextDetailLoadingContainer,
-    metaTextDetailLoadingBox,
-    metaTextDetailAlert,
-    metaTextDetailPaper // <-- import the Paper style
+    metaTextDetailPaper
 } from '../../styles/pageStyles';
 import log from '../../utils/logger';
 import { metaTextReviewRoute } from '../../routes';
@@ -18,7 +15,7 @@ import LoadingBoundary from '../../components/LoadingBoundary';
 
 
 export default function MetaTextDetailPage() {
-    const { id } = useParams();
+    const { metaTextId } = useParams();
     const navigate = useNavigate();
     const {
         metaText,
@@ -26,7 +23,7 @@ export default function MetaTextDetailPage() {
         errors,
         sourceDocInfo,
         refetchSourceDoc,
-    } = useMetaTextDetail(id);
+    } = useMetaTextDetail(metaTextId);
 
     // Destructure metaText fields early for clarity
     const title = metaText?.title;
@@ -36,57 +33,39 @@ export default function MetaTextDetailPage() {
         return () => log.info('MetaTextDetailPage unmounted');
     }, []);
 
-    if (loading) {
-        return (
-            <LoadingBoundary loading={loading}>
-                {/* This will never render children while loading, but keeps the pattern consistent */}
-            </LoadingBoundary>
-        );
-    }
-    if (errors.metaText) {
-        return (
-            <ErrorBoundary>
-                <Box sx={metaTextDetailLoadingContainer}>
-                    <Alert severity="error">{errors.metaText}</Alert>
-                </Box>
-            </ErrorBoundary>
-        );
-    }
+    // Throw error as soon as possible if not loading and no metaText
+    if (!loading && !metaText) throw errors.metaText || new Error('MetaText not found');
 
-    const sourceDocSection = (
-        errors.sourceDoc ? (
-            <ErrorBoundary>
-                <Alert severity="error" sx={metaTextDetailAlert}>{errors.sourceDoc}</Alert>
-            </ErrorBoundary>
-        ) : sourceDocInfo ? (
-            <SourceDocInfo doc={sourceDocInfo} onInfoUpdate={refetchSourceDoc} />
-        ) : null
-    );
-    const chunksErrorSection = errors.chunks && (
-        <ErrorBoundary>
-            <Alert severity="error" sx={metaTextDetailAlert}>{errors.chunks}</Alert>
-        </ErrorBoundary>
-    );
+    // If there are sourceDoc or chunks errors, throw them to be caught by ErrorBoundary
+    if (errors.sourceDoc) throw errors.sourceDoc;
+    if (errors.chunks) throw errors.chunks;
+
+    const sourceDocSection = sourceDocInfo ? (
+        <SourceDocInfo doc={sourceDocInfo} onInfoUpdate={refetchSourceDoc} />
+    ) : null;
 
     return (
-        <PageContainer>
-            <Paper sx={metaTextDetailPaper} elevation={3}>
-                <Typography variant="body1">
-                    Meta Text Title: {title || id}
-                </Typography>
-                <Button
-                    variant="outlined"
-                    size="small"
-                    onClick={() => navigate(metaTextReviewRoute(id))}
-                >
-                    Review
-                </Button>
-            </Paper>
-            {sourceDocSection}
-            {chunksErrorSection}
-            {id && (
-                <Chunks metaTextId={id} />
-            )}
-        </PageContainer>
+        <ErrorBoundary>
+            <LoadingBoundary loading={loading}>
+                <PageContainer>
+                    <Paper sx={metaTextDetailPaper} elevation={3}>
+                        <Typography variant="body1">
+                            Meta Text Title: {title || metaTextId}
+                        </Typography>
+                        <Button
+                            variant="outlined"
+                            size="small"
+                            onClick={() => navigate(metaTextReviewRoute(metaTextId))}
+                        >
+                            Review
+                        </Button>
+                    </Paper>
+                    {sourceDocSection}
+                    {metaTextId && (
+                        <Chunks metaTextId={metaTextId} />
+                    )}
+                </PageContainer>
+            </LoadingBoundary>
+        </ErrorBoundary>
     );
 }

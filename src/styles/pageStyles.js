@@ -85,6 +85,12 @@ export const metaTextDetailLoadingBox = {
     justifyContent: 'center',
     mt: 4,
 };
+export const metaTextDetailPaper = {
+    display: 'flex',
+    p: 2,
+    mb: 4,
+    gap: 2,
+}
 
 export const metaTextDetailAlert = {
     mb: 2,

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { fetchMetaText } from '../services/metaTextService';
 import { fetchSourceDocument } from '../services/sourceDocumentService';
 
-export function useMetaTextDetail(id) {
+export function useMetaTextDetail(metaTextId) {
     const [metaText, setMetaText] = useState(null);
     const [loading, setLoading] = useState(true);
     const [errors, setErrors] = useState({ metaText: '', sourceDoc: '' });
@@ -14,7 +14,7 @@ export function useMetaTextDetail(id) {
         setErrors({ metaText: '', sourceDoc: '' });
         setMetaText(null);
         setSourceDocInfo(null);
-        fetchMetaText(id)
+        fetchMetaText(metaTextId)
             .then(async data => {
                 if (!isMounted) return;
                 setMetaText(data);
@@ -41,7 +41,7 @@ export function useMetaTextDetail(id) {
                 setLoading(false);
             });
         return () => { isMounted = false; };
-    }, [id]);
+    }, [metaTextId]);
 
     // Add a refetchSourceDoc function
     const refetchSourceDoc = async () => {

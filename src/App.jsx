@@ -29,7 +29,7 @@ function App() {
             <SourceDocsPage />
           </AuthGate>
         } />
-        <Route path="/sourceDocs/:id" element={
+        <Route path="/sourceDocs/:sourceDocId" element={
           <AuthGate>
             <SourceDocDetailPage />
           </AuthGate>
@@ -39,12 +39,12 @@ function App() {
             <MetaTextPage />
           </AuthGate>
         } />
-        <Route path="/metaText/:id" element={
+        <Route path="/metaText/:metaTextId" element={
           <AuthGate>
             <MetaTextDetailPage />
           </AuthGate>
         } />
-        <Route path="/metaText/:id/review" element={
+        <Route path="/metaText/:metaTextId/review" element={
           <AuthGate>
             <MetaTextReviewPage />
           </AuthGate>
