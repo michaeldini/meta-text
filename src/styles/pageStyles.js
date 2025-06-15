@@ -74,11 +74,6 @@ export const sourceDocDetailText = {
     fontFamily: 'monospace',
 };
 
-export const metaTextDetailContainer = {
-    mt: 4,
-    mb: 6,
-};
-
 export const metaTextDetailLoadingContainer = {
     maxWidth: 900,
     mx: 'auto',

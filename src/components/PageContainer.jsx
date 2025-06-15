@@ -7,7 +7,7 @@ import { Container } from '@mui/material';
  */
 export default function PageContainer({ children }) {
     return (
-        <Container sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
+        <Container maxWidth="lg" >
             {children}
         </Container>
     );

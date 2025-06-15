@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Box, Pagination, Paper } from '@mui/material';
+import { Box, Pagination, Paper, CircularProgress, Alert } from '@mui/material';
 import Chunk from './Chunk';
 import { chunksContainer } from '../styles/pageStyles';
+import log from '../utils/logger';
+import { useChunkHandlers } from '../hooks/useChunkHandlers';
 
 function ChunksPagination({ pageCount, page, handleChange }) {
     if (pageCount <= 1) return null;
@@ -12,25 +14,50 @@ function ChunksPagination({ pageCount, page, handleChange }) {
     );
 }
 
-export default function Chunks({ chunks, handleWordClick, handleRemoveChunk, handleChunkFieldChange }) {
-    // Defensive: always treat chunks as array
-    const safeChunks = Array.isArray(chunks) ? chunks : [];
+export default function Chunks({ metaTextId }) {
+    console.log('Chunks render, metaTextId:', metaTextId);
+    // All hooks must be called at the top, before any return
+    const {
+        chunks,
+        loadingChunks,
+        chunksError,
+        handleWordClick,
+        handleRemoveChunk,
+        handleChunkFieldChange,
+    } = useChunkHandlers(metaTextId);
     const [page, setPage] = useState(1);
-    const chunksPerPage = 5;
-    const pageCount = Math.ceil(safeChunks.length / chunksPerPage);
-    const startIdx = (page - 1) * chunksPerPage;
-    const endIdx = startIdx + chunksPerPage;
-    const paginatedChunks = safeChunks.slice(startIdx, endIdx);
-
-    // Add ref for the container
     const containerRef = useRef(null);
 
-    // Scroll to top of container when page changes
     useEffect(() => {
         if (containerRef.current) {
             containerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     }, [page]);
+
+    // Conditional rendering only after all hooks
+    if (loadingChunks) {
+        return (
+            <Box sx={chunksContainer} data-testid="chunks-container-loading">
+                <CircularProgress />
+            </Box>
+        );
+    }
+    if (chunksError) {
+        return (
+            <Box sx={chunksContainer} data-testid="chunks-container-error">
+                <Alert severity="error">{chunksError}</Alert>
+            </Box>
+        );
+    }
+    if (!Array.isArray(chunks)) {
+        log.error('Chunks prop is not an array:', chunks);
+        throw new Error('Chunks prop must be an array. Received: ' + typeof chunks);
+    }
+    const chunksPerPage = 5;
+    const pageCount = Math.ceil(chunks.length / chunksPerPage);
+    const startIdx = (page - 1) * chunksPerPage;
+    const endIdx = startIdx + chunksPerPage;
+    const paginatedChunks = chunks.slice(startIdx, endIdx);
 
     const handleChange = (event, value) => {
         setPage(value);

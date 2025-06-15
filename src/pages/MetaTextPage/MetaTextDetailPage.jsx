@@ -1,19 +1,17 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Typography, CircularProgress, Box, Alert, Container, Fade, Button } from '@mui/material';
+import { Typography, CircularProgress, Box, Alert, Button, Paper } from '@mui/material';
 import SourceDocInfo from '../../components/SourceDocInfo';
 import Chunks from '../../features/Chunks';
-import { useChunkHandlers } from '../../hooks/useChunkHandlers';
 import { useMetaTextDetail } from '../../hooks/useMetaTextDetail';
 import {
-    metaTextDetailContainer,
     metaTextDetailLoadingContainer,
     metaTextDetailLoadingBox,
     metaTextDetailAlert
 } from '../../styles/pageStyles';
 import log from '../../utils/logger';
 import { metaTextReviewRoute } from '../../routes';
-
+import PageContainer from '../../components/PageContainer';
 export default function MetaTextDetailPage() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -22,15 +20,8 @@ export default function MetaTextDetailPage() {
         loading,
         errors,
         sourceDocInfo,
-        chunks,
-        setChunks,
         refetchSourceDoc,
     } = useMetaTextDetail(id);
-    const {
-        handleWordClick,
-        handleRemoveChunk,
-        handleChunkFieldChange,
-    } = useChunkHandlers(id, setChunks);
 
     // Destructure metaText fields early for clarity
     const title = metaText?.title;
@@ -56,36 +47,37 @@ export default function MetaTextDetailPage() {
             </Box>
         );
     }
+
+    const sourceDocSection = (
+        errors.sourceDoc ? (
+            <Alert severity="error" sx={metaTextDetailAlert}>{errors.sourceDoc}</Alert>
+        ) : sourceDocInfo ? (
+            <SourceDocInfo doc={sourceDocInfo} onInfoUpdate={refetchSourceDoc} />
+        ) : null
+    );
+    const chunksErrorSection = errors.chunks && (
+        <Alert severity="error" sx={metaTextDetailAlert}>{errors.chunks}</Alert>
+    );
+
     return (
-        <Fade in={true} key={id} timeout={750}>
-            <Container maxWidth="lg" sx={metaTextDetailContainer}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                    <Typography variant="h4" gutterBottom>{title || id}</Typography>
-                    <Button
-                        variant="outlined"
-                        onClick={() => navigate(metaTextReviewRoute(id))}
-                        sx={{ ml: 2 }}
-                    >
-                        Review
-                    </Button>
-                </Box>
-                {errors.sourceDoc ? (
-                    <Alert severity="error" sx={metaTextDetailAlert}>{errors.sourceDoc}</Alert>
-                ) : sourceDocInfo ? (
-                    <SourceDocInfo doc={sourceDocInfo} onInfoUpdate={refetchSourceDoc} />
-                ) : null}
-
-                {errors.chunks && (
-                    <Alert severity="error" sx={metaTextDetailAlert}>{errors.chunks}</Alert>
-                )}
-
-                <Chunks
-                    chunks={chunks}
-                    handleWordClick={handleWordClick}
-                    handleRemoveChunk={(chunkIdx) => handleRemoveChunk(chunkIdx, chunks)}
-                    handleChunkFieldChange={handleChunkFieldChange}
-                />
-            </Container>
-        </Fade>
+        <PageContainer>
+            <Paper sx={{ display: 'flex', alignItems: 'baseline', p: 2, mb: 2, gap: 2 }} elevation={3}>
+                <Typography variant="body1">
+                    Meta Text Title: {title || id}
+                </Typography>
+                <Button
+                    variant="outlined"
+                    size="small"
+                    onClick={() => navigate(metaTextReviewRoute(id))}
+                >
+                    Review
+                </Button>
+            </Paper>
+            {sourceDocSection}
+            {chunksErrorSection}
+            {id && (
+                <Chunks metaTextId={id} />
+            )}
+        </PageContainer>
     );
 }

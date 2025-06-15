@@ -1,44 +1,33 @@
 import { useEffect, useState } from 'react';
 import { fetchMetaText } from '../services/metaTextService';
 import { fetchSourceDocument } from '../services/sourceDocumentService';
-import { fetchChunks } from '../services/chunkService';
 
 export function useMetaTextDetail(id) {
     const [metaText, setMetaText] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [errors, setErrors] = useState({ metaText: '', sourceDoc: '', chunks: '' });
+    const [errors, setErrors] = useState({ metaText: '', sourceDoc: '' });
     const [sourceDocInfo, setSourceDocInfo] = useState(null);
-    const [chunks, setChunks] = useState([]);
 
     useEffect(() => {
         let isMounted = true;
         setLoading(true);
-        setErrors({ metaText: '', sourceDoc: '', chunks: '' });
+        setErrors({ metaText: '', sourceDoc: '' });
         setMetaText(null);
         setSourceDocInfo(null);
-        setChunks([]);
         fetchMetaText(id)
             .then(async data => {
                 if (!isMounted) return;
                 setMetaText(data);
                 if (data.source_document_id) {
                     try {
-                        const [doc, chunkData] = await Promise.all([
-                            fetchSourceDocument(data.source_document_id),
-                            fetchChunks(data.id)
-                        ]);
+                        const doc = await fetchSourceDocument(data.source_document_id);
                         if (!isMounted) return;
                         setSourceDocInfo(doc);
-                        setChunks(chunkData.map(chunk => ({
-                            ...chunk,
-                            content: chunk.text
-                        })));
                     } catch (e) {
                         if (!isMounted) return;
                         setErrors(prev => ({
                             ...prev,
                             sourceDoc: e.message?.includes('document') ? (e.message || 'Failed to load source document.') : prev.sourceDoc,
-                            chunks: e.message?.includes('chunk') ? (e.message || 'Failed to load chunks.') : prev.chunks
                         }));
                     }
                 }
@@ -71,8 +60,6 @@ export function useMetaTextDetail(id) {
         loading,
         errors,
         sourceDocInfo,
-        chunks,
-        setChunks,
         setSourceDocInfo,
         refetchSourceDoc,
     };

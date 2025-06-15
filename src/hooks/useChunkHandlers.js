@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useEffect, useState } from 'react';
 import { useChunks } from './useChunks';
 
 function debounce(func, wait) {
@@ -10,46 +10,61 @@ function debounce(func, wait) {
 }
 
 /**
- * Custom hook for managing MetaText chunk handlers.
+ * Custom hook for managing MetaText chunk handlers and state.
  * @param {string} metaTextId - The MetaText document ID.
- * @param {Function} setChunks - React setState function for chunks.
- * @returns {Object} Handlers for word click, remove chunk, and field change.
+ * @returns {Object} Chunks state, loading, errors, handlers, etc.
  */
-export function useChunkHandlers(metaTextId, setChunks) {
+export function useChunkHandlers(metaTextId) {
+    console.log('useChunkHandlers render, metaTextId:', metaTextId);
     const { split, combine, fetchChunks, update } = useChunks(metaTextId);
     const debounceMap = useRef({});
+    const [chunks, setChunks] = useState([]);
+    const [loadingChunks, setLoadingChunks] = useState(true);
+    const [chunksError, setChunksError] = useState('');
+
+    // Fetch chunks on mount or metaTextId change
+    useEffect(() => {
+        let isMounted = true;
+        setLoadingChunks(true);
+        setChunksError('');
+        setChunks([]);
+        if (!metaTextId) {
+            setLoadingChunks(false);
+            return;
+        }
+        fetchChunks()
+            .then(chunkData => {
+                if (!isMounted) return;
+                setChunks(chunkData.map(chunk => ({ ...chunk, content: chunk.text })));
+            })
+            .catch(e => {
+                if (!isMounted) return;
+                setChunksError(e.message || 'Failed to load chunks.');
+            })
+            .finally(() => {
+                if (!isMounted) return;
+                setLoadingChunks(false);
+            });
+        return () => { isMounted = false; };
+    }, [metaTextId, fetchChunks]);
 
     // Split chunk at word index using backend
     const handleWordClick = useCallback(async (chunkIdx, wordIdx) => {
-        console.log(`Splitting chunk ${chunkIdx} at word index ${wordIdx}`);
-        setChunks(prevChunks => {
-            const currentChunk = prevChunks[chunkIdx];
-            if (!currentChunk || !currentChunk.id) return prevChunks;
-            return prevChunks;
-        });
-        const updatedChunks = await fetchChunks();
-        const chunkId = updatedChunks[chunkIdx]?.id;
-        if (chunkId == null) return;
-        await split(chunkId, wordIdx + 1);
+        if (!chunks[chunkIdx] || !chunks[chunkIdx].id) return;
+        await split(chunks[chunkIdx].id, wordIdx + 1);
         const updated = await fetchChunks();
-        setChunks(updated.map(chunk => ({
-            ...chunk,
-            content: chunk.text
-        })));
-    }, [split, fetchChunks, setChunks]);
+        setChunks(updated.map(chunk => ({ ...chunk, content: chunk.text })));
+    }, [split, fetchChunks, chunks]);
 
     // Combine chunk with next using backend
-    const handleRemoveChunk = useCallback(async (chunkIdx, chunks) => {
+    const handleRemoveChunk = useCallback(async (chunkIdx) => {
         const first = chunks[chunkIdx];
         const second = chunks[chunkIdx + 1];
         if (!first || !second) return;
         await combine(first.id, second.id);
         const updated = await fetchChunks();
-        setChunks(updated.map(chunk => ({
-            ...chunk,
-            content: chunk.text
-        })));
-    }, [combine, fetchChunks, setChunks]);
+        setChunks(updated.map(chunk => ({ ...chunk, content: chunk.text })));
+    }, [combine, fetchChunks, chunks]);
 
     // Field change: update local and save to backend (debounced)
     const handleChunkFieldChange = useCallback((chunkIdx, field, value) => {
@@ -62,21 +77,37 @@ export function useChunkHandlers(metaTextId, setChunks) {
             // Debounced save for this chunk
             const chunk = newChunks[chunkIdx];
             if (!debounceMap.current[chunk.id]) {
-                // Increased debounce interval for smoother typing experience
                 debounceMap.current[chunk.id] = debounce((data) => {
                     update(data.id, data);
-                }, 1200); // was 500ms, now 1200ms
+                }, 1200);
             }
             debounceMap.current[chunk.id]({ ...chunk, [field]: value });
             return newChunks;
         });
-    }, [setChunks, update]);
+    }, [update]);
 
+    // Expose refetchChunks for manual reload
+    const refetchChunks = useCallback(async () => {
+        setLoadingChunks(true);
+        setChunksError('');
+        try {
+            const chunkData = await fetchChunks();
+            setChunks(chunkData.map(chunk => ({ ...chunk, content: chunk.text })));
+        } catch (e) {
+            setChunksError(e.message || 'Failed to reload chunks.');
+        } finally {
+            setLoadingChunks(false);
+        }
+    }, [fetchChunks]);
 
     return {
+        chunks,
+        setChunks,
+        loadingChunks,
+        chunksError,
         handleWordClick,
         handleRemoveChunk,
         handleChunkFieldChange,
-
+        refetchChunks,
     };
 }
