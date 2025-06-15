@@ -9,7 +9,7 @@ function debounce(func: (...args: any[]) => void, wait: number) {
     };
 }
 
-export function useChunksManager(metaTextId: number) {
+export function useChunksManager(metaTextId: string) {
     const { split, combine, fetchChunks, update } = useChunksApi(metaTextId);
     const debounceMap = useRef<Record<string, any>>({});
     const [chunks, setChunks] = useState<any[]>([]);

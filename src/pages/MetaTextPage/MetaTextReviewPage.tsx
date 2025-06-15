@@ -27,21 +27,38 @@ const columns = [
 ];
 
 export default function MetaTextReviewPage() {
+    console.log('MetaTextReviewPage mounted');
+
+    const { metaTextId: metatextIdParam } = useParams<{ metaTextId?: string }>();
+    const metatextId = metatextIdParam ? Number(metatextIdParam) : undefined;
+    console.log('MetaTextReviewPage mounted, metatextId:', metatextId);
+
     const [wordlist, setWordlist] = useState<WordlistRow[]>([]);
     const [chunkSummariesNotes, setChunkSummariesNotes] = useState<ChunkSummaryNote[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
-    const { id: metatextId } = useParams<{ id?: string }>();
 
     useEffect(() => {
         async function loadData() {
+            console.log('loadData called, metatextId:', metatextId);
             try {
                 setLoading(true);
+                logger.info('Starting to load wordlist and chunk summaries/notes', { metatextId });
+                if (!metatextId || isNaN(metatextId)) {
+                    setError('Invalid MetaText ID.');
+                    setLoading(false);
+                    return;
+                }
+                logger.info('Fetching wordlist...');
+                const wordlistPromise = fetchWordlist(metatextId);
+                logger.info('Fetching chunk summaries/notes...');
+                const chunkPromise = fetchChunkSummariesNotes(metatextId);
                 const [wordlistData, chunkData] = await Promise.all([
-                    fetchWordlist(metatextId),
-                    fetchChunkSummariesNotes(metatextId)
+                    wordlistPromise,
+                    chunkPromise
                 ]);
+                logger.info('Fetch complete', { wordlistData, chunkData });
                 setWordlist(Array.isArray(wordlistData) ? wordlistData : []);
                 setChunkSummariesNotes(Array.isArray(chunkData) ? chunkData : []);
                 logger.info('Wordlist and chunk summaries/notes loaded', { wordlistData, chunkData });
@@ -60,7 +77,7 @@ export default function MetaTextReviewPage() {
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                 {metatextId && (
                     <Tooltip title="Back to MetaText Detail">
-                        <IconButton onClick={() => navigate(metaTextDetailRoute(metatextId))}>
+                        <IconButton onClick={() => navigate(metaTextDetailRoute(String(metatextId)))}>
                             <ArrowBackIcon />
                         </IconButton>
                     </Tooltip>

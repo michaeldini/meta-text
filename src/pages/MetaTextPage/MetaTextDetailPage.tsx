@@ -14,7 +14,7 @@ import type { MetaText } from '../../types/metaText';
 import type { SourceDocument } from '../../types/sourceDocument';
 
 export default function MetaTextDetailPage() {
-    const { metaTextId } = useParams<{ metaTextId?: string }>();
+    const { metaTextId } = useParams<{ metaTextId: string }>();
     const navigate = useNavigate();
     const {
         metaText,
@@ -45,24 +45,24 @@ export default function MetaTextDetailPage() {
     return (
         <ErrorBoundary>
             <LoadingBoundary loading={loading}>
-                <PageContainer>
-                    <Paper sx={metaTextDetailPaper} elevation={3}>
-                        <Typography variant="body1">
-                            Meta Text Title: {title || metaTextId}
-                        </Typography>
-                        <Button
-                            variant="outlined"
-                            size="small"
-                            onClick={() => navigate(metaTextReviewRoute(Number(metaTextId)))}
-                        >
-                            Review
-                        </Button>
-                    </Paper>
-                    {sourceDocSection}
-                    {metaTextId && (
-                        <Chunks metaTextId={Number(metaTextId)} />
-                    )}
-                </PageContainer>
+                {metaTextId && (
+                    <PageContainer>
+                        <Paper sx={metaTextDetailPaper} elevation={3}>
+                            <Typography variant="body1">
+                                Meta Text Title: {title || metaTextId}
+                            </Typography>
+                            <Button
+                                variant="outlined"
+                                size="small"
+                                onClick={() => navigate(metaTextReviewRoute(metaTextId))}
+                            >
+                                Review
+                            </Button>
+                        </Paper>
+                        {sourceDocSection}
+                        <Chunks metaTextId={metaTextId} />
+                    </PageContainer>
+                )}
             </LoadingBoundary>
         </ErrorBoundary>
     );

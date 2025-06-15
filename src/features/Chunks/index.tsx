@@ -23,7 +23,7 @@ function ChunksPagination({ pageCount, page, handleChange }: ChunksPaginationPro
 }
 
 interface ChunksProps {
-    metaTextId: number;
+    metaTextId: string;
 }
 
 const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
