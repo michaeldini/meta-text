@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Popover, Box, IconButton, Alert, CircularProgress } from '@mui/material';
 import ContentCutIcon from '@mui/icons-material/ContentCut';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
-import { fetchDefinitionInContext } from '../services/aiService';
+import { fetchDefinitionInContext } from '../../services/aiService';
 
 export default function WordActionDialog({ anchorEl, onClose, word, onSplit, context, metaTextId }) {
     const [loading, setLoading] = useState(false);

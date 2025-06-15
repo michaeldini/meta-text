@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Typography, CircularProgress, Box, Alert, Button, Paper } from '@mui/material';
 import SourceDocInfo from '../../components/SourceDocInfo';
-import Chunks from '../../features/Chunks';
+import Chunks from '../../features/Chunks/index';
 import { useMetaTextDetail } from '../../hooks/useMetaTextDetail';
 import {
     metaTextDetailPaper

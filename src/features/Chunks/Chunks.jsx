@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Box, Pagination, Paper, CircularProgress, Alert } from '@mui/material';
 import Chunk from './Chunk';
-import { chunksContainer } from '../styles/pageStyles';
-import log from '../utils/logger';
-import { useChunkHandlers } from '../hooks/useChunkHandlers';
+import { chunksContainer } from '../../styles/pageStyles';
+import log from '../../utils/logger';
+import { useChunksManager } from './useChunksManager.hook';
 
 function ChunksPagination({ pageCount, page, handleChange }) {
     if (pageCount <= 1) return null;
@@ -24,7 +24,7 @@ export default function Chunks({ metaTextId }) {
         handleWordClick,
         handleRemoveChunk,
         handleChunkFieldChange,
-    } = useChunkHandlers(metaTextId);
+    } = useChunksManager(metaTextId);
     const [page, setPage] = useState(1);
     const containerRef = useRef(null);
 

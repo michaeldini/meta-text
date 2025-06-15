@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Box, Paper } from '@mui/material';
 
-import AiGenerationButton from '../components/AiGenerationButton';
-import { generateChunkNoteSummaryTextComparison } from '../services/aiService';
-import { toolStyles } from '../styles/pageStyles';
+import AiGenerationButton from '../../components/AiGenerationButton';
+import { generateChunkNoteSummaryTextComparison } from '../../services/aiService';
+import { toolStyles } from '../../styles/pageStyles';
 function ChunkComparison({ chunkId, comparisonText, onComparisonUpdate }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');

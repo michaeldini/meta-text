@@ -1,5 +1,5 @@
 import { useCallback, useRef, useEffect, useState } from 'react';
-import { useChunks } from './useChunks';
+import { useChunksApi } from './useChunksApi.hook.';
 
 function debounce(func, wait) {
     let timeout;
@@ -14,9 +14,9 @@ function debounce(func, wait) {
  * @param {string} metaTextId - The MetaText document ID.
  * @returns {Object} Chunks state, loading, errors, handlers, etc.
  */
-export function useChunkHandlers(metaTextId) {
-    console.log('useChunkHandlers render, metaTextId:', metaTextId);
-    const { split, combine, fetchChunks, update } = useChunks(metaTextId);
+export function useChunksManager(metaTextId) {
+    console.log('useChunksManager render, metaTextId:', metaTextId);
+    const { split, combine, fetchChunks, update } = useChunksApi(metaTextId);
     const debounceMap = useRef({});
     const [chunks, setChunks] = useState([]);
     const [loadingChunks, setLoadingChunks] = useState(true);

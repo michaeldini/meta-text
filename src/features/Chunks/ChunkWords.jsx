@@ -1,8 +1,8 @@
 import React, { memo, useState } from 'react';
 import { Box, IconButton } from '@mui/material';
-import UndoArrowIcon from '../components/icons/UndoArrowIcon';
+import UndoArrowIcon from '../../components/icons/UndoArrowIcon';
 import WordActionDialog from './WordActionDialog';
-import { chunkWordBox, chunkUndoIconButton, wordsContainer } from '../styles/pageStyles';
+import { chunkWordBox, chunkUndoIconButton, wordsContainer } from '../../styles/pageStyles';
 
 const ChunkWords = memo(function ChunkWords({
     words,
