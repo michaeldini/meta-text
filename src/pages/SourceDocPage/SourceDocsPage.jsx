@@ -1,12 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CircularProgress, Alert, Box } from '@mui/material';
 import PageContainer from '../../components/PageContainer';
 import SearchableList from '../../components/SearchableList';
 import SourceDocUploadForm from '../../components/SourceDocUploadForm';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
 import { deleteSourceDocument } from '../../services/sourceDocumentService';
 import log from '../../utils/logger';
+import ErrorBoundary from '../../components/ErrorBoundary';
+import LoadingBoundary from '../../components/LoadingBoundary';
 
 export default function SourceDocsPage() {
     const { docs = [], loading, error, refresh } = useSourceDocuments();
@@ -39,32 +40,19 @@ export default function SourceDocsPage() {
         }
     };
 
-    let renderSearchableList;
-    if (loading) {
-        renderSearchableList = (
-            <Box>
-                <CircularProgress />
-            </Box>
-        );
-    } else if (error) {
-        renderSearchableList = (
-            <Alert severity="error">{error}</Alert>
-        );
-    } else {
-        renderSearchableList = (
-            <SearchableList
-                items={docs}
-                onItemClick={handleSourceDocClick}
-                onDeleteClick={handleDeleteClick}
-                filterKey="title"
-            />
-        );
-    }
-
     return (
         <PageContainer>
             <SourceDocUploadForm refresh={refresh} />
-            {renderSearchableList}
+            <ErrorBoundary>
+                <LoadingBoundary loading={loading}>
+                    <SearchableList
+                        items={docs}
+                        onItemClick={handleSourceDocClick}
+                        onDeleteClick={handleDeleteClick}
+                        filterKey="title"
+                    />
+                </LoadingBoundary>
+            </ErrorBoundary>
         </PageContainer>
     );
 }

@@ -7,11 +7,16 @@ import { useMetaTextDetail } from '../../hooks/useMetaTextDetail';
 import {
     metaTextDetailLoadingContainer,
     metaTextDetailLoadingBox,
-    metaTextDetailAlert
+    metaTextDetailAlert,
+    metaTextDetailPaper // <-- import the Paper style
 } from '../../styles/pageStyles';
 import log from '../../utils/logger';
 import { metaTextReviewRoute } from '../../routes';
 import PageContainer from '../../components/PageContainer';
+import ErrorBoundary from '../../components/ErrorBoundary';
+import LoadingBoundary from '../../components/LoadingBoundary';
+
+
 export default function MetaTextDetailPage() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -33,35 +38,39 @@ export default function MetaTextDetailPage() {
 
     if (loading) {
         return (
-            <Box sx={metaTextDetailLoadingContainer}>
-                <Box sx={metaTextDetailLoadingBox}>
-                    <CircularProgress />
-                </Box>
-            </Box>
+            <LoadingBoundary loading={loading}>
+                {/* This will never render children while loading, but keeps the pattern consistent */}
+            </LoadingBoundary>
         );
     }
     if (errors.metaText) {
         return (
-            <Box sx={metaTextDetailLoadingContainer}>
-                <Alert severity="error">{errors.metaText}</Alert>
-            </Box>
+            <ErrorBoundary>
+                <Box sx={metaTextDetailLoadingContainer}>
+                    <Alert severity="error">{errors.metaText}</Alert>
+                </Box>
+            </ErrorBoundary>
         );
     }
 
     const sourceDocSection = (
         errors.sourceDoc ? (
-            <Alert severity="error" sx={metaTextDetailAlert}>{errors.sourceDoc}</Alert>
+            <ErrorBoundary>
+                <Alert severity="error" sx={metaTextDetailAlert}>{errors.sourceDoc}</Alert>
+            </ErrorBoundary>
         ) : sourceDocInfo ? (
             <SourceDocInfo doc={sourceDocInfo} onInfoUpdate={refetchSourceDoc} />
         ) : null
     );
     const chunksErrorSection = errors.chunks && (
-        <Alert severity="error" sx={metaTextDetailAlert}>{errors.chunks}</Alert>
+        <ErrorBoundary>
+            <Alert severity="error" sx={metaTextDetailAlert}>{errors.chunks}</Alert>
+        </ErrorBoundary>
     );
 
     return (
         <PageContainer>
-            <Paper sx={{ display: 'flex', alignItems: 'baseline', p: 2, mb: 2, gap: 2 }} elevation={3}>
+            <Paper sx={metaTextDetailPaper} elevation={3}>
                 <Typography variant="body1">
                     Meta Text Title: {title || id}
                 </Typography>

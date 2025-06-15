@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CircularProgress, Alert, Box } from '@mui/material';
+import { Box } from '@mui/material';
 import PageContainer from '../../components/PageContainer';
 import SearchableList from '../../components/SearchableList';
 import MetaTextCreateForm from '../../components/MetaTextCreateForm';
@@ -8,6 +8,8 @@ import { useSourceDocuments } from '../../hooks/useSourceDocuments';
 import { useMetaTexts } from '../../hooks/useMetaTexts';
 import { deleteMetaText } from '../../services/metaTextService';
 import log from '../../utils/logger';
+import ErrorBoundary from '../../components/ErrorBoundary';
+import LoadingBoundary from '../../components/LoadingBoundary';
 
 
 export default function MetaTextPage() {
@@ -51,28 +53,6 @@ export default function MetaTextPage() {
         }
     };
 
-    let renderSearchableList;
-    if (metaTextsLoading) {
-        renderSearchableList = (
-            <Box>
-                <CircularProgress />
-            </Box>
-        );
-    } else if (metaTextsError) {
-        renderSearchableList = (
-            <Alert severity="error">{metaTextsError}</Alert>
-        );
-    } else {
-        renderSearchableList = (
-            <SearchableList
-                items={metaTexts}
-                onItemClick={handleMetaTextClick}
-                onDeleteClick={handleDeleteClick}
-                filterKey="title"
-            />
-        );
-    }
-
     return (
         <PageContainer>
             <MetaTextCreateForm
@@ -81,7 +61,16 @@ export default function MetaTextPage() {
                 sourceDocsError={sourceDocsError}
                 onCreateSuccess={refresh}
             />
-            {renderSearchableList}
+            <ErrorBoundary>
+                <LoadingBoundary loading={metaTextsLoading}>
+                    <SearchableList
+                        items={metaTexts}
+                        onItemClick={handleMetaTextClick}
+                        onDeleteClick={handleDeleteClick}
+                        filterKey="title"
+                    />
+                </LoadingBoundary>
+            </ErrorBoundary>
         </PageContainer>
     );
 }
