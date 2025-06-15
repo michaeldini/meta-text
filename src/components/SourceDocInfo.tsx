@@ -3,6 +3,7 @@ import { Paper, Box, Typography, Divider, Stack, Chip, Alert } from '@mui/materi
 import AiGenerationButton from './AiGenerationButton';
 import { sourceDocInfoDetailsBox } from '../styles/pageStyles';
 import type { SourceDocument } from '../types/sourceDocument';
+import { generateSourceDocInfo } from '../services/sourceDocInfoService';
 
 interface SourceDocInfoProps {
     doc: SourceDocument;
@@ -33,9 +34,13 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
         setLoading(true);
         setError('');
         try {
-            // TODO: Implement generateSourceDocInfo or use correct service function
-            throw new Error('generateSourceDocInfo is not implemented.');
-            // if (onInfoUpdate) onInfoUpdate();
+            const prompt = doc.text || '';
+            if (!doc.id || !prompt) {
+                throw new Error('Document ID or text is missing.');
+            }
+            const response = await generateSourceDocInfo({ id: doc.id, prompt });
+            // Optionally update UI with new info, or trigger parent update
+            if (onInfoUpdate) onInfoUpdate();
         } catch (err: any) {
             setError(err.message || 'Failed to generate info');
         } finally {
