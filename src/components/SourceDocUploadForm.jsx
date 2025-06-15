@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Box, Typography, TextField, Button, Alert, Paper } from '@mui/material';
-import FileUploadWidget from '../../components/FileUploadWidget';
-import { createSourceDocument } from '../../services/sourceDocumentService';
-import { uploadFormContainer, uploadFormInner } from '../../styles/pageStyles';
-import log from '../../utils/logger';
+import FileUploadWidget from './FileUploadWidget';
+import { createSourceDocument } from '../services/sourceDocumentService';
+import { uploadFormContainer, uploadFormInner } from '../styles/pageStyles';
+import log from '../utils/logger';
 
 export default function SourceDocUploadForm({ onUploadSuccess, refresh }) {
     const [file, setFile] = useState(null);

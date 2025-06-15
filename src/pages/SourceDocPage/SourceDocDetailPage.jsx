@@ -20,6 +20,29 @@ export default function SourceDocDetailPage() {
         return () => log.info('SourceDocDetailPage unmounted');
     }, []);
 
+    let renderDocContent;
+    if (loading) {
+        renderDocContent = (
+            <Box sx={sourceDocDetailLoading}>
+                <CircularProgress />
+            </Box>
+        );
+    } else if (error) {
+        renderDocContent = (
+            <Typography color="error">{error}</Typography>
+        );
+    } else if (doc) {
+        renderDocContent = (
+            <Paper sx={sourceDocDetailPaper}>
+                <Typography variant="body1" style={sourceDocDetailText}>
+                    {doc.text}
+                </Typography>
+            </Paper>
+        );
+    } else {
+        renderDocContent = null;
+    }
+
     return (
         <Box sx={sourceDocDetailContainer}>
             <Typography variant="h4" gutterBottom>{doc?.title}</Typography>
@@ -29,19 +52,7 @@ export default function SourceDocDetailPage() {
                     onInfoUpdate={refetch}
                 />
             )}
-            {loading ? (
-                <Box sx={sourceDocDetailLoading}>
-                    <CircularProgress />
-                </Box>
-            ) : error ? (
-                <Typography color="error">{error}</Typography>
-            ) : doc ? (
-                <Paper sx={sourceDocDetailPaper}>
-                    <Typography variant="body1" style={sourceDocDetailText}>
-                        {doc.text}
-                    </Typography>
-                </Paper>
-            ) : null}
+            {renderDocContent}
         </Box>
     );
 }

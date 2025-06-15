@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { CircularProgress, Alert, Box } from '@mui/material';
 import PageContainer from '../../components/PageContainer';
 import SearchableList from '../../components/SearchableList';
-import SourceDocUploadForm from './SourceDocUploadForm';
+import SourceDocUploadForm from '../../components/SourceDocUploadForm';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
 import { deleteSourceDocument } from '../../services/sourceDocumentService';
 import log from '../../utils/logger';
