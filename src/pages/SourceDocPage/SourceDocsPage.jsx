@@ -3,33 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { CircularProgress, Alert, Box } from '@mui/material';
 import PageContainer from '../../components/PageContainer';
 import SearchableList from '../../components/SearchableList';
-import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
-import useListDeleteWithConfirmation from '../../hooks/useListDeleteWithConfirmation';
 import SourceDocUploadForm from './SourceDocUploadForm';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
 import { deleteSourceDocument } from '../../services/sourceDocumentService';
 import log from '../../utils/logger';
-
-async function handleSourceDocDelete(docId, refresh, log) {
-    if (!docId) {
-        log.error('No document ID provided for deletion.');
-        throw new Error('No document ID provided for deletion.');
-    }
-    try {
-        log.info(`Attempting to delete source document with id: ${docId}`);
-        await deleteSourceDocument(docId);
-        log.info(`Successfully deleted source document with id: ${docId}`);
-        refresh();
-    } catch (e) {
-        log.error('Error deleting source document:', e.message);
-        // Custom error for MetaText records
-        if (e.message.includes('MetaText records exist')) {
-            log.warn('Cannot delete: MetaText records exist for this document.');
-            throw new Error('Cannot delete: MetaText records exist for this document.');
-        }
-        throw e;
-    }
-}
 
 export default function SourceDocsPage() {
     const { docs = [], loading, error, refresh } = useSourceDocuments();
@@ -51,47 +28,43 @@ export default function SourceDocsPage() {
         navigate(`/sourceDocs/${id}`);
     };
 
-    // Use new centralized delete-with-confirmation hook
-    const {
-        dialogOpen,
-        targetId,
-        loading: deleteLoading,
-        error: deleteError,
-        handleDeleteClick,
-        handleDialogClose,
-        handleDialogConfirm,
-    } = useListDeleteWithConfirmation((docId) => handleSourceDocDelete(docId, refresh, log));
+    // Simple delete handler (no confirmation)
+    const handleDeleteClick = async (id, e) => {
+        if (e && e.stopPropagation) e.stopPropagation();
+        try {
+            await deleteSourceDocument(id);
+            refresh();
+        } catch (err) {
+            log.error('Delete failed', err);
+        }
+    };
 
-    const deleteItemName = targetId
-        ? (docs.find(item => item.id === targetId)?.title || 'this item')
-        : '';
+    let renderSearchableList;
+    if (loading) {
+        renderSearchableList = (
+            <Box>
+                <CircularProgress />
+            </Box>
+        );
+    } else if (error) {
+        renderSearchableList = (
+            <Alert severity="error">{error}</Alert>
+        );
+    } else {
+        renderSearchableList = (
+            <SearchableList
+                items={docs}
+                onItemClick={handleSourceDocClick}
+                onDeleteClick={handleDeleteClick}
+                filterKey="title"
+            />
+        );
+    }
 
     return (
         <PageContainer>
             <SourceDocUploadForm refresh={refresh} />
-            {loading ? (
-                <Box>
-                    <CircularProgress />
-                </Box>
-            ) : error ? (
-                <Alert severity="error">{typeof error === 'string' ? error : error?.message || JSON.stringify(error)}</Alert>
-            ) : (
-                <SearchableList
-                    items={docs}
-                    onItemClick={handleSourceDocClick}
-                    onDeleteClick={handleDeleteClick}
-                    deleteLoading={deleteLoading}
-                    deleteError={typeof deleteError === 'string' ? deleteError : deleteError?.message || JSON.stringify(deleteError)}
-                    filterKey="title"
-                />
-            )}
-            <DeleteConfirmationDialog
-                open={dialogOpen}
-                onClose={handleDialogClose}
-                onConfirm={handleDialogConfirm}
-                title={`Delete "${deleteItemName}"?`}
-                text={`Are you sure you want to delete "${deleteItemName}"? This action cannot be undone.`}
-            />
+            {renderSearchableList}
         </PageContainer>
     );
 }

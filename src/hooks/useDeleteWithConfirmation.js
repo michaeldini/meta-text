@@ -1,51 +1,32 @@
 import { useState, useCallback } from 'react';
 
 /**
- * Generic hook for delete-with-confirmation pattern.
+ * Generic hook for delete pattern (no confirmation).
  * @param {Function} deleteFn - async function to delete an item by id
  * @param {Function} [onDeleteSuccess] - optional callback after successful delete
- * @returns {Object} handlers and state for delete dialog and per-item loading/error
+ * @returns {Object} handlers and state for per-item loading/error
  */
 export default function useDeleteWithConfirmation(deleteFn, onDeleteSuccess) {
     const [deleteLoading, setDeleteLoading] = useState({});
     const [deleteError, setDeleteError] = useState({});
-    const [confirmOpen, setConfirmOpen] = useState(false);
-    const [pendingDeleteId, setPendingDeleteId] = useState(null);
 
-    const handleDeleteClick = useCallback((id, e) => {
+    const handleDeleteClick = useCallback(async (id, e) => {
         if (e && e.stopPropagation) e.stopPropagation();
-        setPendingDeleteId(id);
-        setConfirmOpen(true);
-    }, []);
-
-    const handleConfirmClose = useCallback(() => {
-        setConfirmOpen(false);
-        setPendingDeleteId(null);
-    }, []);
-
-    const handleConfirmDelete = useCallback(async () => {
-        if (!pendingDeleteId) return;
-        setDeleteLoading(prev => ({ ...prev, [pendingDeleteId]: true }));
-        setDeleteError(prev => ({ ...prev, [pendingDeleteId]: null }));
+        setDeleteLoading(prev => ({ ...prev, [id]: true }));
+        setDeleteError(prev => ({ ...prev, [id]: null }));
         try {
-            await deleteFn(pendingDeleteId);
+            await deleteFn(id);
             if (onDeleteSuccess) onDeleteSuccess();
         } catch (e) {
-            setDeleteError(prev => ({ ...prev, [pendingDeleteId]: e.message || 'Delete failed' }));
+            setDeleteError(prev => ({ ...prev, [id]: e.message || 'Delete failed' }));
         } finally {
-            setDeleteLoading(prev => ({ ...prev, [pendingDeleteId]: false }));
-            setConfirmOpen(false);
-            setPendingDeleteId(null);
+            setDeleteLoading(prev => ({ ...prev, [id]: false }));
         }
-    }, [pendingDeleteId, deleteFn, onDeleteSuccess]);
+    }, [deleteFn, onDeleteSuccess]);
 
     return {
         deleteLoading,
         deleteError,
-        confirmOpen,
-        pendingDeleteId,
         handleDeleteClick,
-        handleConfirmClose,
-        handleConfirmDelete,
     };
 }

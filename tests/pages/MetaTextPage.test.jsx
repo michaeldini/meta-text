@@ -5,7 +5,6 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 import MetaTextPage from '../../src/pages/MetaTextPage/MetaTextPage';
 import { useSourceDocuments } from '../../src/hooks/useSourceDocuments';
 import { useMetaTexts } from '../../src/hooks/useMetaTexts';
-import useListDeleteWithConfirmation from '../../src/hooks/useListDeleteWithConfirmation';
 
 // Mocks
 vi.mock('../../src/hooks/useSourceDocuments', () => ({
@@ -13,10 +12,6 @@ vi.mock('../../src/hooks/useSourceDocuments', () => ({
 }));
 vi.mock('../../src/hooks/useMetaTexts', () => ({
     useMetaTexts: vi.fn(),
-}));
-vi.mock('../../src/hooks/useListDeleteWithConfirmation', () => ({
-    __esModule: true,
-    default: vi.fn(),
 }));
 vi.mock('../../src/services/metaTextService', () => ({
     deleteMetaText: vi.fn(),
@@ -31,7 +26,7 @@ vi.mock('../../src/components/MetaTextCreateForm', () => ({
 }));
 vi.mock('../../src/components/SearchableList', () => ({
     __esModule: true,
-    default: ({ items, onItemClick, onDeleteClick, deleteLoading, deleteError }) => (
+    default: ({ items, onItemClick, onDeleteClick }) => (
         <div data-testid="SearchableList">
             {items && items.map((item) => (
                 <div key={item.id}>
@@ -40,14 +35,8 @@ vi.mock('../../src/components/SearchableList', () => ({
                     <button onClick={() => onDeleteClick(item.id)}>Delete</button>
                 </div>
             ))}
-            {deleteLoading && <span>Deleting...</span>}
-            {deleteError && <span>{deleteError}</span>}
         </div>
     ),
-}));
-vi.mock('../../src/components/DeleteConfirmationDialog', () => ({
-    __esModule: true,
-    default: () => <div data-testid="DeleteConfirmationDialog">Dialog</div>,
 }));
 vi.mock('../../src/utils/logger', () => ({
     __esModule: true,
@@ -73,15 +62,6 @@ describe('MetaTextPage', () => {
     it('renders loading state', () => {
         useSourceDocuments.mockReturnValue({ docs: [], loading: false, error: null });
         useMetaTexts.mockReturnValue({ metaTexts: [], metaTextsLoading: true, metaTextsError: null, refresh: vi.fn() });
-        useListDeleteWithConfirmation.mockReturnValue({
-            dialogOpen: false,
-            targetId: null,
-            loading: false,
-            error: null,
-            handleDeleteClick: vi.fn(),
-            handleDialogClose: vi.fn(),
-            handleDialogConfirm: vi.fn(),
-        });
         render(<MetaTextPage />);
         expect(screen.getByRole('progressbar')).toBeInTheDocument();
     });
@@ -89,15 +69,6 @@ describe('MetaTextPage', () => {
     it('renders error state', () => {
         useSourceDocuments.mockReturnValue({ docs: [], loading: false, error: null });
         useMetaTexts.mockReturnValue({ metaTexts: [], metaTextsLoading: false, metaTextsError: 'Failed to load', refresh: vi.fn() });
-        useListDeleteWithConfirmation.mockReturnValue({
-            dialogOpen: false,
-            targetId: null,
-            loading: false,
-            error: null,
-            handleDeleteClick: vi.fn(),
-            handleDialogClose: vi.fn(),
-            handleDialogConfirm: vi.fn(),
-        });
         render(<MetaTextPage />);
         expect(screen.getByText('Failed to load')).toBeInTheDocument();
     });
@@ -105,33 +76,8 @@ describe('MetaTextPage', () => {
     it('renders list of meta texts', () => {
         useSourceDocuments.mockReturnValue({ docs: [], loading: false, error: null });
         useMetaTexts.mockReturnValue({ metaTexts: [{ id: 1, title: 'Meta 1' }], metaTextsLoading: false, metaTextsError: null, refresh: vi.fn() });
-        useListDeleteWithConfirmation.mockReturnValue({
-            dialogOpen: false,
-            targetId: null,
-            loading: false,
-            error: null,
-            handleDeleteClick: vi.fn(),
-            handleDialogClose: vi.fn(),
-            handleDialogConfirm: vi.fn(),
-        });
         render(<MetaTextPage />);
         expect(screen.getByText('Meta 1')).toBeInTheDocument();
         expect(screen.getByTestId('SearchableList')).toBeInTheDocument();
-    });
-
-    it('shows delete error if present', () => {
-        useSourceDocuments.mockReturnValue({ docs: [], loading: false, error: null });
-        useMetaTexts.mockReturnValue({ metaTexts: [{ id: 1, title: 'Meta 1' }], metaTextsLoading: false, metaTextsError: null, refresh: vi.fn() });
-        useListDeleteWithConfirmation.mockReturnValue({
-            dialogOpen: false,
-            targetId: null,
-            loading: false,
-            error: 'Cannot delete',
-            handleDeleteClick: vi.fn(),
-            handleDialogClose: vi.fn(),
-            handleDialogConfirm: vi.fn(),
-        });
-        render(<MetaTextPage />);
-        expect(screen.getByText('Cannot delete')).toBeInTheDocument();
     });
 });

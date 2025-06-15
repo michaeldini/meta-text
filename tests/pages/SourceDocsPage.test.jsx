@@ -4,15 +4,10 @@ import { render, screen } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import SourceDocsPage from '../../src/pages/SourceDocPage/SourceDocsPage';
 import { useSourceDocuments } from '../../src/hooks/useSourceDocuments';
-import useListDeleteWithConfirmation from '../../src/hooks/useListDeleteWithConfirmation';
 
 // Mocks
 vi.mock('../../src/hooks/useSourceDocuments', () => ({
     useSourceDocuments: vi.fn(),
-}));
-vi.mock('../../src/hooks/useListDeleteWithConfirmation', () => ({
-    __esModule: true,
-    default: vi.fn(),
 }));
 vi.mock('../../src/services/sourceDocumentService', () => ({
     deleteSourceDocument: vi.fn(),
@@ -21,23 +16,21 @@ vi.mock('../../src/components/PageContainer', () => ({
     __esModule: true,
     default: ({ children }) => <div data-testid="PageContainer">{children}</div>,
 }));
-vi.mock('../../src/pages/SourceDocPage/SourceDocUploadForm', () => ({
+vi.mock('../../src/components/SourceDocUploadForm', () => ({
     __esModule: true,
-    default: ({ refresh }) => <div data-testid="SourceDocUploadForm" onClick={refresh}>UploadForm</div>,
+    default: () => <div data-testid="SourceDocUploadForm">UploadForm</div>,
 }));
 vi.mock('../../src/components/SearchableList', () => ({
     __esModule: true,
-    default: ({ items, onItemClick, onDeleteClick, deleteLoading, deleteError }) => (
+    default: ({ items, onItemClick, onDeleteClick }) => (
         <div data-testid="SearchableList">
-            {items.map((item) => (
+            {items && items.map((item) => (
                 <div key={item.id}>
                     <span>{item.title}</span>
                     <button onClick={() => onItemClick(item.id)}>View</button>
                     <button onClick={() => onDeleteClick(item.id)}>Delete</button>
                 </div>
             ))}
-            {deleteLoading && <span>Deleting...</span>}
-            {deleteError && <span>{deleteError}</span>}
         </div>
     ),
 }));
@@ -65,62 +58,20 @@ describe('SourceDocsPage', () => {
 
     it('renders loading state', () => {
         useSourceDocuments.mockReturnValue({ docs: [], loading: true, error: null, refresh: vi.fn() });
-        useListDeleteWithConfirmation.mockReturnValue({
-            dialogOpen: false,
-            targetId: null,
-            loading: false,
-            error: null,
-            handleDeleteClick: vi.fn(),
-            handleDialogClose: vi.fn(),
-            handleDialogConfirm: vi.fn(),
-        });
         render(<SourceDocsPage />);
         expect(screen.getByRole('progressbar')).toBeInTheDocument();
     });
 
     it('renders error state', () => {
         useSourceDocuments.mockReturnValue({ docs: [], loading: false, error: 'Failed to load', refresh: vi.fn() });
-        useListDeleteWithConfirmation.mockReturnValue({
-            dialogOpen: false,
-            targetId: null,
-            loading: false,
-            error: null,
-            handleDeleteClick: vi.fn(),
-            handleDialogClose: vi.fn(),
-            handleDialogConfirm: vi.fn(),
-        });
         render(<SourceDocsPage />);
         expect(screen.getByText('Failed to load')).toBeInTheDocument();
     });
 
     it('renders list of documents', () => {
         useSourceDocuments.mockReturnValue({ docs: [{ id: 1, title: 'Doc 1' }], loading: false, error: null, refresh: vi.fn() });
-        useListDeleteWithConfirmation.mockReturnValue({
-            dialogOpen: false,
-            targetId: null,
-            loading: false,
-            error: null,
-            handleDeleteClick: vi.fn(),
-            handleDialogClose: vi.fn(),
-            handleDialogConfirm: vi.fn(),
-        });
         render(<SourceDocsPage />);
         expect(screen.getByText('Doc 1')).toBeInTheDocument();
         expect(screen.getByTestId('SearchableList')).toBeInTheDocument();
-    });
-
-    it('shows delete error if present', () => {
-        useSourceDocuments.mockReturnValue({ docs: [{ id: 1, title: 'Doc 1' }], loading: false, error: null, refresh: vi.fn() });
-        useListDeleteWithConfirmation.mockReturnValue({
-            dialogOpen: false,
-            targetId: null,
-            loading: false,
-            error: 'Cannot delete',
-            handleDeleteClick: vi.fn(),
-            handleDialogClose: vi.fn(),
-            handleDialogConfirm: vi.fn(),
-        });
-        render(<SourceDocsPage />);
-        expect(screen.getByText('Cannot delete')).toBeInTheDocument();
     });
 });

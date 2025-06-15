@@ -11,7 +11,6 @@ import { } from '../styles/pageStyles';
  * - onItemClick: function(id) => void
  * - onDeleteClick: function(id, event) => void
  * - deleteLoading: object mapping id to loading state
- * - deleteError: object mapping id to error string
  * - filterKey: string key to filter on (e.g., 'title')
  */
 export default function SearchableList({
@@ -19,7 +18,6 @@ export default function SearchableList({
     onItemClick,
     onDeleteClick,
     deleteLoading = {},
-    deleteError = {},
     filterKey = 'title',
 }) {
     const [search, setSearch] = useState('');
@@ -68,14 +66,7 @@ export default function SearchableList({
                                         />
                                     </ListItemButton>
                                 </ListItem>
-                                {deleteError[obj.id] && (
-                                    <ListItem>
-                                        <ListItemText
-                                            primary={deleteError[obj.id]}
-                                            slotProps={{ primary: { color: 'error', variant: 'body2' } }}
-                                        />
-                                    </ListItem>
-                                )}
+                                {/* Removed deleteError display */}
                             </React.Fragment>
                         ))
                     )}
