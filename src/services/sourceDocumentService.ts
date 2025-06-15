@@ -7,8 +7,12 @@ export async function fetchSourceDocuments(): Promise<SourceDocument[]> {
     return Array.isArray(data) ? data : [];
 }
 
-export async function fetchSourceDocument(docId: number): Promise<SourceDocument> {
-    const res = await fetch(`/api/source-documents/${encodeURIComponent(String(docId))}`);
+export async function fetchSourceDocument(docId: string): Promise<SourceDocument> {
+    const parsedId = parseInt(docId, 10);
+    if (isNaN(parsedId)) {
+        throw new Error('Invalid document ID');
+    }
+    const res = await fetch(`/api/source-documents/${encodeURIComponent(String(parsedId))}`);
     const data = await handleApiResponse(res, 'Failed to fetch document');
     return data;
 }
@@ -21,7 +25,11 @@ export async function createSourceDocument(title: string, file: File): Promise<S
         method: 'POST',
         body: formData,
     });
-    return handleApiResponse(res, 'Upload failed.');
+    const data = await handleApiResponse(res, 'Upload failed.');
+    if (typeof data !== 'object' || data === null || data === true) {
+        throw new Error('Upload failed: invalid response');
+    }
+    return data as SourceDocument;
 }
 
 export async function deleteSourceDocument(docId: number): Promise<{ success: boolean }> {
