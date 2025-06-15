@@ -6,7 +6,7 @@ import { fetchSourceDocument } from "../services/sourceDocumentService";
  * @param {string|number} id - The document ID.
  * @returns {{ doc: object|null, loading: boolean, error: string, setDoc: function }}
  */
-export function useSourceDocument(id) {
+export function useSourceDocumentDetail(id) {
     const [doc, setDoc] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");

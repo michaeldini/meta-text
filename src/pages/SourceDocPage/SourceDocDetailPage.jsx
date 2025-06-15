@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Paper, Typography, Box } from '@mui/material';
 import SourceDocInfo from '../../components/SourceDocInfo';
-import { useSourceDocument } from '../../hooks/useSourceDocument';
+import { useSourceDocumentDetail } from '../../hooks/useSourceDocumentDetail';
 import {
     sourceDocDetailContainer,
     sourceDocDetailPaper,
@@ -14,7 +14,7 @@ import LoadingBoundary from '../../components/LoadingBoundary';
 
 export default function SourceDocDetailPage() {
     const { sourceDocId } = useParams();
-    const { doc, loading, refetch } = useSourceDocument(sourceDocId);
+    const { doc, loading, refetch } = useSourceDocumentDetail(sourceDocId);
 
     React.useEffect(() => {
         log.info('SourceDocDetailPage mounted');
