@@ -3,18 +3,18 @@
 import { CircularProgress, Box, Button } from '@mui/material';
 
 export const pageContainer = {
-    mt: 10,
+    mt: 12,
     width: '90vw',
     display: 'flex',
     flexDirection: 'column' as const,
 }
 
 export const searchableList = {
-    p: 8,
+    // p: 8,
 };
 export const uploadFormContainer = {
-    p: 8,
-    mb: 4,
+    // p: 8,
+    // mb: 4,
 };
 
 export const uploadFormInner = {
@@ -25,8 +25,8 @@ export const uploadFormInner = {
 };
 
 export const navBarAppBar = {
-    // bgcolor: 'background.paper',
-    // color: 'text.primary',
+    marginBottom: 0,
+    padding: 0,
     // zIndex: 1201,
 };
 
@@ -67,11 +67,8 @@ export const sourceDocDetailContainer = {
 };
 
 export const metaTextDetailPaper = {
-    p: 4,
-    m: 2,
-    borderRadius: 3,
-    boxShadow: 3,
-    bgcolor: 'background.paper',
+    // p: 4,
+    // mb: 4,
 };
 
 export const sourceDocDetailPaper = {
@@ -153,5 +150,5 @@ export const chunksContainer = {
     flexDirection: 'column',
     alignItems: 'center',
     gap: 2,
-    mt: 4,
+
 };

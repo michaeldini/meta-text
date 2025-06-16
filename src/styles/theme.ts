@@ -55,7 +55,14 @@ const theme = createTheme({
                 },
             },
         },
+        MuiPaper: {
+            styleOverrides: {
+                root: {
+                    padding: '32px', // default padding for all Paper components
+                    marginBottom: '32px', // default margin-bottom for all Paper components
+                },
+            },
+        },
     },
 });
-
 export default theme;

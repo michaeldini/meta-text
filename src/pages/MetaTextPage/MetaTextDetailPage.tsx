@@ -47,7 +47,7 @@ export default function MetaTextDetailPage() {
             <LoadingBoundary loading={loading}>
                 {metaTextId && (
                     <PageContainer>
-                        <Paper sx={metaTextDetailPaper} elevation={3}>
+                        <Paper elevation={3}>
                             <Typography variant="body1">
                                 Meta Text Title: {title || metaTextId}
                             </Typography>
