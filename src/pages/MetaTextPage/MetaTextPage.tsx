@@ -10,6 +10,7 @@ import { deleteMetaText } from '../../services/metaTextService';
 import log from '../../utils/logger';
 import ErrorBoundary from '../../components/ErrorBoundary';
 import LoadingBoundary from '../../components/LoadingBoundary';
+import { usePageLogger } from '../../hooks/usePageLogger';
 import type { MetaText } from '../../types/metaText';
 import type { SourceDocument } from '../../types/sourceDocument';
 
@@ -17,6 +18,17 @@ export default function MetaTextPage() {
     const { sourceDocs, sourceDocsLoading, sourceDocsError } = useSourceDocuments();
     const { metaTexts, metaTextsLoading, metaTextsError, refresh } = useMetaTexts();
     const navigate = useNavigate();
+
+    usePageLogger('MetaTextPage', {
+        watched: [
+            ['metaTextsLoading', metaTextsLoading],
+            ['metaTextsError', metaTextsError],
+            ['metaTexts', metaTexts?.length],
+            ['sourceDocsLoading', sourceDocsLoading],
+            ['sourceDocsError', sourceDocsError],
+            ['sourceDocs', sourceDocs?.length]
+        ]
+    });
 
     // Log when the page loads
     React.useEffect(() => {

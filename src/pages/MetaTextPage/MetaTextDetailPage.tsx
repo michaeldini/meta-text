@@ -10,6 +10,7 @@ import { metaTextReviewRoute } from '../../routes';
 import PageContainer from '../../components/PageContainer';
 import ErrorBoundary from '../../components/ErrorBoundary';
 import LoadingBoundary from '../../components/LoadingBoundary';
+import { usePageLogger } from '../../hooks/usePageLogger';
 import type { MetaText } from '../../types/metaText';
 import type { SourceDocument } from '../../types/sourceDocument';
 
@@ -31,6 +32,16 @@ export default function MetaTextDetailPage() {
         log.info('MetaTextDetailPage mounted');
         return () => log.info('MetaTextDetailPage unmounted');
     }, []);
+
+    // Log lifecycle and state changes
+    usePageLogger('MetaTextDetailPage', {
+        watched: [
+            ['loading', loading],
+            ['metaText', metaText?.id],
+            ['errors', errors?.metaText],
+            ['sourceDocInfo', sourceDocInfo?.id]
+        ]
+    });
 
     // Throw error as soon as possible if not loading and no metaText
     if (!loading && !metaText) throw errors.metaText || new Error('MetaText not found');

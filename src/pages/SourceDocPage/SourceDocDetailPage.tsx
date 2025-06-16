@@ -13,6 +13,7 @@ import ErrorBoundary from '../../components/ErrorBoundary';
 import LoadingBoundary from '../../components/LoadingBoundary';
 import type { SourceDocument } from '../../types/sourceDocument';
 import PageContainer from '../../components/PageContainer';
+import { usePageLogger } from '../../hooks/usePageLogger';
 
 export default function SourceDocDetailPage() {
     const { sourceDocId } = useParams<{ sourceDocId?: string }>();
@@ -20,6 +21,14 @@ export default function SourceDocDetailPage() {
     // Only call the hook if sourceDocId is defined, otherwise provide a stub error state
     const hookResult = sourceDocId ? useSourceDocumentDetail(sourceDocId) : { doc: null, loading: false, error: 'No document ID provided.', refetch: () => { } };
     const { doc, loading, error, refetch } = hookResult;
+
+    usePageLogger('SourceDocDetailPage', {
+        watched: [
+            ['loading', loading],
+            ['error', error],
+            ['doc', doc?.id]
+        ]
+    });
 
     React.useEffect(() => {
         log.info('SourceDocDetailPage mounted');

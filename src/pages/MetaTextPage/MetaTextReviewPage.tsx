@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { metaTextDetailRoute } from '../../routes';
 import ChunkSummaryNotesTable from '../../features/Chunks/ChunkSummaryNotesTable';
+import { usePageLogger } from '../../hooks/usePageLogger';
 
 interface WordlistRow {
     id: number;
@@ -38,6 +39,16 @@ export default function MetaTextReviewPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
+
+    usePageLogger('MetaTextReviewPage', {
+        watched: [
+            ['metatextId', metatextId],
+            ['loading', loading],
+            ['error', error],
+            ['wordlist', wordlist.length],
+            ['chunkSummariesNotes', chunkSummariesNotes.length]
+        ]
+    });
 
     useEffect(() => {
         async function loadData() {

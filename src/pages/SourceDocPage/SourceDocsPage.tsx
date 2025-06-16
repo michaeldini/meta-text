@@ -10,6 +10,7 @@ import ErrorBoundary from '../../components/ErrorBoundary';
 import LoadingBoundary from '../../components/LoadingBoundary';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { usePageLogger } from '../../hooks/usePageLogger';
 import type { SourceDocument } from '../../types/sourceDocument';
 
 export default function SourceDocsPage() {
@@ -18,16 +19,13 @@ export default function SourceDocsPage() {
     const [deleteError, setDeleteError] = React.useState<string | null>(null);
     const [snackbarOpen, setSnackbarOpen] = React.useState(false);
 
-    React.useEffect(() => {
-        log.info('SourceDocsPage mounted');
-        return () => log.info('SourceDocsPage unmounted');
-    }, []);
-
-    React.useEffect(() => {
-        if (sourceDocsLoading) log.info('Loading source documents...');
-        if (sourceDocsError) log.error('Error loading source documents:', sourceDocsError);
-        if (!sourceDocsLoading && sourceDocs.length > 0) log.info(`Loaded ${sourceDocs.length} source documents`);
-    }, [sourceDocsLoading, sourceDocsError, sourceDocs]);
+    usePageLogger('SourceDocsPage', {
+        watched: [
+            ['sourceDocsLoading', sourceDocsLoading],
+            ['sourceDocsError', sourceDocsError],
+            ['sourceDocs', sourceDocs.length]
+        ]
+    });
 
     const handleSourceDocClick = (id: number) => {
         log.info(`Navigating to source document with id: ${id}`);
