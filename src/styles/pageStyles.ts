@@ -18,7 +18,6 @@ export const uploadFormContainer = {
 };
 
 export const uploadFormInner = {
-    width: '75%',
     display: 'flex',
     flexDirection: 'column' as const,
     alignItems: 'start' as const,
@@ -26,9 +25,9 @@ export const uploadFormInner = {
 };
 
 export const navBarAppBar = {
-    bgcolor: 'background.paper',
-    color: 'text.primary',
-    zIndex: 1201,
+    // bgcolor: 'background.paper',
+    // color: 'text.primary',
+    // zIndex: 1201,
 };
 
 export const navBarToolbar = {
@@ -60,9 +59,11 @@ export const navBarTitle = {
 };
 
 export const sourceDocDetailContainer = {
-    maxWidth: '90vw',
-    mx: 'auto',
-    mt: 4,
+    // maxWidth: '90vw',
+    // mx: 'auto',
+    // mt: 4,
+
+    p: 4,
 };
 
 export const metaTextDetailPaper = {
@@ -75,16 +76,21 @@ export const metaTextDetailPaper = {
 
 export const sourceDocDetailPaper = {
     p: 4,
-    m: 2,
-    borderRadius: 3,
-    boxShadow: 2,
-    bgcolor: 'background.paper',
+    fontFamily: '"Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+    fontSize: '1.05rem',
+    lineHeight: 1.7,
+    letterSpacing: '0.01em',
+    // mb: 4,
+    // borderRadius: 3,
+    // boxShadow: 2,
 };
 
 export const sourceDocDetailText = {
-    fontSize: '1.1rem',
-    color: 'text.primary',
-    mb: 2,
+    fontFamily: '"Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+    fontSize: '1.5rem',
+    lineHeight: 2,
+    letterSpacing: '0.02em',
+    fontColor: 'text.primary',
 };
 
 export const sourceDocInfoDetailsBox = {
@@ -92,6 +98,7 @@ export const sourceDocInfoDetailsBox = {
     flexDirection: 'column',
     gap: 2,
     padding: 5,
+    mb: 4,
 };
 
 export const chunkImageBox = {

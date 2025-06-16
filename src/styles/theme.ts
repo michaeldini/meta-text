@@ -34,6 +34,14 @@ const theme = createTheme({
             fontWeight: 500,
             lineHeight: 1.235,
         },
+        body2: {
+            fontFamily: '"Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+            fontSize: '1.5rem',
+            lineHeight: 2,
+            letterSpacing: '0.02em',
+            fontWeight: 400,
+            color: grey[400],
+        },
     },
     shape: {
         borderRadius: 15,

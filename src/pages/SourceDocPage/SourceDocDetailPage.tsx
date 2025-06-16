@@ -12,6 +12,7 @@ import log from '../../utils/logger';
 import ErrorBoundary from '../../components/ErrorBoundary';
 import LoadingBoundary from '../../components/LoadingBoundary';
 import type { SourceDocument } from '../../types/sourceDocument';
+import PageContainer from '../../components/PageContainer';
 
 export default function SourceDocDetailPage() {
     const { sourceDocId } = useParams<{ sourceDocId?: string }>();
@@ -26,7 +27,8 @@ export default function SourceDocDetailPage() {
     }, []);
 
     return (
-        <Box sx={sourceDocDetailContainer}>
+        <PageContainer>
+            {/* <Paper sx={sourceDocDetailContainer}> */}
             {/* Breadcrumbs for navigation */}
             <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
                 <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>Home</Link>
@@ -45,18 +47,20 @@ export default function SourceDocDetailPage() {
                         <>
                             <Typography variant="h4" gutterBottom>{doc.title}</Typography>
                             <SourceDocInfo doc={doc as SourceDocument} onInfoUpdate={refetch} />
-                            <Paper sx={sourceDocDetailPaper}>
-                                <Typography variant="body1" sx={sourceDocDetailText} aria-label="Document Text">
+                            <Button onClick={refetch}>Refresh</Button>
+                            <Paper sx={sourceDocDetailPaper} elevation={3}>
+                                <Typography variant="body2" aria-label="Document Text">
                                     {doc.text}
                                 </Typography>
                             </Paper>
-                            <Button onClick={refetch} variant="contained" sx={{ mt: 2 }}>Refresh</Button>
                         </>
                     ) : (
                         <Alert severity="info">Document not found.</Alert>
                     )}
                 </LoadingBoundary>
             </ErrorBoundary>
-        </Box>
+            {/* </Paper> */}
+        </PageContainer>
+
     );
 }
