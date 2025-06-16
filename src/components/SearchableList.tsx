@@ -32,9 +32,10 @@ function SearchableList<T extends { id: number; title: string }>({
     }, [items, search, filterKey]);
 
     return (
-        <Paper elevation={3} sx={searchableList} data-testid="searchable-list-paper">
+        <Paper elevation={3} sx={searchableList} >
             <nav aria-label="searchable list">
                 <TextField
+                    data-testid="search-input"
                     label="Search"
                     variant="outlined"
                     size="small"
@@ -42,7 +43,6 @@ function SearchableList<T extends { id: number; title: string }>({
                     margin="normal"
                     value={search}
                     onChange={e => setSearch(e.target.value)}
-                    data-testid="search-input"
                 />
                 <List data-testid="searchable-list">
                     {filteredItems.length === 0 ? (
@@ -50,23 +50,27 @@ function SearchableList<T extends { id: number; title: string }>({
                             <ListItemText primary="No items found." />
                         </ListItem>
                     ) : (
-                        filteredItems.map(obj => (
-                            <React.Fragment key={obj.id}>
-                                <ListItem disablePadding>
-                                    <ListItemButton onClick={() => onItemClick(obj.id)}>
-                                        <ListItemText
-                                            primary={String(obj[filterKey])}
-                                            slotProps={{ primary: { typography: 'h5' } }}
-                                        />
-                                        <DeleteButton
-                                            onClick={(e: React.MouseEvent) => onDeleteClick(obj.id, e)}
-                                            disabled={!!deleteLoading[obj.id]}
-                                            label="Delete"
-                                            icon={<DeleteIcon />}
-                                        />
-                                    </ListItemButton>
-                                </ListItem>
-                            </React.Fragment>
+                        filteredItems.map((obj) => (
+                            <ListItem
+                                key={obj.id}
+                                secondaryAction={
+                                    <DeleteButton
+                                        onClick={(e: React.MouseEvent) => onDeleteClick(obj.id, e)}
+                                        disabled={!!deleteLoading[obj.id]}
+                                        label="Delete"
+                                        icon={<DeleteIcon />}
+                                    />
+                                }
+                                disablePadding
+                            >
+                                <ListItemButton onClick={() => onItemClick(obj.id)}>
+                                    <ListItemText
+                                        primary={String(obj[filterKey])}
+                                        slotProps={{ primary: { typography: 'h5' } }}
+                                        style={{ cursor: 'pointer' }}
+                                    />
+                                </ListItemButton>
+                            </ListItem>
                         ))
                     )}
                 </List>
