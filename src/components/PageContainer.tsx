@@ -8,7 +8,7 @@ import { pageContainer } from '../styles/pageStyles';
  */
 export default function PageContainer({ children }: { children: ReactNode }) {
     return (
-        <Container sx={pageContainer}>
+        <Container maxWidth="lg" sx={pageContainer}>
             {children}
         </Container>
     );
