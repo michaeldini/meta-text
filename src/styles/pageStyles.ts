@@ -2,14 +2,19 @@
 
 import { CircularProgress, Box, Button } from '@mui/material';
 
+export const pageContainer = {
+    mt: 10,
+    width: '90vw',
+    display: 'flex',
+    flexDirection: 'column' as const,
+}
+
+export const searchableList = {
+    p: 8,
+};
 export const uploadFormContainer = {
-    // width: '100%',
-    // display: 'flex',
-    // flexDirection: 'column' as const,
-    // alignItems: 'center' as const,
-    // p: 4,
-    // mb: 8,
-    // bgcolor: 'background.paper',
+    p: 8,
+    mb: 4,
 };
 
 export const uploadFormInner = {

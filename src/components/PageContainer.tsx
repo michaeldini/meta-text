@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Container } from '@mui/material';
+import { pageContainer } from '../styles/pageStyles';
 
 /**
  * Generic page container for consistent layout.
@@ -7,7 +8,7 @@ import { Container } from '@mui/material';
  */
 export default function PageContainer({ children }: { children: ReactNode }) {
     return (
-        <Container maxWidth="lg" >
+        <Container sx={pageContainer}>
             {children}
         </Container>
     );

@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { List, ListItem, ListItemButton, ListItemText, Paper, TextField } from '@mui/material';
 import DeleteButton from '../components/DeleteButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { } from '../styles/pageStyles';
+import { searchableList } from '../styles/pageStyles';
 
 export interface SearchableListProps<T extends { id: number; title: string }> {
     items: T[];
@@ -32,7 +32,7 @@ function SearchableList<T extends { id: number; title: string }>({
     }, [items, search, filterKey]);
 
     return (
-        <Paper elevation={3} sx={{ padding: 2, maxHeight: '80vh', overflowY: 'auto' }} data-testid="searchable-list-paper">
+        <Paper elevation={3} sx={searchableList} data-testid="searchable-list-paper">
             <nav aria-label="searchable list">
                 <TextField
                     label="Search"

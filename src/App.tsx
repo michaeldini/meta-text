@@ -1,4 +1,4 @@
-import './App.css';
+// import './App.css';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import { Fade } from '@mui/material';
