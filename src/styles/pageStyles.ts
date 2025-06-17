@@ -1,7 +1,7 @@
 
 export const pageContainer = {
     mt: 12,
-    width: '90vw',
+    width: '100vw',
     display: 'flex',
     flexDirection: 'column' as const,
 }

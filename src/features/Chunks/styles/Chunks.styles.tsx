@@ -25,7 +25,7 @@ export const chunkMainBox = {
     }
 };
 
-export const chunkTextBox = { flex: 2, minWidth: 0, p: 2 };
+export const chunkTextBox = { minWidth: '60vw', p: 2 };
 
 export const chunkTextField = {
     color: 'text.chunk_text',

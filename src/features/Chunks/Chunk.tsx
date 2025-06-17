@@ -2,10 +2,14 @@ import React, { memo, useRef, useEffect } from 'react';
 import { Box, Paper } from '@mui/material';
 import ChunkWords from './words/ChunkWords';
 import ChunkTools from './tools/ChunkTools';
+
 import SummaryNotesComponent from '../chunks/tools/SummaryNotesComponent';
 import { useDebouncedField } from '../../hooks/useDebouncedField';
 import { chunkMainBox, chunkTextBox } from './styles/Chunks.styles';
 import { useChunkStore } from '../../store/chunkStore';
+import ChunkComparisonPanel from '../chunks/comparison/ChunkComparisonPanel';
+import ChunkImagePanel from '../chunks/image/ChunkImagePanel';
+import { useImageGeneration } from '../../hooks/useImageGeneration';
 
 export interface ChunkProps {
     chunk: any;
@@ -37,6 +41,10 @@ const Chunk = memo(function Chunk({
         (val: string) => handleChunkFieldChange(chunkIdx, 'notes', val),
         800
     );
+    // Image state for ChunkImagePanel
+    const { state: imageState, setState: setImageState, getImgSrc, openDialog } = useImageGeneration(chunk);
+    const setLightboxOpen = (open: boolean) => setImageState(s => ({ ...s, lightboxOpen: open }));
+    const setImageLoaded = (loaded: boolean) => setImageState(s => ({ ...s, loaded }));
 
     useEffect(() => {
         if (isActive && chunkRef.current) {
@@ -57,25 +65,36 @@ const Chunk = memo(function Chunk({
                 chunk={chunk}
             />
             <Box>
-                <Box sx={{ mt: 2, p: 2, borderRadius: 1 }}>
-                    {activeTabs.includes('notes-summary') &&
-                        <SummaryNotesComponent
-                            summary={summary}
-                            notes={notes}
-                            setSummary={setSummary}
-                            setNotes={setNotes}
-                            onSummaryBlur={() => handleChunkFieldChange(chunkIdx, 'summary', summary)}
-                            onNotesBlur={() => handleChunkFieldChange(chunkIdx, 'notes', notes)}
-                        />
-
-                    }
-                    {activeTabs.includes('notes-summary') && <span>Notes/Summary tab is active (from navbar)</span>}
-                    {activeTabs.includes('comparison') && <span>Comparison tab is active (from navbar)</span>}
-                    {activeTabs.includes('ai-image') && <span>AI Image tab is active (from navbar)</span>}
-                    {/* {activeTabs.length === 0 && <span>No tool selected</span>} */}
-                </Box>
+                {activeTabs.includes('notes-summary') &&
+                    <SummaryNotesComponent
+                        summary={summary}
+                        notes={notes}
+                        setSummary={setSummary}
+                        setNotes={setNotes}
+                        onSummaryBlur={() => handleChunkFieldChange(chunkIdx, 'summary', summary)}
+                        onNotesBlur={() => handleChunkFieldChange(chunkIdx, 'notes', notes)}
+                    />
+                }
+                {activeTabs.includes('comparison') &&
+                    <ChunkComparisonPanel
+                        chunkId={chunk.id}
+                        comparisonText={chunk.comparison}
+                        onComparisonUpdate={text => handleChunkFieldChange(chunkIdx, 'comparison', text)}
+                    />
+                }
+                {activeTabs.includes('ai-image') &&
+                    <ChunkImagePanel
+                        imageState={imageState}
+                        openDialog={openDialog}
+                        getImgSrc={getImgSrc}
+                        setImageLoaded={setImageLoaded}
+                        setLightboxOpen={setLightboxOpen}
+                        imgPrompt={imageState.prompt}
+                        createdAt={chunk.ai_image && chunk.ai_image.created_at}
+                    />
+                }
             </Box>
-        </Paper>
+        </Paper >
     );
 });
 
