@@ -46,3 +46,13 @@ coming soon
 
 - Click on a word to crete a new chunk at that word.
 - Click on a word to have an Ai define the word and explain it in the context of the chunk.
+
+a **meta-text** is *derived from* a **source document**.
+
+a **chunk** is a *user defined piece* of a **meta-text**.
+
+a **chunk** has **tools** (summary, notes, image, etc).
+
+a **chunk** *contains* **words**. (the meta-text text)
+
+**words** have **tools** (split chunk, fetch definition, etc).

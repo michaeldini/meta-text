@@ -2,7 +2,7 @@ import React, { memo, useState } from 'react';
 import { Box, IconButton } from '@mui/material';
 import UndoArrowIcon from '../../components/icons/UndoArrowIcon';
 import WordActionDialog from './WordActionDialog';
-import { chunkWordBox, wordsContainer, chunkUndoIconButton } from './Chunks.styles';
+import { chunkWordBox, wordsContainer, chunkUndoIconButton, chunkTextBox } from './Chunks.styles';
 
 export interface ChunkWordsProps {
     words: string[];
@@ -38,10 +38,10 @@ const ChunkWords = memo(function ChunkWords({
     };
 
     return (
-        <>
+        <Box sx={chunkTextBox}>
             <Box sx={wordsContainer}>
                 {words.map((word, wordIdx) => (
-                    <React.Fragment key={wordIdx}>
+                    <React.Fragment key={wordIdx} >
                         <Box
                             component="span"
                             onClick={e => handleWordDialogOpen(wordIdx, e)}
@@ -63,6 +63,7 @@ const ChunkWords = memo(function ChunkWords({
                     </React.Fragment>
                 ))}
             </Box>
+
             <WordActionDialog
                 anchorEl={anchorEl}
                 onClose={handleDialogClose}
@@ -71,7 +72,7 @@ const ChunkWords = memo(function ChunkWords({
                 context={words.join(' ')}
                 metaTextId={chunk?.meta_text_id}
             />
-        </>
+        </Box>
     );
 });
 

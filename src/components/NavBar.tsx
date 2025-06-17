@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import { useAuth } from '../store/authStore';
 import { navBarAppBar, navBarToolbar, navBarTitle } from '../styles/pageStyles';
 import React from 'react';
+import ChunkToolsNavbar from './ChunkToolsNavbar';
 
 interface NavBarButtonProps {
     to?: string;
@@ -51,6 +52,8 @@ const NavBar: React.FC = () => {
                         <NavBarButton onClick={logout}>Logout</NavBarButton>
                     )}
                 </Box>
+                <Box sx={{ flexGrow: 1 }} />
+                <ChunkToolsNavbar />
                 <Typography variant="h6" sx={navBarTitle}>
                     Meta-Text
                 </Typography>

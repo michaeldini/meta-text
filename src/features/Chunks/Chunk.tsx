@@ -3,6 +3,7 @@ import { Box, Paper } from '@mui/material';
 import ChunkWords from './ChunkWords';
 import ChunkTools from './ChunkTools';
 import { chunkMainBox, chunkTextBox, chunkDetailsCol } from './Chunks.styles';
+import { useChunkStore } from '../../store/chunkStore';
 
 export interface ChunkProps {
     chunk: any;
@@ -20,17 +21,17 @@ const Chunk = memo(function Chunk({
     handleChunkFieldChange
 }: ChunkProps) {
     const words = chunk.content ? chunk.content.split(/\s+/) : [];
+    const { activeChunkId, setActiveChunk } = useChunkStore();
+    const isActive = activeChunkId === chunk.id;
     return (
-        <Paper elevation={3} sx={chunkMainBox}>
-            <Box sx={chunkTextBox}>
-                <ChunkWords
-                    words={words}
-                    chunkIdx={chunkIdx}
-                    handleWordClick={handleWordClick}
-                    handleRemoveChunk={handleRemoveChunk}
-                    chunk={chunk}
-                />
-            </Box>
+        <Paper elevation={isActive ? 6 : 3} sx={{ ...chunkMainBox, border: isActive ? '2px solid #1976d2' : '1px solid #ccc', cursor: 'pointer' }} onClick={() => setActiveChunk(chunk.id)}>
+            <ChunkWords
+                words={words}
+                chunkIdx={chunkIdx}
+                handleWordClick={handleWordClick}
+                handleRemoveChunk={handleRemoveChunk}
+                chunk={chunk}
+            />
             <Box sx={chunkDetailsCol}>
                 <ChunkTools
                     chunk={chunk}

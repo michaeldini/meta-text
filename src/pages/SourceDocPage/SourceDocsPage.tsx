@@ -62,7 +62,12 @@ export default function SourceDocsPage() {
                     />
                 </LoadingBoundary>
             </ErrorBoundary>
-            <Snackbar open={snackbarOpen} autoHideDuration={4000} onClose={handleSnackbarClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={4000}
+                onClose={handleSnackbarClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
                 <Alert onClose={handleSnackbarClose} severity="error" sx={{ width: '100%' }}>
                     {deleteError}
                 </Alert>
