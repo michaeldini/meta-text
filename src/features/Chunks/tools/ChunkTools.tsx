@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box } from '@mui/material';
 import { useDebouncedField } from '../../../hooks/useDebouncedField';
 import { useImageGeneration } from '../../../hooks/useImageGeneration';
 import log from '../../../utils/logger';
 import SummaryNotesComponent from './SummaryNotesComponent';
 import ChunkToolsTabs from './ChunkToolsTabs';
+import { useChunkStore } from '../../../store/chunkStore';
 
 interface ChunkToolsProps {
     chunk: any;
@@ -45,7 +46,11 @@ const ChunkTools: React.FC<ChunkToolsProps> = ({ chunk, chunkIdx, handleChunkFie
         if (imageState.data) log.info(`Image retrieved for chunk id: ${chunk.id}`);
     }, [imageState.loading, imageState.error, imageState.data, chunk.id]);
 
-    const [activeTab, setActiveTab] = useState<'comparison' | 'ai-image'>('comparison');
+    // Use selector to only subscribe to activeTab and setActiveTab
+    const { activeTab, setActiveTab } = useChunkStore(state => ({
+        activeTab: state.activeTab,
+        setActiveTab: state.setActiveTab,
+    }));
 
     const handleComparisonUpdate = (newComparison: string) => handleChunkFieldChange(chunkIdx, 'comparison', newComparison);
 
