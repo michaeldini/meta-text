@@ -27,18 +27,6 @@ export const chunkMainBox = {
 
 export const chunkTextBox = { flex: 2, minWidth: 0, p: 2 };
 
-export const chunkDetailsCol = {
-    flex: 1,
-    minWidth: 220,
-    maxWidth: 400,
-    width: 350,
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 2,
-    zIndex: 10,
-    color: 'text.chunk_text',
-};
-
 export const chunkTextField = {
     color: 'text.chunk_text',
     borderRadius: 2,

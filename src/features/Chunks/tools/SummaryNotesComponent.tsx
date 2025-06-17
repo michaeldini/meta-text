@@ -23,7 +23,7 @@ const SummaryNotesComponent: React.FC<SummaryNotesComponentProps> = ({
     summaryFieldSx,
     notesFieldSx,
 }) => (
-    <Paper elevation={6} sx={{ p: 2, mb: 2, gap: 2, display: 'flex', flexDirection: 'column', minWidth: '30vw' }}>
+    <Paper elevation={6} sx={{ p: 2, mb: 2, gap: 2, display: 'flex', flexDirection: 'column', minWidth: 400 }}>
         <ChunkTextField
             label="Summary"
             value={summary}
