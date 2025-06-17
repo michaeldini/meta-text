@@ -1,8 +1,8 @@
 import React, { memo, useState } from 'react';
 import { Box, IconButton } from '@mui/material';
-import UndoArrowIcon from '../../components/icons/UndoArrowIcon';
+import UndoArrowIcon from '../../../components/icons/UndoArrowIcon';
 import WordActionDialog from './WordActionDialog';
-import { chunkWordBox, wordsContainer, chunkUndoIconButton, chunkTextBox } from './Chunks.styles';
+import { chunkWordBox, wordsContainer, chunkUndoIconButton, chunkTextBox } from '../styles/Chunks.styles';
 
 export interface ChunkWordsProps {
     words: string[];

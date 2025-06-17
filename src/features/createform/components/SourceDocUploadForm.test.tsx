@@ -7,7 +7,7 @@ vi.mock('../services/sourceDocumentService', () => ({
     createSourceDocument: vi.fn(),
 }));
 
-import { createSourceDocument } from '../services/sourceDocumentService';
+import { createSourceDocument } from '../../../services/sourceDocumentService';
 
 // Use vi.mock and cast to Vitest mock type for proper type inference
 const mockedCreateSourceDocument = createSourceDocument as unknown as ReturnType<typeof vi.fn>;

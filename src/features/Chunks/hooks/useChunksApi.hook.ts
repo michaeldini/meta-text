@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import * as chunkService from '../../services/chunkService';
+import * as chunkService from '../../../services/chunkService';
 
 export function useChunksApi(metaTextId: number | string) {
     const fetchChunks = useCallback(() => chunkService.fetchChunks(Number(metaTextId)), [metaTextId]);

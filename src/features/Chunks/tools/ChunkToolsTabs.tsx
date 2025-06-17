@@ -1,7 +1,7 @@
 import React from 'react';
 import ChunkTabButtons from './ChunkTabButtons';
-import ChunkComparisonPanel from './ChunkComparisonPanel';
-import ChunkImagePanel from './ChunkImagePanel';
+import ChunkComparisonPanel from '../comparison/ChunkComparisonPanel';
+import ChunkImagePanel from '../image/ChunkImagePanel';
 
 interface ChunkToolsTabsProps {
     chunk: any;

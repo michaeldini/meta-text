@@ -6,10 +6,6 @@ export const pageContainer = {
     flexDirection: 'column' as const,
 }
 
-export const searchableList = {
-    // p: 8,
-};
-
 export const navBarAppBar = {
     marginBottom: 0,
     padding: 0,

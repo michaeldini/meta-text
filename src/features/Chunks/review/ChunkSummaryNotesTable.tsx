@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import ChunkImageDisplay from './ChunkImageDisplay';
+import ChunkImageDisplay from '../image/ChunkImageDisplay';
 
 export interface ChunkSummaryNotesTableProps {
     chunks: Array<{

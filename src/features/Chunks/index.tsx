@@ -3,7 +3,7 @@ import { Box, Pagination, Paper, Alert } from '@mui/material';
 import Chunk from './Chunk';
 import { chunksContainer } from '../../styles/pageStyles';
 import log from '../../utils/logger';
-import { useChunksManager } from './useChunksManager.hook';
+import { useChunksManager } from './hooks/useChunksManager.hook';
 import LoadingBoundary from '../../components/LoadingBoundary';
 import ErrorBoundary from '../../components/ErrorBoundary';
 

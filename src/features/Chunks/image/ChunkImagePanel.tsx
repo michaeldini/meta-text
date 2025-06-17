@@ -1,9 +1,9 @@
 import React from 'react';
 import { Paper } from '@mui/material';
-import AiGenerationButton from '../../components/AiGenerationButton';
+import AiGenerationButton from '../../../components/AiGenerationButton';
 import ChunkImageDisplay from './ChunkImageDisplay';
-import { toolStyles } from './Chunks.styles';
-import { AiGenerationBtn } from '../../components/AiGenerationBtn';
+import { toolStyles } from '../styles/Chunks.styles';
+import { AiGenerationBtn } from '../../../components/AiGenerationBtn';
 
 interface ChunkImagePanelProps {
     imageState: any;

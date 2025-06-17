@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import { useDebouncedField } from '../../hooks/useDebouncedField';
-import { useImageGeneration } from '../../hooks/useImageGeneration';
-import log from '../../utils/logger';
+import { useDebouncedField } from '../../../hooks/useDebouncedField';
+import { useImageGeneration } from '../../../hooks/useImageGeneration';
+import log from '../../../utils/logger';
 import SummaryNotesComponent from './SummaryNotesComponent';
 import ChunkToolsTabs from './ChunkToolsTabs';
 

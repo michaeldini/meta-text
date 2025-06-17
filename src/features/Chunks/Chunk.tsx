@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import { Box, Paper } from '@mui/material';
-import ChunkWords from './ChunkWords';
-import ChunkTools from './ChunkTools';
-import { chunkMainBox, chunkTextBox, chunkDetailsCol } from './Chunks.styles';
+import ChunkWords from './words/ChunkWords';
+import ChunkTools from './tools/ChunkTools';
+import { chunkMainBox, chunkTextBox, chunkDetailsCol } from './styles/Chunks.styles';
 import { useChunkStore } from '../../store/chunkStore';
 
 export interface ChunkProps {
