@@ -23,7 +23,7 @@ const Chunk = memo(function Chunk({
     handleChunkFieldChange
 }: ChunkProps) {
     const words = chunk.content ? chunk.content.split(/\s+/) : [];
-    const { activeChunkId, setActiveChunk } = useChunkStore();
+    const { activeChunkId, setActiveChunk, activeTabs } = useChunkStore();
     const isActive = activeChunkId === chunk.id;
     // Debounced fields for summary/notes
     const [summary, setSummary] = useDebouncedField(
@@ -45,27 +45,26 @@ const Chunk = memo(function Chunk({
                 handleRemoveChunk={handleRemoveChunk}
                 chunk={chunk}
             />
-            <Box sx={chunkDetailsCol}>
-                <SummaryNotesComponent
-                    summary={summary}
-                    notes={notes}
-                    setSummary={setSummary}
-                    setNotes={setNotes}
-                    onSummaryBlur={() => handleChunkFieldChange(chunkIdx, 'summary', summary)}
-                    onNotesBlur={() => handleChunkFieldChange(chunkIdx, 'notes', notes)}
-                />
-                {isActive && (
-                    <Box>
-                        {/* Placeholder for future tools or actions */}
+            <Box>
+                {isActive && activeTabs.includes('notes-summary') && (
+                    <Box sx={{ mb: 2 }}>
+                        <SummaryNotesComponent
+                            summary={summary}
+                            notes={notes}
+                            setSummary={setSummary}
+                            setNotes={setNotes}
+                            onSummaryBlur={() => handleChunkFieldChange(chunkIdx, 'summary', summary)}
+                            onNotesBlur={() => handleChunkFieldChange(chunkIdx, 'notes', notes)}
+                        />
                     </Box>
                 )}
-                {/* {isActive && (
-                    <ChunkTools
-                        chunk={chunk}
-                        chunkIdx={chunkIdx}
-                        handleChunkFieldChange={handleChunkFieldChange}
-                    />
-                )} */}
+                {isActive && (
+                    <Box sx={{ mt: 2, p: 2, borderRadius: 1 }}>
+                        {activeTabs.includes('comparison') && <span>Comparison tab is active (from navbar)</span>}
+                        {activeTabs.includes('ai-image') && <span>AI Image tab is active (from navbar)</span>}
+                        {/* {activeTabs.length === 0 && <span>No tool selected</span>} */}
+                    </Box>
+                )}
             </Box>
         </Paper>
     );

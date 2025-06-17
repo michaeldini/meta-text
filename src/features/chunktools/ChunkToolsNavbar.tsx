@@ -8,14 +8,19 @@ import { useChunkStore } from '../../store/chunkStore';
 
 const ChunkToolsNavbar: React.FC = () => {
     const activeChunkId = useChunkStore(state => state.activeChunkId);
-    const activeTab = useChunkStore(state => state.activeTab);
-    const setActiveTab = useChunkStore(state => state.setActiveTab);
+    const activeTabs = useChunkStore(state => state.activeTabs);
+    const setActiveTabs = useChunkStore(state => state.setActiveTabs);
 
     // Example action handler
     const handleShowDialog = () => {
         if (!activeChunkId) return;
         // Open dialog logic for the active chunk
         alert(`Open dialog for chunk: ${activeChunkId}`);
+    };
+
+    // Allow multiple selection
+    const handleTabsChange = (_: any, tabs: Array<'comparison' | 'ai-image' | 'notes-summary'>) => {
+        setActiveTabs(tabs);
     };
 
     return (
@@ -27,12 +32,14 @@ const ChunkToolsNavbar: React.FC = () => {
                 Open Actions
             </Button>
             <ToggleButtonGroup
-                value={activeTab}
-                exclusive
-                onChange={(_, tab) => tab && setActiveTab(tab)}
+                value={activeTabs}
+                onChange={handleTabsChange}
                 size="small"
                 sx={{ ml: 2 }}
             >
+                <ToggleButton value="notes-summary" aria-label="Show Notes/Summary">
+                    <Typography sx={{ mr: 1 }}>Notes/Summary</Typography>
+                </ToggleButton>
                 <ToggleButton value="comparison" aria-label="Show Comparison">
                     <CompareArrowsIcon sx={{ mr: 1 }} /> Comparison
                 </ToggleButton>

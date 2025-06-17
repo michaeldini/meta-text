@@ -3,13 +3,13 @@ import { create } from 'zustand';
 interface ChunkState {
     activeChunkId: string | null;
     setActiveChunk: (id: string | null) => void;
-    activeTab: 'comparison' | 'ai-image';
-    setActiveTab: (tab: 'comparison' | 'ai-image') => void;
+    activeTabs: Array<'comparison' | 'ai-image' | 'notes-summary'>;
+    setActiveTabs: (tabs: Array<'comparison' | 'ai-image' | 'notes-summary'>) => void;
 }
 
 export const useChunkStore = create<ChunkState>((set) => ({
     activeChunkId: null,
     setActiveChunk: (id) => set({ activeChunkId: id }),
-    activeTab: 'comparison',
-    setActiveTab: (tab) => set({ activeTab: tab }),
+    activeTabs: [],
+    setActiveTabs: (tabs) => set({ activeTabs: tabs }),
 }));
