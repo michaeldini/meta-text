@@ -28,7 +28,7 @@ const ChunkComparison: React.FC<ChunkComparisonProps> = ({ chunkId, comparisonTe
     };
 
     return (
-        <Paper sx={toolStyles}>
+        <Paper elevation={6} sx={toolStyles}>
             <AiGenerationButton
                 label="What Did I Miss?"
                 toolTip="Generate a summary of what you might have missed in this chunk based on your notes and summary."

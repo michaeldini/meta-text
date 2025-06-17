@@ -64,12 +64,10 @@ export const chunkImageBtnBox = {
 
 export const toolStyles = {
     display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
     gap: 1,
-    p: 1,
-    bgcolor: 'background.paper',
-    borderRadius: 2,
-    boxShadow: 1,
+    p: 2,
 };
 
 export const chunkWordBox = (wordIdx: number, totalWords: number) => ({

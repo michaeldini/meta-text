@@ -104,7 +104,6 @@ export const chunkImageBox = {
     alignItems: 'center',
     width: '100%',
     height: 240,
-    bgcolor: 'grey.100',
     borderRadius: 2,
     overflow: 'hidden',
 };
@@ -133,6 +132,7 @@ export const chunkLightboxImgBox = {
     maxWidth: '90vw',
     maxHeight: '80vh',
     display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
 };
