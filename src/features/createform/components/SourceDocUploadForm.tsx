@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { Box, Typography, TextField, Button, Alert, Paper } from '@mui/material';
 import FileUploadWidget from './FileUploadWidget';
 import { createSourceDocument } from '../../../services/sourceDocumentService';
-import { uploadFormContainer, uploadFormInner } from '../../../styles/pageStyles';
 import log from '../../../utils/logger';
+import CreateFormContainer from './CreateForm';
+import { useFormStatus } from '../hooks/useFormStatus';
+import { handleFormSubmit } from '../utils/handleFormSubmit';
+import SubmitButton from './SubmitButton';
+import TitleField from './TitleField';
 
 export interface SourceDocUploadFormProps {
     refresh?: () => void;
@@ -11,43 +14,46 @@ export interface SourceDocUploadFormProps {
 
 const SourceDocUploadForm: React.FC<SourceDocUploadFormProps> = ({ refresh }) => {
     const [file, setFile] = useState<File | null>(null);
-    const [uploadTitle, setUploadTitle] = useState<string>('');
-    const [uploadError, setUploadError] = useState<string>('');
-    const [uploadSuccess, setUploadSuccess] = useState<string>('');
-    const [uploadLoading, setUploadLoading] = useState<boolean>(false);
+    const {
+        title,
+        setTitle,
+        error,
+        setError,
+        success,
+        setSuccess,
+        loading,
+        setLoading,
+        resetStatus,
+    } = useFormStatus();
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFile(e.target.files ? e.target.files[0] : null);
-        setUploadError('');
-        setUploadSuccess('');
+        resetStatus();
     };
-    const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => setUploadTitle(e.target.value);
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setUploadError('');
-        setUploadSuccess('');
-        setUploadLoading(true);
-        try {
-            if (!file) {
-                setUploadError('Please select a file to upload.');
-                setUploadLoading(false);
-                return;
-            }
-            await createSourceDocument(uploadTitle, file);
-            setUploadSuccess('Upload successful!');
-            setFile(null);
-            setUploadTitle('');
-            if (typeof refresh === 'function') refresh();
-        } catch (err: any) {
-            if (err.message === 'Title already exists.') {
-                setUploadError('A document with this title already exists.');
-            } else {
-                setUploadError(err.message);
-            }
-        } finally {
-            setUploadLoading(false);
-        }
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        handleFormSubmit({
+            e,
+            resetStatus,
+            setLoading,
+            setError,
+            setSuccess,
+            action: async () => {
+                if (!file) throw new Error('Please select a file to upload.');
+                await createSourceDocument(title, file);
+            },
+            validate: () => {
+                if (!file) return 'Please select a file to upload.';
+                if (!title.trim()) return 'Title is required.';
+                return null;
+            },
+            onSuccess: refresh,
+            resetFields: () => {
+                setFile(null);
+                setTitle('');
+            },
+            successMsg: 'Upload successful!'
+        });
     };
 
     React.useEffect(() => {
@@ -56,28 +62,25 @@ const SourceDocUploadForm: React.FC<SourceDocUploadFormProps> = ({ refresh }) =>
     }, []);
 
     return (
-        <Paper elevation={3} sx={uploadFormContainer}>
-            <Typography variant="h5" gutterBottom>New Source Document</Typography>
-            <Box component="form" onSubmit={handleSubmit} sx={uploadFormInner}>
-                <FileUploadWidget file={file} onFileChange={handleFileChange} />
-                <TextField
-                    data-testid="upload-title"
-                    id="upload-title"
-                    label="Title"
-                    type="text"
-                    value={uploadTitle}
-                    onChange={handleTitleChange}
-                    fullWidth
-                    required
-                    disabled={uploadLoading}
-                />
-                {uploadError && <Alert severity="error" sx={{ mt: 2 }}>{uploadError}</Alert>}
-                {uploadSuccess && <Alert severity="success" sx={{ mt: 2 }}>{uploadSuccess}</Alert>}
-                <Button type="submit" variant="contained" disabled={uploadLoading || !uploadTitle.trim() || !file} sx={{ mt: 2 }}>
-                    {uploadLoading ? 'Uploading...' : 'Upload'}
-                </Button>
-            </Box>
-        </Paper>
+        <CreateFormContainer
+            title="New Source Document"
+            onSubmit={handleSubmit}
+            error={error}
+            success={success}
+            loading={loading}
+        >
+            <FileUploadWidget file={file} onFileChange={handleFileChange} />
+            <TitleField
+                value={title}
+                onChange={e => setTitle(e.target.value)}
+                loading={loading}
+                data-testid="upload-title"
+                id="upload-title"
+            />
+            <SubmitButton loading={loading} disabled={!title.trim() || !file}>
+                {loading ? 'Uploading...' : 'Upload'}
+            </SubmitButton>
+        </CreateFormContainer>
     );
 };
 

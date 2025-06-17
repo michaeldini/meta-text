@@ -1,6 +1,3 @@
-// src/styles/pageStyles.ts
-
-import { CircularProgress, Box, Button } from '@mui/material';
 
 export const pageContainer = {
     mt: 12,
@@ -11,17 +8,6 @@ export const pageContainer = {
 
 export const searchableList = {
     // p: 8,
-};
-export const uploadFormContainer = {
-    // p: 8,
-    // mb: 4,
-};
-
-export const uploadFormInner = {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    alignItems: 'start' as const,
-    gap: 2,
 };
 
 export const navBarAppBar = {

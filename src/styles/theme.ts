@@ -63,6 +63,13 @@ const theme = createTheme({
                 },
             },
         },
-    },
+        MuiAlert: {
+            styleOverrides: {
+                root: {
+                    marginTop: '16px', // mt: 2 (theme.spacing(2) = 16px by default)
+                },
+            },
+        },
+    }
 });
 export default theme;

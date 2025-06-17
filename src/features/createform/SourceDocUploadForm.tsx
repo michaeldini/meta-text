@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Box, Typography, TextField, Button, Alert, Paper } from '@mui/material';
+import { TextField, Button } from '@mui/material';
 import FileUploadWidget from './components/FileUploadWidget';
 import { createSourceDocument } from '../services/sourceDocumentService';
-import { uploadFormContainer, uploadFormInner } from '../styles/pageStyles';
 import log from '../utils/logger';
+import FormPaper from '../components/FormPaper';
 
 export interface SourceDocUploadFormProps {
     refresh?: () => void;
@@ -56,28 +56,29 @@ const SourceDocUploadForm: React.FC<SourceDocUploadFormProps> = ({ refresh }) =>
     }, []);
 
     return (
-        <Paper elevation={3} sx={uploadFormContainer}>
-            <Typography variant="h5" gutterBottom>New Source Document</Typography>
-            <Box component="form" onSubmit={handleSubmit} sx={uploadFormInner}>
-                <FileUploadWidget file={file} onFileChange={handleFileChange} />
-                <TextField
-                    data-testid="upload-title"
-                    id="upload-title"
-                    label="Title"
-                    type="text"
-                    value={uploadTitle}
-                    onChange={handleTitleChange}
-                    fullWidth
-                    required
-                    disabled={uploadLoading}
-                />
-                {uploadError && <Alert severity="error" sx={{ mt: 2 }}>{uploadError}</Alert>}
-                {uploadSuccess && <Alert severity="success" sx={{ mt: 2 }}>{uploadSuccess}</Alert>}
-                <Button type="submit" variant="contained" disabled={uploadLoading || !uploadTitle.trim() || !file} sx={{ mt: 2 }}>
-                    {uploadLoading ? 'Uploading...' : 'Upload'}
-                </Button>
-            </Box>
-        </Paper>
+        <FormPaper
+            title="New Source Document"
+            onSubmit={handleSubmit}
+            error={uploadError}
+            success={uploadSuccess}
+            loading={uploadLoading}
+        >
+            <FileUploadWidget file={file} onFileChange={handleFileChange} />
+            <TextField
+                data-testid="upload-title"
+                id="upload-title"
+                label="Title"
+                type="text"
+                value={uploadTitle}
+                onChange={handleTitleChange}
+                fullWidth
+                required
+                disabled={uploadLoading}
+            />
+            <Button type="submit" variant="contained" disabled={uploadLoading || !uploadTitle.trim() || !file} sx={{ mt: 2 }}>
+                {uploadLoading ? 'Uploading...' : 'Upload'}
+            </Button>
+        </FormPaper>
     );
 };
 
