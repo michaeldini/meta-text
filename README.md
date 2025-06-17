@@ -56,3 +56,19 @@ a **chunk** has **tools** (summary, notes, image, etc).
 a **chunk** *contains* **words**. (the meta-text text)
 
 **words** have **tools** (split chunk, fetch definition, etc).
+
+## Structure
+
+```plaintext
+src
+  ├── assets
+├── components
+├── features
+│   └── chunks
+│       ├── components
+│       ├── hooks
+│       └── styles
+  ├── hooks
+  ├── pages
+  └── styles
+```

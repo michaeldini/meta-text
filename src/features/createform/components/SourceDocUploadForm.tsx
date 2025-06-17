@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Box, Typography, TextField, Button, Alert, Paper } from '@mui/material';
 import FileUploadWidget from './FileUploadWidget';
-import { createSourceDocument } from '../services/sourceDocumentService';
-import { uploadFormContainer, uploadFormInner } from '../styles/pageStyles';
-import log from '../utils/logger';
+import { createSourceDocument } from '../../../services/sourceDocumentService';
+import { uploadFormContainer, uploadFormInner } from '../../../styles/pageStyles';
+import log from '../../../utils/logger';
 
 export interface SourceDocUploadFormProps {
     refresh?: () => void;

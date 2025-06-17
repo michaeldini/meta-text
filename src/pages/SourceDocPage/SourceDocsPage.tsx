@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import PageContainer from '../../components/PageContainer';
-import SearchableList from '../../components/SearchableList';
-import SourceDocUploadForm from '../../components/SourceDocUploadForm';
+import SearchableList from '../../features/searchablelist/components/SearchableList';
+import SourceDocUploadForm from '../../features/createform/components/SourceDocUploadForm';
 import { useSourceDocuments } from '../../hooks/useSourceDocuments';
 import { deleteSourceDocument } from '../../services/sourceDocumentService';
 import log from '../../utils/logger';

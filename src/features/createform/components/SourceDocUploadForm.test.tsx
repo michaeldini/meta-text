@@ -1,7 +1,7 @@
 import './setupTests';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import SourceDocUploadForm, { SourceDocUploadFormProps } from './SourceDocUploadForm';
+import SourceDocUploadForm, { SourceDocUploadFormProps } from '../SourceDocUploadForm';
 
 vi.mock('../services/sourceDocumentService', () => ({
     createSourceDocument: vi.fn(),

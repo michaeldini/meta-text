@@ -5,7 +5,7 @@ import logger from '../../utils/logger';
 import { useNavigate, useParams } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { metaTextDetailRoute } from '../../routes';
-import ChunkSummaryNotesTable from '../../features/Chunks/ChunkSummaryNotesTable';
+import ChunkSummaryNotesTable from '../../features/chunks/ChunkSummaryNotesTable';
 import { usePageLogger } from '../../hooks/usePageLogger';
 
 interface WordlistRow {

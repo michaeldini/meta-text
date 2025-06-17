@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { List, ListItem, ListItemButton, ListItemText, Paper, TextField } from '@mui/material';
-import DeleteButton from '../components/DeleteButton';
+import DeleteButton from '../../../components/DeleteButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { searchableList } from '../styles/pageStyles';
+import { searchableList } from '../../../styles/pageStyles';
 
 export interface SearchableListProps<T extends { id: number; title: string }> {
     items: T[];
