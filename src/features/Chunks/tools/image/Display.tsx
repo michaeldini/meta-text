@@ -4,7 +4,7 @@ import ChunkImageModal from './Modal';
 import { toolStyles } from '../../styles/styles';
 import AiGenerationButton from '../../../../components/AiGenerationButton';
 
-interface ChunkImagePanelProps {
+interface ChunkImageDisplayProps {
     imageState: any;
     openDialog: () => void;
     getImgSrc: () => string;
@@ -15,7 +15,7 @@ interface ChunkImagePanelProps {
 }
 
 
-const ChunkImagePanel: React.FC<ChunkImagePanelProps> = ({
+const ChunkImageDisplay: React.FC<ChunkImageDisplayProps> = ({
     imageState,
     openDialog,
     getImgSrc,
@@ -48,4 +48,4 @@ const ChunkImagePanel: React.FC<ChunkImagePanelProps> = ({
     </Paper>
 );
 
-export default ChunkImagePanel;
+export default ChunkImageDisplay;

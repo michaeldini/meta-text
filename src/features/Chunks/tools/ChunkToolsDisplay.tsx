@@ -8,7 +8,7 @@ import { useImageGeneration } from '../../../hooks/useImageGeneration';
 import log from '../../../utils/logger';
 import SummaryNotesComponent from './summarynotes/SummaryNotesComponent';
 import ChunkComparisonPanel from './comparison/ChunkComparisonPanel';
-import ChunkImagePanel from './image/ChunkImagePanel';
+import ChunkImageDisplay from './image/Display';
 import { useChunkStore } from '../../../store/chunkStore';
 
 interface ChunkToolsDisplayProps {
@@ -82,7 +82,7 @@ const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk, chunkIdx, 
             )}
             {/* Show AI Image if selected */}
             {activeTabs.includes('ai-image') && (
-                <ChunkImagePanel
+                <ChunkImageDisplay
                     imageState={imageState}
                     openDialog={openDialog}
                     getImgSrc={getImgSrc}

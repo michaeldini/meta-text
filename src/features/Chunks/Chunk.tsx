@@ -8,7 +8,7 @@ import { useDebouncedField } from '../../hooks/useDebouncedField';
 import { chunkMainBox, chunkTextBox } from './styles/styles';
 import { useChunkStore } from '../../store/chunkStore';
 import ChunkComparisonPanel from '../chunks/tools/comparison/ChunkComparisonPanel';
-import ChunkImagePanel from '../chunks/tools/image/ChunkImagePanel';
+import ChunkImageDisplay from './tools/image/Display';
 import { useImageGeneration } from '../../hooks/useImageGeneration';
 
 export interface ChunkProps {
@@ -81,7 +81,7 @@ const Chunk = memo(function Chunk({
                     />
                 }
                 {activeTabs.includes('ai-image') &&
-                    <ChunkImagePanel
+                    <ChunkImageDisplay
                         imageState={imageState}
                         openDialog={openDialog}
                         getImgSrc={getImgSrc}
