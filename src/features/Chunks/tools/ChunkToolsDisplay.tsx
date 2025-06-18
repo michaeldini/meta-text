@@ -1,7 +1,8 @@
 import React from 'react';
-import { Box, IconButton, Tooltip } from '@mui/material';
+import { Box } from '@mui/material';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import PhotoFilterIcon from '@mui/icons-material/PhotoFilter';
+import NotesIcon from '@mui/icons-material/Notes';
 import { useDebouncedField } from '../../../hooks/useDebouncedField';
 import { useImageGeneration } from '../../../hooks/useImageGeneration';
 import log from '../../../utils/logger';
@@ -10,13 +11,21 @@ import ChunkComparisonPanel from '../comparison/ChunkComparisonPanel';
 import ChunkImagePanel from '../image/ChunkImagePanel';
 import { useChunkStore } from '../../../store/chunkStore';
 
-interface ChunkToolsProps {
+interface ChunkToolsDisplayProps {
     chunk: any;
     chunkIdx: number;
     handleChunkFieldChange: (chunkIdx: number, field: string, value: any) => void;
 }
 
-const ChunkTools: React.FC<ChunkToolsProps> = ({ chunk, chunkIdx, handleChunkFieldChange }) => {
+const tabOptions = [
+    { value: 'notes-summary', icon: <NotesIcon />, key: 'notes-summary' },
+    { value: 'comparison', icon: <CompareArrowsIcon />, key: 'comparison' },
+    { value: 'ai-image', icon: <PhotoFilterIcon />, key: 'ai-image' },
+] as const;
+
+type TabType = typeof tabOptions[number]['value'];
+
+const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk, chunkIdx, handleChunkFieldChange }) => {
     // Debounced fields
     const [summary, setSummary] = useDebouncedField(
         chunk.summary || '',
@@ -31,10 +40,6 @@ const ChunkTools: React.FC<ChunkToolsProps> = ({ chunk, chunkIdx, handleChunkFie
 
     // Image state
     const { state: imageState, setState: setImageState, getImgSrc, openDialog } = useImageGeneration(chunk);
-    const closeDialog = () => setImageState(s => ({ ...s, dialogOpen: false }));
-    const handleGenerate = (prompt: string, chunkId: number) => {
-        setImageState(s => ({ ...s, dialogOpen: false }));
-    };
     const setLightboxOpen = (open: boolean) => setImageState(s => ({ ...s, lightboxOpen: open }));
     const setImageLoaded = (loaded: boolean) => setImageState(s => ({ ...s, loaded }));
 
@@ -49,63 +54,34 @@ const ChunkTools: React.FC<ChunkToolsProps> = ({ chunk, chunkIdx, handleChunkFie
         if (imageState.data) log.info(`Image retrieved for chunk id: ${chunk.id}`);
     }, [imageState.loading, imageState.error, imageState.data, chunk.id]);
 
-    // Use selector to only subscribe to activeTabs and setActiveTabs
-    const { activeTabs, setActiveTabs } = useChunkStore(state => ({
-        activeTabs: state.activeTabs,
-        setActiveTabs: state.setActiveTabs,
-    }));
-
-    // Determine the current active tab for this chunk (single-select behavior)
-    const tabOptions: Array<'comparison' | 'ai-image'> = ['comparison', 'ai-image'];
-    const activeTab = tabOptions.find(tab => activeTabs.includes(tab)) || 'comparison';
-    const setActiveTab = (tab: 'comparison' | 'ai-image') => setActiveTabs([tab]);
+    // Use selector to only subscribe to activeTabs
+    const activeTabs = useChunkStore(state => state.activeTabs);
 
     const handleComparisonUpdate = (newComparison: string) => handleChunkFieldChange(chunkIdx, 'comparison', newComparison);
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-            <SummaryNotesComponent
-                summary={summary}
-                notes={notes}
-                setSummary={setSummary}
-                setNotes={setNotes}
-                onSummaryBlur={() => handleChunkFieldChange(chunkIdx, 'summary', summary)}
-                onNotesBlur={() => handleChunkFieldChange(chunkIdx, 'notes', notes)}
-            />
-            {/* Inline tab buttons */}
-            <Box sx={{ display: 'flex', gap: 1, mb: 3, mt: 3, borderBottom: 1 }}>
-                <Tooltip title="Show Comparison">
-                    <span>
-                        <IconButton
-                            color={activeTab === 'comparison' ? 'primary' : 'default'}
-                            aria-label="Show Comparison"
-                            onClick={() => setActiveTab('comparison')}
-                        >
-                            <CompareArrowsIcon />
-                        </IconButton>
-                    </span>
-                </Tooltip>
-                <Tooltip title="Show AI Image">
-                    <span>
-                        <IconButton
-                            color={activeTab === 'ai-image' ? 'primary' : 'default'}
-                            aria-label="Show AI Image"
-                            onClick={() => setActiveTab('ai-image')}
-                        >
-                            <PhotoFilterIcon />
-                        </IconButton>
-                    </span>
-                </Tooltip>
-            </Box>
-            {/* Inline tab panels */}
-            {activeTab === 'comparison' && (
+            {/* Show Notes/Summary if selected */}
+            {activeTabs.includes('notes-summary') && (
+                <SummaryNotesComponent
+                    summary={summary}
+                    notes={notes}
+                    setSummary={setSummary}
+                    setNotes={setNotes}
+                    onSummaryBlur={() => handleChunkFieldChange(chunkIdx, 'summary', summary)}
+                    onNotesBlur={() => handleChunkFieldChange(chunkIdx, 'notes', notes)}
+                />
+            )}
+            {/* Show Comparison if selected */}
+            {activeTabs.includes('comparison') && (
                 <ChunkComparisonPanel
                     chunkId={chunk.id}
                     comparisonText={chunk.comparison}
                     onComparisonUpdate={handleComparisonUpdate}
                 />
             )}
-            {activeTab === 'ai-image' && (
+            {/* Show AI Image if selected */}
+            {activeTabs.includes('ai-image') && (
                 <ChunkImagePanel
                     imageState={imageState}
                     openDialog={openDialog}
@@ -120,4 +96,4 @@ const ChunkTools: React.FC<ChunkToolsProps> = ({ chunk, chunkIdx, handleChunkFie
     );
 };
 
-export default ChunkTools;
+export default ChunkToolsDisplay;

@@ -1,7 +1,7 @@
 import React, { memo, useRef, useEffect } from 'react';
 import { Box, Paper } from '@mui/material';
 import ChunkWords from './words/ChunkWords';
-import ChunkTools from './tools/ChunkTools';
+import ChunkToolsDisplay from './tools/ChunkToolsDisplay';
 
 import SummaryNotesComponent from '../chunks/tools/SummaryNotesComponent';
 import { useDebouncedField } from '../../hooks/useDebouncedField';
