@@ -2,14 +2,8 @@ import React, { memo, useRef, useEffect } from 'react';
 import { Box, Paper } from '@mui/material';
 import ChunkWords from './words/ChunkWords';
 import ChunkToolsDisplay from './tools/ChunkToolsDisplay';
-
-import SummaryNotesComponent from '../chunks/tools/summarynotes/SummaryNotesComponent';
-import { useDebouncedField } from '../../hooks/useDebouncedField';
-import { chunkMainBox, chunkTextBox } from './styles/styles';
+import { chunkMainBox } from './styles/styles';
 import { useChunkStore } from '../../store/chunkStore';
-import ChunkComparisonPanel from '../chunks/tools/comparison/ChunkComparisonPanel';
-import ChunkImageDisplay from './tools/image/Display';
-import { useImageGeneration } from '../../hooks/useImageGeneration';
 
 export interface ChunkProps {
     chunk: any;
@@ -27,24 +21,9 @@ const Chunk = memo(function Chunk({
     handleChunkFieldChange
 }: ChunkProps) {
     const words = chunk.content ? chunk.content.split(/\s+/) : [];
-    const { activeChunkId, setActiveChunk, activeTabs } = useChunkStore();
+    const { activeChunkId, setActiveChunk } = useChunkStore();
     const isActive = activeChunkId === chunk.id;
     const chunkRef = useRef<HTMLDivElement>(null);
-    // Debounced fields for summary/notes
-    const [summary, setSummary] = useDebouncedField(
-        chunk.summary || '',
-        (val: string) => handleChunkFieldChange(chunkIdx, 'summary', val),
-        800
-    );
-    const [notes, setNotes] = useDebouncedField(
-        chunk.notes || '',
-        (val: string) => handleChunkFieldChange(chunkIdx, 'notes', val),
-        800
-    );
-    // Image state for ChunkImagePanel
-    const { state: imageState, setState: setImageState, getImgSrc, openDialog } = useImageGeneration(chunk);
-    const setLightboxOpen = (open: boolean) => setImageState(s => ({ ...s, lightboxOpen: open }));
-    const setImageLoaded = (loaded: boolean) => setImageState(s => ({ ...s, loaded }));
 
     useEffect(() => {
         if (isActive && chunkRef.current) {
@@ -62,36 +41,11 @@ const Chunk = memo(function Chunk({
                 handleRemoveChunk={handleRemoveChunk}
                 chunk={chunk}
             />
-            <Box>
-                {activeTabs.includes('notes-summary') &&
-                    <SummaryNotesComponent
-                        summary={summary}
-                        notes={notes}
-                        setSummary={setSummary}
-                        setNotes={setNotes}
-                        onSummaryBlur={() => handleChunkFieldChange(chunkIdx, 'summary', summary)}
-                        onNotesBlur={() => handleChunkFieldChange(chunkIdx, 'notes', notes)}
-                    />
-                }
-                {activeTabs.includes('comparison') &&
-                    <ChunkComparisonPanel
-                        chunkId={chunk.id}
-                        comparisonText={chunk.comparison}
-                        onComparisonUpdate={text => handleChunkFieldChange(chunkIdx, 'comparison', text)}
-                    />
-                }
-                {activeTabs.includes('ai-image') &&
-                    <ChunkImageDisplay
-                        imageState={imageState}
-                        openDialog={openDialog}
-                        getImgSrc={getImgSrc}
-                        setImageLoaded={setImageLoaded}
-                        setLightboxOpen={setLightboxOpen}
-                        imgPrompt={imageState.prompt}
-                        createdAt={chunk.ai_image && chunk.ai_image.created_at}
-                    />
-                }
-            </Box>
+            <ChunkToolsDisplay
+                chunk={chunk}
+                chunkIdx={chunkIdx}
+                handleChunkFieldChange={handleChunkFieldChange}
+            />
         </Paper >
     );
 });

@@ -7,7 +7,7 @@ import { useDebouncedField } from '../../../hooks/useDebouncedField';
 import { useImageGeneration } from '../../../hooks/useImageGeneration';
 import log from '../../../utils/logger';
 import SummaryNotesComponent from './summarynotes/SummaryNotesComponent';
-import ChunkComparisonPanel from './comparison/ChunkComparisonPanel';
+import ChunkComparison from './comparison/ChunkComparison';
 import ChunkImageDisplay from './image/Display';
 import { useChunkStore } from '../../../store/chunkStore';
 
@@ -26,6 +26,7 @@ const tabOptions = [
 type TabType = typeof tabOptions[number]['value'];
 
 const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk, chunkIdx, handleChunkFieldChange }) => {
+
     // Debounced fields
     const [summary, setSummary] = useDebouncedField(
         chunk.summary || '',
@@ -74,7 +75,7 @@ const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk, chunkIdx, 
             )}
             {/* Show Comparison if selected */}
             {activeTabs.includes('comparison') && (
-                <ChunkComparisonPanel
+                <ChunkComparison
                     chunkId={chunk.id}
                     comparisonText={chunk.comparison}
                     onComparisonUpdate={handleComparisonUpdate}
