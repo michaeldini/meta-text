@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Paper, Box, Typography, Divider, Stack, Chip, Alert } from '@mui/material';
-import AiGenerationButton from './AiGenerationButton';
-import { sourceDocInfoDetailsBox } from '../styles/pageStyles';
-import type { SourceDocument } from '../types/sourceDocument';
-import { generateSourceDocInfo } from '../services/sourceDocInfoService';
+import AiGenerationButton from '../../../components/AiGenerationButton';
+import { sourceDocInfoDetailsBox } from '../../../styles/pageStyles';
+import type { SourceDocument } from '../../../types/sourceDocument';
+import { generateSourceDocInfo } from '../../../services/sourceDocInfoService';
 
 interface SourceDocInfoProps {
     doc: SourceDocument;

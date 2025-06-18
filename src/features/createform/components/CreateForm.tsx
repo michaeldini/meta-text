@@ -3,7 +3,7 @@ import { Paper, Typography, Box, Alert, CircularProgress } from '@mui/material';
 import { uploadFormInner } from '../styles/styles';
 
 interface CreateFormProps {
-    title: string;
+    description: string;
     onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
     children: React.ReactNode;
     error?: string;
@@ -12,7 +12,7 @@ interface CreateFormProps {
 }
 
 const CreateFormContainer: React.FC<CreateFormProps> = ({
-    title,
+    description,
     onSubmit,
     children,
     error,
@@ -20,8 +20,8 @@ const CreateFormContainer: React.FC<CreateFormProps> = ({
     loading,
 }) => (
     <Paper elevation={3}>
-        <Typography variant="h5" gutterBottom>
-            {title}
+        <Typography variant="body1" gutterBottom>
+            {description}
         </Typography>
         <Box component="form" onSubmit={onSubmit} sx={uploadFormInner}>
             {error && <Alert severity="error">{error}</Alert>}

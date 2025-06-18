@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Typography, Button, Paper } from '@mui/material';
-import SourceDocInfo from '../../components/SourceDocInfo';
+import SourceDocInfo from '../../features/info/components/SourceDocInfo';
 import Chunks from '../../features/chunks';
 import { useMetaTextDetail } from '../../hooks/useMetaTextDetail';
 import { metaTextDetailPaper } from '../../styles/pageStyles';

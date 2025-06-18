@@ -14,6 +14,7 @@ const MetaTextReviewPage = lazy(() => import('./pages/MetaTextPage/MetaTextRevie
 const LoginPage = lazy(() => import('./pages/Auth/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/Auth/RegisterPage'));
 const AuthGate = lazy(() => import('./pages/Auth/AuthGate'));
+const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
 
 function App() {
     const location = useLocation();
@@ -21,7 +22,11 @@ function App() {
     const routeElement = useMemo(() => (
         <Suspense fallback={<AppSuspenseFallback />}>
             <Routes location={location} key={location.key}>
-                <Route path="/" element={<h1>Welcome to Meta-Text</h1>} />
+                <Route path="/" element={
+                    <AuthGate>
+                        <HomePage />
+                    </AuthGate>
+                } />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/sourceDocs" element={

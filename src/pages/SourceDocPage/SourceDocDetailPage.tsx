@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Paper, Typography, Box, Alert, Button, Breadcrumbs } from '@mui/material';
-import SourceDocInfo from '../../components/SourceDocInfo';
+import SourceDocInfo from '../../features/info/components/SourceDocInfo';
 import { useSourceDocumentDetail } from '../../hooks/useSourceDocumentDetail';
 import {
     sourceDocDetailContainer,
