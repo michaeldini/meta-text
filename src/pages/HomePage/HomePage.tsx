@@ -12,7 +12,7 @@ import { useMetaTexts } from '../../hooks/useMetaTexts';
 import { deleteSourceDocument } from '../../services/sourceDocumentService';
 import { deleteMetaText } from '../../services/metaTextService';
 import { usePageLogger } from '../../hooks/usePageLogger';
-import CombinedCreateForm from '../../features/createform/components/Form';
+import CombinedCreateForm from '../../features/createform/components';
 import { Typography } from '@mui/material';
 
 export default function HomePage() {

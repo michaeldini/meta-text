@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, ToggleButton, ToggleButtonGroup, TextField } from '@mui/material';
 import FileUploadWidget from './FileUploadWidget';
-import SourceDocSelect from './SourceDocSelect';
+import SourceDocSelect from './Select';
 import { createSourceDocument } from '../../../services/sourceDocumentService';
 import { createMetaText } from '../../../services/metaTextService';
 import log from '../../../utils/logger';
@@ -10,7 +10,7 @@ import { useFormStatus } from '../hooks/useFormStatus';
 import { handleFormSubmit } from '../utils/handleFormSubmit';
 import SubmitButton from './SubmitButton';
 
-export interface CombinedCreateFormProps {
+export interface CreateFormProps {
     sourceDocs: Array<{ id: string | number; title: string }>;
     sourceDocsLoading: boolean;
     sourceDocsError: string | null;
@@ -19,7 +19,7 @@ export interface CombinedCreateFormProps {
 
 type Mode = 'upload' | 'metaText';
 
-const CombinedCreateForm: React.FC<CombinedCreateFormProps> = ({
+const CreateForm: React.FC<CreateFormProps> = ({
     sourceDocs,
     sourceDocsLoading,
     sourceDocsError,
@@ -106,6 +106,7 @@ const CombinedCreateForm: React.FC<CombinedCreateFormProps> = ({
             success={success}
             loading={loading}
         >
+            {/* Choose source doc/meta text */}
             <Box sx={{ mb: 2 }}>
                 <ToggleButtonGroup
                     value={mode}
@@ -121,6 +122,8 @@ const CombinedCreateForm: React.FC<CombinedCreateFormProps> = ({
                     </ToggleButton>
                 </ToggleButtonGroup>
             </Box>
+
+            {/* Display correct component depending on mode */}
             {mode === 'upload' ? (
                 <FileUploadWidget file={file} onFileChange={handleFileChange} />
             ) : (
@@ -158,4 +161,4 @@ const CombinedCreateForm: React.FC<CombinedCreateFormProps> = ({
     );
 };
 
-export default CombinedCreateForm;
+export default CreateForm;
