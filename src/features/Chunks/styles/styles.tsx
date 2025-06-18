@@ -20,7 +20,7 @@ export const chunkMainBox = {
     borderRadius: 2,
     '&:hover': {
         borderColor: 'secondary.main',
-        borderWidth: 1,
+        borderWidth: '1px',
         borderStyle: 'solid',
     }
 };

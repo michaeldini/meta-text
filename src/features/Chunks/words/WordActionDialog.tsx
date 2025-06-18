@@ -85,7 +85,9 @@ const WordActionDialog: React.FC<WordActionDialogProps> = ({ anchorEl, onClose, 
                 anchor="bottom"
                 open={showDefinition}
                 onClose={handleClose}
-                PaperProps={{ sx: { borderTopLeftRadius: 12, borderTopRightRadius: 12, minHeight: 180 } }}
+                slotProps={{
+                    paper: { sx: { borderTopLeftRadius: 12, borderTopRightRadius: 12, minHeight: 180 } }
+                }}
             >
                 <Box sx={{ p: 3, mx: 'auto' }}>
                     <Typography variant="h6" gutterBottom>

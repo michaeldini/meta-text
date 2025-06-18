@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Box, Pagination, Paper, Alert } from '@mui/material';
-import Chunk from './Chunk';
+import Chunk from './tools/components/Chunk';
 import { chunksContainer } from './styles/styles';
 import log from '../../utils/logger';
 import { useChunksManager } from './hooks/useChunksManager.hook';
