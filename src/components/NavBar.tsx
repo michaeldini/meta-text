@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -6,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useAuth } from '../store/authStore';
 import { navBarAppBar, navBarToolbar, navBarTitle } from '../styles/pageStyles';
-import React from 'react';
 import ChunkToolsNavbar from '../features/chunktools/ChunkToolsNavbar';
 
 interface NavBarButtonProps {
@@ -16,7 +16,11 @@ interface NavBarButtonProps {
     active?: boolean;
 }
 
-function NavBarButton({ to, children, onClick, active }: NavBarButtonProps) {
+/**
+ * Unified NavBarButton component for navigation and action buttons.
+ * If `to` is provided, renders as a Link; otherwise, as a regular Button.
+ */
+const NavBarButton: React.FC<NavBarButtonProps> = ({ to, children, onClick, active }) => {
     const buttonProps: any = {
         onClick,
         color: active ? 'primary' : 'inherit',
@@ -30,7 +34,7 @@ function NavBarButton({ to, children, onClick, active }: NavBarButtonProps) {
             {children}
         </Button>
     );
-}
+};
 
 const NavBar: React.FC = () => {
     const location = useLocation();
@@ -39,7 +43,10 @@ const NavBar: React.FC = () => {
     return (
         <AppBar position="fixed" elevation={2} sx={navBarAppBar}>
             <Toolbar sx={navBarToolbar}>
-                <Box sx={{ display: 'flex', gap: 2 }}>
+                <ChunkToolsNavbar />
+
+                <Box sx={{ flexGrow: 8 }} />
+                <Box>
                     <NavBarButton to="/sourceDocs" active={isActive('/sourceDocs')}>Source Docs</NavBarButton>
                     <NavBarButton to="/metaText" active={isActive('/metaText')}>Meta Texts</NavBarButton>
                     {!user && (
@@ -54,7 +61,6 @@ const NavBar: React.FC = () => {
                 </Box>
                 <Box sx={{ flexGrow: 1 }} />
                 {/* ChunkToolsNavbar now provides tab/tool selection for the active chunk */}
-                <ChunkToolsNavbar />
                 <Typography variant="h6" sx={navBarTitle}>
                     Meta-Text
                 </Typography>

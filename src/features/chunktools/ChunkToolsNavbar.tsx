@@ -1,8 +1,10 @@
 import React from 'react';
-import { Box, Typography, Button, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Box, Typography, Button, ToggleButtonGroup } from '@mui/material';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import PhotoFilterIcon from '@mui/icons-material/PhotoFilter';
+import NotesIcon from '@mui/icons-material/Notes';
 import { useChunkStore } from '../../store/chunkStore';
+import ToolToggleButton from './ToolToggleButton';
 
 
 
@@ -24,12 +26,12 @@ const ChunkToolsNavbar: React.FC = () => {
     };
 
     return (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 1, bgcolor: 'background.paper', borderRadius: 1, boxShadow: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography variant="subtitle1">
-                {activeChunkId ? `Active Chunk: ${activeChunkId}` : 'No chunk selected'}
+                {activeChunkId ? `Active: ${activeChunkId}` : 'No chunk selected'}
             </Typography>
-            <Button variant="contained" color="primary" onClick={handleShowDialog} disabled={!activeChunkId}>
-                Open Actions
+            <Button onClick={handleShowDialog} disabled={!activeChunkId}>
+                Dialogue
             </Button>
             <ToggleButtonGroup
                 value={activeTabs}
@@ -37,15 +39,27 @@ const ChunkToolsNavbar: React.FC = () => {
                 size="small"
                 sx={{ ml: 2 }}
             >
-                <ToggleButton value="notes-summary" aria-label="Show Notes/Summary">
-                    <Typography sx={{ mr: 1 }}>Notes/Summary</Typography>
-                </ToggleButton>
-                <ToggleButton value="comparison" aria-label="Show Comparison">
-                    <CompareArrowsIcon sx={{ mr: 1 }} /> Comparison
-                </ToggleButton>
-                <ToggleButton value="ai-image" aria-label="Show AI Image">
-                    <PhotoFilterIcon sx={{ mr: 1 }} /> AI Image
-                </ToggleButton>
+                <ToolToggleButton
+                    value="notes-summary"
+                    ariaLabel="Show Notes/Summary"
+                    tooltip="Show or hide the Notes/Summary editor for all chunks"
+                    icon={<NotesIcon sx={{ mr: 1 }} />}
+                >
+                </ToolToggleButton>
+                <ToolToggleButton
+                    value="comparison"
+                    ariaLabel="Show Comparison"
+                    tooltip="Show or hide the AI-generated comparison panel for all chunks"
+                    icon={<CompareArrowsIcon sx={{ mr: 1 }} />}
+                >
+                </ToolToggleButton>
+                <ToolToggleButton
+                    value="ai-image"
+                    ariaLabel="Show AI Image"
+                    tooltip="Show or hide the AI image panel for all chunks"
+                    icon={<PhotoFilterIcon sx={{ mr: 1 }} />}
+                >
+                </ToolToggleButton>
             </ToggleButtonGroup>
             {/* Add more tool buttons here, acting on activeChunkId */}
         </Box>
