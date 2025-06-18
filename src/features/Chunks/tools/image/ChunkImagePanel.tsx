@@ -2,7 +2,7 @@ import React from 'react';
 import { Paper } from '@mui/material';
 import AiGenerationButton from '../../../../components/AiGenerationButton';
 import ChunkImageDisplay from './ChunkImageDisplay';
-import { toolStyles } from '../../styles/Chunks.styles';
+import { toolStyles } from '../../styles/styles';
 import { AiGenerationBtn } from '../../../../components/AiGenerationBtn';
 
 interface ChunkImagePanelProps {
