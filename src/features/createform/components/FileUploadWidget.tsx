@@ -21,7 +21,7 @@ const FileUploadWidget: React.FC<FileUploadWidgetProps> = ({ file, onFileChange,
                 style={{ display: 'none' }}
             />
             <label htmlFor={id}>
-                <Button component="span" startIcon={<FileUploadIcon />}>
+                <Button variant="outlined" component="span" startIcon={<FileUploadIcon />} sx={{ height: '60px', padding: '16px' }}>
                     {file ? 'Change File' : 'Choose File'}
                 </Button>
             </label>

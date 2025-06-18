@@ -38,6 +38,7 @@ const SourceDocSelect: React.FC<SourceDocSelectProps> = ({
                 label={label}
                 onChange={onChange}
                 required={required}
+                sx={{ height: '60px', padding: '16px' }}
                 {...props}
             >
                 {/* Only show menu items when not loading */}

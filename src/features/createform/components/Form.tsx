@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Box, ToggleButton, ToggleButtonGroup, TextField } from '@mui/material';
+import { Box, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import FileUploadWidget from './FileUploadWidget';
-import SourceDocSelect from './SourceDocSelect';
+import SourceDocSelect from './Select';
 import { createSourceDocument } from '../../../services/sourceDocumentService';
 import { createMetaText } from '../../../services/metaTextService';
 import log from '../../../utils/logger';
@@ -9,6 +9,7 @@ import CreateFormContainer from './Container';
 import { useFormStatus } from '../hooks/useFormStatus';
 import { handleFormSubmit } from '../utils/handleFormSubmit';
 import SubmitButton from './SubmitButton';
+import TitleField from './TitleField';
 
 export interface CombinedCreateFormProps {
     sourceDocs: Array<{ id: string | number; title: string }>;
@@ -112,6 +113,13 @@ const CombinedCreateForm: React.FC<CombinedCreateFormProps> = ({
                     exclusive
                     onChange={handleModeChange}
                     aria-label="form mode"
+                    fullWidth
+                    sx={{
+                        '& .MuiToggleButton-root': {
+                            flex: 1,
+                            minWidth: 200,
+                        }
+                    }}
                 >
                     <ToggleButton value="upload" aria-label="upload">
                         Source Document
@@ -136,13 +144,10 @@ const CombinedCreateForm: React.FC<CombinedCreateFormProps> = ({
             <TextField
                 value={title}
                 onChange={e => setTitle(e.target.value)}
-                label={mode === 'upload' ? 'Enter the title of your document' : 'Choose a title for your meta text'}
-                fullWidth
-                margin="normal"
-                disabled={loading}
                 data-testid={mode === 'upload' ? 'upload-title' : 'meta-text-title'}
                 id={mode === 'upload' ? 'upload-title' : 'meta-text-title'}
-                required
+                label={mode === 'upload' ? 'Enter the title of your document' : 'Choose a title for your meta text'}
+                sx={{ width: '100%' }}
             />
             <SubmitButton
                 loading={loading}

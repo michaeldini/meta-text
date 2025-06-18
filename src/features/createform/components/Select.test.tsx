@@ -1,7 +1,7 @@
 import '../../../components/setupTests';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import SourceDocSelect, { SourceDoc } from './SourceDocSelect';
+import SourceDocSelect, { SourceDoc } from './Select';
 
 const sourceDocs: SourceDoc[] = [
     { id: '1', title: 'Document One' },
