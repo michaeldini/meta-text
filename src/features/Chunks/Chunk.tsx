@@ -50,8 +50,6 @@ const Chunk = memo(function Chunk({
         if (isActive && chunkRef.current) {
             const navbarHeight = 64; // Adjust if your AppBar is a different height
             const rect = chunkRef.current.getBoundingClientRect();
-            const scrollTop = window.pageYOffset + rect.top - navbarHeight - 32; // 32px extra padding
-            window.scrollTo({ top: scrollTop, behavior: 'smooth' });
         }
     }, [isActive]);
 

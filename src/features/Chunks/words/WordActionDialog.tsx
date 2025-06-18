@@ -68,7 +68,7 @@ const WordActionDialog: React.FC<WordActionDialogProps> = ({ anchorEl, onClose, 
                 anchorOrigin={{ vertical: 'center', horizontal: 'right' }}
                 transformOrigin={{ vertical: 'center', horizontal: 'left' }}
             >
-                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: 1, p: 1 }}>
+                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: 1, p: 0, mb: 0 }}>
                     <IconButton onClick={onSplit} disabled={loading} title="Split text here" color="primary">
                         <ContentCutIcon fontSize="small" />
                     </IconButton>

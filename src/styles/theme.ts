@@ -63,6 +63,15 @@ const theme = createTheme({
                 },
             },
         },
+        MuiPopover: {
+            styleOverrides: {
+                paper: {
+                    padding: 8,
+                    margin: 8,
+
+                },
+            },
+        },
         MuiAlert: {
             styleOverrides: {
                 root: {

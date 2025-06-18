@@ -38,12 +38,6 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
     const [page, setPage] = useState(1);
     const containerRef = useRef<HTMLDivElement | null>(null);
 
-    useEffect(() => {
-        if (containerRef.current) {
-            containerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    }, [page]);
-
     if (!Array.isArray(chunks)) {
         log.error('Chunks prop is not an array:', chunks);
         throw new Error('Chunks prop must be an array. Received: ' + typeof chunks);
