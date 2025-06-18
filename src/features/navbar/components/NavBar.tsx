@@ -26,7 +26,7 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({ to, children, onClick, acti
         buttonProps.to = to;
     }
     return (
-        <Button {...buttonProps}>
+        <Button {...buttonProps} sx={{ marginLeft: '16px', textTransform: 'none' }}>
             {children}
         </Button>
     );
