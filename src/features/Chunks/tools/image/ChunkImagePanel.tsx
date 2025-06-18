@@ -1,9 +1,8 @@
 import React from 'react';
-import { Paper } from '@mui/material';
-import AiGenerationButton from '../../../../components/AiGenerationButton';
+import { Paper, Button } from '@mui/material';
 import ChunkImageDisplay from './ChunkImageDisplay';
 import { toolStyles } from '../../styles/styles';
-import { AiGenerationBtn } from '../../../../components/AiGenerationBtn';
+import AiGenerationButton from '../../../../components/AiGenerationButton';
 
 interface ChunkImagePanelProps {
     imageState: any;
@@ -14,6 +13,7 @@ interface ChunkImagePanelProps {
     imgPrompt: string;
     createdAt?: string;
 }
+
 
 const ChunkImagePanel: React.FC<ChunkImagePanelProps> = ({
     imageState,
@@ -31,7 +31,7 @@ const ChunkImagePanel: React.FC<ChunkImagePanelProps> = ({
             loading={imageState.loading}
             onClick={openDialog}
             disabled={imageState.loading}
-            sx={{ ...AiGenerationBtn, opacity: imageState.loading ? 0.7 : 1 }}
+            sx={{ opacity: imageState.loading ? 0.7 : 1 }}
         />
         {imageState.data && (
             <ChunkImageDisplay

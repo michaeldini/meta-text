@@ -23,7 +23,7 @@ const ChunkImageDisplay: React.FC<ChunkImageDisplayProps> = ({
     lightboxOpen,
     setLightboxOpen,
     createdAt,
-    height = '200px',
+    height = '400px',
 }) => (
     <>
         <Box sx={chunkImageBox}
