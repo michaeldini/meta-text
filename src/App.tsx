@@ -1,6 +1,6 @@
 // import './App.css';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import NavBar from './components/NavBar';
+import NavBar from './features/navbar/components/NavBar';
 import { Fade } from '@mui/material';
 import { useMemo, Suspense, lazy } from 'react';
 import { AppSuspenseFallback } from './components/AppSuspenseFallback';

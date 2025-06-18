@@ -5,9 +5,9 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { useAuth } from '../store/authStore';
-import { navBarAppBar, navBarToolbar, navBarTitle } from '../styles/pageStyles';
-import ChunkToolsNavbar from '../features/chunktools/ChunkToolsNavbar';
+import { useAuth } from '../../../store/authStore';
+import { navBarAppBar, navBarToolbar, navBarTitle } from '../styles/styles';
+import ChunkToolsNavbar from '../../chunktools/ChunkToolsNavbar';
 
 interface NavBarButtonProps {
     to?: string;
@@ -16,10 +16,6 @@ interface NavBarButtonProps {
     active?: boolean;
 }
 
-/**
- * Unified NavBarButton component for navigation and action buttons.
- * If `to` is provided, renders as a Link; otherwise, as a regular Button.
- */
 const NavBarButton: React.FC<NavBarButtonProps> = ({ to, children, onClick, active }) => {
     const buttonProps: any = {
         onClick,

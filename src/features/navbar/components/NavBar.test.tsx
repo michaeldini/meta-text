@@ -1,5 +1,5 @@
 /// <reference types="vitest" />
-import './setupTests';
+import '../../../components/setupTests';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { vi } from 'vitest';
@@ -9,7 +9,7 @@ vi.mock('../store/authStore', () => ({
     useAuth: () => ({ user: null, logout: vi.fn() }),
 }));
 
-import NavBar from './NavBar';
+import NavBar from '../components/NavBar';
 
 describe('NavBar', () => {
     it('renders without crashing', () => {
