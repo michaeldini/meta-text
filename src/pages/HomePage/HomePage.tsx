@@ -14,7 +14,7 @@ import { deleteMetaText } from '../../services/metaTextService';
 import { usePageLogger } from '../../hooks/usePageLogger';
 import CombinedCreateForm from '../../features/createform/components';
 import { Typography } from '@mui/material';
-import DocTypeSelect, { DocType } from '../../components/common/DocTypeSelect';
+import DocTypeSelect, { DocType } from '../../components/DocTypeSelect';
 import type { SourceDocument } from '../../types/sourceDocument';
 import type { MetaText } from '../../types/metaText';
 

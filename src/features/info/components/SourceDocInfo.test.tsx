@@ -1,14 +1,13 @@
-import '../../../components/setupTests';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import SourceDocInfo from './SourceDocInfo';
 import { SourceDocument } from '../../../types/sourceDocument';
+import { generateSourceDocInfo } from '../../../services/sourceDocInfoService';
 
-vi.mock('../services/sourceDocInfoService', () => ({
+vi.mock('../../../services/sourceDocInfoService', () => ({
     generateSourceDocInfo: vi.fn(),
 }));
 
-import { generateSourceDocInfo } from '../../../services/sourceDocInfoService';
 const mockedGenerateSourceDocInfo = generateSourceDocInfo as unknown as ReturnType<typeof vi.fn>;
 
 describe('SourceDocInfo', () => {

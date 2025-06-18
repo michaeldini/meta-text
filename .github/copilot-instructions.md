@@ -9,7 +9,7 @@
 - loguru is used for logging in the backend.
 - src/utils/logger.ts is used for logging in the frontend.
 - pytest is used for testing in the backend.
-- vitetest is used for testing in the frontend.
+- vitetest is used for testing in the frontend. tests are colocated with the component being tested.
 ## uv Guidelines
 - use `source .venv/bin/activate` before installing new python packages.
 - use `uv add package_name` to add a new package.

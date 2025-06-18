@@ -9,7 +9,7 @@ import CreateFormContainer from './Container';
 import { useFormStatus } from '../hooks/useFormStatus';
 import { handleFormSubmit } from '../utils/handleFormSubmit';
 import SubmitButton from './SubmitButton';
-import DocTypeSelect, { DocType } from '../../../components/common/DocTypeSelect';
+import DocTypeSelect, { DocType } from '../../../components/DocTypeSelect';
 
 export interface CreateFormProps {
     sourceDocs: Array<{ id: string | number; title: string }>;

@@ -1,11 +1,11 @@
 /// <reference types="vitest" />
-import '../../../components/setupTests';
+import '../../../setupTests';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { vi } from 'vitest';
 
 // Simple static mock for useAuth
-vi.mock('../store/authStore', () => ({
+vi.mock('../../../store/authStore', () => ({
     useAuth: () => ({ user: null, logout: vi.fn() }),
 }));
 
@@ -30,4 +30,6 @@ describe('NavBar', () => {
         expect(screen.getByRole('link', { name: /login/i })).toBeInTheDocument();
         expect(screen.getByRole('link', { name: /register/i })).toBeInTheDocument();
     });
+
 });
+

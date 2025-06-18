@@ -20,7 +20,7 @@ export interface CombinedCreateFormProps {
 
 type Mode = 'upload' | 'metaText';
 
-const CombinedCreateForm: React.FC<CombinedCreateFormProps> = ({
+const CreateForm: React.FC<CombinedCreateFormProps> = ({
     sourceDocs,
     sourceDocsLoading,
     sourceDocsError,
@@ -163,4 +163,4 @@ const CombinedCreateForm: React.FC<CombinedCreateFormProps> = ({
     );
 };
 
-export default CombinedCreateForm;
+export default CreateForm;

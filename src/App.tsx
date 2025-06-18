@@ -6,15 +6,15 @@ import { useMemo, Suspense, lazy } from 'react';
 import { AppSuspenseFallback } from './components/AppSuspenseFallback';
 
 // Dynamically import pages for code splitting
-const SourceDocsPage = lazy(() => import('./pages/SourceDocPage/SourceDocsPage'));
+// const SourceDocsPage = lazy(() => import('./pages/SourceDocPage/SourceDocsPage'));
+// const MetaTextPage = lazy(() => import('./pages/MetaTextPage/MetaTextPage'));
+const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
 const SourceDocDetailPage = lazy(() => import('./pages/SourceDocPage/SourceDocDetailPage'));
-const MetaTextPage = lazy(() => import('./pages/MetaTextPage/MetaTextPage'));
 const MetaTextDetailPage = lazy(() => import('./pages/MetaTextPage/MetaTextDetailPage'));
 const MetaTextReviewPage = lazy(() => import('./pages/MetaTextPage/MetaTextReviewPage'));
 const LoginPage = lazy(() => import('./pages/Auth/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/Auth/RegisterPage'));
 const AuthGate = lazy(() => import('./pages/Auth/AuthGate'));
-const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
 
 function App() {
     const location = useLocation();
@@ -29,21 +29,21 @@ function App() {
                 } />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
-                <Route path="/sourceDocs" element={
+                {/* <Route path="/sourceDocs" element={
                     <AuthGate>
                         <SourceDocsPage />
                     </AuthGate>
-                } />
+                } /> */}
                 <Route path="/sourceDocs/:sourceDocId" element={
                     <AuthGate>
                         <SourceDocDetailPage />
                     </AuthGate>
                 } />
-                <Route path="/metaText" element={
+                {/* <Route path="/metaText" element={
                     <AuthGate>
                         <MetaTextPage />
                     </AuthGate>
-                } />
+                } /> */}
                 <Route path="/metaText/:metaTextId" element={
                     <AuthGate>
                         <MetaTextDetailPage />

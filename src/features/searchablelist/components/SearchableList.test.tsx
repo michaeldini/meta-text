@@ -1,4 +1,4 @@
-import '../../../components/setupTests';
+import '../../../setupTests';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import SearchableList, { SearchableListProps } from './SearchableList';

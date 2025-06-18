@@ -26,7 +26,7 @@ const ChunkToolsNavbar: React.FC = () => {
     };
 
     return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }} data-testid="chunk-tools-navbar">
             <Typography variant="subtitle1">
                 {activeChunkId ? `Active: ${activeChunkId}` : 'No chunk selected'}
             </Typography>
