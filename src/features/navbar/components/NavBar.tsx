@@ -39,12 +39,16 @@ const NavBar: React.FC = () => {
     return (
         <AppBar position="fixed" elevation={2} sx={navBarAppBar}>
             <Toolbar sx={navBarToolbar}>
-                <ChunkToolsNavbar />
-
-                <Box sx={{ flexGrow: 8 }} />
                 <Box>
-                    <NavBarButton to="/sourceDocs" active={isActive('/sourceDocs')}>Source Docs</NavBarButton>
-                    <NavBarButton to="/metaText" active={isActive('/metaText')}>Meta Texts</NavBarButton>
+                    <Typography
+                        variant="h6"
+                        sx={navBarTitle}
+                        component={Link}
+                        to="/"
+                        style={{ textDecoration: 'none', color: 'inherit', marginLeft: '16px' }}
+                    >
+                        Meta-Text
+                    </Typography>
                     {!user && (
                         <NavBarButton to="/login" active={isActive('/login')} >Login</NavBarButton>
                     )}
@@ -54,12 +58,10 @@ const NavBar: React.FC = () => {
                     {user && (
                         <NavBarButton onClick={logout}>Logout</NavBarButton>
                     )}
+
                 </Box>
-                <Box sx={{ flexGrow: 1 }} />
-                {/* ChunkToolsNavbar now provides tab/tool selection for the active chunk */}
-                <Typography variant="h6" sx={navBarTitle}>
-                    Meta-Text
-                </Typography>
+                <Box sx={{ flexGrow: 8 }} />
+                <ChunkToolsNavbar />
             </Toolbar>
         </AppBar>
     );
