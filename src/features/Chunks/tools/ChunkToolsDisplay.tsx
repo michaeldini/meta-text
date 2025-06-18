@@ -6,9 +6,9 @@ import NotesIcon from '@mui/icons-material/Notes';
 import { useDebouncedField } from '../../../hooks/useDebouncedField';
 import { useImageGeneration } from '../../../hooks/useImageGeneration';
 import log from '../../../utils/logger';
-import SummaryNotesComponent from './SummaryNotesComponent';
-import ChunkComparisonPanel from '../comparison/ChunkComparisonPanel';
-import ChunkImagePanel from '../image/ChunkImagePanel';
+import SummaryNotesComponent from './summarynotes/SummaryNotesComponent';
+import ChunkComparisonPanel from './comparison/ChunkComparisonPanel';
+import ChunkImagePanel from './image/ChunkImagePanel';
 import { useChunkStore } from '../../../store/chunkStore';
 
 interface ChunkToolsDisplayProps {

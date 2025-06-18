@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, CircularProgress, Modal, Fade } from '@mui/material';
-import { chunkImageBox, chunkImageLoadingOverlay, chunkLightboxModal, chunkLightboxImgBox, chunkLightboxPromptBox } from '../../../styles/pageStyles';
+import { chunkImageBox, chunkImageLoadingOverlay, chunkLightboxModal, chunkLightboxImgBox, chunkLightboxPromptBox } from '../../styles/Chunks.styles';
 
 export interface ChunkImageDisplayProps {
     imgSrc: string;

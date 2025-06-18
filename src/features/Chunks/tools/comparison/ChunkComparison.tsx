@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Box, Paper } from '@mui/material';
-import AiGenerationButton from '../../../components/AiGenerationButton';
-import { generateChunkNoteSummaryTextComparison } from '../../../services/aiService';
-import { toolStyles } from '../styles/Chunks.styles';
+import AiGenerationButton from '../../../../components/AiGenerationButton';
+import { generateChunkNoteSummaryTextComparison } from '../../../../services/aiService';
+import { toolStyles } from '../../styles/Chunks.styles';
 
 export interface ChunkComparisonProps {
     chunkId: number;

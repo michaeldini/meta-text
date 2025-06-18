@@ -3,12 +3,12 @@ import { Box, Paper } from '@mui/material';
 import ChunkWords from './words/ChunkWords';
 import ChunkToolsDisplay from './tools/ChunkToolsDisplay';
 
-import SummaryNotesComponent from '../chunks/tools/SummaryNotesComponent';
+import SummaryNotesComponent from '../chunks/tools/summarynotes/SummaryNotesComponent';
 import { useDebouncedField } from '../../hooks/useDebouncedField';
 import { chunkMainBox, chunkTextBox } from './styles/Chunks.styles';
 import { useChunkStore } from '../../store/chunkStore';
-import ChunkComparisonPanel from '../chunks/comparison/ChunkComparisonPanel';
-import ChunkImagePanel from '../chunks/image/ChunkImagePanel';
+import ChunkComparisonPanel from '../chunks/tools/comparison/ChunkComparisonPanel';
+import ChunkImagePanel from '../chunks/tools/image/ChunkImagePanel';
 import { useImageGeneration } from '../../hooks/useImageGeneration';
 
 export interface ChunkProps {

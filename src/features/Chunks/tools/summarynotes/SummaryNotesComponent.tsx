@@ -1,5 +1,5 @@
 import React from 'react';
-import ChunkTextField from '../components/ChunkTextField';
+import ChunkTextField from '../../components/ChunkTextField';
 import { Paper } from '@mui/material';
 
 interface SummaryNotesComponentProps {
