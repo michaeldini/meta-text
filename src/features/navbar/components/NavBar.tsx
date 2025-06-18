@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useAuth } from '../../../store/authStore';
 import { navBarAppBar, navBarToolbar, navBarTitle } from '../styles/styles';
-import ChunkToolsNavbar from '../../chunktools/ChunkToolsNavbar';
+import ChunkToolsNavbar from '../../chunks/tools/ChunkToolsNavbar';
 
 interface NavBarButtonProps {
     to?: string;

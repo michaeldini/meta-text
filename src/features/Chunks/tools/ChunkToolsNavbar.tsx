@@ -1,10 +1,9 @@
 import React from 'react';
-import { Box, Typography, Button, ToggleButtonGroup } from '@mui/material';
+import { Box, Typography, Button, ToggleButtonGroup, ToggleButton, Tooltip, Typography as MuiTypography } from '@mui/material';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import PhotoFilterIcon from '@mui/icons-material/PhotoFilter';
 import NotesIcon from '@mui/icons-material/Notes';
-import { useChunkStore } from '../../store/chunkStore';
-import ToolToggleButton from './ToolToggleButton';
+import { useChunkStore } from '../../../store/chunkStore';
 
 
 
@@ -39,27 +38,33 @@ const ChunkToolsNavbar: React.FC = () => {
                 size="small"
                 sx={{ ml: 2 }}
             >
-                <ToolToggleButton
-                    value="notes-summary"
-                    ariaLabel="Show Notes/Summary"
-                    tooltip="Show or hide the Notes/Summary editor for all chunks"
-                    icon={<NotesIcon sx={{ mr: 1 }} />}
+                <Tooltip
+                    title={<MuiTypography sx={{ fontSize: 16 }}>Show or hide the Notes/Summary editor for all chunks</MuiTypography>}
+                    arrow
+                    enterDelay={200}
                 >
-                </ToolToggleButton>
-                <ToolToggleButton
-                    value="comparison"
-                    ariaLabel="Show Comparison"
-                    tooltip="Show or hide the AI-generated comparison panel for all chunks"
-                    icon={<CompareArrowsIcon sx={{ mr: 1 }} />}
+                    <ToggleButton value="notes-summary" aria-label="Show Notes/Summary">
+                        <NotesIcon sx={{ mr: 1 }} />
+                    </ToggleButton>
+                </Tooltip>
+                <Tooltip
+                    title={<MuiTypography sx={{ fontSize: 16 }}>Show or hide the AI-generated comparison panel for all chunks</MuiTypography>}
+                    arrow
+                    enterDelay={200}
                 >
-                </ToolToggleButton>
-                <ToolToggleButton
-                    value="ai-image"
-                    ariaLabel="Show AI Image"
-                    tooltip="Show or hide the AI image panel for all chunks"
-                    icon={<PhotoFilterIcon sx={{ mr: 1 }} />}
+                    <ToggleButton value="comparison" aria-label="Show Comparison">
+                        <CompareArrowsIcon sx={{ mr: 1 }} />
+                    </ToggleButton>
+                </Tooltip>
+                <Tooltip
+                    title={<MuiTypography sx={{ fontSize: 16 }}>Show or hide the AI image panel for all chunks</MuiTypography>}
+                    arrow
+                    enterDelay={200}
                 >
-                </ToolToggleButton>
+                    <ToggleButton value="ai-image" aria-label="Show AI Image">
+                        <PhotoFilterIcon sx={{ mr: 1 }} />
+                    </ToggleButton>
+                </Tooltip>
             </ToggleButtonGroup>
             {/* Add more tool buttons here, acting on activeChunkId */}
         </Box>

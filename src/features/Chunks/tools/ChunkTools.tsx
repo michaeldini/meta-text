@@ -1,10 +1,13 @@
 import React from 'react';
-import { Box } from '@mui/material';
+import { Box, IconButton, Tooltip } from '@mui/material';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
+import PhotoFilterIcon from '@mui/icons-material/PhotoFilter';
 import { useDebouncedField } from '../../../hooks/useDebouncedField';
 import { useImageGeneration } from '../../../hooks/useImageGeneration';
 import log from '../../../utils/logger';
 import SummaryNotesComponent from './SummaryNotesComponent';
-import ChunkToolsTabs from './ChunkToolsTabs';
+import ChunkComparisonPanel from '../comparison/ChunkComparisonPanel';
+import ChunkImagePanel from '../image/ChunkImagePanel';
 import { useChunkStore } from '../../../store/chunkStore';
 
 interface ChunkToolsProps {
@@ -46,11 +49,16 @@ const ChunkTools: React.FC<ChunkToolsProps> = ({ chunk, chunkIdx, handleChunkFie
         if (imageState.data) log.info(`Image retrieved for chunk id: ${chunk.id}`);
     }, [imageState.loading, imageState.error, imageState.data, chunk.id]);
 
-    // Use selector to only subscribe to activeTab and setActiveTab
-    const { activeTab, setActiveTab } = useChunkStore(state => ({
-        activeTab: state.activeTab,
-        setActiveTab: state.setActiveTab,
+    // Use selector to only subscribe to activeTabs and setActiveTabs
+    const { activeTabs, setActiveTabs } = useChunkStore(state => ({
+        activeTabs: state.activeTabs,
+        setActiveTabs: state.setActiveTabs,
     }));
+
+    // Determine the current active tab for this chunk (single-select behavior)
+    const tabOptions: Array<'comparison' | 'ai-image'> = ['comparison', 'ai-image'];
+    const activeTab = tabOptions.find(tab => activeTabs.includes(tab)) || 'comparison';
+    const setActiveTab = (tab: 'comparison' | 'ai-image') => setActiveTabs([tab]);
 
     const handleComparisonUpdate = (newComparison: string) => handleChunkFieldChange(chunkIdx, 'comparison', newComparison);
 
@@ -64,17 +72,50 @@ const ChunkTools: React.FC<ChunkToolsProps> = ({ chunk, chunkIdx, handleChunkFie
                 onSummaryBlur={() => handleChunkFieldChange(chunkIdx, 'summary', summary)}
                 onNotesBlur={() => handleChunkFieldChange(chunkIdx, 'notes', notes)}
             />
-            <ChunkToolsTabs
-                chunk={chunk}
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-                imageState={imageState}
-                openDialog={openDialog}
-                getImgSrc={getImgSrc}
-                setImageLoaded={setImageLoaded}
-                setLightboxOpen={setLightboxOpen}
-                handleComparisonUpdate={handleComparisonUpdate}
-            />
+            {/* Inline tab buttons */}
+            <Box sx={{ display: 'flex', gap: 1, mb: 3, mt: 3, borderBottom: 1 }}>
+                <Tooltip title="Show Comparison">
+                    <span>
+                        <IconButton
+                            color={activeTab === 'comparison' ? 'primary' : 'default'}
+                            aria-label="Show Comparison"
+                            onClick={() => setActiveTab('comparison')}
+                        >
+                            <CompareArrowsIcon />
+                        </IconButton>
+                    </span>
+                </Tooltip>
+                <Tooltip title="Show AI Image">
+                    <span>
+                        <IconButton
+                            color={activeTab === 'ai-image' ? 'primary' : 'default'}
+                            aria-label="Show AI Image"
+                            onClick={() => setActiveTab('ai-image')}
+                        >
+                            <PhotoFilterIcon />
+                        </IconButton>
+                    </span>
+                </Tooltip>
+            </Box>
+            {/* Inline tab panels */}
+            {activeTab === 'comparison' && (
+                <ChunkComparisonPanel
+                    chunkId={chunk.id}
+                    comparisonText={chunk.comparison}
+                    onComparisonUpdate={handleComparisonUpdate}
+                />
+            )}
+            {activeTab === 'ai-image' && (
+                <ChunkImagePanel
+                    imageState={imageState}
+                    openDialog={openDialog}
+                    getImgSrc={getImgSrc}
+                    setImageLoaded={setImageLoaded}
+                    setLightboxOpen={setLightboxOpen}
+                    imgPrompt={imageState.prompt}
+                    createdAt={chunk.ai_image && chunk.ai_image.created_at}
+                />
+            )}
         </Box>
     );
 };
