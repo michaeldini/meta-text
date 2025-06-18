@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, ToggleButton, ToggleButtonGroup, TextField } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 import FileUploadWidget from './FileUploadWidget';
 import SourceDocSelect from './Select';
 import { createSourceDocument } from '../../../services/sourceDocumentService';
@@ -9,23 +9,24 @@ import CreateFormContainer from './Container';
 import { useFormStatus } from '../hooks/useFormStatus';
 import { handleFormSubmit } from '../utils/handleFormSubmit';
 import SubmitButton from './SubmitButton';
+import DocTypeSelect, { DocType } from '../../../components/common/DocTypeSelect';
 
 export interface CreateFormProps {
     sourceDocs: Array<{ id: string | number; title: string }>;
     sourceDocsLoading: boolean;
     sourceDocsError: string | null;
     onSuccess?: () => void;
+    docType: DocType;
 }
-
-type Mode = 'upload' | 'metaText';
 
 const CreateForm: React.FC<CreateFormProps> = ({
     sourceDocs,
     sourceDocsLoading,
     sourceDocsError,
-    onSuccess
+    onSuccess,
+    docType
 }) => {
-    const [mode, setMode] = useState<Mode>('upload');
+    const mode = docType === 'sourceDoc' ? 'upload' : 'metaText';
     const [file, setFile] = useState<File | null>(null);
     const [selectedSourceDocId, setSelectedSourceDocId] = useState<string>('');
     const {
@@ -39,16 +40,6 @@ const CreateForm: React.FC<CreateFormProps> = ({
         setLoading,
         resetStatus,
     } = useFormStatus();
-
-    const handleModeChange = (_event: React.MouseEvent<HTMLElement>, newMode: Mode | null) => {
-        if (newMode) {
-            setMode(newMode);
-            resetStatus();
-            setFile(null);
-            setSelectedSourceDocId('');
-            setTitle('');
-        }
-    };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFile(e.target.files ? e.target.files[0] : null);
@@ -106,23 +97,6 @@ const CreateForm: React.FC<CreateFormProps> = ({
             success={success}
             loading={loading}
         >
-            {/* Choose source doc/meta text */}
-            <Box sx={{ mb: 2 }}>
-                <ToggleButtonGroup
-                    value={mode}
-                    exclusive
-                    onChange={handleModeChange}
-                    aria-label="form mode"
-                >
-                    <ToggleButton value="upload" aria-label="upload">
-                        Source Document
-                    </ToggleButton>
-                    <ToggleButton value="metaText" aria-label="metaText">
-                        Meta-Text
-                    </ToggleButton>
-                </ToggleButtonGroup>
-            </Box>
-
             {/* Display correct component depending on mode */}
             {mode === 'upload' ? (
                 <FileUploadWidget file={file} onFileChange={handleFileChange} />

@@ -14,6 +14,9 @@ import { deleteMetaText } from '../../services/metaTextService';
 import { usePageLogger } from '../../hooks/usePageLogger';
 import CombinedCreateForm from '../../features/createform/components';
 import { Typography } from '@mui/material';
+import DocTypeSelect, { DocType } from '../../components/common/DocTypeSelect';
+import type { SourceDocument } from '../../types/sourceDocument';
+import type { MetaText } from '../../types/metaText';
 
 export default function HomePage() {
     const { sourceDocs, sourceDocsLoading, sourceDocsError, refresh: refreshSourceDocs } = useSourceDocuments();
@@ -21,6 +24,7 @@ export default function HomePage() {
     const navigate = useNavigate();
     const [deleteError, setDeleteError] = React.useState<string | null>(null);
     const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+    const [docType, setDocType] = React.useState<DocType>('sourceDoc');
 
     usePageLogger('HomePage', {
         watched: [
@@ -72,7 +76,8 @@ export default function HomePage() {
 
     return (
         <PageContainer>
-            <Typography variant="h4" gutterBottom>
+            <DocTypeSelect value={docType} onChange={setDocType} />
+            <Typography variant="h5" gutterBottom>
                 Create
             </Typography>
             <CombinedCreateForm
@@ -83,27 +88,29 @@ export default function HomePage() {
                     refreshSourceDocs();
                     refreshMetaTexts();
                 }}
+                docType={docType}
+                onDocTypeChange={setDocType}
             />
             <ErrorBoundary>
-                <LoadingBoundary loading={sourceDocsLoading}>
-                    <h2>Source Documents</h2>
-                    <SearchableList
-                        items={sourceDocs}
-                        onItemClick={handleSourceDocClick}
-                        onDeleteClick={handleDeleteSourceDoc}
-                        filterKey="title"
-                    />
-                </LoadingBoundary>
-            </ErrorBoundary>
-            <ErrorBoundary>
-                <LoadingBoundary loading={metaTextsLoading}>
-                    <h2>Meta Texts</h2>
-                    <SearchableList
-                        items={metaTexts}
-                        onItemClick={handleMetaTextClick}
-                        onDeleteClick={handleDeleteMetaText}
-                        filterKey="title"
-                    />
+                <LoadingBoundary loading={docType === 'sourceDoc' ? sourceDocsLoading : metaTextsLoading}>
+                    <Typography variant="h5" gutterBottom>
+                        Search
+                    </Typography>
+                    {docType === 'sourceDoc' ? (
+                        <SearchableList
+                            items={sourceDocs}
+                            onItemClick={handleSourceDocClick}
+                            onDeleteClick={handleDeleteSourceDoc}
+                            filterKey="title"
+                        />
+                    ) : (
+                        <SearchableList
+                            items={metaTexts}
+                            onItemClick={handleMetaTextClick}
+                            onDeleteClick={handleDeleteMetaText}
+                            filterKey="title"
+                        />
+                    )}
                 </LoadingBoundary>
             </ErrorBoundary>
             <Snackbar
