@@ -14,7 +14,7 @@ export interface ChunkImageDisplayProps {
     height?: string | number;
 }
 
-const ChunkImageDisplay: React.FC<ChunkImageDisplayProps> = ({
+const ChunkImageModal: React.FC<ChunkImageDisplayProps> = ({
     imgSrc,
     imgPrompt,
     imgLoaded,
@@ -94,4 +94,4 @@ const ChunkImageDisplay: React.FC<ChunkImageDisplayProps> = ({
     </>
 );
 
-export default ChunkImageDisplay;
+export default ChunkImageModal;

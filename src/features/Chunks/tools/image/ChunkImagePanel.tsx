@@ -1,6 +1,6 @@
 import React from 'react';
 import { Paper, Button } from '@mui/material';
-import ChunkImageDisplay from './ChunkImageDisplay';
+import ChunkImageModal from './Modal';
 import { toolStyles } from '../../styles/styles';
 import AiGenerationButton from '../../../../components/AiGenerationButton';
 
@@ -34,7 +34,7 @@ const ChunkImagePanel: React.FC<ChunkImagePanelProps> = ({
             sx={{ opacity: imageState.loading ? 0.7 : 1 }}
         />
         {imageState.data && (
-            <ChunkImageDisplay
+            <ChunkImageModal
                 imgSrc={getImgSrc()}
                 imgPrompt={imgPrompt}
                 imgLoaded={imageState.loaded}
