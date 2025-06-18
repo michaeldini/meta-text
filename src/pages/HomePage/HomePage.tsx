@@ -89,7 +89,6 @@ export default function HomePage() {
                     refreshMetaTexts();
                 }}
                 docType={docType}
-                onDocTypeChange={setDocType}
             />
             <ErrorBoundary>
                 <LoadingBoundary loading={docType === 'sourceDoc' ? sourceDocsLoading : metaTextsLoading}>
