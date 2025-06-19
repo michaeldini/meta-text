@@ -22,6 +22,7 @@ export const sourceDocDetailPaper = {
 export const sourceDocInfoDetailsBox = {
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'flex-start',
     gap: 2,
     padding: 5,
     mb: 4,

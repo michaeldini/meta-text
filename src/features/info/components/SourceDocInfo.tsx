@@ -75,23 +75,21 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
     };
 
     return (
-        <Paper sx={sourceDocInfoDetailsBox} elevation={3}>
-            <Box>
+        <Paper sx={{ p: 1 }} elevation={3}>
+            <Box sx={sourceDocInfoDetailsBox}>
                 {Object.entries(FIELD_LABELS).map(([key, label]) =>
                     renderField(key as keyof SourceDocument, label!)
                 )}
             </Box>
             <Divider sx={{ my: 2 }} />
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                <AiGenerationButton
-                    label="Generate Info"
-                    toolTip="Generate or update document info using AI"
-                    onClick={handleDownloadInfo}
-                    loading={loading}
-                />
-                {error && <Alert severity="error">{error}</Alert>}
-            </Box>
-        </Paper>
+            <AiGenerationButton
+                label="Generate Info"
+                toolTip="Generate or update document info using AI"
+                onClick={handleDownloadInfo}
+                loading={loading}
+            />
+            {error && <Alert severity="error">{error}</Alert>}
+        </Paper >
     );
 };
 
