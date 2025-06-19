@@ -1,8 +1,7 @@
 import React from 'react';
 import ChunkImageDisplay from '../image/Display';
 import GenerateImageDialog from '../image/Generate';
-import { useImageGeneration } from '../image/useImageGeneration';
-import { useImageGenerationHandler } from '../image/useImageGenerationHandler';
+import { useAiImageTool } from '../image/useAiImageTool';
 import type { Chunk } from '../../../../types/chunk';
 
 interface AiImageTabProps {
@@ -10,32 +9,35 @@ interface AiImageTabProps {
 }
 
 const AiImageTab: React.FC<AiImageTabProps> = ({ chunk }) => {
-    // Image state and handlers
-    const { state: imageState, setState: setImageState, getImgSrc } = useImageGeneration(chunk);
-    const setLightboxOpen = React.useCallback((open: boolean) => setImageState(s => ({ ...s, lightboxOpen: open })), [setImageState]);
-    const setImageLoaded = React.useCallback((loaded: boolean) => setImageState(s => ({ ...s, loaded })), [setImageState]);
-
-    // Dialog and image generation handler
-    const { dialog, handleDialogSubmit } = useImageGenerationHandler(chunk, setImageState);
+    const {
+        state,
+        getImgSrc,
+        setLightboxOpen,
+        setImageLoaded,
+        openDialog,
+        closeDialog,
+        handlePromptChange,
+        handleDialogSubmit,
+    } = useAiImageTool(chunk);
 
     return (
         <>
             <ChunkImageDisplay
-                imageState={imageState}
+                imageState={state}
                 getImgSrc={getImgSrc}
                 setImageLoaded={setImageLoaded}
                 setLightboxOpen={setLightboxOpen}
-                imgPrompt={imageState.prompt}
-                openDialog={dialog.openDialog}
+                imgPrompt={state.prompt}
+                openDialog={openDialog}
             />
             <GenerateImageDialog
-                open={dialog.dialogOpen}
-                onClose={dialog.closeDialog}
+                open={state.dialogOpen}
+                onClose={closeDialog}
                 onSubmit={handleDialogSubmit}
-                loading={dialog.loading}
-                error={dialog.error}
-                prompt={dialog.prompt}
-                onPromptChange={dialog.handlePromptChange}
+                loading={state.loading}
+                error={state.error}
+                prompt={state.prompt}
+                onPromptChange={handlePromptChange}
             />
         </>
     );

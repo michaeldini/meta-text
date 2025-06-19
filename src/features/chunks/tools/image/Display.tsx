@@ -11,9 +11,7 @@ interface ChunkImageDisplayProps {
     setImageLoaded: (loaded: boolean) => void;
     setLightboxOpen: (open: boolean) => void;
     imgPrompt: string;
-    createdAt?: string;
 }
-
 
 const ChunkImageDisplay: React.FC<ChunkImageDisplayProps> = ({
     imageState,
@@ -22,7 +20,6 @@ const ChunkImageDisplay: React.FC<ChunkImageDisplayProps> = ({
     setImageLoaded,
     setLightboxOpen,
     imgPrompt,
-    createdAt,
 }) => (
     <Paper sx={toolStyles}>
         <AiGenerationButton
@@ -42,7 +39,6 @@ const ChunkImageDisplay: React.FC<ChunkImageDisplayProps> = ({
                 onError={() => setImageLoaded(true)}
                 lightboxOpen={imageState.lightboxOpen}
                 setLightboxOpen={setLightboxOpen}
-                createdAt={createdAt}
             />
         )}
     </Paper>

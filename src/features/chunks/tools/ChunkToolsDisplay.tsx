@@ -3,20 +3,16 @@ import { Box } from '@mui/material';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import PhotoFilterIcon from '@mui/icons-material/PhotoFilter';
 import NotesIcon from '@mui/icons-material/Notes';
-import { useImageGeneration } from './image/useImageGeneration';
 import log from '../../../utils/logger';
 import NotesSummaryTab from './tabs/NotesSummaryTab';
 import ComparisonTab from './tabs/ComparisonTab';
 import AiImageTab from './tabs/AiImageTab';
-import { useImageGenerationHandler } from './image/useImageGenerationHandler';
 import { useChunkTabState } from './hooks/useChunkTabState';
 import { useChunkFieldUpdater } from './hooks/useChunkFieldUpdater';
 import type { Chunk } from '../../../types/chunk';
 
 interface ChunkToolsDisplayProps {
     chunk: Chunk;
-    // chunkIdx: number;
-    // handleChunkFieldChange: (chunkId: number, field: keyof Chunk, value: any) => void;
 }
 
 const tabOptions = [
@@ -27,7 +23,6 @@ const tabOptions = [
 
 type TabType = typeof tabOptions[number]['value'];
 
-// const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk, chunkIdx }) => {
 const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk }) => {
 
     // Use custom hooks for store state and updates

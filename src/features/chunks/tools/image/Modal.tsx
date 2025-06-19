@@ -10,7 +10,6 @@ export interface ChunkImageDisplayProps {
     onError?: React.ReactEventHandler<HTMLImageElement>;
     lightboxOpen: boolean;
     setLightboxOpen: (open: boolean) => void;
-    createdAt?: string | number | Date;
     height?: string | number;
 }
 
@@ -22,7 +21,6 @@ const ChunkImageModal: React.FC<ChunkImageDisplayProps> = ({
     onError,
     lightboxOpen,
     setLightboxOpen,
-    createdAt,
     height = '400px',
 }) => (
     <>
@@ -83,9 +81,6 @@ const ChunkImageModal: React.FC<ChunkImageDisplayProps> = ({
                         />
                         <Box sx={chunkLightboxPromptBox}>
                             {imgPrompt && <div><b>Prompt:</b> {imgPrompt}</div>}
-                            {createdAt && (
-                                <div><b>Generated:</b> {new Date(createdAt).toLocaleString()}</div>
-                            )}
                         </Box>
                     </Box>
                 </Box>
