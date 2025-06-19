@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { generateAiImage } from '../services/aiService';
-import { fetchChunk } from '../services/chunkService';
+import { generateAiImage } from '../../../../services/aiService';
+import { fetchChunk } from '../../../../services/chunkService';
 
 interface Chunk {
     id: number;

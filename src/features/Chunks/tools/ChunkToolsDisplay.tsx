@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import PhotoFilterIcon from '@mui/icons-material/PhotoFilter';
 import NotesIcon from '@mui/icons-material/Notes';
-import { useImageGeneration } from '../../../hooks/useImageGeneration';
+import { useImageGeneration } from './image/useImageGeneration';
 import log from '../../../utils/logger';
 import SummaryNotesComponent from './summarynotes/SummaryNotesComponent';
 import ChunkComparison from './comparison/ChunkComparison';
