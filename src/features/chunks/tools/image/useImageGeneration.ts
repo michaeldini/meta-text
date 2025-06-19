@@ -12,7 +12,6 @@ interface Chunk {
 }
 
 interface ImageGenState {
-    dialogOpen: boolean;
     loading: boolean;
     error: string | null;
     data: string | null;
@@ -23,7 +22,6 @@ interface ImageGenState {
 
 export function useImageGeneration(chunk: Chunk) {
     const [state, setState] = useState<ImageGenState>({
-        dialogOpen: false,
         loading: false,
         error: null,
         data: null,
@@ -53,7 +51,5 @@ export function useImageGeneration(chunk: Chunk) {
 
     const getImgSrc = useCallback(() => (state.data ? `/${state.data}` : ''), [state.data]);
 
-    const openDialog = useCallback(() => setState(s => ({ ...s, dialogOpen: true, error: null })), []);
-    // ...existing code continues...
-    return { state, setState, getImgSrc, openDialog };
+    return { state, setState, getImgSrc };
 }
