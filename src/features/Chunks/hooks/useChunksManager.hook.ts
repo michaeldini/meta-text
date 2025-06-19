@@ -1,6 +1,8 @@
 import { useCallback, useRef, useEffect, useState } from 'react';
 import { useChunksApi } from './useChunksApi.hook';
 
+// Archived on 2025-06-18. No longer used. See chunkStore.ts for new state management.
+
 function debounce(func: (...args: any[]) => void, wait: number) {
     let timeout: NodeJS.Timeout;
     return function (this: any, ...args: any[]) {

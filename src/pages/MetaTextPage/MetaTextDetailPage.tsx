@@ -4,7 +4,6 @@ import { Typography, Button, Paper } from '@mui/material';
 import SourceDocInfo from '../../features/info/components/SourceDocInfo';
 import Chunks from '../../features/chunks';
 import { useMetaTextDetail } from '../../hooks/useMetaTextDetail';
-import { metaTextDetailPaper } from '../../styles/pageStyles';
 import log from '../../utils/logger';
 import { metaTextReviewRoute } from '../../routes';
 import PageContainer from '../../components/PageContainer';

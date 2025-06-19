@@ -3,18 +3,18 @@ import { Box } from '@mui/material';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import PhotoFilterIcon from '@mui/icons-material/PhotoFilter';
 import NotesIcon from '@mui/icons-material/Notes';
-import { useDebouncedField } from '../../../hooks/useDebouncedField';
 import { useImageGeneration } from '../../../hooks/useImageGeneration';
 import log from '../../../utils/logger';
 import SummaryNotesComponent from './summarynotes/SummaryNotesComponent';
 import ChunkComparison from './comparison/ChunkComparison';
 import ChunkImageDisplay from './image/Display';
 import { useChunkStore } from '../../../store/chunkStore';
+import type { Chunk } from '../../../types/chunk';
 
 interface ChunkToolsDisplayProps {
-    chunk: any;
+    chunk: Chunk;
     chunkIdx: number;
-    handleChunkFieldChange: (chunkIdx: number, field: string, value: any) => void;
+    handleChunkFieldChange: (chunkId: number, field: keyof Chunk, value: any) => void;
 }
 
 const tabOptions = [
@@ -26,19 +26,6 @@ const tabOptions = [
 type TabType = typeof tabOptions[number]['value'];
 
 const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk, chunkIdx, handleChunkFieldChange }) => {
-
-    // Debounced fields
-    const [summary, setSummary] = useDebouncedField(
-        chunk.summary || '',
-        (val: string) => handleChunkFieldChange(chunkIdx, 'summary', val),
-        800
-    );
-    const [notes, setNotes] = useDebouncedField(
-        chunk.notes || '',
-        (val: string) => handleChunkFieldChange(chunkIdx, 'notes', val),
-        800
-    );
-
     // Image state
     const { state: imageState, setState: setImageState, getImgSrc, openDialog } = useImageGeneration(chunk);
     const setLightboxOpen = (open: boolean) => setImageState(s => ({ ...s, lightboxOpen: open }));
@@ -57,20 +44,21 @@ const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk, chunkIdx, 
 
     // Use selector to only subscribe to activeTabs
     const activeTabs = useChunkStore(state => state.activeTabs);
+    const { updateChunkField } = useChunkStore();
 
-    const handleComparisonUpdate = (newComparison: string) => handleChunkFieldChange(chunkIdx, 'comparison', newComparison);
+    const handleComparisonUpdate = (newComparison: string) => updateChunkField(chunk.id, 'comparison', newComparison);
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
             {/* Show Notes/Summary if selected */}
             {activeTabs.includes('notes-summary') && (
                 <SummaryNotesComponent
-                    summary={summary}
-                    notes={notes}
-                    setSummary={setSummary}
-                    setNotes={setNotes}
-                    onSummaryBlur={() => handleChunkFieldChange(chunkIdx, 'summary', summary)}
-                    onNotesBlur={() => handleChunkFieldChange(chunkIdx, 'notes', notes)}
+                    summary={chunk.summary}
+                    notes={chunk.notes}
+                    setSummary={val => updateChunkField(chunk.id, 'summary', val)}
+                    setNotes={val => updateChunkField(chunk.id, 'notes', val)}
+                    onSummaryBlur={() => { }}
+                    onNotesBlur={() => { }}
                 />
             )}
             {/* Show Comparison if selected */}
@@ -90,7 +78,6 @@ const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk, chunkIdx, 
                     setImageLoaded={setImageLoaded}
                     setLightboxOpen={setLightboxOpen}
                     imgPrompt={imageState.prompt}
-                    createdAt={chunk.ai_image && chunk.ai_image.created_at}
                 />
             )}
         </Box>

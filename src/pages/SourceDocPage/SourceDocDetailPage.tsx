@@ -4,10 +4,8 @@ import { Paper, Typography, Box, Alert, Button, Breadcrumbs } from '@mui/materia
 import SourceDocInfo from '../../features/info/components/SourceDocInfo';
 import { useSourceDocumentDetail } from '../../hooks/useSourceDocumentDetail';
 import {
-    sourceDocDetailContainer,
     sourceDocDetailPaper,
-    sourceDocDetailText
-} from '../../styles/pageStyles';
+} from '../../styles/styles';
 import log from '../../utils/logger';
 import ErrorBoundary from '../../components/ErrorBoundary';
 import LoadingBoundary from '../../components/LoadingBoundary';
@@ -37,7 +35,6 @@ export default function SourceDocDetailPage() {
 
     return (
         <PageContainer>
-            {/* <Paper sx={sourceDocDetailContainer}> */}
             {/* Breadcrumbs for navigation */}
             <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
                 <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>Home</Link>

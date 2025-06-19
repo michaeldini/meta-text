@@ -23,7 +23,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
         e.preventDefault();
         const success = await login(username, password);
         if (success) {
-            navigate('/metaText');
+            navigate('/');
         } else if (onLoginSuccess) {
             onLoginSuccess();
         }

@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { Box, Pagination, Paper, Alert } from '@mui/material';
 import Chunk from './tools/components/Chunk';
 import { chunksContainer } from './styles/styles';
 import log from '../../utils/logger';
-import { useChunksManager } from './hooks/useChunksManager.hook';
 import LoadingBoundary from '../../components/LoadingBoundary';
 import ErrorBoundary from '../../components/ErrorBoundary';
+import { useChunkStore } from '../../store/chunkStore';
 
 interface ChunksPaginationProps {
     pageCount: number;
@@ -27,16 +27,36 @@ interface ChunksProps {
 }
 
 const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
-    const {
-        chunks,
-        loadingChunks,
-        chunksError,
-        handleWordClick,
-        handleRemoveChunk,
-        handleChunkFieldChange,
-    } = useChunksManager(metaTextId);
+    const { chunks, loadingChunks, chunksError, fetchChunks, handleWordClick, handleRemoveChunk, updateChunkField } = useChunkStore();
     const [page, setPage] = useState(1);
     const containerRef = useRef<HTMLDivElement | null>(null);
+    const prevChunksRef = useRef<any[]>([]);
+
+    // Preserve scroll position on chunk updates
+    React.useEffect(() => {
+        prevChunksRef.current = chunks;
+    }, [chunks]);
+
+    const handleWordClickWithScroll = async (chunkIdx: number, wordIdx: number) => {
+        const scrollY = window.scrollY;
+        await handleWordClick(chunkIdx, wordIdx);
+        // Restore scroll position after DOM update
+        setTimeout(() => {
+            window.scrollTo({ top: scrollY });
+        }, 0);
+    };
+
+    const handleRemoveChunkWithScroll = async (chunkIdx: number) => {
+        const scrollY = window.scrollY;
+        await handleRemoveChunk(chunkIdx);
+        setTimeout(() => {
+            window.scrollTo({ top: scrollY });
+        }, 0);
+    };
+
+    React.useEffect(() => {
+        if (metaTextId) fetchChunks(Number(metaTextId));
+    }, [metaTextId, fetchChunks]);
 
     if (!Array.isArray(chunks)) {
         log.error('Chunks prop is not an array:', chunks);
@@ -67,9 +87,9 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
                                 key={startIdx + chunkIdx}
                                 chunk={chunk}
                                 chunkIdx={startIdx + chunkIdx}
-                                handleWordClick={handleWordClick}
-                                handleRemoveChunk={handleRemoveChunk}
-                                handleChunkFieldChange={handleChunkFieldChange}
+                                handleWordClick={handleWordClickWithScroll}
+                                handleRemoveChunk={handleRemoveChunkWithScroll}
+                                handleChunkFieldChange={updateChunkField}
                             />
                         ))}
                         <ChunksPagination pageCount={pageCount} page={page} handleChange={handleChange} />

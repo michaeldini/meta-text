@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Container } from '@mui/material';
-import { pageContainer } from '../styles/pageStyles';
+import { pageContainer } from '../styles/styles';
 
 /**
  * Generic page container for consistent layout.

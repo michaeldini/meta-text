@@ -56,6 +56,7 @@ export const toolStyles = {
     alignItems: 'center',
     gap: 1,
     p: 2,
+    minWidth: '400px',
 };
 
 export const chunkWordBox = (wordIdx: number, totalWords: number) => ({

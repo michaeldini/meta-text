@@ -12,6 +12,8 @@ const ChunkToolsNavbar: React.FC = () => {
     const activeTabs = useChunkStore(state => state.activeTabs);
     const setActiveTabs = useChunkStore(state => state.setActiveTabs);
 
+    if (!activeChunkId) return null;
+
     // Example action handler
     const handleShowDialog = () => {
         if (!activeChunkId) return;
@@ -27,7 +29,7 @@ const ChunkToolsNavbar: React.FC = () => {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center' }} data-testid="chunk-tools-navbar">
             <Typography variant="subtitle1">
-                {activeChunkId ? `Active: ${activeChunkId}` : 'No chunk selected'}
+                {`Active: ${activeChunkId}`}
             </Typography>
             <Button onClick={handleShowDialog} disabled={!activeChunkId}>
                 Dialogue

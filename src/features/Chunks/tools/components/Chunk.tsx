@@ -4,13 +4,14 @@ import ChunkWords from '../../words/ChunkWords';
 import ChunkToolsDisplay from '../ChunkToolsDisplay';
 import { chunkMainBox } from '../../styles/styles';
 import { useChunkStore } from '../../../../store/chunkStore';
+import type { Chunk } from '../../../../types/chunk';
 
 export interface ChunkProps {
-    chunk: any;
+    chunk: Chunk;
     chunkIdx: number;
     handleWordClick: (chunkIdx: number, wordIdx: number) => void;
     handleRemoveChunk: (chunkIdx: number) => void;
-    handleChunkFieldChange: (chunkIdx: number, field: string, value: any) => void;
+    handleChunkFieldChange: (chunkId: number, field: keyof Chunk, value: any) => void;
 }
 
 const Chunk = memo(function Chunk({
@@ -20,7 +21,7 @@ const Chunk = memo(function Chunk({
     handleRemoveChunk,
     handleChunkFieldChange
 }: ChunkProps) {
-    const words = chunk.content ? chunk.content.split(/\s+/) : [];
+    const words = chunk.text ? chunk.text.split(/\s+/) : [];
     const { activeChunkId, setActiveChunk } = useChunkStore();
     const isActive = activeChunkId === chunk.id;
     const chunkRef = useRef<HTMLDivElement>(null);
