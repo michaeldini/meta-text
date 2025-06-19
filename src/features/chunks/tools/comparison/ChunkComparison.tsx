@@ -37,7 +37,7 @@ const ChunkComparison: React.FC<ChunkComparisonProps> = ({ chunkId, comparisonTe
                 sx={{ ml: 1 }}
                 disabled={loading || !chunkId}
             />
-            <Box sx={{ whiteSpace: 'pre-line', minHeight: 24, color: (theme: any) => theme.palette.text.secondary }}>
+            <Box>
                 {comparisonText || <span style={{ color: '#aaa' }}>No summary yet.</span>}
             </Box>
             {error && <Box sx={{ color: 'error.main', fontSize: 12 }}>{error}</Box>}

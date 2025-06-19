@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Body, status
 from sqlmodel import select, Session, desc
 from typing import List
 from backend.db import get_session
-from backend.models import Chunk, ChunkRead, ChunkWithImageRead, AiImage
+from backend.models import Chunk, ChunkRead, ChunkWithImageRead, ChunkWithImagesRead, AiImage
 from loguru import logger
 
 
@@ -26,7 +26,7 @@ def update_chunk_fields(chunk: Chunk, data: dict):
         if field in data:
             setattr(chunk, field, data[field])
 
-@router.get("/chunks/all/{meta_text_id}", response_model=List[ChunkWithImageRead], name="get_chunks")
+@router.get("/chunks/all/{meta_text_id}", response_model=List[ChunkWithImagesRead], name="get_chunks")
 def get_chunks_api(meta_text_id: int, session: Session = Depends(get_session)):
     logger.info(f"Listing all chunks for meta_text_id: {meta_text_id}")
     chunks = session.exec(
@@ -34,22 +34,26 @@ def get_chunks_api(meta_text_id: int, session: Session = Depends(get_session)):
     ).all()
     result = []
     for chunk in chunks:
-        ai_image = get_latest_ai_image_for_chunk(session, chunk.id)
-        result.append(ChunkWithImageRead.model_validate(chunk, update={"ai_image": ai_image}))
+        ai_images = session.exec(
+            select(AiImage).where(AiImage.chunk_id == chunk.id).order_by(AiImage.id)
+        ).all()
+        result.append(ChunkWithImagesRead.model_validate(chunk, update={"ai_images": ai_images}))
     logger.info(f"Found {len(result)} chunks for meta_text_id: {meta_text_id}")
     return result # type: ignore
 
 
-@router.get("/chunk/{chunk_id}", response_model=ChunkWithImageRead, name="get_chunk")
+@router.get("/chunk/{chunk_id}", response_model=ChunkWithImagesRead, name="get_chunk")
 def get_chunk(chunk_id: int, session: Session = Depends(get_session)):
     logger.info(f"Retrieving chunk with id: {chunk_id}")
     chunk = session.get(Chunk, chunk_id)
     if not chunk:
         logger.warning(f"Chunk not found: id={chunk_id}")
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Chunk not found")
-    ai_image = get_latest_ai_image_for_chunk(session, chunk.id)
+    ai_images = session.exec(
+        select(AiImage).where(AiImage.chunk_id == chunk.id).order_by(AiImage.id)
+    ).all()
     logger.info(f"Chunk found: id={chunk.id}, meta_text_id={chunk.meta_text_id}")
-    return ChunkWithImageRead.model_validate(chunk, update={"ai_image": ai_image})
+    return ChunkWithImagesRead.model_validate(chunk, update={"ai_images": ai_images})
 
 
 @router.post("/chunk/{chunk_id}/split", response_model=List[ChunkRead], name="split_chunk")

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paper, Button } from '@mui/material';
+import { Paper, Button, Box } from '@mui/material';
 import ChunkImageModal from './Modal';
 import { toolStyles } from '../../styles/styles';
 import AiGenerationButton from '../../../../components/AiGenerationButton';
@@ -20,28 +20,35 @@ const ChunkImageDisplay: React.FC<ChunkImageDisplayProps> = ({
     setImageLoaded,
     setLightboxOpen,
     imgPrompt,
-}) => (
-    <Paper sx={toolStyles}>
-        <AiGenerationButton
-            label="Generate Image"
-            toolTip="Generate an image for this chunk using AI"
-            loading={imageState.loading}
-            onClick={openDialog}
-            disabled={imageState.loading}
-            sx={{ opacity: imageState.loading ? 0.7 : 1 }}
-        />
-        {imageState.data && (
-            <ChunkImageModal
-                imgSrc={getImgSrc()}
-                imgPrompt={imgPrompt}
-                imgLoaded={imageState.loaded}
-                onLoad={() => setImageLoaded(true)}
-                onError={() => setImageLoaded(true)}
-                lightboxOpen={imageState.lightboxOpen}
-                setLightboxOpen={setLightboxOpen}
+}) => {
+    // Debug logging
+    console.log('ChunkImageDisplay imageState.data:', imageState.data);
+    console.log('ChunkImageDisplay getImgSrc():', getImgSrc());
+
+    return (
+        <Paper sx={toolStyles}>
+            <AiGenerationButton
+                label="Generate Image"
+                toolTip="Generate an image for this chunk using AI"
+                loading={imageState.loading}
+                onClick={openDialog}
+                disabled={imageState.loading}
+                sx={{ opacity: imageState.loading ? 0.7 : 1 }}
             />
-        )}
-    </Paper>
-);
+            {/* Modal for full-size image */}
+            {imageState.data && (
+                <ChunkImageModal
+                    imgSrc={getImgSrc()}
+                    imgPrompt={imgPrompt}
+                    imgLoaded={imageState.loaded}
+                    onLoad={() => setImageLoaded(true)}
+                    onError={() => setImageLoaded(true)}
+                    lightboxOpen={imageState.lightboxOpen}
+                    setLightboxOpen={setLightboxOpen}
+                />
+            )}
+        </Paper>
+    );
+};
 
 export default ChunkImageDisplay;

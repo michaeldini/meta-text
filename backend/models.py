@@ -80,6 +80,8 @@ class ChunkRead(ChunkBase):
 class ChunkWithImageRead(ChunkRead):
     ai_image: Optional["AiImageRead"] = None
 
+class ChunkWithImagesRead(ChunkRead):
+    ai_images: list["AiImageRead"] = []
 
 
 # --- AI Response Schemas ---
