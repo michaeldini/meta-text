@@ -22,6 +22,9 @@ const ChunkWords = memo(function ChunkWords({
     const handleRemoveChunk = useChunkStore(state => state.handleRemoveChunk);
 
     const handleWordDialogOpen = (idx: number, event: React.MouseEvent<HTMLElement>) => {
+        // Debug: log words and clicked index
+        // eslint-disable-next-line no-console
+        console.log('handleWordDialogOpen', { words, idx, word: words[idx] });
         setSelectedWordIdx(idx);
         setAnchorEl(event.currentTarget);
     };
@@ -31,6 +34,9 @@ const ChunkWords = memo(function ChunkWords({
     };
     const handleSplit = () => {
         if (selectedWordIdx !== null) {
+            // Debug: log before splitting
+            // eslint-disable-next-line no-console
+            console.log('handleSplit', { chunkIdx, selectedWordIdx, word: words[selectedWordIdx], words });
             handleWordClick(chunkIdx, selectedWordIdx);
         }
         handleDialogClose();
