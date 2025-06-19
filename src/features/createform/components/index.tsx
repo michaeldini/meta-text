@@ -10,6 +10,8 @@ import { useFormStatus } from '../hooks/useFormStatus';
 import { handleFormSubmit } from '../utils/handleFormSubmit';
 import SubmitButton from './SubmitButton';
 import DocTypeSelect, { DocType } from '../../../components/DocTypeSelect';
+import ErrorBoundary from '../../../components/ErrorBoundary';
+import LoadingBoundary from '../../../components/LoadingBoundary';
 
 export interface CreateFormProps {
     sourceDocs: Array<{ id: string | number; title: string }>;
@@ -90,48 +92,52 @@ const CreateForm: React.FC<CreateFormProps> = ({
     const sourceDocMsg = 'Upload a text file to create a new source document.';
     const metaTextMsg = 'Choose a source document to create a new meta text.';
     return (
-        <CreateFormContainer
-            description={mode === 'upload' ? sourceDocMsg : metaTextMsg}
-            onSubmit={handleSubmit}
-            error={error}
-            success={success}
-            loading={loading}
-        >
-            {/* Display correct component depending on mode */}
-            {mode === 'upload' ? (
-                <FileUploadWidget file={file} onFileChange={handleFileChange} />
-            ) : (
-                <SourceDocSelect
-                    value={selectedSourceDocId}
-                    onChange={e => setSelectedSourceDocId(e.target.value)}
-                    sourceDocs={sourceDocs}
-                    loading={sourceDocsLoading}
-                    error={sourceDocsError}
-                    required
-                />
-            )}
-            <TextField
-                value={title}
-                onChange={e => setTitle(e.target.value)}
-                label={mode === 'upload' ? 'Enter the title of your document' : 'Choose a title for your meta text'}
-                fullWidth
-                margin="normal"
-                disabled={loading}
-                data-testid={mode === 'upload' ? 'upload-title' : 'meta-text-title'}
-                id={mode === 'upload' ? 'upload-title' : 'meta-text-title'}
-                required
-            />
-            <SubmitButton
-                loading={loading}
-                disabled={
-                    loading ||
-                    !title.trim() ||
-                    (mode === 'upload' ? !file : !selectedSourceDocId)
-                }
-            >
-                {loading ? (mode === 'upload' ? 'Uploading...' : 'Creating...') : (mode === 'upload' ? 'Upload' : 'Create')}
-            </SubmitButton>
-        </CreateFormContainer>
+        <ErrorBoundary>
+            <LoadingBoundary loading={sourceDocsLoading}>
+                <CreateFormContainer
+                    description={mode === 'upload' ? sourceDocMsg : metaTextMsg}
+                    onSubmit={handleSubmit}
+                    error={error}
+                    success={success}
+                    loading={loading}
+                >
+                    {/* Display correct component depending on mode */}
+                    {mode === 'upload' ? (
+                        <FileUploadWidget file={file} onFileChange={handleFileChange} />
+                    ) : (
+                        <SourceDocSelect
+                            value={selectedSourceDocId}
+                            onChange={e => setSelectedSourceDocId(e.target.value)}
+                            sourceDocs={sourceDocs}
+                            loading={sourceDocsLoading}
+                            error={sourceDocsError}
+                            required
+                        />
+                    )}
+                    <TextField
+                        value={title}
+                        onChange={e => setTitle(e.target.value)}
+                        label={mode === 'upload' ? 'Enter the title of your document' : 'Choose a title for your meta text'}
+                        fullWidth
+                        margin="normal"
+                        disabled={loading}
+                        data-testid={mode === 'upload' ? 'upload-title' : 'meta-text-title'}
+                        id={mode === 'upload' ? 'upload-title' : 'meta-text-title'}
+                        required
+                    />
+                    <SubmitButton
+                        loading={loading}
+                        disabled={
+                            loading ||
+                            !title.trim() ||
+                            (mode === 'upload' ? !file : !selectedSourceDocId)
+                        }
+                    >
+                        {loading ? (mode === 'upload' ? 'Uploading...' : 'Creating...') : (mode === 'upload' ? 'Upload' : 'Create')}
+                    </SubmitButton>
+                </CreateFormContainer>
+            </LoadingBoundary>
+        </ErrorBoundary>
     );
 };
 

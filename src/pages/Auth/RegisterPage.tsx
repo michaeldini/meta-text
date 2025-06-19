@@ -58,7 +58,9 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ onRegisterSuccess }) => {
                         color="primary"
                         fullWidth
                         sx={{ mt: 2 }}
-                        disabled={loading}
+                        // disable button while still in development to prevent accidental registrations
+                        // disabled={loading}
+                        disabled={true}
                     >
                         {loading ? 'Registering...' : 'Register'}
                     </Button>

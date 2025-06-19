@@ -7,8 +7,6 @@ import LoadingBoundary from '../../components/LoadingBoundary';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import log from '../../utils/logger';
-import { deleteSourceDocument } from '../../services/sourceDocumentService';
-import { deleteMetaText } from '../../services/metaTextService';
 import { usePageLogger } from '../../hooks/usePageLogger';
 import CombinedCreateForm from '../../features/createform/components';
 import { Typography } from '@mui/material';
