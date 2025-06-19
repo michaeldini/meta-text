@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, LinearProgress, Alert } from '@mui/material';
 
 export interface GenerateImageDialogProps {
@@ -7,11 +7,11 @@ export interface GenerateImageDialogProps {
     onSubmit: (prompt: string) => void;
     loading?: boolean;
     error?: string | null;
+    prompt: string;
+    onPromptChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const GenerateImageDialog: React.FC<GenerateImageDialogProps> = ({ open, onClose, onSubmit, loading = false, error }) => {
-    const [prompt, setPrompt] = useState<string>('');
-
+const GenerateImageDialog: React.FC<GenerateImageDialogProps> = ({ open, onClose, onSubmit, loading = false, error, prompt, onPromptChange }) => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         onSubmit(prompt);
@@ -25,7 +25,7 @@ const GenerateImageDialog: React.FC<GenerateImageDialogProps> = ({ open, onClose
                     <TextField
                         label="Image Prompt"
                         value={prompt}
-                        onChange={e => setPrompt(e.target.value)}
+                        onChange={onPromptChange}
                         fullWidth
                         autoFocus
                         multiline
