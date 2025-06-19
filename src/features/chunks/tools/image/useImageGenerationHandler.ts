@@ -15,14 +15,18 @@ interface ImageGenState {
 
 type SetImageState = React.Dispatch<React.SetStateAction<ImageGenState>>;
 
-export function useImageGenerationHandler(
-    chunk: Chunk,
-    setImageState: SetImageState
-) {
+// Overload: if setImageState is not provided, return dialog and a no-op handleDialogSubmit
+export function useImageGenerationHandler(chunk: Chunk): { dialog: ReturnType<typeof useImageGenerationDialog>; handleDialogSubmit: (prompt: string) => void };
+export function useImageGenerationHandler(chunk: Chunk, setImageState: SetImageState): { dialog: ReturnType<typeof useImageGenerationDialog>; handleDialogSubmit: (prompt: string) => Promise<void> };
+export function useImageGenerationHandler(chunk: Chunk, setImageState?: SetImageState) {
     const dialog = useImageGenerationDialog();
 
     // Handles dialog submit and image polling
     const handleDialogSubmit = useCallback(async (prompt: string) => {
+        if (!setImageState) {
+            log.error('handleDialogSubmit called without setImageState');
+            return;
+        }
         dialog.setLoading(true);
         dialog.setError(null);
         try {
@@ -61,12 +65,12 @@ export function useImageGenerationHandler(
         }
     }, [chunk.id, setImageState, dialog]);
 
-    // Logging side effects
-    const logImageState = useCallback((imageState: ImageGenState) => {
-        if (imageState.loading) log.info(`Image generation started for chunk id: ${chunk.id}`);
-        if (imageState.error) log.error(`Image generation error for chunk id: ${chunk.id}:`, imageState.error);
-        if (imageState.data) log.info(`Image retrieved for chunk id: ${chunk.id}`);
-    }, [chunk.id]);
-
-    return { dialog, handleDialogSubmit, logImageState };
+    // If setImageState is not provided, return a no-op handleDialogSubmit
+    if (!setImageState) {
+        return {
+            dialog,
+            handleDialogSubmit: () => { },
+        };
+    }
+    return { dialog, handleDialogSubmit };
 }

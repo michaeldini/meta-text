@@ -29,13 +29,6 @@ type TabType = typeof tabOptions[number]['value'];
 
 // const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk, chunkIdx }) => {
 const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk }) => {
-    // Image state
-    const { state: imageState, setState: setImageState, getImgSrc } = useImageGeneration(chunk);
-    const setLightboxOpen = (open: boolean) => setImageState(s => ({ ...s, lightboxOpen: open }));
-    const setImageLoaded = (loaded: boolean) => setImageState(s => ({ ...s, loaded }));
-
-    // Use new handler hook for dialog, image generation, and logging
-    const { dialog, handleDialogSubmit, logImageState } = useImageGenerationHandler(chunk, setImageState);
 
     // Use custom hooks for store state and updates
     const activeTabs = useChunkTabState();
@@ -45,12 +38,6 @@ const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk }) => {
         log.info(`ChunkTools mounted (id: ${chunk.id})`);
         return () => log.info(`ChunkTools unmounted (id: ${chunk.id})`);
     }, [chunk.id]);
-
-    React.useEffect(() => {
-        logImageState(imageState);
-    }, [imageState, logImageState]);
-
-    // const handleComparisonUpdate = (newComparison: string) => updateChunkField(chunk.id, 'comparison', newComparison);
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
@@ -64,14 +51,7 @@ const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk }) => {
             )}
             {/* Show AI Image if selected */}
             {activeTabs.includes('ai-image') && (
-                <AiImageTab
-                    imageState={imageState}
-                    getImgSrc={getImgSrc}
-                    setImageLoaded={setImageLoaded}
-                    setLightboxOpen={setLightboxOpen}
-                    dialog={dialog}
-                    handleDialogSubmit={handleDialogSubmit}
-                />
+                <AiImageTab chunk={chunk} />
             )}
         </Box>
     );
