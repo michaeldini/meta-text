@@ -67,7 +67,7 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
         const { chunks } = get();
         if (!chunks[chunkIdx] || !chunks[chunkIdx].id) return;
         const oldChunk = chunks[chunkIdx];
-        const splitResult = await splitChunk(oldChunk.id, wordIdx + 1); // returns [updatedChunk, newChunk]
+        const splitResult = await splitChunk(oldChunk.id, wordIdx); // returns [updatedChunk, newChunk]
         if (!Array.isArray(splitResult) || splitResult.length < 2) return;
         set(state => {
             const newChunks = [...state.chunks];
