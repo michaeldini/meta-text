@@ -20,7 +20,7 @@ export const chunkMainBox = {
     borderRadius: 2,
     '&:hover': {
         borderColor: 'secondary.main',
-        borderWidth: '1px',
+        // borderWidth: '1px',
         borderStyle: 'solid',
     }
 };
@@ -38,7 +38,7 @@ export const chunkTextField = {
         boxShadow: 0,
         '&.Mui-focused': {
             boxShadow: 6,
-            transform: 'scale(1.02)'
+            // transform: 'scale(1.02)'
         }
     }
 };
