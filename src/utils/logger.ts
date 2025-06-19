@@ -20,7 +20,7 @@ if (mode === 'production') {
 // apiLogger.setLevel('info');
 
 // Utility to also send logs to backend for centralization
-async function sendLogToBackend(level: string, message: string, context: Record<string, any> = {}) {
+async function sendLogToBackend(level: string, message: string, context: Record<string, unknown> = {}) {
     try {
         await fetch('/api/frontend-log', {
             method: 'POST',
@@ -32,21 +32,34 @@ async function sendLogToBackend(level: string, message: string, context: Record<
     }
 }
 
+// Helper function to safely convert log arguments to string
+function stringifyArgs(args: unknown[]): string {
+    return args.map(arg => {
+        if (typeof arg === 'string') return arg;
+        if (arg instanceof Error) return `${arg.name}: ${arg.message}`;
+        try {
+            return JSON.stringify(arg);
+        } catch {
+            return String(arg);
+        }
+    }).join(' ');
+}
+
 // Wrap loglevel to also send error/warn/info logs to backend
 const originalError = log.error;
-log.error = function (...args: any[]) {
+log.error = function (...args: unknown[]) {
     originalError.apply(log, args);
-    sendLogToBackend('error', args.map(String).join(' '));
+    sendLogToBackend('error', stringifyArgs(args));
 };
 const originalWarn = log.warn;
-log.warn = function (...args: any[]) {
+log.warn = function (...args: unknown[]) {
     originalWarn.apply(log, args);
-    sendLogToBackend('warn', args.map(String).join(' '));
+    sendLogToBackend('warn', stringifyArgs(args));
 };
 const originalInfo = log.info;
-log.info = function (...args: any[]) {
+log.info = function (...args: unknown[]) {
     originalInfo.apply(log, args);
-    sendLogToBackend('info', args.map(String).join(' '));
+    sendLogToBackend('info', stringifyArgs(args));
 };
 
 export default log;

@@ -13,8 +13,8 @@ import log from '../utils/logger';
 export function usePageLogger(
     pageName: string,
     options?: {
-        watched?: Array<[string, any]>;
-        events?: Array<{ label: string; value: any }>;
+        watched?: Array<[string, unknown]>;
+        events?: Array<{ label: string; value: unknown }>;
     }
 ) {
     React.useEffect(() => {

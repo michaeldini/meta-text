@@ -5,7 +5,6 @@ import { ThemeProvider, CssBaseline } from '@mui/material';
 import './index.css';
 import App from './App';
 import theme from './styles/theme';
-import { AuthProvider } from './store/authStore';
 import ErrorBoundary from './components/ErrorBoundary';
 
 if (typeof document !== 'undefined' && document.getElementById('root')) {
@@ -18,11 +17,9 @@ export function AppRoot() {
             <ErrorBoundary>
                 <ThemeProvider theme={theme}>
                     <CssBaseline />
-                    <AuthProvider>
-                        <BrowserRouter>
-                            <App />
-                        </BrowserRouter>
-                    </AuthProvider>
+                    <BrowserRouter>
+                        <App />
+                    </BrowserRouter>
                 </ThemeProvider>
             </ErrorBoundary>
         </StrictMode>

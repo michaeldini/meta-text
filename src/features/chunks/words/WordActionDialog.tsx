@@ -3,6 +3,7 @@ import { Popover, Box, IconButton, Alert, CircularProgress, Drawer, Typography, 
 import ContentCutIcon from '@mui/icons-material/ContentCut';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import { fetchDefinitionInContext } from '../../../services/aiService';
+import { getErrorMessage } from '../../../types/error';
 
 export interface WordActionDialogProps {
     anchorEl: HTMLElement | null;
@@ -40,8 +41,8 @@ const WordActionDialog: React.FC<WordActionDialogProps> = ({ anchorEl, onClose, 
             setTimeout(() => {
                 if (open) onClose();
             }, 100); // short delay to ensure Drawer opens smoothly
-        } catch (err: any) {
-            setError(err.message || 'Failed to fetch definition in context');
+        } catch (err: unknown) {
+            setError(getErrorMessage(err, 'Failed to fetch definition in context'));
             setShowDefinition(true);
             setTimeout(() => {
                 if (open) onClose();

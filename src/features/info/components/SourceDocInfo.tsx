@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Paper, Box, Typography, Divider, Stack, Chip, Alert } from '@mui/material';
 import AiGenerationButton from '../../../components/AiGenerationButton';
 import { sourceDocInfoDetailsBox } from '../../../styles/styles';
+import { getErrorMessage } from '../../../types/error';
 import type { SourceDocument } from '../../../types/sourceDocument';
 import { generateSourceDocInfo } from '../../../services/sourceDocInfoService';
 
@@ -41,8 +42,8 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
             const response = await generateSourceDocInfo({ id: doc.id, prompt });
             // Optionally update UI with new info, or trigger parent update
             if (onInfoUpdate) onInfoUpdate();
-        } catch (err: any) {
-            setError(err.message || 'Failed to generate info');
+        } catch (err: unknown) {
+            setError(getErrorMessage(err, 'Failed to generate info'));
         } finally {
             setLoading(false);
         }

@@ -3,8 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Typography, Button, Paper } from '@mui/material';
 import SourceDocInfo from '../../features/info/components/SourceDocInfo';
 import Chunks from '../../features/chunks';
-import ChunkToolsNavbar from '../../features/chunks/tools/ChunkToolsNavbar';
-import { useMetaTextDetail } from '../../hooks/useMetaTextDetail';
+import { useMetaTextDetail } from '../../store/metaTextDetailStore';
 import log from '../../utils/logger';
 import { metaTextReviewRoute } from '../../routes';
 import PageContainer from '../../components/PageContainer';
@@ -43,11 +42,20 @@ export default function MetaTextDetailPage() {
         ]
     });
 
-    // Throw error as soon as possible if not loading and no metaText
-    if (!loading && !metaText) throw errors.metaText || new Error('MetaText not found');
+    // If we don't have a metaTextId, that's a routing error
+    if (!metaTextId) {
+        throw new Error('No MetaText ID provided in URL');
+    }
 
-    // If there are sourceDoc errors, throw them to be caught by ErrorBoundary
-    if (errors.sourceDoc) throw errors.sourceDoc;
+    // If we have a critical MetaText error, show it via error boundary
+    if (!loading && errors.metaText) {
+        throw new Error(errors.metaText);
+    }
+
+    // If there are sourceDoc errors, log them but don't throw (they're not critical for page function)
+    if (errors.sourceDoc) {
+        log.error('Source document error:', errors.sourceDoc);
+    }
 
     const sourceDocSection = sourceDocInfo ? (
         <SourceDocInfo doc={sourceDocInfo} onInfoUpdate={refetchSourceDoc} />
@@ -56,7 +64,7 @@ export default function MetaTextDetailPage() {
     return (
         <ErrorBoundary>
             <LoadingBoundary loading={loading}>
-                {metaTextId && (
+                {metaTextId && metaText ? (
                     <PageContainer>
                         <Paper elevation={3}>
                             <Typography variant="body1">
@@ -71,10 +79,16 @@ export default function MetaTextDetailPage() {
                             </Button>
                         </Paper>
                         {sourceDocSection}
-                        <ChunkToolsNavbar />
                         <Chunks metaTextId={metaTextId} />
                     </PageContainer>
-                )}
+                ) : !loading && metaTextId && !errors.metaText ? (
+                    <PageContainer>
+                        <Typography variant="h6">MetaText not found</Typography>
+                        <Typography variant="body2">
+                            The MetaText with ID "{metaTextId}" could not be found.
+                        </Typography>
+                    </PageContainer>
+                ) : null}
             </LoadingBoundary>
         </ErrorBoundary>
     );

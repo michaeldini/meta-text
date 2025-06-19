@@ -1,10 +1,11 @@
 import React, { useCallback } from 'react';
 import SummaryNotesComponent from '../summarynotes/SummaryNotesComponent';
 import type { Chunk } from '../../../../types/chunk';
+import type { ChunkFieldValue } from '../../../../store/chunkStore';
 
 interface NotesSummaryTabProps {
     chunk: Chunk;
-    updateChunkField: (chunkId: number, field: keyof Chunk, value: any) => void;
+    updateChunkField: (chunkId: number, field: keyof Chunk, value: ChunkFieldValue) => void;
 }
 
 const NotesSummaryTab: React.FC<NotesSummaryTabProps> = ({ chunk, updateChunkField }) => {

@@ -7,8 +7,7 @@ import log from '../../../utils/logger';
 import NotesSummaryTab from './tabs/NotesSummaryTab';
 import ComparisonTab from './tabs/ComparisonTab';
 import AiImageTab from './tabs/AiImageTab';
-import { useChunkTabState } from './hooks/useChunkTabState';
-import { useChunkFieldUpdater } from './hooks/useChunkFieldUpdater';
+import { useChunkStore } from '../../../store/chunkStore';
 import type { Chunk } from '../../../types/chunk';
 
 interface ChunkToolsDisplayProps {
@@ -25,9 +24,9 @@ type TabType = typeof tabOptions[number]['value'];
 
 const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk }) => {
 
-    // Use custom hooks for store state and updates
-    const activeTabs = useChunkTabState();
-    const updateChunkField = useChunkFieldUpdater();
+    // Use store selectors directly instead of wrapper hooks
+    const activeTabs = useChunkStore(state => state.activeTabs);
+    const updateChunkField = useChunkStore(state => state.updateChunkField);
 
     React.useEffect(() => {
         log.info(`ChunkTools mounted (id: ${chunk.id})`);

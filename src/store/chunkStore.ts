@@ -1,14 +1,22 @@
 import { create } from 'zustand';
 import { fetchChunks as apiFetchChunks, updateChunk, splitChunk, combineChunks } from '../services/chunkService';
+import { getErrorMessage } from '../types/error';
 import type { Chunk } from '../types/chunk';
 
-function debounce<F extends (...args: any[]) => void>(func: F, wait: number) {
+// Specific debounce function for chunk updates
+function debounceChunkUpdate(
+    func: (chunk: Chunk) => void,
+    wait: number
+): (chunk: Chunk) => void {
     let timeout: ReturnType<typeof setTimeout>;
-    return function (this: any, ...args: Parameters<F>) {
+    return function (chunk: Chunk) {
         clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), wait);
+        timeout = setTimeout(() => func(chunk), wait);
     };
 }
+
+// Type for chunk field values - covers all possible field types
+export type ChunkFieldValue = string | number | boolean | null | undefined;
 
 interface ChunkState {
     chunks: Chunk[];
@@ -19,7 +27,7 @@ interface ChunkState {
     activeTabs: Array<'comparison' | 'ai-image' | 'notes-summary'>;
     setActiveTabs: (tabs: Array<'comparison' | 'ai-image' | 'notes-summary'>) => void;
     fetchChunks: (metaTextId: number) => Promise<void>;
-    updateChunkField: (chunkId: number, field: keyof Chunk, value: any) => void;
+    updateChunkField: (chunkId: number, field: keyof Chunk, value: ChunkFieldValue) => void;
     handleWordClick: (chunkIdx: number, wordIdx: number) => Promise<void>;
     handleRemoveChunk: (chunkIdx: number) => Promise<void>;
     setChunks: (chunks: Chunk[]) => void;
@@ -27,7 +35,7 @@ interface ChunkState {
     resetChunkState: () => void;
 }
 
-const debouncers: Record<number, ReturnType<typeof debounce>> = {};
+const debouncers: Record<number, ReturnType<typeof debounceChunkUpdate>> = {};
 
 export const useChunkStore = create<ChunkState>((set, get) => ({
     chunks: [],
@@ -56,8 +64,8 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
 
                 return { ...state, ...updates };
             });
-        } catch (e: any) {
-            set({ chunksError: e.message || 'Failed to load chunks.', loadingChunks: false });
+        } catch (e: unknown) {
+            set({ chunksError: getErrorMessage(e, 'Failed to load chunks.'), loadingChunks: false });
         }
     },
     updateChunkField: (chunkId, field, value) => {
@@ -69,7 +77,7 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
             newChunks[idx] = updatedChunk;
             // Debounce API update
             if (!debouncers[chunkId]) {
-                debouncers[chunkId] = debounce((data: Chunk) => {
+                debouncers[chunkId] = debounceChunkUpdate((data: Chunk) => {
                     updateChunk(data.id, data);
                 }, 1200);
             }
@@ -136,8 +144,8 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
 
                 return { ...state, ...updates };
             });
-        } catch (e: any) {
-            set({ chunksError: e.message || 'Failed to reload chunks.', loadingChunks: false });
+        } catch (e: unknown) {
+            set({ chunksError: getErrorMessage(e, 'Failed to reload chunks.'), loadingChunks: false });
         }
     },
     resetChunkState: () => {

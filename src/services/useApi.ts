@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { getErrorMessage } from '../types/error';
 import log from '../utils/logger';
 
 interface ApiState<T> {
@@ -8,7 +9,7 @@ interface ApiState<T> {
   loading: boolean;
 }
 
-export function useApi<T = any>() {
+export function useApi<T = unknown>() {
   const [state, setState] = useState<ApiState<T>>({
     data: null,
     error: null,
@@ -22,8 +23,8 @@ export function useApi<T = any>() {
         const response = await axios(config);
         setState({ data: response.data, error: null, loading: false });
         return response;
-      } catch (err: any) {
-        const errorMsg = err.response?.data?.detail || err.message || 'Unknown error';
+      } catch (err: unknown) {
+        const errorMsg = getErrorMessage(err, 'API request failed');
         setState({ data: null, error: errorMsg, loading: false });
         log.error('API Error:', errorMsg);
       }

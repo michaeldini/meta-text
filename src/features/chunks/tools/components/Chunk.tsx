@@ -5,11 +5,12 @@ import ChunkToolsDisplay from '../ChunkToolsDisplay';
 import { chunkMainBox } from '../../styles/styles';
 import { useChunkStore } from '../../../../store/chunkStore';
 import type { Chunk } from '../../../../types/chunk';
+import type { ChunkFieldValue } from '../../../../store/chunkStore';
 
 export interface ChunkProps {
     chunk: Chunk;
     chunkIdx: number;
-    handleChunkFieldChange: (chunkId: number, field: keyof Chunk, value: any) => void;
+    handleChunkFieldChange: (chunkId: number, field: keyof Chunk, value: ChunkFieldValue) => void;
 }
 
 const Chunk = memo(function Chunk({
@@ -38,8 +39,6 @@ const Chunk = memo(function Chunk({
             />
             <ChunkToolsDisplay
                 chunk={chunk}
-                chunkIdx={chunkIdx}
-                handleChunkFieldChange={handleChunkFieldChange}
             />
         </Paper >
     );
