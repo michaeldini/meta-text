@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Typography, Button, Paper } from '@mui/material';
 import SourceDocInfo from '../../features/info/components/SourceDocInfo';
 import Chunks from '../../features/chunks';
+import ChunkToolsNavbar from '../../features/chunks/tools/ChunkToolsNavbar';
 import { useMetaTextDetail } from '../../hooks/useMetaTextDetail';
 import log from '../../utils/logger';
 import { metaTextReviewRoute } from '../../routes';
@@ -70,6 +71,7 @@ export default function MetaTextDetailPage() {
                             </Button>
                         </Paper>
                         {sourceDocSection}
+                        <ChunkToolsNavbar />
                         <Chunks metaTextId={metaTextId} />
                     </PageContainer>
                 )}

@@ -24,6 +24,7 @@ interface ChunkState {
     handleRemoveChunk: (chunkIdx: number) => Promise<void>;
     setChunks: (chunks: Chunk[]) => void;
     refetchChunks: (metaTextId: number) => Promise<void>;
+    resetChunkState: () => void;
 }
 
 const debouncers: Record<number, ReturnType<typeof debounce>> = {};
@@ -41,7 +42,20 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
         set({ loadingChunks: true, chunksError: '' });
         try {
             const chunks = await apiFetchChunks(metaTextId);
-            set({ chunks, loadingChunks: false });
+            set(state => {
+                const updates: Partial<ChunkState> = {
+                    chunks,
+                    loadingChunks: false
+                };
+
+                // Auto-select first chunk and enable notes-summary if no chunk is currently active
+                if (!state.activeChunkId && chunks.length > 0) {
+                    updates.activeChunkId = chunks[0].id;
+                    updates.activeTabs = ['notes-summary'];
+                }
+
+                return { ...state, ...updates };
+            });
         } catch (e: any) {
             set({ chunksError: e.message || 'Failed to load chunks.', loadingChunks: false });
         }
@@ -98,9 +112,41 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
         set({ loadingChunks: true, chunksError: '' });
         try {
             const chunks = await apiFetchChunks(metaTextId);
-            set({ chunks, loadingChunks: false });
+            set(state => {
+                const updates: Partial<ChunkState> = {
+                    chunks,
+                    loadingChunks: false
+                };
+
+                // Only auto-select first chunk if current active chunk no longer exists
+                if (state.activeChunkId && !chunks.find(c => c.id === state.activeChunkId)) {
+                    if (chunks.length > 0) {
+                        updates.activeChunkId = chunks[0].id;
+                        // Reset to default tabs when auto-selecting due to chunk no longer existing
+                        updates.activeTabs = ['notes-summary'];
+                    } else {
+                        updates.activeChunkId = null;
+                        updates.activeTabs = [];
+                    }
+                } else if (!state.activeChunkId && chunks.length > 0) {
+                    // If no chunk was active and we have chunks, select first one
+                    updates.activeChunkId = chunks[0].id;
+                    updates.activeTabs = ['notes-summary'];
+                }
+
+                return { ...state, ...updates };
+            });
         } catch (e: any) {
             set({ chunksError: e.message || 'Failed to reload chunks.', loadingChunks: false });
         }
+    },
+    resetChunkState: () => {
+        set({
+            chunks: [],
+            loadingChunks: false,
+            chunksError: '',
+            activeChunkId: null,
+            activeTabs: []
+        });
     },
 }));

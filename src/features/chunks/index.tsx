@@ -27,7 +27,7 @@ interface ChunksProps {
 }
 
 const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
-    const { chunks, loadingChunks, chunksError, fetchChunks, updateChunkField } = useChunkStore();
+    const { chunks, loadingChunks, chunksError, fetchChunks, updateChunkField, resetChunkState } = useChunkStore();
     const [page, setPage] = useState(1);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const prevChunksRef = useRef<any[]>([]);
@@ -38,8 +38,12 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
     }, [chunks]);
 
     React.useEffect(() => {
-        if (metaTextId) fetchChunks(Number(metaTextId));
-    }, [metaTextId, fetchChunks]);
+        if (metaTextId) {
+            // Reset chunk state when navigating to a different MetaText
+            resetChunkState();
+            fetchChunks(Number(metaTextId));
+        }
+    }, [metaTextId, fetchChunks, resetChunkState]);
 
     if (!Array.isArray(chunks)) {
         log.error('Chunks prop is not an array:', chunks);
