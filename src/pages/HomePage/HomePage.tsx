@@ -7,8 +7,6 @@ import LoadingBoundary from '../../components/LoadingBoundary';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import log from '../../utils/logger';
-import { useSourceDocuments } from '../../hooks/useSourceDocuments';
-import { useMetaTexts } from '../../hooks/useMetaTexts';
 import { deleteSourceDocument } from '../../services/sourceDocumentService';
 import { deleteMetaText } from '../../services/metaTextService';
 import { usePageLogger } from '../../hooks/usePageLogger';
@@ -17,10 +15,12 @@ import { Typography } from '@mui/material';
 import DocTypeSelect, { DocType } from '../../components/DocTypeSelect';
 import type { SourceDocument } from '../../types/sourceDocument';
 import type { MetaText } from '../../types/metaText';
+import { useApi } from '../../services/useApi';
 
 export default function HomePage() {
-    const { sourceDocs, sourceDocsLoading, sourceDocsError, refresh: refreshSourceDocs } = useSourceDocuments();
-    const { metaTexts, metaTextsLoading, metaTextsError, refresh: refreshMetaTexts } = useMetaTexts();
+    // Use useApi for both source documents and meta texts
+    const { data: sourceDocs, error: sourceDocsError, loading: sourceDocsLoading, request: fetchSourceDocs } = useApi<SourceDocument[]>();
+    const { data: metaTexts, error: metaTextsError, loading: metaTextsLoading, request: fetchMetaTexts } = useApi<MetaText[]>();
     const navigate = useNavigate();
     const [deleteError, setDeleteError] = React.useState<string | null>(null);
     const [snackbarOpen, setSnackbarOpen] = React.useState(false);
@@ -30,12 +30,18 @@ export default function HomePage() {
         watched: [
             ['sourceDocsLoading', sourceDocsLoading],
             ['sourceDocsError', sourceDocsError],
-            ['sourceDocs', sourceDocs.length],
+            ['sourceDocs', sourceDocs?.length || 0],
             ['metaTextsLoading', metaTextsLoading],
             ['metaTextsError', metaTextsError],
-            ['metaTexts', metaTexts.length]
+            ['metaTexts', metaTexts?.length || 0]
         ]
     });
+
+    // Fetch data on mount
+    React.useEffect(() => {
+        fetchSourceDocs({ url: '/api/source-documents', method: 'GET' });
+        fetchMetaTexts({ url: '/api/meta-texts', method: 'GET' });
+    }, [fetchSourceDocs, fetchMetaTexts]);
 
     // Handlers for navigation
     const handleSourceDocClick = (id: number) => {
@@ -50,8 +56,8 @@ export default function HomePage() {
     // Delete handlers
     const handleDeleteSourceDoc = (id: number, e: React.MouseEvent) => {
         if (e && e.stopPropagation) e.stopPropagation();
-        deleteSourceDocument(id)
-            .then(() => refreshSourceDocs())
+        fetchSourceDocs({ url: `/api/source-documents/${id}`, method: 'DELETE' })
+            .then(() => fetchSourceDocs({ url: '/api/source-documents', method: 'GET' }))
             .catch(err => {
                 log.error('Delete source doc failed', err);
                 setDeleteError('Failed to delete the source document. Please try again.');
@@ -60,8 +66,8 @@ export default function HomePage() {
     };
     const handleDeleteMetaText = (id: number, e: React.MouseEvent) => {
         if (e && e.stopPropagation) e.stopPropagation();
-        deleteMetaText(id)
-            .then(() => refreshMetaTexts())
+        fetchMetaTexts({ url: `/api/meta-text/${id}`, method: 'DELETE' })
+            .then(() => fetchMetaTexts({ url: '/api/meta-texts', method: 'GET' }))
             .catch(err => {
                 log.error('Delete meta text failed', err);
                 setDeleteError('Failed to delete the meta text. Please try again.');
@@ -81,12 +87,12 @@ export default function HomePage() {
                 Create
             </Typography>
             <CombinedCreateForm
-                sourceDocs={sourceDocs}
+                sourceDocs={sourceDocs || []}
                 sourceDocsLoading={sourceDocsLoading}
                 sourceDocsError={sourceDocsError}
                 onSuccess={() => {
-                    refreshSourceDocs();
-                    refreshMetaTexts();
+                    fetchSourceDocs({ url: '/api/source-documents', method: 'GET' });
+                    fetchMetaTexts({ url: '/api/meta-texts', method: 'GET' });
                 }}
                 docType={docType}
             />
@@ -97,14 +103,14 @@ export default function HomePage() {
                     </Typography>
                     {docType === 'sourceDoc' ? (
                         <SearchableList
-                            items={sourceDocs}
+                            items={sourceDocs || []}
                             onItemClick={handleSourceDocClick}
                             onDeleteClick={handleDeleteSourceDoc}
                             filterKey="title"
                         />
                     ) : (
                         <SearchableList
-                            items={metaTexts}
+                            items={metaTexts || []}
                             onItemClick={handleMetaTextClick}
                             onDeleteClick={handleDeleteMetaText}
                             filterKey="title"
