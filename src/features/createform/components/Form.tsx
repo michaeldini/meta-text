@@ -11,7 +11,7 @@ import { handleFormSubmit } from '../utils/handleFormSubmit';
 import SubmitButton from './SubmitButton';
 import TitleField from './TitleField';
 
-export interface CombinedCreateFormProps {
+export interface CreateFormProps {
     sourceDocs: Array<{ id: string | number; title: string }>;
     sourceDocsLoading: boolean;
     sourceDocsError: string | null;
@@ -20,7 +20,7 @@ export interface CombinedCreateFormProps {
 
 type Mode = 'upload' | 'metaText';
 
-const CreateForm: React.FC<CombinedCreateFormProps> = ({
+const CreateForm: React.FC<CreateFormProps> = ({
     sourceDocs,
     sourceDocsLoading,
     sourceDocsError,

@@ -43,7 +43,7 @@ const CreateFormContainer: React.FC<CreateFormProps> = ({
     };
 
     return (
-        <Paper elevation={3}>
+        <Paper elevation={3} sx={{ minHeight: '400px' }}>
             <Typography variant="body1" gutterBottom>
                 {description}
             </Typography>

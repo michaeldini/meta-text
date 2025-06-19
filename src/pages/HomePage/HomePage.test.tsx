@@ -46,12 +46,14 @@ describe('HomePage', () => {
 
         expect(screen.getByText('Doc 1')).toBeInTheDocument();
         expect(screen.getByText('Doc 2')).toBeInTheDocument();
+        expect(screen.getByText('Upload a text file to create a new source document.')).toBeInTheDocument();
 
         // Switch to meta texts
         fireEvent.click(screen.getByLabelText('Meta-Text'));
         await waitFor(() => {
             expect(screen.getByText('Meta 1')).toBeInTheDocument();
             expect(screen.getByText('Meta 2')).toBeInTheDocument();
+            expect(screen.getByText('Choose a source document to create a new meta text.')).toBeInTheDocument();
         });
     });
 });

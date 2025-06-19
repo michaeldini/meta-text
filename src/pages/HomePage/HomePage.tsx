@@ -8,7 +8,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import log from '../../utils/logger';
 import { usePageLogger } from '../../hooks/usePageLogger';
-import CombinedCreateForm from '../../features/createform/components';
+import CreateForm from '../../features/createform/components';
 import { Typography } from '@mui/material';
 import DocTypeSelect, { DocType } from '../../components/DocTypeSelect';
 import type { SourceDocument } from '../../types/sourceDocument';
@@ -21,6 +21,7 @@ export default function HomePage() {
     const { data: metaTexts, error: metaTextsError, loading: metaTextsLoading, request: fetchMetaTexts } = useApi<MetaText[]>();
     const navigate = useNavigate();
     const [deleteError, setDeleteError] = React.useState<string | null>(null);
+    const [deleteSuccess, setDeleteSuccess] = React.useState<string | null>(null);
     const [snackbarOpen, setSnackbarOpen] = React.useState(false);
     const [docType, setDocType] = React.useState<DocType>('sourceDoc');
 
@@ -38,7 +39,7 @@ export default function HomePage() {
     // Fetch data on mount
     React.useEffect(() => {
         fetchSourceDocs({ url: '/api/source-documents', method: 'GET' });
-        fetchMetaTexts({ url: '/api/meta-texts', method: 'GET' });
+        fetchMetaTexts({ url: '/api/meta-text', method: 'GET' });
     }, [fetchSourceDocs, fetchMetaTexts]);
 
     // Handlers for navigation
@@ -55,20 +56,32 @@ export default function HomePage() {
     const handleDeleteSourceDoc = (id: number, e: React.MouseEvent) => {
         if (e && e.stopPropagation) e.stopPropagation();
         fetchSourceDocs({ url: `/api/source-documents/${id}`, method: 'DELETE' })
-            .then(() => fetchSourceDocs({ url: '/api/source-documents', method: 'GET' }))
+            .then(() => {
+                fetchSourceDocs({ url: '/api/source-documents', method: 'GET' });
+                setDeleteSuccess('Source document deleted successfully.');
+                setDeleteError(null);
+                setSnackbarOpen(true);
+            })
             .catch(err => {
                 log.error('Delete source doc failed', err);
                 setDeleteError('Failed to delete the source document. Please try again.');
+                setDeleteSuccess(null);
                 setSnackbarOpen(true);
             });
     };
     const handleDeleteMetaText = (id: number, e: React.MouseEvent) => {
         if (e && e.stopPropagation) e.stopPropagation();
         fetchMetaTexts({ url: `/api/meta-text/${id}`, method: 'DELETE' })
-            .then(() => fetchMetaTexts({ url: '/api/meta-texts', method: 'GET' }))
+            .then(() => {
+                fetchMetaTexts({ url: '/api/meta-text', method: 'GET' });
+                setDeleteSuccess('Meta text deleted successfully.');
+                setDeleteError(null);
+                setSnackbarOpen(true);
+            })
             .catch(err => {
                 log.error('Delete meta text failed', err);
                 setDeleteError('Failed to delete the meta text. Please try again.');
+                setDeleteSuccess(null);
                 setSnackbarOpen(true);
             });
     };
@@ -76,6 +89,8 @@ export default function HomePage() {
     const handleSnackbarClose = (_event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') return;
         setSnackbarOpen(false);
+        setDeleteError(null);
+        setDeleteSuccess(null);
     };
 
     return (
@@ -84,13 +99,13 @@ export default function HomePage() {
             <Typography variant="h5" gutterBottom>
                 Create
             </Typography>
-            <CombinedCreateForm
+            <CreateForm
                 sourceDocs={sourceDocs || []}
                 sourceDocsLoading={sourceDocsLoading}
                 sourceDocsError={sourceDocsError}
                 onSuccess={() => {
                     fetchSourceDocs({ url: '/api/source-documents', method: 'GET' });
-                    fetchMetaTexts({ url: '/api/meta-texts', method: 'GET' });
+                    fetchMetaTexts({ url: '/api/meta-text', method: 'GET' });
                 }}
                 docType={docType}
             />
@@ -118,12 +133,16 @@ export default function HomePage() {
             </ErrorBoundary>
             <Snackbar
                 open={snackbarOpen}
-                autoHideDuration={4000}
+                autoHideDuration={2000}
                 onClose={handleSnackbarClose}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
             >
-                <Alert onClose={handleSnackbarClose} severity="error" sx={{ width: '100%' }}>
-                    {deleteError}
+                <Alert
+                    onClose={handleSnackbarClose}
+                    severity={deleteError ? 'error' : 'success'}
+                    sx={{ width: '100%' }}
+                >
+                    {deleteError || deleteSuccess || ''}
                 </Alert>
             </Snackbar>
         </PageContainer>
