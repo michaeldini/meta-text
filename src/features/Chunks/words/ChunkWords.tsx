@@ -3,24 +3,23 @@ import { Box, IconButton } from '@mui/material';
 import UndoArrowIcon from '../../../components/icons/UndoArrowIcon';
 import WordActionDialog from './WordActionDialog';
 import { chunkWordBox, wordsContainer, chunkUndoIconButton, chunkTextBox } from '../styles/styles';
+import { useChunkStore } from '../../../store/chunkStore';
 
 export interface ChunkWordsProps {
     words: string[];
     chunkIdx: number;
-    handleWordClick: (chunkIdx: number, wordIdx: number) => void;
-    handleRemoveChunk: (chunkIdx: number) => void;
     chunk?: { meta_text_id?: string | number;[key: string]: any };
 }
 
 const ChunkWords = memo(function ChunkWords({
     words,
     chunkIdx,
-    handleWordClick,
-    handleRemoveChunk,
     chunk
 }: ChunkWordsProps) {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [selectedWordIdx, setSelectedWordIdx] = useState<number | null>(null);
+    const handleWordClick = useChunkStore(state => state.handleWordClick);
+    const handleRemoveChunk = useChunkStore(state => state.handleRemoveChunk);
 
     const handleWordDialogOpen = (idx: number, event: React.MouseEvent<HTMLElement>) => {
         setSelectedWordIdx(idx);

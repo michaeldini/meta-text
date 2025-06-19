@@ -64,18 +64,35 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
         });
     },
     handleWordClick: async (chunkIdx, wordIdx) => {
-        const { chunks, fetchChunks } = get();
+        const { chunks } = get();
         if (!chunks[chunkIdx] || !chunks[chunkIdx].id) return;
-        await splitChunk(chunks[chunkIdx].id, wordIdx + 1);
-        await fetchChunks(chunks[chunkIdx].meta_text_id);
+        const oldChunk = chunks[chunkIdx];
+        const splitResult = await splitChunk(oldChunk.id, wordIdx + 1); // returns [updatedChunk, newChunk]
+        if (!Array.isArray(splitResult) || splitResult.length < 2) return;
+        set(state => {
+            const newChunks = [...state.chunks];
+            // Replace the old chunk with the updated one
+            newChunks[chunkIdx] = splitResult[0];
+            // Insert the new chunk right after
+            newChunks.splice(chunkIdx + 1, 0, splitResult[1]);
+            return { ...state, chunks: newChunks };
+        });
     },
     handleRemoveChunk: async (chunkIdx) => {
-        const { chunks, fetchChunks } = get();
+        const { chunks } = get();
         const first = chunks[chunkIdx];
         const second = chunks[chunkIdx + 1];
         if (!first || !second) return;
-        await combineChunks(first.id, second.id);
-        await fetchChunks(first.meta_text_id);
+        const combineResult = await combineChunks(first.id, second.id); // returns a single combined Chunk
+        if (!combineResult || !combineResult.id) return;
+        set(state => {
+            const newChunks = [...state.chunks];
+            // Replace the first chunk with the combined one
+            newChunks[chunkIdx] = combineResult;
+            // Remove the second chunk
+            newChunks.splice(chunkIdx + 1, 1);
+            return { ...state, chunks: newChunks };
+        });
     },
     refetchChunks: async (metaTextId) => {
         set({ loadingChunks: true, chunksError: '' });

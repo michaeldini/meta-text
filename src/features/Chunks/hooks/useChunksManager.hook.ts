@@ -30,7 +30,7 @@ export function useChunksManager(metaTextId: string) {
         fetchChunks()
             .then(chunkData => {
                 if (!isMounted) return;
-                setChunks(chunkData.map((chunk: any) => ({ ...chunk, content: chunk.text })));
+                setChunks(chunkData);
             })
             .catch((e: any) => {
                 if (!isMounted) return;
@@ -47,7 +47,7 @@ export function useChunksManager(metaTextId: string) {
         if (!chunks[chunkIdx] || !chunks[chunkIdx].id) return;
         await split(chunks[chunkIdx].id, wordIdx + 1);
         const updated = await fetchChunks();
-        setChunks(updated.map((chunk: any) => ({ ...chunk, content: chunk.text })));
+        setChunks(updated);
     }, [split, fetchChunks, chunks]);
 
     const handleRemoveChunk = useCallback(async (chunkIdx: number) => {
@@ -56,7 +56,7 @@ export function useChunksManager(metaTextId: string) {
         if (!first || !second) return;
         await combine(first.id, second.id);
         const updated = await fetchChunks();
-        setChunks(updated.map((chunk: any) => ({ ...chunk, content: chunk.text })));
+        setChunks(updated);
     }, [combine, fetchChunks, chunks]);
 
     const handleChunkFieldChange = useCallback((chunkIdx: number, field: string, value: any) => {
@@ -82,7 +82,7 @@ export function useChunksManager(metaTextId: string) {
         setChunksError('');
         try {
             const chunkData = await fetchChunks();
-            setChunks(chunkData.map((chunk: any) => ({ ...chunk, content: chunk.text })));
+            setChunks(chunkData);
         } catch (e: any) {
             setChunksError(e.message || 'Failed to reload chunks.');
         } finally {

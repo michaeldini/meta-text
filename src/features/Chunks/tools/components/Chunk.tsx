@@ -9,16 +9,12 @@ import type { Chunk } from '../../../../types/chunk';
 export interface ChunkProps {
     chunk: Chunk;
     chunkIdx: number;
-    handleWordClick: (chunkIdx: number, wordIdx: number) => void;
-    handleRemoveChunk: (chunkIdx: number) => void;
     handleChunkFieldChange: (chunkId: number, field: keyof Chunk, value: any) => void;
 }
 
 const Chunk = memo(function Chunk({
     chunk,
     chunkIdx,
-    handleWordClick,
-    handleRemoveChunk,
     handleChunkFieldChange
 }: ChunkProps) {
     const words = chunk.text ? chunk.text.split(/\s+/) : [];
@@ -38,8 +34,6 @@ const Chunk = memo(function Chunk({
             <ChunkWords
                 words={words}
                 chunkIdx={chunkIdx}
-                handleWordClick={handleWordClick}
-                handleRemoveChunk={handleRemoveChunk}
                 chunk={chunk}
             />
             <ChunkToolsDisplay

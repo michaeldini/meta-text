@@ -27,7 +27,7 @@ interface ChunksProps {
 }
 
 const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
-    const { chunks, loadingChunks, chunksError, fetchChunks, handleWordClick, handleRemoveChunk, updateChunkField } = useChunkStore();
+    const { chunks, loadingChunks, chunksError, fetchChunks, updateChunkField } = useChunkStore();
     const [page, setPage] = useState(1);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const prevChunksRef = useRef<any[]>([]);
@@ -36,23 +36,6 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
     React.useEffect(() => {
         prevChunksRef.current = chunks;
     }, [chunks]);
-
-    const handleWordClickWithScroll = async (chunkIdx: number, wordIdx: number) => {
-        const scrollY = window.scrollY;
-        await handleWordClick(chunkIdx, wordIdx);
-        // Restore scroll position after DOM update
-        setTimeout(() => {
-            window.scrollTo({ top: scrollY });
-        }, 0);
-    };
-
-    const handleRemoveChunkWithScroll = async (chunkIdx: number) => {
-        const scrollY = window.scrollY;
-        await handleRemoveChunk(chunkIdx);
-        setTimeout(() => {
-            window.scrollTo({ top: scrollY });
-        }, 0);
-    };
 
     React.useEffect(() => {
         if (metaTextId) fetchChunks(Number(metaTextId));
@@ -87,8 +70,6 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
                                 key={startIdx + chunkIdx}
                                 chunk={chunk}
                                 chunkIdx={startIdx + chunkIdx}
-                                handleWordClick={handleWordClickWithScroll}
-                                handleRemoveChunk={handleRemoveChunkWithScroll}
                                 handleChunkFieldChange={updateChunkField}
                             />
                         ))}
