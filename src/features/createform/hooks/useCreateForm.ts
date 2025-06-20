@@ -3,6 +3,7 @@ import { CreateFormResult, CreateFormOptions, FormMode, CreateFormData } from '.
 import { validateCreateForm } from '../utils/validation';
 import { createFormService } from '../services/createFormService';
 import { FORM_MODES, FORM_MESSAGES } from '../constants';
+import { useNotifications } from '../../../store/notificationStore';
 import log from '../../../utils/logger';
 
 const INITIAL_DATA: CreateFormData = {
@@ -17,6 +18,9 @@ export function useCreateForm(options: CreateFormOptions = {}): CreateFormResult
         onSuccess,
         sourceDocs = []
     } = options;
+
+    // Global notifications for user feedback
+    const { showSuccess, showError } = useNotifications();
 
     // State
     const [mode, setMode] = useState<FormMode>(initialMode);
@@ -95,9 +99,15 @@ export function useCreateForm(options: CreateFormOptions = {}): CreateFormResult
                 await createFormService.submitMetaText(sourceDocIdNum, data.title);
             }
 
-            // Success
-            setSuccess(FORM_MESSAGES.SUCCESS[mode]);
-            reset();
+            // Success - show global notification for better user feedback
+            showSuccess(FORM_MESSAGES.SUCCESS[mode]);
+
+            // Reset form data for new input
+            setData(INITIAL_DATA);
+
+            // Clear any existing error/success states
+            setError(null);
+            setSuccess(null);
 
             // Call success callback
             if (onSuccess) {
@@ -108,12 +118,14 @@ export function useCreateForm(options: CreateFormOptions = {}): CreateFormResult
 
         } catch (err: any) {
             const errorMessage = err?.message || 'An error occurred during submission';
+            // Use global notification for errors as well for consistency
+            showError(errorMessage);
             setError(errorMessage);
             log.error(`Form submission failed for mode: ${mode}`, err);
         } finally {
             setLoading(false);
         }
-    }, [mode, data, onSuccess, clearMessages, reset]);
+    }, [mode, data, onSuccess, showSuccess, showError]);
 
     return {
         // State
