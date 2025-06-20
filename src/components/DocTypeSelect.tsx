@@ -22,11 +22,11 @@ const DocTypeSelect: React.FC<DocTypeSelectProps> = ({ value, onChange, disabled
                 aria-label="document type"
                 disabled={disabled}
             >
-                <ToggleButton value="sourceDoc" aria-label="Source Document">
-                    Source Document
-                </ToggleButton>
                 <ToggleButton value="metaText" aria-label="Meta-Text">
                     Meta-Text
+                </ToggleButton>
+                <ToggleButton value="sourceDoc" aria-label="Source Document">
+                    Source Document
                 </ToggleButton>
             </ToggleButtonGroup>
         </Box>

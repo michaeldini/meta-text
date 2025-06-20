@@ -50,8 +50,12 @@ const theme = createTheme({
         MuiTextField: {
             defaultProps: {
                 variant: 'outlined',
-                inputProps: {
-                    style: { color: grey[200] },
+            },
+            styleOverrides: {
+                root: {
+                    '& .MuiInputBase-input': {
+                        color: grey[200],
+                    },
                 },
             },
         },
@@ -77,6 +81,26 @@ const theme = createTheme({
             styleOverrides: {
                 root: {
                     marginTop: '16px', // mt: 2 (theme.spacing(2) = 16px by default)
+                },
+            },
+        },
+
+        MuiButton: {
+            defaultProps: {
+                variant: 'contained',
+            },
+            styleOverrides: {
+                root: {
+                    borderRadius: 8,
+                    textTransform: 'none', // Disable uppercase transformation
+                },
+            },
+        },
+        MuiToggleButton: {
+            styleOverrides: {
+                root: {
+                    borderRadius: 8,
+                    textTransform: 'none',
                 },
             },
         },

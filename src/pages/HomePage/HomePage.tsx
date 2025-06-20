@@ -52,7 +52,7 @@ export default function HomePage() {
 
     const { showSuccess, showError } = useNotifications();
     const navigate = useNavigate();
-    const [docType, setDocType] = React.useState<DocType>(DOC_TYPES.SOURCE_DOC);
+    const [docType, setDocType] = React.useState<DocType>(DOC_TYPES.META_TEXT);
 
     // Consolidated data refresh function
     const refreshData = React.useCallback(() => {

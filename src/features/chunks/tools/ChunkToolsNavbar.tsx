@@ -42,13 +42,10 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
             display: 'flex',
             alignItems: 'center',
             flexDirection: 'column',
-            gap: 1,
-            backgroundColor: 'background.paper',
+            // backgroundColor: 'background.paper',
             borderRadius: 2,
-            boxShadow: 3,
-            padding: 1,
-            border: '1px solid',
-            borderColor: 'divider',
+            padding: 0,
+            margin: 0,
         }
         : {
             display: 'flex',
@@ -61,11 +58,7 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
             data-testid={dataTestId}
             className={className}
         >
-            {isFloating && (
-                <Typography variant="caption" color="text.secondary" sx={{ textAlign: 'center' }}>
-                    Chunk Tools
-                </Typography>
-            )}
+
             {!isFloating && (
                 <Typography variant="subtitle1">
                     {`Active: ${activeChunkId}`}
@@ -114,17 +107,17 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
                     </ToggleButton>
                 </Tooltip>
             </ToggleButtonGroup>
-            {isFloating && (
+            {/* {isFloating && (
                 <Button
                     onClick={handleShowDialog}
                     disabled={!activeChunkId}
                     size="small"
                     variant="outlined"
-                    sx={{ fontSize: '0.75rem', py: 0.5 }}
+                    sx={{ fontSize: '0.75rem', m: 0, p: 0 }}
                 >
-                    Dialog
+                    Test
                 </Button>
-            )}
+            )} */}
         </Box>
     );
 };

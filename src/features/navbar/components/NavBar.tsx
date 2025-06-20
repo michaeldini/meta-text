@@ -105,7 +105,7 @@ const NavBar: React.FC<NavBarProps> = ({
 
     return (
         <AppBar
-            position="fixed"
+            position="static"
             elevation={2}
             sx={memoizedStyles.appBar}
             className={className}

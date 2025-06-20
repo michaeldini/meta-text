@@ -15,6 +15,7 @@ export const chunkMainBox = {
     flexDirection: { xs: 'column', md: 'row' },
     gap: 2,
     p: 2,
+    ml: 8,
     mb: 8,
     border: '1px solid transparent',
     borderRadius: 2,
