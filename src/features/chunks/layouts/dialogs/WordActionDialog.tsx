@@ -1,0 +1,80 @@
+import React, { memo } from 'react';
+import { Popover, Box } from '@mui/material';
+import SplitChunkTool from '../../tools/split/SplitChunkTool';
+import DefineWordTool from '../../tools/define/DefineWordTool';
+
+export interface WordActionDialogProps {
+    anchorEl: HTMLElement | null;
+    onClose: () => void;
+    word: string;
+    wordIdx: number;
+    chunkIdx: number;
+    context: string;
+    metaTextId: string | number | undefined;
+}
+
+/**
+ * WordActionDialog - Layout component that presents word-level tools
+ * This is a layout component that uses the split and define tools
+ */
+const WordActionDialog: React.FC<WordActionDialogProps> = memo(({
+    anchorEl,
+    onClose,
+    word,
+    wordIdx,
+    chunkIdx,
+    context,
+    metaTextId
+}) => {
+    const open = Boolean(anchorEl);
+
+    const chunk = {
+        meta_text_id: metaTextId
+    };
+
+    const handleToolComplete = (success: boolean, result?: any) => {
+        if (success) {
+            console.log('Tool completed successfully:', result);
+            onClose();
+        }
+    };
+
+    return (
+        <Popover
+            open={open}
+            anchorEl={anchorEl}
+            onClose={onClose}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+            }}
+        >
+            <Box sx={{ p: 1, display: 'flex', gap: 1 }}>
+                <SplitChunkTool
+                    chunkIdx={chunkIdx}
+                    wordIdx={wordIdx}
+                    word={word}
+                    context={context}
+                    chunk={chunk}
+                    onComplete={handleToolComplete}
+                />
+                <DefineWordTool
+                    chunkIdx={chunkIdx}
+                    wordIdx={wordIdx}
+                    word={word}
+                    context={context}
+                    chunk={chunk}
+                    onComplete={handleToolComplete}
+                />
+            </Box>
+        </Popover>
+    );
+});
+
+WordActionDialog.displayName = 'WordActionDialog';
+
+export default WordActionDialog;

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import ChunkComparison from '../comparison/ChunkComparison';
+import ComparisonTool from '../../tools/comparison/ComparisonTool';
 import type { Chunk } from '../../../../types/chunk';
 import type { ChunkFieldValue } from '../../../../store/chunkStore';
 
@@ -15,8 +15,9 @@ const ComparisonTab: React.FC<ComparisonTabProps> = ({ chunk, updateChunkField }
     );
 
     return (
-        <ChunkComparison
-            chunkId={chunk.id}
+        <ComparisonTool
+            chunkIdx={chunk.id}
+            chunk={chunk}
             comparisonText={chunk.comparison}
             onComparisonUpdate={handleComparisonUpdate}
         />

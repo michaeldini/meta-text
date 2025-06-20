@@ -1,6 +1,6 @@
 import React, { memo, useRef, useEffect } from 'react';
 import { Box, Paper } from '@mui/material';
-import ChunkWords from '../../words/ChunkWords';
+import { ChunkWords } from '../../components';
 import ChunkToolsDisplay from '../ChunkToolsDisplay';
 import { chunkMainBox } from '../../styles/styles';
 import { useChunkStore } from '../../../../store/chunkStore';

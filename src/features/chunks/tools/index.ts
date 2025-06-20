@@ -3,10 +3,17 @@
  * Centralized exports for chunk tools components
  */
 
-// Tool Components
-export { default as ChunkToolsNavbar } from './ChunkToolsNavbar';
-export { default as FloatingChunkToolbar } from './FloatingChunkToolbar';
+// Individual Tools
+export * from './split';
+export * from './define';
+export * from './merge';
+export * from './comparison';
+export * from './image';
+export * from './notes';
+
+// Layout Components (imported from new locations)
+export { ChunkToolsNavbar, FloatingChunkToolbar } from '../layouts/toolbars';
 export { default as ChunkToolsDisplay } from './ChunkToolsDisplay';
 
-// Types (if any are added later)
-// export type { ChunkToolsProps } from './types';
+// Types
+export * from './types';

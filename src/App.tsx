@@ -6,7 +6,7 @@ import { useMemo, Suspense, lazy, ComponentType } from 'react';
 import { AppSuspenseFallback } from './components/AppSuspenseFallback';
 import ErrorBoundary from './components/ErrorBoundary';
 import GlobalNotifications from './components/GlobalNotifications';
-import FloatingChunkToolbar from './features/chunks/tools/FloatingChunkToolbar';
+import FloatingChunkToolbar from './features/chunks/layouts/toolbars/FloatingChunkToolbar';
 
 // Dynamically import pages for code splitting
 const HomePage = lazy(() => import('./pages/HomePage/HomePage'));

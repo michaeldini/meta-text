@@ -3,7 +3,7 @@ import { Box, Typography, Button, ToggleButtonGroup, ToggleButton, Tooltip, Typo
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import PhotoFilterIcon from '@mui/icons-material/PhotoFilter';
 import NotesIcon from '@mui/icons-material/Notes';
-import { useChunkStore } from '../../../store/chunkStore';
+import { useChunkStore } from '../../../../store/chunkStore';
 
 interface ChunkToolsNavbarProps {
     /** Whether this component is rendered as a floating element */

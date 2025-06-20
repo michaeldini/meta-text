@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import SummaryNotesComponent from '../summarynotes/SummaryNotesComponent';
+import NotesTool from '../../tools/notes/NotesTool';
 import type { Chunk } from '../../../../types/chunk';
 import type { ChunkFieldValue } from '../../../../store/chunkStore';
 
@@ -13,11 +13,13 @@ const NotesSummaryTab: React.FC<NotesSummaryTabProps> = ({ chunk, updateChunkFie
     const setNotes = useCallback((val: string) => updateChunkField(chunk.id, 'notes', val), [chunk.id, updateChunkField]);
 
     return (
-        <SummaryNotesComponent
+        <NotesTool
+            chunkIdx={chunk.id}
+            chunk={chunk}
             summary={chunk.summary}
             notes={chunk.notes}
-            setSummary={setSummary}
-            setNotes={setNotes}
+            onSummaryUpdate={setSummary}
+            onNotesUpdate={setNotes}
             onSummaryBlur={() => { }}
             onNotesBlur={() => { }}
         />

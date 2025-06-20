@@ -4,9 +4,9 @@ import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import PhotoFilterIcon from '@mui/icons-material/PhotoFilter';
 import NotesIcon from '@mui/icons-material/Notes';
 import log from '../../../utils/logger';
-import NotesSummaryTab from './tabs/NotesSummaryTab';
-import ComparisonTab from './tabs/ComparisonTab';
-import AiImageTab from './tabs/AiImageTab';
+import NotesSummaryTab from '../layouts/tabs/NotesSummaryTab';
+import ComparisonTab from '../layouts/tabs/ComparisonTab';
+import AiImageTab from '../layouts/tabs/AiImageTab';
 import { useChunkStore } from '../../../store/chunkStore';
 import type { Chunk } from '../../../types/chunk';
 

@@ -7,6 +7,11 @@ import LoadingBoundary from '../../components/LoadingBoundary';
 import ErrorBoundary from '../../components/ErrorBoundary';
 import { useChunkStore } from '../../store/chunkStore';
 
+// Export the new organized structure
+export * from './components';
+export * from './tools';
+export * from './layouts';
+
 interface ChunksPaginationProps {
     pageCount: number;
     page: number;

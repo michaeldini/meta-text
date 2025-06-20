@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Fade, useTheme } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import ChunkToolsNavbar from './ChunkToolsNavbar';
-import { useChunkStore } from '../../../store/chunkStore';
+import { useChunkStore } from '../../../../store/chunkStore';
 
 interface FloatingChunkToolbarProps {
     /** Additional CSS class name */
