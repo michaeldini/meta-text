@@ -1,14 +1,6 @@
-// Extracted shared styles for AI Generation buttons
-// export const aiGenerationBtnStyles = {
-//     borderRadius: 2,
-//     textTransform: 'none',
-//     fontWeight: 600,
-//     px: 3,
-//     py: 1.5,
-// };
-
 import React from 'react';
 import { Button, CircularProgress, Tooltip } from '@mui/material';
+import type { SxProps, Theme } from '@mui/material/styles';
 
 export interface AiGenerationButtonProps {
     label: string;
@@ -16,7 +8,7 @@ export interface AiGenerationButtonProps {
     onClick: () => void;
     loading?: boolean;
     disabled?: boolean;
-    sx?: object;
+    sx?: SxProps<Theme>;
 }
 
 const AiGenerationButton: React.FC<AiGenerationButtonProps> = ({ label, toolTip, onClick, loading = false, disabled = false, sx }) => (
@@ -30,7 +22,7 @@ const AiGenerationButton: React.FC<AiGenerationButtonProps> = ({ label, toolTip,
                 disabled={disabled || loading}
                 aria-label={toolTip || 'AI Generation Button'}
             >
-                {loading ? <CircularProgress /> :
+                {loading ? <CircularProgress size={20} aria-label="Loading AI generation" /> :
                     <>
                         {label}
                         <img src="/ai-stars.png" alt="AI" style={{ width: 20, height: 20, marginLeft: 8 }} />

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Typography, Button, Alert } from '@mui/material';
+import type { Logger } from '../types/global';
 
 interface ErrorBoundaryState {
     hasError: boolean;
@@ -10,6 +11,14 @@ interface ErrorBoundaryState {
 interface ErrorBoundaryProps {
     children: React.ReactNode;
 }
+
+// Type-safe access to global logger
+const getLogger = (): Logger | null => {
+    if (typeof window !== 'undefined' && window.logger) {
+        return window.logger;
+    }
+    return null;
+};
 
 class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
     constructor(props: ErrorBoundaryProps) {
@@ -23,9 +32,11 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 
     componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
         this.setState({ errorInfo });
-        // Optionally log error to an external service here
-        if (window && (window as any).logger) {
-            (window as any).logger.error('ErrorBoundary caught an error', error, errorInfo);
+
+        // Log error to external service if logger is available
+        const logger = getLogger();
+        if (logger) {
+            logger.error('ErrorBoundary caught an error', error, errorInfo);
         }
     }
 
