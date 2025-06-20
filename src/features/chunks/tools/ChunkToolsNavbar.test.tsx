@@ -85,4 +85,67 @@ describe('ChunkToolsNavbar', () => {
         expect(screen.getByRole('button', { name: /show comparison/i })).toHaveAttribute('aria-pressed', 'true');
         expect(screen.getByRole('button', { name: /show ai image/i })).toHaveAttribute('aria-pressed', 'true');
     });
+
+    it('should render differently when isFloating is true', () => {
+        mockUseChunkStore.mockImplementation((selector: any) => {
+            const state = {
+                activeChunkId: 1,
+                activeTabs: ['notes-summary'],
+                setActiveTabs: mockSetActiveTabs,
+            };
+            return selector(state);
+        });
+
+        render(<ChunkToolsNavbar isFloating={true} />);
+
+        // Should show floating-specific content
+        expect(screen.getByText('Chunk Tools')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /dialog/i })).toBeInTheDocument();
+
+        // Should not show non-floating content
+        expect(screen.queryByText(/Active: 1/)).not.toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: /dialogue/i })).not.toBeInTheDocument();
+    });
+
+    it('should render differently when isFloating is false', () => {
+        mockUseChunkStore.mockImplementation((selector: any) => {
+            const state = {
+                activeChunkId: 1,
+                activeTabs: ['notes-summary'],
+                setActiveTabs: mockSetActiveTabs,
+            };
+            return selector(state);
+        });
+
+        render(<ChunkToolsNavbar isFloating={false} />);
+
+        // Should show non-floating content
+        expect(screen.getByText('Active: 1')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /dialogue/i })).toBeInTheDocument();
+
+        // Should not show floating-specific content
+        expect(screen.queryByText('Chunk Tools')).not.toBeInTheDocument();
+    });
+
+    it('should accept custom className and data-testid', () => {
+        mockUseChunkStore.mockImplementation((selector: any) => {
+            const state = {
+                activeChunkId: 1,
+                activeTabs: ['notes-summary'],
+                setActiveTabs: mockSetActiveTabs,
+            };
+            return selector(state);
+        });
+
+        render(
+            <ChunkToolsNavbar
+                className="custom-class"
+                data-testid="custom-test-id"
+            />
+        );
+
+        const navbar = screen.getByTestId('custom-test-id');
+        expect(navbar).toBeInTheDocument();
+        expect(navbar).toHaveClass('custom-class');
+    });
 });
