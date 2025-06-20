@@ -25,13 +25,18 @@
         "typeRoots": [
             "./src/types",
             "./node_modules/@types"
-        ]
+        ],
+        // Performance optimizations
+        "incremental": true,
+        "tsBuildInfoFile": "./node_modules/.cache/tsbuildinfo.json"
     },
     "include": [
         "src"
     ],
     "exclude": [
         "node_modules",
-        "dist"
+        "dist",
+        "**/*.test.ts",
+        "**/*.test.tsx"
     ]
 }

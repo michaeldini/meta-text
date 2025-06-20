@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:analyze": "vite build --mode analyze",
+    "build:fast": "vite build --sourcemap=false --minify=false",
     "lint": "eslint .",
     "preview": "vite preview",
     "start:frontend": "npm run dev",
