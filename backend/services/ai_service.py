@@ -62,7 +62,7 @@ class AIService:
         
         # Generate AI response
         ai_text = self.openai_service.generate_text_response(
-            "note_summary_comparison_instructions.txt",
+            "instructions/note_summary_comparison_instructions.txt",
             prompt
         )
         
@@ -101,7 +101,7 @@ class AIService:
         
         # Generate AI response
         ai_data = self.openai_service.generate_parsed_response(
-            "definition_with_context_instructions.txt",
+            "instructions/definition_with_context_instructions.txt",
             prompt,
             WordDefinitionResponse
         )
@@ -149,7 +149,7 @@ class AIService:
         
         # Generate AI response
         ai_data = self.openai_service.generate_parsed_response(
-            "source_doc_info_instructions.txt",
+            "instructions/source_doc_info_instructions.txt",
             prompt,
             SourceDocInfoAiResponse
         )

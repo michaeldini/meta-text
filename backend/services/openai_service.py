@@ -27,7 +27,7 @@ class OpenAIService:
         Read and return the contents of an instructions file.
         
         Args:
-            filename: Path to instructions file relative to the API directory
+            filename: Path to instructions file relative to the backend directory
             
         Returns:
             Contents of the instructions file
@@ -36,7 +36,7 @@ class OpenAIService:
             InstructionsFileNotFoundError: If the file cannot be found or read
         """
         try:
-            # Construct path relative to the backend/api directory
+            # Construct path relative to the backend directory
             instructions_path = os.path.join(
                 os.path.dirname(os.path.dirname(__file__)), 
                 filename
