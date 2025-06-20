@@ -1,11 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { faker } from '@faker-js/faker';
 import ErrorBoundary from './ErrorBoundary';
 
 // Create a component that throws an error for testing
-const ThrowError = ({ shouldThrow }: { shouldThrow: boolean }) => {
+const ThrowError = ({ shouldThrow, errorMessage }: { shouldThrow: boolean; errorMessage?: string }) => {
     if (shouldThrow) {
-        throw new Error('Test error message');
+        throw new Error(errorMessage || faker.lorem.sentence());
     }
     return <div data-testid="success-content">No error</div>;
 };
@@ -49,22 +51,24 @@ describe('ErrorBoundary', () => {
     it('should render error UI when error occurs', () => {
         // Suppress console.error for this test since we expect an error
         const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+        const testErrorMessage = 'Test error message';
 
         render(
             <ErrorBoundary>
-                <ThrowError shouldThrow={true} />
+                <ThrowError shouldThrow={true} errorMessage={testErrorMessage} />
             </ErrorBoundary>
         );
 
         expect(screen.getByText('Something went wrong.')).toBeInTheDocument();
-        expect(screen.getByText('Error: Test error message')).toBeInTheDocument();
+        expect(screen.getByText(`Error: ${testErrorMessage}`)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Reload Page' })).toBeInTheDocument();
         expect(screen.queryByTestId('success-content')).not.toBeInTheDocument();
 
         consoleSpy.mockRestore();
     });
 
-    it('should call reload when reload button is clicked', () => {
+    it('should call reload when reload button is clicked', async () => {
+        const user = userEvent.setup();
         const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
 
         render(
@@ -74,7 +78,7 @@ describe('ErrorBoundary', () => {
         );
 
         const reloadButton = screen.getByRole('button', { name: 'Reload Page' });
-        fireEvent.click(reloadButton);
+        await user.click(reloadButton);
 
         expect(mockReload).toHaveBeenCalledTimes(1);
 
@@ -101,14 +105,32 @@ describe('ErrorBoundary', () => {
 
     it('should display error message in error UI', () => {
         const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+        const testErrorMessage = 'Test error message';
 
         render(
             <ErrorBoundary>
-                <ThrowError shouldThrow={true} />
+                <ThrowError shouldThrow={true} errorMessage={testErrorMessage} />
             </ErrorBoundary>
         );
 
-        expect(screen.getByText('Error: Test error message')).toBeInTheDocument();
+        expect(screen.getByText(`Error: ${testErrorMessage}`)).toBeInTheDocument();
+
+        consoleSpy.mockRestore();
+    });
+
+    it('should handle random error messages correctly', () => {
+        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+        // Generate random error message with faker
+        const randomErrorMessage = faker.lorem.words(faker.number.int({ min: 3, max: 8 }));
+
+        render(
+            <ErrorBoundary>
+                <ThrowError shouldThrow={true} errorMessage={randomErrorMessage} />
+            </ErrorBoundary>
+        );
+
+        expect(screen.getByText('Something went wrong.')).toBeInTheDocument();
+        expect(screen.getByText(`Error: ${randomErrorMessage}`)).toBeInTheDocument();
 
         consoleSpy.mockRestore();
     });

@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import DeleteButton from './DeleteButton';
 
 describe('DeleteButton', () => {
@@ -30,22 +31,21 @@ describe('DeleteButton', () => {
 
         const button = screen.getByRole('button');
         expect(button).toBeDisabled();
-    });
-
-    it('should call onClick when clicked', () => {
+    }); it('should call onClick when clicked', async () => {
+        const user = userEvent.setup();
         render(<DeleteButton onClick={mockOnClick} disabled={false} />);
 
         const button = screen.getByRole('button');
-        fireEvent.click(button);
+        await user.click(button);
 
         expect(mockOnClick).toHaveBeenCalledTimes(1);
-    });
-
-    it('should not call onClick when disabled', () => {
+    }); it('should not call onClick when disabled', async () => {
+        const user = userEvent.setup();
         render(<DeleteButton onClick={mockOnClick} disabled={true} />);
 
         const button = screen.getByRole('button');
-        fireEvent.click(button);
+        // user-event correctly prevents interaction with disabled buttons
+        await expect(user.click(button)).rejects.toThrow('pointer-events: none');
 
         expect(mockOnClick).not.toHaveBeenCalled();
     });

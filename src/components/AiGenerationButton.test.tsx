@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import AiGenerationButton from './AiGenerationButton';
 
 describe('AiGenerationButton', () => {
@@ -30,13 +31,12 @@ describe('AiGenerationButton', () => {
 
         const button = screen.getByRole('button');
         expect(button).toHaveAttribute('aria-label', 'AI Generation Button');
-    });
-
-    it('should call onClick when clicked', () => {
+    }); it('should call onClick when clicked', async () => {
+        const user = userEvent.setup();
         render(<AiGenerationButton label="Generate" onClick={mockOnClick} />);
 
         const button = screen.getByRole('button');
-        fireEvent.click(button);
+        await user.click(button);
 
         expect(mockOnClick).toHaveBeenCalledTimes(1);
     });
@@ -63,22 +63,22 @@ describe('AiGenerationButton', () => {
         expect(spinner).toHaveAttribute('aria-label', 'Loading AI generation');
         expect(screen.queryByText('Generate')).not.toBeInTheDocument();
         expect(screen.queryByAltText('AI')).not.toBeInTheDocument();
-    });
-
-    it('should not call onClick when disabled', () => {
+    }); it('should not call onClick when disabled', async () => {
+        const user = userEvent.setup();
         render(<AiGenerationButton label="Generate" onClick={mockOnClick} disabled={true} />);
 
         const button = screen.getByRole('button');
-        fireEvent.click(button);
+        // user-event correctly prevents interaction with disabled buttons
+        await expect(user.click(button)).rejects.toThrow('pointer-events: none');
 
         expect(mockOnClick).not.toHaveBeenCalled();
-    });
-
-    it('should not call onClick when loading', () => {
+    }); it('should not call onClick when loading', async () => {
+        const user = userEvent.setup();
         render(<AiGenerationButton label="Generate" onClick={mockOnClick} loading={true} />);
 
         const button = screen.getByRole('button');
-        fireEvent.click(button);
+        // user-event correctly prevents interaction with disabled buttons (loading makes it disabled)
+        await expect(user.click(button)).rejects.toThrow('pointer-events: none');
 
         expect(mockOnClick).not.toHaveBeenCalled();
     });
