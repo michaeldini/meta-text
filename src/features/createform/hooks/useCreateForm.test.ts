@@ -1,26 +1,29 @@
 import { renderHook, act } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useCreateForm } from './useCreateForm';
 import { createFormService } from '../services/createFormService';
 
 // Mock the service
-jest.mock('../services/createFormService', () => ({
+vi.mock('../services/createFormService', () => ({
     createFormService: {
-        submitUpload: jest.fn(),
-        submitMetaText: jest.fn(),
+        submitUpload: vi.fn(),
+        submitMetaText: vi.fn(),
     },
 }));
 
 // Mock logger
-jest.mock('../../../utils/logger', () => ({
-    info: jest.fn(),
-    error: jest.fn(),
+vi.mock('../../../utils/logger', () => ({
+    default: {
+        info: vi.fn(),
+        error: vi.fn(),
+    },
 }));
 
-const mockService = createFormService as jest.Mocked<typeof createFormService>;
+const mockService = vi.mocked(createFormService);
 
 describe('useCreateForm', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     it('initializes with correct default state', () => {
@@ -67,7 +70,7 @@ describe('useCreateForm', () => {
 
     it('submits upload form successfully', async () => {
         const mockFile = new File(['content'], 'test.txt', { type: 'text/plain' });
-        const onSuccess = jest.fn();
+        const onSuccess = vi.fn();
 
         mockService.submitUpload.mockResolvedValueOnce();
 
@@ -89,7 +92,7 @@ describe('useCreateForm', () => {
     });
 
     it('submits metaText form successfully', async () => {
-        const onSuccess = jest.fn();
+        const onSuccess = vi.fn();
         const sourceDocs = [{ id: 1, title: 'Doc 1' }];
 
         mockService.submitMetaText.mockResolvedValueOnce();

@@ -99,15 +99,16 @@ export function useCreateForm(options: CreateFormOptions = {}): CreateFormResult
                 await createFormService.submitMetaText(sourceDocIdNum, data.title);
             }
 
-            // Success - show global notification for better user feedback
-            showSuccess(FORM_MESSAGES.SUCCESS[mode]);
+            // Success - show global notification and set local success state
+            const successMessage = FORM_MESSAGES.SUCCESS[mode];
+            showSuccess(successMessage);
+            setSuccess(successMessage);
 
             // Reset form data for new input
             setData(INITIAL_DATA);
 
-            // Clear any existing error/success states
+            // Clear any existing error
             setError(null);
-            setSuccess(null);
 
             // Call success callback
             if (onSuccess) {

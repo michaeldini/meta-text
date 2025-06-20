@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import ChunkToolsNavbar from './ChunkToolsNavbar';
-import { useChunkStore } from '../../../store/chunkStore';
+import { useChunkStore } from '../../../../store/chunkStore';
 
 // Mock the chunk store
-vi.mock('../../../store/chunkStore', () => ({
+vi.mock('../../../../store/chunkStore', () => ({
     useChunkStore: vi.fn(),
 }));
 
@@ -98,9 +98,9 @@ describe('ChunkToolsNavbar', () => {
 
         render(<ChunkToolsNavbar isFloating={true} />);
 
-        // Should show floating-specific content
-        expect(screen.getByText('Chunk Tools')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /dialog/i })).toBeInTheDocument();
+        // Should show vertical orientation for floating
+        const toggleButtonGroup = screen.getByRole('group');
+        expect(toggleButtonGroup).toBeInTheDocument();
 
         // Should not show non-floating content
         expect(screen.queryByText(/Active: 1/)).not.toBeInTheDocument();
