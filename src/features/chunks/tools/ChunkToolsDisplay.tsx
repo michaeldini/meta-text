@@ -47,6 +47,17 @@ const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk }) => {
                 alignSelf: 'flex-start', // Ensure it doesn't stretch to full height
                 width: '100%', // Take full width of parent
                 zIndex: 1, // Ensure it stays above other content when sticky
+                backgroundColor: 'background.default',
+                borderRadius: 1,
+                border: '1px solid',
+                borderColor: 'divider',
+                boxShadow: 'none',
+                opacity: 0.85,
+                transition: 'all 0.2s ease',
+                '&:hover': {
+                    opacity: 1,
+                    borderColor: 'primary.light',
+                }
             }}>
                 {/* Show Notes/Summary if selected */}
                 {activeTabs.includes('notes-summary') && (

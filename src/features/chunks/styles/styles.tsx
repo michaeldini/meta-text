@@ -7,26 +7,23 @@ export const chunksContainer = {
     flexDirection: 'column',
     alignItems: 'center',
     gap: 2,
-    mt: 4,
 };
 
 export const chunkMainBox = {
+    minWidth: '100%',
     display: 'flex',
     flexDirection: { xs: 'column', md: 'row' },
     gap: 2,
     p: 2,
-    ml: 8,
-    mb: 8,
     border: '1px solid transparent',
     borderRadius: 2,
     '&:hover': {
         borderColor: 'secondary.main',
-        // borderWidth: '1px',
         borderStyle: 'solid',
     }
 };
 
-export const chunkTextBox = { minWidth: '60vw', p: 2, fontSize: '1.5rem', lineHeight: 1.5 };
+export const chunkTextBox = { p: 2, fontSize: '1.5rem', lineHeight: 1.5 };
 
 export const chunkTextField = {
     color: 'text.chunk_text',

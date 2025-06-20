@@ -5,6 +5,7 @@ import SourceDocInfo from '../../../features/info/components/SourceDocInfo';
 import Chunks from '../../../features/chunks';
 import PageContainer from '../../../components/PageContainer';
 import { useChunkStore } from '../../../store/chunkStore';
+import { getMetaTextContentStyles, getFloatingToolbarPadding } from './MetaTextContent.styles';
 
 interface MetaTextContentProps {
     metaTextId: string;
@@ -31,24 +32,30 @@ export const MetaTextContent: React.FC<MetaTextContentProps> = ({
     const theme = useTheme();
     const location = useLocation();
     const activeChunkId = useChunkStore(state => state.activeChunkId);
+    const styles = getMetaTextContentStyles(theme);
 
     // Check if we're on the MetaTextDetailPage and if the floating toolbar should be visible
     const isOnMetaTextDetailPage = /^\/metaText\/[^\/]+$/.test(location.pathname);
     const shouldShowFloatingToolbar = Boolean(activeChunkId) && isOnMetaTextDetailPage;
 
     // Add right padding to prevent overlap with floating toolbar
-    const contentStyles = shouldShowFloatingToolbar ? {
-        paddingRight: {
-            xs: theme.spacing(12), // Space for floating toolbar on mobile (96px)
-            sm: theme.spacing(16), // Space for floating toolbar on desktop (128px)
-        }
-    } : {};
+    const contentStyles = shouldShowFloatingToolbar ? getFloatingToolbarPadding(theme) : {};
 
     return (
         <PageContainer>
-            <Box sx={contentStyles}>
-                <Paper elevation={3}>
-                    <Typography variant="body1">
+            <Box sx={{
+                ...contentStyles,
+                ...styles.container,
+            }}>
+                {/* Header section with title and review button, and source document info */}
+                <Paper
+                    elevation={2}
+                    sx={styles.headerPaper}
+                >
+                    <Typography
+                        variant="subtitle1"
+                        sx={styles.title}
+                    >
                         {messages.META_TEXT_TITLE} {displayTitle}
                     </Typography>
                     <Button
@@ -56,6 +63,7 @@ export const MetaTextContent: React.FC<MetaTextContentProps> = ({
                         size="small"
                         onClick={onReviewClick}
                         aria-label={`Review ${displayTitle}`}
+                        sx={styles.reviewButton}
                     >
                         {messages.REVIEW_BUTTON}
                     </Button>

@@ -6,7 +6,7 @@ const theme = createTheme({
         mode: 'dark',
         // spacing: 4,
         primary: {
-            main: blue[300],
+            main: blue[900],
             light: blue[200],
             dark: blue[400],
         },
@@ -63,7 +63,6 @@ const theme = createTheme({
             styleOverrides: {
                 root: {
                     padding: '32px', // default padding for all Paper components
-                    marginBottom: '32px', // default margin-bottom for all Paper components
                     borderRadius: 8,
                 },
             },
@@ -87,12 +86,18 @@ const theme = createTheme({
 
         MuiButton: {
             defaultProps: {
-                variant: 'contained',
+                variant: 'outlined',
             },
             styleOverrides: {
                 root: {
                     borderRadius: 8,
                     textTransform: 'none', // Disable uppercase transformation
+                    color: grey[200],
+                    borderColor: grey[600],
+                    '&:hover': {
+                        backgroundColor: grey[700],
+                        borderColor: grey[500],
+                    },
                 },
             },
         },

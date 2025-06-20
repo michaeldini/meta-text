@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Paper, Box, Typography, Divider, Stack, Chip, Alert } from '@mui/material';
 import AiGenerationButton from '../../../components/AiGenerationButton';
-import { sourceDocInfoDetailsBox } from '../../../styles/styles';
 import { getErrorMessage } from '../../../types/error';
 import type { SourceDocument } from '../../../types/sourceDocument';
 import { generateSourceDocInfo } from '../../../services/sourceDocInfoService';
@@ -56,9 +55,13 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
         if (key === 'text') return null;
         if (key === 'summary') {
             return (
-                <Box key={key} sx={{ mb: 2 }}>
-                    <Typography variant="subtitle2" color="secondary">{label}</Typography>
-                    <Typography variant="body1">{value || 'N/A'}</Typography>
+                <Box key={key} sx={{ mb: 1 }}>
+                    <Typography variant="caption" color="secondary" sx={{ fontWeight: 600 }}>
+                        {label}
+                    </Typography>
+                    <Typography variant="body2" sx={{ mt: 0.5, lineHeight: 1.3 }}>
+                        {value || 'N/A'}
+                    </Typography>
                 </Box>
             );
         }
@@ -66,30 +69,46 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
         const arr = splitToArray(value as string);
         if (arr.length === 0) return null;
         return (
-            <Stack key={key} direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
-                <Chip label={label} size="small" color="secondary" />
+            <Stack key={key} direction="row" spacing={0.5} alignItems="center" sx={{ mb: 0.5, flexWrap: 'wrap' }}>
+                <Chip
+                    label={label}
+                    size="small"
+                    color="secondary"
+                    sx={{ fontSize: '0.9rem', height: 24 }}
+                />
                 {arr.map((item, i) => (
-                    <Chip key={i} label={item} size="small" color="primary" />
+                    <Chip
+                        key={i}
+                        label={item}
+                        size="small"
+                        color="primary"
+                        sx={{ fontSize: '0.9rem', height: 24 }}
+                    />
                 ))}
             </Stack>
         );
     };
 
     return (
-        <Paper sx={{ p: 1 }} elevation={3}>
-            <Box sx={sourceDocInfoDetailsBox}>
+        <Paper sx={{ p: 1.5 }} elevation={2}>
+            <Box sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 1,
+                mb: 1.5
+            }}>
                 {Object.entries(FIELD_LABELS).map(([key, label]) =>
                     renderField(key as keyof SourceDocument, label!)
                 )}
             </Box>
-            <Divider sx={{ my: 2 }} />
+            <Divider sx={{ my: 1 }} />
             <AiGenerationButton
                 label="Generate Info"
                 toolTip="Generate or update document info using AI"
                 onClick={handleDownloadInfo}
                 loading={loading}
             />
-            {error && <Alert severity="error">{error}</Alert>}
+            {error && <Alert severity="error" sx={{ mt: 1 }}>{error}</Alert>}
         </Paper >
     );
 };

@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-import { Box, IconButton } from '@mui/material';
+import { Box, IconButton, Paper } from '@mui/material';
 import MergeChunksTool from '../tools/merge/MergeChunksTool';
 import WordActionDialog from '../layouts/dialogs/WordActionDialog';
 import { chunkWordBox, wordsContainer, chunkUndoIconButton, chunkTextBox } from '../styles/styles';
@@ -40,7 +40,20 @@ const ChunkWords = memo(function ChunkWords({
     };
 
     return (
-        <Box sx={chunkTextBox}>
+        <Paper
+            elevation={8}
+            sx={{
+                ...chunkTextBox,
+                backgroundColor: 'background.paper',
+                borderRadius: 2,
+                boxShadow: '0 8px 24px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.08)',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                    boxShadow: '0 12px 32px rgba(0,0,0,0.16), 0 6px 12px rgba(0,0,0,0.12)',
+                    transform: 'translateY(-2px)',
+                }
+            }}
+        >
             <Box sx={wordsContainer}>
                 {words.map((word, wordIdx) => (
                     <Box
@@ -71,7 +84,7 @@ const ChunkWords = memo(function ChunkWords({
                 context={words.join(' ')}
                 metaTextId={chunk?.meta_text_id}
             />
-        </Box>
+        </Paper>
     );
 });
 
