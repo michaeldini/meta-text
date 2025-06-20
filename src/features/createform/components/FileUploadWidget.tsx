@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Button } from '@mui/material';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+import { FORM_DEFAULTS, FORM_STYLES, FORM_A11Y } from '../constants';
 
 export interface FileUploadWidgetProps {
     file: File | null;
@@ -9,9 +10,26 @@ export interface FileUploadWidgetProps {
     id?: string;
 }
 
-const FileUploadWidget: React.FC<FileUploadWidgetProps> = ({ file, onFileChange, accept = ".txt", id = "file-upload" }) => {
+const FileUploadWidget: React.FC<FileUploadWidgetProps> = React.memo(({
+    file,
+    onFileChange,
+    accept = FORM_DEFAULTS.FILE_ACCEPT,
+    id = FORM_A11Y.IDS.FILE_UPLOAD
+}) => {
+    const inputStyles = {
+        gap: FORM_STYLES.FORM_SPACING,
+        display: 'flex',
+        flexDirection: 'row' as const,
+        alignItems: 'end' as const
+    };
+
+    const buttonStyles = {
+        height: FORM_STYLES.INPUT_HEIGHT,
+        padding: FORM_STYLES.STANDARD_PADDING
+    };
+
     return (
-        <Box sx={{ gap: 2, display: 'flex', flexDirection: 'row', alignItems: 'end' }}>
+        <Box sx={inputStyles}>
             <input
                 id={id}
                 data-testid="file-upload-input"
@@ -19,15 +37,26 @@ const FileUploadWidget: React.FC<FileUploadWidgetProps> = ({ file, onFileChange,
                 accept={accept}
                 onChange={onFileChange}
                 style={{ display: 'none' }}
+                aria-label={FORM_A11Y.LABELS.FILE_UPLOAD}
             />
             <label htmlFor={id}>
-                <Button variant="outlined" component="span" startIcon={<FileUploadIcon />} sx={{ height: '60px', padding: '16px' }}>
+                <Button
+                    variant="outlined"
+                    component="span"
+                    startIcon={<FileUploadIcon />}
+                    sx={buttonStyles}
+                    aria-describedby={file ? 'selected-file-name' : undefined}
+                >
                     {file ? 'Change File' : 'Choose File'}
                 </Button>
             </label>
-            {file && <span className="file-name">{file.name}</span>}
+            {file && (
+                <span id="selected-file-name" className="file-name">
+                    {file.name}
+                </span>
+            )}
         </Box>
     );
-};
+});
 
 export default FileUploadWidget;

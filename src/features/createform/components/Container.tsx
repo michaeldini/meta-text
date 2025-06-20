@@ -3,17 +3,18 @@ import { Paper, Typography, Box, CircularProgress } from '@mui/material';
 import { uploadFormInner } from '../styles/styles';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { FORM_STYLES, FORM_DEFAULTS } from '../constants';
 
 interface CreateFormProps {
     description: string;
     onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
     children: React.ReactNode;
-    error?: string;
-    success?: string;
+    error?: string | null;
+    success?: string | null;
     loading?: boolean;
 }
 
-const CreateFormContainer: React.FC<CreateFormProps> = ({
+const CreateFormContainer: React.FC<CreateFormProps> = React.memo(({
     description,
     onSubmit,
     children,
@@ -37,32 +38,54 @@ const CreateFormContainer: React.FC<CreateFormProps> = ({
         }
     }, [error, success]);
 
-    const handleSnackbarClose = (_event?: React.SyntheticEvent | Event, reason?: string) => {
+    const handleSnackbarClose = React.useCallback((_event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') return;
         setSnackbarOpen(false);
+    }, []);
+
+    const paperStyles = {
+        minHeight: FORM_STYLES.MIN_CONTAINER_HEIGHT
+    };
+
+    const loadingBoxStyles = {
+        display: 'flex',
+        justifyContent: 'center',
+        mt: FORM_STYLES.FORM_SPACING
+    };
+
+    const spinnerStyles = {
+        size: FORM_STYLES.LOADING_SPINNER_SIZE
+    };
+
+    const alertStyles = {
+        width: '100%'
     };
 
     return (
-        <Paper elevation={3} sx={{ minHeight: '400px' }}>
+        <Paper elevation={3} sx={paperStyles}>
             <Typography variant="body1" gutterBottom>
                 {description}
             </Typography>
             <Box component="form" onSubmit={onSubmit} sx={uploadFormInner}>
-                {loading && <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}><CircularProgress size={24} /></Box>}
+                {loading && (
+                    <Box sx={loadingBoxStyles}>
+                        <CircularProgress sx={spinnerStyles} />
+                    </Box>
+                )}
                 {children}
             </Box>
             <Snackbar
                 open={snackbarOpen}
-                autoHideDuration={4000}
+                autoHideDuration={FORM_DEFAULTS.SNACKBAR_AUTO_HIDE}
                 onClose={handleSnackbarClose}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
             >
-                <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+                <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={alertStyles}>
                     {snackbarMsg}
                 </Alert>
             </Snackbar>
         </Paper>
     );
-};
+});
 
 export default CreateFormContainer;

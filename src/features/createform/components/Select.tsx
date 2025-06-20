@@ -1,24 +1,23 @@
 import React from 'react';
 import { FormControl, InputLabel, Select, MenuItem, FormHelperText, CircularProgress, Box, SelectChangeEvent } from '@mui/material';
-
-export interface SourceDoc {
-    id: string | number;
-    title: string;
-}
+import { SourceDocument } from '../types';
+import { FORM_DEFAULTS, FORM_STYLES } from '../constants';
 
 export interface SourceDocSelectProps {
     value: string;
     onChange: (event: SelectChangeEvent) => void;
-    sourceDocs?: SourceDoc[];
+    sourceDocs?: SourceDocument[];
     loading?: boolean;
     error?: string | null;
     label?: string;
     required?: boolean;
     sx?: object;
+    id?: string;
+    'aria-label'?: string;
     [key: string]: any;
 }
 
-const SourceDocSelect: React.FC<SourceDocSelectProps> = ({
+const SourceDocSelect: React.FC<SourceDocSelectProps> = React.memo(({
     value,
     onChange,
     sourceDocs = [],
@@ -27,10 +26,37 @@ const SourceDocSelect: React.FC<SourceDocSelectProps> = ({
     label = 'Source Document',
     required = false,
     sx = {},
+    id,
+    'aria-label': ariaLabel,
     ...props
 }) => {
+    const controlStyles = {
+        minWidth: FORM_DEFAULTS.SELECT_MIN_WIDTH,
+        ...sx
+    };
+
+    const selectStyles = {
+        height: FORM_STYLES.INPUT_HEIGHT,
+        padding: FORM_STYLES.STANDARD_PADDING
+    };
+
+    const loadingStyles = {
+        display: 'flex',
+        alignItems: 'center',
+        mt: 1
+    };
+
+    const spinnerStyles = {
+        mr: 1,
+        size: FORM_STYLES.LOADING_SPINNER_SIZE
+    };
+
     return (
-        <FormControl sx={{ minWidth: 200, ...sx }} disabled={loading || !!error} error={!!error}>
+        <FormControl
+            sx={controlStyles}
+            disabled={loading || !!error}
+            error={!!error}
+        >
             <InputLabel id="source-doc-label">{label}</InputLabel>
             <Select
                 labelId="source-doc-label"
@@ -38,7 +64,10 @@ const SourceDocSelect: React.FC<SourceDocSelectProps> = ({
                 label={label}
                 onChange={onChange}
                 required={required}
-                sx={{ height: '60px', padding: '16px' }}
+                sx={selectStyles}
+                id={id}
+                aria-label={ariaLabel}
+                aria-describedby={error ? 'select-error' : loading ? 'select-loading' : undefined}
                 {...props}
             >
                 {/* Only show menu items when not loading */}
@@ -47,20 +76,22 @@ const SourceDocSelect: React.FC<SourceDocSelectProps> = ({
                         <MenuItem value="" disabled>No documents found</MenuItem>
                     ) : (
                         sourceDocs.map((doc) => (
-                            <MenuItem key={String(doc.id)} value={String(doc.id)}>{doc.title}</MenuItem>
+                            <MenuItem key={String(doc.id)} value={String(doc.id)}>
+                                {doc.title}
+                            </MenuItem>
                         ))
                     )
                 )}
             </Select>
             {loading && (
-                <Box display="flex" alignItems="center" mt={1} data-testid="loading-indicator">
-                    <CircularProgress size={20} sx={{ mr: 1 }} />
+                <Box sx={loadingStyles} data-testid="loading-indicator" id="select-loading">
+                    <CircularProgress sx={spinnerStyles} />
                     Loading...
                 </Box>
             )}
-            {error && <FormHelperText>{error}</FormHelperText>}
+            {error && <FormHelperText id="select-error">{error}</FormHelperText>}
         </FormControl>
     );
-};
+});
 
 export default SourceDocSelect;

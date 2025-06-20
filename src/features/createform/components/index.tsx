@@ -1,144 +1,170 @@
-import React, { useState } from 'react';
-import { Box, TextField } from '@mui/material';
+import React, { useMemo, useCallback } from 'react';
+import { TextField } from '@mui/material';
 import FileUploadWidget from './FileUploadWidget';
 import SourceDocSelect from './Select';
-import { createSourceDocument } from '../../../services/sourceDocumentService';
-import { createMetaText } from '../../../services/metaTextService';
-import log from '../../../utils/logger';
 import CreateFormContainer from './Container';
-import { useFormStatus } from '../hooks/useFormStatus';
-import { handleFormSubmit } from '../utils/handleFormSubmit';
 import SubmitButton from './SubmitButton';
-import DocTypeSelect, { DocType } from '../../../components/DocTypeSelect';
+import { DocType } from '../../../components/DocTypeSelect';
 import ErrorBoundary from '../../../components/ErrorBoundary';
 import LoadingBoundary from '../../../components/LoadingBoundary';
+import { useCreateForm } from '../hooks/useCreateForm';
+import { SourceDocument, FormMode } from '../types';
+import { FORM_MODES, FORM_MESSAGES, FORM_A11Y } from '../constants';
 
 export interface CreateFormProps {
-    sourceDocs: Array<{ id: string | number; title: string }>;
+    sourceDocs: SourceDocument[];
     sourceDocsLoading: boolean;
     sourceDocsError: string | null;
     onSuccess?: () => void;
     docType: DocType;
 }
 
-const CreateForm: React.FC<CreateFormProps> = ({
+const CreateForm: React.FC<CreateFormProps> = React.memo(({
     sourceDocs,
     sourceDocsLoading,
     sourceDocsError,
     onSuccess,
     docType
 }) => {
-    const mode = docType === 'sourceDoc' ? 'upload' : 'metaText';
-    const [file, setFile] = useState<File | null>(null);
-    const [selectedSourceDocId, setSelectedSourceDocId] = useState<string>('');
-    const {
-        title,
-        setTitle,
-        error,
-        setError,
-        success,
-        setSuccess,
-        loading,
-        setLoading,
-        resetStatus,
-    } = useFormStatus();
+    // Convert docType to FormMode - memoized to prevent unnecessary recalculations
+    const mode: FormMode = useMemo(() =>
+        docType === 'sourceDoc' ? FORM_MODES.UPLOAD : FORM_MODES.META_TEXT,
+        [docType]
+    );
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFile(e.target.files ? e.target.files[0] : null);
-        resetStatus();
-    };
+    // Use the new custom hook for all business logic
+    const form = useCreateForm({
+        initialMode: mode,
+        onSuccess,
+        sourceDocs
+    });
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        handleFormSubmit({
-            e,
-            resetStatus,
-            setLoading,
-            setError,
-            setSuccess,
-            action: async () => {
-                if (mode === 'upload') {
-                    if (!file) throw new Error('Please select a file to upload.');
-                    await createSourceDocument(title, file);
-                } else {
-                    const sourceDocIdNum = Number(selectedSourceDocId);
-                    if (isNaN(sourceDocIdNum)) throw new Error('Please select a valid source document.');
-                    await createMetaText(sourceDocIdNum, title);
-                }
-            },
-            validate: () => {
-                if (!title.trim()) return 'Title is required.';
-                if (mode === 'upload') {
-                    if (!file) return 'Please select a file to upload.';
-                } else {
-                    if (!selectedSourceDocId) return 'Please select a source document.';
-                }
-                return null;
-            },
-            onSuccess,
-            resetFields: () => {
-                setFile(null);
-                setSelectedSourceDocId('');
-                setTitle('');
-            },
-            successMsg: mode === 'upload' ? 'Upload successful!' : 'Meta-text created!'
-        });
-    };
-
+    // Update mode when docType prop changes
     React.useEffect(() => {
-        log.info('CombinedCreateForm mounted');
-        return () => log.info('CombinedCreateForm unmounted');
-    }, []);
+        const newMode: FormMode = docType === 'sourceDoc' ? FORM_MODES.UPLOAD : FORM_MODES.META_TEXT;
+        if (newMode !== form.mode) {
+            form.setMode(newMode);
+        }
+    }, [docType, form.mode, form.setMode]);
 
-    const sourceDocMsg = 'Upload a text file to create a new source document.';
-    const metaTextMsg = 'Choose a source document to create a new meta text.';
+    // Memoized event handlers
+    const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files ? e.target.files[0] : null;
+        form.setFile(file);
+    }, [form.setFile]);
+
+    const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        form.submit();
+    }, [form.submit]);
+
+    const handleSourceDocChange = useCallback((e: any) => {
+        form.setSourceDocId(e.target.value);
+    }, [form.setSourceDocId]);
+
+    const handleTitleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        form.setTitle(e.target.value);
+    }, [form.setTitle]);
+
+    // Memoized computed values to prevent unnecessary re-renders
+    const isSubmitDisabled = useMemo(() =>
+        form.loading ||
+        !form.data.title.trim() ||
+        (form.mode === FORM_MODES.UPLOAD ? !form.data.file : !form.data.sourceDocId),
+        [form.loading, form.data.title, form.data.file, form.data.sourceDocId, form.mode]
+    );
+
+    // Memoized dynamic content
+    const formContent = useMemo(() => ({
+        description: FORM_MESSAGES.DESCRIPTIONS[form.mode],
+        titleLabel: FORM_MESSAGES.LABELS.TITLE[form.mode],
+        submitText: form.loading
+            ? FORM_MESSAGES.LOADING[form.mode]
+            : FORM_MESSAGES.SUBMIT[form.mode],
+        titleId: form.mode === FORM_MODES.UPLOAD ? FORM_A11Y.IDS.UPLOAD_TITLE : FORM_A11Y.IDS.META_TEXT_TITLE
+    }), [form.mode, form.loading]);
+
     return (
         <ErrorBoundary>
             <LoadingBoundary loading={sourceDocsLoading}>
                 <CreateFormContainer
-                    description={mode === 'upload' ? sourceDocMsg : metaTextMsg}
+                    description={formContent.description}
                     onSubmit={handleSubmit}
-                    error={error}
-                    success={success}
-                    loading={loading}
+                    error={form.error}
+                    success={form.success}
+                    loading={form.loading}
                 >
-                    {/* Display correct component depending on mode */}
-                    {mode === 'upload' ? (
-                        <FileUploadWidget file={file} onFileChange={handleFileChange} />
+                    {/* Live region for screen reader announcements */}
+                    <div
+                        aria-live={FORM_A11Y.LIVE_REGION}
+                        aria-atomic="true"
+                        className="sr-only"
+                        id={FORM_A11Y.IDS.ERROR_MESSAGE}
+                    >
+                        {form.error && `Error: ${form.error}`}
+                    </div>
+                    <div
+                        aria-live={FORM_A11Y.LIVE_REGION}
+                        aria-atomic="true"
+                        className="sr-only"
+                        id={FORM_A11Y.IDS.SUCCESS_MESSAGE}
+                    >
+                        {form.success && `Success: ${form.success}`}
+                    </div>
+
+                    {/* Mode-specific input widget */}
+                    {form.mode === FORM_MODES.UPLOAD ? (
+                        <FileUploadWidget
+                            file={form.data.file}
+                            onFileChange={handleFileChange}
+                            id={FORM_A11Y.IDS.FILE_UPLOAD}
+                        />
                     ) : (
                         <SourceDocSelect
-                            value={selectedSourceDocId}
-                            onChange={e => setSelectedSourceDocId(e.target.value)}
+                            value={form.data.sourceDocId || ''}
+                            onChange={handleSourceDocChange}
                             sourceDocs={sourceDocs}
                             loading={sourceDocsLoading}
                             error={sourceDocsError}
                             required
+                            id={FORM_A11Y.IDS.SOURCE_DOC_SELECT}
+                            aria-label={FORM_A11Y.LABELS.SOURCE_DOC_SELECT}
                         />
                     )}
+
+                    {/* Title input with accessibility features */}
                     <TextField
-                        value={title}
-                        onChange={e => setTitle(e.target.value)}
-                        label={mode === 'upload' ? 'Enter the title of your document' : 'Choose a title for your meta text'}
+                        value={form.data.title}
+                        onChange={handleTitleChange}
+                        label={formContent.titleLabel}
                         fullWidth
                         margin="normal"
-                        disabled={loading}
-                        data-testid={mode === 'upload' ? 'upload-title' : 'meta-text-title'}
-                        id={mode === 'upload' ? 'upload-title' : 'meta-text-title'}
+                        disabled={form.loading}
+                        data-testid={formContent.titleId}
+                        id={formContent.titleId}
                         required
+                        aria-describedby={form.error ? FORM_A11Y.IDS.ERROR_MESSAGE : undefined}
+                        aria-invalid={!!form.error}
+                        autoComplete="off"
                     />
+
+                    {/* Submit button */}
                     <SubmitButton
-                        loading={loading}
-                        disabled={
-                            loading ||
-                            !title.trim() ||
-                            (mode === 'upload' ? !file : !selectedSourceDocId)
-                        }
+                        loading={form.loading}
+                        disabled={isSubmitDisabled}
+                        aria-describedby={form.loading ? 'submit-loading-text' : undefined}
                     >
-                        {loading ? (mode === 'upload' ? 'Uploading...' : 'Creating...') : (mode === 'upload' ? 'Upload' : 'Create')}
+                        {formContent.submitText}
+                        {form.loading && (
+                            <span id="submit-loading-text" className="sr-only">
+                                Form is being submitted, please wait.
+                            </span>
+                        )}
                     </SubmitButton>
                 </CreateFormContainer>
             </LoadingBoundary>
         </ErrorBoundary>
     );
-};
+});
 
 export default CreateForm;
