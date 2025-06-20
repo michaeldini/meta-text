@@ -1,21 +1,19 @@
 // Service for meta-text API calls
-import { handleApiResponse } from '../utils/api';
+import { handleApiResponse, apiGet, apiPost, apiPut, apiDelete } from '../utils/api';
 import { withCache, apiCache } from '../utils/cache';
 import type { MetaText } from '../types/metaText';
 import log from '../utils/logger';
 
 // Base functions without caching
 async function _fetchMetaTexts(): Promise<MetaText[]> {
-    const res = await fetch('/api/meta-text');
-    const data = await handleApiResponse<MetaText[]>(res, 'Failed to fetch meta texts');
+    const data = await apiGet<MetaText[]>('/api/meta-text');
     log.info('Fetched meta texts:', data?.length || 0);
     return Array.isArray(data) ? data : [];
 }
 
 async function _fetchMetaText(id: number): Promise<MetaText> {
-    const res = await fetch(`/api/meta-text/${id}`);
     log.info('Fetching meta text with id:', id);
-    return handleApiResponse<MetaText>(res, 'Failed to fetch meta text');
+    return await apiGet<MetaText>(`/api/meta-text/${id}`);
 }
 
 // Cached versions (10 minutes for lists, 15 minutes for individual documents)
@@ -32,12 +30,7 @@ export const fetchMetaText = withCache(
 );
 
 export async function createMetaText(sourceDocId: number, title: string): Promise<MetaText> {
-    const res = await fetch('/api/meta-text', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sourceDocId, title })
-    });
-    const data = await handleApiResponse<MetaText>(res, 'Create failed.');
+    const data = await apiPost<MetaText>('/api/meta-text', { sourceDocId, title });
 
     // Invalidate meta texts list cache since we added a new meta text
     apiCache.invalidate('fetchMetaTexts');
@@ -46,12 +39,7 @@ export async function createMetaText(sourceDocId: number, title: string): Promis
 }
 
 export async function updateMetaText(id: number, content: Partial<MetaText>): Promise<MetaText> {
-    const res = await fetch(`/api/meta-text/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(content),
-    });
-    const data = await handleApiResponse<MetaText>(res, 'Failed to update meta-text');
+    const data = await apiPut<MetaText>(`/api/meta-text/${id}`, content);
 
     // Invalidate both list and specific meta text caches
     apiCache.invalidate('fetchMetaTexts');
@@ -61,8 +49,7 @@ export async function updateMetaText(id: number, content: Partial<MetaText>): Pr
 }
 
 export async function deleteMetaText(id: number): Promise<{ success: boolean }> {
-    const res = await fetch(`/api/meta-text/${id}`, { method: 'DELETE' });
-    const data = await handleApiResponse<{ success: boolean }>(res, 'Failed to delete meta-text');
+    const data = await apiDelete<{ success: boolean }>(`/api/meta-text/${id}`);
 
     // Invalidate both list and specific meta text caches
     apiCache.invalidate('fetchMetaTexts');

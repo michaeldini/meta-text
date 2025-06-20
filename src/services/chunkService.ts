@@ -1,11 +1,10 @@
-import { handleApiResponse } from '../utils/api';
+import { handleApiResponse, apiGet, apiPost, apiPut } from '../utils/api';
 import { withCache, apiCache } from '../utils/cache';
 import type { Chunk } from '../types/chunk';
 
 // Base functions without caching
 async function _fetchChunks(metaTextId: number): Promise<Chunk[]> {
-    const res = await fetch(`/api/chunks/all/${metaTextId}`);
-    const data = await handleApiResponse<Chunk[]>(res);
+    const data = await apiGet<Chunk[]>(`/api/chunks/all/${metaTextId}`);
     return Array.isArray(data) ? data : [];
 }
 
@@ -17,8 +16,7 @@ export const fetchChunks = withCache(
 );
 
 export async function splitChunk(chunkId: number, wordIndex: number): Promise<Chunk[]> {
-    const res = await fetch(`/api/chunk/${chunkId}/split?word_index=${wordIndex}`, { method: 'POST' });
-    const data = await handleApiResponse<Chunk[]>(res);
+    const data = await apiPost<Chunk[]>(`/api/chunk/${chunkId}/split?word_index=${wordIndex}`, null);
 
     // Invalidate caches since chunks were modified
     apiCache.invalidate(/fetchChunk/); // Invalidate all chunk-related cache entries
@@ -27,8 +25,7 @@ export async function splitChunk(chunkId: number, wordIndex: number): Promise<Ch
 }
 
 export async function combineChunks(firstChunkId: number, secondChunkId: number): Promise<Chunk | null> {
-    const res = await fetch(`/api/chunk/combine?first_chunk_id=${firstChunkId}&second_chunk_id=${secondChunkId}`, { method: 'POST' });
-    const data = await handleApiResponse<Chunk | null>(res);
+    const data = await apiPost<Chunk | null>(`/api/chunk/combine?first_chunk_id=${firstChunkId}&second_chunk_id=${secondChunkId}`, null);
 
     // Invalidate caches since chunks were modified
     apiCache.invalidate(/fetchChunk/); // Invalidate all chunk-related cache entries
@@ -37,12 +34,7 @@ export async function combineChunks(firstChunkId: number, secondChunkId: number)
 }
 
 export async function updateChunk(chunkId: number, chunkData: Partial<Chunk>): Promise<Chunk> {
-    const res = await fetch(`/api/chunk/${chunkId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(chunkData)
-    });
-    const data = await handleApiResponse<Chunk>(res);
+    const data = await apiPut<Chunk>(`/api/chunk/${chunkId}`, chunkData);
     if (!data || Object.keys(data).length === 0) {
         throw new Error('Failed to update chunk');
     }
@@ -56,8 +48,7 @@ export async function updateChunk(chunkId: number, chunkData: Partial<Chunk>): P
 
 // Base function for individual chunk fetching
 async function _fetchChunk(chunkId: number): Promise<Chunk> {
-    const res = await fetch(`/api/chunk/${chunkId}`);
-    const data = await handleApiResponse<Chunk>(res);
+    const data = await apiGet<Chunk>(`/api/chunk/${chunkId}`);
     if (!data || Object.keys(data).length === 0) {
         throw new Error('Failed to fetch chunk');
     }

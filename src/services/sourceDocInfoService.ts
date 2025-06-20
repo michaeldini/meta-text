@@ -1,5 +1,5 @@
 // src/services/sourceDocInfoService.ts
-import { handleApiResponse } from '../utils/api';
+import { handleApiResponse, apiPost } from '../utils/api';
 import type { SourceDocument } from '../types/sourceDocument';
 
 export interface SourceDocInfoRequest {
@@ -20,12 +20,7 @@ export interface SourceDocInfoResponse {
 }
 
 export async function generateSourceDocInfo(request: SourceDocInfoRequest): Promise<SourceDocInfoResponse> {
-    const res = await fetch('/api/source-doc-info', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(request),
-    });
-    const data = await handleApiResponse<SourceDocInfoResponse>(res, 'Failed to generate source doc info');
+    const data = await apiPost<SourceDocInfoResponse>('/api/source-doc-info', request);
     if (!data || Object.keys(data).length === 0) {
         throw new Error('No data returned from source doc info endpoint');
     }

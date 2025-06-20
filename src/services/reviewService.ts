@@ -1,4 +1,4 @@
-import { handleApiResponse } from '../utils/api';
+import { handleApiResponse, apiGet } from '../utils/api';
 import { withCache } from '../utils/cache';
 import logger from '../utils/logger';
 
@@ -12,8 +12,7 @@ interface WordlistResponse {
 // Base function without caching
 async function _fetchWordlist(metaTextId: number): Promise<WordlistResponse> {
     try {
-        const response = await fetch(`/api/metatext/${metaTextId}/wordlist`);
-        const data = await handleApiResponse<WordlistResponse>(response);
+        const data = await apiGet<WordlistResponse>(`/api/metatext/${metaTextId}/wordlist`);
         logger.info('Fetched wordlist', data);
         return data as WordlistResponse;
     } catch (error) {
