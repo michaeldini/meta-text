@@ -1,6 +1,6 @@
 
 export const pageContainer = {
-    mt: 4, // Reduced from 12 to 4 for more compact layout
+    mt: 2,
     width: '100vw',
     display: 'flex',
     flexDirection: 'column' as const,

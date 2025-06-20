@@ -10,7 +10,7 @@ import ErrorBoundary from './ErrorBoundary';
  */
 export default function PageContainer({ children }: { children: ReactNode }) {
     return (
-        <Container maxWidth="lg" sx={pageContainer}>
+        <Container maxWidth={false} sx={pageContainer} >
             <ErrorBoundary>
                 {children}
             </ErrorBoundary>

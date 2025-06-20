@@ -40,7 +40,7 @@ const FloatingChunkToolbar: React.FC<FloatingChunkToolbarProps> = ({
         width: '48px', // Width for desktop
         position: 'fixed' as const,
         top: 72, // Account for desktop NavBar height (64px) + padding
-        right: theme.spacing(2),
+        right: theme.spacing(2), // 16px right padding
         zIndex: theme.zIndex.speedDial, // High enough to be above content, but below modals
         transition: theme.transitions.create(['opacity', 'transform'], {
             duration: theme.transitions.duration.short,

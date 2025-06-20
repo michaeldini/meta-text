@@ -38,8 +38,9 @@ export const MetaTextContent: React.FC<MetaTextContentProps> = ({
     const isOnMetaTextDetailPage = /^\/metaText\/[^\/]+$/.test(location.pathname);
     const shouldShowFloatingToolbar = Boolean(activeChunkId) && isOnMetaTextDetailPage;
 
-    // Add right padding to prevent overlap with floating toolbar
+    // TEMPORARILY DISABLED: Add right padding to prevent overlap with floating toolbar
     const contentStyles = shouldShowFloatingToolbar ? getFloatingToolbarPadding(theme) : {};
+    // const contentStyles = {}; // Remove this line and uncomment above if you want floating toolbar padding
 
     return (
         <PageContainer>

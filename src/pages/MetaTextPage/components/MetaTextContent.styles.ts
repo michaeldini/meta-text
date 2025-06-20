@@ -29,9 +29,10 @@ export const getMetaTextContentStyles = (theme: Theme) => ({
     }
 });
 
+// Commented out the floating toolbar padding - remove this if you don't want the floating toolbar
 export const getFloatingToolbarPadding = (theme: Theme) => ({
     paddingRight: {
         xs: theme.spacing(12), // Space for floating toolbar on mobile (96px)
-        sm: theme.spacing(16), // Space for floating toolbar on desktop (128px)
+        sm: theme.spacing(8), // Space for floating toolbar on desktop (128px)
     }
 });

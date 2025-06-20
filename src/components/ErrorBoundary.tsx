@@ -47,7 +47,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     render() {
         if (this.state.hasError) {
             return (
-                <Box sx={{ p: 4, textAlign: 'center' }}>
+                <Box sx={{ textAlign: 'center' }}>
                     <Alert severity="error" sx={{ mb: 2 }}>
                         <Typography variant="h6" color="error" gutterBottom>
                             Something went wrong.
