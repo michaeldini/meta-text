@@ -34,19 +34,33 @@ const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk }) => {
     }, [chunk.id]);
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-            {/* Show Notes/Summary if selected */}
-            {activeTabs.includes('notes-summary') && (
-                <NotesSummaryTab chunk={chunk} updateChunkField={updateChunkField} />
-            )}
-            {/* Show Comparison if selected */}
-            {activeTabs.includes('comparison') && (
-                <ComparisonTab chunk={chunk} updateChunkField={updateChunkField} />
-            )}
-            {/* Show AI Image if selected */}
-            {activeTabs.includes('ai-image') && (
-                <AiImageTab chunk={chunk} />
-            )}
+        <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            flex: 1,
+            minHeight: 'fit-content', // Allow container to size to content
+        }}>
+            <Box sx={{
+                // Sticky positioning: stays in view during scroll until parent container boundary
+                position: 'sticky',
+                top: 20, // Account for navbar height (64px) + some padding (16px)
+                alignSelf: 'flex-start', // Ensure it doesn't stretch to full height
+                width: '100%', // Take full width of parent
+                zIndex: 1, // Ensure it stays above other content when sticky
+            }}>
+                {/* Show Notes/Summary if selected */}
+                {activeTabs.includes('notes-summary') && (
+                    <NotesSummaryTab chunk={chunk} updateChunkField={updateChunkField} />
+                )}
+                {/* Show Comparison if selected */}
+                {activeTabs.includes('comparison') && (
+                    <ComparisonTab chunk={chunk} updateChunkField={updateChunkField} />
+                )}
+                {/* Show AI Image if selected */}
+                {activeTabs.includes('ai-image') && (
+                    <AiImageTab chunk={chunk} />
+                )}
+            </Box>
         </Box>
     );
 };
