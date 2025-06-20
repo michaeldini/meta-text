@@ -32,9 +32,16 @@ const DefineWordTool: React.FC<DefineWordToolComponentProps> = ({
     const [definition, setDefinition] = useState<string | null>(null);
     const [definitionWithContext, setDefinitionWithContext] = useState<string | null>(null);
 
+    // Strip punctuation from word
+    const stripPunctuation = (text: string): string => {
+        return text.replace(/[^\w\s]/g, '').trim();
+    };
+
     const handleDefine = async () => {
+        const cleanedWord = stripPunctuation(word);
+
         const result = await defineWord({
-            word,
+            word: cleanedWord,
             context,
             chunk,
             chunkIdx: 0, // Not used for definition
@@ -58,12 +65,12 @@ const DefineWordTool: React.FC<DefineWordToolComponentProps> = ({
 
     return (
         <>
-            <Tooltip title={`Define "${word}"`}>
+            <Tooltip title={`Define "${stripPunctuation(word)}"`}>
                 <IconButton
                     onClick={handleDefine}
                     size="small"
                     disabled={loading}
-                    aria-label={`Define ${word}`}
+                    aria-label={`Define ${stripPunctuation(word)}`}
                 >
                     {loading ? <CircularProgress size={20} /> : <QuestionMarkIcon />}
                 </IconButton>
@@ -77,7 +84,7 @@ const DefineWordTool: React.FC<DefineWordToolComponentProps> = ({
             >
                 <Box sx={{ width: 400, p: 3 }}>
                     <Typography variant="h6" gutterBottom>
-                        Definition: {word}
+                        Definition: {stripPunctuation(word)}
                     </Typography>
                     <Divider sx={{ mb: 2 }} />
 

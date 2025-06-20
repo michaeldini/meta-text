@@ -32,10 +32,17 @@ const WordActionDialog: React.FC<WordActionDialogProps> = memo(({
         meta_text_id: metaTextId
     };
 
-    const handleToolComplete = (success: boolean, result?: any) => {
+    const handleSplitToolComplete = (success: boolean, result?: any) => {
         if (success) {
-            console.log('Tool completed successfully:', result);
+            console.log('Split tool completed successfully:', result);
             onClose();
+        }
+    };
+
+    const handleDefineToolComplete = (success: boolean, result?: any) => {
+        if (success) {
+            console.log('Define tool completed successfully:', result);
+            // Don't close the dialog - let the define tool manage its own drawer
         }
     };
 
@@ -60,7 +67,7 @@ const WordActionDialog: React.FC<WordActionDialogProps> = memo(({
                     word={word}
                     context={context}
                     chunk={chunk}
-                    onComplete={handleToolComplete}
+                    onComplete={handleSplitToolComplete}
                 />
                 <DefineWordTool
                     chunkIdx={chunkIdx}
@@ -68,7 +75,7 @@ const WordActionDialog: React.FC<WordActionDialogProps> = memo(({
                     word={word}
                     context={context}
                     chunk={chunk}
-                    onComplete={handleToolComplete}
+                    onComplete={handleDefineToolComplete}
                 />
             </Box>
         </Popover>
