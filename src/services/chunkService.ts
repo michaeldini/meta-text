@@ -19,20 +19,20 @@ export const fetchChunks = withCache(
 export async function splitChunk(chunkId: number, wordIndex: number): Promise<Chunk[]> {
     const res = await fetch(`/api/chunk/${chunkId}/split?word_index=${wordIndex}`, { method: 'POST' });
     const data = await handleApiResponse<Chunk[]>(res);
-    
+
     // Invalidate caches since chunks were modified
     apiCache.invalidate(/fetchChunk/); // Invalidate all chunk-related cache entries
-    
+
     return Array.isArray(data) ? data : [];
 }
 
 export async function combineChunks(firstChunkId: number, secondChunkId: number): Promise<Chunk | null> {
     const res = await fetch(`/api/chunk/combine?first_chunk_id=${firstChunkId}&second_chunk_id=${secondChunkId}`, { method: 'POST' });
     const data = await handleApiResponse<Chunk | null>(res);
-    
+
     // Invalidate caches since chunks were modified
     apiCache.invalidate(/fetchChunk/); // Invalidate all chunk-related cache entries
-    
+
     return data || null;
 }
 
@@ -46,11 +46,11 @@ export async function updateChunk(chunkId: number, chunkData: Partial<Chunk>): P
     if (!data || Object.keys(data).length === 0) {
         throw new Error('Failed to update chunk');
     }
-    
+
     // Invalidate specific chunk and its parent chunks list
     apiCache.invalidate(`fetchChunk:${chunkId}`);
     apiCache.invalidate(/fetchChunks/); // Invalidate chunks lists
-    
+
     return data;
 }
 

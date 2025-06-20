@@ -38,10 +38,10 @@ export async function createMetaText(sourceDocId: number, title: string): Promis
         body: JSON.stringify({ sourceDocId, title })
     });
     const data = await handleApiResponse<MetaText>(res, 'Create failed.');
-    
+
     // Invalidate meta texts list cache since we added a new meta text
     apiCache.invalidate('fetchMetaTexts');
-    
+
     return data;
 }
 
@@ -52,21 +52,21 @@ export async function updateMetaText(id: number, content: Partial<MetaText>): Pr
         body: JSON.stringify(content),
     });
     const data = await handleApiResponse<MetaText>(res, 'Failed to update meta-text');
-    
+
     // Invalidate both list and specific meta text caches
     apiCache.invalidate('fetchMetaTexts');
     apiCache.invalidate(`fetchMetaText:${id}`);
-    
+
     return data;
 }
 
 export async function deleteMetaText(id: number): Promise<{ success: boolean }> {
     const res = await fetch(`/api/meta-text/${id}`, { method: 'DELETE' });
     const data = await handleApiResponse<{ success: boolean }>(res, 'Failed to delete meta-text');
-    
+
     // Invalidate both list and specific meta text caches
     apiCache.invalidate('fetchMetaTexts');
     apiCache.invalidate(`fetchMetaText:${id}`);
-    
+
     return data;
 }

@@ -44,20 +44,20 @@ export async function createSourceDocument(title: string, file: File): Promise<S
     if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
         throw new Error('Upload failed: invalid response');
     }
-    
+
     // Invalidate source documents list cache since we added a new document
     apiCache.invalidate('fetchSourceDocuments');
-    
+
     return data;
 }
 
 export async function deleteSourceDocument(docId: number): Promise<{ success: boolean }> {
     const res = await fetch(`/api/source-documents/${encodeURIComponent(String(docId))}`, { method: 'DELETE' });
     const data = await handleApiResponse<{ success: boolean }>(res, 'Failed to delete source document');
-    
+
     // Invalidate both list and individual document caches
     apiCache.invalidate('fetchSourceDocuments');
     apiCache.invalidate(`fetchSourceDocument:${docId}`);
-    
+
     return data;
 }
