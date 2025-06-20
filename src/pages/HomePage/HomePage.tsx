@@ -159,7 +159,7 @@ export default function HomePage() {
             />
             <ErrorBoundary>
                 <LoadingBoundary loading={currentDocConfig.loading}>
-                    <Typography variant="h5" gutterBottom>
+                    <Typography variant="h5" gutterBottom sx={{ mt: 4 }}>
                         Search
                     </Typography>
                     <SearchableList

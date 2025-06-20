@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Paper, Box, Typography, Divider, Stack, Chip, Alert } from '@mui/material';
+import { Paper, Box, Typography, Divider, Stack, Chip, Alert, List, ListItem, ListItemText, Collapse, ListItemButton, ListItemIcon } from '@mui/material';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import AiGenerationButton from '../../../components/AiGenerationButton';
 import { getErrorMessage } from '../../../types/error';
 import type { SourceDocument } from '../../../types/sourceDocument';
@@ -29,6 +30,19 @@ function splitToArray(str?: string | null): string[] {
 const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>({
+        characters: false,
+        locations: false,
+        themes: false,
+        symbols: false
+    });
+
+    const handleToggleSection = (key: string) => {
+        setOpenSections(prev => ({
+            ...prev,
+            [key]: !prev[key]
+        }));
+    };
 
     const handleDownloadInfo = async () => {
         setLoading(true);
@@ -48,59 +62,111 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
         }
     };
 
-    // Helper to render each field
-    const renderField = (key: keyof SourceDocument, label: string) => {
-        const value = doc[key];
-        if (key === 'id' || value == null || value === '') return null;
-        if (key === 'text') return null;
-        if (key === 'summary') {
-            return (
-                <Box key={key} sx={{ mb: 1 }}>
-                    <Typography variant="caption" color="secondary" sx={{ fontWeight: 600 }}>
-                        {label}
-                    </Typography>
-                    <Typography variant="body2" sx={{ mt: 0.5, lineHeight: 1.3 }}>
-                        {value || 'N/A'}
-                    </Typography>
-                </Box>
-            );
-        }
-        // Render comma-separated fields as chips
+    // Separate fields into different categories
+    const titleField = doc.title ? (
+        <Box sx={{ mb: 1.5 }}>
+            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                {doc.title}
+            </Typography>
+        </Box>
+    ) : null;
+
+    const authorField = doc.author ? (
+        <Box sx={{ mb: 1 }}>
+            <Typography variant="caption" color="secondary" sx={{ fontWeight: 600 }}>
+                Author
+            </Typography>
+            <Typography variant="body2" sx={{ mt: 0.5, lineHeight: 1.3 }}>
+                {doc.author}
+            </Typography>
+        </Box>
+    ) : null;
+
+    const summaryField = doc.summary ? (
+        <Box sx={{ mb: 1 }}>
+            <Typography variant="caption" color="secondary" sx={{ fontWeight: 600 }}>
+                Summary
+            </Typography>
+            <Typography variant="body2" sx={{ mt: 0.5, lineHeight: 1.3 }}>
+                {doc.summary}
+            </Typography>
+        </Box>
+    ) : null;
+
+    // List fields
+    const listFields = ['characters', 'locations', 'themes', 'symbols'].map(key => {
+        const value = doc[key as keyof SourceDocument];
+        const label = FIELD_LABELS[key as keyof SourceDocument];
         const arr = splitToArray(value as string);
         if (arr.length === 0) return null;
+
+        const isOpen = openSections[key];
+
         return (
-            <Stack key={key} direction="row" spacing={0.5} alignItems="center" sx={{ mb: 0.5, flexWrap: 'wrap' }}>
-                <Chip
-                    label={label}
-                    size="small"
-                    color="secondary"
-                    sx={{ fontSize: '0.9rem', height: 24 }}
-                />
-                {arr.map((item, i) => (
-                    <Chip
-                        key={i}
-                        label={item}
-                        size="small"
-                        color="primary"
-                        sx={{ fontSize: '0.9rem', height: 24 }}
+            <React.Fragment key={key}>
+                <ListItemButton onClick={() => handleToggleSection(key)} dense>
+                    <ListItemText
+                        primary={label}
+                        slotProps={{
+                            primary: {
+                                variant: 'caption',
+                                color: 'secondary',
+                                fontWeight: 600
+                            }
+                        }}
                     />
-                ))}
-            </Stack>
+                    <ListItemIcon sx={{ minWidth: 'auto' }}>
+                        {isOpen ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemIcon>
+                </ListItemButton>
+                <Collapse in={isOpen} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                        {arr.map((item, i) => (
+                            <ListItemButton key={i} sx={{ pl: 4 }} dense>
+                                <ListItemText
+                                    primary={item}
+                                    slotProps={{
+                                        primary: {
+                                            variant: 'caption',
+                                            sx: { lineHeight: 1.0 }
+                                        }
+                                    }}
+                                />
+                            </ListItemButton>
+                        ))}
+                    </List>
+                </Collapse>
+            </React.Fragment>
         );
-    };
+    }).filter(Boolean);
 
     return (
         <Paper sx={{ p: 1.5 }} elevation={2}>
+            {/* Title at the top */}
+            {titleField}
+
+            {/* Two-column layout */}
             <Box sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 1,
-                mb: 1.5
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap: 2,
+                mb: 1.5,
+                minHeight: '100px'
             }}>
-                {Object.entries(FIELD_LABELS).map(([key, label]) =>
-                    renderField(key as keyof SourceDocument, label!)
-                )}
+                {/* Left column - Summary and Author */}
+                <Box>
+                    {authorField}
+                    {summaryField}
+                </Box>
+
+                {/* Right column - Lists */}
+                <Box>
+                    <List dense disablePadding>
+                        {listFields}
+                    </List>
+                </Box>
             </Box>
+
             <Divider sx={{ my: 1 }} />
             <AiGenerationButton
                 label="Generate Info"

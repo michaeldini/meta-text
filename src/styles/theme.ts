@@ -1,19 +1,19 @@
 import { createTheme } from '@mui/material/styles';
-import { grey, blue, cyan } from '@mui/material/colors';
+import { grey, blue, cyan, indigo } from '@mui/material/colors';
 
 const theme = createTheme({
     palette: {
         mode: 'dark',
         // spacing: 4,
         primary: {
-            main: blue[900],
-            light: blue[200],
-            dark: blue[400],
+            main: grey[800],
+            light: grey[200],
+            dark: grey[400],
         },
         secondary: {
-            main: cyan[600],
-            light: cyan[500],
-            dark: cyan[700],
+            main: blue[600],
+            light: blue[500],
+            dark: blue[700],
         },
         text: {
             primary: grey[200],
