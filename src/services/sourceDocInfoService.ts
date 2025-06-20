@@ -25,8 +25,8 @@ export async function generateSourceDocInfo(request: SourceDocInfoRequest): Prom
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(request),
     });
-    const data = await handleApiResponse(res, 'Failed to generate source doc info');
-    if (data === true) {
+    const data = await handleApiResponse<SourceDocInfoResponse>(res, 'Failed to generate source doc info');
+    if (!data || Object.keys(data).length === 0) {
         throw new Error('No data returned from source doc info endpoint');
     }
     return data;

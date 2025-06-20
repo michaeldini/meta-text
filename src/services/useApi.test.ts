@@ -1,14 +1,27 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
-import axios from 'axios';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useApi } from './useApi';
 
-vi.mock('axios');
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+// Mock fetch
+const mockFetch = vi.fn();
+global.fetch = mockFetch;
 
 describe('useApi', () => {
+    beforeEach(() => {
+        mockFetch.mockClear();
+    });
+
     it('should handle successful API call', async () => {
-        (mockedAxios as any).mockResolvedValueOnce({ data: { message: 'success' } });
+        const mockResponse = {
+            ok: true,
+            status: 200,
+            statusText: 'OK',
+            headers: new Headers({ 'content-type': 'application/json' }),
+            json: vi.fn().mockResolvedValue({ message: 'success' }),
+        };
+
+        mockFetch.mockResolvedValueOnce(mockResponse);
+
         const { result } = renderHook(() => useApi());
 
         act(() => {
@@ -23,7 +36,15 @@ describe('useApi', () => {
     });
 
     it('should handle API error', async () => {
-        (mockedAxios as any).mockRejectedValueOnce({ message: 'fail', response: { data: { detail: 'fail' } } });
+        const mockResponse = {
+            ok: false,
+            status: 500,
+            statusText: 'Internal Server Error',
+            headers: new Headers(),
+        };
+
+        mockFetch.mockResolvedValueOnce(mockResponse);
+
         const { result } = renderHook(() => useApi());
 
         act(() => {
@@ -32,7 +53,7 @@ describe('useApi', () => {
 
         await waitFor(() => {
             expect(result.current.data).toBeNull();
-            expect(result.current.error).toBe('fail');
+            expect(result.current.error).toContain('HTTP error! status: 500');
             expect(result.current.loading).toBe(false);
         });
     });

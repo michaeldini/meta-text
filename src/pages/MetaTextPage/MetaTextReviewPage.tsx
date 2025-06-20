@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, CircularProgress, Alert, IconButton, Tooltip } from '@mui/material';
-import { fetchWordlist, fetchChunkSummariesNotes } from '../../services/reviewService';
+import { fetchWordlist } from '../../services/reviewService';
+import { fetchChunks } from '../../services/chunkService';
 import logger from '../../utils/logger';
 import { useNavigate, useParams } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -64,7 +65,7 @@ export default function MetaTextReviewPage() {
                 logger.info('Fetching wordlist...');
                 const wordlistPromise = fetchWordlist(metatextId);
                 logger.info('Fetching chunk summaries/notes...');
-                const chunkPromise = fetchChunkSummariesNotes(metatextId);
+                const chunkPromise = fetchChunks(metatextId);
                 const [wordlistData, chunkData] = await Promise.all([
                     wordlistPromise,
                     chunkPromise

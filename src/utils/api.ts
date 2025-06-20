@@ -7,7 +7,7 @@ interface ApiErrorResponse {
     message?: string;
 }
 
-export async function handleApiResponse<T = unknown>(res: Response, defaultErrorMsg = 'Request failed'): Promise<T | true> {
+export async function handleApiResponse<T = unknown>(res: Response, defaultErrorMsg = 'Request failed'): Promise<T> {
     if (!res.ok) {
         let data: ApiErrorResponse = {};
         try {
@@ -17,11 +17,17 @@ export async function handleApiResponse<T = unknown>(res: Response, defaultError
         }
         throw new Error(data.detail || data.error || data.message || defaultErrorMsg);
     }
-    // Try to parse JSON, but allow for endpoints that return no content
+
+    // Handle responses with no content (204, etc.)
+    if (res.status === 204 || res.headers.get('content-length') === '0') {
+        return {} as T;
+    }
+
+    // Try to parse JSON, but return empty object for empty responses
     try {
         return await res.json();
     } catch {
-        return true as T;
+        return {} as T;
     }
 }
 

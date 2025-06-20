@@ -1,6 +1,6 @@
-import handleApiResponse from '../utils/api';
+import { handleApiResponse } from '../utils/api';
+import { withCache } from '../utils/cache';
 import logger from '../utils/logger';
-import { fetchChunks } from './chunkService';
 
 interface WordlistResponse {
     words: string[];
@@ -9,7 +9,8 @@ interface WordlistResponse {
     [key: string]: unknown; // Allow for additional fields
 }
 
-export async function fetchWordlist(metaTextId: number): Promise<WordlistResponse> {
+// Base function without caching
+async function _fetchWordlist(metaTextId: number): Promise<WordlistResponse> {
     try {
         const response = await fetch(`/api/metatext/${metaTextId}/wordlist`);
         const data = await handleApiResponse<WordlistResponse>(response);
@@ -21,4 +22,9 @@ export async function fetchWordlist(metaTextId: number): Promise<WordlistRespons
     }
 }
 
-export { fetchChunks as fetchChunkSummariesNotes };
+// Cached version (5 minutes for wordlists)
+export const fetchWordlist = withCache(
+    'fetchWordlist',
+    _fetchWordlist,
+    5 * 60 * 1000 // 5 minutes
+);

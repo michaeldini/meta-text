@@ -16,3 +16,15 @@ export const navBarTitle = {
     fontWeight: 700,
     letterSpacing: 2,
 };
+
+export const menuButtonStyles = {
+    textDecoration: 'none',
+    color: 'inherit',
+    marginLeft: 2,
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    '&:hover': {
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    },
+} as const;

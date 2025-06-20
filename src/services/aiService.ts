@@ -28,9 +28,6 @@ export async function generateAiImage(prompt: string, chunkId: number): Promise<
  */
 export async function generateChunkNoteSummaryTextComparison(chunkId: number): Promise<{ result: string }> {
     const res = await fetch(`/api/generate-chunk-note-summary-text-comparison/${chunkId}`);
-    const data = await handleApiResponse(res, 'Failed to generate AI comparison summary');
-    if (data === true) {
-        return { result: '' };
-    }
-    return data;
+    const data = await handleApiResponse<{ result: string }>(res, 'Failed to generate AI comparison summary');
+    return data || { result: '' };
 }

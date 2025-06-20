@@ -1,45 +1,72 @@
-import handleApiResponse from '../utils/api';
+import { handleApiResponse } from '../utils/api';
+import { withCache, apiCache } from '../utils/cache';
 import type { Chunk } from '../types/chunk';
 
-export const fetchChunks = async (metaTextId: number): Promise<Chunk[]> => {
+// Base functions without caching
+async function _fetchChunks(metaTextId: number): Promise<Chunk[]> {
     const res = await fetch(`/api/chunks/all/${metaTextId}`);
-    const data = await handleApiResponse(res);
-    if (data === true) return [];
-    return data;
-};
+    const data = await handleApiResponse<Chunk[]>(res);
+    return Array.isArray(data) ? data : [];
+}
 
-export const splitChunk = async (chunkId: number, wordIndex: number): Promise<Chunk[]> => {
+// Cached version (5 minutes for chunks list)
+export const fetchChunks = withCache(
+    'fetchChunks',
+    _fetchChunks,
+    5 * 60 * 1000 // 5 minutes
+);
+
+export async function splitChunk(chunkId: number, wordIndex: number): Promise<Chunk[]> {
     const res = await fetch(`/api/chunk/${chunkId}/split?word_index=${wordIndex}`, { method: 'POST' });
-    const data = await handleApiResponse(res);
-    if (data === true) return [];
-    return data;
-};
+    const data = await handleApiResponse<Chunk[]>(res);
+    
+    // Invalidate caches since chunks were modified
+    apiCache.invalidate(/fetchChunk/); // Invalidate all chunk-related cache entries
+    
+    return Array.isArray(data) ? data : [];
+}
 
-export const combineChunks = async (firstChunkId: number, secondChunkId: number): Promise<Chunk | null> => {
+export async function combineChunks(firstChunkId: number, secondChunkId: number): Promise<Chunk | null> {
     const res = await fetch(`/api/chunk/combine?first_chunk_id=${firstChunkId}&second_chunk_id=${secondChunkId}`, { method: 'POST' });
-    const data = await handleApiResponse(res);
-    if (data === true) return null;
-    return data;
-};
+    const data = await handleApiResponse<Chunk | null>(res);
+    
+    // Invalidate caches since chunks were modified
+    apiCache.invalidate(/fetchChunk/); // Invalidate all chunk-related cache entries
+    
+    return data || null;
+}
 
-export const updateChunk = async (chunkId: number, chunkData: Partial<Chunk>): Promise<Chunk> => {
+export async function updateChunk(chunkId: number, chunkData: Partial<Chunk>): Promise<Chunk> {
     const res = await fetch(`/api/chunk/${chunkId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(chunkData)
     });
-    const data = await handleApiResponse(res);
-    if (data === true) {
+    const data = await handleApiResponse<Chunk>(res);
+    if (!data || Object.keys(data).length === 0) {
         throw new Error('Failed to update chunk');
     }
+    
+    // Invalidate specific chunk and its parent chunks list
+    apiCache.invalidate(`fetchChunk:${chunkId}`);
+    apiCache.invalidate(/fetchChunks/); // Invalidate chunks lists
+    
     return data;
-};
+}
 
-export const fetchChunk = async (chunkId: number): Promise<Chunk> => {
+// Base function for individual chunk fetching
+async function _fetchChunk(chunkId: number): Promise<Chunk> {
     const res = await fetch(`/api/chunk/${chunkId}`);
-    const data = await handleApiResponse(res);
-    if (data === true) {
+    const data = await handleApiResponse<Chunk>(res);
+    if (!data || Object.keys(data).length === 0) {
         throw new Error('Failed to fetch chunk');
     }
     return data;
-};
+}
+
+// Cached version (10 minutes for individual chunks)
+export const fetchChunk = withCache(
+    'fetchChunk',
+    _fetchChunk,
+    10 * 60 * 1000 // 10 minutes
+);

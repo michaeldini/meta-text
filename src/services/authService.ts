@@ -1,4 +1,4 @@
-import handleApiResponse from '../utils/api';
+import { handleApiResponse } from '../utils/api';
 
 const API_BASE = '/api/auth';
 
