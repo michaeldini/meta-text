@@ -43,26 +43,23 @@ const ChunkWords = memo(function ChunkWords({
         <Box sx={chunkTextBox}>
             <Box sx={wordsContainer}>
                 {words.map((word, wordIdx) => (
-                    <React.Fragment key={wordIdx}>
-                        <Box
-                            component="span"
-                            onClick={e => handleWordDialogOpen(wordIdx, e)}
-                            sx={chunkWordBox(wordIdx, words.length)}
-                        >
-                            {word}
-                            {/* Show merge tool only after the last word */}
-                            {wordIdx === words.length - 1 && (
-                                <Box sx={chunkUndoIconButton}>
-                                    <MergeChunksTool
-                                        chunkIndices={[chunkIdx, chunkIdx + 1]}
-                                        chunks={chunk ? [chunk] : undefined}
-                                        onComplete={handleMergeComplete}
-                                    />
-                                </Box>
-                            )}
-                        </Box>
-                    </React.Fragment>
+                    <Box
+                        key={wordIdx}
+                        component="span"
+                        onClick={e => handleWordDialogOpen(wordIdx, e)}
+                        sx={chunkWordBox(wordIdx, words.length)}
+                    >
+                        {word}
+                    </Box>
                 ))}
+                {/* Show merge tool after all words, inline with the text */}
+                <Box component="span" sx={chunkUndoIconButton}>
+                    <MergeChunksTool
+                        chunkIndices={[chunkIdx, chunkIdx + 1]}
+                        chunks={chunk ? [chunk] : undefined}
+                        onComplete={handleMergeComplete}
+                    />
+                </Box>
             </Box>
 
             <WordActionDialog
