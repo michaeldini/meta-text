@@ -43,9 +43,9 @@ const theme = createTheme({
             color: grey[400],
         },
     },
-    shape: {
-        borderRadius: 15,
-    },
+    // shape: {
+    //     borderRadius: 8,
+    // },
     components: {
         MuiTextField: {
             defaultProps: {
@@ -60,6 +60,7 @@ const theme = createTheme({
                 root: {
                     padding: '32px', // default padding for all Paper components
                     marginBottom: '32px', // default margin-bottom for all Paper components
+                    borderRadius: 8,
                 },
             },
         },

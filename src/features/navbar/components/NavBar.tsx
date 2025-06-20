@@ -9,8 +9,9 @@ import {
     MenuItem,
     Badge,
     useTheme,
+    IconButton,
 } from '@mui/material';
-import { KeyboardArrowDown } from '@mui/icons-material';
+import { KeyboardArrowDown, Menu as MenuIcon } from '@mui/icons-material';
 import { useAuth } from '../../../store/authStore';
 import { useNavigation } from '../hooks/useNavigation';
 import { useDropdownMenu } from '../hooks/useDropdownMenu';
@@ -20,6 +21,7 @@ import {
     appBarStyles,
     toolbarStyles,
     brandTitleStyles,
+    brandTextStyles,
     menuTriggerButtonStyles,
     dropdownMenuStyles,
     menuItemStyles,
@@ -92,6 +94,7 @@ const NavBar: React.FC<NavBarProps> = ({
         appBar: appBarStyles(theme),
         toolbar: toolbarStyles(theme),
         brandTitle: brandTitleStyles(theme),
+        brandText: brandTextStyles(theme),
         menuButton: menuTriggerButtonStyles(theme),
         dropdownMenu: dropdownMenuStyles(theme),
         menuItem: menuItemStyles(theme),
@@ -111,26 +114,36 @@ const NavBar: React.FC<NavBarProps> = ({
             <Toolbar sx={memoizedStyles.toolbar}>
                 {/* Brand and Navigation Menu Section */}
                 <Box sx={memoizedStyles.toolbarSection}>
+                    {/* Brand/Logo Button - Takes user to homepage */}
                     <Button
-                        sx={memoizedStyles.menuButton}
-                        onClick={openMenu}
-                        onKeyDown={handleKeyDown}
-                        aria-label={`Open navigation menu. Current brand: ${brandConfig.label}`}
-                        aria-controls={isOpen ? 'navigation-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={isOpen ? 'true' : 'false'}
-                        data-testid="nav-menu-button"
-                        endIcon={<KeyboardArrowDown />}
+                        sx={memoizedStyles.brandTitle}
+                        onClick={brandConfig.path ? handleBrandClick : undefined}
+                        aria-label={`Go to homepage - ${brandConfig.label}`}
+                        data-testid="nav-brand-button"
                     >
                         <Typography
                             component="span"
-                            sx={memoizedStyles.brandTitle}
-                            onClick={brandConfig.path ? handleBrandClick : undefined}
+                            sx={memoizedStyles.brandText}
                             data-testid="nav-brand"
                         >
                             {brandConfig.label}
                         </Typography>
                     </Button>
+
+                    {/* Menu Trigger Icon - Opens dropdown */}
+                    <IconButton
+                        sx={memoizedStyles.menuButton}
+                        onClick={openMenu}
+                        onKeyDown={handleKeyDown}
+                        aria-label="Open navigation menu"
+                        aria-controls={isOpen ? 'navigation-menu' : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={isOpen ? 'true' : 'false'}
+                        data-testid="nav-menu-button"
+                        size="medium"
+                    >
+                        <MenuIcon />
+                    </IconButton>
 
                     <Menu
                         id="navigation-menu"
@@ -142,10 +155,13 @@ const NavBar: React.FC<NavBarProps> = ({
                         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
                         sx={memoizedStyles.dropdownMenu}
                         data-testid="nav-menu"
-                        MenuListProps={{
-                            'aria-label': 'Navigation menu',
-                            role: 'menu',
+                        slotProps={{
+                            list: {
+                                'aria-label': 'Navigation items',
+                                role: 'menu',
+                            },
                         }}
+
                     >
                         {navigationItems.map((item) => (
                             <MenuItem

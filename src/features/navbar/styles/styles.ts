@@ -1,4 +1,3 @@
-
 import { Theme } from '@mui/material/styles';
 
 /**
@@ -30,7 +29,7 @@ export const toolbarStyles = (theme: Theme) => ({
 });
 
 export const brandTitleStyles = (theme: Theme) => ({
-    textTransform: 'uppercase' as const,
+    textTransform: 'none' as const,
     fontWeight: 700,
     letterSpacing: 2,
     color: theme.palette.primary.contrastText,
@@ -39,23 +38,39 @@ export const brandTitleStyles = (theme: Theme) => ({
         sm: '1.25rem',
     },
     cursor: 'pointer',
-    transition: theme.transitions.create(['opacity'], {
+    minWidth: 'auto',
+    padding: theme.spacing(0.5, 1),
+    borderRadius: theme.shape.borderRadius,
+    transition: theme.transitions.create(['background-color', 'opacity'], {
         duration: theme.transitions.duration.short,
     }),
     '&:hover': {
-        opacity: 0.8,
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        opacity: 0.9,
+    },
+    '&:focus': {
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        outline: `2px solid ${theme.palette.primary.contrastText}`,
+        outlineOffset: 2,
     },
 });
 
-export const menuTriggerButtonStyles = (theme: Theme) => ({
-    textDecoration: 'none',
+export const brandTextStyles = (theme: Theme) => ({
+    textTransform: 'uppercase' as const,
+    fontWeight: 700,
+    letterSpacing: 2,
+    fontSize: {
+        xs: '1rem',
+        sm: '1.25rem',
+    },
     color: 'inherit',
-    marginLeft: theme.spacing(1),
-    background: 'none',
-    border: 'none',
-    cursor: 'pointer',
+});
+
+export const menuTriggerButtonStyles = (theme: Theme) => ({
+    color: theme.palette.primary.contrastText,
+    marginLeft: theme.spacing(0.5),
+    padding: theme.spacing(1),
     borderRadius: theme.shape.borderRadius,
-    padding: theme.spacing(1, 2),
     transition: theme.transitions.create(['background-color'], {
         duration: theme.transitions.duration.short,
     }),
@@ -70,6 +85,9 @@ export const menuTriggerButtonStyles = (theme: Theme) => ({
     '&:disabled': {
         opacity: 0.6,
         cursor: 'not-allowed',
+    },
+    '& .MuiSvgIcon-root': {
+        fontSize: '1.5rem',
     },
 });
 
