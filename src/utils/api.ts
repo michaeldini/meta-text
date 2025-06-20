@@ -25,7 +25,7 @@ export async function handleApiResponse<T>(
             // Response has no JSON body
         }
         const errorMessage = errorData.detail || errorData.error || errorData.message || defaultErrorMsg;
-        log.error(`API Error: ${res.status} ${res.statusText} - ${errorMessage}`);
+        log.error(`API Error: ${res.status} ${res.statusText} - ${errorMessage}`, errorData);
         throw new Error(errorMessage);
     }
 
@@ -55,8 +55,14 @@ export async function apiRequest<T>(
     };
 
     // Don't set Content-Type for FormData (let browser set it with boundary)
+    // Also don't override Content-Type for URLSearchParams 
     if (options.body instanceof FormData) {
         delete (defaultHeaders as any)['Content-Type'];
+    } else if (options.body instanceof URLSearchParams) {
+        // Keep the passed Content-Type for URLSearchParams (likely application/x-www-form-urlencoded)
+        if (options.headers && (options.headers as any)['Content-Type']) {
+            (defaultHeaders as any)['Content-Type'] = (options.headers as any)['Content-Type'];
+        }
     }
 
     const config: RequestInit = {
@@ -91,7 +97,9 @@ export async function apiPost<T>(
     data?: unknown,
     options?: RequestInit
 ): Promise<T> {
-    const body = data instanceof FormData ? data : JSON.stringify(data);
+    const body = data instanceof FormData || data instanceof URLSearchParams 
+        ? data 
+        : JSON.stringify(data);
     return apiRequest<T>(url, { ...options, method: 'POST', body });
 }
 
