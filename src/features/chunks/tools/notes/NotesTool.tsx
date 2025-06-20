@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Paper, IconButton, Tooltip } from '@mui/material';
-import NotesIcon from '@mui/icons-material/Notes';
+import { NotesIcon } from '../../../../components/icons';
 import ChunkTextField from '../../components/ChunkTextField';
 import { useNotesTool } from './useNotesTool';
 import { NotesToolProps } from '../types';

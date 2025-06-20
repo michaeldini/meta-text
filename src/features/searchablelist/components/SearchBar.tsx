@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Paper, TextField, InputAdornment, IconButton } from '@mui/material';
-import { Search as SearchIcon, Clear as ClearIcon } from '@mui/icons-material';
+import { Search as SearchIcon, Clear as ClearIcon } from '../../../components/icons';
 
 export interface SearchBarProps {
     label?: string;

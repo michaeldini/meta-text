@@ -1,8 +1,6 @@
 import React from 'react';
 import { Box, Typography, Button, ToggleButtonGroup, ToggleButton, Tooltip, Typography as MuiTypography } from '@mui/material';
-import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
-import PhotoFilterIcon from '@mui/icons-material/PhotoFilter';
-import NotesIcon from '@mui/icons-material/Notes';
+import { CompareArrowsIcon, PhotoFilterIcon, NotesIcon } from '../../../../components/icons';
 import { useChunkStore } from '../../../../store/chunkStore';
 
 interface ChunkToolsNavbarProps {

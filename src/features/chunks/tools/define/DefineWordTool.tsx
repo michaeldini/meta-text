@@ -9,7 +9,7 @@ import {
     CircularProgress,
     Alert
 } from '@mui/material';
-import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import { QuestionMarkIcon } from '../../../../components/icons';
 import { useDefineWord } from './useDefineWord';
 import { DefineWordToolProps } from '../types';
 

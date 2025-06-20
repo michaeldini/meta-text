@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Paper, Box, Typography, Divider, Stack, Chip, Alert, List, ListItem, ListItemText, Collapse, ListItemButton, ListItemIcon } from '@mui/material';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { ExpandLess, ExpandMore } from '../../../components/icons';
 import AiGenerationButton from '../../../components/AiGenerationButton';
 import { getErrorMessage } from '../../../types/error';
 import type { SourceDocument } from '../../../types/sourceDocument';

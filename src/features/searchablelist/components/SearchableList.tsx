@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { List, ListItem, ListItemButton, ListItemText, Paper, TextField, InputAdornment } from '@mui/material';
-import { Search as SearchIcon, Clear as ClearIcon } from '@mui/icons-material';
+import { Search as SearchIcon, Clear as ClearIcon, DeleteIcon } from '../../../components/icons';
 import IconButton from '@mui/material/IconButton';
 import DeleteButton from '../../../components/DeleteButton';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { useFilteredList } from '../hooks/useFilteredList';
 
 export interface SearchableListProps<T extends Record<string, any> & { id: number }> {

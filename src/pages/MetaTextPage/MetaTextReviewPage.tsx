@@ -4,7 +4,7 @@ import { fetchWordlist } from '../../services/reviewService';
 import { fetchChunks } from '../../services/chunkService';
 import logger from '../../utils/logger';
 import { useNavigate, useParams } from 'react-router-dom';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { ArrowBackIcon } from '../../components/icons';
 import { metaTextDetailRoute } from '../../routes';
 import ChunkSummaryNotesTable from '../../features/chunks/review/ChunkSummaryNotesTable';
 import { usePageLogger } from '../../hooks/usePageLogger';

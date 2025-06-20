@@ -1,7 +1,7 @@
 import React from 'react';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { DeleteIcon } from './icons';
 
 export interface DeleteButtonProps {
     onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;

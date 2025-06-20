@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IconButton, Tooltip, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, LinearProgress, Alert } from '@mui/material';
-import PhotoFilterIcon from '@mui/icons-material/PhotoFilter';
+import { PhotoFilterIcon } from '../../../../components/icons';
 import { useImageTool } from './useImageTool';
 import { ImageToolProps } from '../types';
 import ChunkImageModal from './Modal';

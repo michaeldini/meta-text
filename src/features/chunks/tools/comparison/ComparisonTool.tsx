@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Paper, IconButton, Tooltip } from '@mui/material';
-import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
+import { CompareArrowsIcon } from '../../../../components/icons';
 import AiGenerationButton from '../../../../components/AiGenerationButton';
 import { useComparison } from './useComparison';
 import { ComparisonToolProps } from '../types';

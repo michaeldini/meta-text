@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Popover, Box, IconButton, Alert, CircularProgress, Drawer, Typography, Divider } from '@mui/material';
-import ContentCutIcon from '@mui/icons-material/ContentCut';
-import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import { ContentCutIcon, QuestionMarkIcon } from '../../../components/icons';
 import { fetchDefinitionInContext } from '../../../services/aiService';
 import { getErrorMessage } from '../../../types/error';
 

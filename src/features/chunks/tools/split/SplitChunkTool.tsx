@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
-import ContentCutIcon from '@mui/icons-material/ContentCut';
+import { ContentCutIcon } from '../../../../components/icons';
 import { useSplitChunk } from './useSplitChunk';
 import { SplitChunkToolProps } from '../types';
 

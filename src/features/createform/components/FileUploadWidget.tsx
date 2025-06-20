@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Button } from '@mui/material';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
+import { FileUploadIcon } from '../../../components/icons';
 import { FORM_DEFAULTS, FORM_STYLES, FORM_A11Y } from '../constants';
 
 export interface FileUploadWidgetProps {
