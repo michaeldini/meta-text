@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Paper, Box, Typography, Divider, Stack, Chip, Alert, List, ListItem, ListItemText, Collapse, ListItemButton, ListItemIcon } from '@mui/material';
+import { Paper, Divider, Alert, List, ListItem, ListItemText, Collapse, ListItemButton, ListItemIcon, Box } from '@mui/material';
 import { ExpandLess, ExpandMore } from '../../../components/icons';
 import AiGenerationButton from '../../../components/AiGenerationButton';
 import { getErrorMessage } from '../../../types/error';
 import type { SourceDocument } from '../../../types/sourceDocument';
 import { generateSourceDocInfo } from '../../../services/sourceDocInfoService';
+import { slotPropsStyles } from '../styles/styles';
 
 interface SourceDocInfoProps {
     doc: SourceDocument;
@@ -17,7 +18,6 @@ interface FieldConfig {
 }
 
 const FIELD_CONFIG: FieldConfig[] = [
-    { key: 'title', label: 'Title' },
     { key: 'author', label: 'Author' },
     { key: 'summary', label: 'Summary' },
     { key: 'characters', label: 'Characters' },
@@ -35,7 +35,6 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>({
-        author: false,
         summary: false,
         characters: false,
         locations: false,
@@ -59,7 +58,6 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
                 throw new Error('Document ID or text is missing.');
             }
             const response = await generateSourceDocInfo({ id: doc.id, prompt });
-            // Optionally update UI with new info, or trigger parent update
             if (onInfoUpdate) onInfoUpdate();
         } catch (err: unknown) {
             setError(getErrorMessage(err, 'Failed to generate info'));
@@ -79,10 +77,7 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
                     <ListItemText
                         primary={value as string}
                         slotProps={{
-                            primary: {
-                                variant: 'h6',
-                                sx: { fontWeight: 600 }
-                            }
+                            primary: slotPropsStyles.primaryTitle,
                         }}
                     />
                 </ListItem>
@@ -102,11 +97,7 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
                         <ListItemText
                             primary={config.label}
                             slotProps={{
-                                primary: {
-                                    variant: 'caption',
-                                    color: 'secondary',
-                                    fontWeight: 600
-                                }
+                                primary: slotPropsStyles.primaryListItem,
                             }}
                         />
                         <ListItemIcon sx={{ minWidth: 'auto' }}>
@@ -120,10 +111,7 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
                                     <ListItemText
                                         primary={item}
                                         slotProps={{
-                                            primary: {
-                                                variant: 'caption',
-                                                sx: { lineHeight: 1.0 }
-                                            }
+                                            primary: slotPropsStyles.primaryListItemText,
                                         }}
                                     />
                                 </ListItemButton>
@@ -142,11 +130,7 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
                     <ListItemText
                         primary={config.label}
                         slotProps={{
-                            primary: {
-                                variant: 'caption',
-                                color: 'secondary',
-                                fontWeight: 600
-                            }
+                            primary: slotPropsStyles.primaryListItem,
                         }}
                     />
                     <ListItemIcon sx={{ minWidth: 'auto' }}>
@@ -158,10 +142,7 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
                         <ListItemText
                             primary={value as string}
                             slotProps={{
-                                primary: {
-                                    variant: 'body2',
-                                    sx: { lineHeight: 1.3 }
-                                }
+                                primary: slotPropsStyles.primaryCollapsibleText,
                             }}
                         />
                     </ListItem>
@@ -171,21 +152,12 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
     };
 
     return (
-        <Paper sx={{ p: 1.5 }} elevation={2}>
-            <List dense disablePadding>
+        <Box>
+            <List dense disablePadding >
                 {FIELD_CONFIG.map(config => renderField(config))}
             </List>
-
-            {/* <Divider sx={{ my: 1 }} /> */}
-            <AiGenerationButton
-                label="Generate Info"
-                toolTip="Generate or update document info using AI"
-                onClick={handleDownloadInfo}
-                loading={loading}
-                sx={{ fontSize: '0.7rem' }}
-            />
             {error && <Alert severity="error" sx={{ mt: 1 }}>{error}</Alert>}
-        </Paper>
+        </Box>
     );
 };
 

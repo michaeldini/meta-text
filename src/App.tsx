@@ -17,6 +17,7 @@ import FloatingChunkToolbar from './features/chunks/layouts/toolbars/FloatingChu
 // Import theme system
 import { useThemeContext } from './contexts/ThemeContext';
 import { lightTheme, darkTheme } from './styles/themes';
+import { appContainerStyles } from './styles/styles';
 
 // Dynamically import pages for code splitting
 const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
@@ -79,18 +80,7 @@ function App() {
             <CssBaseline />
 
             <ErrorBoundary>
-                <Box
-                    sx={{
-                        minHeight: '100vh',
-                        backgroundColor: 'background.default',
-                        color: 'text.primary',
-                        transition: 'background-color 0.3s ease-in-out, color 0.3s ease-in-out',
-                        width: '100%', // Ensure full width
-                        margin: 0, // Remove any default margins
-                        padding: 0, // Remove any default padding
-
-                    }}
-                >
+                <Box sx={appContainerStyles}>
                     <NavBar config={navbarConfig} />
 
                     <Fade in={true} timeout={300}>

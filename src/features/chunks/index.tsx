@@ -21,7 +21,7 @@ interface ChunksPaginationProps {
 function ChunksPagination({ pageCount, page, handleChange }: ChunksPaginationProps) {
     if (pageCount <= 1) return null;
     return (
-        <Paper elevation={5} >
+        <Paper elevation={5} sx={{ padding: 0 }}>
             <Pagination count={pageCount} page={page} onChange={handleChange} color="primary" />
         </Paper>
     );

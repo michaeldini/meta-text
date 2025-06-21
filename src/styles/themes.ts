@@ -56,6 +56,22 @@ const baseTheme: ThemeOptions = {
                 },
             },
         },
+        MuiListItemButton: {
+            styleOverrides: {
+                root: {
+                    margin: 0,
+                    padding: 0,
+                },
+            },
+        },
+        MuiListItem: {
+            styleOverrides: {
+                root: {
+                    padding: 0,
+                    margin: 0,
+                },
+            },
+        },
     },
 };
 
@@ -154,7 +170,7 @@ export const darkTheme = createTheme({
         },
         text: {
             primary: grey[200],
-            secondary: grey[400],
+            secondary: blue[500],
             disabled: grey[700],
         },
         background: {

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Paper, Typography } from '@mui/material';
-import { sourceDocContainerStyle } from '../styles';
+import { sourceDocContainerStyle } from '../styles/styles';
 import type { SourceDocument } from '../../../types/sourceDocument';
 
 interface SourceDocProps {
