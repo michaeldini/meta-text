@@ -85,6 +85,10 @@ function App() {
                         backgroundColor: 'background.default',
                         color: 'text.primary',
                         transition: 'background-color 0.3s ease-in-out, color 0.3s ease-in-out',
+                        width: '100%', // Ensure full width
+                        margin: 0, // Remove any default margins
+                        padding: 0, // Remove any default padding
+                        overflow: 'hidden', // Prevent horizontal scrollbar from navbar overflow
                     }}
                 >
                     <NavBar config={navbarConfig} />

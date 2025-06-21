@@ -19,28 +19,16 @@ import { NavBarProps, NavigationError } from '../types';
 import { DEFAULT_NAVBAR_CONFIG } from '../index';
 import ThemeToggle from '../../../components/ThemeToggle';
 import { useThemeContext } from '../../../contexts/ThemeContext';
-import {
-    appBarStyles,
-    toolbarStyles,
-    brandTitleStyles,
-    brandTextStyles,
-    menuTriggerButtonStyles,
-    dropdownMenuStyles,
-    menuItemStyles,
-    toolbarSectionStyles,
-    menuItemIconStyles,
-    menuItemBadgeStyles,
-} from '../styles/styles';
+import { createNavbarStyles } from '../styles';
 
 /**
- * NavBar Component - Main navigation bar with dropdown menu
+ * NavBar Component - Simplified and maintainable
  * 
  * Features:
- * - Responsive design with Material-UI
- * - Authentication-aware navigation items
- * - Customizable brand and navigation items
- * - Keyboard navigation support
- * - Error handling for navigation failures
+ * - Theme-aware responsive design
+ * - Authentication-aware navigation
+ * - Light/dark theme support
+ * - Keyboard navigation
  */
 const NavBar: React.FC<NavBarProps> = ({
     config = DEFAULT_NAVBAR_CONFIG,
@@ -92,45 +80,33 @@ const NavBar: React.FC<NavBarProps> = ({
         handleItemClick(item, closeMenu);
     };
 
-    // Memoize styles to prevent unnecessary recalculations
-    const memoizedStyles = useMemo(() => ({
-        appBar: appBarStyles(theme),
-        toolbar: toolbarStyles(theme),
-        brandTitle: brandTitleStyles(theme),
-        brandText: brandTextStyles(theme),
-        menuButton: menuTriggerButtonStyles(theme),
-        dropdownMenu: dropdownMenuStyles(theme),
-        menuItem: menuItemStyles(theme),
-        toolbarSection: toolbarSectionStyles(theme),
-        menuItemIcon: menuItemIconStyles(theme),
-        menuItemBadge: menuItemBadgeStyles(theme),
-    }), [theme]);
+    // ✅ Simplified theme-aware styles
+    const styles = useMemo(() => createNavbarStyles(theme), [theme]);
 
-    // Replace Material UI Icons with Heroicons
-    const menuIcon = <MenuIcon style={{ width: 24, height: 24, color: theme.palette.text.secondary }} />;
-    const dropdownIcon = <ChevronDownIcon style={{ width: 20, height: 20, color: theme.palette.text.secondary }} />;
+    // Custom icons (Heroicons) need explicit styling since they don't inherit from MuiSvgIcon
+    const menuIcon = <MenuIcon style={styles.icon} />;
 
     return (
         <AppBar
             position="static"
             elevation={2}
-            sx={memoizedStyles.appBar}
+            sx={styles.appBar}
             className={className}
             data-testid={dataTestId}
         >
-            <Toolbar sx={memoizedStyles.toolbar}>
+            <Toolbar sx={styles.toolbar}>
                 {/* Brand and Navigation Menu Section */}
-                <Box sx={memoizedStyles.toolbarSection}>
+                <Box sx={styles.section}>
                     {/* Brand/Logo Button - Takes user to homepage */}
                     <Button
-                        sx={memoizedStyles.brandTitle}
+                        sx={styles.brandButton}
                         onClick={brandConfig.path ? handleBrandClick : undefined}
                         aria-label={`Go to homepage - ${brandConfig.label}`}
                         data-testid="nav-brand-button"
                     >
                         <Typography
                             component="span"
-                            sx={memoizedStyles.brandText}
+                            variant="h6"
                             data-testid="nav-brand"
                         >
                             {brandConfig.label}
@@ -139,7 +115,7 @@ const NavBar: React.FC<NavBarProps> = ({
 
                     {/* Menu Trigger Icon - Opens dropdown */}
                     <IconButton
-                        sx={memoizedStyles.menuButton}
+                        sx={styles.menuButton}
                         onClick={openMenu}
                         onKeyDown={handleKeyDown}
                         aria-label="Open navigation menu"
@@ -160,7 +136,7 @@ const NavBar: React.FC<NavBarProps> = ({
                         onKeyDown={handleKeyDown}
                         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
                         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-                        sx={memoizedStyles.dropdownMenu}
+                        sx={styles.dropdownMenu}
                         data-testid="nav-menu"
                         slotProps={{
                             list: {
@@ -176,13 +152,13 @@ const NavBar: React.FC<NavBarProps> = ({
                                 onClick={() => handleMenuItemClick(item)}
                                 selected={isActive(item.path)}
                                 disabled={item.disabled}
-                                sx={memoizedStyles.menuItem}
+                                sx={styles.menuItem}
                                 data-testid={`nav-item-${item.id}`}
                                 role="menuitem"
                                 aria-label={`${item.label}${item.disabled ? ' (disabled)' : ''}`}
                             >
                                 {item.icon && (
-                                    <Box sx={memoizedStyles.menuItemIcon}>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', mr: 1 }}>
                                         {item.icon}
                                     </Box>
                                 )}
@@ -190,7 +166,6 @@ const NavBar: React.FC<NavBarProps> = ({
                                     <Badge
                                         badgeContent={item.badge}
                                         color="secondary"
-                                        sx={memoizedStyles.menuItemBadge}
                                     >
                                         <Typography variant="body2">{item.label}</Typography>
                                     </Badge>
@@ -204,7 +179,7 @@ const NavBar: React.FC<NavBarProps> = ({
 
                 {/* Custom Toolbar Section */}
                 {renderToolbar && (
-                    <Box sx={memoizedStyles.toolbarSection} data-testid="nav-toolbar">
+                    <Box sx={styles.section} data-testid="nav-toolbar">
                         {renderToolbar()}
                     </Box>
                 )}
