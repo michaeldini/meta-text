@@ -12,6 +12,7 @@ import { getErrorMessage } from '../../types/error';
 import DocTypeSelect, { DocType } from '../../components/DocTypeSelect';
 import { useDocumentsStore } from '../../store/documentsStore';
 import { useNotifications } from '../../store/notificationStore';
+import { Box } from '@mui/material';
 
 // Constants to avoid magic strings
 const DOC_TYPES = {
@@ -147,29 +148,35 @@ export default function HomePage() {
     return (
         <PageContainer>
             <DocTypeSelect value={docType} onChange={setDocType} />
-            <Typography variant="h5" gutterBottom>
-                Create
-            </Typography>
-            <CreateForm
-                sourceDocs={sourceDocs || []}
-                sourceDocsLoading={sourceDocsLoading}
-                sourceDocsError={sourceDocsError}
-                onSuccess={refreshData}
-                docType={docType}
-            />
-            <ErrorBoundary>
-                <LoadingBoundary loading={currentDocConfig.loading}>
-                    <Typography variant="h5" gutterBottom sx={{ mt: 4 }}>
-                        Search
+            <Box display="flex" flexDirection="row" gap={4} height="100vh">
+                <Box flex={1} display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
+                    <ErrorBoundary>
+                        <LoadingBoundary loading={currentDocConfig.loading}>
+                            <Typography variant="h5" gutterBottom>
+                                Search
+                            </Typography>
+                            <SearchableList
+                                items={currentDocConfig.items}
+                                onItemClick={currentDocConfig.onItemClick}
+                                onDeleteClick={currentDocConfig.onDeleteClick}
+                                filterKey="title"
+                            />
+                        </LoadingBoundary>
+                    </ErrorBoundary>
+                </Box>
+                <Box flex={1} display="flex" flexDirection="column">
+                    <Typography variant="h5" gutterBottom>
+                        Create
                     </Typography>
-                    <SearchableList
-                        items={currentDocConfig.items}
-                        onItemClick={currentDocConfig.onItemClick}
-                        onDeleteClick={currentDocConfig.onDeleteClick}
-                        filterKey="title"
+                    <CreateForm
+                        sourceDocs={sourceDocs || []}
+                        sourceDocsLoading={sourceDocsLoading}
+                        sourceDocsError={sourceDocsError}
+                        onSuccess={refreshData}
+                        docType={docType}
                     />
-                </LoadingBoundary>
-            </ErrorBoundary>
+                </Box>
+            </Box>
         </PageContainer>
     );
 }

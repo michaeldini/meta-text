@@ -14,7 +14,7 @@ const DocTypeSelect: React.FC<DocTypeSelectProps> = ({ value, onChange, disabled
         if (newValue) onChange(newValue);
     };
     return (
-        <Box sx={{ mb: 2 }}>
+        <Box sx={{ my: 2 }}>
             <ToggleButtonGroup
                 value={value}
                 exclusive
