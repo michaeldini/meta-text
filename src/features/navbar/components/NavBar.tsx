@@ -17,6 +17,8 @@ import { useNavigation } from '../hooks/useNavigation';
 import { useDropdownMenu } from '../hooks/useDropdownMenu';
 import { NavBarProps, NavigationError } from '../types';
 import { DEFAULT_NAVBAR_CONFIG } from '../index';
+import ThemeToggle from '../../../components/ThemeToggle';
+import { useThemeContext } from '../../../contexts/ThemeContext';
 import {
     appBarStyles,
     toolbarStyles,
@@ -49,6 +51,7 @@ const NavBar: React.FC<NavBarProps> = ({
     const theme = useTheme();
     const { user, logout } = useAuth();
     const { anchorEl, isOpen, openMenu, closeMenu, handleKeyDown } = useDropdownMenu();
+    const { toggleMode } = useThemeContext();
 
     // Handle navigation errors
     const handleNavigationError = (error: NavigationError) => {
@@ -205,6 +208,11 @@ const NavBar: React.FC<NavBarProps> = ({
                         {renderToolbar()}
                     </Box>
                 )}
+
+                {/* Theme Toggle */}
+                <Box sx={{ ml: 'auto' }}>
+                    <ThemeToggle onToggle={toggleMode} data-testid="nav-theme-toggle" />
+                </Box>
             </Toolbar>
         </AppBar>
     );

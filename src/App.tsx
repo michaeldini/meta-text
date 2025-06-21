@@ -1,12 +1,22 @@
-// import './App.css';
+/**
+ * Enhanced App.tsx with light/dark theme support
+ * This shows how to integrate the theme system into your existing app
+ */
+
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { NavBar } from './features/navbar';
+import { ThemeProvider, CssBaseline } from '@mui/material';
 import { Fade, Box, Typography } from '@mui/material';
 import { useMemo, Suspense, lazy, ComponentType } from 'react';
+
+import { NavBar } from './features/navbar';
 import { AppSuspenseFallback } from './components/AppSuspenseFallback';
 import ErrorBoundary from './components/ErrorBoundary';
 import GlobalNotifications from './components/GlobalNotifications';
 import FloatingChunkToolbar from './features/chunks/layouts/toolbars/FloatingChunkToolbar';
+
+// Import theme system
+import { useThemeContext } from './contexts/ThemeContext';
+import { lightTheme, darkTheme } from './styles/themes';
 
 // Dynamically import pages for code splitting
 const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
@@ -15,78 +25,98 @@ const MetaTextDetailPage = lazy(() => import('./pages/MetaTextPage/MetaTextDetai
 const MetaTextReviewPage = lazy(() => import('./pages/MetaTextPage/MetaTextReviewPage'));
 const LoginPage = lazy(() => import('./pages/Auth/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/Auth/RegisterPage'));
-const AuthGate = lazy(() => import('./pages/Auth/AuthGate'));
 
-// 404 Page component
-const NotFoundPage = () => (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '50vh' }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-            404 - Page Not Found
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-            The page you're looking for doesn't exist.
-        </Typography>
-    </Box>
-);
-
-// Type for route configuration
 interface RouteConfig {
     path: string;
-    element: ComponentType;
-    protected: boolean;
+    element: ComponentType<any>;
+    protected?: boolean;
 }
 
-// Route configuration for better maintainability
 const routes: RouteConfig[] = [
     { path: '/', element: HomePage, protected: true },
     { path: '/login', element: LoginPage, protected: false },
     { path: '/register', element: RegisterPage, protected: false },
-    { path: '/sourceDocs/:sourceDocId', element: SourceDocDetailPage, protected: true },
+    { path: '/source-document/:sourceDocId', element: SourceDocDetailPage, protected: true },
     { path: '/metaText/:metaTextId', element: MetaTextDetailPage, protected: true },
     { path: '/metaText/:metaTextId/review', element: MetaTextReviewPage, protected: true },
 ];
 
 function App() {
     const location = useLocation();
+    const { mode, toggleMode } = useThemeContext();
 
-    // Use consistent key for both routing and transitions
-    const transitionKey = location.pathname + location.search;
+    // Get current theme based on mode
+    const currentTheme = useMemo(() => {
+        return mode === 'light' ? lightTheme : darkTheme;
+    }, [mode]);
 
-    const routeElement = useMemo(() => (
-        <ErrorBoundary>
-            <Suspense fallback={<AppSuspenseFallback />}>
-                <Routes location={location}>
-                    {routes.map(({ path, element: Component, protected: isProtected }) => (
-                        <Route
-                            key={path}
-                            path={path}
-                            element={
-                                isProtected ? (
-                                    <AuthGate>
-                                        <Component />
-                                    </AuthGate>
-                                ) : (
-                                    <Component />
-                                )
-                            }
-                        />
-                    ))}
-                    {/* 404 Route - must be last */}
-                    <Route path="*" element={<NotFoundPage />} />
-                </Routes>
-            </Suspense>
-        </ErrorBoundary>
-    ), [location]);
+    // Navbar config
+    const navbarConfig = useMemo(() => ({
+        brand: {
+            label: 'Meta-Text',
+            path: '/',
+        },
+    }), []);
+
+    const renderRoute = (route: RouteConfig) => {
+        const Component = route.element;
+        return (
+            <Route
+                key={route.path}
+                path={route.path}
+                element={
+                    <Suspense fallback={<AppSuspenseFallback />}>
+                        <Component />
+                    </Suspense>
+                }
+            />
+        );
+    };
 
     return (
-        <>
-            <NavBar />
-            <Fade in={true} key={transitionKey} timeout={400}>
-                <div>{routeElement}</div>
-            </Fade>
-            <GlobalNotifications />
-            <FloatingChunkToolbar />
-        </>
+        <ThemeProvider theme={currentTheme}>
+            {/* CssBaseline provides consistent CSS reset and applies theme background */}
+            <CssBaseline />
+
+            <ErrorBoundary>
+                <Box
+                    sx={{
+                        minHeight: '100vh',
+                        backgroundColor: 'background.default',
+                        color: 'text.primary',
+                        transition: 'background-color 0.3s ease-in-out, color 0.3s ease-in-out',
+                    }}
+                >
+                    <NavBar config={navbarConfig} />
+
+                    <Fade in={true} timeout={300}>
+                        <Box component="main">
+                            <Routes>
+                                {routes.map(renderRoute)}
+
+                                {/* 404 Route */}
+                                <Route path="*" element={
+                                    <Box sx={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        minHeight: '50vh'
+                                    }}>
+                                        <Typography variant="h4" color="text.secondary">
+                                            Page not found
+                                        </Typography>
+                                    </Box>
+                                } />
+                            </Routes>
+                        </Box>
+                    </Fade>
+
+                    {/* Global components */}
+                    <GlobalNotifications />
+                    <FloatingChunkToolbar />
+                </Box>
+            </ErrorBoundary>
+        </ThemeProvider>
     );
 }
 

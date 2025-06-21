@@ -106,7 +106,9 @@ export const lightTheme = createTheme({
             },
         },
         MuiTextField: {
-            ...baseTheme.components?.MuiTextField,
+            defaultProps: {
+                variant: 'outlined',
+            },
             styleOverrides: {
                 root: {
                     '& .MuiInputBase-input': {
@@ -116,10 +118,13 @@ export const lightTheme = createTheme({
             },
         },
         MuiButton: {
-            ...baseTheme.components?.MuiButton,
+            defaultProps: {
+                variant: 'outlined',
+            },
             styleOverrides: {
                 root: {
-                    ...baseTheme.components?.MuiButton?.styleOverrides?.root,
+                    borderRadius: 8,
+                    textTransform: 'none',
                     color: grey[700],
                     borderColor: grey[300],
                     '&:hover': {
@@ -179,7 +184,9 @@ export const darkTheme = createTheme({
             },
         },
         MuiTextField: {
-            ...baseTheme.components?.MuiTextField,
+            defaultProps: {
+                variant: 'outlined',
+            },
             styleOverrides: {
                 root: {
                     '& .MuiInputBase-input': {
@@ -189,10 +196,13 @@ export const darkTheme = createTheme({
             },
         },
         MuiButton: {
-            ...baseTheme.components?.MuiButton,
+            defaultProps: {
+                variant: 'outlined',
+            },
             styleOverrides: {
                 root: {
-                    ...baseTheme.components?.MuiButton?.styleOverrides?.root,
+                    borderRadius: 8,
+                    textTransform: 'none',
                     color: grey[200],
                     borderColor: grey[600],
                     '&:hover': {
