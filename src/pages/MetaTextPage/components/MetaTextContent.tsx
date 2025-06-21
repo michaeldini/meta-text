@@ -72,7 +72,7 @@ export const MetaTextContent: React.FC<MetaTextContentProps> = ({
                 ...styles.container,
             }}>
                 {/* Header Section with Two Columns */}
-                <Box sx={{ display: 'flex', flexDirection: 'row', gap: theme.spacing(2), width: '100%' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'row', gap: theme.spacing(10), width: '100%', p: theme.spacing(2) }}>
                     {/* Left Column: Title, Subtitle, Buttons */}
                     <Box sx={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'start', gap: theme.spacing(2) }}>
                         <Typography
