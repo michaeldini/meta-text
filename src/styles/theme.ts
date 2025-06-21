@@ -1,6 +1,8 @@
 import { createTheme } from '@mui/material/styles';
 import { grey, blue, cyan, indigo } from '@mui/material/colors';
 
+// This is your original dark theme - keeping for backward compatibility
+// For new theme system with light/dark support, see ./themes.ts
 const theme = createTheme({
     palette: {
         mode: 'dark',

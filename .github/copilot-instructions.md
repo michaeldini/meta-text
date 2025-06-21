@@ -4,7 +4,9 @@ This is a monorepo containing a full-stack application with a React frontend and
 ## Frontend Stack
 - Build System: Vite
 - Framework: React with TypeScript
+- State Management: Zustand
 - UI Library: Material UI (use separate files for styling to keep components clean, leverage MUI's theming)
+- Design for desktop and tablet, not mobile.
 - Testing: Vitest (tests colocated with components)
 - Location: `src/` folder
 - Logging: `src/utils/logger.ts`
