@@ -1,11 +1,11 @@
 import React, { memo, useRef, useEffect } from 'react';
 import { Box, Paper } from '@mui/material';
-import { ChunkWords } from '../../components';
-import ChunkToolsDisplay from '../ChunkToolsDisplay';
-import { chunkMainBox } from '../../styles/styles';
-import { useChunkStore } from '../../../../store/chunkStore';
-import type { Chunk } from '../../../../types/chunk';
-import type { ChunkFieldValue } from '../../../../store/chunkStore';
+import { ChunkWords } from '.';
+import ChunkToolsDisplay from '../tools/ChunkToolsDisplay';
+import { chunkMainBox } from '../styles/styles';
+import { useChunkStore } from '../../../store/chunkStore';
+import type { Chunk } from '../../../types/chunk';
+import type { ChunkFieldValue } from '../../../store/chunkStore';
 
 export interface ChunkProps {
     chunk: Chunk;

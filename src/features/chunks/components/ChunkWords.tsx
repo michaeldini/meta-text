@@ -2,7 +2,7 @@ import React, { memo, useState } from 'react';
 import { Box, IconButton, Paper } from '@mui/material';
 import { MergeChunksTool } from '../tools';
 import WordActionDialog from '../layouts/dialogs/WordActionDialog';
-import { chunkWordBox, wordsContainer, chunkUndoIconButton, chunkTextBox } from '../styles/styles';
+import { chunkWordBox, wordsContainer, chunkUndoIconButton, chunkTextBox } from './styles/styles';
 
 export interface ChunkWordsProps {
     words: string[];

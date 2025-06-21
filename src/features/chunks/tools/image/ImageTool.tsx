@@ -5,7 +5,6 @@ import { useImageTool } from './useImageTool';
 import { ImageToolProps } from '../types';
 import ChunkImageModal from './Modal';
 import AiGenerationButton from '../../../../components/AiGenerationButton';
-import { toolStyles } from '../../styles/styles';
 import { Paper } from '@mui/material';
 import type { Chunk } from '../../../../types/chunk';
 
@@ -79,7 +78,7 @@ const ImageTool: React.FC<ImageToolComponentProps> = ({
 
     return (
         <>
-            <Paper sx={toolStyles}>
+            <Paper>
                 <AiGenerationButton
                     label="Generate Image"
                     toolTip="Generate an image for this chunk using AI"

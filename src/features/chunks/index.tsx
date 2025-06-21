@@ -1,11 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { Box, Pagination, Paper, Alert } from '@mui/material';
-import Chunk from './tools/components/Chunk';
-import { chunksContainer } from './styles/styles';
+import Chunk from './components/Chunk';
+import { createChunksContainerStyles } from './styles/theme-aware-styles';
 import log from '../../utils/logger';
 import LoadingBoundary from '../../components/LoadingBoundary';
 import ErrorBoundary from '../../components/ErrorBoundary';
 import { useChunkStore } from '../../store/chunkStore';
+import { useTheme } from '@mui/material/styles';
 
 // Export the new organized structure
 export * from './components';
@@ -63,6 +64,10 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
     };
+
+    // Replace hard-coded styles with theme-aware styles
+    const theme = useTheme();
+    const chunksContainer = createChunksContainerStyles(theme);
 
     return (
         <ErrorBoundary>

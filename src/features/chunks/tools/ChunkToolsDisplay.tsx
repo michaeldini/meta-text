@@ -7,7 +7,7 @@ import ComparisonTab from '../layouts/tabs/ComparisonTab';
 import AiImageTab from '../layouts/tabs/AiImageTab';
 import { useChunkStore } from '../../../store/chunkStore';
 import type { Chunk } from '../../../types/chunk';
-import { chunkToolsContainer, chunkToolsBox, } from '../styles/styles';
+import { chunkToolsContainer, chunkToolsBox, } from './styles/styles';
 
 interface ChunkToolsDisplayProps {
     chunk: Chunk;

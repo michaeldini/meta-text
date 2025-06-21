@@ -1,7 +1,6 @@
 import React from 'react';
 import { Paper, Button, Box } from '@mui/material';
 import ChunkImageModal from './Modal';
-import { toolStyles } from '../../styles/styles';
 import AiGenerationButton from '../../../../components/AiGenerationButton';
 
 interface ChunkImageDisplayProps {
@@ -26,7 +25,7 @@ const ChunkImageDisplay: React.FC<ChunkImageDisplayProps> = ({
     console.log('ChunkImageDisplay getImgSrc():', getImgSrc());
 
     return (
-        <Paper sx={toolStyles}>
+        <Paper>
             <AiGenerationButton
                 label="Generate Image"
                 toolTip="Generate an image for this chunk using AI"
