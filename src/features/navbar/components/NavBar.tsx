@@ -11,7 +11,7 @@ import {
     useTheme,
     IconButton,
 } from '@mui/material';
-import { KeyboardArrowDown, Menu as MenuIcon } from '@mui/icons-material';
+import { ChevronDownIcon, MenuIcon } from '@heroicons/react/solid';
 import { useAuth } from '../../../store/authStore';
 import { useNavigation } from '../hooks/useNavigation';
 import { useDropdownMenu } from '../hooks/useDropdownMenu';
@@ -103,6 +103,10 @@ const NavBar: React.FC<NavBarProps> = ({
         menuItemBadge: menuItemBadgeStyles(theme),
     }), [theme]);
 
+    // Replace Material UI Icons with Heroicons
+    const menuIcon = <MenuIcon className="h-6 w-6 text-gray-500" />;
+    const dropdownIcon = <ChevronDownIcon className="h-5 w-5 text-gray-500" />;
+
     return (
         <AppBar
             position="static"
@@ -142,7 +146,7 @@ const NavBar: React.FC<NavBarProps> = ({
                         data-testid="nav-menu-button"
                         size="medium"
                     >
-                        <MenuIcon />
+                        {menuIcon}
                     </IconButton>
 
                     <Menu
