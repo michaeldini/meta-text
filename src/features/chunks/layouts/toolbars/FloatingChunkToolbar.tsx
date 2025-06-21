@@ -60,12 +60,12 @@ const FloatingChunkToolbar: React.FC<FloatingChunkToolbarProps> = ({
         // Ensure it doesn't interfere with scrolling
         pointerEvents: shouldShow ? 'auto' : 'none',
         // Additional safeguards for production builds
-        '@media (max-width: 480px)': {
-            right: '8px', // Even smaller margin on very small screens
-            width: '36px',
-        },
+        // '@media (max-width: 480px)': {
+        //     right: '8px', // Even smaller margin on very small screens
+        //     width: '36px',
+        // },
         // Ensure it never goes off-screen
-        maxWidth: 'calc(100vw - 24px)',
+        // maxWidth: 'calc(100vw - 24px)',
     };
 
     return (
