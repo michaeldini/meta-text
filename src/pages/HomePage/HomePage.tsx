@@ -20,7 +20,7 @@ const DOC_TYPES = {
 } as const;
 
 const ROUTES = {
-    SOURCE_DOC: '/sourceDocs',
+    SOURCE_DOC: '/source-document',
     META_TEXT: '/metaText',
 } as const;
 

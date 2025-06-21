@@ -41,7 +41,7 @@ const routes: RouteConfig[] = [
     { path: '/', element: HomePage, protected: true },
     { path: '/login', element: LoginPage, protected: false },
     { path: '/register', element: RegisterPage, protected: false },
-    { path: '/sourceDocs/:sourceDocId', element: SourceDocDetailPage, protected: true },
+    { path: '/source-document/:sourceDocId', element: SourceDocDetailPage, protected: true },
     { path: '/metaText/:metaTextId', element: MetaTextDetailPage, protected: true },
     { path: '/metaText/:metaTextId/review', element: MetaTextReviewPage, protected: true },
 ];
