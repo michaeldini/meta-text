@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Box, Fade, useTheme } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import ChunkToolsNavbar from './ChunkToolsNavbar';
@@ -38,38 +39,20 @@ const FloatingChunkToolbar: React.FC<FloatingChunkToolbarProps> = ({
 
     const floatingStyles = {
         padding: 0,
-        width: {
-            xs: '40px', // Slightly smaller on mobile
-            sm: '48px', // Standard width on tablet and up
-        },
+        width: '48px',
         position: 'fixed' as const,
-        top: {
-            xs: 64, // Account for mobile NavBar height
-            sm: 72, // Account for desktop NavBar height (64px) + padding
-        },
-        right: {
-            xs: '12px', // 12px right padding on mobile
-            sm: '20px', // 20px right padding on tablet
-            md: '24px', // 24px right padding on desktop for better spacing
-            lg: '32px', // 32px right padding on large screens
-        },
+        top: '72px',
+        right: '20px',
         zIndex: theme.zIndex.speedDial, // High enough to be above content, but below modals
         transition: theme.transitions.create(['opacity', 'transform'], {
             duration: theme.transitions.duration.short,
         }),
         // Ensure it doesn't interfere with scrolling
         pointerEvents: shouldShow ? 'auto' : 'none',
-        // Additional safeguards for production builds
-        // '@media (max-width: 480px)': {
-        //     right: '8px', // Even smaller margin on very small screens
-        //     width: '36px',
-        // },
-        // Ensure it never goes off-screen
-        // maxWidth: 'calc(100vw - 24px)',
     };
 
-    return (
-        <Fade in={shouldShow} timeout={300} >
+    const toolbarContent = (
+        <Fade in={shouldShow} timeout={300}>
             <Box
                 sx={floatingStyles}
                 className={className}
@@ -80,8 +63,10 @@ const FloatingChunkToolbar: React.FC<FloatingChunkToolbarProps> = ({
                     data-testid="floating-chunk-tools-navbar"
                 />
             </Box>
-        </Fade >
+        </Fade>
     );
+
+    return ReactDOM.createPortal(toolbarContent, document.body);
 };
 
 export default FloatingChunkToolbar;
