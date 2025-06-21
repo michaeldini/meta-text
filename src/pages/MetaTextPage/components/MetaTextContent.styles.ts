@@ -6,7 +6,8 @@ export const getMetaTextContentStyles = (theme: Theme) => ({
         flexDirection: 'column' as const,
         alignItems: 'start',
         gap: theme.spacing(1.5), // Reduced gap between sections
-        padding: theme.spacing(1), // Minimal padding
+        // padding: theme.spacing(1), // Minimal padding
+        paddingRight: "32px", // Adjusted for floating toolbar
     },
 
     headerPaper: {
@@ -33,8 +34,5 @@ export const getMetaTextContentStyles = (theme: Theme) => ({
 
 // Commented out the floating toolbar padding - remove this if you don't want the floating toolbar
 export const getFloatingToolbarPadding = (theme: Theme) => ({
-    paddingRight: {
-        xs: theme.spacing(12), // Space for floating toolbar on mobile (96px)
-        sm: theme.spacing(8), // Space for floating toolbar on desktop (128px)
-    }
+    paddingRight: "2000px", // Adjusted for floating toolbar
 });

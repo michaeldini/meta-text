@@ -44,9 +44,8 @@ export const MetaTextContent: React.FC<MetaTextContentProps> = ({
     const isOnMetaTextDetailPage = /^\/metaText\/[^\/]+$/.test(location.pathname);
     const shouldShowFloatingToolbar = Boolean(activeChunkId) && isOnMetaTextDetailPage;
 
-    // TEMPORARILY DISABLED: Add right padding to prevent overlap with floating toolbar
+
     const contentStyles = shouldShowFloatingToolbar ? getFloatingToolbarPadding(theme) : {};
-    // const contentStyles = {}; // Remove this line and uncomment above if you want floating toolbar padding
 
     const handleDownloadInfo = async () => {
         setLoading(true);
@@ -78,13 +77,12 @@ export const MetaTextContent: React.FC<MetaTextContentProps> = ({
                     <Box sx={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'start', gap: theme.spacing(2) }}>
                         <Typography
                             variant="h1"
-                            sx={{ ...styles.title, textAlign: 'start' }}
+                            sx={styles.title}
                         >
                             {displayTitle}
                         </Typography>
                         <Typography
                             variant="subtitle1"
-                            sx={{ textAlign: 'start' }}
                         >
                             Source Doc: {sourceDocSection ? `${sourceDocSection.doc.title}` : ''}
                         </Typography>
@@ -93,7 +91,7 @@ export const MetaTextContent: React.FC<MetaTextContentProps> = ({
                             size="small"
                             onClick={onReviewClick}
                             aria-label={`Review ${displayTitle}`}
-                            sx={{ ...styles.reviewButton, textAlign: 'start' }}
+                            sx={styles.reviewButton}
                         >
                             {messages.REVIEW_BUTTON}
                         </Button>
@@ -102,7 +100,6 @@ export const MetaTextContent: React.FC<MetaTextContentProps> = ({
                             toolTip="Generate or update document info using AI"
                             onClick={handleDownloadInfo}
                             loading={loading}
-                            sx={{ textAlign: 'start' }}
                         />
                     </Box>
 
