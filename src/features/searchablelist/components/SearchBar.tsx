@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Paper, TextField, InputAdornment, IconButton } from '@mui/material';
-import { Search as SearchIcon, Clear as ClearIcon } from '../../../components/icons';
+import { Search as SearchIcon, ClearIcon } from '../../../components/icons';
 
 export interface SearchBarProps {
     label?: string;
@@ -52,7 +52,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 InputProps={{
                     startAdornment: (
                         <InputAdornment position="start">
-                            <SearchIcon style={{ width: 20, height: 20, color: 'rgba(0, 0, 0, 0.54)' }} />
+                            <SearchIcon style={{ width: 24, height: 24 }} />
                         </InputAdornment>
                     ),
                     endAdornment: value && (
@@ -65,7 +65,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                                 aria-label="Clear search"
                                 disabled={disabled}
                             >
-                                <ClearIcon />
+                                <ClearIcon style={{ width: 24, height: 24 }} />
                             </IconButton>
                         </InputAdornment>
                     ),

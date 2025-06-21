@@ -62,7 +62,7 @@ function SearchableList<T extends Record<string, any> & { id: number }>({
                 InputProps={{
                     startAdornment: (
                         <InputAdornment position="start">
-                            <SearchIcon style={{ width: 20, height: 20, color: 'rgba(0, 0, 0, 0.54)' }} />
+                            <SearchIcon style={{ width: 24, height: 24, color: 'rgba(0, 0, 0, 0.54)' }} />
                         </InputAdornment>
                     ),
                     endAdornment: search && (
@@ -74,7 +74,7 @@ function SearchableList<T extends Record<string, any> & { id: number }>({
                                 size="small"
                                 aria-label="Clear search"
                             >
-                                <ClearIcon style={{ width: 18, height: 18, color: 'currentColor' }} />
+                                <ClearIcon style={{ width: 24, height: 24, color: 'currentColor' }} />
                             </IconButton>
                         </InputAdornment>
                     ),
@@ -104,7 +104,8 @@ function SearchableList<T extends Record<string, any> & { id: number }>({
                                         onClick={(e: React.MouseEvent) => onDeleteClick(item.id, e)}
                                         disabled={!!deleteLoading[item.id]}
                                         label={`Delete ${displayText}`}
-                                        icon={<DeleteIcon />}
+                                        icon={<DeleteIcon style={{ height: 24, width: 24, }} />}
+
                                     />
                                 }
                                 disablePadding

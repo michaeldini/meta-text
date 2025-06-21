@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography, Button, Paper, Box, useTheme } from '@mui/material';
 import { useLocation } from 'react-router-dom';
-import SourceDocInfo from '../../../features/info/components/SourceDocInfo';
+import SourceDocInfo from '../../../features/sourcedoc/components/SourceDocInfo';
 import Chunks from '../../../features/chunks';
 import PageContainer from '../../../components/PageContainer';
 import { useChunkStore } from '../../../store/chunkStore';

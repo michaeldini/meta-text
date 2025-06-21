@@ -1,5 +1,6 @@
 # Project Overview
 This is a monorepo containing a full-stack application with a React frontend and FastAPI backend.
+The codebase uses modern best practices, but prioritizes readability, maintainability, and a clean user interface over complexity.
 
 ## Frontend Stack
 - Build System: Vite

@@ -1,11 +1,9 @@
 import React, { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { Paper, Typography, Alert, Button } from '@mui/material';
-import SourceDocInfo from '../../features/info/components/SourceDocInfo';
+import SourceDocInfo from '../../features/sourcedoc/components/SourceDocInfo';
+import SourceDoc from '../../features/sourcedoc/components/SourceDoc';
 import { useSourceDocumentDetail } from '../../store/sourceDocumentDetailStore';
-import {
-    sourceDocDetailPaper,
-} from '../../styles/styles';
 import log from '../../utils/logger';
 import ErrorBoundary from '../../components/ErrorBoundary';
 import LoadingBoundary from '../../components/LoadingBoundary';
@@ -62,11 +60,8 @@ export default function SourceDocDetailPage() {
                             <Typography variant="h4" gutterBottom>{doc.title}</Typography>
                             <SourceDocInfo doc={doc} onInfoUpdate={refetch} />
                             <Button onClick={refetch}>{MESSAGES.REFRESH}</Button>
-                            <Paper sx={sourceDocDetailPaper} elevation={3}>
-                                <Typography variant="body2" aria-label="Document Text">
-                                    {doc.text}
-                                </Typography>
-                            </Paper>
+                            <SourceDoc doc={doc} /* Assuming SourceDoc is a component that displays the document details */
+                            />
                         </>
                     ) : (
                         <Alert severity="info">{MESSAGES.DOC_NOT_FOUND}</Alert>

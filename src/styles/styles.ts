@@ -1,29 +1,21 @@
-
+/**
+ * Top-level page container styles
+ * Provides consistent layout foundation for all pages
+ */
 export const pageContainer = {
-    mt: 2,
-    width: '100vw',
+    // Layout structure
     display: 'flex',
     flexDirection: 'column' as const,
+
+    // Spacing and dimensions
+    width: '100%',
+    minHeight: '100vh', // Ensure full viewport height
+
+    // Responsive spacing - more space on larger screens
+    pt: { xs: 2, sm: 3, md: 4 }, // top padding
+    px: { xs: 2, sm: 3, md: 4 }, // horizontal padding
+
+    // Max width for optimal reading experience on large screens
+    maxWidth: '1400px',
+    mx: 'auto', // center the container
 }
-
-export const sourceDocDetailContainer = {
-    p: 4,
-};
-
-export const sourceDocDetailPaper = {
-    p: 4,
-    fontFamily: '"Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
-    fontSize: '1.05rem',
-    lineHeight: 1.7,
-    letterSpacing: '0.01em',
-
-};
-
-export const sourceDocInfoDetailsBox = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    gap: 2,
-    padding: 5,
-    mb: 4,
-};
