@@ -1,14 +1,14 @@
-import { FORM_STYLES } from '../constants';
+import { Theme } from '@mui/material/styles';
 
-export const uploadFormInner = {
+export const uploadFormInner = (theme: Theme) => ({
     display: 'flex',
     flexDirection: 'column' as const,
     alignItems: 'start' as const,
-    gap: FORM_STYLES.FORM_SPACING,
-};
+    gap: theme.spacing(2),
+});
 
 // Screen reader only styles
-export const srOnly = {
+export const srOnly = (theme: Theme) => ({
     position: 'absolute' as const,
     width: '1px',
     height: '1px',
@@ -17,5 +17,5 @@ export const srOnly = {
     overflow: 'hidden' as const,
     clip: 'rect(0, 0, 0, 0)',
     whiteSpace: 'nowrap' as const,
-    border: 0,
-};
+    border: `1px solid ${theme.palette.divider}`,
+});
