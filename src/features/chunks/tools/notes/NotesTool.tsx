@@ -76,7 +76,7 @@ const NotesTool: React.FC<NotesToolComponentProps> = ({
                     size="small"
                     aria-label="Notes and summary"
                 >
-                    <NotesIcon />
+                    <NotesIcon style={{ width: 20, height: 20, color: 'currentColor' }} />
                 </IconButton>
             </Tooltip>
         );

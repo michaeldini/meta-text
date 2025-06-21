@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 import { Box, IconButton, Paper } from '@mui/material';
-import MergeChunksTool from '../tools/merge/MergeChunksTool';
+import { MergeChunksTool } from '../tools';
 import WordActionDialog from '../layouts/dialogs/WordActionDialog';
 import { chunkWordBox, wordsContainer, chunkUndoIconButton, chunkTextBox } from '../styles/styles';
 

@@ -81,7 +81,7 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
                     placement={isFloating ? 'left' : 'top'}
                 >
                     <ToggleButton value="notes-summary" aria-label="Show Notes/Summary">
-                        <NotesIcon sx={isFloating ? {} : { mr: 1 }} />
+                        <NotesIcon style={isFloating ? { width: 24, height: 24, color: 'currentColor' } : { marginRight: 8 }} />
                     </ToggleButton>
                 </Tooltip>
                 <Tooltip
@@ -91,7 +91,7 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
                     placement={isFloating ? 'left' : 'top'}
                 >
                     <ToggleButton value="comparison" aria-label="Show Comparison">
-                        <CompareArrowsIcon sx={isFloating ? {} : { mr: 1 }} />
+                        <CompareArrowsIcon style={isFloating ? { width: 24, height: 24, color: 'currentColor' } : { marginRight: 8 }} />
                     </ToggleButton>
                 </Tooltip>
                 <Tooltip
@@ -101,7 +101,7 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
                     placement={isFloating ? 'left' : 'top'}
                 >
                     <ToggleButton value="ai-image" aria-label="Show AI Image">
-                        <PhotoFilterIcon sx={isFloating ? {} : { mr: 1 }} />
+                        <PhotoFilterIcon style={isFloating ? { width: 24, height: 24, color: 'currentColor' } : { marginRight: 8 }} />
                     </ToggleButton>
                 </Tooltip>
             </ToggleButtonGroup>

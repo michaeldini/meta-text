@@ -52,7 +52,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 InputProps={{
                     startAdornment: (
                         <InputAdornment position="start">
-                            <SearchIcon color="action" />
+                            <SearchIcon style={{ width: 20, height: 20, color: 'rgba(0, 0, 0, 0.54)' }} />
                         </InputAdornment>
                     ),
                     endAdornment: value && (

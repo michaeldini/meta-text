@@ -29,9 +29,9 @@ export default defineConfig({
             },
             // Exclude unused icon imports
             external: (id) => {
-                // Exclude unused Heroicons imports
-                if (id.includes('heroicons/solid')) {
-                    return true; // Explicitly externalize Heroicons
+                // Exclude unused Heroicons imports - new format
+                if (id.includes('@heroicons/react/24/')) {
+                    return false; // Include these in the bundle since we use them
                 }
                 return false;
             }

@@ -90,7 +90,7 @@ export default function MetaTextReviewPage() {
                 {metatextId && (
                     <Tooltip title="Back to MetaText Detail">
                         <IconButton onClick={() => navigate(metaTextDetailRoute(String(metatextId)))}>
-                            <ArrowBackIcon />
+                            <ArrowBackIcon style={{ width: 24, height: 24, color: 'currentColor' }} />
                         </IconButton>
                     </Tooltip>
                 )}

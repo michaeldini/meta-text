@@ -1,33 +1,41 @@
-/**
- * Custom Heroicons Bundle
- * Only includes the icons actually used in the app
- * This replaces importing from 'heroicons/solid' directly
- */
-
 // Navigation & Actions
-export { default as ArrowBackIcon } from 'heroicons/solid/ArrowBack';
+export { ArrowLeftIcon } from '@heroicons/react/24/solid';
+export { ArrowLeftIcon as ArrowBackIcon } from '@heroicons/react/24/solid';
+export { Bars3Icon } from '@heroicons/react/24/solid';
+export { Bars3Icon as MenuIcon } from '@heroicons/react/24/solid';
+export { ArrowUturnLeftIcon } from '@heroicons/react/24/solid';
+export { ArrowUturnLeftIcon as UndoArrowIcon } from '@heroicons/react/24/solid';
 
 // Search & Clear 
-export { default as SearchIcon } from 'heroicons/solid/Search';
-export { default as ClearIcon } from 'heroicons/solid/Clear';
+export { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
+export { MagnifyingGlassIcon as SearchIcon } from '@heroicons/react/24/solid';
+export { MagnifyingGlassIcon as Search } from '@heroicons/react/24/solid';
+export { XMarkIcon } from '@heroicons/react/24/solid';
+export { XMarkIcon as ClearIcon } from '@heroicons/react/24/solid';
+export { XMarkIcon as Clear } from '@heroicons/react/24/solid';
 
 // Actions
-export { default as DeleteIcon } from 'heroicons/solid/Delete';
-export { default as FileUploadIcon } from 'heroicons/solid/FileUpload';
+export { TrashIcon } from '@heroicons/react/24/solid';
+export { TrashIcon as DeleteIcon } from '@heroicons/react/24/solid';
+export { ArrowUpTrayIcon } from '@heroicons/react/24/solid';
+export { ArrowUpTrayIcon as FileUploadIcon } from '@heroicons/react/24/solid';
 
 // Chunks Tools
-export { default as CompareArrowsIcon } from 'heroicons/solid/CompareArrows';
-export { default as PhotoFilterIcon } from 'heroicons/solid/PhotoFilter';
-export { default as NotesIcon } from 'heroicons/solid/Notes';
-export { default as ContentCutIcon } from 'heroicons/solid/ContentCut';
-export { default as QuestionMarkIcon } from 'heroicons/solid/QuestionMark';
+export { ArrowsRightLeftIcon } from '@heroicons/react/24/solid';
+export { ArrowsRightLeftIcon as CompareArrowsIcon } from '@heroicons/react/24/solid';
+export { AdjustmentsHorizontalIcon } from '@heroicons/react/24/solid';
+export { AdjustmentsHorizontalIcon as PhotoFilterIcon } from '@heroicons/react/24/solid';
+export { DocumentTextIcon } from '@heroicons/react/24/solid';
+export { DocumentTextIcon as NotesIcon } from '@heroicons/react/24/solid';
+export { ScissorsIcon } from '@heroicons/react/24/solid';
+export { ScissorsIcon as ContentCutIcon } from '@heroicons/react/24/solid';
+export { QuestionMarkCircleIcon } from '@heroicons/react/24/solid';
+export { QuestionMarkCircleIcon as QuestionMarkIcon } from '@heroicons/react/24/solid';
 
 // Expand/Collapse
-export { default as ExpandMoreIcon } from 'heroicons/solid/ExpandMore';
-export { default as ExpandLessIcon } from 'heroicons/solid/ExpandLess';
-
-// Re-export for destructured imports (e.g., import { Search, Clear })
-export { default as Search } from 'heroicons/solid/Search';
-export { default as Clear } from 'heroicons/solid/Clear';
-export { default as ExpandMore } from 'heroicons/solid/ExpandMore';
-export { default as ExpandLess } from 'heroicons/solid/ExpandLess';
+export { ChevronDownIcon } from '@heroicons/react/24/solid';
+export { ChevronDownIcon as ExpandMoreIcon } from '@heroicons/react/24/solid';
+export { ChevronDownIcon as ExpandMore } from '@heroicons/react/24/solid';
+export { ChevronUpIcon } from '@heroicons/react/24/solid';
+export { ChevronUpIcon as ExpandLessIcon } from '@heroicons/react/24/solid';
+export { ChevronUpIcon as ExpandLess } from '@heroicons/react/24/solid';

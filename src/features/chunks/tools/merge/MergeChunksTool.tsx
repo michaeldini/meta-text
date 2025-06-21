@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
-import UndoArrowIcon from '../../../../components/icons/UndoArrowIcon';
+import { UndoArrowIcon } from '../../../../components/icons';
 import { useMergeChunks } from './useMergeChunks';
 import { MergeChunksToolProps } from '../types';
 
@@ -41,7 +41,7 @@ const MergeChunksTool: React.FC<MergeChunksToolComponentProps> = ({
                 onClick={handleMerge}
                 aria-label="Undo split (merge with next chunk)"
             >
-                <UndoArrowIcon />
+                <UndoArrowIcon style={{ width: 20, height: 20, color: 'currentColor' }} />
             </IconButton>
         </Tooltip>
     );

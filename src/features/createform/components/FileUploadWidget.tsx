@@ -43,7 +43,7 @@ const FileUploadWidget: React.FC<FileUploadWidgetProps> = React.memo(({
                 <Button
                     variant="outlined"
                     component="span"
-                    startIcon={<FileUploadIcon />}
+                    startIcon={<FileUploadIcon style={{ width: 20, height: 20 }} />}
                     sx={buttonStyles}
                     aria-describedby={file ? 'selected-file-name' : undefined}
                 >

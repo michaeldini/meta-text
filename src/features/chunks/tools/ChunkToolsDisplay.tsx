@@ -13,9 +13,9 @@ interface ChunkToolsDisplayProps {
 }
 
 const tabOptions = [
-    { value: 'notes-summary', icon: <NotesIcon />, key: 'notes-summary' },
-    { value: 'comparison', icon: <CompareArrowsIcon />, key: 'comparison' },
-    { value: 'ai-image', icon: <PhotoFilterIcon />, key: 'ai-image' },
+    { value: 'notes-summary', icon: <NotesIcon style={{ width: 20, height: 20 }} />, key: 'notes-summary' },
+    { value: 'comparison', icon: <CompareArrowsIcon style={{ width: 20, height: 20 }} />, key: 'comparison' },
+    { value: 'ai-image', icon: <PhotoFilterIcon style={{ width: 20, height: 20 }} />, key: 'ai-image' },
 ] as const;
 
 type TabType = typeof tabOptions[number]['value'];

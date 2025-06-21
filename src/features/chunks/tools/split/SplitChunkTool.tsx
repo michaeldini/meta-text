@@ -41,7 +41,7 @@ const SplitChunkTool: React.FC<SplitChunkToolComponentProps> = ({
                 size="small"
                 aria-label={`Split chunk at ${word}`}
             >
-                <ContentCutIcon />
+                <ContentCutIcon style={{ width: 24, height: 24, color: 'currentColor' }} />
             </IconButton>
         </Tooltip>
     );

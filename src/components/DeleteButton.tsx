@@ -22,7 +22,7 @@ export default function DeleteButton({ onClick, disabled, label = "Delete", icon
                     aria-label={label}
                     size="large"
                 >
-                    {icon || <DeleteIcon />}
+                    {icon || <DeleteIcon style={{ width: 24, height: 24, color: 'currentColor' }} />}
                 </IconButton>
             </span>
         </Tooltip>

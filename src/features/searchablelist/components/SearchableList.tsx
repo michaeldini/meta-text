@@ -62,7 +62,7 @@ function SearchableList<T extends Record<string, any> & { id: number }>({
                 InputProps={{
                     startAdornment: (
                         <InputAdornment position="start">
-                            <SearchIcon color="action" />
+                            <SearchIcon style={{ width: 20, height: 20, color: 'rgba(0, 0, 0, 0.54)' }} />
                         </InputAdornment>
                     ),
                     endAdornment: search && (
@@ -74,7 +74,7 @@ function SearchableList<T extends Record<string, any> & { id: number }>({
                                 size="small"
                                 aria-label="Clear search"
                             >
-                                <ClearIcon />
+                                <ClearIcon style={{ width: 18, height: 18, color: 'currentColor' }} />
                             </IconButton>
                         </InputAdornment>
                     ),

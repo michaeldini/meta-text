@@ -53,7 +53,7 @@ const ComparisonTool: React.FC<ComparisonToolComponentProps> = ({
                     size="small"
                     aria-label="Generate comparison"
                 >
-                    <CompareArrowsIcon />
+                    <CompareArrowsIcon style={{ width: 24, height: 24, color: 'currentColor' }} />
                 </IconButton>
             </Tooltip>
         );

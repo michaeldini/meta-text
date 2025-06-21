@@ -11,7 +11,7 @@ import {
     useTheme,
     IconButton,
 } from '@mui/material';
-import { ChevronDownIcon, MenuIcon } from '@heroicons/react/solid';
+import { ChevronDownIcon, MenuIcon } from '../../../components/icons';
 import { useAuth } from '../../../store/authStore';
 import { useNavigation } from '../hooks/useNavigation';
 import { useDropdownMenu } from '../hooks/useDropdownMenu';
@@ -104,8 +104,8 @@ const NavBar: React.FC<NavBarProps> = ({
     }), [theme]);
 
     // Replace Material UI Icons with Heroicons
-    const menuIcon = <MenuIcon className="h-6 w-6 text-gray-500" />;
-    const dropdownIcon = <ChevronDownIcon className="h-5 w-5 text-gray-500" />;
+    const menuIcon = <MenuIcon style={{ width: 24, height: 24, color: theme.palette.text.secondary }} />;
+    const dropdownIcon = <ChevronDownIcon style={{ width: 20, height: 20, color: theme.palette.text.secondary }} />;
 
     return (
         <AppBar

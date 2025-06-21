@@ -71,7 +71,7 @@ const ImageTool: React.FC<ImageToolComponentProps> = ({
                     size="small"
                     aria-label="Generate AI image"
                 >
-                    <PhotoFilterIcon />
+                    <PhotoFilterIcon style={{ width: 20, height: 20, color: 'currentColor' }} />
                 </IconButton>
             </Tooltip>
         );
