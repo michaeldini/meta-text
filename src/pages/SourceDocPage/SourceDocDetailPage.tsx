@@ -57,10 +57,9 @@ export default function SourceDocDetailPage() {
                         </Alert>
                     ) : doc ? (
                         <>
-                            <Typography variant="h4" gutterBottom>{doc.title}</Typography>
+                            {/* <Button onClick={refetch}>{MESSAGES.REFRESH}</Button> */}
                             <SourceDocInfo doc={doc} onInfoUpdate={refetch} />
-                            <Button onClick={refetch}>{MESSAGES.REFRESH}</Button>
-                            <SourceDoc doc={doc} /* Assuming SourceDoc is a component that displays the document details */
+                            <SourceDoc doc={doc}
                             />
                         </>
                     ) : (

@@ -23,6 +23,37 @@ export const chunkMainBox = {
     }
 };
 
+
+// ChunkToolsDisplay styles
+export const chunkToolsContainer = {
+    display: 'flex',
+    flexDirection: 'row',
+    flex: 1,
+    minHeight: '100vh', // Allow container to size to content
+};
+
+export const chunkToolsBox = {
+    position: 'sticky',
+    // Sticky positioning: stays in view during scroll until parent container boundary
+    top: 20, // Account for navbar height (64px) + some padding (16px)
+    alignSelf: 'flex-start', // Ensure it doesn't stretch to full height
+    width: '100%', // Take full width of parent
+    zIndex: 1, // Ensure it stays above other content when sticky
+    backgroundColor: 'background.default',
+    borderRadius: 1,
+    border: '1px solid',
+    borderColor: 'divider',
+    boxShadow: 'none',
+    opacity: 0.85,
+    transition: 'all 0.2s ease',
+    '&:hover': {
+        opacity: 1,
+        borderColor: 'primary.light',
+    }
+};
+
+
+
 export const chunkTextBox = { p: 2, fontSize: '1.5rem', lineHeight: 1.5 };
 
 export const chunkTextField = {
@@ -129,4 +160,3 @@ export const chunkLightboxPromptBox = {
     borderRadius: 2,
     boxShadow: 1,
 };
-

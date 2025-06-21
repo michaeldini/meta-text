@@ -25,7 +25,7 @@ const AiGenerationButton: React.FC<AiGenerationButtonProps> = ({ label, toolTip,
                 {loading ? <CircularProgress size={20} aria-label="Loading AI generation" /> :
                     <>
                         {label}
-                        <img src="/ai-stars.png" alt="AI" style={{ width: 20, height: 20, marginLeft: 8 }} />
+                        <img src="/ai-stars.png" alt="AI" style={{ width: 24, height: 24, marginLeft: 8 }} />
                     </>
                 }
             </Button>

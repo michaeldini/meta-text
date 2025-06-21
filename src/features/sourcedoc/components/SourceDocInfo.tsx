@@ -11,16 +11,20 @@ interface SourceDocInfoProps {
     onInfoUpdate?: () => void;
 }
 
-const FIELD_LABELS: { [K in keyof SourceDocument]?: string } = {
-    title: 'Title',
-    author: 'Author',
-    summary: 'Summary',
-    characters: 'Characters',
-    locations: 'Locations',
-    themes: 'Themes',
-    symbols: 'Symbols',
-    text: 'Text',
-};
+interface FieldConfig {
+    key: keyof SourceDocument;
+    label: string;
+}
+
+const FIELD_CONFIG: FieldConfig[] = [
+    { key: 'title', label: 'Title' },
+    { key: 'author', label: 'Author' },
+    { key: 'summary', label: 'Summary' },
+    { key: 'characters', label: 'Characters' },
+    { key: 'locations', label: 'Locations' },
+    { key: 'themes', label: 'Themes' },
+    { key: 'symbols', label: 'Symbols' },
+];
 
 function splitToArray(str?: string | null): string[] {
     if (!str) return [];
@@ -31,6 +35,8 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>({
+        author: false,
+        summary: false,
         characters: false,
         locations: false,
         themes: false,
@@ -62,51 +68,79 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
         }
     };
 
-    // Separate fields into different categories
-    const titleField = doc.title ? (
-        <Box sx={{ mb: 1.5 }}>
-            <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                {doc.title}
-            </Typography>
-        </Box>
-    ) : null;
+    const renderField = (config: FieldConfig) => {
+        const value = doc[config.key];
+        if (!value) return null;
 
-    const authorField = doc.author ? (
-        <Box sx={{ mb: 1 }}>
-            <Typography variant="caption" color="secondary" sx={{ fontWeight: 600 }}>
-                Author
-            </Typography>
-            <Typography variant="body2" sx={{ mt: 0.5, lineHeight: 1.3 }}>
-                {doc.author}
-            </Typography>
-        </Box>
-    ) : null;
-
-    const summaryField = doc.summary ? (
-        <Box sx={{ mb: 1 }}>
-            <Typography variant="caption" color="secondary" sx={{ fontWeight: 600 }}>
-                Summary
-            </Typography>
-            <Typography variant="body2" sx={{ mt: 0.5, lineHeight: 1.3 }}>
-                {doc.summary}
-            </Typography>
-        </Box>
-    ) : null;
-
-    // List fields
-    const listFields = ['characters', 'locations', 'themes', 'symbols'].map(key => {
-        const value = doc[key as keyof SourceDocument];
-        const label = FIELD_LABELS[key as keyof SourceDocument];
-        const arr = splitToArray(value as string);
-        if (arr.length === 0) return null;
-
-        const isOpen = openSections[key];
-
-        return (
-            <React.Fragment key={key}>
-                <ListItemButton onClick={() => handleToggleSection(key)} dense>
+        // Handle title field with special styling (non-collapsible)
+        if (config.key === 'title') {
+            return (
+                <ListItem key={config.key} dense>
                     <ListItemText
-                        primary={label}
+                        primary={value as string}
+                        slotProps={{
+                            primary: {
+                                variant: 'h6',
+                                sx: { fontWeight: 600 }
+                            }
+                        }}
+                    />
+                </ListItem>
+            );
+        }
+
+        // Handle list fields (comma-separated values)
+        const listFields = ['characters', 'locations', 'themes', 'symbols'];
+        if (listFields.includes(config.key)) {
+            const arr = splitToArray(value as string);
+            if (arr.length === 0) return null;
+
+            const isOpen = openSections[config.key];
+            return (
+                <React.Fragment key={config.key}>
+                    <ListItemButton onClick={() => handleToggleSection(config.key)} dense>
+                        <ListItemText
+                            primary={config.label}
+                            slotProps={{
+                                primary: {
+                                    variant: 'caption',
+                                    color: 'secondary',
+                                    fontWeight: 600
+                                }
+                            }}
+                        />
+                        <ListItemIcon sx={{ minWidth: 'auto' }}>
+                            {isOpen ? <ExpandLess /> : <ExpandMore />}
+                        </ListItemIcon>
+                    </ListItemButton>
+                    <Collapse in={isOpen} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                            {arr.map((item, i) => (
+                                <ListItemButton key={i} sx={{ pl: 4 }} dense>
+                                    <ListItemText
+                                        primary={item}
+                                        slotProps={{
+                                            primary: {
+                                                variant: 'caption',
+                                                sx: { lineHeight: 1.0 }
+                                            }
+                                        }}
+                                    />
+                                </ListItemButton>
+                            ))}
+                        </List>
+                    </Collapse>
+                </React.Fragment>
+            );
+        }
+
+        // Handle collapsible text fields (summary, author, etc.)
+        const isOpen = openSections[config.key];
+        return (
+            <React.Fragment key={config.key}>
+                <ListItemButton onClick={() => handleToggleSection(config.key)} dense>
+                    <ListItemText
+                        primary={config.label}
                         slotProps={{
                             primary: {
                                 variant: 'caption',
@@ -120,62 +154,38 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
                     </ListItemIcon>
                 </ListItemButton>
                 <Collapse in={isOpen} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                        {arr.map((item, i) => (
-                            <ListItemButton key={i} sx={{ pl: 4 }} dense>
-                                <ListItemText
-                                    primary={item}
-                                    slotProps={{
-                                        primary: {
-                                            variant: 'caption',
-                                            sx: { lineHeight: 1.0 }
-                                        }
-                                    }}
-                                />
-                            </ListItemButton>
-                        ))}
-                    </List>
+                    <ListItem sx={{ pl: 4 }} dense>
+                        <ListItemText
+                            primary={value as string}
+                            slotProps={{
+                                primary: {
+                                    variant: 'body2',
+                                    sx: { lineHeight: 1.3 }
+                                }
+                            }}
+                        />
+                    </ListItem>
                 </Collapse>
             </React.Fragment>
         );
-    }).filter(Boolean);
+    };
 
     return (
         <Paper sx={{ p: 1.5 }} elevation={2}>
-            {/* Title at the top */}
-            {titleField}
+            <List dense disablePadding>
+                {FIELD_CONFIG.map(config => renderField(config))}
+            </List>
 
-            {/* Two-column layout */}
-            <Box sx={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: 2,
-                mb: 1.5,
-                minHeight: '100px'
-            }}>
-                {/* Left column - Summary and Author */}
-                <Box>
-                    {authorField}
-                    {summaryField}
-                </Box>
-
-                {/* Right column - Lists */}
-                <Box>
-                    <List dense disablePadding>
-                        {listFields}
-                    </List>
-                </Box>
-            </Box>
-
-            <Divider sx={{ my: 1 }} />
+            {/* <Divider sx={{ my: 1 }} /> */}
             <AiGenerationButton
                 label="Generate Info"
                 toolTip="Generate or update document info using AI"
                 onClick={handleDownloadInfo}
                 loading={loading}
+                sx={{ fontSize: '0.7rem' }}
             />
             {error && <Alert severity="error" sx={{ mt: 1 }}>{error}</Alert>}
-        </Paper >
+        </Paper>
     );
 };
 

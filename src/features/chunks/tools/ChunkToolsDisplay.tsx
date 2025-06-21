@@ -7,6 +7,7 @@ import ComparisonTab from '../layouts/tabs/ComparisonTab';
 import AiImageTab from '../layouts/tabs/AiImageTab';
 import { useChunkStore } from '../../../store/chunkStore';
 import type { Chunk } from '../../../types/chunk';
+import { chunkToolsContainer, chunkToolsBox } from '../styles/styles';
 
 interface ChunkToolsDisplayProps {
     chunk: Chunk;
@@ -32,31 +33,8 @@ const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk }) => {
     }, [chunk.id]);
 
     return (
-        <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            flex: 1,
-            minHeight: 'fit-content', // Allow container to size to content
-        }}>
-            <Box sx={{
-                // Sticky positioning: stays in view during scroll until parent container boundary
-                position: 'sticky',
-                top: 20, // Account for navbar height (64px) + some padding (16px)
-                alignSelf: 'flex-start', // Ensure it doesn't stretch to full height
-                width: '100%', // Take full width of parent
-                zIndex: 1, // Ensure it stays above other content when sticky
-                backgroundColor: 'background.default',
-                borderRadius: 1,
-                border: '1px solid',
-                borderColor: 'divider',
-                boxShadow: 'none',
-                opacity: 0.85,
-                transition: 'all 0.2s ease',
-                '&:hover': {
-                    opacity: 1,
-                    borderColor: 'primary.light',
-                }
-            }}>
+        <Box sx={chunkToolsContainer}>
+            <Box sx={chunkToolsBox}>
                 {/* Show Notes/Summary if selected */}
                 {activeTabs.includes('notes-summary') && (
                     <NotesSummaryTab chunk={chunk} updateChunkField={updateChunkField} />

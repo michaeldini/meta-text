@@ -88,7 +88,7 @@ function App() {
                         width: '100%', // Ensure full width
                         margin: 0, // Remove any default margins
                         padding: 0, // Remove any default padding
-                        overflow: 'hidden', // Prevent horizontal scrollbar from navbar overflow
+
                     }}
                 >
                     <NavBar config={navbarConfig} />
