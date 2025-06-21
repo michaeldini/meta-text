@@ -72,3 +72,38 @@ src
   ├── pages
   └── styles
 ```
+
+## Usage Guidelines
+
+### Import Icons
+
+```typescript
+// Always import from the centralized location
+import { ArrowBackIcon, SearchIcon, MenuIcon } from '../../components/icons';
+
+// For multiple icons
+import { 
+  ArrowBackIcon, 
+  SearchIcon, 
+  MenuIcon,
+  TrashIcon 
+} from '../../components/icons';
+```
+
+### Styling Icons
+
+```typescript
+// Use standard React SVG props for Heroicons
+<SearchIcon 
+  style={{ width: 24, height: 24, color: theme.palette.text.primary }} 
+/>
+
+// Or with className for Tailwind (if using)
+<SearchIcon className="w-6 h-6 text-gray-600" />
+```
+
+### Adding New Icons
+
+1. Add the import to `/src/components/icons/index.ts`
+2. Export with a descriptive alias if needed
+3. Group with similar icons (Navigation, Actions, etc.)
