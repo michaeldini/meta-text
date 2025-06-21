@@ -21,7 +21,7 @@ const ChunkImageModal: React.FC<ChunkImageDisplayProps> = ({
     onError,
     lightboxOpen,
     setLightboxOpen,
-    height = '400px',
+    height = '300px',
 }) => (
     <>
         <Box sx={chunkImageBox}

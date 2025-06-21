@@ -7,7 +7,8 @@ import ComparisonTab from '../layouts/tabs/ComparisonTab';
 import AiImageTab from '../layouts/tabs/AiImageTab';
 import { useChunkStore } from '../../../store/chunkStore';
 import type { Chunk } from '../../../types/chunk';
-import { chunkToolsContainer, chunkToolsBox, } from './styles/styles';
+import { createChunkToolsContainerStyles, createChunkToolsBoxStyles } from './styles/styles';
+import { useTheme } from '@mui/material/styles';
 
 interface ChunkToolsDisplayProps {
     chunk: Chunk;
@@ -22,6 +23,9 @@ const tabOptions = [
 type TabType = typeof tabOptions[number]['value'];
 
 const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk }) => {
+    const theme = useTheme();
+    const chunkToolsContainer = createChunkToolsContainerStyles(theme);
+    const chunkToolsBox = createChunkToolsBoxStyles(theme);
 
     // Use store selectors directly instead of wrapper hooks
     const activeTabs = useChunkStore(state => state.activeTabs);

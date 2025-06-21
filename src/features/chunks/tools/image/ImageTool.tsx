@@ -70,7 +70,7 @@ const ImageTool: React.FC<ImageToolComponentProps> = ({
                     size="small"
                     aria-label="Generate AI image"
                 >
-                    <PhotoFilterIcon style={{ width: 20, height: 20, color: 'currentColor' }} />
+                    <PhotoFilterIcon style={{ width: 24, height: 24, color: 'currentColor' }} />
                 </IconButton>
             </Tooltip>
         );
@@ -78,7 +78,7 @@ const ImageTool: React.FC<ImageToolComponentProps> = ({
 
     return (
         <>
-            <Paper>
+            <Box sx={{ p: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', gap: 1, minWidth: 400 }}>
                 <AiGenerationButton
                     label="Generate Image"
                     toolTip="Generate an image for this chunk using AI"
@@ -99,7 +99,7 @@ const ImageTool: React.FC<ImageToolComponentProps> = ({
                         setLightboxOpen={setLightboxOpen}
                     />
                 )}
-            </Paper>
+            </Box>
 
             <Dialog open={state.dialogOpen} onClose={closeDialog} maxWidth="xs" fullWidth>
                 <DialogTitle>Generate Image</DialogTitle>

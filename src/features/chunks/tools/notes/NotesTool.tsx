@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Paper, IconButton, Tooltip } from '@mui/material';
+import { Paper, IconButton, Tooltip, Box } from '@mui/material';
 import { NotesIcon } from '../../../../components/icons';
 import ChunkTextField from '../../components/ChunkTextField';
 import { useNotesTool } from './useNotesTool';
@@ -76,14 +76,14 @@ const NotesTool: React.FC<NotesToolComponentProps> = ({
                     size="small"
                     aria-label="Notes and summary"
                 >
-                    <NotesIcon style={{ width: 20, height: 20, color: 'currentColor' }} />
+                    <NotesIcon style={{ width: 24, height: 24, color: 'currentColor' }} />
                 </IconButton>
             </Tooltip>
         );
     }
 
     return (
-        <Paper elevation={6} sx={{ p: 2, mb: 2, gap: 2, display: 'flex', flexDirection: 'column', width: '30vw' }}>
+        <Box sx={{ p: 1, gap: 2, display: 'flex', flexDirection: 'column', width: '100%', minWidth: 400 }}>
             <ChunkTextField
                 label="Summary"
                 value={summary}
@@ -105,7 +105,7 @@ const NotesTool: React.FC<NotesToolComponentProps> = ({
                     {error}
                 </div>
             )}
-        </Paper>
+        </Box>
     );
 };
 

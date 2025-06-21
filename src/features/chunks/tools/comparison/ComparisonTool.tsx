@@ -64,7 +64,7 @@ const ComparisonTool: React.FC<ComparisonToolComponentProps> = ({
     }
 
     return (
-        <Paper elevation={6}>
+        <Box sx={{ minWidth: 400, display: 'flex', flexDirection: 'column', alignItems: 'center', p: 1, gap: 1 }}>
             <AiGenerationButton
                 label="What Did I Miss?"
                 toolTip="Generate a summary of what you might have missed in this chunk based on your notes and summary."
@@ -77,7 +77,7 @@ const ComparisonTool: React.FC<ComparisonToolComponentProps> = ({
                 {comparisonText || <span style={{ color: '#aaa' }}>No comparison yet.</span>}
             </Box>
             {error && <Box sx={{ color: 'error.main', fontSize: 12 }}>{error}</Box>}
-        </Paper>
+        </Box>
     );
 };
 

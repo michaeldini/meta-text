@@ -1,12 +1,6 @@
 
 export const chunkImageBox = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    height: 240,
-    borderRadius: 2,
-    overflow: 'hidden',
+    p: 0,
 };
 
 export const chunkImageLoadingOverlay = {
