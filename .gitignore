@@ -42,3 +42,4 @@ backend/erd_from_sqlite.pdf
 /graphs
 /coverage
 src/pages/MetaTextPage/Additional Enhancements to Consider.md
+package-lock.json
