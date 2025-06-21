@@ -12,7 +12,6 @@ export default defineConfig({
                 manualChunks: {
                     // Separate vendor chunks
                     'mui-core': ['@mui/material'],
-                    'mui-icons': ['@mui/icons-material'],
                     'react-vendor': ['react', 'react-dom', 'react-router-dom'],
                     'utils': ['zustand', 'loglevel'],
                     // Separate your chunks feature since it's large
@@ -30,9 +29,9 @@ export default defineConfig({
             },
             // Exclude unused icon imports
             external: (id) => {
-                // This helps exclude unused MUI icons that aren't in our custom bundle
-                if (id.includes('@mui/icons-material') && !id.includes('src/components/icons')) {
-                    return false; // Let bundler handle it (will be tree-shaken)
+                // Exclude unused Heroicons imports
+                if (id.includes('heroicons/solid')) {
+                    return true; // Explicitly externalize Heroicons
                 }
                 return false;
             }
@@ -51,19 +50,6 @@ export default defineConfig({
             'react',
             'react-dom',
             '@mui/material',
-            // Only include specific icons we use
-            '@mui/icons-material/ArrowBack',
-            '@mui/icons-material/Search',
-            '@mui/icons-material/Clear',
-            '@mui/icons-material/Delete',
-            '@mui/icons-material/CompareArrows',
-            '@mui/icons-material/PhotoFilter',
-            '@mui/icons-material/Notes',
-            '@mui/icons-material/ContentCut',
-            '@mui/icons-material/QuestionMark',
-            '@mui/icons-material/ExpandMore',
-            '@mui/icons-material/ExpandLess',
-            '@mui/icons-material/FileUpload',
             'zustand'
         ],
         exclude: [
