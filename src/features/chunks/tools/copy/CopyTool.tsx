@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, IconButton, Snackbar } from '@mui/material';
+import { Box, IconButton, Snackbar, Tooltip, Typography } from '@mui/material';
 import { useChunkStore } from '../../../../store/chunkStore';
 import { CopyIcon } from '../../../../components/icons';
 interface CopyToolProps {
@@ -38,13 +38,21 @@ const CopyTool: React.FC<CopyToolProps> = ({
     return (
         <>
             <Box sx={{ width: 40, height: 40, borderRadius: 1, border: '1px solid', }}>
-                <IconButton
-                    onClick={handleCopyChunk}
-                    disabled={!activeChunkId}
-                    data-testid={dataTestId}
+                <Tooltip
+                    title={<Typography variant="caption">Copy the active chunk</Typography>}
+                    arrow
+                    enterDelay={200}
+                    placement='left'
                 >
-                    <CopyIcon style={{ width: 24, height: 24, color: 'currentColor' }} />
-                </IconButton>
+
+                    <IconButton
+                        onClick={handleCopyChunk}
+                        disabled={!activeChunkId}
+                        data-testid={dataTestId}
+                    >
+                        <CopyIcon style={{ width: 24, height: 24, color: 'currentColor' }} />
+                    </IconButton>
+                </Tooltip>
             </Box>
             <Snackbar
                 open={snackbarOpen}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Button, ToggleButtonGroup, ToggleButton, Tooltip, Typography as MuiTypography } from '@mui/material';
+import { Box, Button, ToggleButtonGroup, ToggleButton, Tooltip, Typography } from '@mui/material';
 import { CompareArrowsIcon, PhotoFilterIcon, NotesIcon } from '../../../../components/icons';
 import { useChunkStore } from '../../../../store/chunkStore';
 import CopyTool from '../../tools/copy/CopyTool';
@@ -14,7 +14,6 @@ interface ChunkToolsNavbarProps {
 }
 
 const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
-    isFloating = false,
     className,
     'data-testid': dataTestId = 'chunk-tools-navbar'
 }) => {
@@ -36,20 +35,33 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
         setActiveTabs(tabs);
     };
 
-    const containerSx = isFloating
-        ? {
-            display: 'flex',
-            alignItems: 'center',
-            flexDirection: 'column',
-            // backgroundColor: 'background.paper',
-            borderRadius: 2,
-            padding: 0,
-            margin: 0,
-        }
-        : {
-            display: 'flex',
-            alignItems: 'center'
-        };
+    const containerSx = {
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column',
+        borderRadius: 2,
+        padding: 0,
+        margin: 0
+    };
+
+    const tooltipProps = {
+        arrow: true,
+        enterDelay: 200,
+        placement: "left" as const
+    };
+
+    const iconStyle = { width: 24, height: 24, color: 'currentColor' };
+
+    const tooltipTitles = {
+        notesSummary: <Typography variant="caption">
+            Show or hide the Notes/Summary editor for all chunks</Typography>,
+        comparison: <Typography variant="caption">
+            Show or hide the AI-generated comparison panel for all chunks</Typography>,
+        aiImage: <Typography variant="caption">
+            Show or hide the AI image panel for all chunks</Typography>,
+        copyChunk: <Typography variant="caption">
+            Copy the active chunk</Typography>
+    };
 
     return (
         <Box
@@ -57,75 +69,43 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
             data-testid={dataTestId}
             className={className}
         >
-
-            {!isFloating && (
-                <Typography variant="subtitle1">
-                    {`Active: ${activeChunkId}`}
-                </Typography>
-            )}
-            {!isFloating && (
-                <Button onClick={handleShowDialog} disabled={!activeChunkId}>
-                    Dialogue
-                </Button>
-            )}
             <ToggleButtonGroup
                 value={activeTabs}
                 onChange={handleTabsChange}
                 size="small"
-                orientation={isFloating ? 'vertical' : 'horizontal'}
-                sx={isFloating ? {} : { ml: 2 }}
+                orientation="vertical"
             >
                 <Tooltip
-                    title={<MuiTypography sx={{ fontSize: 16 }}>Show or hide the Notes/Summary editor for all chunks</MuiTypography>}
-                    arrow
-                    enterDelay={200}
-                    placement={isFloating ? 'left' : 'top'}
+                    title={tooltipTitles.notesSummary}
+                    {...tooltipProps}
                 >
                     <ToggleButton value="notes-summary" aria-label="Show Notes/Summary">
-                        <NotesIcon style={isFloating ? { width: 24, height: 24, color: 'currentColor' } : { marginRight: 8 }} />
+                        <NotesIcon style={iconStyle} />
                     </ToggleButton>
                 </Tooltip>
                 <Tooltip
-                    title={<MuiTypography sx={{ fontSize: 16 }}>Show or hide the AI-generated comparison panel for all chunks</MuiTypography>}
-                    arrow
-                    enterDelay={200}
-                    placement={isFloating ? 'left' : 'top'}
+                    title={tooltipTitles.comparison}
+                    {...tooltipProps}
                 >
                     <ToggleButton value="comparison" aria-label="Show Comparison">
-                        <CompareArrowsIcon style={isFloating ? { width: 24, height: 24, color: 'currentColor' } : { marginRight: 8 }} />
+                        <CompareArrowsIcon style={iconStyle} />
                     </ToggleButton>
                 </Tooltip>
                 <Tooltip
-                    title={<MuiTypography sx={{ fontSize: 16 }}>Show or hide the AI image panel for all chunks</MuiTypography>}
-                    arrow
-                    enterDelay={200}
-                    placement={isFloating ? 'left' : 'top'}
+                    title={tooltipTitles.aiImage}
+                    {...tooltipProps}
                 >
                     <ToggleButton value="ai-image" aria-label="Show AI Image">
-                        <PhotoFilterIcon style={isFloating ? { width: 24, height: 24, color: 'currentColor' } : { marginRight: 8 }} />
+                        <PhotoFilterIcon style={iconStyle} />
                     </ToggleButton>
                 </Tooltip>
             </ToggleButtonGroup>
             <Tooltip
-                title={<MuiTypography sx={{ fontSize: 16 }}>Copy the active chunk</MuiTypography>}
-                arrow
-                enterDelay={200}
-                placement={isFloating ? 'left' : 'top'}
+                title={tooltipTitles.copyChunk}
+                {...tooltipProps}
             >
-
                 <CopyTool />
             </Tooltip>
-            {/* {isFloating && (
-                <Button
-                    onClick={handleShowDialog}
-                    disabled={!activeChunkId}
-                    size="small"
-                    variant="outlined"
-                    sx={{ fontSize: '0.75rem', m: 0, p: 0 }}
-                >
-                    Test
-                </Button>
-            )} */}
         </Box>
     );
 };

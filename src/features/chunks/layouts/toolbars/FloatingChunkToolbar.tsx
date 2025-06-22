@@ -42,7 +42,7 @@ const FloatingChunkToolbar: React.FC<FloatingChunkToolbarProps> = ({
         width: '48px',
         position: 'fixed' as const,
         top: '72px',
-        right: '20px',
+        right: '15px',
         zIndex: theme.zIndex.speedDial, // High enough to be above content, but below modals
         transition: theme.transitions.create(['opacity', 'transform'], {
             duration: theme.transitions.duration.short,
@@ -59,7 +59,6 @@ const FloatingChunkToolbar: React.FC<FloatingChunkToolbarProps> = ({
                 data-testid={dataTestId}
             >
                 <ChunkToolsNavbar
-                    isFloating={true}
                     data-testid="floating-chunk-tools-navbar"
                 />
             </Box>

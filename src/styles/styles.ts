@@ -12,7 +12,7 @@ export const pageContainer = {
     minHeight: '100vh', // Ensure full viewport height
 
     // Responsive spacing - more space on larger screens
-    // pt: { xs: 2, sm: 3, md: 4 }, // top padding
+    pt: { xs: 2, sm: 3, md: 4 }, // top padding
     px: { xs: 2, sm: 3, md: 4 }, // horizontal padding
 
     // Max width for optimal reading experience on large screens
