@@ -3,7 +3,8 @@
  * This shows how to integrate the theme system into your existing app
  */
 
-import { Routes, Route, useLocation } from 'react-router-dom';
+import React, { JSX } from 'react';
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { Fade, Box, Typography } from '@mui/material';
 import { useMemo, Suspense, lazy, ComponentType } from 'react';
@@ -18,6 +19,7 @@ import FloatingChunkToolbar from './features/chunks/layouts/toolbars/FloatingChu
 import { useThemeContext } from './contexts/ThemeContext';
 import { lightTheme, darkTheme } from './styles/themes';
 import { appContainerStyles } from './styles/styles';
+import { useAuthStore } from './store/authStore';
 
 // Dynamically import pages for code splitting
 const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
@@ -42,9 +44,16 @@ const routes: RouteConfig[] = [
     { path: '/metaText/:metaTextId/review', element: MetaTextReviewPage, protected: true },
 ];
 
+const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
+    const { user } = useAuthStore();
+    if (!user) {
+        return <Navigate to="/login" replace />;
+    }
+    return children;
+};
+
 function App() {
-    const location = useLocation();
-    const { mode, toggleMode } = useThemeContext();
+    const { mode } = useThemeContext();
 
     // Get current theme based on mode
     const currentTheme = useMemo(() => {
@@ -61,14 +70,18 @@ function App() {
 
     const renderRoute = (route: RouteConfig) => {
         const Component = route.element;
+        const element = (
+            <Suspense fallback={<AppSuspenseFallback />}>
+                <Component />
+            </Suspense>
+        );
+
         return (
             <Route
                 key={route.path}
                 path={route.path}
                 element={
-                    <Suspense fallback={<AppSuspenseFallback />}>
-                        <Component />
-                    </Suspense>
+                    route.protected ? <ProtectedRoute>{element}</ProtectedRoute> : element
                 }
             />
         );

@@ -25,7 +25,11 @@
         ],
         // Performance optimizations
         "incremental": true,
-        "tsBuildInfoFile": "./node_modules/.cache/tsbuildinfo.json"
+        "tsBuildInfoFile": "./node_modules/.cache/tsbuildinfo.json",
+        // for testing
+        "types": [
+            "@testing-library/jest-dom"
+        ]
     },
     "include": [
         "src"

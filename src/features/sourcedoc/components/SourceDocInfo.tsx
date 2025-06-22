@@ -93,17 +93,22 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
             const isOpen = openSections[config.key];
             return (
                 <React.Fragment key={config.key}>
+
+                    {/* Section for {config.label} */}
                     <ListItemButton onClick={() => handleToggleSection(config.key)} dense>
                         <ListItemText
                             primary={config.label}
                             slotProps={{
                                 primary: slotPropsStyles.primaryListItem,
+
                             }}
+                            data-testid={`${config.key}ListItemText`}
                         />
                         <ListItemIcon sx={{ minWidth: 'auto' }}>
-                            {isOpen ? <ExpandLess /> : <ExpandMore />}
                         </ListItemIcon>
                     </ListItemButton>
+
+                    {/* Collapsible list of items */}
                     <Collapse in={isOpen} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
                             {arr.map((item, i) => (

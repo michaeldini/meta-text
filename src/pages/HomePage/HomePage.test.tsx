@@ -171,7 +171,7 @@ describe('HomePage', () => {
             fireEvent.click(sourceDocItem);
         });
 
-        expect(mockNavigate).toHaveBeenCalledWith('/sourceDocs/1');
+        expect(mockNavigate).toHaveBeenCalledWith('/source-document/1');
     });
 
     it('calls delete function when delete button is clicked', async () => {
