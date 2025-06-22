@@ -39,3 +39,5 @@ export { ChevronDownIcon as ExpandMore } from '@heroicons/react/24/solid';
 export { ChevronUpIcon } from '@heroicons/react/24/solid';
 export { ChevronUpIcon as ExpandLessIcon } from '@heroicons/react/24/solid';
 export { ChevronUpIcon as ExpandLess } from '@heroicons/react/24/solid';
+export { DocumentDuplicateIcon } from '@heroicons/react/24/solid';
+export { DocumentDuplicateIcon as CopyIcon } from '@heroicons/react/24/solid';

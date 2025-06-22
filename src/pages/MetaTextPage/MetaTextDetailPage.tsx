@@ -46,7 +46,7 @@ export default function MetaTextDetailPage() {
 
     return (
         <ErrorBoundary>
-            <Slide in={true} direction="up">
+            <Slide in={true} timeout={500} direction="up">
                 <div>
                     <LoadingBoundary loading={loading}>
                         {shouldShowContent ? (

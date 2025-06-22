@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Typography, Button, ToggleButtonGroup, ToggleButton, Tooltip, Typography as MuiTypography } from '@mui/material';
 import { CompareArrowsIcon, PhotoFilterIcon, NotesIcon } from '../../../../components/icons';
 import { useChunkStore } from '../../../../store/chunkStore';
+import CopyTool from '../../tools/copy/CopyTool';
 
 interface ChunkToolsNavbarProps {
     /** Whether this component is rendered as a floating element */
@@ -105,6 +106,15 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
                     </ToggleButton>
                 </Tooltip>
             </ToggleButtonGroup>
+            <Tooltip
+                title={<MuiTypography sx={{ fontSize: 16 }}>Copy the active chunk</MuiTypography>}
+                arrow
+                enterDelay={200}
+                placement={isFloating ? 'left' : 'top'}
+            >
+
+                <CopyTool />
+            </Tooltip>
             {/* {isFloating && (
                 <Button
                     onClick={handleShowDialog}

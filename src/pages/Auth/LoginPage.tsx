@@ -31,7 +31,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
 
     return (
         <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-            <Grow in={true}>
+            <Grow in={true} timeout={500}>
                 <Paper elevation={3} sx={{ p: 4, minWidth: 320 }}>
                     <Typography variant="h5" mb={2}>Login</Typography>
                     <form onSubmit={handleSubmit}>

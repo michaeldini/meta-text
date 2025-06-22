@@ -22,7 +22,7 @@ interface ChunksPaginationProps {
 function ChunksPagination({ pageCount, page, handleChange }: ChunksPaginationProps) {
     if (pageCount <= 1) return null;
     return (
-        <Slide in={true} direction="up" >
+        <Slide in={true} timeout={500} direction="up">
             <Paper elevation={5} sx={{ padding: 0 }}>
                 <Pagination count={pageCount} page={page} onChange={handleChange} color="primary" />
             </Paper>
@@ -73,8 +73,6 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
 
     return (
         <ErrorBoundary>
-            {/* <Slide in={true} direction="up">
-                <div> */}
             <LoadingBoundary loading={loadingChunks}>
                 {chunksError ? (
                     <Box sx={chunksContainer} data-testid="chunks-container-error">
@@ -95,8 +93,6 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
                     </Box>
                 )}
             </LoadingBoundary>
-            {/* </div>
-            </Slide> */}
         </ErrorBoundary>
     );
 };

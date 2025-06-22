@@ -43,7 +43,7 @@ export default function SourceDocDetailPage() {
 
     return (
         <PageContainer>
-            <Slide in={true} direction="up" timeout={{ enter: 500 }}>
+            <Slide in={true} direction="up" timeout={500}>
                 <div>
                     <ErrorBoundary>
                         <LoadingBoundary loading={loading}>

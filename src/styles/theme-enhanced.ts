@@ -63,8 +63,6 @@ const enhancedTheme = createTheme({
                 root: {
                     padding: 24, // Use theme.spacing(3) equivalent
                     borderRadius: 8,
-                    // Add subtle transitions for better UX
-                    transition: 'box-shadow 0.2s ease-in-out',
                 },
             },
         },
