@@ -7,6 +7,7 @@ import { ComparisonToolProps } from '../types';
 import { generateChunkNoteSummaryTextComparison } from '../../../../services/aiService';
 import { createToolStyles } from './styles/ComparisonToolStyles';
 import { useTheme } from '@mui/material/styles';
+import ReactMarkdown from 'react-markdown';
 
 interface ComparisonToolComponentProps extends ComparisonToolProps {
     /** Current comparison text */
@@ -74,7 +75,11 @@ const ComparisonTool: React.FC<ComparisonToolComponentProps> = ({
                 disabled={loading || !chunk?.id}
             />
             <Box>
-                {comparisonText || <span style={{ color: '#aaa' }}>No comparison yet.</span>}
+                {comparisonText ? (
+                    <ReactMarkdown>{comparisonText}</ReactMarkdown>
+                ) : (
+                    <span style={{ color: '#aaa' }}>No comparison yet.</span>
+                )}
             </Box>
             {error && <Box sx={{ color: 'error.main', fontSize: 12 }}>{error}</Box>}
         </Box>
