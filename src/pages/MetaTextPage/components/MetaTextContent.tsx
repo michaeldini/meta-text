@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Typography, Button, Paper, Box, useTheme, Alert } from '@mui/material';
+import { Typography, Button, Box, useTheme, Alert } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import SourceDocInfo from '../../../features/sourcedoc/components/SourceDocInfo';
 import Chunks from '../../../features/chunks';
 import PageContainer from '../../../components/PageContainer';
+import AiGenerationButton from '../../../components/AiGenerationButton';
 import { useChunkStore } from '../../../store/chunkStore';
 import { getMetaTextContentStyles, getFloatingToolbarPadding } from './MetaTextContent.styles';
-import AiGenerationButton from '../../../components/AiGenerationButton';
 import { generateSourceDocInfo } from '../../../services/sourceDocInfoService';
 import { getErrorMessage } from '../../../types/error';
 
@@ -21,10 +21,84 @@ interface MetaTextContentProps {
     };
 }
 
-/**
- * Component responsible for rendering MetaText content
- * Single responsibility: Display MetaText data and related components
- */
+const HeaderLeftColumn: React.FC<{
+    displayTitle: string;
+    sourceDocSection: { doc: any; onInfoUpdate: () => void } | null;
+    onReviewClick: () => void;
+    messages: {
+        REVIEW_BUTTON: string;
+    };
+    handleDownloadInfo: () => Promise<void>;
+    loading: boolean;
+}> = ({ displayTitle, sourceDocSection, onReviewClick, messages, handleDownloadInfo, loading }) => {
+    const theme = useTheme();
+    const styles = getMetaTextContentStyles(theme);
+
+    return (
+        <Box sx={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'start', gap: theme.spacing(2) }}>
+            <Typography variant="h1" sx={styles.title}>{displayTitle}</Typography>
+            <Typography variant="subtitle1">Source Doc: {sourceDocSection ? `${sourceDocSection.doc.title}` : ''}</Typography>
+            <Button
+                variant="outlined"
+                size="small"
+                onClick={onReviewClick}
+                aria-label={`Review ${displayTitle}`}
+                sx={styles.reviewButton}
+            >
+                {messages.REVIEW_BUTTON}
+            </Button>
+            <AiGenerationButton
+                label="Generate Info"
+                toolTip="Generate or update document info using AI"
+                onClick={handleDownloadInfo}
+                loading={loading}
+            />
+        </Box>
+    );
+};
+
+const HeaderRightColumn: React.FC<{
+    sourceDocSection: { doc: any; onInfoUpdate: () => void } | null;
+}> = ({ sourceDocSection }) => {
+    return (
+        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
+            {sourceDocSection && (
+                <SourceDocInfo
+                    doc={sourceDocSection.doc}
+                    onInfoUpdate={sourceDocSection.onInfoUpdate}
+                />
+            )}
+        </Box>
+    );
+};
+
+const HeaderSection: React.FC<{
+    displayTitle: string;
+    sourceDocSection: { doc: any; onInfoUpdate: () => void } | null;
+    onReviewClick: () => void;
+    messages: {
+        REVIEW_BUTTON: string;
+    };
+    handleDownloadInfo: () => Promise<void>;
+    loading: boolean;
+}> = ({ displayTitle, sourceDocSection, onReviewClick, messages, handleDownloadInfo, loading }) => {
+    const theme = useTheme();
+
+    return (
+        <Box sx={{ display: 'flex', flexDirection: 'row', gap: theme.spacing(10), width: '100%', p: theme.spacing(2) }}>
+            <HeaderLeftColumn
+                displayTitle={displayTitle}
+                sourceDocSection={sourceDocSection}
+                onReviewClick={onReviewClick}
+                messages={messages}
+                handleDownloadInfo={handleDownloadInfo}
+                loading={loading}
+            />
+            <HeaderRightColumn sourceDocSection={sourceDocSection} />
+        </Box>
+    );
+};
+
 export const MetaTextContent: React.FC<MetaTextContentProps> = ({
     metaTextId,
     displayTitle,
@@ -40,10 +114,8 @@ export const MetaTextContent: React.FC<MetaTextContentProps> = ({
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    // Check if we're on the MetaTextDetailPage and if the floating toolbar should be visible
     const isOnMetaTextDetailPage = /^\/metaText\/[^\/]+$/.test(location.pathname);
     const shouldShowFloatingToolbar = Boolean(activeChunkId) && isOnMetaTextDetailPage;
-
 
     const contentStyles = shouldShowFloatingToolbar ? getFloatingToolbarPadding(theme) : {};
 
@@ -64,55 +136,17 @@ export const MetaTextContent: React.FC<MetaTextContentProps> = ({
         }
     };
 
-
     return (
         <PageContainer>
-            <Box sx={{
-                ...contentStyles,
-                ...styles.container,
-            }}>
-                {/* Header Section with Two Columns */}
-                <Box sx={{ display: 'flex', flexDirection: 'row', gap: theme.spacing(10), width: '100%', p: theme.spacing(2) }}>
-                    {/* Left Column: Title, Subtitle, Buttons */}
-                    <Box sx={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'start', gap: theme.spacing(2) }}>
-                        <Typography
-                            variant="h1"
-                            sx={styles.title}
-                        >
-                            {displayTitle}
-                        </Typography>
-                        <Typography
-                            variant="subtitle1"
-                        >
-                            Source Doc: {sourceDocSection ? `${sourceDocSection.doc.title}` : ''}
-                        </Typography>
-                        <Button
-                            variant="outlined"
-                            size="small"
-                            onClick={onReviewClick}
-                            aria-label={`Review ${displayTitle}`}
-                            sx={styles.reviewButton}
-                        >
-                            {messages.REVIEW_BUTTON}
-                        </Button>
-                        <AiGenerationButton
-                            label="Generate Info"
-                            toolTip="Generate or update document info using AI"
-                            onClick={handleDownloadInfo}
-                            loading={loading}
-                        />
-                    </Box>
-
-                    {/* Right Column: Info Items */}
-                    <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
-                        {sourceDocSection && (
-                            <SourceDocInfo
-                                doc={sourceDocSection.doc}
-                                onInfoUpdate={sourceDocSection.onInfoUpdate}
-                            />
-                        )}
-                    </Box>
-                </Box>
+            <Box sx={{ ...contentStyles, ...styles.container }}>
+                <HeaderSection
+                    displayTitle={displayTitle}
+                    sourceDocSection={sourceDocSection}
+                    onReviewClick={onReviewClick}
+                    messages={messages}
+                    handleDownloadInfo={handleDownloadInfo}
+                    loading={loading}
+                />
 
                 {/* Remaining Content */}
                 <Chunks metaTextId={metaTextId} />
