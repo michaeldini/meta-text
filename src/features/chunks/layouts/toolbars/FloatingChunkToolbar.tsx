@@ -52,7 +52,7 @@ const FloatingChunkToolbar: React.FC<FloatingChunkToolbarProps> = ({
     };
 
     const toolbarContent = (
-        <Fade in={shouldShow} timeout={300}>
+        <Fade in={shouldShow} timeout={1000}>
             <Box
                 sx={floatingStyles}
                 className={className}

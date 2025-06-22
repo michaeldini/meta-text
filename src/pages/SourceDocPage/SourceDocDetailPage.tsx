@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { Paper, Typography, Alert, Button } from '@mui/material';
+import { Paper, Typography, Alert, Button, Slide } from '@mui/material';
 import SourceDocInfo from '../../features/sourcedoc/components/SourceDocInfo';
 import SourceDoc from '../../features/sourcedoc/components/SourceDoc';
 import { useSourceDocumentDetail } from '../../store/sourceDocumentDetailStore';
@@ -43,31 +43,33 @@ export default function SourceDocDetailPage() {
 
     return (
         <PageContainer>
-            <ErrorBoundary>
-                <LoadingBoundary loading={loading}>
-                    {/* Show error if present */}
-                    {displayError ? (
-                        <Alert severity="error" sx={{ mb: 2 }}>
-                            {displayError}
-                            {sourceDocId && (
-                                <Button onClick={refetch} size="small" sx={{ ml: 2 }} variant="outlined">
-                                    {MESSAGES.RETRY}
-                                </Button>
+            <Slide in={true} direction="up" timeout={{ enter: 500 }}>
+                <div>
+                    <ErrorBoundary>
+                        <LoadingBoundary loading={loading}>
+                            {/* Show error if present */}
+                            {displayError ? (
+                                <Alert severity="error" sx={{ mb: 2 }}>
+                                    {displayError}
+                                    {sourceDocId && (
+                                        <Button onClick={refetch} size="small" sx={{ ml: 2 }} variant="outlined">
+                                            {MESSAGES.RETRY}
+                                        </Button>
+                                    )}
+                                </Alert>
+                            ) : doc ? (
+                                <>
+                                    {/* <Button onClick={refetch}>{MESSAGES.REFRESH}</Button> */}
+                                    <SourceDocInfo doc={doc} onInfoUpdate={refetch} />
+                                    <SourceDoc doc={doc} />
+                                </>
+                            ) : (
+                                <Alert severity="info">{MESSAGES.DOC_NOT_FOUND}</Alert>
                             )}
-                        </Alert>
-                    ) : doc ? (
-                        <>
-                            {/* <Button onClick={refetch}>{MESSAGES.REFRESH}</Button> */}
-                            <SourceDocInfo doc={doc} onInfoUpdate={refetch} />
-                            <SourceDoc doc={doc}
-                            />
-                        </>
-                    ) : (
-                        <Alert severity="info">{MESSAGES.DOC_NOT_FOUND}</Alert>
-                    )}
-                </LoadingBoundary>
-            </ErrorBoundary>
+                        </LoadingBoundary>
+                    </ErrorBoundary>
+                </div>
+            </Slide>
         </PageContainer>
-
     );
 }

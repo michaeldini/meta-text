@@ -1,5 +1,5 @@
 import React, { memo, useRef, useEffect } from 'react';
-import { Box, Paper } from '@mui/material';
+import { Box, Paper, Slide } from '@mui/material';
 import { ChunkWords } from '.';
 import ChunkToolsDisplay from '../tools/ChunkToolsDisplay';
 import { chunkMainBox } from '../styles/styles';
@@ -31,27 +31,29 @@ const Chunk = memo(function Chunk({
     }, [isActive]);
 
     return (
-        <Paper
-            ref={chunkRef}
-            elevation={isActive ? 2 : 0}
-            sx={{
-                ...chunkMainBox,
-                border: isActive ? '1px solid #1976d2' : '1px solid #e0e0e0',
-                cursor: 'pointer',
-                backgroundColor: 'background.default',
-                boxShadow: isActive ? '0 2px 8px rgba(25,118,210,0.1)' : 'none',
-            }}
-            onClick={() => setActiveChunk(chunk.id)}
-        >
-            <ChunkWords
-                words={words}
-                chunkIdx={chunkIdx}
-                chunk={chunk}
-            />
-            <ChunkToolsDisplay
-                chunk={chunk}
-            />
-        </Paper >
+        <Slide in={true} direction="up">
+            <Paper
+                ref={chunkRef}
+                elevation={isActive ? 2 : 0}
+                sx={{
+                    ...chunkMainBox,
+                    border: isActive ? '1px solid #1976d2' : '1px solid #e0e0e0',
+                    cursor: 'pointer',
+                    backgroundColor: 'background.default',
+                    boxShadow: isActive ? '0 2px 8px rgba(25,118,210,0.1)' : 'none',
+                }}
+                onClick={() => setActiveChunk(chunk.id)}
+            >
+                <ChunkWords
+                    words={words}
+                    chunkIdx={chunkIdx}
+                    chunk={chunk}
+                />
+                <ChunkToolsDisplay
+                    chunk={chunk}
+                />
+            </Paper>
+        </Slide>
     );
 });
 

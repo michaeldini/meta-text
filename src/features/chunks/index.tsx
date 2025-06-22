@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Box, Pagination, Paper, Alert } from '@mui/material';
+import { Box, Pagination, Paper, Alert, Slide } from '@mui/material';
 import Chunk from './components/Chunk';
 import { createChunksContainerStyles } from './styles/theme-aware-styles';
 import log from '../../utils/logger';
@@ -22,9 +22,11 @@ interface ChunksPaginationProps {
 function ChunksPagination({ pageCount, page, handleChange }: ChunksPaginationProps) {
     if (pageCount <= 1) return null;
     return (
-        <Paper elevation={5} sx={{ padding: 0 }}>
-            <Pagination count={pageCount} page={page} onChange={handleChange} color="primary" />
-        </Paper>
+        <Slide in={true} direction="up" >
+            <Paper elevation={5} sx={{ padding: 0 }}>
+                <Pagination count={pageCount} page={page} onChange={handleChange} color="primary" />
+            </Paper>
+        </Slide>
     );
 }
 
@@ -71,6 +73,8 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
 
     return (
         <ErrorBoundary>
+            {/* <Slide in={true} direction="up">
+                <div> */}
             <LoadingBoundary loading={loadingChunks}>
                 {chunksError ? (
                     <Box sx={chunksContainer} data-testid="chunks-container-error">
@@ -91,6 +95,8 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
                     </Box>
                 )}
             </LoadingBoundary>
+            {/* </div>
+            </Slide> */}
         </ErrorBoundary>
     );
 };

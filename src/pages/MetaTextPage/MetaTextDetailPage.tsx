@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { Slide } from '@mui/material';
 import ErrorBoundary from '../../components/ErrorBoundary';
 import LoadingBoundary from '../../components/LoadingBoundary';
 import { usePageLogger } from '../../hooks/usePageLogger';
@@ -45,22 +46,26 @@ export default function MetaTextDetailPage() {
 
     return (
         <ErrorBoundary>
-            <LoadingBoundary loading={loading}>
-                {shouldShowContent ? (
-                    <MetaTextContent
-                        metaTextId={metaTextId!}
-                        displayTitle={displayTitle}
-                        sourceDocSection={sourceDocSection}
-                        onReviewClick={handleReviewClick}
-                        messages={MESSAGES}
-                    />
-                ) : shouldShowNotFound ? (
-                    <NotFoundDisplay
-                        metaTextId={metaTextId!}
-                        messages={MESSAGES}
-                    />
-                ) : null}
-            </LoadingBoundary>
+            <Slide in={true} direction="up">
+                <div>
+                    <LoadingBoundary loading={loading}>
+                        {shouldShowContent ? (
+                            <MetaTextContent
+                                metaTextId={metaTextId!}
+                                displayTitle={displayTitle}
+                                sourceDocSection={sourceDocSection}
+                                onReviewClick={handleReviewClick}
+                                messages={MESSAGES}
+                            />
+                        ) : shouldShowNotFound ? (
+                            <NotFoundDisplay
+                                metaTextId={metaTextId!}
+                                messages={MESSAGES}
+                            />
+                        ) : null}
+                    </LoadingBoundary>
+                </div>
+            </Slide>
         </ErrorBoundary>
     );
 }
