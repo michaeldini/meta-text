@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends
 from sqlmodel import Session
 from typing import List
 
@@ -21,24 +21,20 @@ review_service = ReviewService()
 def get_wordlist(metatext_id: int, session: Session = Depends(get_session)):
     """Get the wordlist for a specific meta-text."""
     try:
-        return review_service.get_wordlist_for_meta_text(metatext_id, session)
+        wordlist = review_service.get_wordlist_for_meta_text(metatext_id, session)
+        return wordlist if wordlist else []
     except WordlistNotFoundError:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, 
-            detail="No words found in the wordlist for this metatext"
-        )
+        return []
 
 
 @router.get("/metatext/{metatext_id}/chunk-summaries-notes", response_model=List[ChunkRead], name="get_chunk_summaries_notes")
 def get_chunk_summaries_notes(metatext_id: int, session: Session = Depends(get_session)):
     """Get chunk summaries and notes for a specific meta-text."""
     try:
-        return review_service.get_chunk_summaries_and_notes(metatext_id, session)
+        chunks = review_service.get_chunk_summaries_and_notes(metatext_id, session)
+        return chunks if chunks else []
     except ChunksNotFoundError:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, 
-            detail="No chunks found for this metatext"
-        )
+        return []
 
 
 @router.get("/metatext/{metatext_id}/wordlist-summary", name="get_wordlist_summary")
