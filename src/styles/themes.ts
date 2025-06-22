@@ -72,6 +72,13 @@ const baseTheme: ThemeOptions = {
                 },
             },
         },
+        MuiCircularProgress: {
+            styleOverrides: {
+                root: {
+                    color: '#9c88ff', //  #9c88ff
+                },
+            },
+        },
     },
 };
 
