@@ -29,6 +29,7 @@ const MetaTextReviewPage = lazy(() => import('./pages/MetaTextPage/MetaTextRevie
 const LoginPage = lazy(() => import('./pages/Auth/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/Auth/RegisterPage'));
 const ExperimentsPage = lazy(() => import('./pages/ExperimentsPage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
 
 interface RouteConfig {
     path: string;
@@ -44,6 +45,7 @@ const routes: RouteConfig[] = [
     { path: '/metaText/:metaTextId', element: MetaTextDetailPage, protected: true },
     { path: '/metaText/:metaTextId/review', element: MetaTextReviewPage, protected: true },
     { path: '/experiments', element: ExperimentsPage, protected: false },
+    { path: '/about', element: AboutPage, protected: false },
 ];
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
@@ -68,6 +70,14 @@ function App() {
             label: 'Meta-Text',
             path: '/',
         },
+        items: [
+            {
+                id: 'about',
+                label: 'About',
+                path: '/about',
+                showWhen: 'always' as const,
+            },
+        ],
     }), []);
 
     const renderRoute = (route: RouteConfig) => {
