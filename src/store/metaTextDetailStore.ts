@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { useEffect } from 'react';
 import { fetchMetaText } from '../services/metaTextService';
 import { fetchSourceDocument } from '../services/sourceDocumentService';
 import { getErrorMessage } from '../types/error';
@@ -143,17 +142,23 @@ export const useMetaTextDetailStore = create<MetaTextDetailState>((set, get) => 
 }));
 
 // Convenience hook that provides the same interface as the old useMetaTextDetail
+import { useEffect } from 'react';
+import { useChunkStore } from './chunkStore';
+
 export const useMetaTextDetail = (metaTextId?: string) => {
     const store = useMetaTextDetailStore();
+    const fetchChunks = useChunkStore(state => state.fetchChunks);
 
     // Fetch data when metaTextId changes
     useEffect(() => {
         if (metaTextId) {
             store.fetchMetaTextDetail(metaTextId);
+            // Also fetch chunks for this MetaText (and restore last active chunk)
+            fetchChunks(Number(metaTextId));
         } else {
             store.clearState();
         }
-    }, [metaTextId, store.fetchMetaTextDetail]);
+    }, [metaTextId, store.fetchMetaTextDetail, fetchChunks]);
 
     return {
         metaText: store.metaText,

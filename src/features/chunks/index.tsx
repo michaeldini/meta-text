@@ -71,6 +71,33 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
     const theme = useTheme();
     const chunksContainer = createChunksContainerStyles(theme);
 
+    // Auto-pagination: go to the page containing the active chunk
+    React.useEffect(() => {
+        const { activeChunkId } = useChunkStore.getState();
+        if (!activeChunkId) return;
+        const idx = chunks.findIndex(c => c.id === activeChunkId);
+        if (idx === -1) return;
+        const newPage = Math.floor(idx / chunksPerPage) + 1;
+        if (newPage !== page) setPage(newPage);
+    }, [chunks, useChunkStore.getState().activeChunkId]);
+
+    // Scroll to active chunk if it is on the current page
+    React.useEffect(() => {
+        if (!containerRef.current) return;
+        const { activeChunkId } = useChunkStore.getState();
+        if (!activeChunkId) return;
+        // Wait for DOM update to ensure chunk is rendered
+        setTimeout(() => {
+            const chunkNode = containerRef.current?.querySelector(
+                `[data-chunk-id="${activeChunkId}"]`
+            );
+            if (chunkNode && chunkNode.scrollIntoView) {
+                chunkNode.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            }
+        }, 0);
+    }, [paginatedChunks, useChunkStore.getState().activeChunkId]);
+
     return (
         <ErrorBoundary>
             <LoadingBoundary loading={loadingChunks}>
@@ -87,6 +114,7 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
                                 chunk={chunk}
                                 chunkIdx={startIdx + chunkIdx}
                                 handleChunkFieldChange={updateChunkField}
+                                data-chunk-id={chunk.id}
                             />
                         ))}
                         <ChunksPagination pageCount={pageCount} page={page} handleChange={handleChange} />

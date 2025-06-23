@@ -34,6 +34,7 @@ const Chunk = memo(function Chunk({
         <Slide in={true} timeout={500} direction="up">
             <Paper
                 ref={chunkRef}
+                data-chunk-id={chunk.id}
                 elevation={isActive ? 2 : 0}
                 sx={{
                     ...chunkMainBox,

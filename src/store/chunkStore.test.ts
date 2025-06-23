@@ -176,4 +176,49 @@ describe('ChunkStore', () => {
             expect(updatedStore.chunksError).toBe('');
         });
     });
+
+    describe('localStorage integration', () => {
+        const mockChunks = [
+            {
+                id: 1,
+                text: 'First chunk text',
+                position: 0,
+                notes: '',
+                summary: '',
+                comparison: '',
+                meta_text_id: 1,
+                ai_images: [],
+            },
+            {
+                id: 2,
+                text: 'Second chunk text',
+                position: 1,
+                notes: '',
+                summary: '',
+                comparison: '',
+                meta_text_id: 1,
+                ai_images: [],
+            },
+        ];
+
+        beforeEach(() => {
+            useChunkStore.getState().resetChunkState();
+            vi.clearAllMocks();
+            localStorage.clear();
+        });
+
+        it('restores last active chunk from localStorage on fetchChunks', async () => {
+            localStorage.setItem('lastActiveChunk_1', '2');
+            vi.mocked(chunkService.fetchChunks).mockResolvedValue(mockChunks);
+            await useChunkStore.getState().fetchChunks(1);
+            expect(useChunkStore.getState().activeChunkId).toBe(2);
+        });
+
+        it('updates localStorage when setActiveChunk is called', async () => {
+            vi.mocked(chunkService.fetchChunks).mockResolvedValue(mockChunks);
+            await useChunkStore.getState().fetchChunks(1);
+            useChunkStore.getState().setActiveChunk(2);
+            expect(localStorage.getItem('lastActiveChunk_1')).toBe('2');
+        });
+    });
 });

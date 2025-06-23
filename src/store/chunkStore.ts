@@ -2,6 +2,8 @@ import { create } from 'zustand';
 import { fetchChunks as apiFetchChunks, updateChunk, splitChunk, combineChunks } from '../services/chunkService';
 import { getErrorMessage } from '../types/error';
 import type { Chunk } from '../types/chunk';
+import { getUserChunkSession, setUserChunkSession } from '../services/userChunkSessionService';
+import { useAuthStore } from './authStore';
 
 // Specific debounce function for chunk updates
 function debounceChunkUpdate(
@@ -37,12 +39,48 @@ interface ChunkState {
 
 const debouncers: Record<number, ReturnType<typeof debounceChunkUpdate>> = {};
 
+// Utility for localStorage persistence of last active chunk per MetaText
+function getLastActiveChunkId(metaTextId: number): number | null {
+    const val = localStorage.getItem(`lastActiveChunk_${metaTextId}`);
+    if (!val) return null;
+    const num = Number(val);
+    return isNaN(num) ? null : num;
+}
+
+function setLastActiveChunkId(metaTextId: number, chunkId: number | null) {
+    if (chunkId === null || chunkId === undefined) {
+        localStorage.removeItem(`lastActiveChunk_${metaTextId}`);
+    } else {
+        localStorage.setItem(`lastActiveChunk_${metaTextId}`, String(chunkId));
+    }
+}
+
 export const useChunkStore = create<ChunkState>((set, get) => ({
     chunks: [],
     loadingChunks: false,
     chunksError: '',
     activeChunkId: null,
-    setActiveChunk: (id) => set({ activeChunkId: id }),
+    setActiveChunk: async (id) => {
+        const { chunks } = get();
+        const metaTextId = chunks.length > 0 ? chunks[0].meta_text_id : null;
+        set({ activeChunkId: id });
+        if (metaTextId) {
+            setLastActiveChunkId(metaTextId, id);
+            // Backend persistence if user is logged in
+            const user = useAuthStore.getState().user;
+            if (user && id) {
+                try {
+                    await setUserChunkSession({
+                        user_id: user.id,
+                        meta_text_id: metaTextId,
+                        last_active_chunk_id: id,
+                    });
+                } catch (e) {
+                    // Optionally handle error (e.g., show notification)
+                }
+            }
+        }
+    },
     activeTabs: [],
     setActiveTabs: (tabs) => set({ activeTabs: tabs }),
     setChunks: (chunks) => set({ chunks }),
@@ -50,18 +88,33 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
         set({ loadingChunks: true, chunksError: '' });
         try {
             const chunks = await apiFetchChunks(metaTextId);
+            let backendActiveChunkId: number | null = null;
+            // Try backend first if user is logged in
+            const user = useAuthStore.getState().user;
+            if (user) {
+                try {
+                    const session = await getUserChunkSession(user.id, metaTextId);
+                    if (session) backendActiveChunkId = session.last_active_chunk_id;
+                } catch { }
+            }
             set(state => {
                 const updates: Partial<ChunkState> = {
                     chunks,
                     loadingChunks: false
                 };
-
-                // Auto-select first chunk and enable notes-summary if no chunk is currently active
-                if (!state.activeChunkId && chunks.length > 0) {
-                    updates.activeChunkId = chunks[0].id;
-                    updates.activeTabs = ['notes-summary'];
+                if (!state.activeChunkId) {
+                    let lastActive = backendActiveChunkId;
+                    if (!lastActive) {
+                        lastActive = getLastActiveChunkId(metaTextId);
+                    }
+                    if (lastActive && chunks.find(c => c.id === lastActive)) {
+                        updates.activeChunkId = lastActive;
+                        updates.activeTabs = ['notes-summary'];
+                    } else if (chunks.length > 0) {
+                        updates.activeChunkId = chunks[0].id;
+                        updates.activeTabs = ['notes-summary'];
+                    }
                 }
-
                 return { ...state, ...updates };
             });
         } catch (e: unknown) {
