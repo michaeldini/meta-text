@@ -94,24 +94,6 @@ const CreateForm: React.FC<CreateFormProps> = React.memo(({
                     success={form.success}
                     loading={form.loading}
                 >
-                    {/* Live region for screen reader announcements */}
-                    <div
-                        aria-live={FORM_A11Y.LIVE_REGION}
-                        aria-atomic="true"
-                        className="sr-only"
-                        id={FORM_A11Y.IDS.ERROR_MESSAGE}
-                    >
-                        {form.error && `Error: ${form.error}`}
-                    </div>
-                    <div
-                        aria-live={FORM_A11Y.LIVE_REGION}
-                        aria-atomic="true"
-                        className="sr-only"
-                        id={FORM_A11Y.IDS.SUCCESS_MESSAGE}
-                    >
-                        {form.success && `Success: ${form.success}`}
-                    </div>
-
                     {/* Mode-specific input widget */}
                     {form.mode === FORM_MODES.UPLOAD ? (
                         <FileUploadWidget
@@ -143,8 +125,6 @@ const CreateForm: React.FC<CreateFormProps> = React.memo(({
                         data-testid={formContent.titleId}
                         id={formContent.titleId}
                         required
-                        aria-describedby={form.error ? FORM_A11Y.IDS.ERROR_MESSAGE : undefined}
-                        aria-invalid={!!form.error}
                         autoComplete="off"
                     />
 
@@ -152,7 +132,6 @@ const CreateForm: React.FC<CreateFormProps> = React.memo(({
                     <SubmitButton
                         loading={form.loading}
                         disabled={isSubmitDisabled}
-                        aria-describedby={form.loading ? 'submit-loading-text' : undefined}
                     >
                         {formContent.submitText}
                         {form.loading && (

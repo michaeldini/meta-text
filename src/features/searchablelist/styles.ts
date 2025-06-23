@@ -13,7 +13,8 @@ import { alpha } from '@mui/material/styles';
  */
 export const createSearchableListStyles = (theme: Theme) => ({
     root: {
-        // backgroundColor: alpha(theme.palette.background.paper, 0.8),
+        backgroundColor: alpha(theme.palette.background.paper, 0.8),
+        height: '100%',
     },
     searchInput: {
         marginBottom: theme.spacing(2),

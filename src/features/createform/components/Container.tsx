@@ -1,9 +1,9 @@
-import React from 'react';
-import { Paper, Typography, Box, CircularProgress } from '@mui/material';
-import { uploadFormInner } from '../styles/styles';
+import React, { useMemo } from 'react';
+import { Paper, Typography, Box, CircularProgress, useTheme } from '@mui/material';
+import { createFormStyles } from '../styles/styles';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import { FORM_STYLES, FORM_DEFAULTS } from '../constants';
+import { FORM_DEFAULTS } from '../constants';
 
 interface CreateFormProps {
     description: string;
@@ -22,6 +22,7 @@ const CreateFormContainer: React.FC<CreateFormProps> = React.memo(({
     success,
     loading,
 }) => {
+    const theme = useTheme();
     const [snackbarOpen, setSnackbarOpen] = React.useState(false);
     const [snackbarMsg, setSnackbarMsg] = React.useState('');
     const [snackbarSeverity, setSnackbarSeverity] = React.useState<'success' | 'error'>('success');
@@ -43,33 +44,18 @@ const CreateFormContainer: React.FC<CreateFormProps> = React.memo(({
         setSnackbarOpen(false);
     }, []);
 
-    const paperStyles = {
-        minHeight: FORM_STYLES.MIN_CONTAINER_HEIGHT
-    };
-
-    const loadingBoxStyles = {
-        display: 'flex',
-        justifyContent: 'center',
-        mt: FORM_STYLES.FORM_SPACING
-    };
-
-    const spinnerStyles = {
-        size: FORM_STYLES.LOADING_SPINNER_SIZE
-    };
-
-    const alertStyles = {
-        width: '100%'
-    };
+    // Theme-aware styles (NavBar pattern)
+    const styles = useMemo(() => createFormStyles(theme), [theme]);
 
     return (
-        <Paper elevation={3} sx={paperStyles}>
+        <Paper elevation={3} sx={styles.paperStyles}>
             <Typography variant="body1" gutterBottom>
                 {description}
             </Typography>
-            <Box component="form" onSubmit={onSubmit} sx={uploadFormInner}>
+            <Box component="form" onSubmit={onSubmit} sx={styles.uploadFormInner}>
                 {loading && (
-                    <Box sx={loadingBoxStyles}>
-                        <CircularProgress sx={spinnerStyles} />
+                    <Box sx={styles.loadingBoxStyles}>
+                        <CircularProgress sx={styles.spinnerStyles} />
                     </Box>
                 )}
                 {children}
@@ -80,7 +66,7 @@ const CreateFormContainer: React.FC<CreateFormProps> = React.memo(({
                 onClose={handleSnackbarClose}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
             >
-                <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={alertStyles}>
+                <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={styles.alertStyles}>
                     {snackbarMsg}
                 </Alert>
             </Snackbar>
