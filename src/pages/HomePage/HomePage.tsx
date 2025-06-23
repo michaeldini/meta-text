@@ -7,7 +7,7 @@ import LoadingBoundary from '../../components/LoadingBoundary';
 import log from '../../utils/logger';
 import { usePageLogger } from '../../hooks/usePageLogger';
 import CreateForm from '../../features/createform/components';
-import { Typography } from '@mui/material';
+import { Typography, Fade } from '@mui/material';
 import { getErrorMessage } from '../../types/error';
 import DocTypeSelect, { DocType } from '../../components/DocTypeSelect';
 import { useDocumentsStore } from '../../store/documentsStore';
@@ -152,31 +152,41 @@ export default function HomePage() {
                 <Box flex={1} display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
                     <ErrorBoundary>
                         <LoadingBoundary loading={currentDocConfig.loading}>
-                            <Typography variant="h5" gutterBottom>
-                                Search
-                            </Typography>
-                            <SearchableList
-                                items={currentDocConfig.items}
-                                onItemClick={currentDocConfig.onItemClick}
-                                onDeleteClick={currentDocConfig.onDeleteClick}
-                                filterKey="title"
-                            />
+                            <Fade in={true} key={docType} timeout={900}>
+                                <Box>
+                                    <Typography variant="h5" gutterBottom>
+                                        Search
+                                    </Typography>
+                                    <div style={{ height: '100%' }}>
+                                        <SearchableList
+                                            items={currentDocConfig.items}
+                                            onItemClick={currentDocConfig.onItemClick}
+                                            onDeleteClick={currentDocConfig.onDeleteClick}
+                                            filterKey="title"
+                                        />
+                                    </div>
+                                </Box>
+                            </Fade>
                         </LoadingBoundary>
                     </ErrorBoundary>
                 </Box>
-                <Box flex={1} display="flex" flexDirection="column">
-                    <Typography variant="h5" gutterBottom>
-                        Create
-                    </Typography>
-                    <CreateForm
-                        sourceDocs={sourceDocs || []}
-                        sourceDocsLoading={sourceDocsLoading}
-                        sourceDocsError={sourceDocsError}
-                        onSuccess={refreshData}
-                        docType={docType}
-                    />
-                </Box>
+                <Fade in={true} key={docType + '-form'} timeout={900}>
+                    <Box flex={1} display="flex" flexDirection="column">
+                        <Typography variant="h5" gutterBottom>
+                            Create
+                        </Typography>
+                        <div style={{ height: '100%' }}>
+                            <CreateForm
+                                sourceDocs={sourceDocs || []}
+                                sourceDocsLoading={sourceDocsLoading}
+                                sourceDocsError={sourceDocsError}
+                                onSuccess={refreshData}
+                                docType={docType}
+                            />
+                        </div>
+                    </Box>
+                </Fade>
             </Box>
-        </PageContainer>
+        </PageContainer >
     );
 }

@@ -1,5 +1,11 @@
-import { Theme } from '@mui/material/styles';
+import { Theme, keyframes } from '@mui/material/styles';
 import { alpha } from '@mui/material/styles';
+
+// Define fadeIn keyframes
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(24px);}
+  to { opacity: 1; transform: translateY(0);}
+`;
 
 /**
  * styles - theme-aware and maintainable
@@ -15,6 +21,7 @@ export const createSearchableListStyles = (theme: Theme) => ({
     root: {
         backgroundColor: alpha(theme.palette.background.paper, 0.8),
         height: '100%',
+        animation: `${fadeIn} 0.9s ease`, // Add animation here
     },
     searchInput: {
         marginBottom: theme.spacing(2),

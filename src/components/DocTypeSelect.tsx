@@ -1,5 +1,5 @@
 import React from 'react';
-import { ToggleButton, ToggleButtonGroup, Box } from '@mui/material';
+import { ToggleButton, ToggleButtonGroup, Box, Fade } from '@mui/material';
 
 export type DocType = 'sourceDoc' | 'metaText';
 
@@ -14,22 +14,24 @@ const DocTypeSelect: React.FC<DocTypeSelectProps> = ({ value, onChange, disabled
         if (newValue) onChange(newValue);
     };
     return (
-        <Box sx={{ my: 2 }}>
-            <ToggleButtonGroup
-                value={value}
-                exclusive
-                onChange={handleChange}
-                aria-label="document type"
-                disabled={disabled}
-            >
-                <ToggleButton value="metaText" aria-label="Meta-Text">
-                    Meta-Text
-                </ToggleButton>
-                <ToggleButton value="sourceDoc" aria-label="Source Document">
-                    Source Document
-                </ToggleButton>
-            </ToggleButtonGroup>
-        </Box>
+        <Fade in={true} timeout={900}>
+            <Box sx={{ my: 2 }}>
+                <ToggleButtonGroup
+                    value={value}
+                    exclusive
+                    onChange={handleChange}
+                    aria-label="document type"
+                    disabled={disabled}
+                >
+                    <ToggleButton value="metaText" aria-label="Meta-Text">
+                        Meta-Text
+                    </ToggleButton>
+                    <ToggleButton value="sourceDoc" aria-label="Source Document">
+                        Source Document
+                    </ToggleButton>
+                </ToggleButtonGroup>
+            </Box>
+        </Fade>
     );
 };
 

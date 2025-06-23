@@ -1,4 +1,11 @@
-import { Theme } from '@mui/material/styles';
+import { Theme, keyframes } from '@mui/material/styles';
+
+
+// Define fadeIn keyframes inside the styles file
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(24px);}
+  to { opacity: 1; transform: translateY(0);}
+`;
 
 export const createFormStyles = (theme: Theme) => ({
     uploadFormInner: {
@@ -10,6 +17,7 @@ export const createFormStyles = (theme: Theme) => ({
     paperStyles: {
         minHeight: theme.spacing(20),
         height: '100%',
+        animation: `${fadeIn} 0.9s ease`, // Add animation here
     },
     loadingBoxStyles: {
         display: 'flex',

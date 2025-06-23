@@ -54,7 +54,6 @@ function SearchableList<T extends Record<string, any> & { id: number }>({
 
     return (
         <Paper elevation={3} role="region" aria-label={ariaLabel} sx={styles.root}>
-
             {/* Search Input */}
             <TextField
                 data-testid="search-input"
@@ -116,7 +115,6 @@ function SearchableList<T extends Record<string, any> & { id: number }>({
                                         onClick={(e: React.MouseEvent) => onDeleteClick(item.id, e)}
                                         disabled={!!deleteLoading[item.id]}
                                         label={`Delete ${displayText}`}
-                                        icon={<DeleteIcon style={{ height: 24, width: 24, }} />}
 
                                     />
                                 }
