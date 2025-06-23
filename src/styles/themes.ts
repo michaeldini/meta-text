@@ -79,6 +79,16 @@ const baseTheme: ThemeOptions = {
                 },
             },
         },
+        MuiPaper: {
+            styleOverrides: {
+                root: {
+                    padding: '32px',
+                    borderRadius: 8,
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                    backdropFilter: 'blur(8px)',
+                },
+            },
+        },
     },
 };
 
@@ -116,6 +126,7 @@ export const lightTheme = createTheme({
                     padding: '32px',
                     borderRadius: 8,
                     boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                    backdropFilter: 'blur(8px)',
                 },
             },
         },
@@ -194,6 +205,7 @@ export const darkTheme = createTheme({
                     padding: '32px',
                     borderRadius: 8,
                     backgroundColor: grey[900],
+                    backdropFilter: 'blur(8px)',
                 },
             },
         },

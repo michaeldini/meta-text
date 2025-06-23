@@ -1,5 +1,30 @@
 # MUI Styling Best Practices Guide
 
+## 📚 Quick Reference
+
+### Essential Theme Tokens
+
+- `theme.spacing(n)` - Consistent spacing scale
+- `theme.palette.*` - Color system
+- `theme.breakpoints.*` - Responsive breakpoints
+- `theme.transitions.*` - Consistent animations
+- `theme.shape.borderRadius` - Consistent border radius
+
+### Performance Props
+
+- `willChange: 'transform, opacity'` - For animations
+- `contain: 'layout style paint'` - For isolated components
+- Use `transform` instead of changing `top/left/width/height`
+
+### Accessibility Considerations
+
+- Always provide proper color contrast
+- Use theme color tokens for consistent contrast ratios
+- Include focus states in interactive elements
+- Test with dark/light mode switching
+
+This approach will give you a scalable, maintainable, and performant styling system that leverages MUI's full potential while keeping your code clean and organized.
+
 ## Overview
 
 This guide teaches you how to create maintainable, performant, and consistent styling in your React + Material UI application.
@@ -452,28 +477,3 @@ export const usePersistedTheme = () => {
    // GOOD - Set in theme.ts once
    MuiButton: { styleOverrides: { root: { borderRadius: 8, textTransform: 'none' } } }
    ```
-
-## 📚 Quick Reference
-
-### Essential Theme Tokens
-
-- `theme.spacing(n)` - Consistent spacing scale
-- `theme.palette.*` - Color system
-- `theme.breakpoints.*` - Responsive breakpoints
-- `theme.transitions.*` - Consistent animations
-- `theme.shape.borderRadius` - Consistent border radius
-
-### Performance Props
-
-- `willChange: 'transform, opacity'` - For animations
-- `contain: 'layout style paint'` - For isolated components
-- Use `transform` instead of changing `top/left/width/height`
-
-### Accessibility Considerations
-
-- Always provide proper color contrast
-- Use theme color tokens for consistent contrast ratios
-- Include focus states in interactive elements
-- Test with dark/light mode switching
-
-This approach will give you a scalable, maintainable, and performant styling system that leverages MUI's full potential while keeping your code clean and organized.

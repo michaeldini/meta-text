@@ -1,9 +1,10 @@
+import type { Theme } from '@mui/material/styles';
 import type { TypographyVariant } from '@mui/material';
 
 // Styles for SourceDocInfo component
-export const sourceDocContainerStyle = {
-    p: 4,
-};
+export const sourceDocContainerStyle = (theme: Theme) => ({
+    p: theme.spacing(2),
+});
 export const slotPropsStyles = {
     primaryTitle: {
         variant: 'h6' as TypographyVariant,

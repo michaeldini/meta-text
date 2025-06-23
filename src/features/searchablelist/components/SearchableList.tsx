@@ -4,6 +4,9 @@ import { Search as SearchIcon, Clear as ClearIcon, DeleteIcon } from '../../../c
 import IconButton from '@mui/material/IconButton';
 import DeleteButton from '../../../components/DeleteButton';
 import { useFilteredList } from '../hooks/useFilteredList';
+import { createSearchableListStyles } from '../styles';
+
+import { useTheme } from '@mui/material/styles';
 
 export interface SearchableListProps<T extends Record<string, any> & { id: number }> {
     items: T[];
@@ -46,8 +49,13 @@ function SearchableList<T extends Record<string, any> & { id: number }>({
         }
     };
 
+    const theme = useTheme();
+    const styles = createSearchableListStyles(theme);
+
     return (
-        <Paper elevation={3} role="region" aria-label={ariaLabel}>
+        <Paper elevation={3} role="region" aria-label={ariaLabel} sx={styles.root}>
+
+            {/* Search Input */}
             <TextField
                 data-testid="search-input"
                 label="Search"
@@ -59,6 +67,7 @@ function SearchableList<T extends Record<string, any> & { id: number }>({
                 value={search}
                 onChange={handleSearchChange}
                 aria-label="Search items"
+                sx={styles.searchInput}
                 InputProps={{
                     startAdornment: (
                         <InputAdornment position="start">
@@ -80,19 +89,22 @@ function SearchableList<T extends Record<string, any> & { id: number }>({
                     ),
                 }}
             />
+
+            {/* Search Results */}
             <List
                 data-testid="searchable-list"
                 role="list"
                 aria-label={`${filteredItems.length} ${filteredItems.length === 1 ? 'item' : 'items'} found`}
             >
+                {/* No Results */}
                 {filteredItems.length === 0 ? (
-                    <ListItem role="listitem">
+                    <ListItem role="listitem" sx={styles.noResults}>
                         <ListItemText
                             primary={emptyMessage}
-                            sx={{ textAlign: 'center', fontStyle: 'italic', color: 'text.secondary' }}
                         />
                     </ListItem>
                 ) : (
+                    // Render Results
                     filteredItems.map((item) => {
                         const displayText = String(item[filterKey] || '');
                         return (
@@ -109,6 +121,7 @@ function SearchableList<T extends Record<string, any> & { id: number }>({
                                     />
                                 }
                                 disablePadding
+                                sx={styles.listItem}
                             >
                                 <ListItemButton
                                     onClick={() => onItemClick(item.id)}
