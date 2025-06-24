@@ -23,9 +23,7 @@ function ChunksPagination({ pageCount, page, handleChange }: ChunksPaginationPro
     if (pageCount <= 1) return null;
     return (
         <Slide in={true} timeout={500} direction="up">
-            {/* <Paper elevation={5} sx={{ padding: 0 }}> */}
             <Pagination count={pageCount} page={page} onChange={handleChange} color="secondary" />
-            {/* </Paper> */}
         </Slide>
     );
 }
