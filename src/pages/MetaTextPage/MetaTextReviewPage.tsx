@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, CircularProgress, Alert, IconButton, Tooltip } from '@mui/material';
+import { Box, Typography, Paper, CircularProgress, Alert, IconButton, Tooltip } from '@mui/material';
 import { fetchWordlist } from '../../services/reviewService';
 import { fetchChunks } from '../../services/chunkService';
 import logger from '../../utils/logger';
@@ -8,12 +8,14 @@ import { ArrowBackIcon } from '../../components/icons';
 import { metaTextDetailRoute } from '../../routes';
 import ChunkSummaryNotesTable from '../../features/chunks/review/ChunkSummaryNotesTable';
 import { usePageLogger } from '../../hooks/usePageLogger';
+import WordFlashcard from '../../components/WordFlashcard';
 
 interface WordlistRow {
     id: number;
     word: string;
     definition: string;
     definition_with_context: string;
+    context?: string; // Added context field for flashcard
 }
 
 interface ChunkSummaryNote {
@@ -104,27 +106,17 @@ export default function MetaTextReviewPage() {
                 wordlist.length === 0 ? (
                     <Alert severity="info">No words found in the wordlist.</Alert>
                 ) : (
-                    <TableContainer component={Paper} sx={{ mt: 2 }}>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    {columns.map(col => (
-                                        <TableCell key={col.id}>{col.label}</TableCell>
-                                    ))}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {wordlist.map(row => (
-                                    <TableRow key={row.id}>
-                                        <TableCell sx={{ color: 'text.secondary', fontWeight: 800, fontSize: '1.3rem' }}>{row.word}</TableCell>
-                                        <TableCell sx={{ color: 'text.primary', fontSize: '1.2rem', lineHeight: 1.5 }}>{row.definition}</TableCell>
-                                        <TableCell sx={{ color: 'text.primary', fontSize: '1rem', lineHeight: 1.5 }}>{row.definition_with_context}</TableCell>
-                                        {/* <TableCell>{row.context}</TableCell> */}
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 2 }}>
+                        {wordlist.map(row => (
+                            <WordFlashcard
+                                key={row.id}
+                                word={row.word}
+                                definition={row.definition}
+                                definitionWithContext={row.definition_with_context}
+                                context={row.context}
+                            />
+                        ))}
+                    </Box>
                 )
             )}
 
