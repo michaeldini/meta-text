@@ -1,11 +1,12 @@
 import { createTheme, ThemeOptions } from '@mui/material/styles';
 import { grey, blue, cyan, indigo } from '@mui/material/colors';
-
+// declare module augmentation for MUI theme defaults
 // Shared theme configuration that applies to both light and dark modes
 const baseTheme: ThemeOptions = {
     spacing: 8, // Base unit (8px)
     shape: {
         borderRadius: 8,
+        borderRadiusSm: 4, // Smaller radius for specific components
     },
     typography: {
         fontFamily: 'Arial, sans-serif, system-ui',

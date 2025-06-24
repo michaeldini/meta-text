@@ -15,13 +15,15 @@ export const createWordFlashcardStyles = (theme: Theme) => ({
         width: '100%',
         height: '100%',
         position: 'relative',
-        transition: 'transform 0.5s',
+        transition: 'transform 0.7s cubic-bezier(.68,-0.55,.27,1.55), box-shadow 0.4s',
         transformStyle: 'preserve-3d',
         cursor: 'pointer',
-
+        boxShadow: '0 1px 4px rgba(0,0,0,0.06)', // reduced shadow
     },
     flipped: {
-        transform: 'rotateY(180deg)',
+        transform: 'rotateY(180deg) scale(1.04)',
+        boxShadow: `0 4px 16px 0 ${theme.palette.primary.light}`, // reduced shadow
+        background: theme.palette.secondary.light,
     },
     front: {
         position: 'absolute',
@@ -35,7 +37,7 @@ export const createWordFlashcardStyles = (theme: Theme) => ({
         alignItems: 'center',
         justifyContent: 'center',
         background: theme.palette.background.paper,
-        borderRadius: theme.shape.borderRadius,
+        borderRadius: theme.shape.borderRadiusSm,
         boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
         padding: theme.spacing(2),
         zIndex: 2,
@@ -53,7 +55,7 @@ export const createWordFlashcardStyles = (theme: Theme) => ({
         alignItems: 'start',
         justifyContent: 'start',
         background: theme.palette.background.paper,
-        borderRadius: theme.shape.borderRadius,
+        borderRadius: theme.shape.borderRadiusSm,
         boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
         padding: theme.spacing(2),
         transform: 'rotateY(180deg)',
