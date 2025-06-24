@@ -4,12 +4,21 @@ import FileUploadWidget from './FileUploadWidget';
 import SourceDocSelect from './Select';
 import CreateFormContainer from './Container';
 import SubmitButton from './SubmitButton';
-import { DocType } from '../../../components/DocTypeSelect';
 import ErrorBoundary from '../../../components/ErrorBoundary';
 import LoadingBoundary from '../../../components/LoadingBoundary';
 import { useCreateForm } from '../hooks/useCreateForm';
 import { SourceDocument, FormMode } from '../types';
 import { FORM_MODES, FORM_MESSAGES, FORM_A11Y } from '../constants';
+
+export enum DocType {
+    SourceDoc = 'sourceDoc',
+    MetaText = 'metaText'
+}
+
+export enum ViewMode {
+    Search = 'search',
+    Create = 'create'
+}
 
 export interface CreateFormProps {
     sourceDocs: SourceDocument[];
@@ -28,7 +37,7 @@ const CreateForm: React.FC<CreateFormProps> = React.memo(({
 }) => {
     // Convert docType to FormMode - memoized to prevent unnecessary recalculations
     const mode: FormMode = useMemo(() =>
-        docType === 'sourceDoc' ? FORM_MODES.UPLOAD : FORM_MODES.META_TEXT,
+        docType === DocType.SourceDoc ? FORM_MODES.UPLOAD : FORM_MODES.META_TEXT,
         [docType]
     );
 
@@ -41,7 +50,7 @@ const CreateForm: React.FC<CreateFormProps> = React.memo(({
 
     // Update mode when docType prop changes
     React.useEffect(() => {
-        const newMode: FormMode = docType === 'sourceDoc' ? FORM_MODES.UPLOAD : FORM_MODES.META_TEXT;
+        const newMode: FormMode = docType === DocType.SourceDoc ? FORM_MODES.UPLOAD : FORM_MODES.META_TEXT;
         if (newMode !== form.mode) {
             form.setMode(newMode);
         }

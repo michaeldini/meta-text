@@ -37,7 +37,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     }, [onChange]);
 
     return (
-        <Paper elevation={1} sx={{ p: 1 }}>
+        <Paper elevation={1} sx={{ p: 1, minWidth: '500px' }}>
             <TextField
                 data-testid="search-bar"
                 fullWidth={fullWidth}

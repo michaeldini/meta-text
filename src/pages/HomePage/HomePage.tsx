@@ -7,12 +7,13 @@ import LoadingBoundary from '../../components/LoadingBoundary';
 import log from '../../utils/logger';
 import { usePageLogger } from '../../hooks/usePageLogger';
 import CreateForm from '../../features/createform/components';
-import { Typography, Fade } from '@mui/material';
+import { Typography } from '@mui/material';
 import { getErrorMessage } from '../../types/error';
-import DocTypeSelect, { DocType } from '../../components/DocTypeSelect';
 import { useDocumentsStore } from '../../store/documentsStore';
 import { useNotifications } from '../../store/notificationStore';
 import { Box } from '@mui/material';
+import ToggleSelector from '../../components/ToggleSelector';
+import FlexBox from '../../components/FlexBox';
 
 // Constants to avoid magic strings
 const DOC_TYPES = {
@@ -27,14 +28,77 @@ const ROUTES = {
 
 const MESSAGES = {
     DELETE_SUCCESS: {
-        [DOC_TYPES.SOURCE_DOC]: 'Source document deleted successfully.',
-        [DOC_TYPES.META_TEXT]: 'Meta text deleted successfully.',
-    },
+        sourceDoc: 'Source document deleted successfully.',
+        metaText: 'Meta text deleted successfully.',
+    } as const satisfies Record<DocType, string>,
     DELETE_ERROR: {
-        [DOC_TYPES.SOURCE_DOC]: 'Failed to delete the source document. Please try again.',
-        [DOC_TYPES.META_TEXT]: 'Failed to delete the meta text. Please try again.',
-    },
+        sourceDoc: 'Failed to delete the source document. Please try again.',
+        metaText: 'Failed to delete the meta text. Please try again.',
+    } as const satisfies Record<DocType, string>,
 } as const;
+
+// Type for DocType based on DOC_TYPES
+export type DocType = typeof DOC_TYPES[keyof typeof DOC_TYPES];
+
+// Extracted SearchSection component
+function SearchSection({ loading, items, onItemClick, onDeleteClick }: {
+    loading: boolean;
+    items: any[];
+    onItemClick: (id: number) => void;
+    onDeleteClick: (id: number, e: React.MouseEvent) => void;
+}) {
+    return (
+        <ErrorBoundary>
+            <LoadingBoundary loading={loading}>
+                <Box sx={{ minWidth: '70vw' }}>
+                    <Typography variant="h5" gutterBottom>
+                        Search
+                    </Typography>
+                    <div style={{ height: '100%' }}>
+                        <SearchableList
+                            items={items}
+                            onItemClick={onItemClick}
+                            onDeleteClick={onDeleteClick}
+                            filterKey="title"
+                        />
+                    </div>
+                </Box>
+            </LoadingBoundary>
+        </ErrorBoundary>
+    );
+}
+
+// Extracted CreateSection component
+function CreateSection({
+    sourceDocs,
+    sourceDocsLoading,
+    sourceDocsError,
+    onSuccess,
+    docType
+}: {
+    sourceDocs: any[];
+    sourceDocsLoading: boolean;
+    sourceDocsError: any;
+    onSuccess: () => void;
+    docType: any;
+}) {
+    return (
+        <Box sx={{ minWidth: '70vw' }}>
+            <Typography variant="h5" gutterBottom>
+                Create
+            </Typography>
+            <div style={{ height: '100%' }}>
+                <CreateForm
+                    sourceDocs={sourceDocs}
+                    sourceDocsLoading={sourceDocsLoading}
+                    sourceDocsError={sourceDocsError}
+                    onSuccess={onSuccess}
+                    docType={docType}
+                />
+            </div>
+        </Box>
+    );
+}
 
 export default function HomePage() {
     // Use Zustand stores
@@ -54,6 +118,10 @@ export default function HomePage() {
     const { showSuccess, showError } = useNotifications();
     const navigate = useNavigate();
     const [docType, setDocType] = React.useState<DocType>(DOC_TYPES.META_TEXT);
+    // Add view mode state
+    const VIEW_MODES = { SEARCH: 'search', CREATE: 'create' } as const;
+    type ViewMode = keyof typeof VIEW_MODES;
+    const [viewMode, setViewMode] = React.useState<ViewMode>('SEARCH');
 
     // Consolidated data refresh function
     const refreshData = React.useCallback(() => {
@@ -98,10 +166,10 @@ export default function HomePage() {
             } else {
                 await deleteMetaText(id);
             }
-            showSuccess(MESSAGES.DELETE_SUCCESS[docType]);
+            showSuccess(MESSAGES.DELETE_SUCCESS[docType as keyof typeof MESSAGES.DELETE_SUCCESS]);
         } catch (error: unknown) {
             log.error(`Delete ${docType} failed`, error);
-            showError(getErrorMessage(error, MESSAGES.DELETE_ERROR[docType]));
+            showError(getErrorMessage(error, MESSAGES.DELETE_ERROR[docType as keyof typeof MESSAGES.DELETE_ERROR]));
         }
     }, [deleteSourceDoc, deleteMetaText, showSuccess, showError]);
 
@@ -147,46 +215,44 @@ export default function HomePage() {
 
     return (
         <PageContainer>
-            <DocTypeSelect value={docType} onChange={setDocType} />
-            <Box display="flex" flexDirection="row" gap={4} height="100vh">
-                <Box flex={1} display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
-                    <ErrorBoundary>
-                        <LoadingBoundary loading={currentDocConfig.loading}>
-                            <Fade in={true} key={docType} timeout={900}>
-                                <Box>
-                                    <Typography variant="h5" gutterBottom>
-                                        Search
-                                    </Typography>
-                                    <div style={{ height: '100%' }}>
-                                        <SearchableList
-                                            items={currentDocConfig.items}
-                                            onItemClick={currentDocConfig.onItemClick}
-                                            onDeleteClick={currentDocConfig.onDeleteClick}
-                                            filterKey="title"
-                                        />
-                                    </div>
-                                </Box>
-                            </Fade>
-                        </LoadingBoundary>
-                    </ErrorBoundary>
-                </Box>
-                <Fade in={true} key={docType + '-form'} timeout={900}>
-                    <Box flex={1} display="flex" flexDirection="column">
-                        <Typography variant="h5" gutterBottom>
-                            Create
-                        </Typography>
-                        <div style={{ height: '100%' }}>
-                            <CreateForm
-                                sourceDocs={sourceDocs || []}
-                                sourceDocsLoading={sourceDocsLoading}
-                                sourceDocsError={sourceDocsError}
-                                onSuccess={refreshData}
-                                docType={docType}
-                            />
-                        </div>
-                    </Box>
-                </Fade>
-            </Box>
+            <FlexBox sx={{ minWidth: '600px' }}>
+                <ToggleSelector
+                    value={docType}
+                    onChange={setDocType}
+                    options={[
+                        { value: DOC_TYPES.META_TEXT, label: 'Meta-Text', ariaLabel: 'Meta-Text' },
+                        { value: DOC_TYPES.SOURCE_DOC, label: 'Source Document', ariaLabel: 'Source Document' },
+                    ]}
+                    sx={{ my: 2 }}
+                />
+                {/* View mode toggle */}
+                <ToggleSelector
+                    value={viewMode}
+                    onChange={setViewMode}
+                    options={[
+                        { value: 'SEARCH', label: 'Search', ariaLabel: 'Search' },
+                        { value: 'CREATE', label: 'Create', ariaLabel: 'Create' },
+                    ]}
+                    sx={{ mb: 2 }}
+                />
+                {/* Only show one section at a time based on viewMode */}
+                {viewMode === 'SEARCH' ? (
+                    <SearchSection
+                        loading={currentDocConfig.loading}
+                        items={currentDocConfig.items}
+                        onItemClick={currentDocConfig.onItemClick}
+                        onDeleteClick={currentDocConfig.onDeleteClick}
+                    />
+                ) : (
+                    <CreateSection
+                        sourceDocs={sourceDocs || []}
+                        sourceDocsLoading={sourceDocsLoading}
+                        sourceDocsError={sourceDocsError}
+                        onSuccess={refreshData}
+                        docType={docType}
+                    />
+                )}
+            </FlexBox>
         </PageContainer >
     );
 }
