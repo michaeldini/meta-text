@@ -14,6 +14,7 @@ import { useNotifications } from '../../store/notificationStore';
 import { Box } from '@mui/material';
 import ToggleSelector from '../../components/ToggleSelector';
 import FlexBox from '../../components/FlexBox';
+import { useTheme } from '@mui/material/styles';
 
 // Constants to avoid magic strings
 const DOC_TYPES = {
@@ -100,6 +101,42 @@ function CreateSection({
     );
 }
 
+export enum ViewMode {
+    Search = 'search',
+    Create = 'create'
+}
+
+// Custom flipping styles for HomePage
+const flippingContainerSx = (theme: any) => ({
+    perspective: 1200,
+    width: '70vw',
+    minWidth: 600,
+    height: theme.spacing(50),
+    margin: '0 auto',
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+});
+
+const flippingContentSx = (viewMode: ViewMode, theme: any) => ({
+    width: '100%',
+    height: '100%',
+    position: 'relative',
+    transition: 'transform 0.7s cubic-bezier(.68,-0.55,.27,1.55), box-shadow 0.4s',
+    transform: viewMode === ViewMode.Create ? 'rotateY(180deg) scale(1.04)' : 'none',
+    // borderRadius: theme.shape.borderRadius * 2,
+    // background:
+    //     viewMode === ViewMode.Create
+    //         ? theme.palette.secondary.light
+    //         : theme.palette.background.paper,
+    overflow: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+});
+
 export default function HomePage() {
     // Use Zustand stores
     const {
@@ -119,9 +156,8 @@ export default function HomePage() {
     const navigate = useNavigate();
     const [docType, setDocType] = React.useState<DocType>(DOC_TYPES.META_TEXT);
     // Add view mode state
-    const VIEW_MODES = { SEARCH: 'search', CREATE: 'create' } as const;
-    type ViewMode = keyof typeof VIEW_MODES;
-    const [viewMode, setViewMode] = React.useState<ViewMode>('SEARCH');
+    const [viewMode, setViewMode] = React.useState<ViewMode>(ViewMode.Search);
+    const theme = useTheme();
 
     // Consolidated data refresh function
     const refreshData = React.useCallback(() => {
@@ -230,28 +266,32 @@ export default function HomePage() {
                     value={viewMode}
                     onChange={setViewMode}
                     options={[
-                        { value: 'SEARCH', label: 'Search', ariaLabel: 'Search' },
-                        { value: 'CREATE', label: 'Create', ariaLabel: 'Create' },
+                        { value: ViewMode.Search, label: 'Search', ariaLabel: 'Search' },
+                        { value: ViewMode.Create, label: 'Create', ariaLabel: 'Create' },
                     ]}
                     sx={{ mb: 2 }}
                 />
-                {/* Only show one section at a time based on viewMode */}
-                {viewMode === 'SEARCH' ? (
-                    <SearchSection
-                        loading={currentDocConfig.loading}
-                        items={currentDocConfig.items}
-                        onItemClick={currentDocConfig.onItemClick}
-                        onDeleteClick={currentDocConfig.onDeleteClick}
-                    />
-                ) : (
-                    <CreateSection
-                        sourceDocs={sourceDocs || []}
-                        sourceDocsLoading={sourceDocsLoading}
-                        sourceDocsError={sourceDocsError}
-                        onSuccess={refreshData}
-                        docType={docType}
-                    />
-                )}
+                {/* Flipping transition for content */}
+                <Box sx={flippingContainerSx(theme)}>
+                    <Box sx={flippingContentSx(viewMode, theme)}>
+                        {viewMode === ViewMode.Search ? (
+                            <SearchSection
+                                loading={currentDocConfig.loading}
+                                items={currentDocConfig.items}
+                                onItemClick={currentDocConfig.onItemClick}
+                                onDeleteClick={currentDocConfig.onDeleteClick}
+                            />
+                        ) : (
+                            <CreateSection
+                                sourceDocs={sourceDocs || []}
+                                sourceDocsLoading={sourceDocsLoading}
+                                sourceDocsError={sourceDocsError}
+                                onSuccess={refreshData}
+                                docType={docType}
+                            />
+                        )}
+                    </Box>
+                </Box>
             </FlexBox>
         </PageContainer >
     );

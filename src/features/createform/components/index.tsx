@@ -15,11 +15,6 @@ export enum DocType {
     MetaText = 'metaText'
 }
 
-export enum ViewMode {
-    Search = 'search',
-    Create = 'create'
-}
-
 export interface CreateFormProps {
     sourceDocs: SourceDocument[];
     sourceDocsLoading: boolean;
