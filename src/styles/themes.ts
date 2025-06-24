@@ -89,7 +89,28 @@ const baseTheme: ThemeOptions = {
                 },
             },
         },
+        MuiTableCell: {
+            styleOverrides: {
+                root: {
+                    fontSize: '1rem', // 16px
+                    lineHeight: 1.5,
+                },
+            },
+        },
+        MuiTableHead: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: blue[900],
+                    '& th': {
+                        fontWeight: 600,
+                        // color: grey[900],   // Darker text for better contrast
+
+                    }
+                }
+            }
+        },
     },
+
 };
 
 // Light theme configuration

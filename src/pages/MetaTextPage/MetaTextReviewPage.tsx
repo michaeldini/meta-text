@@ -116,10 +116,10 @@ export default function MetaTextReviewPage() {
                             <TableBody>
                                 {wordlist.map(row => (
                                     <TableRow key={row.id}>
-                                        <TableCell>{row.word}</TableCell>
+                                        <TableCell sx={{ color: 'text.secondary', fontWeight: 800, fontSize: '1.3rem' }}>{row.word}</TableCell>
+                                        <TableCell sx={{ color: 'text.primary', fontSize: '1.2rem', lineHeight: 1.5 }}>{row.definition}</TableCell>
+                                        <TableCell sx={{ color: 'text.primary', fontSize: '1rem', lineHeight: 1.5 }}>{row.definition_with_context}</TableCell>
                                         {/* <TableCell>{row.context}</TableCell> */}
-                                        <TableCell>{row.definition}</TableCell>
-                                        <TableCell>{row.definition_with_context}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
