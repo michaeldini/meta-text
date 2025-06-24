@@ -21,13 +21,14 @@ export const createChunksContainerStyles = (theme: Theme) => ({
     padding: theme.spacing(2),
     minHeight: '100vh',
     backgroundColor: theme.palette.background.default,
+    width: '100%',
 });
 
 /**
  * Creates main chunk box styles with theme awareness
  */
 export const createChunkMainBoxStyles = (theme: Theme) => ({
-    minWidth: '100%',
+    width: '100%',
     display: 'flex',
     flexDirection: { xs: 'column', md: 'row' } as const,
     gap: theme.spacing(2),
