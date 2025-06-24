@@ -33,12 +33,12 @@ const WordFlashcard: React.FC<WordFlashcardProps> = ({ word, definition, definit
             <Box sx={{ ...styles.flashcard, ...(flipped ? styles.flipped : {}) }}>
                 {/* Front Side */}
                 <Box sx={styles.front} onClick={e => { e.stopPropagation(); setFlipped(true); }}>
-                    <Typography variant="h5" fontWeight={700} align="center">{word}</Typography>
+                    <Typography variant="h4" fontWeight={700} align="center">{word}</Typography>
                 </Box>
                 {/* Back Side */}
                 <Box sx={styles.back} onClick={e => { e.stopPropagation(); setFlipped(false); }}>
-                    <Typography variant="h6" fontWeight={700} align="center">{word}</Typography>
-                    <Typography variant="body1" sx={{ mt: 1 }}>{definition}</Typography>
+                    <Typography variant="h5" fontWeight={700} align="center" color={theme.palette.text.secondary}>{word}</Typography>
+                    <Typography variant="body2" sx={{ mt: 1 }}>{definition}</Typography>
                     <Box sx={{ display: 'flex', gap: 1, mt: 2, justifyContent: 'center' }}>
                         <IconButton
                             size="small"
@@ -48,7 +48,7 @@ const WordFlashcard: React.FC<WordFlashcardProps> = ({ word, definition, definit
                             onMouseEnter={handlePopoverOpenInfo}
                             onMouseLeave={handlePopoverCloseInfo}
                         >
-                            <InfoOutlinedIcon style={{ width: 24, height: 24 }} />
+                            <InfoOutlinedIcon style={{ ...styles.icons }} />
                         </IconButton>
                         <Popover
                             id="info-popover"
@@ -77,7 +77,7 @@ const WordFlashcard: React.FC<WordFlashcardProps> = ({ word, definition, definit
                             onMouseEnter={handlePopoverOpenContext}
                             onMouseLeave={handlePopoverCloseContext}
                         >
-                            <QuestionMarkIcon style={{ width: 24, height: 24 }} />
+                            <QuestionMarkIcon style={{ ...styles.icons }} />
                         </IconButton>
                         <Popover
                             id="context-popover"
