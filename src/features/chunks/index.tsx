@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Box, Pagination, Paper, Alert, Slide } from '@mui/material';
 import Chunk from './components/Chunk';
 import { createChunksContainerStyles } from './styles/theme-aware-styles';
@@ -39,6 +39,9 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
     const [page, setPage] = useState(1);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const prevChunksRef = useRef<any[]>([]);
+    const setActiveChunk = useChunkStore(state => state.setActiveChunk);
+    const activeChunkId = useChunkStore(state => state.activeChunkId);
+    const chunkRefs = useRef<(HTMLDivElement | null)[]>([]);
 
     // Preserve scroll position on chunk updates
     React.useEffect(() => {
@@ -81,22 +84,45 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
         if (newPage !== page) setPage(newPage);
     }, [chunks, useChunkStore.getState().activeChunkId]);
 
-    // Scroll to active chunk if it is on the current page
-    React.useEffect(() => {
+    // Keyboard navigation with j/k
+    const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (!paginatedChunks.length) return;
+        const currentIdx = paginatedChunks.findIndex(chunk => chunk.id === activeChunkId);
+        if (e.key === 'j' || e.key === 'ArrowDown') {
+            const nextIdx = Math.min(currentIdx + 1, paginatedChunks.length - 1);
+            if (nextIdx !== currentIdx && paginatedChunks[nextIdx]) {
+                setActiveChunk(paginatedChunks[nextIdx].id);
+            }
+            e.preventDefault();
+        } else if (e.key === 'k' || e.key === 'ArrowUp') {
+            const prevIdx = Math.max(currentIdx - 1, 0);
+            if (prevIdx !== currentIdx && paginatedChunks[prevIdx]) {
+                setActiveChunk(paginatedChunks[prevIdx].id);
+            }
+            e.preventDefault();
+        }
+    }, [paginatedChunks, activeChunkId, setActiveChunk]);
+
+    // Ensure the container is focused so it receives keyboard events
+    useEffect(() => {
+        if (containerRef.current) {
+            containerRef.current.focus();
+        }
+    }, [paginatedChunks.length, page]);
+
+    // Scroll to chunk when activeChunkId changes (keyboard navigation)
+    useEffect(() => {
         if (!containerRef.current) return;
-        const { activeChunkId } = useChunkStore.getState();
         if (!activeChunkId) return;
-        // Wait for DOM update to ensure chunk is rendered
         setTimeout(() => {
             const chunkNode = containerRef.current?.querySelector(
                 `[data-chunk-id="${activeChunkId}"]`
             );
             if (chunkNode && chunkNode.scrollIntoView) {
                 chunkNode.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
             }
         }, 0);
-    }, [paginatedChunks, useChunkStore.getState().activeChunkId]);
+    }, [activeChunkId, paginatedChunks]);
 
     return (
         <ErrorBoundary>
@@ -106,16 +132,37 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
                         <Alert severity="error">{chunksError}</Alert>
                     </Box>
                 ) : (
-                    <Box ref={containerRef} sx={chunksContainer} data-testid="chunks-container">
+                    <Box
+                        ref={containerRef}
+                        sx={{
+                            ...chunksContainer,
+                            outline: 'none',
+                            boxShadow: 'none',
+                            '&:focus': {
+                                outline: 'none',
+                                boxShadow: 'none',
+                            },
+                        }}
+                        data-testid="chunks-container"
+                        tabIndex={0}
+                        onKeyDown={handleKeyDown}
+                    >
                         <ChunksPagination pageCount={pageCount} page={page} handleChange={handleChange} />
                         {paginatedChunks.map((chunk, chunkIdx) => (
-                            <Chunk
+                            <div
                                 key={startIdx + chunkIdx}
-                                chunk={chunk}
-                                chunkIdx={startIdx + chunkIdx}
-                                handleChunkFieldChange={updateChunkField}
+                                ref={el => { chunkRefs.current[chunkIdx] = el; }}
                                 data-chunk-id={chunk.id}
-                            />
+                                data-chunk-idx={chunkIdx}
+                                style={{ outline: chunk.id === activeChunkId ? '2px solid #1976d2' : 'none', borderRadius: 4 }}
+                            >
+                                <Chunk
+                                    chunk={chunk}
+                                    chunkIdx={startIdx + chunkIdx}
+                                    handleChunkFieldChange={updateChunkField}
+                                    data-chunk-id={chunk.id}
+                                />
+                            </div>
                         ))}
                         <ChunksPagination pageCount={pageCount} page={page} handleChange={handleChange} />
                     </Box>
