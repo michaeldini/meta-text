@@ -6,14 +6,15 @@ import ErrorBoundary from '../../components/ErrorBoundary';
 import LoadingBoundary from '../../components/LoadingBoundary';
 import log from '../../utils/logger';
 import { usePageLogger } from '../../hooks/usePageLogger';
-import CreateForm from '../../features/createform/components';
+import { CreateForm } from '../../features/createform/components';
 import { getErrorMessage } from '../../types/error';
 import { useDocumentsStore } from '../../store/documentsStore';
 import { useNotifications } from '../../store/notificationStore';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import ToggleSelector from '../../components/ToggleSelector';
 import FlexBox from '../../components/FlexBox';
 import { useTheme } from '@mui/material/styles';
+import WelcomeText from './WelcomeText';
 
 // Constants to avoid magic strings
 const DOC_TYPES = {
@@ -252,25 +253,28 @@ export default function HomePage() {
 
     return (
         <PageContainer>
-            <FlexBox sx={{ minWidth: '600px', height: '100%' }}>
-                <ToggleSelector
-                    value={docType}
-                    onChange={handleDocTypeChange}
-                    options={[
-                        { value: DOC_TYPES.META_TEXT, label: 'Meta-Text', ariaLabel: 'Meta-Text' },
-                        { value: DOC_TYPES.SOURCE_DOC, label: 'Source Document', ariaLabel: 'Source Document' },
-                    ]}
-                    sx={{ my: 2 }}
-                />
-                <ToggleSelector
-                    value={viewMode}
-                    onChange={handleViewModeChange}
-                    options={[
-                        { value: ViewMode.Search, label: 'Search', ariaLabel: 'Search' },
-                        { value: ViewMode.Create, label: 'Create', ariaLabel: 'Create' },
-                    ]}
-                    sx={{ mb: 2 }}
-                />
+            <FlexBox flexDirection="row" alignItems="start" >
+                <Box>
+                    <WelcomeText />
+                    <ToggleSelector
+                        value={docType}
+                        onChange={handleDocTypeChange}
+                        options={[
+                            { value: DOC_TYPES.META_TEXT, label: 'Meta-Text', ariaLabel: 'Meta-Text' },
+                            { value: DOC_TYPES.SOURCE_DOC, label: 'Source Document', ariaLabel: 'Source Document' },
+                        ]}
+                        sx={{ my: 2 }}
+                    />
+                    <ToggleSelector
+                        value={viewMode}
+                        onChange={handleViewModeChange}
+                        options={[
+                            { value: ViewMode.Search, label: 'Search', ariaLabel: 'Search' },
+                            { value: ViewMode.Create, label: 'Create', ariaLabel: 'Create' },
+                        ]}
+                        sx={{ mb: 2 }}
+                    />
+                </Box>
                 {content}
             </FlexBox>
         </PageContainer >

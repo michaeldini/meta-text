@@ -24,24 +24,22 @@ const flipIn = keyframes`
  * @returns {object} - Styles object for SearchableList component
  */
 export const createSearchableListStyles = (theme: Theme) => ({
-    root: {
-        backgroundColor: alpha(theme.palette.background.paper, 0.8),
-        height: '100%',
-        animation: `${flipIn} 0.3s cubic-bezier(0.4,0.2,0.2,1)`, // Use flip animation
-        transformStyle: 'preserve-3d',
+  root: {
+    animation: `${flipIn} 0.3s cubic-bezier(0.4,0.2,0.2,1)`, // Use flip animation
+    transformStyle: 'preserve-3d',
+  },
+  searchInput: {
+    marginBottom: theme.spacing(2),
+  },
+  noResults: {
+    textAlign: 'center',
+    fontStyle: 'italic',
+    color: theme.palette.text.secondary,
+  },
+  listItem: {
+    padding: theme.spacing(2),
+    '&:hover': {
+      backgroundColor: alpha(theme.palette.primary.main, 0.1),
     },
-    searchInput: {
-        marginBottom: theme.spacing(2),
-    },
-    noResults: {
-        textAlign: 'center',
-        fontStyle: 'italic',
-        color: theme.palette.text.secondary,
-    },
-    listItem: {
-        padding: theme.spacing(1, 2),
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.primary.main, 0.1),
-        },
-    },
+  },
 });
