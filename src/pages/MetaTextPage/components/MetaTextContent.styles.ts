@@ -3,6 +3,7 @@ import { Theme } from '@mui/material/styles';
 export const getMetaTextContentStyles = (theme: Theme) => ({
     container: {
         display: 'flex',
+        height: '100%',
         flexDirection: 'column' as const,
         alignItems: 'start',
         gap: theme.spacing(1.5), // Reduced gap between sections

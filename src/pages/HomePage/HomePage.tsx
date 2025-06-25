@@ -106,36 +106,42 @@ export enum ViewMode {
     Create = 'create'
 }
 
-// Custom flipping styles for HomePage
-const flippingContainerSx = (theme: any) => ({
+// Minimal flipping styles for HomePage (reset, simple flip only)
+const flippingContainerSx = {
     perspective: 1200,
     width: '70vw',
-    minWidth: 600,
-    height: theme.spacing(50),
+    minHeight: 600,
     margin: '0 auto',
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-});
+};
 
-const flippingContentSx = (viewMode: ViewMode, theme: any) => ({
+const flippingContentSx = (flipped: boolean) => ({
     width: '100%',
     height: '100%',
     position: 'relative',
-    transition: 'transform 0.7s cubic-bezier(.68,-0.55,.27,1.55), box-shadow 0.4s',
-    transform: viewMode === ViewMode.Create ? 'rotateY(180deg) scale(1.04)' : 'none',
-    // borderRadius: theme.shape.borderRadius * 2,
-    // background:
-    //     viewMode === ViewMode.Create
-    //         ? theme.palette.secondary.light
-    //         : theme.palette.background.paper,
-    overflow: 'auto',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
+    transition: 'transform 0.5s cubic-bezier(.68,-0.55,.27,1.55)',
+    transformStyle: 'preserve-3d',
+    transform: flipped ? 'rotateY(180deg)' : 'none',
 });
+
+const flippingSideSx = {
+    width: '100%',
+    height: '100%',
+    position: 'absolute' as const,
+    top: 0,
+    left: 0,
+    backfaceVisibility: 'hidden' as const,
+    boxSizing: 'border-box' as const,
+    overflow: 'auto',
+};
+
+const flippingBackSx = {
+    ...flippingSideSx,
+    transform: 'rotateY(180deg)',
+};
 
 export default function HomePage() {
     // Use Zustand stores
@@ -155,8 +161,12 @@ export default function HomePage() {
     const { showSuccess, showError } = useNotifications();
     const navigate = useNavigate();
     const [docType, setDocType] = React.useState<DocType>(DOC_TYPES.META_TEXT);
-    // Add view mode state
     const [viewMode, setViewMode] = React.useState<ViewMode>(ViewMode.Search);
+    const [flipped, setFlipped] = React.useState(false);
+    // For always-forward flip
+    const [pendingDocType, setPendingDocType] = React.useState<DocType>(docType);
+    const [pendingViewMode, setPendingViewMode] = React.useState<ViewMode>(viewMode);
+    const [isAnimating, setIsAnimating] = React.useState(false);
     const theme = useTheme();
 
     // Consolidated data refresh function
@@ -249,47 +259,77 @@ export default function HomePage() {
         handleDeleteMetaText,
     ]);
 
+    // Flip on any toggle input
+    const handleDocTypeChange = (value: DocType) => {
+        setFlipped(f => !f);
+        setDocType(value);
+    };
+    const handleViewModeChange = (value: ViewMode) => {
+        setFlipped(f => !f);
+        setViewMode(value);
+    };
+
     return (
         <PageContainer>
-            <FlexBox sx={{ minWidth: '600px' }}>
+            <FlexBox sx={{ minWidth: '600px', height: '100%' }}>
                 <ToggleSelector
                     value={docType}
-                    onChange={setDocType}
+                    onChange={handleDocTypeChange}
                     options={[
                         { value: DOC_TYPES.META_TEXT, label: 'Meta-Text', ariaLabel: 'Meta-Text' },
                         { value: DOC_TYPES.SOURCE_DOC, label: 'Source Document', ariaLabel: 'Source Document' },
                     ]}
                     sx={{ my: 2 }}
                 />
-                {/* View mode toggle */}
                 <ToggleSelector
                     value={viewMode}
-                    onChange={setViewMode}
+                    onChange={handleViewModeChange}
                     options={[
                         { value: ViewMode.Search, label: 'Search', ariaLabel: 'Search' },
                         { value: ViewMode.Create, label: 'Create', ariaLabel: 'Create' },
                     ]}
                     sx={{ mb: 2 }}
                 />
-                {/* Flipping transition for content */}
-                <Box sx={flippingContainerSx(theme)}>
-                    <Box sx={flippingContentSx(viewMode, theme)}>
-                        {viewMode === ViewMode.Search ? (
-                            <SearchSection
-                                loading={currentDocConfig.loading}
-                                items={currentDocConfig.items}
-                                onItemClick={currentDocConfig.onItemClick}
-                                onDeleteClick={currentDocConfig.onDeleteClick}
-                            />
-                        ) : (
-                            <CreateSection
-                                sourceDocs={sourceDocs || []}
-                                sourceDocsLoading={sourceDocsLoading}
-                                sourceDocsError={sourceDocsError}
-                                onSuccess={refreshData}
-                                docType={docType}
-                            />
-                        )}
+                <Box sx={flippingContainerSx}>
+                    <Box sx={flippingContentSx(flipped)}>
+                        {/* Front side */}
+                        <Box sx={flippingSideSx}>
+                            {!flipped && (viewMode === ViewMode.Search ? (
+                                <SearchSection
+                                    loading={docType === DOC_TYPES.SOURCE_DOC ? sourceDocsLoading : metaTextsLoading}
+                                    items={docType === DOC_TYPES.SOURCE_DOC ? (sourceDocs || []) : (metaTexts || [])}
+                                    onItemClick={docType === DOC_TYPES.SOURCE_DOC ? handleSourceDocClick : handleMetaTextClick}
+                                    onDeleteClick={docType === DOC_TYPES.SOURCE_DOC ? handleDeleteSourceDoc : handleDeleteMetaText}
+                                />
+                            ) : (
+                                <CreateSection
+                                    sourceDocs={sourceDocs || []}
+                                    sourceDocsLoading={sourceDocsLoading}
+                                    sourceDocsError={sourceDocsError}
+                                    onSuccess={refreshData}
+                                    docType={docType}
+                                />
+                            ))}
+                        </Box>
+                        {/* Back side */}
+                        <Box sx={flippingBackSx}>
+                            {flipped && (viewMode === ViewMode.Search ? (
+                                <SearchSection
+                                    loading={docType === DOC_TYPES.SOURCE_DOC ? sourceDocsLoading : metaTextsLoading}
+                                    items={docType === DOC_TYPES.SOURCE_DOC ? (sourceDocs || []) : (metaTexts || [])}
+                                    onItemClick={docType === DOC_TYPES.SOURCE_DOC ? handleSourceDocClick : handleMetaTextClick}
+                                    onDeleteClick={docType === DOC_TYPES.SOURCE_DOC ? handleDeleteSourceDoc : handleDeleteMetaText}
+                                />
+                            ) : (
+                                <CreateSection
+                                    sourceDocs={sourceDocs || []}
+                                    sourceDocsLoading={sourceDocsLoading}
+                                    sourceDocsError={sourceDocsError}
+                                    onSuccess={refreshData}
+                                    docType={docType}
+                                />
+                            ))}
+                        </Box>
                     </Box>
                 </Box>
             </FlexBox>

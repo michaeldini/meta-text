@@ -152,7 +152,7 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
                                 ref={el => { chunkRefs.current[chunkIdx] = el; }}
                                 data-chunk-id={chunk.id}
                                 data-chunk-idx={chunkIdx}
-                                style={{ outline: chunk.id === activeChunkId ? '2px solid #1976d2' : 'none', borderRadius: 4 }}
+                                style={{ outline: chunk.id === activeChunkId ? '2px solid #1976d2' : 'none', borderRadius: 12 }}
                             >
                                 <Chunk
                                     chunk={chunk}

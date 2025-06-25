@@ -4,6 +4,7 @@ import React from 'react';
 
 export const chunkMainBox = {
     minWidth: '100%',
+    height: '100%',
     display: 'flex',
     flexDirection: { xs: 'column', md: 'row' },
     gap: 2,
