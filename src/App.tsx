@@ -13,13 +13,13 @@ import { NavBar } from './features/navbar';
 import { AppSuspenseFallback } from './components/AppSuspenseFallback';
 import ErrorBoundary from './components/ErrorBoundary';
 import GlobalNotifications from './components/GlobalNotifications';
-import FloatingChunkToolbar from './features/chunks/layouts/toolbars/FloatingChunkToolbar';
 
 // Import theme system
 import { useThemeContext } from './contexts/ThemeContext';
 import { lightTheme, darkTheme } from './styles/themes';
 import { appContainerStyles } from './styles/styles';
 import { useAuthStore } from './store/authStore';
+import FlexBox from './components/FlexBox';
 
 // Dynamically import pages for code splitting
 const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
@@ -99,40 +99,30 @@ function App() {
         );
     };
 
+    const NotFoundElement = (
+        <FlexBox>
+            <Typography variant="h4" color="text.secondary">
+                Page not found
+            </Typography>
+        </FlexBox>
+    );
+
     return (
         <ThemeProvider theme={currentTheme}>
             {/* CssBaseline provides consistent CSS reset and applies theme background */}
             <CssBaseline />
-
             <ErrorBoundary>
                 <Box sx={appContainerStyles}>
                     <NavBar config={navbarConfig} />
-
-                    <Fade in={true} timeout={300}>
-                        <Box component="main">
-                            <Routes>
-                                {routes.map(renderRoute)}
-
-                                {/* 404 Route */}
-                                <Route path="*" element={
-                                    <Box sx={{
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        minHeight: '50vh'
-                                    }}>
-                                        <Typography variant="h4" color="text.secondary">
-                                            Page not found
-                                        </Typography>
-                                    </Box>
-                                } />
-                            </Routes>
-                        </Box>
-                    </Fade>
-
+                    <Box component="main">
+                        <Routes>
+                            {routes.map(renderRoute)}
+                            {/* 404 Route */}
+                            <Route path="*" element={NotFoundElement} />
+                        </Routes>
+                    </Box>
                     {/* Global components */}
                     <GlobalNotifications />
-                    <FloatingChunkToolbar />
                 </Box>
             </ErrorBoundary>
         </ThemeProvider>

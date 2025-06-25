@@ -12,6 +12,11 @@ import { alpha } from '@mui/material/styles';
 export const createNavbarStyles = (theme: Theme) => ({
     // App bar with theme-aware background and transitions - full width for smooth loading
     appBar: {
+        // position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: theme.zIndex.appBar,
         backgroundColor: theme.palette.primary.main,
         borderBottom: `1px solid ${theme.palette.divider}`,
         transition: theme.transitions.create(['background-color']),
