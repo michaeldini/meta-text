@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { List, ListItem, ListItemButton, ListItemText, Paper, TextField, InputAdornment } from '@mui/material';
+import { List, ListItem, ListItemButton, ListItemText, Paper, TextField, InputAdornment, Typography } from '@mui/material';
 import { Search as SearchIcon, Clear as ClearIcon, DeleteIcon } from '../../../components/icons';
 import IconButton from '@mui/material/IconButton';
 import DeleteButton from '../../../components/DeleteButton';
@@ -17,6 +17,7 @@ export interface SearchableListProps<T extends Record<string, any> & { id: numbe
     searchPlaceholder?: string;
     emptyMessage?: string;
     ariaLabel?: string;
+    title?: string; // New prop for title
 }
 
 function SearchableList<T extends Record<string, any> & { id: number }>({
@@ -28,6 +29,7 @@ function SearchableList<T extends Record<string, any> & { id: number }>({
     searchPlaceholder = "Search items...",
     emptyMessage = "No items found.",
     ariaLabel = "searchable list",
+    title, // Destructure title
 }: SearchableListProps<T>) {
     const [search, setSearch] = useState('');
 
@@ -54,6 +56,12 @@ function SearchableList<T extends Record<string, any> & { id: number }>({
 
     return (
         <Paper elevation={3} role="region" aria-label={ariaLabel} sx={styles.root}>
+            {/* Title (optional) */}
+            {title && (
+                <Typography variant="h6" fontWeight={600} component="div">
+                    {title}
+                </Typography>
+            )}
             {/* Search Input */}
             <TextField
                 data-testid="search-input"

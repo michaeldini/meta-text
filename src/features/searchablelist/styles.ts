@@ -1,10 +1,16 @@
 import { Theme, keyframes } from '@mui/material/styles';
 import { alpha } from '@mui/material/styles';
 
-// Define fadeIn keyframes
-const fadeIn = keyframes`
-  from { opacity: 0; transform: translateY(24px);}
-  to { opacity: 1; transform: translateY(0);}
+// Define flipIn keyframes for a turn-over effect
+const flipIn = keyframes`
+  from {
+    opacity: 0;
+    transform: perspective(600px) rotateY(90deg);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(600px) rotateY(0deg);
+  }
 `;
 
 /**
@@ -21,7 +27,8 @@ export const createSearchableListStyles = (theme: Theme) => ({
     root: {
         backgroundColor: alpha(theme.palette.background.paper, 0.8),
         height: '100%',
-        animation: `${fadeIn} 0.9s ease`, // Add animation here
+        animation: `${flipIn} 0.3s cubic-bezier(0.4,0.2,0.2,1)`, // Use flip animation
+        transformStyle: 'preserve-3d',
     },
     searchInput: {
         marginBottom: theme.spacing(2),

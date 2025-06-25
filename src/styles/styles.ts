@@ -25,7 +25,7 @@ export const pageContainer = {
  * Applied to the root container of the app
  */
 export const appContainerStyles = {
-    height: '100vh', // Full viewport height
+    height: '100%', // Full viewport height
     color: 'text.primary',
     margin: 0, // Remove any default margins
     padding: 0, // Remove any default padding

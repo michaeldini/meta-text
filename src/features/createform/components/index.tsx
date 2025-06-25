@@ -1,11 +1,11 @@
+// CreateForm is a "smart" form orchestrator: it manages state via useCreateForm, handles mode switching, and renders the correct input widgets and submit logic.
+
 import React, { useMemo, useCallback } from 'react';
-import { TextField } from '@mui/material';
+import { TextField, Typography } from '@mui/material';
 import FileUploadWidget from './FileUploadWidget';
 import SourceDocSelect from './Select';
 import CreateFormContainer from './Container';
 import SubmitButton from './SubmitButton';
-import ErrorBoundary from '../../../components/ErrorBoundary';
-import LoadingBoundary from '../../../components/LoadingBoundary';
 import { useCreateForm } from '../hooks/useCreateForm';
 import { SourceDocument, FormMode } from '../types';
 import { FORM_MODES, FORM_MESSAGES, FORM_A11Y } from '../constants';
@@ -21,6 +21,7 @@ export interface CreateFormProps {
     sourceDocsError: string | null;
     onSuccess?: () => void;
     docType: DocType;
+    title?: string; // New prop for title
 }
 
 const CreateForm: React.FC<CreateFormProps> = React.memo(({
@@ -28,7 +29,8 @@ const CreateForm: React.FC<CreateFormProps> = React.memo(({
     sourceDocsLoading,
     sourceDocsError,
     onSuccess,
-    docType
+    docType,
+    title // Destructure title
 }) => {
     // Convert docType to FormMode - memoized to prevent unnecessary recalculations
     const mode: FormMode = useMemo(() =>
@@ -38,18 +40,10 @@ const CreateForm: React.FC<CreateFormProps> = React.memo(({
 
     // Use the new custom hook for all business logic
     const form = useCreateForm({
-        initialMode: mode,
+        mode, // controlled mode
         onSuccess,
         sourceDocs
     });
-
-    // Update mode when docType prop changes
-    React.useEffect(() => {
-        const newMode: FormMode = docType === DocType.SourceDoc ? FORM_MODES.UPLOAD : FORM_MODES.META_TEXT;
-        if (newMode !== form.mode) {
-            form.setMode(newMode);
-        }
-    }, [docType, form.mode, form.setMode]);
 
     // Memoized event handlers
     const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,12 +65,14 @@ const CreateForm: React.FC<CreateFormProps> = React.memo(({
     }, [form.setTitle]);
 
     // Memoized computed values to prevent unnecessary re-renders
-    const isSubmitDisabled = useMemo(() =>
-        form.loading ||
-        !form.data.title.trim() ||
-        (form.mode === FORM_MODES.UPLOAD ? !form.data.file : !form.data.sourceDocId),
-        [form.loading, form.data.title, form.data.file, form.data.sourceDocId, form.mode]
-    );
+    // const isSubmitDisabled = useMemo(() =>
+    //     form.loading ||
+    //     !form.data.title.trim() ||
+    //     (form.mode === FORM_MODES.UPLOAD ? !form.data.file : !form.data.sourceDocId),
+    //     [form.loading, form.data.title, form.data.file, form.data.sourceDocId, form.mode]
+    // );
+    // Use single-source-of-truth from hook
+    const isSubmitDisabled = form.isSubmitDisabled;
 
     // Memoized dynamic content
     const formContent = useMemo(() => ({
@@ -89,64 +85,63 @@ const CreateForm: React.FC<CreateFormProps> = React.memo(({
     }), [form.mode, form.loading]);
 
     return (
-        <ErrorBoundary>
-            <LoadingBoundary loading={sourceDocsLoading}>
-                <CreateFormContainer
-                    description={formContent.description}
-                    onSubmit={handleSubmit}
-                    error={form.error}
-                    success={form.success}
-                    loading={form.loading}
-                >
-                    {/* Mode-specific input widget */}
-                    {form.mode === FORM_MODES.UPLOAD ? (
-                        <FileUploadWidget
-                            file={form.data.file}
-                            onFileChange={handleFileChange}
-                            id={FORM_A11Y.IDS.FILE_UPLOAD}
-                        />
-                    ) : (
-                        <SourceDocSelect
-                            value={form.data.sourceDocId || ''}
-                            onChange={handleSourceDocChange}
-                            sourceDocs={sourceDocs}
-                            loading={sourceDocsLoading}
-                            error={sourceDocsError}
-                            required
-                            id={FORM_A11Y.IDS.SOURCE_DOC_SELECT}
-                            aria-label={FORM_A11Y.LABELS.SOURCE_DOC_SELECT}
-                        />
-                    )}
-
-                    {/* Title input with accessibility features */}
-                    <TextField
-                        value={form.data.title}
-                        onChange={handleTitleChange}
-                        label={formContent.titleLabel}
-                        fullWidth
-                        margin="normal"
-                        disabled={form.loading}
-                        data-testid={formContent.titleId}
-                        id={formContent.titleId}
-                        required
-                        autoComplete="off"
+        <>
+            <CreateFormContainer
+                title={title}
+                description={formContent.description}
+                onSubmit={handleSubmit}
+                error={form.error}
+                success={form.success}
+                loading={form.loading}
+            >
+                {/* Mode-specific input widget */}
+                {form.mode === FORM_MODES.UPLOAD ? (
+                    <FileUploadWidget
+                        file={form.data.file}
+                        onFileChange={handleFileChange}
+                        id={FORM_A11Y.IDS.FILE_UPLOAD}
                     />
+                ) : (
+                    <SourceDocSelect
+                        value={form.data.sourceDocId || ''}
+                        onChange={handleSourceDocChange}
+                        sourceDocs={sourceDocs}
+                        loading={sourceDocsLoading}
+                        error={sourceDocsError}
+                        required
+                        id={FORM_A11Y.IDS.SOURCE_DOC_SELECT}
+                        aria-label={FORM_A11Y.LABELS.SOURCE_DOC_SELECT}
+                    />
+                )}
 
-                    {/* Submit button */}
-                    <SubmitButton
-                        loading={form.loading}
-                        disabled={isSubmitDisabled}
-                    >
-                        {formContent.submitText}
-                        {form.loading && (
-                            <span id="submit-loading-text" className="sr-only">
-                                Form is being submitted, please wait.
-                            </span>
-                        )}
-                    </SubmitButton>
-                </CreateFormContainer>
-            </LoadingBoundary>
-        </ErrorBoundary>
+                {/* Title input with accessibility features */}
+                <TextField
+                    value={form.data.title}
+                    onChange={handleTitleChange}
+                    label={formContent.titleLabel}
+                    fullWidth
+                    margin="normal"
+                    disabled={form.loading}
+                    data-testid={formContent.titleId}
+                    id={formContent.titleId}
+                    required
+                    autoComplete="off"
+                />
+
+                {/* Submit button */}
+                <SubmitButton
+                    loading={form.loading}
+                    disabled={isSubmitDisabled}
+                >
+                    {formContent.submitText}
+                    {form.loading && (
+                        <span id="submit-loading-text" className="sr-only">
+                            Form is being submitted, please wait.
+                        </span>
+                    )}
+                </SubmitButton>
+            </CreateFormContainer>
+        </>
     );
 });
 

@@ -7,7 +7,6 @@ import LoadingBoundary from '../../components/LoadingBoundary';
 import log from '../../utils/logger';
 import { usePageLogger } from '../../hooks/usePageLogger';
 import CreateForm from '../../features/createform/components';
-import { Typography } from '@mui/material';
 import { getErrorMessage } from '../../types/error';
 import { useDocumentsStore } from '../../store/documentsStore';
 import { useNotifications } from '../../store/notificationStore';
@@ -42,27 +41,24 @@ const MESSAGES = {
 export type DocType = typeof DOC_TYPES[keyof typeof DOC_TYPES];
 
 // Extracted SearchSection component
-function SearchSection({ loading, items, onItemClick, onDeleteClick }: {
+function SearchSection({ loading, items, onItemClick, onDeleteClick, docType }: {
     loading: boolean;
     items: any[];
     onItemClick: (id: number) => void;
     onDeleteClick: (id: number, e: React.MouseEvent) => void;
+    docType: DocType;
 }) {
     return (
         <ErrorBoundary>
             <LoadingBoundary loading={loading}>
                 <Box sx={{ minWidth: '70vw' }}>
-                    <Typography variant="h5" gutterBottom>
-                        Search
-                    </Typography>
-                    <div style={{ height: '100%' }}>
-                        <SearchableList
-                            items={items}
-                            onItemClick={onItemClick}
-                            onDeleteClick={onDeleteClick}
-                            filterKey="title"
-                        />
-                    </div>
+                    <SearchableList
+                        items={items}
+                        onItemClick={onItemClick}
+                        onDeleteClick={onDeleteClick}
+                        filterKey="title"
+                        title="Search"
+                    />
                 </Box>
             </LoadingBoundary>
         </ErrorBoundary>
@@ -84,20 +80,22 @@ function CreateSection({
     docType: any;
 }) {
     return (
-        <Box sx={{ minWidth: '70vw' }}>
-            <Typography variant="h5" gutterBottom>
-                Create
-            </Typography>
-            <div style={{ height: '100%' }}>
-                <CreateForm
-                    sourceDocs={sourceDocs}
-                    sourceDocsLoading={sourceDocsLoading}
-                    sourceDocsError={sourceDocsError}
-                    onSuccess={onSuccess}
-                    docType={docType}
-                />
-            </div>
-        </Box>
+        <ErrorBoundary>
+            <LoadingBoundary loading={sourceDocsLoading}>
+                <Box sx={{ minWidth: '70vw' }}>
+                    <CreateForm
+                        sourceDocs={sourceDocs}
+                        sourceDocsLoading={sourceDocsLoading}
+                        sourceDocsError={sourceDocsError}
+                        onSuccess={onSuccess}
+                        docType={docType}
+                        title="Create"
+                    />
+                </Box>
+            </LoadingBoundary>
+
+        </ErrorBoundary>
+
     );
 }
 
@@ -105,43 +103,6 @@ export enum ViewMode {
     Search = 'search',
     Create = 'create'
 }
-
-// Minimal flipping styles for HomePage (reset, simple flip only)
-const flippingContainerSx = {
-    perspective: 1200,
-    width: '70vw',
-    minHeight: 600,
-    margin: '0 auto',
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-};
-
-const flippingContentSx = (flipped: boolean) => ({
-    width: '100%',
-    height: '100%',
-    position: 'relative',
-    transition: 'transform 0.5s cubic-bezier(.68,-0.55,.27,1.55)',
-    transformStyle: 'preserve-3d',
-    transform: flipped ? 'rotateY(180deg)' : 'none',
-});
-
-const flippingSideSx = {
-    width: '100%',
-    height: '100%',
-    position: 'absolute' as const,
-    top: 0,
-    left: 0,
-    backfaceVisibility: 'hidden' as const,
-    boxSizing: 'border-box' as const,
-    overflow: 'auto',
-};
-
-const flippingBackSx = {
-    ...flippingSideSx,
-    transform: 'rotateY(180deg)',
-};
 
 export default function HomePage() {
     // Use Zustand stores
@@ -160,13 +121,11 @@ export default function HomePage() {
 
     const { showSuccess, showError } = useNotifications();
     const navigate = useNavigate();
+    // Use a single viewKey to represent the current view
     const [docType, setDocType] = React.useState<DocType>(DOC_TYPES.META_TEXT);
     const [viewMode, setViewMode] = React.useState<ViewMode>(ViewMode.Search);
-    const [flipped, setFlipped] = React.useState(false);
-    // For always-forward flip
-    const [pendingDocType, setPendingDocType] = React.useState<DocType>(docType);
-    const [pendingViewMode, setPendingViewMode] = React.useState<ViewMode>(viewMode);
-    const [isAnimating, setIsAnimating] = React.useState(false);
+    // viewKey is a string like 'metaText-search', 'sourceDoc-create', etc.
+    const viewKey = `${docType}-${viewMode}`;
     const theme = useTheme();
 
     // Consolidated data refresh function
@@ -261,13 +220,35 @@ export default function HomePage() {
 
     // Flip on any toggle input
     const handleDocTypeChange = (value: DocType) => {
-        setFlipped(f => !f);
         setDocType(value);
     };
     const handleViewModeChange = (value: ViewMode) => {
-        setFlipped(f => !f);
         setViewMode(value);
     };
+
+    // Render the correct content for the current view
+    let content: React.ReactNode = null;
+    if (viewMode === ViewMode.Search) {
+        content = (
+            <SearchSection
+                loading={docType === DOC_TYPES.SOURCE_DOC ? sourceDocsLoading : metaTextsLoading}
+                items={docType === DOC_TYPES.SOURCE_DOC ? (sourceDocs || []) : (metaTexts || [])}
+                onItemClick={docType === DOC_TYPES.SOURCE_DOC ? handleSourceDocClick : handleMetaTextClick}
+                onDeleteClick={docType === DOC_TYPES.SOURCE_DOC ? handleDeleteSourceDoc : handleDeleteMetaText}
+                docType={docType}
+            />
+        );
+    } else {
+        content = (
+            <CreateSection
+                sourceDocs={sourceDocs || []}
+                sourceDocsLoading={sourceDocsLoading}
+                sourceDocsError={sourceDocsError}
+                onSuccess={refreshData}
+                docType={docType}
+            />
+        );
+    }
 
     return (
         <PageContainer>
@@ -290,48 +271,7 @@ export default function HomePage() {
                     ]}
                     sx={{ mb: 2 }}
                 />
-                <Box sx={flippingContainerSx}>
-                    <Box sx={flippingContentSx(flipped)}>
-                        {/* Front side */}
-                        <Box sx={flippingSideSx}>
-                            {!flipped && (viewMode === ViewMode.Search ? (
-                                <SearchSection
-                                    loading={docType === DOC_TYPES.SOURCE_DOC ? sourceDocsLoading : metaTextsLoading}
-                                    items={docType === DOC_TYPES.SOURCE_DOC ? (sourceDocs || []) : (metaTexts || [])}
-                                    onItemClick={docType === DOC_TYPES.SOURCE_DOC ? handleSourceDocClick : handleMetaTextClick}
-                                    onDeleteClick={docType === DOC_TYPES.SOURCE_DOC ? handleDeleteSourceDoc : handleDeleteMetaText}
-                                />
-                            ) : (
-                                <CreateSection
-                                    sourceDocs={sourceDocs || []}
-                                    sourceDocsLoading={sourceDocsLoading}
-                                    sourceDocsError={sourceDocsError}
-                                    onSuccess={refreshData}
-                                    docType={docType}
-                                />
-                            ))}
-                        </Box>
-                        {/* Back side */}
-                        <Box sx={flippingBackSx}>
-                            {flipped && (viewMode === ViewMode.Search ? (
-                                <SearchSection
-                                    loading={docType === DOC_TYPES.SOURCE_DOC ? sourceDocsLoading : metaTextsLoading}
-                                    items={docType === DOC_TYPES.SOURCE_DOC ? (sourceDocs || []) : (metaTexts || [])}
-                                    onItemClick={docType === DOC_TYPES.SOURCE_DOC ? handleSourceDocClick : handleMetaTextClick}
-                                    onDeleteClick={docType === DOC_TYPES.SOURCE_DOC ? handleDeleteSourceDoc : handleDeleteMetaText}
-                                />
-                            ) : (
-                                <CreateSection
-                                    sourceDocs={sourceDocs || []}
-                                    sourceDocsLoading={sourceDocsLoading}
-                                    sourceDocsError={sourceDocsError}
-                                    onSuccess={refreshData}
-                                    docType={docType}
-                                />
-                            ))}
-                        </Box>
-                    </Box>
-                </Box>
+                {content}
             </FlexBox>
         </PageContainer >
     );

@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect, useRef } from 'react';
 import { CreateFormResult, CreateFormOptions, FormMode, CreateFormData } from '../types';
 import { validateCreateForm } from '../utils/validation';
 import { createFormService } from '../services/createFormService';
@@ -15,6 +15,7 @@ const INITIAL_DATA: CreateFormData = {
 export function useCreateForm(options: CreateFormOptions = {}): CreateFormResult {
     const {
         initialMode = FORM_MODES.UPLOAD,
+        mode: controlledMode, // NEW: controlled mode
         onSuccess,
         sourceDocs = []
     } = options;
@@ -23,16 +24,28 @@ export function useCreateForm(options: CreateFormOptions = {}): CreateFormResult
     const { showSuccess, showError } = useNotifications();
 
     // State
-    const [mode, setMode] = useState<FormMode>(initialMode);
+    const isControlled = controlledMode !== undefined;
+    const [uncontrolledMode, setUncontrolledMode] = useState<FormMode>(initialMode);
+    const mode = isControlled ? controlledMode! : uncontrolledMode;
     const [data, setData] = useState<CreateFormData>(INITIAL_DATA);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
 
+    // Track previous mode to detect changes
+    const prevModeRef = useRef<FormMode>(mode);
+    useEffect(() => {
+        if (prevModeRef.current !== mode) {
+            setData(INITIAL_DATA);
+            setError(null);
+            setSuccess(null);
+            prevModeRef.current = mode;
+        }
+    }, [mode]);
+
     // Actions
     const setTitle = useCallback((title: string) => {
         setData(prev => ({ ...prev, title }));
-        // Clear messages when user starts typing
         if (error || success) {
             setError(null);
             setSuccess(null);
@@ -41,7 +54,6 @@ export function useCreateForm(options: CreateFormOptions = {}): CreateFormResult
 
     const setFile = useCallback((file: File | null) => {
         setData(prev => ({ ...prev, file }));
-        // Clear messages when file changes
         if (error || success) {
             setError(null);
             setSuccess(null);
@@ -50,7 +62,6 @@ export function useCreateForm(options: CreateFormOptions = {}): CreateFormResult
 
     const setSourceDocId = useCallback((sourceDocId: string) => {
         setData(prev => ({ ...prev, sourceDocId }));
-        // Clear messages when selection changes
         if (error || success) {
             setError(null);
             setSuccess(null);
@@ -58,12 +69,14 @@ export function useCreateForm(options: CreateFormOptions = {}): CreateFormResult
     }, [error, success]);
 
     const handleSetMode = useCallback((newMode: FormMode) => {
-        setMode(newMode);
-        // Reset form data when switching modes
-        setData(INITIAL_DATA);
-        setError(null);
-        setSuccess(null);
-    }, []);
+        if (!isControlled) {
+            setUncontrolledMode(newMode);
+            setData(INITIAL_DATA);
+            setError(null);
+            setSuccess(null);
+        }
+        // If controlled, do nothing (parent controls mode)
+    }, [isControlled]);
 
     const clearMessages = useCallback(() => {
         setError(null);
@@ -78,16 +91,12 @@ export function useCreateForm(options: CreateFormOptions = {}): CreateFormResult
     }, []);
 
     const submit = useCallback(async () => {
-        // Clear previous messages
         clearMessages();
-
-        // Validate form
         const validation = validateCreateForm(mode, data);
         if (!validation.isValid) {
             setError(validation.error || 'Invalid form data');
             return;
         }
-
         setLoading(true); try {
             if (mode === FORM_MODES.UPLOAD) {
                 if (!data.file) throw new Error('File is required for upload');
@@ -98,28 +107,17 @@ export function useCreateForm(options: CreateFormOptions = {}): CreateFormResult
                 if (isNaN(sourceDocIdNum)) throw new Error('Invalid source document ID');
                 await createFormService.submitMetaText(sourceDocIdNum, data.title);
             }
-
-            // Success - show global notification and set local success state
             const successMessage = FORM_MESSAGES.SUCCESS[mode];
             showSuccess(successMessage);
             setSuccess(successMessage);
-
-            // Reset form data for new input
             setData(INITIAL_DATA);
-
-            // Clear any existing error
             setError(null);
-
-            // Call success callback
             if (onSuccess) {
                 onSuccess();
             }
-
             log.info(`Form submission successful for mode: ${mode}`);
-
         } catch (err: any) {
             const errorMessage = err?.message || 'An error occurred during submission';
-            // Use global notification for errors as well for consistency
             showError(errorMessage);
             setError(errorMessage);
             log.error(`Form submission failed for mode: ${mode}`, err);
@@ -128,20 +126,24 @@ export function useCreateForm(options: CreateFormOptions = {}): CreateFormResult
         }
     }, [mode, data, onSuccess, showSuccess, showError]);
 
+    // Compute isSubmitDisabled based on current form state
+    const isSubmitDisabled = loading ||
+        !data.title.trim() ||
+        (mode === FORM_MODES.UPLOAD ? !data.file : !data.sourceDocId);
+
     return {
-        // State
         mode,
         data,
         loading,
         error,
         success,
-        // Actions  
         setTitle,
         setFile,
         setSourceDocId,
         setMode: handleSetMode,
         submit,
         reset,
-        clearMessages
+        clearMessages,
+        isSubmitDisabled // NEW: for single-source-of-truth
     };
 }

@@ -1,11 +1,10 @@
+// CreateFormContainer is a "dumb" presentational wrapper: it provides layout, loading, and feedback UI (snackbar, spinner, etc).
 import React, { useMemo } from 'react';
 import { Paper, Typography, Box, CircularProgress, useTheme } from '@mui/material';
 import { createFormStyles } from '../styles/styles';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
-import { FORM_DEFAULTS } from '../constants';
 
 interface CreateFormProps {
+    title?: string; // Optional title prop
     description: string;
     onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
     children: React.ReactNode;
@@ -15,6 +14,7 @@ interface CreateFormProps {
 }
 
 const CreateFormContainer: React.FC<CreateFormProps> = React.memo(({
+    title, // Optional title prop
     description,
     onSubmit,
     children,
@@ -23,32 +23,15 @@ const CreateFormContainer: React.FC<CreateFormProps> = React.memo(({
     loading,
 }) => {
     const theme = useTheme();
-    const [snackbarOpen, setSnackbarOpen] = React.useState(false);
-    const [snackbarMsg, setSnackbarMsg] = React.useState('');
-    const [snackbarSeverity, setSnackbarSeverity] = React.useState<'success' | 'error'>('success');
-
-    React.useEffect(() => {
-        if (error) {
-            setSnackbarMsg(error);
-            setSnackbarSeverity('error');
-            setSnackbarOpen(true);
-        } else if (success) {
-            setSnackbarMsg(success);
-            setSnackbarSeverity('success');
-            setSnackbarOpen(true);
-        }
-    }, [error, success]);
-
-    const handleSnackbarClose = React.useCallback((_event?: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') return;
-        setSnackbarOpen(false);
-    }, []);
-
+    // Remove snackbar state and effects
     // Theme-aware styles (NavBar pattern)
     const styles = useMemo(() => createFormStyles(theme), [theme]);
 
     return (
-        <Paper elevation={3} sx={styles.paperStyles}>
+        <Paper elevation={3} sx={styles.createFormContainer}>
+            {title && (
+                <Typography variant="h6">{title}</Typography>
+            )}
             <Typography variant="body1" gutterBottom>
                 {description}
             </Typography>
@@ -60,16 +43,6 @@ const CreateFormContainer: React.FC<CreateFormProps> = React.memo(({
                 )}
                 {children}
             </Box>
-            <Snackbar
-                open={snackbarOpen}
-                autoHideDuration={FORM_DEFAULTS.SNACKBAR_AUTO_HIDE}
-                onClose={handleSnackbarClose}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-            >
-                <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={styles.alertStyles}>
-                    {snackbarMsg}
-                </Alert>
-            </Snackbar>
         </Paper>
     );
 });

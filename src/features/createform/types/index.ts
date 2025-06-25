@@ -31,10 +31,13 @@ export interface CreateFormActions {
     clearMessages: () => void;
 }
 
-export interface CreateFormResult extends CreateFormState, CreateFormActions { }
+export interface CreateFormResult extends CreateFormState, CreateFormActions {
+    isSubmitDisabled: boolean;
+}
 
 export interface CreateFormOptions {
     initialMode?: FormMode;
+    mode?: FormMode; // NEW: controlled mode
     onSuccess?: () => void;
     sourceDocs?: SourceDocument[];
 }
