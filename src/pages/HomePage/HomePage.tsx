@@ -52,13 +52,13 @@ function SearchSection({ loading, items, onItemClick, onDeleteClick, docType }: 
     return (
         <ErrorBoundary>
             <LoadingBoundary loading={loading}>
-                <Box sx={{ minWidth: '70vw' }}>
+                <Box width="100%">
                     <SearchableList
                         items={items}
                         onItemClick={onItemClick}
                         onDeleteClick={onDeleteClick}
                         filterKey="title"
-                        title="Search"
+                        title={docType}
                     />
                 </Box>
             </LoadingBoundary>
@@ -83,14 +83,14 @@ function CreateSection({
     return (
         <ErrorBoundary>
             <LoadingBoundary loading={sourceDocsLoading}>
-                <Box sx={{ minWidth: '70vw' }}>
+                <Box width="100%">
                     <CreateForm
                         sourceDocs={sourceDocs}
                         sourceDocsLoading={sourceDocsLoading}
                         sourceDocsError={sourceDocsError}
                         onSuccess={onSuccess}
                         docType={docType}
-                        title="Create"
+                        title={docType}
                     />
                 </Box>
             </LoadingBoundary>
