@@ -11,6 +11,14 @@ export const getMetaTextContentStyles = (theme: Theme) => ({
         paddingRight: "32px", // Adjusted for floating toolbar
     },
 
+    headerContainer: {
+        display: 'flex',
+        flexDirection: 'row' as const,
+        gap: theme.spacing(10),
+        width: '100%',
+        padding: theme.spacing(2),
+    },
+
     headerPaper: {
         padding: theme.spacing(1.5), // Compact padding
         display: 'flex',
@@ -21,19 +29,8 @@ export const getMetaTextContentStyles = (theme: Theme) => ({
         width: '100%',
     },
 
-    title: {
-        fontWeight: 600,
-        margin: 0,
-        lineHeight: 1.2 // Tighter line height
-    },
-
     reviewButton: {
         minWidth: 'auto',
         padding: theme.spacing(0.5, 1),
     }
-});
-
-// Commented out the floating toolbar padding - remove this if you don't want the floating toolbar
-export const getFloatingToolbarPadding = (theme: Theme) => ({
-    paddingRight: "2000px", // Adjusted for floating toolbar
 });

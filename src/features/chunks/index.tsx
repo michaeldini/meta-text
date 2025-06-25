@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Box, Pagination, Paper, Alert, Slide } from '@mui/material';
 import Chunk from './components/Chunk';
-import { createChunksContainerStyles } from './styles/theme-aware-styles';
+import { getChunksStyles } from './styles/Chunks.style';
 import log from '../../utils/logger';
 import LoadingBoundary from '../../components/LoadingBoundary';
 import ErrorBoundary from '../../components/ErrorBoundary';
@@ -70,7 +70,7 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
 
     // Replace hard-coded styles with theme-aware styles
     const theme = useTheme();
-    const chunksContainer = createChunksContainerStyles(theme);
+    const styles = getChunksStyles(theme);
 
     // Auto-pagination: go to the page containing the active chunk
     React.useEffect(() => {
@@ -126,14 +126,14 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
         <ErrorBoundary>
             <LoadingBoundary loading={loadingChunks}>
                 {chunksError ? (
-                    <Box sx={chunksContainer} data-testid="chunks-container-error">
+                    <Box sx={styles.container} data-testid="chunks-container-error">
                         <Alert severity="error">{chunksError}</Alert>
                     </Box>
                 ) : (
                     <Box
                         ref={containerRef}
                         sx={{
-                            ...chunksContainer,
+                            ...styles.container,
                             outline: 'none',
                             boxShadow: 'none',
                             '&:focus': {
@@ -152,7 +152,6 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
                                 ref={el => { chunkRefs.current[chunkIdx] = el; }}
                                 data-chunk-id={chunk.id}
                                 data-chunk-idx={chunkIdx}
-                                style={{ outline: chunk.id === activeChunkId ? '2px solid #1976d2' : 'none', borderRadius: 12 }}
                             >
                                 <Chunk
                                     chunk={chunk}

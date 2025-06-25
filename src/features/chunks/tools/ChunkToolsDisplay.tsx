@@ -7,7 +7,7 @@ import ComparisonTab from '../layouts/tabs/ComparisonTab';
 import AiImageTab from '../layouts/tabs/AiImageTab';
 import { useChunkStore } from '../../../store/chunkStore';
 import type { Chunk } from '../../../types/chunk';
-import { createChunkToolsContainerStyles, createChunkToolsBoxStyles } from './styles/styles';
+import { getChunkToolsStyles } from './styles/styles';
 import { useTheme } from '@mui/material/styles';
 
 interface ChunkToolsDisplayProps {
@@ -20,12 +20,9 @@ const tabOptions = [
     { value: 'ai-image', icon: <PhotoFilterIcon style={{ width: 20, height: 20 }} />, key: 'ai-image' },
 ] as const;
 
-type TabType = typeof tabOptions[number]['value'];
-
 const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk }) => {
     const theme = useTheme();
-    const chunkToolsContainer = createChunkToolsContainerStyles(theme);
-    const chunkToolsBox = createChunkToolsBoxStyles(theme);
+    const styles = React.useMemo(() => getChunkToolsStyles(theme), [theme]);
 
     // Use store selectors directly instead of wrapper hooks
     const activeTabs = useChunkStore(state => state.activeTabs);
@@ -37,8 +34,8 @@ const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk }) => {
     }, [chunk.id]);
 
     return (
-        <Box sx={chunkToolsContainer}>
-            <Box sx={chunkToolsBox}>
+        <Box sx={styles.container}>
+            <Box sx={styles.box}>
                 {/* Show Notes/Summary if selected */}
                 {activeTabs.includes('notes-summary') && (
                     <NotesSummaryTab chunk={chunk} updateChunkField={updateChunkField} />

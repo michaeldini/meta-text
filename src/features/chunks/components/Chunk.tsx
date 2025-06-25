@@ -1,8 +1,8 @@
-import React, { memo, useRef, useEffect } from 'react';
-import { Box, Paper, Slide } from '@mui/material';
+import React, { memo, useRef, useEffect, useMemo } from 'react';
+import { Box, Paper, Slide, useTheme } from '@mui/material';
 import { ChunkWords } from '.';
 import ChunkToolsDisplay from '../tools/ChunkToolsDisplay';
-import { chunkMainBox } from '../styles/styles';
+import { getChunkStyles } from './styles/Chunk.styles';
 import { useChunkStore } from '../../../store/chunkStore';
 import type { Chunk } from '../../../types/chunk';
 import type { ChunkFieldValue } from '../../../store/chunkStore';
@@ -22,6 +22,8 @@ const Chunk = memo(function Chunk({
     const { activeChunkId, setActiveChunk } = useChunkStore();
     const isActive = activeChunkId === chunk.id;
     const chunkRef = useRef<HTMLDivElement>(null);
+    const theme = useTheme();
+    const styles = useMemo(() => getChunkStyles(theme), [theme]);
 
     useEffect(() => {
         if (isActive && chunkRef.current) {
@@ -31,30 +33,22 @@ const Chunk = memo(function Chunk({
     }, [isActive]);
 
     return (
-        <Slide in={true} timeout={500} direction="up">
-            <Paper
-                ref={chunkRef}
-                data-chunk-id={chunk.id}
-                elevation={isActive ? 2 : 0}
-                sx={{
-                    ...chunkMainBox,
-                    border: isActive ? '1px solid #1976d2' : '1px solid #e0e0e0',
-                    cursor: 'pointer',
-                    backgroundColor: 'background.default',
-                    boxShadow: isActive ? '0 2px 8px rgba(25,118,210,0.1)' : 'none',
-                }}
-                onClick={() => setActiveChunk(chunk.id)}
-            >
-                <ChunkWords
-                    words={words}
-                    chunkIdx={chunkIdx}
-                    chunk={chunk}
-                />
-                <ChunkToolsDisplay
-                    chunk={chunk}
-                />
-            </Paper>
-        </Slide>
+        <Paper
+            ref={chunkRef}
+            data-chunk-id={chunk.id}
+            elevation={isActive ? 2 : 0}
+            sx={styles.chunkContainer}
+            onClick={() => setActiveChunk(chunk.id)}
+        >
+            <ChunkWords
+                words={words}
+                chunkIdx={chunkIdx}
+                chunk={chunk}
+            />
+            <ChunkToolsDisplay
+                chunk={chunk}
+            />
+        </Paper>
     );
 });
 
