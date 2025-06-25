@@ -7,16 +7,16 @@ export const sourceDocContainerStyle = (theme: Theme) => ({
 });
 export const slotPropsStyles = {
     primaryTitle: {
-        variant: 'h6' as TypographyVariant,
+        variant: 'h5' as TypographyVariant,
         sx: { fontWeight: 600, py: 0, my: 0 },
     },
     primaryListItem: {
-        variant: 'caption' as TypographyVariant,
+        variant: 'h6' as TypographyVariant,
         color: 'secondary',
         fontWeight: 600,
     },
     primaryListItemText: {
-        variant: 'caption' as TypographyVariant,
+        variant: 'h6' as TypographyVariant,
         sx: { lineHeight: 1.0 },
     },
     primaryCollapsibleText: {
