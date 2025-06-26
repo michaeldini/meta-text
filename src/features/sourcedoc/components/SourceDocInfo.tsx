@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Alert, List, ListItem, ListItemText, Collapse, ListItemButton, ListItemIcon, Box, useTheme } from '@mui/material';
-import { ExpandLessIcon, ExpandMoreIcon } from '../../../components/icons';
 import { getErrorMessage } from '../../../types/error';
 import type { SourceDocument } from '../../../types/sourceDocument';
 import { generateSourceDocInfo } from '../../../services/sourceDocInfoService';
@@ -129,17 +128,14 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
                 <ListItemButton onClick={() => handleToggleSection(config.key)} dense>
                     <ListItemText
                         primary={config.label}
-                        primaryTypographyProps={styles.slotProps.primaryListItem}
+                        slotProps={{ primary: styles.slotProps.primaryListItem }}
                     />
-                    <ListItemIcon sx={{ minWidth: 'auto' }}>
-                        {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                    </ListItemIcon>
                 </ListItemButton>
                 <Collapse in={isOpen} timeout="auto" unmountOnExit>
                     <ListItem sx={{ pl: 4 }} dense>
                         <ListItemText
                             primary={value as string}
-                            primaryTypographyProps={styles.slotProps.primaryCollapsibleText}
+                            slotProps={{ primary: styles.slotProps.primaryCollapsibleText }}
                         />
                     </ListItem>
                 </Collapse>
