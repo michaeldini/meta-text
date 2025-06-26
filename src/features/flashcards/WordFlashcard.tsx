@@ -34,6 +34,7 @@ const WordFlashcard: React.FC<WordFlashcardProps> = ({ word, definition, definit
                 sx={{ ...styles.flashcard, ...(flipped ? styles.flipped : {}), height: '100%' }}
                 onClick={() => setFlipped(f => !f)}
             >
+
                 {/* Front Side */}
                 <Box sx={styles.front}>
                     <CardContent>
