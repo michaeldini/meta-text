@@ -39,6 +39,8 @@ const baseTheme: ThemeOptions = {
             },
             styleOverrides: {
                 root: {
+                    width: '100%',
+                    flex: 1,
                     borderRadius: 8,
                     textTransform: 'none', // Disable uppercase transformation
                 },

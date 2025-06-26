@@ -26,6 +26,7 @@ const FlexBox: React.FC<BoxProps & {
         const theme = useTheme();
         return (
             <Box
+                width="100%"
                 display="flex"
                 flexDirection={flexDirection}
                 alignItems={alignItems}

@@ -14,7 +14,7 @@ import { QuestionMarkCircleIcon as QuestionMarkCircleSvg } from '@heroicons/reac
 import { DocumentDuplicateIcon as DocumentDuplicateSvg } from '@heroicons/react/24/solid';
 import { ChevronDownIcon as ChevronDownSvg } from '@heroicons/react/24/solid';
 import { ChevronUpIcon as ChevronUpSvg } from '@heroicons/react/24/solid';
-
+import { SparklesIcon as StarsSvg } from '@heroicons/react/24/solid';
 // All icons are typed to accept all ThemedIconProps except 'as'
 type IconProps = Omit<ThemedIconProps, 'as'>;
 
@@ -31,8 +31,9 @@ export const NotesIcon: React.FC<IconProps> = (props) => <ThemedIcon as={Documen
 export const ContentCutIcon: React.FC<IconProps> = (props) => <ThemedIcon as={ScissorsSvg} {...props} />;
 export const QuestionMarkIcon: React.FC<IconProps> = (props) => <ThemedIcon as={QuestionMarkCircleSvg} {...props} />;
 export const CopyIcon: React.FC<IconProps> = (props) => <ThemedIcon as={DocumentDuplicateSvg} {...props} />;
+export const ExpandMoreIcon: React.FC<IconProps> = (props) => <ThemedIcon as={ChevronDownSvg} {...props} />;
+export const StarsIcon: React.FC<IconProps> = (props) => <ThemedIcon as={StarsSvg} {...props} />;
 
 // unused icons but may be needed later
-export const ExpandMoreIcon: React.FC<IconProps> = (props) => <ThemedIcon as={ChevronDownSvg} {...props} />;
 export const ExpandLessIcon: React.FC<IconProps> = (props) => <ThemedIcon as={ChevronUpSvg} {...props} />;
 

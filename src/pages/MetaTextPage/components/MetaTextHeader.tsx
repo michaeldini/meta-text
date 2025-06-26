@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Typography, Button, Box, useTheme } from '@mui/material';
 import SourceDocInfo from '../../../features/sourcedoc/components/SourceDocInfo';
 import AiGenerationButton from '../../../components/AiGenerationButton';
+import ReviewButton from '../../../components/ReviewButton';
 import { getMetaTextContentStyles } from './MetaText.styles';
 import FlexBox from '../../../components/FlexBox';
 
@@ -36,23 +37,19 @@ const MetaTextHeader: React.FC<MetaTextHeaderProps> = ({
     };
 
     return (
-        <FlexBox alignItems="start" sx={{ ...styles.headerContainer, width: '100%' }}>
-            <FlexBox alignItems="flex-end" flexDirection="row" sx={{ width: '100%' }}>
+        <FlexBox alignItems="start" sx={styles.headerContainer}>
+            <FlexBox alignItems="flex-end" flexDirection="row">
                 <Typography variant="subtitle1" color={theme.palette.text.secondary}>Editing the meta-text named</Typography>
                 <Typography variant="h4" sx={{ mx: 1 }}>{displayTitle}</Typography>
                 <Typography variant="subtitle1" color={theme.palette.text.secondary}>that was derived from</Typography>
                 <Typography variant="h5" sx={{ mx: 1 }}>{sourceDocSection ? `${sourceDocSection.doc.title}` : ''}</Typography>
             </FlexBox>
-            <FlexBox flexDirection="row" sx={{ width: '100%', mt: 2, gap: 2 }}>
-                <Button
-                    variant="outlined"
-                    size="small"
+            <FlexBox flexDirection="row" >
+                <ReviewButton
+                    label={messages.REVIEW_BUTTON}
+                    toolTip="Review this meta-text"
                     onClick={onReviewClick}
-                    aria-label={`Review ${displayTitle}`}
-                    sx={styles.reviewButton}
-                >
-                    {messages.REVIEW_BUTTON}
-                </Button>
+                />
                 <AiGenerationButton
                     label="Generate Info"
                     toolTip="Generate or update document info using AI"
@@ -60,13 +57,15 @@ const MetaTextHeader: React.FC<MetaTextHeaderProps> = ({
                     loading={loading}
                 />
             </FlexBox>
-            {sourceDocSection && (
-                <SourceDocInfo
-                    doc={sourceDocSection.doc}
-                    key={infoRefreshKey}
-                />
-            )}
-        </FlexBox>
+            {
+                sourceDocSection && (
+                    <SourceDocInfo
+                        doc={sourceDocSection.doc}
+                        key={infoRefreshKey}
+                    />
+                )
+            }
+        </FlexBox >
     );
 };
 

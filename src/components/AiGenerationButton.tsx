@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, CircularProgress, Tooltip } from '@mui/material';
 import type { SxProps, Theme } from '@mui/material/styles';
-
+import { StarsIcon } from '../components/icons'; // Adjust the import path as necessary
 export interface AiGenerationButtonProps {
     label: string;
     toolTip?: string;
@@ -16,15 +16,15 @@ const AiGenerationButton: React.FC<AiGenerationButtonProps> = ({ label, toolTip,
         <Button
             variant="outlined"
             color="secondary"
-            sx={{ ...sx, opacity: loading ? 0.7 : 1 }}
+            sx={{ ...sx, opacity: loading ? 0.7 : 1, flex: 1 }}
             onClick={onClick}
             disabled={disabled || loading}
             aria-label={toolTip || 'AI Generation Button'}
         >
             {loading ? <CircularProgress size={20} aria-label="Loading AI generation" /> :
                 <>
+                    <StarsIcon style={{ marginRight: 8 }} />
                     {label}
-                    <img src="/ai-stars.png" alt="AI" style={{ width: 24, height: 24, marginLeft: 8 }} />
                 </>
             }
         </Button>

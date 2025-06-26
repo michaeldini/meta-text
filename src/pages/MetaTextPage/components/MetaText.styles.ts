@@ -24,10 +24,4 @@ export const getMetaTextContentStyles = (theme: Theme) => ({
         minHeight: 'auto', // Remove default min-height
         width: '100%',
     },
-
-    reviewButton: {
-        minWidth: 'auto',
-        padding: theme.spacing(0.5, 1),
-        flex: 1,
-    }
 });
