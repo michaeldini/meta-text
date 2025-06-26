@@ -76,7 +76,7 @@ const WordActionDialog: React.FC<WordActionDialogProps> = ({ anchorEl, onClose, 
                         {loading ? (
                             <CircularProgress size={20} />
                         ) : (
-                            <QuestionMarkIcon fontSize="small" />
+                            <QuestionMarkIcon />
                         )}
                     </IconButton>
                 </Box>

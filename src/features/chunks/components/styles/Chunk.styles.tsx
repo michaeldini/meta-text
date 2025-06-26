@@ -14,6 +14,16 @@ export const getChunkStyles = (theme: Theme) => ({
         width: '100%',
 
     },
+    wordsContainer: {
+        display: 'flex',
+        flexWrap: 'wrap' as const,
+        gap: theme.spacing(1),
+        transition: 'all 0.3s ease',
+        '&:hover': {
+            transform: 'translateY(-2px)',
+        },
+        padding: theme.spacing(2),
+    },
     chunkWordBox: {
         display: 'inline-block',
         borderRadius: 1,
@@ -24,16 +34,6 @@ export const getChunkStyles = (theme: Theme) => ({
             backgroundColor: theme.palette.secondary.main,
             color: theme.palette.background.paper,
         },
-    },
-    wordsContainer: {
-        display: 'flex',
-        flexWrap: 'wrap' as const,
-        gap: theme.spacing(1),
-        transition: 'all 0.3s ease',
-        '&:hover': {
-            transform: 'translateY(-2px)',
-        },
-        padding: theme.spacing(2),
     },
     chunkUndoIconButton: {
         transition: 'transform 0.2s',

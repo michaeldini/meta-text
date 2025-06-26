@@ -11,7 +11,7 @@ import {
     useTheme,
     IconButton,
 } from '@mui/material';
-import { ChevronDownIcon, MenuIcon } from '../../../components/icons';
+import { MenuIcon } from '../../../components/icons';
 import { useAuth } from '../../../store/authStore';
 import { useNavigation } from '../hooks/useNavigation';
 import { useDropdownMenu } from '../hooks/useDropdownMenu';
@@ -84,7 +84,7 @@ const NavBar: React.FC<NavBarProps> = ({
     const styles = useMemo(() => createNavbarStyles(theme), [theme]);
 
     // Custom icons (Heroicons) need explicit styling since they don't inherit from MuiSvgIcon
-    const menuIcon = <MenuIcon style={styles.icon} />;
+    const menuIcon = <MenuIcon />;
 
     return (
         <AppBar

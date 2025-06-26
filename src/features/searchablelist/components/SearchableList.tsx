@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { List, ListItem, ListItemButton, ListItemText, Paper, TextField, InputAdornment, Typography } from '@mui/material';
-import { Search as SearchIcon, Clear as ClearIcon, DeleteIcon } from '../../../components/icons';
+import { SearchIcon, ClearIcon } from '../../../components/icons';
 import IconButton from '@mui/material/IconButton';
 import DeleteButton from '../../../components/DeleteButton';
 import { useFilteredList } from '../hooks/useFilteredList';
@@ -78,7 +78,7 @@ function SearchableList<T extends Record<string, any> & { id: number }>({
                 InputProps={{
                     startAdornment: (
                         <InputAdornment position="start">
-                            <SearchIcon style={{ width: 24, height: 24, color: 'rgba(0, 0, 0, 0.54)' }} />
+                            <SearchIcon />
                         </InputAdornment>
                     ),
                     endAdornment: search && (
@@ -90,7 +90,7 @@ function SearchableList<T extends Record<string, any> & { id: number }>({
                                 size="small"
                                 aria-label="Clear search"
                             >
-                                <ClearIcon style={{ width: 24, height: 24, color: 'currentColor' }} />
+                                <ClearIcon />
                             </IconButton>
                         </InputAdornment>
                     ),

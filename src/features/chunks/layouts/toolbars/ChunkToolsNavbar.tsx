@@ -50,8 +50,6 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
         placement: "left" as const
     };
 
-    const iconStyle = { width: 24, height: 24, color: 'currentColor' };
-
     const tooltipTitles = {
         notesSummary: <Typography variant="caption">
             Show or hide the Notes/Summary editor for all chunks</Typography>,
@@ -80,7 +78,7 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
                     {...tooltipProps}
                 >
                     <ToggleButton value="notes-summary" aria-label="Show Notes/Summary">
-                        <NotesIcon style={iconStyle} />
+                        <NotesIcon />
                     </ToggleButton>
                 </Tooltip>
                 <Tooltip
@@ -88,7 +86,7 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
                     {...tooltipProps}
                 >
                     <ToggleButton value="comparison" aria-label="Show Comparison">
-                        <CompareArrowsIcon style={iconStyle} />
+                        <CompareArrowsIcon />
                     </ToggleButton>
                 </Tooltip>
                 <Tooltip
@@ -96,7 +94,7 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
                     {...tooltipProps}
                 >
                     <ToggleButton value="ai-image" aria-label="Show AI Image">
-                        <PhotoFilterIcon style={iconStyle} />
+                        <PhotoFilterIcon />
                     </ToggleButton>
                 </Tooltip>
             </ToggleButtonGroup>

@@ -88,11 +88,4 @@ export const createNavbarStyles = (theme: Theme) => ({
         alignItems: 'center',
         gap: theme.spacing(1),
     },
-
-    // Icon styling for custom icons (Heroicons, etc.) that don't inherit from MuiSvgIcon
-    icon: {
-        width: 24,
-        height: 24,
-        color: 'inherit',
-    },
 });

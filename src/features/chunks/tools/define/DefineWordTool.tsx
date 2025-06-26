@@ -72,7 +72,7 @@ const DefineWordTool: React.FC<DefineWordToolComponentProps> = ({
                     disabled={loading}
                     aria-label={`Define ${stripPunctuation(word)}`}
                 >
-                    {loading ? <CircularProgress size={20} /> : <QuestionMarkIcon style={{ width: 24, height: 24, color: 'currentColor' }} />}
+                    {loading ? <CircularProgress size={20} /> : <QuestionMarkIcon />}
                 </IconButton>
             </Tooltip>
 

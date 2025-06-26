@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Alert, List, ListItem, ListItemText, Collapse, ListItemButton, ListItemIcon, Box, useTheme } from '@mui/material';
-import { ExpandLess, ExpandMore } from '../../../components/icons';
+import { ExpandLessIcon, ExpandMoreIcon } from '../../../components/icons';
 import { getErrorMessage } from '../../../types/error';
 import type { SourceDocument } from '../../../types/sourceDocument';
 import { generateSourceDocInfo } from '../../../services/sourceDocInfoService';
@@ -132,7 +132,7 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
                         primaryTypographyProps={styles.slotProps.primaryListItem}
                     />
                     <ListItemIcon sx={{ minWidth: 'auto' }}>
-                        {isOpen ? <ExpandLess /> : <ExpandMore />}
+                        {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                     </ListItemIcon>
                 </ListItemButton>
                 <Collapse in={isOpen} timeout="auto" unmountOnExit>

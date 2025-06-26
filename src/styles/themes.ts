@@ -8,6 +8,13 @@ const baseTheme: ThemeOptions = {
         borderRadius: 8,
         borderRadiusSm: 4, // Smaller radius for specific components
     },
+    icons: {
+        default: {
+            width: 24,
+            height: 24,
+        },
+        className: 'size-6 text-blue-500', // this doesnt work, maybe can be later
+    },
     typography: {
         fontFamily: 'Arial, sans-serif, system-ui',
         fontSize: 16,

@@ -16,7 +16,7 @@ export default function DeleteButton({ onClick, disabled, label = "Delete", icon
         <Tooltip title={label} placement="top">
             <span>
                 <IconButton
-                    sx={{ color: theme.palette.text.primary, opacity: .5 }}
+                    // sx={{ color: theme.palette.text.primary, opacity: .5 }}
                     data-testid="delete-button"
                     onClick={onClick}
                     disabled={disabled}
@@ -24,7 +24,7 @@ export default function DeleteButton({ onClick, disabled, label = "Delete", icon
                     aria-label={label}
                     size="large"
                 >
-                    {icon || <DeleteIcon style={{ height: 24, width: 24, color: theme.palette.text.primary, opacity: .5 }} />}
+                    {icon || <DeleteIcon />}
                 </IconButton>
             </span>
         </Tooltip>

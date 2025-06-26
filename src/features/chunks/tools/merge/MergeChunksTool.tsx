@@ -41,7 +41,7 @@ const MergeChunksTool: React.FC<MergeChunksToolComponentProps> = ({
                 onClick={handleMerge}
                 aria-label="Undo split (merge with next chunk)"
             >
-                <UndoArrowIcon style={{ width: 20, height: 20, color: 'currentColor' }} />
+                <UndoArrowIcon />
             </IconButton>
         </Tooltip>
     );

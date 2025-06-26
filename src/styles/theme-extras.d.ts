@@ -5,12 +5,20 @@ declare module '@mui/material/styles' {
             borderRadius: number;
             borderRadiusSm: number;
         };
-    }
+        icons: {
+            default: React.CSSProperties;
+            className: string;
+        }
+    };
     // allow configuration using `createTheme()`
     interface ThemeOptions {
         shape?: {
             borderRadius?: number;
             borderRadiusSm?: number;
+        };
+        icons?: {
+            default?: React.CSSProperties;
+            className?: string;
         };
     }
 }
