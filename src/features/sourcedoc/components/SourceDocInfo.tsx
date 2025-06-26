@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { Paper, Divider, Alert, List, ListItem, ListItemText, Collapse, ListItemButton, ListItemIcon, Box } from '@mui/material';
+import { Alert, List, ListItem, ListItemText, Collapse, ListItemButton, ListItemIcon, Box, useTheme } from '@mui/material';
 import { ExpandLess, ExpandMore } from '../../../components/icons';
-import AiGenerationButton from '../../../components/AiGenerationButton';
 import { getErrorMessage } from '../../../types/error';
 import type { SourceDocument } from '../../../types/sourceDocument';
 import { generateSourceDocInfo } from '../../../services/sourceDocInfoService';
-import { slotPropsStyles } from '../styles/styles';
+import { getSourceDocumentStyles } from '../styles/styles';
 
 interface SourceDocInfoProps {
     doc: SourceDocument;
@@ -32,6 +31,9 @@ function splitToArray(str?: string | null): string[] {
 }
 
 const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
+    const theme = useTheme();
+    const styles = getSourceDocumentStyles(theme);
+
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>({
@@ -76,9 +78,7 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
                 <ListItem key={config.key} dense>
                     <ListItemText
                         primary={value as string}
-                        slotProps={{
-                            primary: slotPropsStyles.primaryTitle,
-                        }}
+                        primaryTypographyProps={styles.slotProps.primaryTitle}
                     />
                 </ListItem>
             );
@@ -98,10 +98,7 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
                     <ListItemButton onClick={() => handleToggleSection(config.key)} dense>
                         <ListItemText
                             primary={config.label}
-                            slotProps={{
-                                primary: slotPropsStyles.primaryListItem,
-
-                            }}
+                            primaryTypographyProps={styles.slotProps.primaryListItem}
                             data-testid={`${config.key}ListItemText`}
                         />
                         <ListItemIcon sx={{ minWidth: 'auto' }}>
@@ -115,9 +112,7 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
                                 <ListItemButton key={i} sx={{ pl: 4 }} dense>
                                     <ListItemText
                                         primary={item}
-                                        slotProps={{
-                                            primary: slotPropsStyles.primaryListItemText,
-                                        }}
+                                        primaryTypographyProps={styles.slotProps.primaryListItemText}
                                     />
                                 </ListItemButton>
                             ))}
@@ -134,9 +129,7 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
                 <ListItemButton onClick={() => handleToggleSection(config.key)} dense>
                     <ListItemText
                         primary={config.label}
-                        slotProps={{
-                            primary: slotPropsStyles.primaryListItem,
-                        }}
+                        primaryTypographyProps={styles.slotProps.primaryListItem}
                     />
                     <ListItemIcon sx={{ minWidth: 'auto' }}>
                         {isOpen ? <ExpandLess /> : <ExpandMore />}
@@ -146,9 +139,7 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
                     <ListItem sx={{ pl: 4 }} dense>
                         <ListItemText
                             primary={value as string}
-                            slotProps={{
-                                primary: slotPropsStyles.primaryCollapsibleText,
-                            }}
+                            primaryTypographyProps={styles.slotProps.primaryCollapsibleText}
                         />
                     </ListItem>
                 </Collapse>

@@ -14,11 +14,6 @@ const flipIn = keyframes`
 `;
 
 /**
- * styles - theme-aware and maintainable
- * Focus on responsive feel without unnecessary complexity
- */
-
-/**
  * Creates all searchable list styles in one simple function
  * @param {Theme} theme - MUI theme object
  * @returns {object} - Styles object for SearchableList component

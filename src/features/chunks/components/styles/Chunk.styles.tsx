@@ -14,13 +14,6 @@ export const getChunkStyles = (theme: Theme) => ({
         width: '100%',
 
     },
-
-    chunkImageBtnBox: {
-        marginTop: theme.spacing(2),
-        display: 'flex',
-        flexDirection: 'column' as const,
-        alignItems: 'flex-end',
-    },
     chunkWordBox: {
         display: 'inline-block',
         borderRadius: 1,
