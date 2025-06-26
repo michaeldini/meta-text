@@ -40,9 +40,9 @@ const MetaTextHeader: React.FC<MetaTextHeaderProps> = ({
         <FlexBox alignItems="start" sx={styles.headerContainer}>
             <FlexBox alignItems="flex-end" flexDirection="row">
                 <Typography variant="subtitle1" color={theme.palette.text.secondary}>Editing the meta-text named</Typography>
-                <Typography variant="h4" sx={{ mx: 1 }}>{displayTitle}</Typography>
+                <Typography variant="h5" sx={{ mx: 1 }}>{displayTitle}</Typography>
                 <Typography variant="subtitle1" color={theme.palette.text.secondary}>that was derived from</Typography>
-                <Typography variant="h5" sx={{ mx: 1 }}>{sourceDocSection ? `${sourceDocSection.doc.title}` : ''}</Typography>
+                <Typography variant="h6" sx={{ mx: 1 }}>{sourceDocSection ? `${sourceDocSection.doc.title}` : ''}</Typography>
             </FlexBox>
             <FlexBox flexDirection="row" >
                 <ReviewButton
