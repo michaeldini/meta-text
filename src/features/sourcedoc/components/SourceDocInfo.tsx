@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Alert, List, ListItem, ListItemText, Collapse, ListItemButton, ListItemIcon, Box, useTheme } from '@mui/material';
+import { Alert, List, ListItem, ListItemText, Box, useTheme, Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
+import { ExpandMoreIcon } from '../../../components/icons';
 import { getErrorMessage } from '../../../types/error';
 import type { SourceDocument } from '../../../types/sourceDocument';
 import { generateSourceDocInfo } from '../../../services/sourceDocInfoService';
@@ -35,20 +36,6 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>({
-        summary: false,
-        characters: false,
-        locations: false,
-        themes: false,
-        symbols: false
-    });
-
-    const handleToggleSection = (key: string) => {
-        setOpenSections(prev => ({
-            ...prev,
-            [key]: !prev[key]
-        }));
-    };
 
     const handleDownloadInfo = async () => {
         setLoading(true);
@@ -77,7 +64,7 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
                 <ListItem key={config.key} dense>
                     <ListItemText
                         primary={value as string}
-                        primaryTypographyProps={styles.slotProps.primaryTitle}
+                        slotProps={{ primary: styles.slotProps.primaryTitle }}
                     />
                 </ListItem>
             );
@@ -88,67 +75,59 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
         if (listFields.includes(config.key)) {
             const arr = splitToArray(value as string);
             if (arr.length === 0) return null;
-
-            const isOpen = openSections[config.key];
             return (
-                <React.Fragment key={config.key}>
-
-                    {/* Section for {config.label} */}
-                    <ListItemButton onClick={() => handleToggleSection(config.key)} dense>
-                        <ListItemText
-                            primary={config.label}
-                            primaryTypographyProps={styles.slotProps.primaryListItem}
-                            data-testid={`${config.key}ListItemText`}
-                        />
-                        <ListItemIcon sx={{ minWidth: 'auto' }}>
-                        </ListItemIcon>
-                    </ListItemButton>
-
-                    {/* Collapsible list of items */}
-                    <Collapse in={isOpen} timeout="auto" unmountOnExit>
+                <Accordion
+                    key={config.key}
+                    slotProps={{ transition: { unmountOnExit: true } }}
+                >
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                        <Typography variant="subtitle1">{config.label}</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
                         <List component="div" disablePadding>
                             {arr.map((item, i) => (
-                                <ListItemButton key={i} sx={{ pl: 4 }} dense>
+                                <ListItem key={i} sx={{ pl: 2 }} dense>
                                     <ListItemText
                                         primary={item}
-                                        primaryTypographyProps={styles.slotProps.primaryListItemText}
+                                        slotProps={{ primary: styles.slotProps.primaryListItemText }}
                                     />
-                                </ListItemButton>
+                                </ListItem>
                             ))}
                         </List>
-                    </Collapse>
-                </React.Fragment>
+                    </AccordionDetails>
+                </Accordion>
             );
         }
 
         // Handle collapsible text fields (summary, author, etc.)
-        const isOpen = openSections[config.key];
         return (
-            <React.Fragment key={config.key}>
-                <ListItemButton onClick={() => handleToggleSection(config.key)} dense>
-                    <ListItemText
-                        primary={config.label}
-                        slotProps={{ primary: styles.slotProps.primaryListItem }}
-                    />
-                </ListItemButton>
-                <Collapse in={isOpen} timeout="auto" unmountOnExit>
-                    <ListItem sx={{ pl: 4 }} dense>
-                        <ListItemText
-                            primary={value as string}
-                            slotProps={{ primary: styles.slotProps.primaryCollapsibleText }}
-                        />
-                    </ListItem>
-                </Collapse>
-            </React.Fragment>
+            <Accordion
+                key={config.key}
+                slotProps={{ transition: { unmountOnExit: true } }}
+            >
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography variant="subtitle1">{config.label}</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <Typography {...styles.slotProps.primaryCollapsibleText}>
+                        {value as string}
+                    </Typography>
+                </AccordionDetails>
+            </Accordion>
         );
     };
 
     return (
         <Box>
-            <List dense disablePadding >
-                {FIELD_CONFIG.map(config => renderField(config))}
-            </List>
-            {error && <Alert severity="error" sx={{ mt: 1 }}>{error}</Alert>}
+            <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography variant="h6">Document Info</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    {FIELD_CONFIG.map(config => renderField(config))}
+                    {error && <Alert severity="error" sx={{ mt: 1 }}>{error}</Alert>}
+                </AccordionDetails>
+            </Accordion>
         </Box>
     );
 };

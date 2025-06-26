@@ -117,6 +117,44 @@ const baseTheme: ThemeOptions = {
                 }
             }
         },
+        MuiAccordion: {
+            styleOverrides: {
+                root: {
+                    padding: 8,
+                    margin: 8,
+                    minHeight: 32,
+                    '&.Mui-expanded': {
+                        minHeight: 32,
+                    },
+                },
+            },
+        },
+        MuiAccordionSummary: {
+            styleOverrides: {
+                root: {
+                    minHeight: 32,
+                    paddingTop: 0,
+                    paddingBottom: 0,
+                    '&.Mui-expanded': {
+                        minHeight: 32,
+                    },
+                },
+                content: {
+                    margin: 0,
+                    padding: 0,
+                },
+            },
+        },
+        MuiAccordionDetails: {
+            styleOverrides: {
+                root: {
+                    paddingTop: 4,
+                    paddingBottom: 4,
+                    paddingLeft: 8,
+                    paddingRight: 8,
+                },
+            },
+        },
     },
 
 };
