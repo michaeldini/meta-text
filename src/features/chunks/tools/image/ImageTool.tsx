@@ -6,7 +6,7 @@ import { ImageToolProps } from '../types';
 import ChunkImageModal from './Modal';
 import AiGenerationButton from '../../../../components/AiGenerationButton';
 import type { Chunk } from '../../../../types/chunk';
-import { getToolsStyles } from '../styles/styles';
+import { getToolsStyles } from '../styles/Tools.styles';
 
 interface ImageToolComponentProps extends ImageToolProps {
     /** Callback when action completes */

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, CircularProgress, Modal, Fade, useTheme } from '@mui/material';
-import { getChunkImageStyles } from './styles/styles';
+import { getToolsStyles } from '../styles/Tools.styles';
 
 export interface ChunkImageDisplayProps {
     imgSrc: string;
@@ -24,7 +24,7 @@ const ChunkImageModal: React.FC<ChunkImageDisplayProps> = ({
     height = '300px',
 }) => {
     const theme = useTheme();
-    const styles = getChunkImageStyles(theme);
+    const styles = getToolsStyles(theme);
 
     return (
         <>

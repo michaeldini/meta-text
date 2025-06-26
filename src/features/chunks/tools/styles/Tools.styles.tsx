@@ -1,3 +1,5 @@
+// all styles related to chunk tools
+
 import { Theme } from '@mui/material/styles';
 
 export const getToolsStyles = (theme: Theme) => ({
@@ -35,23 +37,50 @@ export const getToolsStyles = (theme: Theme) => ({
         minWidth: 400
     },
 
-
-    // Individual tool styles
-    chunkTools: {
-        // Chunk-specific tool styles can be added here
-    },
-
-    // Common tool button styles
-    toolButton: {
-        minWidth: 'auto',
-        padding: theme.spacing(0.5, 1),
-    },
-
     // Common tool panel styles
     toolPanel: {
         width: '100%',
         backgroundColor: theme.palette.background.paper,
         borderRadius: theme.shape.borderRadius,
+    },
+
+    // image tool styles
+    chunkImageBox: {
+        p: 0,
+        position: 'relative' as const,
+    },
+    chunkImageLoadingOverlay: {
+        position: 'absolute' as const,
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        bgcolor: theme.palette.background.paper + 'b3', // 70% opacity
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 2,
+    },
+    chunkLightboxModal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        p: 4,
+    },
+    chunkLightboxImgBox: {
+        maxWidth: '90vw',
+        maxHeight: '80vh',
+        display: 'flex',
+        flexDirection: 'column' as const,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    chunkLightboxPromptBox: {
+        mt: 2,
+        p: 2,
+        bgcolor: theme.palette.background.paper,
+        borderRadius: 2,
+        boxShadow: 1,
     },
 });
 

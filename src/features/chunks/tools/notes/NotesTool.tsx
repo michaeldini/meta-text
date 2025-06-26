@@ -4,7 +4,7 @@ import { NotesIcon } from '../../../../components/icons';
 import ChunkTextField from '../../components/ChunkTextField';
 import { useNotesTool } from './useNotesTool';
 import { NotesToolProps } from '../types';
-import { getToolsStyles } from '../styles/styles';
+import { getToolsStyles } from '../styles/Tools.styles';
 interface NotesToolComponentProps extends NotesToolProps {
     /** Current summary text */
     summary?: string;

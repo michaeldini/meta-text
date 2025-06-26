@@ -82,7 +82,7 @@ const DefineWordTool: React.FC<DefineWordToolComponentProps> = ({
                 onClose={handleCloseDefinition}
                 sx={{ zIndex: 1300 }}
             >
-                <Box sx={{ width: 400, p: 3 }}>
+                <Box sx={{ width: 500, p: 3 }}>
                     <Typography variant="h6" gutterBottom>
                         Definition: {stripPunctuation(word)}
                     </Typography>
