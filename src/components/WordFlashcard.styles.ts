@@ -4,10 +4,8 @@ import { Theme } from '@mui/material/styles';
 export const createWordFlashcardStyles = (theme: Theme) => ({
     flashcardContainer: {
         perspective: 1000,
-        width: theme.spacing(60), // 800px
-        height: theme.spacing(50), // 192px
-        // margin: theme.spacing(2),
-        // padding: theme.spacing(3),
+        width: theme.spacing(50), // 800px
+        height: theme.spacing(40), // 192px
         display: 'inline-block',
 
     },
@@ -75,22 +73,6 @@ export const createWordFlashcardStyles = (theme: Theme) => ({
         boxShadow: theme.shadows[1],
         color: theme.palette.text.primary,
         fontSize: theme.typography.body2.fontSize,
-    },
-    iconButton: {
-        color: theme.palette.text.secondary,
-        '&:hover': {
-            color: theme.palette.primary.main,
-        },
-        transition: 'color 0.3s',
-    },
-    infoIcon: {
-        width: 24,
-        height: 24,
-        color: theme.palette.text.secondary,
-        '&:hover': {
-            color: theme.palette.primary.main,
-        },
-        transition: 'color 0.3s',
     },
     word: {
         fontWeight: 700,

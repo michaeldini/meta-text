@@ -1,8 +1,10 @@
 import React from 'react';
-import { Box, Button, ToggleButtonGroup, ToggleButton, Tooltip, Typography } from '@mui/material';
+import { Box, ToggleButtonGroup, ToggleButton, Tooltip, Typography } from '@mui/material';
 import { CompareArrowsIcon, PhotoFilterIcon, NotesIcon } from '../../../../components/icons';
 import { useChunkStore } from '../../../../store/chunkStore';
 import CopyTool from '../../tools/copy/CopyTool';
+import { getLayoutsStyles } from '../Layouts.styles';
+import { useTheme } from '@mui/material/styles';
 
 interface ChunkToolsNavbarProps {
     /** Whether this component is rendered as a floating element */
@@ -13,10 +15,34 @@ interface ChunkToolsNavbarProps {
     'data-testid'?: string;
 }
 
+interface TooltipToggleButtonProps {
+    value: string;
+    ariaLabel: string;
+    tooltipTitle: React.ReactNode;
+    icon: React.ReactNode;
+    tooltipProps: any;
+}
+
+const TooltipToggleButton: React.FC<TooltipToggleButtonProps> = ({
+    value,
+    ariaLabel,
+    tooltipTitle,
+    icon,
+    tooltipProps
+}) => (
+    <Tooltip title={tooltipTitle} {...tooltipProps}>
+        <ToggleButton value={value} aria-label={ariaLabel}>
+            {icon}
+        </ToggleButton>
+    </Tooltip>
+);
+
 const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
     className,
     'data-testid': dataTestId = 'chunk-tools-navbar'
 }) => {
+    const theme = useTheme();
+    const styles = getLayoutsStyles(theme);
     const activeChunkId = useChunkStore(state => state.activeChunkId);
     const activeTabs = useChunkStore(state => state.activeTabs);
     const setActiveTabs = useChunkStore(state => state.setActiveTabs);
@@ -35,35 +61,33 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
         setActiveTabs(tabs);
     };
 
-    const containerSx = {
-        display: 'flex',
-        alignItems: 'center',
-        flexDirection: 'column',
-        borderRadius: 2,
-        padding: 0,
-        margin: 0
-    };
-
-    const tooltipProps = {
-        arrow: true,
-        enterDelay: 200,
-        placement: "left" as const
-    };
-
-    const tooltipTitles = {
-        notesSummary: <Typography variant="caption">
-            Show or hide the Notes/Summary editor for all chunks</Typography>,
-        comparison: <Typography variant="caption">
-            Show or hide the AI-generated comparison panel for all chunks</Typography>,
-        aiImage: <Typography variant="caption">
-            Show or hide the AI image panel for all chunks</Typography>,
-        copyChunk: <Typography variant="caption">
-            Copy the active chunk</Typography>
-    };
+    const toggleButtons = [
+        {
+            value: 'notes-summary',
+            ariaLabel: 'Show Notes/Summary',
+            tooltipTitle: <Typography variant="caption">
+                Show or hide the Notes/Summary editor for all chunks</Typography>,
+            icon: <NotesIcon />
+        },
+        {
+            value: 'comparison',
+            ariaLabel: 'Show Comparison',
+            tooltipTitle: <Typography variant="caption">
+                Show or hide the AI-generated comparison panel for all chunks</Typography>,
+            icon: <CompareArrowsIcon />
+        },
+        {
+            value: 'ai-image',
+            ariaLabel: 'Show AI Image',
+            tooltipTitle: <Typography variant="caption">
+                Show or hide the AI image panel for all chunks</Typography>,
+            icon: <PhotoFilterIcon />
+        }
+    ];
 
     return (
         <Box
-            sx={containerSx}
+            sx={styles.toolsContainer}
             data-testid={dataTestId}
             className={className}
         >
@@ -73,37 +97,26 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
                 size="small"
                 orientation="vertical"
             >
-                <Tooltip
-                    title={tooltipTitles.notesSummary}
-                    {...tooltipProps}
-                >
-                    <ToggleButton value="notes-summary" aria-label="Show Notes/Summary">
-                        <NotesIcon />
-                    </ToggleButton>
-                </Tooltip>
-                <Tooltip
-                    title={tooltipTitles.comparison}
-                    {...tooltipProps}
-                >
-                    <ToggleButton value="comparison" aria-label="Show Comparison">
-                        <CompareArrowsIcon />
-                    </ToggleButton>
-                </Tooltip>
-                <Tooltip
-                    title={tooltipTitles.aiImage}
-                    {...tooltipProps}
-                >
-                    <ToggleButton value="ai-image" aria-label="Show AI Image">
-                        <PhotoFilterIcon />
-                    </ToggleButton>
-                </Tooltip>
+                {toggleButtons.map((button) => (
+                    <Tooltip
+                        key={button.value}
+                        title={button.tooltipTitle}
+                        {...styles.tooltipProps}
+                    >
+                        <ToggleButton value={button.value} aria-label={button.ariaLabel}>
+                            {button.icon}
+                        </ToggleButton>
+                    </Tooltip>
+                ))}
             </ToggleButtonGroup>
-            <Tooltip
-                title={tooltipTitles.copyChunk}
-                {...tooltipProps}
-            >
-                <CopyTool />
-            </Tooltip>
+            <Box sx={styles.toolButtonsContainer}>
+                <Tooltip
+                    title={<Typography variant="caption">Copy the active chunk</Typography>}
+                    {...styles.tooltipProps}
+                >
+                    <CopyTool />
+                </Tooltip>
+            </Box>
         </Box>
     );
 };

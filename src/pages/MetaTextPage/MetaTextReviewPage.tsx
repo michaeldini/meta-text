@@ -88,11 +88,11 @@ export default function MetaTextReviewPage() {
 
     return (
         <Box sx={{ p: 3 }}>
-            <Flexbox>
+            <Flexbox flexDirection="row" alignItems="center" mb={2} >
                 {metatextId && (
                     <Tooltip title="Back to MetaText Detail">
                         <IconButton onClick={() => navigate(metaTextDetailRoute(String(metatextId)))}>
-                            <ArrowBackIcon style={{ width: 24, height: 24, color: 'currentColor' }} />
+                            <ArrowBackIcon />
                         </IconButton>
                     </Tooltip>
                 )}
