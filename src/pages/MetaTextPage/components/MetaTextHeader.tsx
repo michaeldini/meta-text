@@ -36,10 +36,14 @@ const MetaTextHeader: React.FC<MetaTextHeaderProps> = ({
     };
 
     return (
-        <Box sx={styles.headerContainer}>
-            <FlexBox alignItems="start">
-                <Typography variant="h1">{displayTitle}</Typography>
-                <Typography variant="subtitle1">Source Doc: {sourceDocSection ? `${sourceDocSection.doc.title}` : ''}</Typography>
+        <FlexBox alignItems="start" sx={{ ...styles.headerContainer, width: '100%' }}>
+            <FlexBox alignItems="flex-end" flexDirection="row" sx={{ width: '100%' }}>
+                <Typography variant="subtitle1" color={theme.palette.text.secondary}>Editing the meta-text named</Typography>
+                <Typography variant="h4" sx={{ mx: 1 }}>{displayTitle}</Typography>
+                <Typography variant="subtitle1" color={theme.palette.text.secondary}>that was derived from</Typography>
+                <Typography variant="h5" sx={{ mx: 1 }}>{sourceDocSection ? `${sourceDocSection.doc.title}` : ''}</Typography>
+            </FlexBox>
+            <FlexBox flexDirection="row" sx={{ width: '100%', mt: 2, gap: 2 }}>
                 <Button
                     variant="outlined"
                     size="small"
@@ -62,7 +66,7 @@ const MetaTextHeader: React.FC<MetaTextHeaderProps> = ({
                     key={infoRefreshKey}
                 />
             )}
-        </Box>
+        </FlexBox>
     );
 };
 

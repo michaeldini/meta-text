@@ -7,18 +7,10 @@ export const pageContainer = {
     // Layout structure
     display: 'flex',
     flexDirection: 'column' as const,
-
-    // Spacing and dimensions
     width: '100%',
     height: '100%', // Ensure full viewport height
     flex: 1,
     minHeight: 0, // Allow children to shrink if needed
-
-    // Responsive spacing - more space on larger screens
-    pt: { xs: 2, sm: 3, md: 4 }, // top padding
-    px: { xs: 2, sm: 3, md: 4 }, // horizontal padding
-
-    // Max width for optimal reading experience on large screens
     maxWidth: '1400px',
     mx: 'auto', // center the container
 }
@@ -35,6 +27,6 @@ export const appContainerStyles = {
     flex: 1,
     minHeight: 0,
     color: 'text.primary',
-    margin: 0, // Remove any default margins
-    padding: 0, // Remove any default padding
+    // margin: 0, // Remove any default margins
+    // padding: 0, // Remove any default padding
 };

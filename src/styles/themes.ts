@@ -18,11 +18,6 @@ const baseTheme: ThemeOptions = {
     typography: {
         fontFamily: 'Arial, sans-serif, system-ui',
         fontSize: 16,
-        h1: {
-            fontSize: '2.125rem',
-            fontWeight: 500,
-            lineHeight: 1.235,
-        },
         body2: {
             fontFamily: '"Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
             fontSize: '1.5rem',
@@ -90,7 +85,6 @@ const baseTheme: ThemeOptions = {
         MuiPaper: {
             styleOverrides: {
                 root: {
-                    padding: '32px',
                     borderRadius: 8,
                     boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
                     backdropFilter: 'blur(8px)',
@@ -191,7 +185,7 @@ export const lightTheme = createTheme({
         MuiPaper: {
             styleOverrides: {
                 root: {
-                    padding: '32px',
+                    // padding: '32px',
                     borderRadius: 8,
                     boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
                     backdropFilter: 'blur(8px)',

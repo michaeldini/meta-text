@@ -13,23 +13,21 @@ export interface AiGenerationButtonProps {
 
 const AiGenerationButton: React.FC<AiGenerationButtonProps> = ({ label, toolTip, onClick, loading = false, disabled = false, sx }) => (
     <Tooltip title={toolTip || ''} arrow disableHoverListener={!toolTip}>
-        <span>
-            <Button
-                variant="outlined"
-                color="secondary"
-                sx={{ ...sx, opacity: loading ? 0.7 : 1 }}
-                onClick={onClick}
-                disabled={disabled || loading}
-                aria-label={toolTip || 'AI Generation Button'}
-            >
-                {loading ? <CircularProgress size={20} aria-label="Loading AI generation" /> :
-                    <>
-                        {label}
-                        <img src="/ai-stars.png" alt="AI" style={{ width: 24, height: 24, marginLeft: 8 }} />
-                    </>
-                }
-            </Button>
-        </span>
+        <Button
+            variant="outlined"
+            color="secondary"
+            sx={{ ...sx, opacity: loading ? 0.7 : 1 }}
+            onClick={onClick}
+            disabled={disabled || loading}
+            aria-label={toolTip || 'AI Generation Button'}
+        >
+            {loading ? <CircularProgress size={20} aria-label="Loading AI generation" /> :
+                <>
+                    {label}
+                    <img src="/ai-stars.png" alt="AI" style={{ width: 24, height: 24, marginLeft: 8 }} />
+                </>
+            }
+        </Button>
     </Tooltip>
 );
 

@@ -20,7 +20,7 @@ export const createThemeAwareStyles = (theme: Theme) => ({
         color: theme.palette.text.primary,
         border: `1px solid ${theme.palette.divider}`,
         borderRadius: theme.shape.borderRadius,
-        padding: theme.spacing(3),
+        // padding: theme.spacing(3),
         boxShadow: theme.palette.mode === 'dark'
             ? '0 4px 20px rgba(0,0,0,0.4)'
             : '0 4px 20px rgba(0,0,0,0.1)',
@@ -75,7 +75,7 @@ export const createThemeAwareStyles = (theme: Theme) => ({
             ? alpha(theme.palette.background.paper, 0.3)
             : alpha(theme.palette.grey[50], 0.8),
         borderRadius: theme.shape.borderRadius,
-        padding: theme.spacing(3),
+        // padding: theme.spacing(3),
     },
 });
 

@@ -3,8 +3,8 @@ import type { TypographyVariant } from '@mui/material';
 
 export const getSourceDocumentStyles = (theme: Theme) => ({
     container: {
-        p: theme.spacing(2),
         width: '100%',
+        paddingX: theme.spacing(2),
     },
     slotProps: {
         primaryTitle: {
