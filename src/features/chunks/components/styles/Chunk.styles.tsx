@@ -9,27 +9,12 @@ export const getChunkStyles = (theme: Theme) => ({
         paddingRight: "32px", // Adjusted for floating toolbar
         border: `1px solid ${theme.palette.secondary.light}`,
         borderRadius: theme.shape.borderRadius,
+        minHeight: 0,
+        height: '100%',
+        width: '100%',
+
     },
-    chunkTextBox: {
-        padding: theme.spacing(2),
-        fontSize: '1.5rem',
-        lineHeight: 1.5,
-    },
-    chunkTextField: {
-        color: theme.palette.text.primary, // Use theme palette
-        borderRadius: 2,
-        transition: 'box-shadow 0.2s, transform 0.2s',
-        boxShadow: 0,
-        '& .MuiOutlinedInput-root': {
-            borderRadius: 2,
-            transition: 'box-shadow 0.2s, transform 0.2s',
-            boxShadow: 0,
-            '&.Mui-focused': {
-                boxShadow: 6,
-                // transform: 'scale(1.02)'
-            },
-        },
-    },
+
     chunkImageBtnBox: {
         marginTop: theme.spacing(2),
         display: 'flex',

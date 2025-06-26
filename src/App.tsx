@@ -17,7 +17,7 @@ import GlobalNotifications from './components/GlobalNotifications';
 // Import theme system
 import { useThemeContext } from './contexts/ThemeContext';
 import { lightTheme, darkTheme } from './styles/themes';
-import { appContainerStyles } from './styles/styles';
+import { appContainerStyles, pageContainer } from './styles/styles';
 import { useAuthStore } from './store/authStore';
 import FlexBox from './components/FlexBox';
 
@@ -114,7 +114,7 @@ function App() {
             <ErrorBoundary>
                 <Box sx={appContainerStyles}>
                     <NavBar config={navbarConfig} />
-                    <Box component="main">
+                    <Box component="main" sx={{ ...pageContainer, flex: 1, minHeight: 0 }}>
                         <Routes>
                             {routes.map(renderRoute)}
                             {/* 404 Route */}

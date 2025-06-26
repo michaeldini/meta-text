@@ -46,24 +46,22 @@ export default function MetaTextDetailPage() {
 
     return (
         <ErrorBoundary>
-            <div>
-                <LoadingBoundary loading={loading}>
-                    {shouldShowContent ? (
-                        <MetaTextContent
-                            metaTextId={metaTextId!}
-                            displayTitle={displayTitle}
-                            sourceDocSection={sourceDocSection}
-                            onReviewClick={handleReviewClick}
-                            messages={MESSAGES}
-                        />
-                    ) : shouldShowNotFound ? (
-                        <NotFoundDisplay
-                            metaTextId={metaTextId!}
-                            messages={MESSAGES}
-                        />
-                    ) : null}
-                </LoadingBoundary>
-            </div>
+            <LoadingBoundary loading={loading}>
+                {shouldShowContent ? (
+                    <MetaTextContent
+                        metaTextId={metaTextId!}
+                        displayTitle={displayTitle}
+                        sourceDocSection={sourceDocSection}
+                        onReviewClick={handleReviewClick}
+                        messages={MESSAGES}
+                    />
+                ) : shouldShowNotFound ? (
+                    <NotFoundDisplay
+                        metaTextId={metaTextId!}
+                        messages={MESSAGES}
+                    />
+                ) : null}
+            </LoadingBoundary>
             <FloatingChunkToolbar />
         </ErrorBoundary>
     );

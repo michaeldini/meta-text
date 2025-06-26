@@ -17,6 +17,7 @@ const AnimatedShape: React.FC<{ isCircle: boolean }> = ({ isCircle }) => (
             userSelect: 'none',
         }}
     >
+
         <Box
             sx={{
                 position: 'absolute',
@@ -131,6 +132,20 @@ const LayoutFrames: React.FC = () => {
                                 Toggle Shape
                             </Button>
                         </Box>
+                    </Box>
+                </Box>
+                <Box sx={{ height: '400px', overflow: 'auto', border: '1px solid red' }}>
+                    <Box sx={{ height: '1000px', position: 'relative' }}>
+                        <Box sx={{
+                            position: 'sticky',
+                            top: 0,
+                            background: 'yellow',
+                            p: 2,
+                            zIndex: 10,
+                        }}>
+                            I am sticky!
+                        </Box>
+                        <Box sx={{ height: '1200px' }}>Scroll me</Box>
                     </Box>
                 </Box>
             </Box>

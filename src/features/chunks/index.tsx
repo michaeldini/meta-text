@@ -132,26 +132,20 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
                 ) : (
                     <Box
                         ref={containerRef}
-                        sx={{
-                            ...styles.container,
-                            outline: 'none',
-                            boxShadow: 'none',
-                            '&:focus': {
-                                outline: 'none',
-                                boxShadow: 'none',
-                            },
-                        }}
+                        sx={styles.container}
                         data-testid="chunks-container"
                         tabIndex={0}
                         onKeyDown={handleKeyDown}
                     >
                         <ChunksPagination pageCount={pageCount} page={page} handleChange={handleChange} />
                         {paginatedChunks.map((chunk, chunkIdx) => (
-                            <div
+                            <Box
+                                component="div"
                                 key={startIdx + chunkIdx}
-                                ref={el => { chunkRefs.current[chunkIdx] = el; }}
+                                ref={el => { chunkRefs.current[chunkIdx] = el as HTMLDivElement; }}
                                 data-chunk-id={chunk.id}
                                 data-chunk-idx={chunkIdx}
+                                sx={{ height: '100%', width: '100%' }}
                             >
                                 <Chunk
                                     chunk={chunk}
@@ -159,7 +153,7 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
                                     handleChunkFieldChange={updateChunkField}
                                     data-chunk-id={chunk.id}
                                 />
-                            </div>
+                            </Box>
                         ))}
                         <ChunksPagination pageCount={pageCount} page={page} handleChange={handleChange} />
                     </Box>

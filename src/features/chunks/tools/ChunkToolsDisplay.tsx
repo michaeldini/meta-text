@@ -34,21 +34,19 @@ const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk }) => {
     }, [chunk.id]);
 
     return (
-        <Box sx={styles.container}>
-            <Box sx={styles.box}>
-                {/* Show Notes/Summary if selected */}
-                {activeTabs.includes('notes-summary') && (
-                    <NotesSummaryTab chunk={chunk} updateChunkField={updateChunkField} />
-                )}
-                {/* Show Comparison if selected */}
-                {activeTabs.includes('comparison') && (
-                    <ComparisonTab chunk={chunk} updateChunkField={updateChunkField} />
-                )}
-                {/* Show AI Image if selected */}
-                {activeTabs.includes('ai-image') && (
-                    <AiImageTab chunk={chunk} />
-                )}
-            </Box>
+        <Box sx={styles.box}>
+            {/* Show Notes/Summary if selected */}
+            {activeTabs.includes('notes-summary') && (
+                <NotesSummaryTab chunk={chunk} updateChunkField={updateChunkField} />
+            )}
+            {/* Show Comparison if selected */}
+            {activeTabs.includes('comparison') && (
+                <ComparisonTab chunk={chunk} updateChunkField={updateChunkField} />
+            )}
+            {/* Show AI Image if selected */}
+            {activeTabs.includes('ai-image') && (
+                <AiImageTab chunk={chunk} />
+            )}
         </Box>
     );
 };

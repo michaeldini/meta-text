@@ -1,11 +1,15 @@
 import { Theme } from '@mui/material/styles';
 
 export const getChunkToolsStyles = (theme: Theme) => ({
-    container: {
-        display: 'flex',
-        flexDirection: 'row' as const,
-        flex: 1,
-    },
+    // container: {
+    //     display: 'flex',
+    //     flexDirection: 'column' as const,
+    //     flex: 1,
+    //     minHeight: 0,
+    //     height: '100%',
+    //     width: '100%',
+    //     position: 'relative' as const,
+    // },
     box: {
         display: 'flex',
         flexDirection: 'column' as const,
@@ -13,12 +17,11 @@ export const getChunkToolsStyles = (theme: Theme) => ({
         gap: theme.spacing(1),
         padding: theme.spacing(1),
         position: 'sticky' as const,
-        // Sticky positioning: stays in view during scroll until parent is out of view
-        top: theme.spacing(5), // Account for navbar height + padding
-        alignSelf: 'flex-start', // Ensure it doesn't stretch to full height
-        width: '100%', // Take full width of parent
-        maxWidth: '400px', // Limit width for better readability
-        zIndex: theme.zIndex.appBar, // Ensure it stays above other content when sticky
+        top: theme.spacing(5),
+        alignSelf: 'flex-start',
+        width: '100%',
+        maxWidth: '400px',
+        zIndex: theme.zIndex.appBar,
         boxShadow: 'none',
         opacity: 0.85,
         transition: theme.transitions.create(['opacity'], {
