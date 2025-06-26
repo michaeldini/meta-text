@@ -34,7 +34,7 @@ const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk }) => {
     }, [chunk.id]);
 
     return (
-        <Box sx={styles.box}>
+        <Box sx={styles.toolDisplayContainer}>
             {/* Show Notes/Summary if selected */}
             {activeTabs.includes('notes-summary') && (
                 <NotesSummaryTab chunk={chunk} updateChunkField={updateChunkField} />

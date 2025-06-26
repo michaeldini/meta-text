@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
-import { Paper, IconButton, Tooltip, Box } from '@mui/material';
+import { Paper, IconButton, Tooltip, Box, useTheme } from '@mui/material';
 import { NotesIcon } from '../../../../components/icons';
 import ChunkTextField from '../../components/ChunkTextField';
 import { useNotesTool } from './useNotesTool';
 import { NotesToolProps } from '../types';
-
+import { getToolsStyles } from '../styles/styles';
 interface NotesToolComponentProps extends NotesToolProps {
     /** Current summary text */
     summary?: string;
@@ -47,6 +47,8 @@ const NotesTool: React.FC<NotesToolComponentProps> = ({
     summaryFieldSx,
     notesFieldSx
 }) => {
+    const theme = useTheme();
+    const styles = getToolsStyles(theme);
     const { updateNotes, loading, error } = useNotesTool();
 
     const handleSummaryChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,7 +85,7 @@ const NotesTool: React.FC<NotesToolComponentProps> = ({
     }
 
     return (
-        <Box sx={{ p: 1, gap: 2, display: 'flex', flexDirection: 'column', width: '100%', minWidth: 400 }}>
+        <Box sx={styles.toolTabContainer}>
             <ChunkTextField
                 label="Summary"
                 value={summary}

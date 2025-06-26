@@ -1,16 +1,9 @@
 import { Theme } from '@mui/material/styles';
 
-export const getChunkToolsStyles = (theme: Theme) => ({
-    // container: {
-    //     display: 'flex',
-    //     flexDirection: 'column' as const,
-    //     flex: 1,
-    //     minHeight: 0,
-    //     height: '100%',
-    //     width: '100%',
-    //     position: 'relative' as const,
-    // },
-    box: {
+export const getToolsStyles = (theme: Theme) => ({
+
+    // sticky container for tools
+    toolDisplayContainer: {
         display: 'flex',
         flexDirection: 'column' as const,
         alignItems: 'flex-start',
@@ -31,5 +24,37 @@ export const getChunkToolsStyles = (theme: Theme) => ({
             opacity: 1,
         },
     },
+
+    // styles for each tool section
+    toolTabContainer: {
+        p: 1,
+        gap: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        minWidth: 400
+    },
+
+
+    // Individual tool styles
+    chunkTools: {
+        // Chunk-specific tool styles can be added here
+    },
+
+    // Common tool button styles
+    toolButton: {
+        minWidth: 'auto',
+        padding: theme.spacing(0.5, 1),
+    },
+
+    // Common tool panel styles
+    toolPanel: {
+        width: '100%',
+        backgroundColor: theme.palette.background.paper,
+        borderRadius: theme.shape.borderRadius,
+    },
 });
+
+// Legacy export for backward compatibility
+export const getChunkToolsStyles = getToolsStyles;
 

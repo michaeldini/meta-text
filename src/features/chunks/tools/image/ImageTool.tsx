@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { IconButton, Tooltip, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, LinearProgress, Alert } from '@mui/material';
+import { IconButton, Tooltip, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, LinearProgress, Alert, useTheme } from '@mui/material';
 import { PhotoFilterIcon } from '../../../../components/icons';
 import { useImageTool } from './useImageTool';
 import { ImageToolProps } from '../types';
 import ChunkImageModal from './Modal';
 import AiGenerationButton from '../../../../components/AiGenerationButton';
-import { Paper } from '@mui/material';
 import type { Chunk } from '../../../../types/chunk';
+import { getToolsStyles } from '../styles/styles';
 
 interface ImageToolComponentProps extends ImageToolProps {
     /** Callback when action completes */
@@ -40,7 +40,8 @@ const ImageTool: React.FC<ImageToolComponentProps> = ({
     } = useImageTool(chunk as Chunk);
 
     const [localPrompt, setLocalPrompt] = useState(initialPrompt);
-
+    const theme = useTheme();
+    const styles = getToolsStyles(theme);
     const handleGenerate = async () => {
         const result = await generateImage({
             chunkIdx,
@@ -78,14 +79,13 @@ const ImageTool: React.FC<ImageToolComponentProps> = ({
 
     return (
         <>
-            <Box sx={{ p: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', gap: 1, minWidth: 400 }}>
+            <Box sx={styles.toolTabContainer}>
                 <AiGenerationButton
                     label="Generate Image"
                     toolTip="Generate an image for this chunk using AI"
                     loading={loading}
                     onClick={openDialog}
                     disabled={loading}
-                    sx={{ opacity: loading ? 0.7 : 1 }}
                 />
                 {/* Modal for full-size image */}
                 {state.data && (

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, CircularProgress, Modal, Fade } from '@mui/material';
-import { chunkImageBox, chunkImageLoadingOverlay, chunkLightboxModal, chunkLightboxImgBox, chunkLightboxPromptBox } from './styles/styles';
+import { Box, CircularProgress, Modal, Fade, useTheme } from '@mui/material';
+import { getChunkImageStyles } from './styles/styles';
 
 export interface ChunkImageDisplayProps {
     imgSrc: string;
@@ -22,71 +22,76 @@ const ChunkImageModal: React.FC<ChunkImageDisplayProps> = ({
     lightboxOpen,
     setLightboxOpen,
     height = '300px',
-}) => (
-    <>
-        <Box sx={chunkImageBox}
-            onClick={() => setLightboxOpen(true)}
-            tabIndex={0}
-            aria-label="Expand image"
-        >
-            {!imgLoaded && (
-                <Box sx={chunkImageLoadingOverlay}>
-                    <CircularProgress />
-                </Box>
-            )}
-            <img
-                src={imgSrc}
-                alt={imgPrompt}
-                style={{ height, objectFit: 'cover', display: imgLoaded ? 'block' : 'none' }}
-                onLoad={onLoad}
-                onError={onError}
-            />
-        </Box>
-        <Modal
-            open={lightboxOpen}
-            onClose={() => setLightboxOpen(false)}
-            closeAfterTransition
-            aria-labelledby="image-lightbox-title"
-            aria-describedby="image-lightbox-description"
-        >
-            <Fade in={lightboxOpen}>
-                <Box
-                    onClick={() => setLightboxOpen(false)}
-                    sx={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        width: '100vw',
-                        height: '100vh',
-                        bgcolor: 'rgba(0,0,0,0.7)',
-                        zIndex: 1300,
-                        outline: 'none',
-                        ...chunkLightboxModal
-                    }}
-                >
+}) => {
+    const theme = useTheme();
+    const styles = getChunkImageStyles(theme);
+
+    return (
+        <>
+            <Box sx={styles.chunkImageBox}
+                onClick={() => setLightboxOpen(true)}
+                tabIndex={0}
+                aria-label="Expand image"
+            >
+                {!imgLoaded && (
+                    <Box sx={styles.chunkImageLoadingOverlay}>
+                        <CircularProgress />
+                    </Box>
+                )}
+                <img
+                    src={imgSrc}
+                    alt={imgPrompt}
+                    style={{ height, objectFit: 'cover', display: imgLoaded ? 'block' : 'none' }}
+                    onLoad={onLoad}
+                    onError={onError}
+                />
+            </Box>
+            <Modal
+                open={lightboxOpen}
+                onClose={() => setLightboxOpen(false)}
+                closeAfterTransition
+                aria-labelledby="image-lightbox-title"
+                aria-describedby="image-lightbox-description"
+            >
+                <Fade in={lightboxOpen}>
                     <Box
-                        onClick={e => e.stopPropagation()}
-                        sx={chunkLightboxImgBox}
+                        onClick={() => setLightboxOpen(false)}
+                        sx={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            width: '100vw',
+                            height: '100vh',
+                            bgcolor: 'rgba(0,0,0,0.7)',
+                            zIndex: 1300,
+                            outline: 'none',
+                            ...styles.chunkLightboxModal
+                        }}
                     >
-                        <img
-                            src={imgSrc}
-                            alt={imgPrompt}
-                            style={{
-                                maxWidth: '90vw',
-                                maxHeight: '80vh',
-                                objectFit: 'contain',
-                                borderRadius: 8,
-                                background: '#fafafa',
-                            }}
-                        />
-                        <Box sx={chunkLightboxPromptBox}>
-                            {imgPrompt && <div><b>Prompt:</b> {imgPrompt}</div>}
+                        <Box
+                            onClick={e => e.stopPropagation()}
+                            sx={styles.chunkLightboxImgBox}
+                        >
+                            <img
+                                src={imgSrc}
+                                alt={imgPrompt}
+                                style={{
+                                    maxWidth: '90vw',
+                                    maxHeight: '80vh',
+                                    objectFit: 'contain',
+                                    borderRadius: 8,
+                                    background: '#fafafa',
+                                }}
+                            />
+                            <Box sx={styles.chunkLightboxPromptBox}>
+                                {imgPrompt && <div><b>Prompt:</b> {imgPrompt}</div>}
+                            </Box>
                         </Box>
                     </Box>
-                </Box>
-            </Fade>
-        </Modal>
-    </>
-);
+                </Fade>
+            </Modal>
+        </>
+    );
+};
 
 export default ChunkImageModal;
