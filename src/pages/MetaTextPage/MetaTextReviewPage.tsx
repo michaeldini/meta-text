@@ -8,7 +8,7 @@ import { ArrowBackIcon } from '../../components/icons';
 import { metaTextDetailRoute } from '../../routes';
 import ChunkSummaryNotesTable from '../../features/chunks/review/ChunkSummaryNotesTable';
 import { usePageLogger } from '../../hooks/usePageLogger';
-import WordFlashcard from '../../components/WordFlashcard';
+import WordFlashcard from '../../features/flashcards/WordFlashcard';
 import Flexbox from '../../components/FlexBox';
 interface WordlistRow {
     id: number;

@@ -7,6 +7,8 @@ export const createWordFlashcardStyles = (theme: Theme) => ({
         width: theme.spacing(50), // 800px
         height: theme.spacing(40), // 192px
         display: 'inline-block',
+        padding: 0,
+        borderRadius: theme.shape.borderRadiusSm,
 
     },
     flashcard: {
@@ -16,12 +18,10 @@ export const createWordFlashcardStyles = (theme: Theme) => ({
         transition: 'transform 0.7s cubic-bezier(.68,-0.55,.27,1.55), box-shadow 0.4s',
         transformStyle: 'preserve-3d',
         cursor: 'pointer',
-        boxShadow: '0 1px 4px rgba(0,0,0,0.06)', // reduced shadow
     },
     flipped: {
         transform: 'rotateY(180deg) scale(1.04)',
-        boxShadow: `0 4px 16px 0 ${theme.palette.primary.light}`, // reduced shadow
-        background: theme.palette.secondary.light,
+
     },
     front: {
         position: 'absolute',
@@ -59,7 +59,6 @@ export const createWordFlashcardStyles = (theme: Theme) => ({
         transform: 'rotateY(180deg)',
         zIndex: 3,
         paddingTop: theme.spacing(4),
-        // fontSize: theme.typography.body1.fontSize,
     },
     tooltip: {
         maxWidth: 800,
