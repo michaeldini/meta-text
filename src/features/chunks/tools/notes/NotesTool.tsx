@@ -20,8 +20,6 @@ interface NotesToolComponentProps extends NotesToolProps {
     onNotesBlur?: () => void;
     /** Callback when action completes */
     onComplete?: (success: boolean, result?: any) => void;
-    /** Render as compact button only */
-    compact?: boolean;
     /** Custom styles for summary field */
     summaryFieldSx?: object;
     /** Custom styles for notes field */
@@ -43,7 +41,6 @@ const NotesTool: React.FC<NotesToolComponentProps> = ({
     onSummaryBlur = () => { },
     onNotesBlur = () => { },
     onComplete,
-    compact = false,
     summaryFieldSx,
     notesFieldSx
 }) => {
@@ -70,19 +67,6 @@ const NotesTool: React.FC<NotesToolComponentProps> = ({
 
         onComplete?.(result.success, result.data);
     };
-
-    if (compact) {
-        return (
-            <Tooltip title="Notes/Summary tool">
-                <IconButton
-                    size="small"
-                    aria-label="Notes and summary"
-                >
-                    <NotesIcon style={{ width: 24, height: 24, color: 'currentColor' }} />
-                </IconButton>
-            </Tooltip>
-        );
-    }
 
     return (
         <Box sx={styles.toolTabContainer}>

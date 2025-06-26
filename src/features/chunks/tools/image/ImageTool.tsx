@@ -11,8 +11,6 @@ import { getToolsStyles } from '../styles/Tools.styles';
 interface ImageToolComponentProps extends ImageToolProps {
     /** Callback when action completes */
     onComplete?: (success: boolean, result?: any) => void;
-    /** Render as compact button only */
-    compact?: boolean;
 }
 
 /**
@@ -23,8 +21,7 @@ const ImageTool: React.FC<ImageToolComponentProps> = ({
     chunkIdx,
     chunk,
     prompt: initialPrompt = '',
-    onComplete,
-    compact = false
+    onComplete
 }) => {
     const {
         generateImage,
@@ -61,21 +58,6 @@ const ImageTool: React.FC<ImageToolComponentProps> = ({
         setLocalPrompt(e.target.value);
         handlePromptChange(e);
     };
-
-    if (compact) {
-        return (
-            <Tooltip title="Generate AI image">
-                <IconButton
-                    onClick={openDialog}
-                    disabled={loading}
-                    size="small"
-                    aria-label="Generate AI image"
-                >
-                    <PhotoFilterIcon />
-                </IconButton>
-            </Tooltip>
-        );
-    }
 
     return (
         <>

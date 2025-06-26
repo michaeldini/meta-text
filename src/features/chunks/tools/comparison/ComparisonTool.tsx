@@ -16,8 +16,6 @@ interface ComparisonToolComponentProps extends ComparisonToolProps {
     onComparisonUpdate?: (text: string) => void;
     /** Callback when action completes */
     onComplete?: (success: boolean, result?: any) => void;
-    /** Render as compact button only */
-    compact?: boolean;
 }
 
 /**
@@ -29,10 +27,8 @@ const ComparisonTool: React.FC<ComparisonToolComponentProps> = ({
     chunk,
     comparisonText = '',
     onComparisonUpdate,
-    onComplete,
-    compact = false
+    onComplete
 }) => {
-
     const { generateComparison, loading, error } = useComparison();
     const theme = useTheme();
     const styles = getToolsStyles(theme);
@@ -49,21 +45,6 @@ const ComparisonTool: React.FC<ComparisonToolComponentProps> = ({
 
         onComplete?.(result.success, result.data);
     };
-
-    if (compact) {
-        return (
-            <Tooltip title="Generate comparison summary">
-                <IconButton
-                    onClick={handleGenerate}
-                    disabled={loading || !chunk?.id}
-                    size="small"
-                    aria-label="Generate comparison"
-                >
-                    <CompareArrowsIcon style={{ width: 24, height: 24, color: 'currentColor' }} />
-                </IconButton>
-            </Tooltip>
-        );
-    }
 
     return (
         <Box sx={styles.toolTabContainer}>
