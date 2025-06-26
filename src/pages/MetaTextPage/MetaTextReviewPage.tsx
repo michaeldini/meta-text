@@ -9,7 +9,7 @@ import { metaTextDetailRoute } from '../../routes';
 import ChunkSummaryNotesTable from '../../features/chunks/review/ChunkSummaryNotesTable';
 import { usePageLogger } from '../../hooks/usePageLogger';
 import WordFlashcard from '../../components/WordFlashcard';
-
+import Flexbox from '../../components/FlexBox';
 interface WordlistRow {
     id: number;
     word: string;
@@ -88,7 +88,7 @@ export default function MetaTextReviewPage() {
 
     return (
         <Box sx={{ p: 3 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+            <Flexbox>
                 {metatextId && (
                     <Tooltip title="Back to MetaText Detail">
                         <IconButton onClick={() => navigate(metaTextDetailRoute(String(metatextId)))}>
@@ -97,7 +97,7 @@ export default function MetaTextReviewPage() {
                     </Tooltip>
                 )}
                 <Typography variant="h4" gutterBottom sx={{ ml: metatextId ? 1 : 0 }}>Review</Typography>
-            </Box>
+            </Flexbox>
 
             <Typography variant="h5" gutterBottom>Wordlist</Typography>
             {loading && <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}><CircularProgress /></Box>}

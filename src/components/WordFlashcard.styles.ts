@@ -92,15 +92,6 @@ export const createWordFlashcardStyles = (theme: Theme) => ({
         },
         transition: 'color 0.3s',
     },
-    icons: {
-        width: 24,
-        height: 24,
-        color: theme.palette.text.secondary,
-        '&:hover': {
-            color: theme.palette.primary.main,
-        },
-        transition: 'color 0.3s',
-    },
     word: {
         fontWeight: 700,
         fontSize: theme.typography.h4.fontSize,

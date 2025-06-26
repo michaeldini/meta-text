@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Box, Typography, IconButton, Popover, useTheme } from '@mui/material';
-import { QuestionMarkIcon } from './icons';
-import { DocumentTextIcon as InfoOutlinedIcon } from './icons';
+import { QuestionMarkIcon, } from './icons';
+import { MenuIcon } from './icons';
 import { createWordFlashcardStyles } from './WordFlashcard.styles';
 
 interface WordFlashcardProps {
@@ -48,7 +48,7 @@ const WordFlashcard: React.FC<WordFlashcardProps> = ({ word, definition, definit
                             onMouseEnter={handlePopoverOpenInfo}
                             onMouseLeave={handlePopoverCloseInfo}
                         >
-                            <InfoOutlinedIcon style={{ ...styles.icons }} />
+                            <MenuIcon />
                         </IconButton>
                         <Popover
                             id="info-popover"
@@ -77,7 +77,7 @@ const WordFlashcard: React.FC<WordFlashcardProps> = ({ word, definition, definit
                             onMouseEnter={handlePopoverOpenContext}
                             onMouseLeave={handlePopoverCloseContext}
                         >
-                            <QuestionMarkIcon style={{ ...styles.icons }} />
+                            <QuestionMarkIcon />
                         </IconButton>
                         <Popover
                             id="context-popover"
