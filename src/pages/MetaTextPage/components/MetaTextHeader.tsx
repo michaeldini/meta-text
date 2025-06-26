@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Typography, Button, Box, useTheme } from '@mui/material';
 import SourceDocInfo from '../../../features/sourcedoc/components/SourceDocInfo';
 import AiGenerationButton from '../../../components/AiGenerationButton';
@@ -26,6 +26,15 @@ const MetaTextHeader: React.FC<MetaTextHeaderProps> = ({
 }) => {
     const theme = useTheme();
     const styles = getMetaTextContentStyles(theme);
+    // Add state to force SourceDocInfo remount
+    const [infoRefreshKey, setInfoRefreshKey] = useState(0);
+
+    // Wrap handleDownloadInfo to refresh SourceDocInfo after download
+    const handleDownloadAndRefresh = async () => {
+        await handleDownloadInfo();
+        setInfoRefreshKey(k => k + 1);
+    };
+
     return (
         <Box sx={styles.headerContainer}>
             <FlexBox alignItems="start">
@@ -43,18 +52,16 @@ const MetaTextHeader: React.FC<MetaTextHeaderProps> = ({
                 <AiGenerationButton
                     label="Generate Info"
                     toolTip="Generate or update document info using AI"
-                    onClick={handleDownloadInfo}
+                    onClick={handleDownloadAndRefresh}
                     loading={loading}
                 />
             </FlexBox>
-            <FlexBox alignItems="start">
-                {sourceDocSection && (
-                    <SourceDocInfo
-                        doc={sourceDocSection.doc}
-                        onInfoUpdate={sourceDocSection.onInfoUpdate}
-                    />
-                )}
-            </FlexBox>
+            {sourceDocSection && (
+                <SourceDocInfo
+                    doc={sourceDocSection.doc}
+                    key={infoRefreshKey}
+                />
+            )}
         </Box>
     );
 };

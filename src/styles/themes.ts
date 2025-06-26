@@ -123,6 +123,7 @@ const baseTheme: ThemeOptions = {
                     padding: 8,
                     margin: 8,
                     minHeight: 32,
+                    width: '100%',
                     '&.Mui-expanded': {
                         minHeight: 32,
                     },

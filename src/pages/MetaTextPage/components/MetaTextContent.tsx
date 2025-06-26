@@ -17,6 +17,7 @@ interface MetaTextContentProps {
         META_TEXT_TITLE: string;
         REVIEW_BUTTON: string;
     };
+    onHeaderRefresh?: () => void; // Optional prop to trigger header/content refresh
 }
 
 export const MetaTextContent: React.FC<MetaTextContentProps> = ({
@@ -25,6 +26,7 @@ export const MetaTextContent: React.FC<MetaTextContentProps> = ({
     sourceDocSection,
     onReviewClick,
     messages,
+    onHeaderRefresh,
 }) => {
     const theme = useTheme();
     const styles = getMetaTextContentStyles(theme);
@@ -41,6 +43,7 @@ export const MetaTextContent: React.FC<MetaTextContentProps> = ({
             }
             await generateSourceDocInfo({ id: sourceDocSection.doc.id, prompt });
             if (sourceDocSection.onInfoUpdate) sourceDocSection.onInfoUpdate();
+            if (onHeaderRefresh) onHeaderRefresh(); // Trigger full header/content refresh if provided
         } catch (err: unknown) {
             setError(getErrorMessage(err, 'Failed to generate info'));
         } finally {

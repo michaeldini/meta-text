@@ -30,45 +30,13 @@ function splitToArray(str?: string | null): string[] {
     return str.split(',').map(s => s.trim()).filter(Boolean);
 }
 
-const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
+const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc }) => {
     const theme = useTheme();
     const styles = getSourceDocumentStyles(theme);
-
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-
-    const handleDownloadInfo = async () => {
-        setLoading(true);
-        setError('');
-        try {
-            const prompt = doc.text || '';
-            if (!doc.id || !prompt) {
-                throw new Error('Document ID or text is missing.');
-            }
-            const response = await generateSourceDocInfo({ id: doc.id, prompt });
-            if (onInfoUpdate) onInfoUpdate();
-        } catch (err: unknown) {
-            setError(getErrorMessage(err, 'Failed to generate info'));
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const renderField = (config: FieldConfig) => {
         const value = doc[config.key];
         if (!value) return null;
-
-        // Handle title field with special styling (non-collapsible)
-        if (config.key === 'title') {
-            return (
-                <ListItem key={config.key} dense>
-                    <ListItemText
-                        primary={value as string}
-                        slotProps={{ primary: styles.slotProps.primaryTitle }}
-                    />
-                </ListItem>
-            );
-        }
 
         // Handle list fields (comma-separated values)
         const listFields = ['characters', 'locations', 'themes', 'symbols'];
@@ -99,7 +67,7 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
             );
         }
 
-        // Handle collapsible text fields (summary, author, etc.)
+        // Handle text fields (summary, author, etc.)
         return (
             <Accordion
                 key={config.key}
@@ -118,14 +86,13 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onInfoUpdate }) => {
     };
 
     return (
-        <Box>
+        <Box sx={styles.container} data-testid="source-doc-info">
             <Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography variant="h6">Document Info</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     {FIELD_CONFIG.map(config => renderField(config))}
-                    {error && <Alert severity="error" sx={{ mt: 1 }}>{error}</Alert>}
                 </AccordionDetails>
             </Accordion>
         </Box>

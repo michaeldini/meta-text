@@ -15,7 +15,6 @@ const MESSAGES = {
     NO_DOC_ID: 'No document ID provided.',
     DOC_NOT_FOUND: 'Document not found.',
     RETRY: 'Retry',
-    REFRESH: 'Refresh',
 } as const;
 
 export default function SourceDocDetailPage() {
@@ -59,8 +58,7 @@ export default function SourceDocDetailPage() {
                                 </Alert>
                             ) : doc ? (
                                 <>
-                                    {/* <Button onClick={refetch}>{MESSAGES.REFRESH}</Button> */}
-                                    <SourceDocInfo doc={doc} onInfoUpdate={refetch} />
+                                    <SourceDocInfo doc={doc} />
                                     <SourceDoc doc={doc} />
                                 </>
                             ) : (

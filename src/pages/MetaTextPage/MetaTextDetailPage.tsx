@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ErrorBoundary from '../../components/ErrorBoundary';
 import LoadingBoundary from '../../components/LoadingBoundary';
@@ -14,6 +14,8 @@ import FloatingChunkToolbar from '../../features/chunks/layouts/toolbars/Floatin
  */
 export default function MetaTextDetailPage() {
     const { metaTextId } = useParams<{ metaTextId: string }>();
+    // Add a key to force remount of MetaTextContent (and header) after refresh
+    const [contentKey, setContentKey] = useState(0);
 
     // Extract all business logic to custom hook
     const {
@@ -44,16 +46,21 @@ export default function MetaTextDetailPage() {
         ]
     });
 
+    // Handler to trigger a full header/content refresh
+    const handleHeaderRefresh = () => setContentKey(k => k + 1);
+
     return (
         <ErrorBoundary>
             <LoadingBoundary loading={loading}>
                 {shouldShowContent ? (
                     <MetaTextContent
+                        key={contentKey}
                         metaTextId={metaTextId!}
                         displayTitle={displayTitle}
                         sourceDocSection={sourceDocSection}
                         onReviewClick={handleReviewClick}
                         messages={MESSAGES}
+                        onHeaderRefresh={handleHeaderRefresh}
                     />
                 ) : shouldShowNotFound ? (
                     <NotFoundDisplay
