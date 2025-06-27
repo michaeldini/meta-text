@@ -1,14 +1,15 @@
 import React, { useMemo } from 'react';
-import { Box, CardContent, Typography, useTheme } from '@mui/material';
+import { Box, CardActionArea, CardContent, Typography, useTheme } from '@mui/material';
 import { MenuIcon, QuestionMarkIcon } from '../../components/icons';
 import { createWordFlashcardStyles } from './WordFlashcard.styles';
-import InfoPopoverButton from './InfoPopoverButton';
+import InfoButton from './InfoPopoverButton';
 
 interface WordFlashcardBackProps {
     word: string;
     definition: string;
     definitionWithContext: string;
     context?: string;
+    setFlipped: any;
 }
 
 const WordFlashcardBack: React.FC<WordFlashcardBackProps> = ({
@@ -16,33 +17,37 @@ const WordFlashcardBack: React.FC<WordFlashcardBackProps> = ({
     definition,
     definitionWithContext,
     context,
+    setFlipped
 }) => {
     const theme = useTheme();
     const styles = useMemo(() => createWordFlashcardStyles(theme), [theme]);
 
     return (
-        <Box sx={styles.back}>
-            <CardContent>
+        <CardContent sx={styles.back}>
+            <CardActionArea
+                sx={styles.cardActionArea}
+                onClick={() => setFlipped(false)}
+            >
                 <Typography variant="h5" fontWeight={700} align="center" color={theme.palette.text.secondary}>{word}</Typography>
                 <Typography variant="body1" sx={{ mt: 1 }}>{definition}</Typography>
-                <Box sx={{ display: 'flex', gap: 1, mt: 2, justifyContent: 'center' }}>
-                    <InfoPopoverButton
-                        icon={<MenuIcon />}
-                        popoverId="info-popover"
-                        title="Definition with Context"
-                        content={definitionWithContext}
-                        typographyVariant="body1"
-                    />
-                    <InfoPopoverButton
-                        icon={<QuestionMarkIcon />}
-                        popoverId="context-popover"
-                        title="Context"
-                        content={context || 'No context available'}
-                        typographyVariant="body1"
-                    />
-                </Box>
-            </CardContent>
-        </Box>
+            </CardActionArea>
+            <Box sx={{ display: 'flex', gap: 1, alignItems: 'end', justifyContent: 'start' }}>
+                <InfoButton
+                    icon={<MenuIcon />}
+                    dialogId="info-dialog"
+                    title="Definition with Context"
+                    content={definitionWithContext}
+                    typographyVariant="body1"
+                />
+                <InfoButton
+                    icon={<QuestionMarkIcon />}
+                    dialogId="context-dialog"
+                    title="Context"
+                    content={context || 'No context available'}
+                    typographyVariant="body1"
+                />
+            </Box>
+        </CardContent>
     );
 };
 

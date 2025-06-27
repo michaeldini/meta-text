@@ -79,4 +79,12 @@ export const createWordFlashcardStyles = (theme: Theme) => ({
         marginBottom: theme.spacing(1),
         color: theme.palette.text.secondary,
     },
+
+    cardActionArea: {
+        height: '100%',
+        borderRadius: theme.shape.borderRadius,
+        paddingX: theme.spacing(2),
+        marginTop: 0,
+    },
+
 });

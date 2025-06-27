@@ -1,53 +1,51 @@
 import React, { useState } from 'react';
-import { IconButton, Popover, Typography } from '@mui/material';
+import { IconButton, Dialog, DialogTitle, DialogContent, Typography } from '@mui/material';
 
-interface InfoPopoverButtonProps {
+interface InfoButtonProps {
     icon: React.ReactElement;
-    popoverId: string;
+    dialogId: string;
     title: string;
     content: string;
     typographyVariant?: 'body1' | 'body2';
 }
 
-const InfoPopoverButton: React.FC<InfoPopoverButtonProps> = ({
+const InfoButton: React.FC<InfoButtonProps> = ({
     icon,
-    popoverId,
+    dialogId,
     title,
     content,
     typographyVariant = 'body2',
 }) => {
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-    const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
-    const handlePopoverClose = () => setAnchorEl(null);
+    const [open, setOpen] = useState(false);
+    const handleDialogOpen = () => setOpen(true);
+    const handleDialogClose = () => setOpen(false);
 
     return (
         <>
             <IconButton
                 size="small"
                 color="secondary"
-                aria-owns={open ? popoverId : undefined}
-                aria-haspopup="true"
-                onMouseEnter={handlePopoverOpen}
-                onMouseLeave={handlePopoverClose}
+                aria-controls={open ? dialogId : undefined}
+                aria-haspopup="dialog"
+                onClick={handleDialogOpen}
             >
                 {icon}
             </IconButton>
-            <Popover
-                id={popoverId}
-                sx={{ pointerEvents: 'none' }}
+            <Dialog
+                id={dialogId}
                 open={open}
-                anchorEl={anchorEl}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-                onClose={handlePopoverClose}
-                disableRestoreFocus
+                onClose={handleDialogClose}
+                aria-labelledby={`${dialogId}-title`}
+                maxWidth="sm"
+                fullWidth
             >
-                <Typography sx={{ p: 1 }} variant="subtitle2" gutterBottom>{title}</Typography>
-                <Typography sx={{ p: 1, whiteSpace: 'pre-line' }} variant={typographyVariant}>{content}</Typography>
-            </Popover>
+                <DialogTitle id={`${dialogId}-title`}>{title}</DialogTitle>
+                <DialogContent>
+                    <Typography variant={typographyVariant} sx={{ whiteSpace: 'pre-line' }}>{content}</Typography>
+                </DialogContent>
+            </Dialog>
         </>
     );
 };
 
-export default InfoPopoverButton;
+export default InfoButton;

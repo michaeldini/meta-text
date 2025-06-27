@@ -1,16 +1,22 @@
 import React from 'react';
-import { Box, CardContent, Typography } from '@mui/material';
+import { Box, CardActionArea, CardContent, Typography } from '@mui/material';
 
 interface WordFlashcardFrontProps {
     word: string;
     styles: any;
+    setFlipped: any;
 }
 
-const WordFlashcardFront: React.FC<WordFlashcardFrontProps> = ({ word, styles }) => (
+const WordFlashcardFront: React.FC<WordFlashcardFrontProps> = ({ word, styles, setFlipped }) => (
     <Box sx={styles.front}>
-        <CardContent>
-            <Typography variant="h4" fontWeight={700} align="center">{word}</Typography>
-        </CardContent>
+        <CardActionArea
+            sx={styles.flashcard}
+            onClick={() => setFlipped(true)}
+        >
+            <CardContent>
+                <Typography variant="h4" fontWeight={700} align="center">{word}</Typography>
+            </CardContent>
+        </CardActionArea>
     </Box>
 );
 

@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Card, CardActionArea, useTheme } from '@mui/material';
+import { Card, Box, useTheme } from '@mui/material';
 import { createWordFlashcardStyles } from './WordFlashcard.styles';
 import WordFlashcardFront from './WordFlashcardFront';
 import WordFlashcardBack from './WordFlashcardBack';
@@ -18,18 +18,21 @@ const WordFlashcard: React.FC<WordFlashcardProps> = ({ word, definition, definit
 
     return (
         <Card sx={styles.flashcardContainer} elevation={3}>
-            <CardActionArea
-                sx={{ ...styles.flashcard, ...(flipped ? styles.flipped : {}), height: '100%' }}
-                onClick={() => setFlipped(f => !f)}
+            <Box
+                sx={{
+                    ...styles.flashcard,
+                    ...(flipped ? styles.flipped : {}),
+                }}
             >
-                <WordFlashcardFront word={word} styles={styles} />
+                <WordFlashcardFront word={word} styles={styles} setFlipped={setFlipped} />
                 <WordFlashcardBack
                     word={word}
                     definition={definition}
                     definitionWithContext={definitionWithContext}
                     context={context}
+                    setFlipped={setFlipped}
                 />
-            </CardActionArea>
+            </Box>
         </Card>
     );
 };

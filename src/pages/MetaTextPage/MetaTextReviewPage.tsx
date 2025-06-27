@@ -72,10 +72,8 @@ export default function MetaTextReviewPage() {
                     wordlistPromise,
                     chunkPromise
                 ]);
-                logger.info('Fetch complete', { wordlistData, chunkData });
                 setWordlist(Array.isArray(wordlistData) ? wordlistData : []);
                 setChunkSummariesNotes(Array.isArray(chunkData) ? chunkData : []);
-                logger.info('Wordlist and chunk summaries/notes loaded', { wordlistData, chunkData });
             } catch (err) {
                 setError('Failed to load wordlist or chunk summaries/notes.');
                 logger.error('Failed to load wordlist or chunk summaries/notes', err);

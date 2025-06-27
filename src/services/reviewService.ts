@@ -13,7 +13,6 @@ interface WordlistResponse {
 async function _fetchWordlist(metaTextId: number): Promise<WordlistResponse> {
     try {
         const data = await apiGet<WordlistResponse>(`/api/metatext/${metaTextId}/wordlist`);
-        logger.info('Fetched wordlist', data);
         return data as WordlistResponse;
     } catch (error) {
         logger.error('Failed to fetch wordlist', error);
