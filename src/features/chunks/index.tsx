@@ -72,16 +72,6 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
     const theme = useTheme();
     const styles = getChunksStyles(theme);
 
-    // // Auto-pagination: go to the page containing the active chunk
-    // React.useEffect(() => {
-    //     const { activeChunkId } = useChunkStore.getState();
-    //     if (!activeChunkId) return;
-    //     const idx = chunks.findIndex(c => c.id === activeChunkId);
-    //     if (idx === -1) return;
-    //     const newPage = Math.floor(idx / chunksPerPage) + 1;
-    //     if (newPage !== page) setPage(newPage);
-    // }, [chunks, useChunkStore.getState().activeChunkId]);
-
     // Keyboard navigation with j/k
     const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
         if (!paginatedChunks.length) return;
