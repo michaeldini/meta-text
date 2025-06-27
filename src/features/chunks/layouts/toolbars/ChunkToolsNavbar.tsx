@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, ToggleButtonGroup, ToggleButton, Tooltip, Typography } from '@mui/material';
-import { CompareArrowsIcon, PhotoFilterIcon, NotesIcon } from '../../../../components/icons';
+import { CompareArrowsIcon, PhotoIcon, NotesIcon } from '../../../../components/icons';
 import { useChunkStore } from '../../../../store/chunkStore';
 import CopyTool from '../../tools/copy/CopyTool';
 import { getLayoutsStyles } from '../layouts.styles';
@@ -81,7 +81,7 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
             ariaLabel: 'Show AI Image',
             tooltipTitle: <Typography variant="caption">
                 Show or hide the AI image panel for all chunks</Typography>,
-            icon: <PhotoFilterIcon />
+            icon: <PhotoIcon />
         }
     ];
 

@@ -6,10 +6,13 @@ import logger from '../../utils/logger';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowBackIcon } from '../../components/icons';
 import { metaTextDetailRoute } from '../../routes';
+import FlashCards from '../../features/flashcards/FlashCards';
 import ChunkSummaryNotesTable from '../../features/chunks/review/ChunkSummaryNotesTable';
 import { usePageLogger } from '../../hooks/usePageLogger';
-import WordFlashcard from '../../features/flashcards/WordFlashcard';
+import { useTheme } from '@mui/material/styles';
+import { getMetaTextPageStyles } from './MetaTextPage.styles';
 import Flexbox from '../../components/FlexBox';
+
 interface WordlistRow {
     id: number;
     word: string;
@@ -24,11 +27,28 @@ interface ChunkSummaryNote {
     [key: string]: any;
 }
 
-const columns = [
-    { id: 'word', label: 'Word' },
-    { id: 'definition', label: 'Definition' },
-    { id: 'definition_with_context', label: 'Definition (with Context)' },
-];
+function LoadingIndicator({ styles }: { styles: ReturnType<typeof getMetaTextPageStyles> }) {
+    return <Box sx={styles.loadingBox}><CircularProgress /></Box>;
+}
+
+function ErrorAlert({ message }: { message: string }) {
+    return <Alert severity="error">{message}</Alert>;
+}
+
+function Header({ metatextId, navigate, styles }: { metatextId?: number; navigate: (path: string) => void; styles: ReturnType<typeof getMetaTextPageStyles> }) {
+    return (
+        <Flexbox sx={styles.header}>
+            {metatextId && (
+                <Tooltip title="Back to MetaText Detail">
+                    <IconButton onClick={() => navigate(metaTextDetailRoute(String(metatextId)))}>
+                        <ArrowBackIcon />
+                    </IconButton>
+                </Tooltip>
+            )}
+            <Typography variant="h4" gutterBottom sx={metatextId ? styles.title : undefined}>Review</Typography>
+        </Flexbox>
+    );
+}
 
 export default function MetaTextReviewPage() {
     console.log('MetaTextReviewPage mounted');
@@ -42,6 +62,8 @@ export default function MetaTextReviewPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
+    const theme = useTheme();
+    const styles = getMetaTextPageStyles(theme);
 
     usePageLogger('MetaTextReviewPage', {
         watched: [
@@ -84,44 +106,14 @@ export default function MetaTextReviewPage() {
         if (metatextId) loadData();
     }, [metatextId]);
 
+    if (loading) return <Box sx={styles.root}><LoadingIndicator styles={styles} /></Box>;
+    if (error) return <Box sx={styles.root}><ErrorAlert message={error} /></Box>;
+
     return (
-        <Box sx={{ p: 3 }}>
-            <Flexbox flexDirection="row" alignItems="center" mb={2} >
-                {metatextId && (
-                    <Tooltip title="Back to MetaText Detail">
-                        <IconButton onClick={() => navigate(metaTextDetailRoute(String(metatextId)))}>
-                            <ArrowBackIcon />
-                        </IconButton>
-                    </Tooltip>
-                )}
-                <Typography variant="h4" gutterBottom sx={{ ml: metatextId ? 1 : 0 }}>Review</Typography>
-            </Flexbox>
-
-            <Typography variant="h5" gutterBottom>Wordlist</Typography>
-            {loading && <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}><CircularProgress /></Box>}
-            {error && <Alert severity="error">{error}</Alert>}
-            {!loading && !error && (
-                wordlist.length === 0 ? (
-                    <Alert severity="info">No words found in the wordlist.</Alert>
-                ) : (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 2 }}>
-                        {wordlist.map(row => (
-                            <WordFlashcard
-                                key={row.id}
-                                word={row.word}
-                                definition={row.definition}
-                                definitionWithContext={row.definition_with_context}
-                                context={row.context}
-                            />
-                        ))}
-                    </Box>
-                )
-            )}
-
-            {/* summaries/notes table */}
-            {!loading && !error && (
-                <ChunkSummaryNotesTable chunks={chunkSummariesNotes} />
-            )}
+        <Box sx={styles.root}>
+            <Header metatextId={metatextId} navigate={navigate} styles={styles} />
+            <FlashCards wordlist={wordlist} />
+            <ChunkSummaryNotesTable chunks={chunkSummariesNotes} />
         </Box>
     );
 }

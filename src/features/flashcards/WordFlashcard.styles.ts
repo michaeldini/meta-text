@@ -4,8 +4,8 @@ import { Theme } from '@mui/material/styles';
 export const createWordFlashcardStyles = (theme: Theme) => ({
     flashcardContainer: {
         perspective: 1000,
-        width: theme.spacing(50), // 800px
-        height: theme.spacing(40), // 192px
+        width: theme.spacing(40),
+        height: theme.spacing(40),
         display: 'inline-block',
         padding: 0,
         borderRadius: theme.shape.borderRadiusSm,
@@ -85,6 +85,15 @@ export const createWordFlashcardStyles = (theme: Theme) => ({
         borderRadius: theme.shape.borderRadius,
         paddingX: theme.spacing(2),
         marginTop: 0,
+    },
+    wordlistTitle: {
+        marginBottom: theme.spacing(2),
+    },
+    wordlistWrap: {
+        display: 'flex',
+        flexWrap: 'wrap' as const,
+        gap: theme.spacing(2),
+        marginTop: theme.spacing(2),
     },
 
 });

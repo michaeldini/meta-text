@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Tooltip } from '@mui/material';
 import type { SxProps, Theme } from '@mui/material/styles';
-import { UndoArrowIcon } from './icons'; // Use a random icon for now
+import { AcademicCapIcon } from './icons'; // Use a random icon for now
 
 export interface ReviewButtonProps {
     label: string;
@@ -21,7 +21,7 @@ const ReviewButton: React.FC<ReviewButtonProps> = ({ label, toolTip, onClick, di
             disabled={disabled}
             aria-label={toolTip || 'Review Button'}
         >
-            <UndoArrowIcon style={{ marginRight: 8 }} />
+            <AcademicCapIcon style={{ marginRight: 8 }} />
             {label}
         </Button>
     </Tooltip>
