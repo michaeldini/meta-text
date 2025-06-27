@@ -30,7 +30,7 @@ const FlexBox: React.FC<BoxProps & {
                 display="flex"
                 flexDirection={flexDirection}
                 alignItems={alignItems}
-                padding='0 32px'
+                // padding='0 32px'
                 gap={typeof gap === 'number' ? theme.spacing(gap) : gap}
                 sx={sx}
                 {...props}

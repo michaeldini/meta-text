@@ -143,22 +143,24 @@ export default function HomePage() {
 
     return (
         <PageContainer>
-            <FlexBox flexDirection="row" alignItems="start" >
-                <Box>
+            <FlexBox flexDirection="row">
+                <FlexBox flexDirection="column" alignItems="start" >
                     <WelcomeText />
-                    <ToggleSelector
-                        value={docType}
-                        onChange={handleDocTypeChange}
-                        options={DOC_TYPE_OPTIONS}
-                        sx={{ my: 2 }}
-                    />
-                    <ToggleSelector
-                        value={viewMode}
-                        onChange={handleViewModeChange}
-                        options={VIEW_MODE_OPTIONS}
-                        sx={{ mb: 2 }}
-                    />
-                </Box>
+                    <FlexBox flexDirection='column'>
+                        <ToggleSelector
+                            value={docType}
+                            onChange={handleDocTypeChange}
+                            options={DOC_TYPE_OPTIONS}
+                            sx={{ my: 2 }}
+                        />
+                        <ToggleSelector
+                            value={viewMode}
+                            onChange={handleViewModeChange}
+                            options={VIEW_MODE_OPTIONS}
+                            sx={{ mb: 2 }}
+                        />
+                    </FlexBox>
+                </FlexBox>
 
                 {/* Render the correct content for the current view */}
                 {content}

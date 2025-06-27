@@ -1,11 +1,11 @@
 import React from 'react';
-import { Paper, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 /**
  * WelcomeText - A highly emotive greeting and instruction for Meta-Text users.
  */
 const WelcomeText: React.FC = () => (
-    <Paper elevation={10} sx={{ width: '100%' }}>
+    <Box sx={{ padding: 0 }}>
         <Typography variant="h3" color="secondary" gutterBottom fontWeight={700}>
             Welcome to Meta-Text!
         </Typography>
@@ -14,7 +14,7 @@ const WelcomeText: React.FC = () => (
             <b>How does it work?</b> Upload a document that sparks your curiosity. Break it into sections that matter to you. Annotate each part with your thoughts, questions, and insights. <br /><br />
             <i>Transform passive reading into an active, personal journey of discovery. Your ideas belong here.</i>
         </Typography>
-    </Paper>
+    </Box>
 );
 
 export default WelcomeText;

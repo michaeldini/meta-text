@@ -28,7 +28,7 @@ const WordFlashcardBack: React.FC<WordFlashcardBackProps> = ({
                 sx={styles.cardActionArea}
                 onClick={() => setFlipped(false)}
             >
-                <Typography variant="h5" fontWeight={700} align="center" color={theme.palette.text.secondary}>{word}</Typography>
+                <Typography variant="h5" fontWeight={700} align="left" color={theme.palette.text.secondary}>{word}</Typography>
                 <Typography variant="body1" sx={{ mt: 1 }}>{definition}</Typography>
             </CardActionArea>
             <Box sx={{ display: 'flex', gap: 1, alignItems: 'end', justifyContent: 'start' }}>
@@ -36,6 +36,7 @@ const WordFlashcardBack: React.FC<WordFlashcardBackProps> = ({
                     icon={<MenuIcon />}
                     dialogId="info-dialog"
                     title="Definition with Context"
+                    word={word}
                     content={definitionWithContext}
                     typographyVariant="body1"
                 />
@@ -43,6 +44,7 @@ const WordFlashcardBack: React.FC<WordFlashcardBackProps> = ({
                     icon={<QuestionMarkIcon />}
                     dialogId="context-dialog"
                     title="Context"
+                    word={word}
                     content={context || 'No context available'}
                     typographyVariant="body1"
                 />

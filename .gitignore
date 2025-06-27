@@ -43,3 +43,4 @@ backend/erd_from_sqlite.pdf
 /coverage
 src/pages/MetaTextPage/Additional Enhancements to Consider.md
 package-lock.json
+nginx_config.pl

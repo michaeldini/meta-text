@@ -5,6 +5,7 @@ interface InfoButtonProps {
     icon: React.ReactElement;
     dialogId: string;
     title: string;
+    word: string;
     content: string;
     typographyVariant?: 'body1' | 'body2';
 }
@@ -12,6 +13,7 @@ interface InfoButtonProps {
 const InfoButton: React.FC<InfoButtonProps> = ({
     icon,
     dialogId,
+    word,
     title,
     content,
     typographyVariant = 'body2',
@@ -41,6 +43,7 @@ const InfoButton: React.FC<InfoButtonProps> = ({
             >
                 <DialogTitle id={`${dialogId}-title`}>{title}</DialogTitle>
                 <DialogContent>
+                    <Typography variant='subtitle1' sx={{ mb: 6 }}>{word}</Typography>
                     <Typography variant={typographyVariant} sx={{ whiteSpace: 'pre-line' }}>{content}</Typography>
                 </DialogContent>
             </Dialog>

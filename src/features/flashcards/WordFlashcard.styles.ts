@@ -4,12 +4,15 @@ import { Theme } from '@mui/material/styles';
 export const createWordFlashcardStyles = (theme: Theme) => ({
     flashcardContainer: {
         perspective: 1000,
-        width: theme.spacing(40),
+        width: 'fit-content',
+        minWidth: theme.spacing(40),
         height: theme.spacing(40),
-        display: 'inline-block',
+        display: 'flex',
+        alignItems: 'start',
         padding: 0,
         borderRadius: theme.shape.borderRadiusSm,
-
+        // border: '1px solid',
+        // borderColor: theme.palette.secondary.main
     },
     flashcard: {
         width: '100%',
@@ -18,6 +21,7 @@ export const createWordFlashcardStyles = (theme: Theme) => ({
         transition: 'transform 0.7s cubic-bezier(.68,-0.55,.27,1.55), box-shadow 0.4s',
         transformStyle: 'preserve-3d',
         cursor: 'pointer',
+
     },
     flipped: {
         transform: 'rotateY(180deg) scale(1.04)',
@@ -40,6 +44,7 @@ export const createWordFlashcardStyles = (theme: Theme) => ({
         padding: theme.spacing(2),
         zIndex: 2,
         color: theme.palette.text.primary,
+
     },
     back: {
         position: 'absolute',
@@ -58,7 +63,7 @@ export const createWordFlashcardStyles = (theme: Theme) => ({
         padding: theme.spacing(2),
         transform: 'rotateY(180deg)',
         zIndex: 3,
-        paddingTop: theme.spacing(4),
+        paddingTop: theme.spacing(1),
     },
     tooltip: {
         maxWidth: 800,
@@ -82,9 +87,14 @@ export const createWordFlashcardStyles = (theme: Theme) => ({
 
     cardActionArea: {
         height: '100%',
-        borderRadius: theme.shape.borderRadius,
+        borderRadius: theme.shape.borderRadiusSm,
         paddingX: theme.spacing(2),
-        marginTop: 0,
+        paddingTop: theme.spacing(2),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        overflow: 'auto',
+
     },
     wordlistTitle: {
         marginBottom: theme.spacing(2),
