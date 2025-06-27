@@ -10,11 +10,21 @@ import FlexBox from '../../components/FlexBox';
 import { useTheme } from '@mui/material/styles';
 import WelcomeText from './WelcomeText';
 import { ROUTES, MESSAGES } from '../../components/constants';
-import { SearchSection } from './SearchSection';
-import { CreateSection } from './CreateSection';
+import { CreateForm } from '../../features/createform/components';
 import { DocType } from '../../types/docTypes';
 import { usePageLogger } from '../../hooks/usePageLogger';
 import log from '../../utils/logger';
+import SearchableList from '../../features/searchablelist/components/SearchableList';
+import {
+    getDeleteActions,
+    getRouteMap,
+    handleNavigationFactory,
+    handleDeleteFactory,
+    handleSourceDocClickFactory,
+    handleMetaTextClickFactory,
+    handleDeleteSourceDocFactory,
+    handleDeleteMetaTextFactory
+} from './HomePage.handlers';
 
 export enum ViewMode {
     Search = 'search',
@@ -76,53 +86,14 @@ export default function HomePage() {
         ]
     });
 
-    const deleteActions = {
-        [DocType.SourceDoc]: deleteSourceDoc,
-        [DocType.MetaText]: deleteMetaText,
-    };
-
-    const routeMap = {
-        [DocType.SourceDoc]: ROUTES.SOURCE_DOC,
-        [DocType.MetaText]: ROUTES.META_TEXT,
-    };
-
-    // Generic navigation handler
-    const handleNavigation = React.useCallback(
-        (docType: DocType, id: number) => {
-            log.info(`Navigating to ${docType} with id: ${id}`);
-            navigate(`${routeMap[docType]}/${id}`);
-        },
-        [navigate]
-    );
-
-    // Generic delete handler with error handling
-    const handleDelete = React.useCallback(
-        async (docType: DocType, id: number, e: React.MouseEvent) => {
-            if (e?.stopPropagation) e.stopPropagation();
-
-            try {
-                await deleteActions[docType](id);
-                showSuccess(MESSAGES.DELETE_SUCCESS[docType as keyof typeof MESSAGES.DELETE_SUCCESS]);
-            } catch (error: unknown) {
-                log.error(`Delete ${docType} failed`, error);
-                showError(getErrorMessage(error, MESSAGES.DELETE_ERROR[docType as keyof typeof MESSAGES.DELETE_ERROR]));
-            }
-        },
-        [showSuccess, showError, navigate, deleteSourceDoc, deleteMetaText]
-    );
-
-    // Specific handlers using the generic ones
-    const handleSourceDocClick = React.useCallback((id: number) =>
-        handleNavigation(DocType.SourceDoc, id), [handleNavigation]);
-
-    const handleMetaTextClick = React.useCallback((id: number) =>
-        handleNavigation(DocType.MetaText, id), [handleNavigation]);
-
-    const handleDeleteSourceDoc = React.useCallback((id: number, e: React.MouseEvent) =>
-        handleDelete(DocType.SourceDoc, id, e), [handleDelete]);
-
-    const handleDeleteMetaText = React.useCallback((id: number, e: React.MouseEvent) =>
-        handleDelete(DocType.MetaText, id, e), [handleDelete]);
+    const deleteActions = getDeleteActions(deleteSourceDoc, deleteMetaText);
+    const routeMap = getRouteMap();
+    const handleNavigation = React.useCallback(handleNavigationFactory(navigate, routeMap), [navigate, routeMap]);
+    const handleDelete = React.useCallback(handleDeleteFactory(deleteActions, showSuccess, showError, navigate), [deleteActions, showSuccess, showError, navigate]);
+    const handleSourceDocClick = React.useCallback(handleSourceDocClickFactory(handleNavigation), [handleNavigation]);
+    const handleMetaTextClick = React.useCallback(handleMetaTextClickFactory(handleNavigation), [handleNavigation]);
+    const handleDeleteSourceDoc = React.useCallback(handleDeleteSourceDocFactory(handleDelete), [handleDelete]);
+    const handleDeleteMetaText = React.useCallback(handleDeleteMetaTextFactory(handleDelete), [handleDelete]);
 
     // Flip on any toggle input
     const handleDocTypeChange = (value: DocType) => {
@@ -133,25 +104,39 @@ export default function HomePage() {
     };
 
     // Render the correct content for the current view
+    const isSourceDoc = docType === DocType.SourceDoc;
+    const listProps = isSourceDoc
+        ? {
+            items: sourceDocs || [],
+            onItemClick: handleSourceDocClick,
+            onDeleteClick: handleDeleteSourceDoc,
+            loading: sourceDocsLoading
+        }
+        : {
+            items: metaTexts || [],
+            onItemClick: handleMetaTextClick,
+            onDeleteClick: handleDeleteMetaText,
+            loading: metaTextsLoading
+        };
+
     let content: React.ReactNode = null;
     if (viewMode === ViewMode.Search) {
         content = (
-            <SearchSection
-                loading={docType === DocType.SourceDoc ? sourceDocsLoading : metaTextsLoading}
-                items={docType === DocType.SourceDoc ? (sourceDocs || []) : (metaTexts || [])}
-                onItemClick={docType === DocType.SourceDoc ? handleSourceDocClick : handleMetaTextClick}
-                onDeleteClick={docType === DocType.SourceDoc ? handleDeleteSourceDoc : handleDeleteMetaText}
-                docType={docType}
+            <SearchableList
+                {...listProps}
+                filterKey="title"
+                title={docType}
             />
         );
     } else {
         content = (
-            <CreateSection
+            <CreateForm
                 sourceDocs={sourceDocs || []}
                 sourceDocsLoading={sourceDocsLoading}
                 sourceDocsError={sourceDocsError}
                 onSuccess={refreshData}
                 docType={docType}
+                title={docType}
             />
         );
     }

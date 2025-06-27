@@ -64,13 +64,6 @@ const CreateForm: React.FC<CreateFormProps> = React.memo(({
         form.setTitle(e.target.value);
     }, [form.setTitle]);
 
-    // Memoized computed values to prevent unnecessary re-renders
-    // const isSubmitDisabled = useMemo(() =>
-    //     form.loading ||
-    //     !form.data.title.trim() ||
-    //     (form.mode === FORM_MODES.UPLOAD ? !form.data.file : !form.data.sourceDocId),
-    //     [form.loading, form.data.title, form.data.file, form.data.sourceDocId, form.mode]
-    // );
     // Use single-source-of-truth from hook
     const isSubmitDisabled = form.isSubmitDisabled;
 

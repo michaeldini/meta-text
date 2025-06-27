@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { List, ListItem, ListItemButton, ListItemText, Paper, TextField, InputAdornment, Typography } from '@mui/material';
+import ErrorBoundary from '../../../components/ErrorBoundary';
+import LoadingBoundary from '../../../components/LoadingBoundary';
+import { List, ListItem, ListItemButton, ListItemText, Paper, TextField, InputAdornment, Typography, Box } from '@mui/material';
 import { SearchIcon, ClearIcon } from '../../../components/icons';
 import IconButton from '@mui/material/IconButton';
 import DeleteButton from '../../../components/DeleteButton';
 import { useFilteredList } from '../hooks/useFilteredList';
 import { createSearchableListStyles } from '../styles';
-
 import { useTheme } from '@mui/material/styles';
 
 export interface SearchableListProps<T extends Record<string, any> & { id: number }> {
@@ -17,7 +18,8 @@ export interface SearchableListProps<T extends Record<string, any> & { id: numbe
     searchPlaceholder?: string;
     emptyMessage?: string;
     ariaLabel?: string;
-    title?: string; // New prop for title
+    title?: string;
+    loading?: boolean;
 }
 
 function SearchableList<T extends Record<string, any> & { id: number }>({
@@ -29,7 +31,8 @@ function SearchableList<T extends Record<string, any> & { id: number }>({
     searchPlaceholder = "Search items...",
     emptyMessage = "No items found.",
     ariaLabel = "searchable list",
-    title, // Destructure title
+    title,
+    loading = false,
 }: SearchableListProps<T>) {
     const [search, setSearch] = useState('');
 
@@ -55,103 +58,109 @@ function SearchableList<T extends Record<string, any> & { id: number }>({
     const styles = createSearchableListStyles(theme);
 
     return (
-        <Paper elevation={3} role="region" aria-label={ariaLabel} sx={styles.root}>
-            {/* Title (optional) */}
-            {title && (
-                <Typography variant="h6" fontWeight={600} component="div">
-                    {title}
-                </Typography>
-            )}
-            {/* Search Input */}
-            <TextField
-                data-testid="search-input"
-                label="Search"
-                placeholder={searchPlaceholder}
-                variant="outlined"
-                size="small"
-                fullWidth
-                margin="normal"
-                value={search}
-                onChange={handleSearchChange}
-                aria-label="Search items"
-                sx={styles.searchInput}
-                InputProps={{
-                    startAdornment: (
-                        <InputAdornment position="start">
-                            <SearchIcon />
-                        </InputAdornment>
-                    ),
-                    endAdornment: search && (
-                        <InputAdornment position="end">
-                            <IconButton
-                                data-testid="clear-search"
-                                onClick={handleClearSearch}
-                                edge="end"
-                                size="small"
-                                aria-label="Clear search"
-                            >
-                                <ClearIcon />
-                            </IconButton>
-                        </InputAdornment>
-                    ),
-                }}
-            />
-
-            {/* Search Results */}
-            <List
-                data-testid="searchable-list"
-                role="list"
-                aria-label={`${filteredItems.length} ${filteredItems.length === 1 ? 'item' : 'items'} found`}
-            >
-                {/* No Results */}
-                {filteredItems.length === 0 ? (
-                    <ListItem role="listitem" sx={styles.noResults}>
-                        <ListItemText
-                            primary={emptyMessage}
+        <ErrorBoundary>
+            <LoadingBoundary loading={loading}>
+                <Box width="100%">
+                    <Paper elevation={3} role="region" aria-label={ariaLabel} sx={styles.root}>
+                        {/* Title (optional) */}
+                        {title && (
+                            <Typography variant="h6" fontWeight={600} component="div">
+                                {title}
+                            </Typography>
+                        )}
+                        {/* Search Input */}
+                        <TextField
+                            data-testid="search-input"
+                            label="Search"
+                            placeholder={searchPlaceholder}
+                            variant="outlined"
+                            size="small"
+                            fullWidth
+                            margin="normal"
+                            value={search}
+                            onChange={handleSearchChange}
+                            aria-label="Search items"
+                            sx={styles.searchInput}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <SearchIcon />
+                                    </InputAdornment>
+                                ),
+                                endAdornment: search && (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            data-testid="clear-search"
+                                            onClick={handleClearSearch}
+                                            edge="end"
+                                            size="small"
+                                            aria-label="Clear search"
+                                        >
+                                            <ClearIcon />
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
-                    </ListItem>
-                ) : (
-                    // Render Results
-                    filteredItems.map((item) => {
-                        const displayText = String(item[filterKey] || '');
-                        return (
-                            <ListItem
-                                key={item.id}
-                                role="listitem"
-                                secondaryAction={
-                                    <DeleteButton
-                                        onClick={(e: React.MouseEvent) => onDeleteClick(item.id, e)}
-                                        disabled={!!deleteLoading[item.id]}
-                                        label={`Delete ${displayText}`}
 
-                                    />
-                                }
-                                disablePadding
-                                sx={styles.listItem}
-                            >
-                                <ListItemButton
-                                    onClick={() => onItemClick(item.id)}
-                                    onKeyDown={(e) => handleItemKeyDown(e, item.id)}
-                                    aria-label={`Select ${displayText}`}
-                                    role="button"
-                                    tabIndex={0}
-                                >
+                        {/* Search Results */}
+                        <List
+                            data-testid="searchable-list"
+                            role="list"
+                            aria-label={`${filteredItems.length} ${filteredItems.length === 1 ? 'item' : 'items'} found`}
+                        >
+                            {/* No Results */}
+                            {filteredItems.length === 0 ? (
+                                <ListItem role="listitem" sx={styles.noResults}>
                                     <ListItemText
-                                        primary={displayText}
-                                        slotProps={{
-                                            primary: {
-                                                typography: 'h6',
-                                                sx: { fontWeight: 'medium' }
-                                            }
-                                        }}
+                                        primary={emptyMessage}
                                     />
-                                </ListItemButton>
-                            </ListItem>
-                        );
-                    })
-                )}
-            </List>
-        </Paper>
+                                </ListItem>
+                            ) : (
+                                // Render Results
+                                filteredItems.map((item) => {
+                                    const displayText = String(item[filterKey] || '');
+                                    return (
+                                        <ListItem
+                                            key={item.id}
+                                            role="listitem"
+                                            secondaryAction={
+                                                <DeleteButton
+                                                    onClick={(e: React.MouseEvent) => onDeleteClick(item.id, e)}
+                                                    disabled={!!deleteLoading[item.id]}
+                                                    label={`Delete ${displayText}`}
+
+                                                />
+                                            }
+                                            disablePadding
+                                            sx={styles.listItem}
+                                        >
+                                            <ListItemButton
+                                                onClick={() => onItemClick(item.id)}
+                                                onKeyDown={(e) => handleItemKeyDown(e, item.id)}
+                                                aria-label={`Select ${displayText}`}
+                                                role="button"
+                                                tabIndex={0}
+                                            >
+                                                <ListItemText
+                                                    primary={displayText}
+                                                    slotProps={{
+                                                        primary: {
+                                                            typography: 'h6',
+                                                            sx: { fontWeight: 'medium' }
+                                                        }
+                                                    }}
+                                                />
+                                            </ListItemButton>
+                                        </ListItem>
+                                    );
+                                })
+                            )}
+                        </List>
+                    </Paper>
+                </Box>
+            </LoadingBoundary>
+        </ErrorBoundary>
     );
 }
 
