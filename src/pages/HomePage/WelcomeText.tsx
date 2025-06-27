@@ -5,7 +5,7 @@ import { Paper, Typography } from '@mui/material';
  * WelcomeText - A highly emotive greeting and instruction for Meta-Text users.
  */
 const WelcomeText: React.FC = () => (
-    <Paper elevation={10} width="100%">
+    <Paper elevation={10} sx={{ width: '100%' }}>
         <Typography variant="h3" color="secondary" gutterBottom fontWeight={700}>
             Welcome to Meta-Text!
         </Typography>

@@ -23,7 +23,6 @@ const WordFlashcard: React.FC<WordFlashcardProps> = ({ word, definition, definit
                 onClick={() => setFlipped(f => !f)}
             >
                 <WordFlashcardFront word={word} styles={styles} />
-                {/* Back Side */}
                 <WordFlashcardBack
                     word={word}
                     definition={definition}

@@ -7,11 +7,7 @@ import SubmitButton from './SubmitButton';
 import { useCreateForm } from '../hooks/useCreateForm';
 import { SourceDocument, FormMode } from '../types';
 import { FORM_MODES, FORM_MESSAGES, FORM_A11Y } from '../constants';
-
-export enum DocType {
-    SourceDoc = 'sourceDoc',
-    MetaText = 'metaText'
-}
+import { DocType } from '../../../types/docTypes';
 
 export interface CreateFormProps {
     sourceDocs: SourceDocument[];

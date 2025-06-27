@@ -12,3 +12,19 @@ export const LOADING_CONSTANTS = {
     MIN_HEIGHT_BOUNDARY: 120, // Minimum height for LoadingBoundary
     MIN_HEIGHT_SUSPENSE: 200, // Minimum height for AppSuspenseFallback
 } as const;
+
+export const ROUTES = {
+    SOURCE_DOC: '/source-document',
+    META_TEXT: '/metaText',
+} as const;
+
+export const MESSAGES = {
+    DELETE_SUCCESS: {
+        sourceDoc: 'Source document deleted successfully.',
+        metaText: 'Meta text deleted successfully.',
+    } as const,
+    DELETE_ERROR: {
+        sourceDoc: 'Failed to delete the source document. Please try again.',
+        metaText: 'Failed to delete the meta text. Please try again.',
+    } as const,
+} as const;
