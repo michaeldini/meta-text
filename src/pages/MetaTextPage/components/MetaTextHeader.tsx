@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Typography, Button, Box, useTheme } from '@mui/material';
+import { Typography, Button, Box, Paper, useTheme } from '@mui/material';
 import SourceDocInfo from '../../../features/sourcedoc/components/SourceDocInfo';
 import AiGenerationButton from '../../../components/AiGenerationButton';
 import ReviewButton from '../../../components/ReviewButton';
@@ -37,13 +37,13 @@ const MetaTextHeader: React.FC<MetaTextHeaderProps> = ({
     };
 
     return (
-        <FlexBox alignItems="start" sx={styles.headerContainer}>
-            <FlexBox alignItems="flex-end" flexDirection="row">
+        <FlexBox alignItems="center" sx={styles.headerContainer}>
+            <Paper elevation={10} sx={styles.headerPaper}>
                 <Typography variant="subtitle1" color={theme.palette.text.secondary}>Editing the meta-text named</Typography>
                 <Typography variant="h5" sx={{ mx: 1 }}>{displayTitle}</Typography>
                 <Typography variant="subtitle1" color={theme.palette.text.secondary}>that was derived from</Typography>
                 <Typography variant="h6" sx={{ mx: 1 }}>{sourceDocSection ? `${sourceDocSection.doc.title}` : ''}</Typography>
-            </FlexBox>
+            </Paper>
             <FlexBox flexDirection="row" >
                 <ReviewButton
                     label={messages.REVIEW_BUTTON}

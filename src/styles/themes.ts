@@ -32,6 +32,9 @@ const baseTheme: ThemeOptions = {
             defaultProps: {
                 variant: 'outlined',
             },
+            styleOverrides: {
+                root: {}, // color override in theme
+            },
         },
         MuiButton: {
             defaultProps: {
@@ -71,10 +74,7 @@ const baseTheme: ThemeOptions = {
         },
         MuiListItem: {
             styleOverrides: {
-                root: {
-                    padding: 0,
-                    margin: 0,
-                },
+                root: {},
             },
         },
         MuiCircularProgress: {
@@ -107,8 +107,6 @@ const baseTheme: ThemeOptions = {
                     backgroundColor: blue[900],
                     '& th': {
                         fontWeight: 600,
-                        // color: grey[900],   // Darker text for better contrast
-
                     }
                 }
             }
@@ -116,25 +114,18 @@ const baseTheme: ThemeOptions = {
         MuiAccordion: {
             styleOverrides: {
                 root: {
-                    padding: 8,
-                    margin: 8,
-                    minHeight: 32,
+                    boxShadow: 'none',
+                    // padding: 8,
+                    // margin: 8,
                     width: '100%',
-                    '&.Mui-expanded': {
-                        minHeight: 32,
-                    },
                 },
             },
         },
         MuiAccordionSummary: {
             styleOverrides: {
                 root: {
-                    minHeight: 32,
                     paddingTop: 0,
                     paddingBottom: 0,
-                    '&.Mui-expanded': {
-                        minHeight: 32,
-                    },
                 },
                 content: {
                     margin: 0,
@@ -152,8 +143,16 @@ const baseTheme: ThemeOptions = {
                 },
             },
         },
+        // Add shared Popover config, but leave color/boxShadow for theme
+        MuiPopover: {
+            styleOverrides: {
+                paper: {
+                    padding: 8,
+                    margin: 8,
+                },
+            },
+        },
     },
-
 };
 
 // Light theme configuration
@@ -183,30 +182,22 @@ export const lightTheme = createTheme({
         divider: grey[200],
     },
     components: {
-        ...baseTheme.components,
         MuiPaper: {
             styleOverrides: {
                 root: {
                     // padding: '32px',
-                    borderRadius: 8,
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                    backdropFilter: 'blur(8px)',
+                    backgroundColor: '#fff',
                 },
             },
         },
         MuiPopover: {
             styleOverrides: {
                 paper: {
-                    padding: 8,
-                    margin: 8,
                     boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
                 },
             },
         },
         MuiTextField: {
-            defaultProps: {
-                variant: 'outlined',
-            },
             styleOverrides: {
                 root: {
                     '& .MuiInputBase-input': {
@@ -216,13 +207,8 @@ export const lightTheme = createTheme({
             },
         },
         MuiButton: {
-            defaultProps: {
-                variant: 'outlined',
-            },
             styleOverrides: {
                 root: {
-                    borderRadius: 8,
-                    textTransform: 'none',
                     color: grey[700],
                     borderColor: grey[300],
                     '&:hover': {
@@ -235,7 +221,7 @@ export const lightTheme = createTheme({
     },
 });
 
-// Dark theme configuration (your current theme, enhanced)
+// Dark theme configuration
 export const darkTheme = createTheme({
     ...baseTheme,
     palette: {
@@ -262,30 +248,21 @@ export const darkTheme = createTheme({
         divider: grey[700],
     },
     components: {
-        ...baseTheme.components,
         MuiPaper: {
             styleOverrides: {
                 root: {
-                    padding: '32px',
-                    borderRadius: 8,
                     backgroundColor: grey[900],
-                    backdropFilter: 'blur(8px)',
                 },
             },
         },
         MuiPopover: {
             styleOverrides: {
                 paper: {
-                    padding: 8,
-                    margin: 8,
                     backgroundColor: grey[800],
                 },
             },
         },
         MuiTextField: {
-            defaultProps: {
-                variant: 'outlined',
-            },
             styleOverrides: {
                 root: {
                     '& .MuiInputBase-input': {
@@ -295,13 +272,8 @@ export const darkTheme = createTheme({
             },
         },
         MuiButton: {
-            defaultProps: {
-                variant: 'outlined',
-            },
             styleOverrides: {
                 root: {
-                    borderRadius: 8,
-                    textTransform: 'none',
                     color: grey[200],
                     borderColor: grey[600],
                     '&:hover': {

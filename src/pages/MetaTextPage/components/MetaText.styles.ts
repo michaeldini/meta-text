@@ -13,15 +13,16 @@ export const getMetaTextContentStyles = (theme: Theme) => ({
     headerContainer: {
         width: '100%',
         padding: theme.spacing(2),
+        gap: theme.spacing(6),
+        marginBottom: theme.spacing(20)
     },
 
     headerPaper: {
         padding: theme.spacing(1.5), // Compact padding
         display: 'flex',
         flexDirection: 'row',
-        alignItems: 'start',
-        justifyContent: 'space-between',
+        alignItems: 'center',
         minHeight: 'auto', // Remove default min-height
-        width: '100%',
+        // width: '100%',
     },
 });

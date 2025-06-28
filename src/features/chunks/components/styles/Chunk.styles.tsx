@@ -6,7 +6,7 @@ export const getChunkStyles = (theme: Theme) => ({
         flexDirection: 'row' as const,
         alignItems: 'start',
         gap: theme.spacing(1.5), // Reduced gap between sections
-        paddingRight: "32px", // Adjusted for floating toolbar
+        paddingRight: theme.spacing(4),
         border: `1px solid ${theme.palette.secondary.light}`,
         borderRadius: theme.shape.borderRadius,
         minHeight: 0,
@@ -22,7 +22,7 @@ export const getChunkStyles = (theme: Theme) => ({
         '&:hover': {
             transform: 'translateY(-2px)',
         },
-        padding: theme.spacing(2),
+        padding: theme.spacing(4),
     },
     chunkWordBox: {
         display: 'inline-block',

@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
-import { Alert, List, ListItem, ListItemText, Box, useTheme, Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
+import React from 'react';
+import { List, ListItem, ListItemText, Box, useTheme, Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
 import { ExpandMoreIcon } from '../../../components/icons';
-import { getErrorMessage } from '../../../types/error';
 import type { SourceDocument } from '../../../types/sourceDocument';
-import { generateSourceDocInfo } from '../../../services/sourceDocInfoService';
 import { getSourceDocumentStyles } from '../styles/styles';
 
 interface SourceDocInfoProps {
@@ -47,21 +45,15 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc }) => {
                 <Accordion
                     key={config.key}
                     slotProps={{ transition: { unmountOnExit: true } }}
+                    disableGutters={true}
                 >
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography variant="subtitle1">{config.label}</Typography>
+                        <Typography variant="h6">{config.label}</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <List component="div" disablePadding>
-                            {arr.map((item, i) => (
-                                <ListItem key={i} sx={{ pl: 2 }} dense>
-                                    <ListItemText
-                                        primary={item}
-                                        slotProps={{ primary: styles.slotProps.primaryListItemText }}
-                                    />
-                                </ListItem>
-                            ))}
-                        </List>
+                        <Typography >
+                            {value as string}
+                        </Typography>
                     </AccordionDetails>
                 </Accordion>
             );
@@ -74,10 +66,10 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc }) => {
                 slotProps={{ transition: { unmountOnExit: true } }}
             >
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant="subtitle1">{config.label}</Typography>
+                    <Typography variant="h6">{config.label}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Typography {...styles.slotProps.primaryCollapsibleText}>
+                    <Typography >
                         {value as string}
                     </Typography>
                 </AccordionDetails>
