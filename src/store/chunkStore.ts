@@ -26,8 +26,8 @@ interface ChunkState {
     chunksError: string;
     activeChunkId: number | null;
     setActiveChunk: (id: number | null) => void;
-    activeTabs: Array<'comparison' | 'ai-image' | 'notes-summary'>;
-    setActiveTabs: (tabs: Array<'comparison' | 'ai-image' | 'notes-summary'>) => void;
+    activeTabs: Array<'comparison' | 'ai-image' | 'notes-summary' | 'compression' | 'explanation'>;
+    setActiveTabs: (tabs: Array<'comparison' | 'ai-image' | 'notes-summary' | 'compression' | 'explanation'>) => void;
     fetchChunks: (metaTextId: number) => Promise<void>;
     updateChunkField: (chunkId: number, field: keyof Chunk, value: ChunkFieldValue) => void;
     handleWordClick: (chunkIdx: number, wordIdx: number) => Promise<void>;

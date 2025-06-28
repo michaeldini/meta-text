@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, ToggleButtonGroup, ToggleButton, Tooltip, Typography } from '@mui/material';
-import { CompareArrowsIcon, PhotoIcon, NotesIcon } from '../../../../components/icons';
+import { CompareArrowsIcon, PhotoIcon, NotesIcon, CompressionIcon } from '../../../../components/icons';
 import { useChunkStore } from '../../../../store/chunkStore';
 import CopyTool from '../../tools/copy/CopyTool';
 import { getLayoutsStyles } from '../layouts.styles';
@@ -51,7 +51,7 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
 
 
     // Allow multiple selection
-    const handleTabsChange = (_: any, tabs: Array<'comparison' | 'ai-image' | 'notes-summary'>) => {
+    const handleTabsChange = (_: any, tabs: Array<'comparison' | 'ai-image' | 'notes-summary' | 'compression' | 'explanation'>) => {
         setActiveTabs(tabs);
     };
 
@@ -76,7 +76,22 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
             tooltipTitle: <Typography variant="caption">
                 Show or hide the AI image panel for all chunks</Typography>,
             icon: <PhotoIcon />
-        }
+        },
+        {
+            value: 'compression',
+            ariaLabel: 'Compress Chunk',
+            tooltipTitle: <Typography variant="caption">
+                Show or hide the compressions for all chunks</Typography>,
+            icon: <CompressionIcon />
+        },
+        {
+            value: 'explanation',
+            ariaLabel: 'Show Explanation',
+            tooltipTitle: <Typography variant="caption">
+                Show or hide the explanation editor for all chunks</Typography>,
+            icon: <NotesIcon />
+        },
+
     ];
 
     return (
@@ -104,14 +119,7 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
                 ))}
             </ToggleButtonGroup>
             <Box sx={styles.toolButtonsContainer}>
-                <Tooltip
-                    title={<Typography variant="caption">Copy the active chunk</Typography>}
-                    {...styles.tooltipProps}
-                >
-                    <span style={{ display: 'inline-block' }}>
-                        <CopyTool />
-                    </span>
-                </Tooltip>
+                <CopyTool />
             </Box>
         </Box>
     );

@@ -1,0 +1,25 @@
+# Chunk Compression Instructions
+
+You are an AI assistant tasked with compressing a given text chunk into a specific style, as requested by the user. Your response should:
+
+- Rewrite the provided text in the requested style (e.g., "explain it like I'm 5", "like a bro").
+- Preserve the core meaning and important details of the original text.
+- Be concise, clear, and easy to understand in the chosen style.
+- Do not add extra commentary or information not present in the original text.
+
+## Example Styles
+- Like I'm 5: Use simple words and short sentences, as if explaining to a young child.
+- Like a bro: Use casual, friendly, and informal language.
+- Academic: Use formal, precise, and technical language.
+
+## Output Format
+Return only the rewritten text, with no preamble or explanation.
+
+---
+
+**Input:**
+- Original text: <original_chunk_text>
+- Style: <style_title>
+
+**Output:**
+- Compressed text in the requested style.

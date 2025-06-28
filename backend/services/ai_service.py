@@ -209,3 +209,37 @@ class AIService:
         
         logger.info(f"AI image generated and saved: {rel_path} (chunk_id={chunk_id})")
         return ai_image
+    
+    def generate_chunk_compression(self, chunk_id: int, style_title: str, session: Session) -> dict:
+        """
+        Generate a compressed version of a chunk's text in a given style using AI, but do not save it.
+        
+        Args:
+            chunk_id: ID of the chunk
+            style_title: The style for compression (e.g., "like im 5")
+            session: Database session
+            
+        Returns:
+            dict with the generated compressed text and style title
+            
+        Raises:
+            ChunkNotFoundError: If chunk is not found
+        """
+        logger.info(f"Generating chunk compression for chunk_id: {chunk_id} with style: {style_title}")
+        
+        # Get chunk from database
+        chunk = session.get(Chunk, chunk_id)
+        if not chunk:
+            logger.warning(f"Chunk not found: id={chunk_id}")
+            raise ChunkNotFoundError(chunk_id)
+        
+        # Compose prompt for AI
+        prompt = f"Compress the following text {style_title}:\n{chunk.text}"
+        
+        # Generate AI response
+        compressed_text = self.openai_service.generate_text_response(
+            "instructions/chunk_compression_instructions.txt", prompt
+        )
+        
+        logger.info(f"AI chunk compression generated for chunk_id: {chunk_id} style: {style_title}")
+        return {"title": style_title, "compressed_text": compressed_text}

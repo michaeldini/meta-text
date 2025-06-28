@@ -1,10 +1,11 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import { CompareArrowsIcon, PhotoFilterIcon, NotesIcon } from '../../../components/icons';
+import { CompareArrowsIcon, PhotoFilterIcon, NotesIcon, CompressionIcon } from '../../../components/icons';
 import log from '../../../utils/logger';
 import NotesSummaryTab from '../layouts/tabs/NotesSummaryTab';
 import ComparisonTab from '../layouts/tabs/ComparisonTab';
 import AiImageTab from '../layouts/tabs/AiImageTab';
+import CompressionToolTab from '../layouts/tabs/CompressionToolTab';
 import { useChunkStore } from '../../../store/chunkStore';
 import type { Chunk } from '../../../types/chunk';
 import { getChunkToolsStyles } from './styles/Tools.styles';
@@ -18,6 +19,8 @@ const tabOptions = [
     { value: 'notes-summary', icon: <NotesIcon />, key: 'notes-summary' },
     { value: 'comparison', icon: <CompareArrowsIcon />, key: 'comparison' },
     { value: 'ai-image', icon: <PhotoFilterIcon />, key: 'ai-image' },
+    { value: 'compression', icon: <CompressionIcon />, key: 'compression' },
+    { value: 'explanation', icon: <NotesIcon />, key: 'explanation' },
 ] as const;
 
 const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk }) => {
@@ -46,6 +49,19 @@ const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk }) => {
             {/* Show AI Image if selected */}
             {activeTabs.includes('ai-image') && (
                 <AiImageTab chunk={chunk} />
+            )}
+            {/* Show Compression if selected */}
+            {activeTabs.includes('compression') && (
+                <CompressionToolTab />
+            )}
+            {/* Show Explanation if selected */}
+            {activeTabs.includes('explanation') && (
+                <Box>
+                    <NotesIcon fontSize="large" />
+                    <Box>
+                        Explanation tools are not yet implemented.
+                    </Box>
+                </Box>
             )}
         </Box>
     );

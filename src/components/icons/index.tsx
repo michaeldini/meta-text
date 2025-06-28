@@ -17,7 +17,9 @@ import { ChevronUpIcon as ChevronUpSvg } from '@heroicons/react/24/solid';
 import { SparklesIcon as StarsSvg } from '@heroicons/react/24/solid';
 import { AcademicCapIcon as AcademicCapSvg } from '@heroicons/react/24/solid';
 import { PhotoIcon as PhotoSvg } from '@heroicons/react/24/solid';
+import { BeakerIcon as CompressionSvg } from '@heroicons/react/24/solid';
 import { SVGProps } from 'react';
+
 
 // All icons are typed to accept all ThemedIconProps except 'as'
 type IconProps = Omit<ThemedIconProps, 'as'>;
@@ -38,7 +40,7 @@ export const ExpandMoreIcon: React.FC<IconProps> = (props) => <ThemedIcon as={Ch
 export const StarsIcon: React.FC<IconProps> = (props) => <ThemedIcon as={StarsSvg} {...props} />;
 export const AcademicCapIcon: React.FC<IconProps> = (props) => <ThemedIcon as={AcademicCapSvg} {...props} />;
 export const PhotoIcon: React.FC<IconProps> = (props) => <ThemedIcon as={PhotoSvg} {...props} />;
-
+export const CompressionIcon: React.FC<IconProps> = (props) => <ThemedIcon as={CompressionSvg} {...props} />;
 
 // unused icons but may be needed later
 export const ExpandLessIcon: React.FC<IconProps> = (props) => <ThemedIcon as={ChevronUpSvg} {...props} />;

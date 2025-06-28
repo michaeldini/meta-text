@@ -60,6 +60,19 @@ class CreateMetaTextRequest(BaseModel):
     sourceDocId: int
     title: str
     
+# --- Chunk Compression Schemas ---
+class ChunkCompressionBase(SQLModel):
+    title: str  # e.g., "like im 5", "like a bro"
+    compressed_text: str
+    chunk_id: int = Field(foreign_key="chunk.id")
+
+class ChunkCompression(ChunkCompressionBase, table=True):
+    id: int = Field(default=None, primary_key=True)
+    chunk: Optional["Chunk"] = Relationship(back_populates="compressions")
+
+class ChunkCompressionRead(ChunkCompressionBase):
+    id: int
+
 # --- Chunk Schemas ---
 class ChunkBase(SQLModel):
     text: str
@@ -67,12 +80,14 @@ class ChunkBase(SQLModel):
     notes: str = ""
     summary: str = ""
     comparison: str = ""
+    explanation: str = ""  # New field for user explanation, defaults to empty string
     meta_text_id: int = Field(foreign_key="metatext.id")
 
 class Chunk(ChunkBase, table=True):
     id: int = Field(default=None, primary_key=True)
     meta_text: Optional[MetaText] = Relationship(back_populates="chunks")
     ai_images: List["AiImage"] = Relationship(back_populates="chunk")  # One-to-many relationship
+    compressions: List["ChunkCompression"] = Relationship(back_populates="chunk")  # One-to-many relationship for compressions
 
 class ChunkRead(ChunkBase):
     id: int

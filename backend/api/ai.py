@@ -112,3 +112,21 @@ async def generate_image(prompt: str = Form(...), chunk_id: int = Form(None), se
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
             detail=f"AI service error: {str(e)}"
         )
+
+
+@router.get("/generate-chunk-compression/{chunk_id}")
+async def generate_chunk_compression(chunk_id: int, style_title: str, session: Session = Depends(get_session)) -> dict:
+    """Generate a compressed version of a chunk's text in a given style using AI (does not save)."""
+    try:
+        return get_ai_service().generate_chunk_compression(chunk_id, style_title, session)
+    except ChunkNotFoundError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Chunk not found"
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"AI service error: {str(e)}"
+        )
+
