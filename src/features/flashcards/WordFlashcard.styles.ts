@@ -55,8 +55,8 @@ export const createWordFlashcardStyles = (theme: Theme) => ({
         backfaceVisibility: 'hidden',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'start',
-        justifyContent: 'start',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
         background: theme.palette.background.paper,
         borderRadius: theme.shape.borderRadiusSm,
         boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
@@ -105,5 +105,9 @@ export const createWordFlashcardStyles = (theme: Theme) => ({
         gap: theme.spacing(2),
         marginTop: theme.spacing(2),
     },
+
+    buttonsContainer: {
+        display: 'flex', gap: 1, alignItems: 'end', justifyContent: 'start'
+    }
 
 });

@@ -28,10 +28,10 @@ const WordFlashcardBack: React.FC<WordFlashcardBackProps> = ({
                 sx={styles.cardActionArea}
                 onClick={() => setFlipped(false)}
             >
-                <Typography variant="h5" fontWeight={700} align="left" color={theme.palette.text.secondary}>{word}</Typography>
+                <Typography variant="h5" fontWeight={700} color={theme.palette.text.secondary}>{word}</Typography>
                 <Typography variant="body1" sx={{ mt: 1 }}>{definition}</Typography>
             </CardActionArea>
-            <Box sx={{ display: 'flex', gap: 1, alignItems: 'end', justifyContent: 'start' }}>
+            <Box sx={styles.buttonsContainer}>
                 <InfoButton
                     icon={<MenuIcon />}
                     dialogId="info-dialog"
