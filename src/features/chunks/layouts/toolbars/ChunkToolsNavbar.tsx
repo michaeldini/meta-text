@@ -47,14 +47,8 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
     const activeTabs = useChunkStore(state => state.activeTabs);
     const setActiveTabs = useChunkStore(state => state.setActiveTabs);
 
-    if (!activeChunkId) return null;
+    const isDisabled = !activeChunkId;
 
-    // Example action handler
-    const handleShowDialog = () => {
-        if (!activeChunkId) return;
-        // Open dialog logic for the active chunk
-        alert(`Open dialog for chunk: ${activeChunkId}`);
-    };
 
     // Allow multiple selection
     const handleTabsChange = (_: any, tabs: Array<'comparison' | 'ai-image' | 'notes-summary'>) => {
@@ -103,7 +97,7 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
                         title={button.tooltipTitle}
                         {...styles.tooltipProps}
                     >
-                        <ToggleButton value={button.value} aria-label={button.ariaLabel}>
+                        <ToggleButton value={button.value} aria-label={button.ariaLabel} disabled={isDisabled}>
                             {button.icon}
                         </ToggleButton>
                     </Tooltip>
@@ -114,7 +108,9 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
                     title={<Typography variant="caption">Copy the active chunk</Typography>}
                     {...styles.tooltipProps}
                 >
-                    <CopyTool />
+                    <span style={{ display: 'inline-block' }}>
+                        <CopyTool />
+                    </span>
                 </Tooltip>
             </Box>
         </Box>

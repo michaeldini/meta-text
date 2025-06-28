@@ -7,7 +7,8 @@ import { useMetaTextDetailPage } from './hooks/useMetaTextDetailPage';
 import { MetaTextContent, NotFoundDisplay } from './components';
 import log from '../../utils/logger';
 import FloatingChunkToolbar from '../../features/chunks/layouts/toolbars/FloatingChunkToolbar';
-
+import { Box, Fade } from '@mui/material';
+import { FADE_IN_DURATION } from '../../constants/ui';
 /**
  * MetaTextDetailPage - Main page component
  * Single responsibility: Coordinate page-level concerns (routing, error boundaries, logging)
@@ -53,15 +54,20 @@ export default function MetaTextDetailPage() {
         <ErrorBoundary>
             <LoadingBoundary loading={loading}>
                 {shouldShowContent ? (
-                    <MetaTextContent
-                        key={contentKey}
-                        metaTextId={metaTextId!}
-                        displayTitle={displayTitle}
-                        sourceDocSection={sourceDocSection}
-                        onReviewClick={handleReviewClick}
-                        messages={MESSAGES}
-                        onHeaderRefresh={handleHeaderRefresh}
-                    />
+                    <Fade in={!loading} timeout={FADE_IN_DURATION}>
+                        <Box>
+                            <MetaTextContent
+                                key={contentKey}
+                                metaTextId={metaTextId!}
+                                displayTitle={displayTitle}
+                                sourceDocSection={sourceDocSection}
+                                onReviewClick={handleReviewClick}
+                                messages={MESSAGES}
+                                onHeaderRefresh={handleHeaderRefresh}
+                            />
+                            <FloatingChunkToolbar />
+                        </Box>
+                    </Fade>
                 ) : shouldShowNotFound ? (
                     <NotFoundDisplay
                         metaTextId={metaTextId!}
@@ -69,7 +75,6 @@ export default function MetaTextDetailPage() {
                     />
                 ) : null}
             </LoadingBoundary>
-            <FloatingChunkToolbar />
         </ErrorBoundary>
     );
 }

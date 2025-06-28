@@ -22,9 +22,9 @@ interface ChunksPaginationProps {
 function ChunksPagination({ pageCount, page, handleChange }: ChunksPaginationProps) {
     if (pageCount <= 1) return null;
     return (
-        <Slide in={true} timeout={500} direction="up">
+        <Box>
             <Pagination count={pageCount} page={page} onChange={handleChange} color="secondary" />
-        </Slide>
+        </Box>
     );
 }
 
@@ -72,45 +72,47 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
     const theme = useTheme();
     const styles = getChunksStyles(theme);
 
-    // Keyboard navigation with j/k
+    // Keyboard navigation with j/k and scroll into view
     const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
+        // Prevent shortcuts when typing in input, textarea, or contenteditable
+        const target = e.target as HTMLElement;
+        if (
+            target.tagName === 'INPUT' ||
+            target.tagName === 'TEXTAREA' ||
+            target.isContentEditable
+        ) {
+            return;
+        }
         if (!paginatedChunks.length) return;
         const currentIdx = paginatedChunks.findIndex(chunk => chunk.id === activeChunkId);
+        let newChunkId: number | null = null;
         if (e.key === 'j' || e.key === 'ArrowDown') {
             const nextIdx = Math.min(currentIdx + 1, paginatedChunks.length - 1);
             if (nextIdx !== currentIdx && paginatedChunks[nextIdx]) {
-                setActiveChunk(paginatedChunks[nextIdx].id);
+                newChunkId = paginatedChunks[nextIdx].id;
+                setActiveChunk(newChunkId);
             }
             e.preventDefault();
         } else if (e.key === 'k' || e.key === 'ArrowUp') {
             const prevIdx = Math.max(currentIdx - 1, 0);
             if (prevIdx !== currentIdx && paginatedChunks[prevIdx]) {
-                setActiveChunk(paginatedChunks[prevIdx].id);
+                newChunkId = paginatedChunks[prevIdx].id;
+                setActiveChunk(newChunkId);
             }
             e.preventDefault();
         }
-    }, [paginatedChunks, activeChunkId, setActiveChunk]);
-
-    // Ensure the container is focused so it receives keyboard events
-    useEffect(() => {
-        if (containerRef.current) {
-            containerRef.current.focus();
+        // Scroll to the new chunk if navigation occurred
+        if (newChunkId !== null && containerRef.current) {
+            setTimeout(() => {
+                const chunkNode = containerRef.current?.querySelector(
+                    `[data-chunk-id="${newChunkId}"]`
+                );
+                if (chunkNode && chunkNode.scrollIntoView) {
+                    chunkNode.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 0);
         }
-    }, [paginatedChunks.length, page]);
-
-    // Scroll to chunk when activeChunkId changes (keyboard navigation)
-    useEffect(() => {
-        if (!containerRef.current) return;
-        if (!activeChunkId) return;
-        setTimeout(() => {
-            const chunkNode = containerRef.current?.querySelector(
-                `[data-chunk-id="${activeChunkId}"]`
-            );
-            if (chunkNode && chunkNode.scrollIntoView) {
-                chunkNode.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }, 0);
-    }, [activeChunkId, paginatedChunks]);
+    }, [paginatedChunks, activeChunkId, setActiveChunk]);
 
     return (
         <ErrorBoundary>
@@ -120,6 +122,7 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
                         <Alert severity="error">{chunksError}</Alert>
                     </Box>
                 ) : (
+                    // <Slide timeout={500} direction="up" in={true}>
                     <Box
                         ref={containerRef}
                         sx={styles.container}
@@ -147,6 +150,7 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
                         ))}
                         <ChunksPagination pageCount={pageCount} page={page} handleChange={handleChange} />
                     </Box>
+                    // </Slide>
                 )}
             </LoadingBoundary>
         </ErrorBoundary>
