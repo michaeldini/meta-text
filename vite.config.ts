@@ -17,8 +17,8 @@ export default defineConfig({
                     'utils': ['zustand', 'loglevel'],
                     // Separate your chunks feature since it's large
                     'chunks-tools': [
-                        './src/features/chunks/tools',
-                        './src/features/chunks/layouts'
+                        // './src/features/chunks/tools',
+                        // './src/features/chunks/layouts'
                     ]
                 }
             },

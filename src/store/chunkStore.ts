@@ -109,10 +109,10 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
                     }
                     if (lastActive && chunks.find(c => c.id === lastActive)) {
                         updates.activeChunkId = lastActive;
-                        updates.activeTabs = ['compression'];
+                        // updates.activeTabs = ['compression'];
                     } else if (chunks.length > 0) {
                         updates.activeChunkId = chunks[0].id;
-                        updates.activeTabs = ['compression'];
+                        // updates.activeTabs = ['compression'];
                     }
                 }
                 return { ...state, ...updates };
