@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Select, MenuItem, FormControl, InputLabel, CircularProgress, Paper } from '@mui/material';
+import { Box, Typography, Select, MenuItem, FormControl, CircularProgress, Paper, useTheme } from '@mui/material';
 import { fetchChunkCompressions } from '../../../../services/chunkService';
 import CompressionTool from '../../tools/compression/CompressionTool';
 import type { ChunkCompression } from '../../../../types/chunkCompression';
+import { getCompressionTabStyles } from '../layouts.styles';
 
 interface CompressionToolTabProps {
     chunk: any;
@@ -12,6 +13,8 @@ const CompressionToolTab: React.FC<CompressionToolTabProps> = ({ chunk }) => {
     const [selectedId, setSelectedId] = useState<number | ''>('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const theme = useTheme();
+    const styles = getCompressionTabStyles(theme);
 
     useEffect(() => {
         if (!chunk) {
@@ -19,6 +22,10 @@ const CompressionToolTab: React.FC<CompressionToolTabProps> = ({ chunk }) => {
             setSelectedId('');
             return;
         }
+        fetchCompressions();
+    }, [chunk]);
+
+    const fetchCompressions = () => {
         setLoading(true);
         setError(null);
         fetchChunkCompressions(chunk.id)
@@ -28,12 +35,12 @@ const CompressionToolTab: React.FC<CompressionToolTabProps> = ({ chunk }) => {
             })
             .catch(() => setError('Failed to load compressions.'))
             .finally(() => setLoading(false));
-    }, [chunk]);
+    };
 
     const selected = compressions.find(c => c.id === selectedId);
 
     return (
-        <Box sx={{ p: 2, minWidth: 400, width: '100%' }}>
+        <Box sx={{ p: 2, minWidth: '600px', width: '100%' }}>
             {loading ? (
                 <CircularProgress />
             ) : error ? (
@@ -45,31 +52,33 @@ const CompressionToolTab: React.FC<CompressionToolTabProps> = ({ chunk }) => {
                         Use the Compression Tool below to create a new compression for this chunk.
                     </Typography>
                     <Box sx={{ mt: 2 }}>
-                        <CompressionTool chunk={chunk} />
+                        <CompressionTool chunk={chunk} onCompressionCreated={fetchCompressions} />
                     </Box>
                 </Box>
             ) : (
                 <>
-                    <FormControl fullWidth margin="normal">
-                        <InputLabel id="compression-select-label">Compression Style</InputLabel>
-                        <Select
-                            labelId="compression-select-label"
-                            value={selectedId}
-                            label="Compression Style"
-                            onChange={e => setSelectedId(Number(e.target.value))}
-                        >
-                            {compressions.map(c => (
-                                <MenuItem key={c.id} value={c.id}>{c.title}</MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                    <Box display="flex" alignItems="center" gap={1}>
+                        <Typography variant="subtitle1" sx={{ minWidth: 90, mr: 1 }} id="compression-select-label">
+                            Compression
+                        </Typography>
+                        <FormControl sx={styles.compressionSelectInline} margin="none">
+                            <Select
+                                labelId="compression-select-label"
+                                value={selectedId}
+                                onChange={e => setSelectedId(Number(e.target.value))}
+                                aria-labelledby="compression-select-label"
+                            >
+                                {compressions.map(c => (
+                                    <MenuItem key={c.id} value={c.id}>{c.title}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                        <CompressionTool chunk={chunk} onCompressionCreated={fetchCompressions} />
+                    </Box>
                     {selected && (
-                        <Paper elevation={1} sx={{ p: 2, mt: 2, }}>
-                            <CompressionTool chunk={chunk} />
-                            <Typography variant="subtitle2" gutterBottom>Compressed Text:</Typography>
-                            <Typography variant="body1">{selected.compressed_text}</Typography>
-                        </Paper>
-
+                        <Box sx={styles.compressedWords}>
+                            <Typography variant="body2">{selected.compressed_text}</Typography>
+                        </Box>
                     )}
                 </>
             )}

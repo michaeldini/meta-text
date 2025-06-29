@@ -1,5 +1,5 @@
 import { Theme } from '@mui/material/styles';
-
+import { CHUNK_WORDS_MIN_WIDTH, CHUNK_TABS_MIN_WIDTH, CHUNK_TABS_MAX_WIDTH } from '../../../../constants/ui';
 export const getChunkStyles = (theme: Theme) => ({
     chunkContainer: {
         display: 'flex',
@@ -17,12 +17,13 @@ export const getChunkStyles = (theme: Theme) => ({
     wordsContainer: {
         display: 'flex',
         flexWrap: 'wrap' as const,
-        gap: theme.spacing(1),
+        gap: theme.spacing(.5),
         transition: 'all 0.3s ease',
         '&:hover': {
             transform: 'translateY(-2px)',
         },
         padding: theme.spacing(4),
+        minWidth: CHUNK_WORDS_MIN_WIDTH,
     },
     chunkWordBox: {
         display: 'inline-block',

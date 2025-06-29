@@ -1,7 +1,7 @@
 // all styles related to chunk tools
 
 import { Theme } from '@mui/material/styles';
-
+import { CHUNK_WORDS_MIN_WIDTH, CHUNK_TABS_MIN_WIDTH, CHUNK_TABS_MAX_WIDTH } from '../../../../constants/ui';
 export const getToolsStyles = (theme: Theme) => ({
 
     // sticky container for tools
@@ -15,7 +15,7 @@ export const getToolsStyles = (theme: Theme) => ({
         top: theme.spacing(5),
         alignSelf: 'flex-start',
         width: '100%',
-        maxWidth: '400px',
+        maxWidth: CHUNK_TABS_MAX_WIDTH,
         zIndex: theme.zIndex.appBar,
         boxShadow: 'none',
         opacity: 0.85,
@@ -24,6 +24,9 @@ export const getToolsStyles = (theme: Theme) => ({
         }),
         '&:hover': {
             opacity: 1,
+        },
+        compressedWords: {
+            flexWrap: 'wrap' as const,
         },
     },
 
@@ -82,6 +85,7 @@ export const getToolsStyles = (theme: Theme) => ({
         borderRadius: 2,
         boxShadow: 1,
     },
+
 });
 
 // Legacy export for backward compatibility

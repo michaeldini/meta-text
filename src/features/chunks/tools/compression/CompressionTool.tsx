@@ -13,9 +13,10 @@ const STYLE_OPTIONS = [
 
 interface CompressionToolProps {
     chunk: any; // Replace with actual chunk type
+    onCompressionCreated?: () => void;
 }
 
-const CompressionTool: React.FC<CompressionToolProps> = ({ chunk }) => {
+const CompressionTool: React.FC<CompressionToolProps> = ({ chunk, onCompressionCreated }) => {
     const [open, setOpen] = useState(false);
     const [style, setStyle] = useState(STYLE_OPTIONS[0].value);
     const [preview, setPreview] = useState<string | null>(null);
@@ -58,6 +59,7 @@ const CompressionTool: React.FC<CompressionToolProps> = ({ chunk }) => {
         try {
             await createChunkCompression(chunk.id, { title: style, compressed_text: preview });
             handleClose();
+            if (onCompressionCreated) onCompressionCreated();
         } catch (err: any) {
             setError('Failed to save compression.');
         } finally {

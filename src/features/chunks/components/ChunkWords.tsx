@@ -43,7 +43,7 @@ const ChunkWords = memo(function ChunkWords({
 
     return (
         <Box>
-            <Box sx={styles.wordsContainer}>
+            <Box sx={{ ...styles.wordsContainer, ...theme.typography.body2 }}>
                 {words.map((word, wordIdx) => (
                     <Box
                         key={wordIdx}
