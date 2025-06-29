@@ -2,10 +2,10 @@ import React from 'react';
 import { Box } from '@mui/material';
 import { CompareArrowsIcon, PhotoFilterIcon, NotesIcon, CompressionIcon } from '../../../components/icons';
 import log from '../../../utils/logger';
-import { NotesSummaryTab, ComparisonTab, AiImageTab, CompressionToolTab } from '../layouts/tabs';
+import { NotesSummaryTab, ComparisonTab, AiImageTab, CompressionToolTab } from '../tools';
 import { useChunkStore } from '../../../store/chunkStore';
 import type { Chunk } from '../../../types/chunk';
-import { getChunkToolsStyles } from './styles/Tools.styles';
+import { getChunkToolsStyles } from '../tools/styles/Tools.styles';
 import { useTheme } from '@mui/material/styles';
 
 interface ChunkToolsDisplayProps {

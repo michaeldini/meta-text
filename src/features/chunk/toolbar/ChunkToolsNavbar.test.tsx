@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import ChunkToolsNavbar from './ChunkToolsNavbar';
-import { useChunkStore } from '../../../../store/chunkStore';
+import ChunkToolsNavbar from '../../chunk/toolbar/ChunkToolsNavbar';
+import { useChunkStore } from '../../../store/chunkStore';
 
 // Mock the chunk store
 vi.mock('../../../../store/chunkStore', () => ({

@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { Paper, IconButton, Tooltip, Box, useTheme } from '@mui/material';
 import { NotesIcon } from '../../../../components/icons';
-import ChunkTextField from '../../components/ChunkTextField';
+import ChunkTextField from '../../../chunk/components/ChunkTextField';
 import { useNotesTool } from './useNotesTool';
 import { NotesToolProps } from '../types';
 import { getToolsStyles } from '../styles/Tools.styles';

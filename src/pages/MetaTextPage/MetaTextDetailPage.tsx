@@ -6,7 +6,7 @@ import { usePageLogger } from '../../hooks/usePageLogger';
 import { useMetaTextDetailPage } from './hooks/useMetaTextDetailPage';
 import { MetaTextContent, NotFoundDisplay } from './components';
 import log from '../../utils/logger';
-import FloatingChunkToolbar from '../../features/chunks/layouts/toolbars/FloatingChunkToolbar';
+import FloatingChunkToolbar from '../../features/chunk/toolbar/FloatingChunkToolbar';
 import { Box, Fade } from '@mui/material';
 import { FADE_IN_DURATION } from '../../constants/ui';
 /**

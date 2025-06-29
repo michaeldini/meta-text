@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Box, Pagination, Paper, Alert, Slide } from '@mui/material';
-import Chunk from './components/Chunk';
+import Chunk from '../chunk/components/Chunk';
 import { getChunksStyles } from './styles/Chunks.style';
 import log from '../../utils/logger';
 import LoadingBoundary from '../../components/LoadingBoundary';
@@ -9,8 +9,8 @@ import { useChunkStore } from '../../store/chunkStore';
 import { useTheme } from '@mui/material/styles';
 
 // Export the new organized structure
-export * from './components';
-export * from './tools';
+export * from '../chunk/components';
+export * from '../chunk/tools';
 export * from './layouts';
 
 interface ChunksPaginationProps {

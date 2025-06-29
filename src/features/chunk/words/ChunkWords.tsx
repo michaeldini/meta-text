@@ -1,8 +1,8 @@
 import React, { memo, useState, useMemo } from 'react';
 import { Box, IconButton, Paper, useTheme } from '@mui/material';
-import { MergeChunksTool } from '../tools';
-import WordActionDialog from '../layouts/dialogs/WordActionDialog';
-import { getChunkStyles } from './styles/Chunk.styles';
+import { MergeChunksTool } from '../../chunk/tools';
+import WordActionDialog from './WordActionDialog';
+import { getChunkStyles } from '../components/styles/Chunk.styles';
 
 export interface ChunkWordsProps {
     words: string[];

@@ -7,7 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowBackIcon } from '../../components/icons';
 import { metaTextDetailRoute } from '../../routes';
 import FlashCards from '../../features/flashcards/FlashCards';
-import ChunkSummaryNotesTable from '../../features/chunks/review/ChunkSummaryNotesTable';
+import ChunkSummaryNotesTable from '../../features/NotesSummaryTable/ChunkSummaryNotesTable';
 import { usePageLogger } from '../../hooks/usePageLogger';
 import { useTheme } from '@mui/material/styles';
 import { getMetaTextPageStyles } from './MetaTextPage.styles';

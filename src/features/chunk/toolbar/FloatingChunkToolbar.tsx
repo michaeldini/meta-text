@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Box, Fade, useTheme } from '@mui/material';
 import ChunkToolsNavbar from './ChunkToolsNavbar';
-import { FADE_IN_DURATION } from '../../../../constants/ui';
+import { FADE_IN_DURATION } from '../../../constants/ui';
 interface FloatingChunkToolbarProps {
     /** Additional CSS class name */
     className?: string;

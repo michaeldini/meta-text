@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Select, MenuItem, FormControl, CircularProgress, Paper, useTheme } from '@mui/material';
 import { fetchChunkCompressions } from '../../../../services/chunkService';
-import CompressionTool from '../../tools/compression/CompressionTool';
+import CompressionTool from './CompressionTool';
 import type { ChunkCompression } from '../../../../types/chunkCompression';
-import { getCompressionTabStyles } from '../layouts.styles';
+import { getCompressionTabStyles } from './compression.styles';
 
 interface CompressionToolTabProps {
     chunk: any;

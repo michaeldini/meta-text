@@ -1,9 +1,9 @@
 import React from 'react';
 import { Box, ToggleButtonGroup, ToggleButton, Tooltip, Typography } from '@mui/material';
-import { CompareArrowsIcon, PhotoIcon, NotesIcon, CompressionIcon } from '../../../../components/icons';
-import { useChunkStore } from '../../../../store/chunkStore';
-import CopyTool from '../../tools/copy/CopyTool';
-import { getLayoutsStyles } from '../layouts.styles';
+import { CompareArrowsIcon, PhotoIcon, NotesIcon, CompressionIcon } from '../../../components/icons';
+import { useChunkStore } from '../../../store/chunkStore';
+import CopyTool from '../../chunk/tools/copy/CopyTool';
+import { getLayoutsStyles } from '../../chunks/layouts/layouts.styles';
 import { useTheme } from '@mui/material/styles';
 
 interface ChunkToolsNavbarProps {
