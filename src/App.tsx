@@ -5,7 +5,7 @@
 
 import React, { JSX } from 'react';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
-import { ThemeProvider, CssBaseline } from '@mui/material';
+import { ThemeProvider, CssBaseline, useTheme } from '@mui/material';
 import { Fade, Box, Typography } from '@mui/material';
 import { useMemo, Suspense, lazy, ComponentType } from 'react';
 
@@ -14,10 +14,9 @@ import { AppSuspenseFallback } from './components/AppSuspenseFallback';
 import ErrorBoundary from './components/ErrorBoundary';
 import GlobalNotifications from './components/GlobalNotifications';
 
-// Import theme system
 import { useThemeContext } from './contexts/ThemeContext';
 import { lightTheme, darkTheme } from './styles/themes';
-import { appContainerStyles, pageContainer } from './styles/styles';
+import { getTopLevelStyles } from './styles/styles';
 import { useAuthStore } from './store/authStore';
 import FlexBox from './components/FlexBox';
 
@@ -58,7 +57,8 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
 
 function App() {
     const { mode } = useThemeContext();
-
+    const theme = useTheme();
+    const styles = getTopLevelStyles(theme);
     // Get current theme based on mode
     const currentTheme = useMemo(() => {
         return mode === 'light' ? lightTheme : darkTheme;
@@ -112,15 +112,13 @@ function App() {
             {/* CssBaseline provides consistent CSS reset and applies theme background */}
             <CssBaseline />
             <ErrorBoundary>
-                <Box sx={appContainerStyles}>
+                <Box sx={styles.appContainerStyles}>
                     <NavBar config={navbarConfig} />
-                    <Box component="main" sx={{ ...pageContainer, flex: 1, minHeight: 0 }}>
-                        <Routes>
-                            {routes.map(renderRoute)}
-                            {/* 404 Route */}
-                            <Route path="*" element={NotFoundElement} />
-                        </Routes>
-                    </Box>
+                    <Routes>
+                        {routes.map(renderRoute)}
+                        {/* 404 Route */}
+                        <Route path="*" element={NotFoundElement} />
+                    </Routes>
                     {/* Global components */}
                     <GlobalNotifications />
                 </Box>

@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box } from '@mui/material';
-import AiGenerationButton from '../../../../components/AiGenerationButton';
-import { useExplanation } from './useExplanation';
-import { ToolResult } from '../types';
-import type { Chunk } from '../../../../types/chunk';
-import { useTheme } from '@mui/material/styles';
-import { getToolsStyles } from '../comparison/Comparison.styles';
 import ReactMarkdown from 'react-markdown';
+import { useTheme } from '@mui/material/styles';
+
+import { AiGenerationButton } from 'components';
+import { useExplanation } from './useExplanation';
+import type { Chunk } from '../../../../types/chunk';
+import { getExplanationStyles } from './Explanation.styles';
 
 interface ExplanationToolProps {
     chunkIdx: number;
@@ -25,7 +25,7 @@ const ExplanationTool: React.FC<ExplanationToolProps> = ({
 }) => {
     const { generateExplanation, loading, error } = useExplanation();
     const theme = useTheme();
-    const styles = getToolsStyles(theme);
+    const styles = getExplanationStyles(theme);
 
     const handleGenerate = async () => {
         const result = await generateExplanation({ chunkIdx, chunk });
@@ -45,11 +45,11 @@ const ExplanationTool: React.FC<ExplanationToolProps> = ({
                 sx={{ ml: 1 }}
                 disabled={loading || !chunk?.id}
             />
-            <Box>
+            <Box sx={styles.explanationTextContainer}>
                 {explanationText ? (
                     <ReactMarkdown>{explanationText}</ReactMarkdown>
                 ) : (
-                    <span style={{ color: '#aaa' }}>No explanation yet.</span>
+                    <span >No explanation yet.</span>
                 )}
             </Box>
             {error && <Box sx={{ color: 'error.main', fontSize: 12 }}>{error}</Box>}

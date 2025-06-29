@@ -40,7 +40,7 @@ const CompressionToolTab: React.FC<CompressionToolTabProps> = ({ chunk }) => {
     const selected = compressions.find(c => c.id === selectedId);
 
     return (
-        <Box sx={{ p: 2, minWidth: '600px', width: '100%' }}>
+        <Box sx={styles.root}>
             {loading ? (
                 <CircularProgress />
             ) : error ? (
@@ -57,27 +57,29 @@ const CompressionToolTab: React.FC<CompressionToolTabProps> = ({ chunk }) => {
                 </Box>
             ) : (
                 <>
-                    <Box display="flex" alignItems="center" gap={1}>
-                        <Typography variant="subtitle1" sx={{ minWidth: 90, mr: 1 }} id="compression-select-label">
+                    <Box flexDirection="row" display="flex" alignItems="center" >
+                        <CompressionTool chunk={chunk} onCompressionCreated={fetchCompressions} />
+                        <Typography variant="subtitle1" id="compression-select-label">
                             Compression
                         </Typography>
-                        <FormControl sx={styles.compressionSelectInline} margin="none">
+                        <FormControl sx={styles.form} margin="none">
                             <Select
                                 labelId="compression-select-label"
                                 value={selectedId}
                                 onChange={e => setSelectedId(Number(e.target.value))}
                                 aria-labelledby="compression-select-label"
+                                sx={styles.select}
                             >
                                 {compressions.map(c => (
                                     <MenuItem key={c.id} value={c.id}>{c.title}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
-                        <CompressionTool chunk={chunk} onCompressionCreated={fetchCompressions} />
+
                     </Box>
                     {selected && (
                         <Box sx={styles.compressedWords}>
-                            <Typography variant="body2">{selected.compressed_text}</Typography>
+                            <Typography variant="body1">{selected.compressed_text}</Typography>
                         </Box>
                     )}
                 </>

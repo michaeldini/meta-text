@@ -1,5 +1,5 @@
 import { createTheme, ThemeOptions } from '@mui/material/styles';
-import { grey, blue, blueGrey, deepPurple, cyan, indigo } from '@mui/material/colors';
+import { grey, blue, blueGrey, deepPurple, cyan, indigo, yellow } from '@mui/material/colors';
 // declare module augmentation for MUI theme defaults
 // Shared theme configuration that applies to both light and dark modes
 const baseTheme: ThemeOptions = {
@@ -238,12 +238,12 @@ export const darkTheme = createTheme({
         },
         text: {
             primary: grey[200],
-            secondary: blue[500],
+            secondary: blue[100],
             disabled: grey[700],
         },
         background: {
             default: grey[900],
-            paper: deepPurple[700],
+            paper: grey[500],
         },
         divider: grey[700],
     },

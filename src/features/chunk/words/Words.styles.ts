@@ -11,6 +11,7 @@ export const getWordsStyles = (theme: Theme) => ({
             transform: 'translateY(-2px)',
         },
         padding: theme.spacing(4),
+        paddingRight: 0,
         minWidth: CHUNK_WORDS_MIN_WIDTH,
     },
     chunkWordBox: {
