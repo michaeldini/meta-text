@@ -84,7 +84,7 @@ export default defineConfig({
             pages: path.resolve(__dirname, 'src/pages'),
             constants: path.resolve(__dirname, 'src/constants'),
             store: path.resolve(__dirname, 'src/store'),
-            icons: path.resolve(__dirname, 'src/components/icons'),
+            icons: path.resolve(__dirname, 'src/components/icons')
         },
     },
 })

@@ -1,17 +1,12 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Box, Pagination, Paper, Alert, Slide } from '@mui/material';
+import { LoadingBoundary, ErrorBoundary } from 'components';
+import log from '../../utils/logger';
+import { useChunkStore } from 'store';
+
 import Chunk from '../chunk/components/Chunk';
 import { getChunksStyles } from './Chunks.style';
-import log from '../../utils/logger';
-import LoadingBoundary from '../../components/LoadingBoundary';
-import ErrorBoundary from '../../components/ErrorBoundary';
-import { useChunkStore } from '../../store/chunkStore';
 import { useTheme } from '@mui/material/styles';
-
-// Export the new organized structure
-export * from '../chunk/components';
-export * from '../chunk/tools';
-// export * from './layouts';
 
 interface ChunksPaginationProps {
     pageCount: number;
@@ -122,7 +117,6 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
                         <Alert severity="error">{chunksError}</Alert>
                     </Box>
                 ) : (
-                    // <Slide timeout={500} direction="up" in={true}>
                     <Box
                         ref={containerRef}
                         sx={styles.container}
@@ -150,7 +144,6 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
                         ))}
                         <ChunksPagination pageCount={pageCount} page={page} handleChange={handleChange} />
                     </Box>
-                    // </Slide>
                 )}
             </LoadingBoundary>
         </ErrorBoundary>

@@ -11,6 +11,7 @@ export const getChunkStyles = (theme: Theme) => ({
         height: '100%',
         width: '100%',
         backgroundColor: 'black',
+        padding: 0,
     },
 
 });

@@ -24,8 +24,6 @@ export default function PageContainer({ children }: { children: ReactNode }) {
         maxWidth: 1400,
         marginLeft: 'auto',
         marginRight: 'auto',
-        paddingLeft: theme.spacing(0),
-        paddingRight: theme.spacing(0),
         backgroundColor: theme.palette.background.default,
     }
 

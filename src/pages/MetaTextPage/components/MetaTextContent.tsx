@@ -65,6 +65,6 @@ export const MetaTextContent: React.FC<MetaTextContentProps> = ({
                 <Chunks metaTextId={metaTextId} />
                 {error && <Alert severity="error" sx={{ mt: 1 }}>{error}</Alert>}
             </Box>
-        </PageContainer>
+        </PageContainer >
     );
 };

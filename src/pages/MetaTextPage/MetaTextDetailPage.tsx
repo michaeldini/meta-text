@@ -56,7 +56,7 @@ export default function MetaTextDetailPage() {
             <LoadingBoundary loading={loading}>
                 {shouldShowContent ? (
                     <Fade in={!loading} timeout={FADE_IN_DURATION}>
-                        <Box>
+                        <Box >
                             <MetaTextContent
                                 key={contentKey}
                                 metaTextId={metaTextId!}

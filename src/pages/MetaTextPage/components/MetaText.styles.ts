@@ -8,6 +8,7 @@ export const getMetaTextContentStyles = (theme: Theme) => ({
         alignItems: 'start',
         gap: theme.spacing(1.5), // Reduced gap between sections
         paddingRight: theme.spacing(3), // Adjusted for floating toolbar
+        paddingLeft: theme.spacing(0),
     },
 
     headerContainer: {

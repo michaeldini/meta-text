@@ -1,9 +1,9 @@
 import React from 'react';
 import { Box, ToggleButtonGroup, ToggleButton, Tooltip, Typography } from '@mui/material';
-import { CompareArrowsIcon, PhotoIcon, NotesIcon, CompressionIcon } from '../../../components/icons';
-import { useChunkStore } from '../../../store/chunkStore';
+import { CompareArrowsIcon, PhotoIcon, NotesIcon, CompressionIcon } from 'icons';
+import { useChunkStore } from 'store';
 import CopyTool from '../../chunk/tools/copy/CopyTool';
-import { getLayoutsStyles } from './Toolbar.styles';
+import { getChunkToolsStyles } from './Toolbar.styles';
 import { useTheme } from '@mui/material/styles';
 
 interface ChunkToolsNavbarProps {
@@ -42,7 +42,7 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
     'data-testid': dataTestId = 'chunk-tools-navbar'
 }) => {
     const theme = useTheme();
-    const styles = getLayoutsStyles(theme);
+    const styles = getChunkToolsStyles(theme);
     const activeChunkId = useChunkStore(state => state.activeChunkId);
     const activeTabs = useChunkStore(state => state.activeTabs);
     const setActiveTabs = useChunkStore(state => state.setActiveTabs);

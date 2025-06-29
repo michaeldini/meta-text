@@ -54,9 +54,12 @@
             "store/*": [
                 "store/index.ts"
             ],
-            "icons/*": [
-                "components/icons/index.ts"
+            "icons": [
+                "components/icons/index.tsx"
             ],
+            // "icons/*": [
+            //     "components/icons/*"
+            // ],
         }
     },
     "include": [

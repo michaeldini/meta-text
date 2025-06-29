@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, ListItem, ListItemText, Box, useTheme, Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
+import { Box, useTheme, Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
 import { ExpandMoreIcon } from 'icons';
 import type { SourceDocument } from '../../../types/sourceDocument';
 import { getSourceDocumentStyles } from '../styles/styles';

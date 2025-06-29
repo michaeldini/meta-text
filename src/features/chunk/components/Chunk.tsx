@@ -1,9 +1,11 @@
 import React, { memo, useRef, useEffect, useMemo } from 'react';
 import { Box, Paper, Slide, useTheme } from '@mui/material';
+
+import { useChunkStore } from 'store';
+
 import ChunkWords from '../words/ChunkWords';
 import ChunkToolsDisplay from '../../chunk/tabs/ChunkTabs';
 import { getChunkStyles } from './styles/Chunk.styles';
-import { useChunkStore } from '../../../store/chunkStore';
 import type { Chunk } from '../../../types/chunk';
 import type { ChunkFieldValue } from '../../../store/chunkStore';
 
