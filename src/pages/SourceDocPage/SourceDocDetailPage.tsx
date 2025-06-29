@@ -1,14 +1,12 @@
 import React, { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { Paper, Typography, Alert, Button, Slide } from '@mui/material';
-import SourceDocInfo from '../../features/sourcedoc/components/SourceDocInfo';
-import SourceDoc from '../../features/sourcedoc/components/SourceDoc';
-import { useSourceDocumentDetail } from '../../store/sourceDocumentDetailStore';
-import log from '../../utils/logger';
-import ErrorBoundary from '../../components/ErrorBoundary';
-import LoadingBoundary from '../../components/LoadingBoundary';
-import PageContainer from '../../components/PageContainer';
-import { usePageLogger } from '../../hooks/usePageLogger';
+import { Alert, Button, Slide } from '@mui/material';
+
+import { SourceDocInfo, SourceDoc } from 'features';
+import { useSourceDocumentDetail } from 'store';
+import { log } from 'utils';
+import { ErrorBoundary, LoadingBoundary, PageContainer } from 'components';
+import { usePageLogger } from 'hooks';
 
 // Constants
 const MESSAGES = {
