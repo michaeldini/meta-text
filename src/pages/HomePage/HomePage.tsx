@@ -1,20 +1,15 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import PageContainer from '../../components/PageContainer';
-import { getErrorMessage } from '../../types/error';
-import { useDocumentsStore } from '../../store/documentsStore';
-import { useNotifications } from '../../store/notificationStore';
-import { Box, Typography } from '@mui/material';
-import ToggleSelector from '../../components/ToggleSelector';
-import FlexBox from '../../components/FlexBox';
-import { useTheme } from '@mui/material/styles';
+
+import { PageContainer } from 'components';
+import { useDocumentsStore, useNotifications } from 'store';
+import { ToggleSelector, FlexBox } from 'components';
+import { CreateForm, SearchableList } from 'features';
+import { usePageLogger } from 'hooks';
+
 import WelcomeText from './WelcomeText';
-import { ROUTES, MESSAGES } from '../../components/constants';
-import { CreateForm } from '../../features/createform/components';
 import { DocType } from '../../types/docTypes';
-import { usePageLogger } from '../../hooks/usePageLogger';
-import log from '../../utils/logger';
-import SearchableList from '../../features/searchablelist/components/SearchableList';
+
 import {
     getDeleteActions,
     getRouteMap,

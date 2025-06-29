@@ -83,6 +83,7 @@ export default defineConfig({
             features: path.resolve(__dirname, 'src/features'),
             pages: path.resolve(__dirname, 'src/pages'),
             constants: path.resolve(__dirname, 'src/constants'),
+            store: path.resolve(__dirname, 'src/store'),
         },
     },
 })

@@ -49,8 +49,11 @@
                 "pages/index.ts"
             ],
             "constants/*": [
-                "constants/ui.ts",
-            ]
+                "constants/index.ts",
+            ],
+            "store/*": [
+                "store/index.ts"
+            ],
         }
     },
     "include": [
