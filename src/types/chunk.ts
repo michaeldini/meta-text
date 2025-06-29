@@ -5,6 +5,7 @@ export type Chunk = {
     notes: string;
     summary: string;
     comparison: string;
+    explanation?: string; // <-- add explanation field
     meta_text_id: number;
     ai_images?: AiImage[];
 };

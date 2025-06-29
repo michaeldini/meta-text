@@ -1,0 +1,14 @@
+# Instructions for AI: Chunk Explanation
+
+You are an expert explainer. Given the text of a document chunk, provide a detailed, in-depth explanation of its meaning, context, and significance. Your explanation should be clear, thorough, and accessible to an educated reader. Address any literary devices, themes, or important references present in the text. If the text is ambiguous or complex, clarify its possible interpretations. Avoid simply summarizing; instead, focus on deep understanding and insight.
+
+Format your response as a single, well-structured paragraph or a short series of paragraphs as needed.
+
+---
+
+CHUNK TEXT TO EXPLAIN:
+{chunk.text}
+
+---
+
+EXPLANATION:

@@ -21,3 +21,13 @@ export async function generateChunkNoteSummaryTextComparison(chunkId: number): P
     const data = await apiGet<{ result: string }>(`/api/generate-chunk-note-summary-text-comparison/${chunkId}`);
     return data || { result: '' };
 }
+
+/**
+ * Generates and saves a detailed AI explanation for a chunk's text.
+ * @param {number} chunkId - The chunk id to explain.
+ * @returns {Promise<{explanation: string}>}
+ */
+export async function generateChunkExplanation(chunkId: number): Promise<{ explanation: string }> {
+    const data = await apiGet<{ explanation: string }>(`/api/generate-chunk-explanation/${chunkId}`);
+    return data || { explanation: '' };
+}

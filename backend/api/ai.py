@@ -130,3 +130,21 @@ async def generate_chunk_compression(chunk_id: int, style_title: str, session: S
             detail=f"AI service error: {str(e)}"
         )
 
+
+@router.get("/generate-chunk-explanation/{chunk_id}")
+async def generate_chunk_explanation(chunk_id: int, session: Session = Depends(get_session)) -> dict:
+    """Generate and save a detailed AI explanation for a chunk's text."""
+    try:
+        return get_ai_service().generate_chunk_explanation(chunk_id, session)
+    except ChunkNotFoundError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Chunk not found"
+        )
+    except (OpenAIClientError, OpenAIResponseParsingError, InstructionsFileNotFoundError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"AI service error: {str(e)}"
+        )
+
+

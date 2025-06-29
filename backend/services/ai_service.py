@@ -243,3 +243,42 @@ class AIService:
         
         logger.info(f"AI chunk compression generated for chunk_id: {chunk_id} style: {style_title}")
         return {"title": style_title, "compressed_text": compressed_text}
+    
+    def generate_chunk_explanation(self, chunk_id: int, session: Session) -> dict:
+        """
+        Generate a detailed, in-depth AI explanation for a chunk's text.
+        
+        Args:
+            chunk_id: ID of the chunk to explain
+            session: Database session
+            
+        Returns:
+            Dictionary with the generated explanation result
+            
+        Raises:
+            ChunkNotFoundError: If chunk is not found
+        """
+        logger.info(f"Generating chunk explanation for chunk_id: {chunk_id}")
+        
+        # Get chunk from database
+        chunk = session.get(Chunk, chunk_id)
+        if not chunk:
+            logger.warning(f"Chunk not found: id={chunk_id}")
+            raise ChunkNotFoundError(chunk_id)
+        
+        # Compose prompt for AI
+        prompt = f"CHUNK TEXT TO EXPLAIN:\n{chunk.text}\n"
+        
+        # Generate AI response
+        ai_text = self.openai_service.generate_text_response(
+            "instructions/chunk_explanation_instructions.txt",
+            prompt
+        )
+        
+        # Save explanation to database
+        chunk.explanation = ai_text
+        session.add(chunk)
+        session.commit()
+        
+        logger.info(f"AI explanation generated and saved for chunk_id: {chunk_id}")
+        return {"explanation": ai_text}

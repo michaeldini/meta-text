@@ -80,7 +80,7 @@ class ChunkBase(SQLModel):
     notes: str = ""
     summary: str = ""
     comparison: str = ""
-    explanation: str = ""  # New field for user explanation, defaults to empty string
+    explanation: str = ""
     meta_text_id: int = Field(foreign_key="metatext.id")
 
 class Chunk(ChunkBase, table=True):

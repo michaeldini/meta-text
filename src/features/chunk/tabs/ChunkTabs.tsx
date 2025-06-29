@@ -3,6 +3,7 @@ import { Box } from '@mui/material';
 import { CompareArrowsIcon, PhotoFilterIcon, NotesIcon, CompressionIcon } from '../../../components/icons';
 import log from '../../../utils/logger';
 import { NotesSummaryTab, ComparisonTab, AiImageTab, CompressionToolTab } from '../tools';
+import ExplanationTab from '../tools/explanation/ExplanationTab';
 import { useChunkStore } from '../../../store/chunkStore';
 import type { Chunk } from '../../../types/chunk';
 import { getToolsStyles } from './ChunkTabs.styles';
@@ -53,12 +54,7 @@ const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk }) => {
             )}
             {/* Show Explanation if selected */}
             {activeTabs.includes('explanation') && (
-                <Box>
-                    <NotesIcon fontSize="large" />
-                    <Box>
-                        Explanation tools are not yet implemented.
-                    </Box>
-                </Box>
+                <ExplanationTab chunk={chunk} updateChunkField={updateChunkField} />
             )}
         </Box>
     );
