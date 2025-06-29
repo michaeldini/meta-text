@@ -5,7 +5,7 @@ import log from '../../../utils/logger';
 import { NotesSummaryTab, ComparisonTab, AiImageTab, CompressionToolTab } from '../tools';
 import { useChunkStore } from '../../../store/chunkStore';
 import type { Chunk } from '../../../types/chunk';
-import { getChunkToolsStyles } from '../tools/styles/Tools.styles';
+import { getToolsStyles } from './ChunkTabs.styles';
 import { useTheme } from '@mui/material/styles';
 
 interface ChunkToolsDisplayProps {
@@ -22,7 +22,7 @@ const tabOptions = [
 
 const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk }) => {
     const theme = useTheme();
-    const styles = React.useMemo(() => getChunkToolsStyles(theme), [theme]);
+    const styles = React.useMemo(() => getToolsStyles(theme), [theme]);
 
     // Use store selectors directly instead of wrapper hooks
     const activeTabs = useChunkStore(state => state.activeTabs);

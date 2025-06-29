@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, CircularProgress, Modal, Fade, useTheme } from '@mui/material';
-import { getToolsStyles } from '../styles/Tools.styles';
+import { getToolsStyles } from './Image.styles';
 
 export interface ChunkImageDisplayProps {
     imgSrc: string;

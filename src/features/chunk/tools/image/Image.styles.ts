@@ -3,33 +3,6 @@
 import { Theme } from '@mui/material/styles';
 import { CHUNK_WORDS_MIN_WIDTH, CHUNK_TABS_MIN_WIDTH, CHUNK_TABS_MAX_WIDTH } from '../../../../constants/ui';
 export const getToolsStyles = (theme: Theme) => ({
-
-    // sticky container for tools
-    toolDisplayContainer: {
-        display: 'flex',
-        flexDirection: 'column' as const,
-        alignItems: 'flex-start',
-        gap: theme.spacing(1),
-        padding: theme.spacing(1),
-        position: 'sticky' as const,
-        top: theme.spacing(5),
-        alignSelf: 'flex-start',
-        width: '100%',
-        maxWidth: CHUNK_TABS_MAX_WIDTH,
-        zIndex: theme.zIndex.appBar,
-        boxShadow: 'none',
-        opacity: 0.85,
-        transition: theme.transitions.create(['opacity'], {
-            duration: theme.transitions.duration.short,
-        }),
-        '&:hover': {
-            opacity: 1,
-        },
-        compressedWords: {
-            flexWrap: 'wrap' as const,
-        },
-    },
-
     // styles for each tool section
     toolTabContainer: {
         p: 1,
@@ -39,14 +12,6 @@ export const getToolsStyles = (theme: Theme) => ({
         width: '100%',
         minWidth: 400
     },
-
-    // Common tool panel styles
-    toolPanel: {
-        width: '100%',
-        backgroundColor: theme.palette.background.paper,
-        borderRadius: theme.shape.borderRadius,
-    },
-
     // image tool styles
     chunkImageBox: {
         p: 0,

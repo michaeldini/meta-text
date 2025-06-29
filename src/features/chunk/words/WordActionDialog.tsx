@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { Popover, Box, useTheme } from '@mui/material';
 import SplitChunkTool from '../tools/split/SplitChunkTool';
 import DefineWordTool from '../tools/define/DefineWordTool';
-import { getLayoutsStyles } from '../../chunks/layouts/layouts.styles';
+import { getLayoutsStyles } from './Words.styles';
 export interface WordActionDialogProps {
     anchorEl: HTMLElement | null;
     onClose: () => void;

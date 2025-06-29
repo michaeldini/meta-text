@@ -5,7 +5,7 @@ import AiGenerationButton from '../../../../components/AiGenerationButton';
 import { useComparison } from './useComparison';
 import { ComparisonToolProps } from '../types';
 import { generateChunkNoteSummaryTextComparison } from '../../../../services/aiService';
-import { getToolsStyles } from '../styles/Tools.styles';
+import { getToolsStyles } from './Comparison.styles';
 import { useTheme } from '@mui/material/styles';
 import ReactMarkdown from 'react-markdown';
 

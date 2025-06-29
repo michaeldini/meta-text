@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, useTheme, Alert, Fade } from '@mui/material';
 
-import Chunks from '../../../features/chunks';
+import Chunks from '../../../features/chunks/Chunks';
 import PageContainer from '../../../components/PageContainer';
 import { getMetaTextContentStyles } from './MetaText.styles';
 import { generateSourceDocInfo } from '../../../services/sourceDocInfoService';
