@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { configDefaults } from 'vitest/config'
+import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -73,5 +74,15 @@ export default defineConfig({
         globals: true,
         setupFiles: './src/setupTests.ts',
         exclude: [...configDefaults.exclude, 'tests/e2e/**'],
+    },
+    resolve: {
+        alias: {
+            utils: path.resolve(__dirname, 'src/utils'),
+            hooks: path.resolve(__dirname, 'src/hooks'),
+            components: path.resolve(__dirname, 'src/components'),
+            features: path.resolve(__dirname, 'src/features'),
+            pages: path.resolve(__dirname, 'src/pages'),
+            constants: path.resolve(__dirname, 'src/constants'),
+        },
     },
 })

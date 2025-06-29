@@ -29,7 +29,29 @@
         // for testing
         "types": [
             "@testing-library/jest-dom"
-        ]
+        ],
+        // Path aliases
+        "baseUrl": "src",
+        "paths": {
+            "utils/*": [
+                "utils/index.ts",
+            ],
+            "hooks/*": [
+                "hooks/index.ts"
+            ],
+            "components/*": [
+                "components/index.ts"
+            ],
+            "features/*": [
+                "features/index.ts"
+            ],
+            "pages/*": [
+                "pages/index.ts"
+            ],
+            "constants/*": [
+                "constants/ui.ts",
+            ]
+        }
     },
     "include": [
         "src"

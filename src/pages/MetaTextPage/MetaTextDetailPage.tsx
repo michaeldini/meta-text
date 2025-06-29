@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import ErrorBoundary from '../../components/ErrorBoundary';
-import LoadingBoundary from '../../components/LoadingBoundary';
-import { usePageLogger } from '../../hooks/usePageLogger';
+import { Box, Fade } from '@mui/material';
+import { ErrorBoundary, LoadingBoundary } from '../../components';
+import { usePageLogger } from '../../hooks';
 import { useMetaTextDetailPage } from './hooks/useMetaTextDetailPage';
 import { MetaTextContent, NotFoundDisplay } from './components';
-import log from '../../utils/logger';
-import FloatingChunkToolbar from '../../features/chunk/toolbar/FloatingChunkToolbar';
-import { Box, Fade } from '@mui/material';
+import { FloatingChunkToolbar } from '../../features/chunk/toolbar';
 import { FADE_IN_DURATION } from '../../constants/ui';
+import log from '../../utils/logger';
 /**
  * MetaTextDetailPage - Main page component
  * Single responsibility: Coordinate page-level concerns (routing, error boundaries, logging)
