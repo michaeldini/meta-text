@@ -2,7 +2,7 @@
 from sqlmodel import select, Session
 from loguru import logger
 
-from backend.models import Chunk, ChunkWithImagesRead
+from backend.models import Chunk, ChunkRead, ChunkWithImagesRead
 from backend.exceptions.chunk_exceptions import (
     ChunkNotFoundError,
     InvalidSplitIndexError,
@@ -91,7 +91,7 @@ class ChunkService:
         ai_images = self.ai_image_service.get_all_images_for_chunk(session, chunk_id)
         return ChunkWithImagesRead.model_validate(chunk, update={"ai_images": ai_images})
     
-    def get_all_chunks_for_meta_text(self, meta_text_id: int, session: Session) -> list[ChunkWithImagesRead]:
+    def get_all_chunks_for_meta_text(self, meta_text_id: int, session: Session) -> list[ChunkRead]:
         """
         Get all chunks for a meta-text with their AI images.
         
@@ -117,15 +117,16 @@ class ChunkService:
             logger.warning(f"No chunks found for meta_text_id: {meta_text_id}")
             raise NoChunksFoundError(meta_text_id)
         
+        result = [ChunkRead.model_validate(chunk, from_attributes=True) for chunk in chunks]
         # Get all AI images for these chunks efficiently
-        chunk_ids = [chunk.id for chunk in chunks]
-        images_by_chunk = self.ai_image_service.get_images_for_chunks(session, chunk_ids)
+        # chunk_ids = [chunk.id for chunk in chunks]  
+        # images_by_chunk = self.ai_image_service.get_images_for_chunks(session, chunk_ids)
         
         # Build result with images
-        result = []
-        for chunk in chunks:
-            ai_images = images_by_chunk.get(chunk.id, [])
-            result.append(ChunkWithImagesRead.model_validate(chunk, update={"ai_images": ai_images}))
+        # result = []
+        # for chunk in chunks:
+        #     ai_images = images_by_chunk.get(chunk.id, [])
+        #     result.append(ChunkWithImagesRead.model_validate(chunk, update={"ai_images": ai_images}))
         
         logger.info(f"Found {len(result)} chunks for meta_text_id: {meta_text_id}")
         return result

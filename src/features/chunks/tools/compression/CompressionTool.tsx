@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, MenuItem, CircularProgress, Typography, Box, Tooltip } from '@mui/material';
 import { CompressionIcon } from '../../../../components/icons';
 
-import { useChunkStore } from '../../../../store/chunkStore';
 import { fetchChunkCompressions, createChunkCompression, previewChunkCompression } from '../../../../services/chunkService';
 import type { ChunkCompression, ChunkCompressionCreate } from '../../../../types/chunkCompression';
 
@@ -12,8 +11,11 @@ const STYLE_OPTIONS = [
     { value: 'academic', label: 'Academic' },
 ];
 
-const CompressionTool: React.FC = () => {
-    const activeChunkId = useChunkStore(state => state.activeChunkId);
+interface CompressionToolProps {
+    chunk: any; // Replace with actual chunk type
+}
+
+const CompressionTool: React.FC<CompressionToolProps> = ({ chunk }) => {
     const [open, setOpen] = useState(false);
     const [style, setStyle] = useState(STYLE_OPTIONS[0].value);
     const [preview, setPreview] = useState<string | null>(null);
@@ -36,11 +38,11 @@ const CompressionTool: React.FC = () => {
     };
 
     const handlePreview = async () => {
-        if (!activeChunkId) return;
+        if (!chunk) return;
         setLoading(true);
         setError(null);
         try {
-            const res = await previewChunkCompression(activeChunkId, style);
+            const res = await previewChunkCompression(chunk.id, style);
             setPreview(res.compressed_text);
         } catch (err: any) {
             setError('Failed to generate preview.');
@@ -50,11 +52,11 @@ const CompressionTool: React.FC = () => {
     };
 
     const handleSave = async () => {
-        if (!activeChunkId || !preview) return;
+        if (!chunk || !preview) return;
         setSaving(true);
         setError(null);
         try {
-            await createChunkCompression(activeChunkId, { title: style, compressed_text: preview });
+            await createChunkCompression(chunk.id, { title: style, compressed_text: preview });
             handleClose();
         } catch (err: any) {
             setError('Failed to save compression.');
@@ -71,7 +73,7 @@ const CompressionTool: React.FC = () => {
                 enterDelay={200}
                 placement='left'
             >
-                <IconButton onClick={handleOpen} size="small" aria-label="Compress chunk" disabled={!activeChunkId}>
+                <IconButton onClick={handleOpen} size="small" aria-label="Compress chunk" disabled={!chunk}>
                     <CompressionIcon fontSize="small" />
                 </IconButton>
             </Tooltip >
@@ -91,7 +93,7 @@ const CompressionTool: React.FC = () => {
                         ))}
                     </TextField>
                     <Box mt={2}>
-                        <Button onClick={handlePreview} disabled={loading || !style || !activeChunkId} variant="outlined">
+                        <Button onClick={handlePreview} disabled={loading || !style || !chunk} variant="outlined">
                             {loading ? <CircularProgress size={20} /> : 'Preview Compression'}
                         </Button>
                     </Box>
@@ -99,7 +101,7 @@ const CompressionTool: React.FC = () => {
                         <Box mt={3}>
                             <Typography variant="subtitle2">Preview:</Typography>
                             <Box p={2} borderRadius={1} mt={1}>
-                                <Typography variant="body2">{preview}</Typography>
+                                <Typography variant="body1">{preview}</Typography>
                             </Box>
                         </Box>
                     )}

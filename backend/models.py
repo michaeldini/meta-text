@@ -91,10 +91,9 @@ class Chunk(ChunkBase, table=True):
 
 class ChunkRead(ChunkBase):
     id: int
-
-class ChunkWithImageRead(ChunkRead):
-    ai_image: Optional["AiImageRead"] = None
-
+    ai_images: list["AiImageRead"] = []
+    compressions: list["ChunkCompressionRead"] = []
+    
 class ChunkWithImagesRead(ChunkRead):
     ai_images: list["AiImageRead"] = []
 

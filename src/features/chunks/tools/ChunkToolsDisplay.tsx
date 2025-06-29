@@ -52,7 +52,7 @@ const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk }) => {
             )}
             {/* Show Compression if selected */}
             {activeTabs.includes('compression') && (
-                <CompressionToolTab />
+                <CompressionToolTab chunk={chunk} />
             )}
             {/* Show Explanation if selected */}
             {activeTabs.includes('explanation') && (
