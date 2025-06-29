@@ -2,7 +2,7 @@ import React, { memo, useState, useMemo } from 'react';
 import { Box, IconButton, Paper, useTheme } from '@mui/material';
 import { MergeChunksTool } from '../../chunk/tools';
 import WordActionDialog from './WordActionDialog';
-import { getChunkStyles } from '../components/styles/Chunk.styles';
+import { getWordsStyles } from './Words.styles';
 
 export interface ChunkWordsProps {
     words: string[];
@@ -22,7 +22,7 @@ const ChunkWords = memo(function ChunkWords({
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [selectedWordIdx, setSelectedWordIdx] = useState<number | null>(null);
     const theme = useTheme();
-    const styles = useMemo(() => getChunkStyles(theme), [theme]);
+    const styles = useMemo(() => getWordsStyles(theme), [theme]);
 
     const handleWordDialogOpen = (idx: number, event: React.MouseEvent<HTMLElement>) => {
         console.log('handleWordDialogOpen', { words, idx, word: words[idx] });
@@ -43,13 +43,16 @@ const ChunkWords = memo(function ChunkWords({
 
     return (
         <Box>
-            <Box sx={{ ...styles.wordsContainer, ...theme.typography.body2 }}>
+            <Box sx={styles.wordsContainer}>
                 {words.map((word, wordIdx) => (
                     <Box
                         key={wordIdx}
                         component="span"
                         onClick={e => handleWordDialogOpen(wordIdx, e)}
-                        sx={styles.chunkWordBox}
+                        sx={[
+                            theme.typography.body2,
+                            styles.chunkWordBox
+                        ]}
                     >
                         {word}
                     </Box>

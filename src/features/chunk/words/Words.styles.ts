@@ -1,7 +1,36 @@
 import { Theme } from '@mui/material/styles';
+import { CHUNK_WORDS_MIN_WIDTH } from 'constants';
 
+export const getWordsStyles = (theme: Theme) => ({
+    wordsContainer: {
+        display: 'flex',
+        flexWrap: 'wrap' as const,
+        gap: theme.spacing(.75),
+        transition: 'all 0.3s ease',
+        '&:hover': {
+            transform: 'translateY(-2px)',
+        },
+        padding: theme.spacing(4),
+        minWidth: CHUNK_WORDS_MIN_WIDTH,
+    },
+    chunkWordBox: {
+        display: 'inline-block',
+        borderRadius: 1,
+        position: 'relative' as const,
+        cursor: 'pointer',
+        transition: 'background 0.2s',
+        '&:hover': {
+            backgroundColor: theme.palette.secondary.main,
+            color: theme.palette.background.paper,
+        },
+    },
+    chunkUndoIconButton: {
+        transition: 'transform 0.2s',
+        '&:hover': {
+            transform: 'rotate(-45deg)',
+        },
+    },
 
-export const getLayoutsStyles = (theme: Theme) => ({
     wordActionDialogContainer: {
         padding: theme.spacing(1),
         display: 'flex',
