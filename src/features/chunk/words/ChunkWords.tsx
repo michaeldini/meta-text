@@ -30,6 +30,7 @@ const ChunkWords = memo(function ChunkWords({
     const styles = useMemo(() => getWordsStyles(theme), [theme]);
     const textSizePx = useUIPreferencesStore(state => state.textSizePx);
     const fontFamily = useUIPreferencesStore(state => state.fontFamily);
+    const lineHeight = useUIPreferencesStore(state => state.lineHeight);
 
     // Ref to the last selected word element
     const lastSelectedWordElRef = useRef<HTMLElement | null>(null);
@@ -133,7 +134,7 @@ const ChunkWords = memo(function ChunkWords({
                                     backgroundColor: theme.palette.secondary.main,
                                     color: theme.palette.primary.contrastText,
                                 },
-                                { fontSize: `${textSizePx}px`, fontFamily }
+                                { fontSize: `${textSizePx}px`, fontFamily, lineHeight }
                             ]}
                             onMouseDown={e => handleWordDown(wordIdx, e)}
                             onMouseEnter={e => handleWordEnter(wordIdx, e)}

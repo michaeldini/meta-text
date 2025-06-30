@@ -5,6 +5,7 @@ import { SourceDocInfo } from 'features';
 import { AiGenerationButton, ReviewButton, FlexBox } from 'components';
 import { TextSizeInput } from 'components';
 import FontFamilySelect from '../../../components/FontFamilySelect';
+import LineHeightInput from '../../../components/LineHeightInput';
 
 import { getMetaTextContentStyles } from './MetaText.styles';
 
@@ -59,6 +60,7 @@ const MetaTextHeader: React.FC<MetaTextHeaderProps> = ({
                     loading={loading}
                 />
                 <TextSizeInput />
+                <LineHeightInput />
                 <FontFamilySelect />
 
             </FlexBox>

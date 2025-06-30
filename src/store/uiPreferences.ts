@@ -17,6 +17,8 @@ interface UIPreferencesState {
     setTextSizePx: (size: number) => void;
     fontFamily: string;
     setFontFamily: (font: string) => void;
+    lineHeight: number;
+    setLineHeight: (lh: number) => void;
 }
 
 export const useUIPreferencesStore = create<UIPreferencesState>((set) => ({
@@ -24,6 +26,8 @@ export const useUIPreferencesStore = create<UIPreferencesState>((set) => ({
     setTextSizePx: (size) => set({ textSizePx: size }),
     fontFamily: FONT_FAMILIES[0],
     setFontFamily: (font) => set({ fontFamily: font }),
+    lineHeight: 1.5, // default line height
+    setLineHeight: (lh) => set({ lineHeight: lh }),
 }));
 
 export const AVAILABLE_FONT_FAMILIES = FONT_FAMILIES;
