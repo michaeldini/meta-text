@@ -1,5 +1,4 @@
-import { createSourceDocument } from '../../../services/sourceDocumentService';
-import { createMetaText } from '../../../services/metaTextService';
+import { createSourceDocument, createMetaText } from 'services';
 import { FormSubmissionService } from '../types';
 
 export class CreateFormService implements FormSubmissionService {

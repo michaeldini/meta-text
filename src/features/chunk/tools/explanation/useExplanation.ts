@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { generateChunkExplanation } from '../../../../services/aiService';
+import { generateChunkExplanation } from 'services';
 import { ComparisonToolProps, ToolResult } from '../types';
 
 interface ExplanationResult {

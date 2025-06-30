@@ -1,6 +1,7 @@
 import { create } from 'zustand';
-import { fetchMetaText } from '../services/metaTextService';
-import { fetchSourceDocument } from '../services/sourceDocumentService';
+
+import { fetchMetaText, fetchSourceDocument } from 'services';
+
 import { getErrorMessage } from '../types/error';
 import type { MetaText } from '../types/metaText';
 import type { SourceDocument } from '../types/sourceDocument';

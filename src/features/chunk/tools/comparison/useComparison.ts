@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { generateChunkNoteSummaryTextComparison } from '../../../../services/aiService';
+import { generateChunkNoteSummaryTextComparison } from 'services';
 import { ComparisonToolProps, ToolResult } from '../types';
 
 interface ComparisonResult {

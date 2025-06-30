@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { fetchDefinitionInContext } from '../../../../services/aiService';
+import { fetchDefinitionInContext } from 'services';
 import { DefineWordToolProps, ToolResult } from '../types';
 
 interface DefinitionResult {

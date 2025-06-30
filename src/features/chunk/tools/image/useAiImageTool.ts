@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { generateAiImage } from '../../../../services/aiService';
+import { generateAiImage } from 'services';
 import log from '../../../../utils/logger';
 import type { Chunk, AiImage } from '../../../../types/chunk';
 

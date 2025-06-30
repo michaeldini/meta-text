@@ -4,7 +4,7 @@ import { CompareArrowsIcon } from '../../../../components/icons';
 import AiGenerationButton from '../../../../components/AiGenerationButton';
 import { useComparison } from './useComparison';
 import { ComparisonToolProps } from '../types';
-import { generateChunkNoteSummaryTextComparison } from '../../../../services/aiService';
+import { generateChunkNoteSummaryTextComparison } from 'services';
 import { getToolsStyles } from './Comparison.styles';
 import { useTheme } from '@mui/material/styles';
 import ReactMarkdown from 'react-markdown';

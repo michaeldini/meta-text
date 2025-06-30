@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, MenuItem, CircularProgress, Typography, Box, Tooltip } from '@mui/material';
 import { CompressionIcon } from '../../../../components/icons';
 
-import { fetchChunkCompressions, createChunkCompression, previewChunkCompression } from '../../../../services/chunkService';
-import type { ChunkCompression, ChunkCompressionCreate } from '../../../../types/chunkCompression';
+import { fetchChunkCompressions, createChunkCompression, previewChunkCompression } from 'services';
+// import type { ChunkCompression, ChunkCompressionCreate } from '../../../../types/chunkCompression';
 
 const STYLE_OPTIONS = [
     { value: 'like im 5', label: 'Explain like I’m 5' },

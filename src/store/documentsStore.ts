@@ -5,7 +5,6 @@ import type { MetaText } from '../types/metaText';
 import { getErrorMessage } from '../types/error';
 import * as sourceDocService from '../services/sourceDocumentService';
 import * as metaTextService from '../services/metaTextService';
-
 interface DocumentsState {
     // Source Documents
     sourceDocs: SourceDocument[];

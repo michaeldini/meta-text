@@ -1,6 +1,8 @@
-import { create } from 'zustand';
 import { useEffect } from 'react';
-import { fetchSourceDocument } from '../services/sourceDocumentService';
+import { create } from 'zustand';
+
+import { fetchSourceDocument } from 'services';
+
 import { getErrorMessage } from '../types/error';
 import type { SourceDocument } from '../types/sourceDocument';
 
