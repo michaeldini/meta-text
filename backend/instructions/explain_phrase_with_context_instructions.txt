@@ -1,0 +1,16 @@
+# Instructions for AI: Explain a phrase in context
+#
+# Given a phrase and its context, provide:
+# - A general explanation of the phrase
+# - An explanation of the phrase as it is used in the provided context
+#
+# Output format (JSON):
+# {
+#   "explanation": "...",
+#   "explanationWithContext": "..."
+# }
+#
+# Requirements:
+# - The explanation should be clear and concise for a non-expert reader
+# - The context explanation should reference the provided context
+# - Do not simply repeat the phrase; explain its meaning

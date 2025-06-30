@@ -178,7 +178,7 @@ const ChunkWords = memo(function ChunkWords({
                 chunkIdx={chunkIdx}
                 context={words.join(' ')}
                 metaTextId={chunk?.meta_text_id}
-                disableSplit={highlightedIndices.length > 1}
+                isPhrase={highlightedIndices.length > 1}
             />
         </Box>
     );

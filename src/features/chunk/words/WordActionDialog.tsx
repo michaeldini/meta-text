@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { Popover, Box, useTheme } from '@mui/material';
 import SplitChunkTool from '../tools/split/SplitChunkTool';
 import DefineWordTool from '../tools/define/DefineWordTool';
+import ExplainPhraseTool from '../tools/explain/ExplainPhraseTool';
 import { getWordsStyles } from './Words.styles';
 export interface WordActionDialogProps {
     anchorEl: HTMLElement | null;
@@ -11,7 +12,7 @@ export interface WordActionDialogProps {
     chunkIdx: number;
     context: string;
     metaTextId: string | number | undefined;
-    disableSplit?: boolean;
+    isPhrase?: boolean;
 }
 
 /**
@@ -26,7 +27,7 @@ const WordActionDialog: React.FC<WordActionDialogProps> = memo(({
     chunkIdx,
     context,
     metaTextId,
-    disableSplit = false
+    isPhrase = false
 }) => {
     const theme = useTheme();
     const styles = getWordsStyles(theme);
@@ -50,6 +51,13 @@ const WordActionDialog: React.FC<WordActionDialogProps> = memo(({
         }
     };
 
+    const handleExplainPhraseToolComplete = (success: boolean, result?: any) => {
+        if (success) {
+            console.log('Explain phrase tool completed successfully:', result);
+            // Don't close the dialog - let the explain tool manage its own drawer
+        }
+    };
+
     return (
         <Popover
             open={open}
@@ -65,24 +73,34 @@ const WordActionDialog: React.FC<WordActionDialogProps> = memo(({
             }}
         >
             <Box sx={styles.wordActionDialogContainer}>
-                {!disableSplit && (
-                    <SplitChunkTool
+                {isPhrase ? (
+                    <ExplainPhraseTool
                         chunkIdx={chunkIdx}
-                        wordIdx={wordIdx}
-                        word={word}
+                        phrase={word}
                         context={context}
                         chunk={chunk}
-                        onComplete={handleSplitToolComplete}
+                        onComplete={handleExplainPhraseToolComplete}
                     />
+                ) : (
+                    <>
+                        <SplitChunkTool
+                            chunkIdx={chunkIdx}
+                            wordIdx={wordIdx}
+                            word={word}
+                            context={context}
+                            chunk={chunk}
+                            onComplete={handleSplitToolComplete}
+                        />
+                        <DefineWordTool
+                            chunkIdx={chunkIdx}
+                            wordIdx={wordIdx}
+                            word={word}
+                            context={context}
+                            chunk={chunk}
+                            onComplete={handleDefineToolComplete}
+                        />
+                    </>
                 )}
-                <DefineWordTool
-                    chunkIdx={chunkIdx}
-                    wordIdx={wordIdx}
-                    word={word}
-                    context={context}
-                    chunk={chunk}
-                    onComplete={handleDefineToolComplete}
-                />
             </Box>
         </Popover>
     );

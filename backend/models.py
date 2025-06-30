@@ -171,3 +171,21 @@ class UserChunkSessionCreate(SQLModel):
     user_id: int
     meta_text_id: int
     last_active_chunk_id: int
+
+# --- Phrase Explanation Schemas ---
+class ExplainPhraseWithContextRequest(SQLModel):
+    phrase: str
+    context: str
+    meta_text_id: int | None = None
+
+class ExplainPhraseResponse(SQLModel):
+    explanation: str
+    explanationWithContext: str
+
+class PhraseExplanation(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    phrase: str
+    context: str
+    explanation: str
+    explanation_with_context: str
+    meta_text_id: int | None = None

@@ -72,3 +72,10 @@ export interface NotesToolProps extends ChunkToolProps {
     /** User input for notes/summary */
     userInput?: string;
 }
+
+export interface ExplainPhraseToolProps extends ChunkToolProps {
+    /** The phrase to explain */
+    phrase: string;
+    /** Context around the phrase */
+    context?: string;
+}

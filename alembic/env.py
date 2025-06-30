@@ -32,6 +32,10 @@ from backend.models import (
     WordDefinitionWithContextRequest,
     WordDefinitionResponse,
     WordDefinition,
+    PhraseExplanation,
+    ExplainPhraseWithContextRequest,
+    ExplainPhraseResponse,
+    
 )
 # Set the target metadata for autogenerate
 # If you have multiple models, you can combine their metadata

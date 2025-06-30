@@ -5,7 +5,8 @@ from loguru import logger
 from backend.models import (
     Chunk, WordDefinition, SourceDocument, AiImage,
     WordDefinitionResponse, WordDefinitionWithContextRequest,
-    SourceDocInfoRequest, SourceDocInfoResponse, SourceDocInfoAiResponse
+    SourceDocInfoRequest, SourceDocInfoResponse, SourceDocInfoAiResponse,
+    ExplainPhraseWithContextRequest, ExplainPhraseResponse, PhraseExplanation
 )
 from backend.services.openai_service import OpenAIService
 from backend.services.file_service import FileService
@@ -282,3 +283,51 @@ class AIService:
         
         logger.info(f"AI explanation generated and saved for chunk_id: {chunk_id}")
         return {"explanation": ai_text}
+    
+    def generate_phrase_explanation(self, request: ExplainPhraseWithContextRequest, session: Session) -> ExplainPhraseResponse:
+        """
+        Generate phrase explanation with context using AI.
+        
+        Args:
+            request: Phrase explanation request data
+            session: Database session
+            
+        Returns:
+            Phrase explanation response
+            
+        Raises:
+            WordDefinitionValidationError: If request validation fails
+        """
+        logger.info(f"Generating explanation for phrase: '{request.phrase}'")
+        
+        # Validate request
+        if not request.phrase:
+            raise WordDefinitionValidationError("phrase", "Missing phrase")
+        if request.meta_text_id is None:
+            raise WordDefinitionValidationError("meta_text_id", "Missing meta_text_id")
+        
+        # Prepare prompt
+        prompt = f"phrase='{request.phrase}' context='{request.context}'"
+        
+        # Generate AI response
+        ai_data = self.openai_service.generate_parsed_response(
+            "instructions/explain_phrase_with_context_instructions.txt",
+            prompt,
+            ExplainPhraseResponse
+        )
+        
+        # Save to database
+        log_entry = PhraseExplanation(
+            phrase=request.phrase,
+            context=request.context,
+            explanation=ai_data.explanation,
+            explanation_with_context=ai_data.explanationWithContext,
+            meta_text_id=request.meta_text_id
+        )
+        session.add(log_entry)
+        session.commit()
+        logger.info(f"Explanation generated and saved for phrase: '{request.phrase}'")
+        return ExplainPhraseResponse(
+            explanation=ai_data.explanation,
+            explanationWithContext=ai_data.explanationWithContext
+        )

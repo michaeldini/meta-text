@@ -3,7 +3,8 @@ from sqlmodel import Session
 
 from backend.models import (
     WordDefinitionResponse, WordDefinitionWithContextRequest, 
-    SourceDocInfoRequest, SourceDocInfoResponse, AiImageRead
+    SourceDocInfoRequest, SourceDocInfoResponse, AiImageRead,
+    ExplainPhraseWithContextRequest, ExplainPhraseResponse
 )
 from backend.db import get_session
 from backend.services.ai_service import AIService
@@ -144,6 +145,23 @@ async def generate_chunk_explanation(chunk_id: int, session: Session = Depends(g
     except (OpenAIClientError, OpenAIResponseParsingError, InstructionsFileNotFoundError) as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"AI service error: {str(e)}"
+        )
+
+
+@router.post("/explain-phrase-in-context")
+async def explain_phrase_in_context(request: ExplainPhraseWithContextRequest, session: Session = Depends(get_session)) -> ExplainPhraseResponse:
+    """Generate phrase explanation with context using AI."""
+    try:
+        return get_ai_service().generate_phrase_explanation(request, session)
+    except WordDefinitionValidationError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, 
+            detail=f"Validation error - {e.field}: {e.message}"
+        )
+    except (OpenAIClientError, OpenAIResponseParsingError, InstructionsFileNotFoundError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
             detail=f"AI service error: {str(e)}"
         )
 
