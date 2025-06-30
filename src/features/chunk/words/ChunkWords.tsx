@@ -3,6 +3,7 @@ import { Box, IconButton, Paper, useTheme } from '@mui/material';
 import { MergeChunksTool } from '../../chunk/tools';
 import WordActionDialog from './WordActionDialog';
 import { getWordsStyles } from './Words.styles';
+import { useUIPreferencesStore } from 'store';
 
 export interface ChunkWordsProps {
     words: string[];
@@ -23,6 +24,7 @@ const ChunkWords = memo(function ChunkWords({
     const [selectedWordIdx, setSelectedWordIdx] = useState<number | null>(null);
     const theme = useTheme();
     const styles = useMemo(() => getWordsStyles(theme), [theme]);
+    const textSizePx = useUIPreferencesStore(state => state.textSizePx);
 
     const handleWordDialogOpen = (idx: number, event: React.MouseEvent<HTMLElement>) => {
         console.log('handleWordDialogOpen', { words, idx, word: words[idx] });
@@ -51,7 +53,8 @@ const ChunkWords = memo(function ChunkWords({
                         onClick={e => handleWordDialogOpen(wordIdx, e)}
                         sx={[
                             theme.typography.body2,
-                            styles.chunkWordBox
+                            styles.chunkWordBox,
+                            { fontSize: `${textSizePx}px` }
                         ]}
                     >
                         {word}

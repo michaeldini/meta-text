@@ -3,6 +3,7 @@ import { Typography, Paper, useTheme } from '@mui/material';
 
 import { SourceDocInfo } from 'features';
 import { AiGenerationButton, ReviewButton, FlexBox } from 'components';
+import { TextSizeInput } from 'components';
 
 import { getMetaTextContentStyles } from './MetaText.styles';
 
@@ -56,6 +57,8 @@ const MetaTextHeader: React.FC<MetaTextHeaderProps> = ({
                     onClick={handleDownloadAndRefresh}
                     loading={loading}
                 />
+                <TextSizeInput />
+
             </FlexBox>
             {
                 sourceDocSection && (

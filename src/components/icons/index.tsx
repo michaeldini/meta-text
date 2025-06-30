@@ -37,12 +37,12 @@ export const ContentCutIcon: React.FC<IconProps> = (props) => <ThemedIcon as={Sc
 export const QuestionMarkIcon: React.FC<IconProps> = (props) => <ThemedIcon as={QuestionMarkCircleSvg} {...props} />;
 export const CopyIcon: React.FC<IconProps> = (props) => <ThemedIcon as={DocumentDuplicateSvg} {...props} />;
 export const ExpandMoreIcon: React.FC<IconProps> = (props) => <ThemedIcon as={ChevronDownSvg} {...props} />;
+export const ExpandLessIcon: React.FC<IconProps> = (props) => <ThemedIcon as={ChevronUpSvg} {...props} />;
 export const StarsIcon: React.FC<IconProps> = (props) => <ThemedIcon as={StarsSvg} {...props} />;
 export const AcademicCapIcon: React.FC<IconProps> = (props) => <ThemedIcon as={AcademicCapSvg} {...props} />;
 export const PhotoIcon: React.FC<IconProps> = (props) => <ThemedIcon as={PhotoSvg} {...props} />;
 export const CompressionIcon: React.FC<IconProps> = (props) => <ThemedIcon as={CompressionSvg} {...props} />;
 
 // unused icons but may be needed later
-export const ExpandLessIcon: React.FC<IconProps> = (props) => <ThemedIcon as={ChevronUpSvg} {...props} />;
 export const PhotoFilterIcon: React.FC<IconProps> = (props) => <ThemedIcon as={AdjustmentsHorizontalSvg} {...props} />;
 

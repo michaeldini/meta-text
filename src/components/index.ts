@@ -6,3 +6,4 @@ export { default as DeleteButton } from './DeleteButton';
 export { default as FlexBox } from './FlexBox';
 export { default as AiGenerationButton } from './AiGenerationButton';
 export { default as ReviewButton } from './ReviewButton';
+export { default as TextSizeInput } from './TextSizeInput';
