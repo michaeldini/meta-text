@@ -6,7 +6,7 @@ import FloatingChunkToolbar from './FloatingChunkToolbar';
 import { useChunkStore } from '../../../store/chunkStore';
 
 // Mock the chunk store
-vi.mock('../../../../store/chunkStore', () => ({
+vi.mock('store/chunkStore', () => ({
     useChunkStore: vi.fn(),
 }));
 

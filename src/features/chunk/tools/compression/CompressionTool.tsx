@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, MenuItem, CircularProgress, Typography, Box, Tooltip } from '@mui/material';
-import { CompressionIcon } from '../../../../components/icons';
+import { CompressionIcon } from 'icons';
 
 import { fetchChunkCompressions, createChunkCompression, previewChunkCompression } from 'services';
 // import type { ChunkCompression, ChunkCompressionCreate } from '../../../../types/chunkCompression';

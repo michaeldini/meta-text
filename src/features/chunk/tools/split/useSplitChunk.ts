@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useChunkStore } from '../../../../store/chunkStore';
+import { useChunkStore } from 'store';
 import { SplitChunkToolProps, ToolResult } from '../types';
 
 /**

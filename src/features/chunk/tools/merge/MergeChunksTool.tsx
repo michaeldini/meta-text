@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
-import { UndoArrowIcon } from '../../../../components/icons';
+import { UndoArrowIcon } from 'icons';
 import { useMergeChunks } from './useMergeChunks';
 import { MergeChunksToolProps } from '../types';
 

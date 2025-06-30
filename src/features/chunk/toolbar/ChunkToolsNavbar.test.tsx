@@ -4,7 +4,7 @@ import ChunkToolsNavbar from '../../chunk/toolbar/ChunkToolsNavbar';
 import { useChunkStore } from '../../../store/chunkStore';
 
 // Mock the chunk store
-vi.mock('../../../../store/chunkStore', () => ({
+vi.mock('store/chunkStore', () => ({
     useChunkStore: vi.fn(),
 }));
 

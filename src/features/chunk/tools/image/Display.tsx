@@ -1,7 +1,7 @@
 import React from 'react';
 import { Paper, Button, Box } from '@mui/material';
 import ChunkImageModal from './Modal';
-import AiGenerationButton from '../../../../components/AiGenerationButton';
+import { AiGenerationButton } from 'components';
 
 interface ChunkImageDisplayProps {
     imageState: any;

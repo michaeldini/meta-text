@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Paper, IconButton, Tooltip } from '@mui/material';
-import { CompareArrowsIcon } from '../../../../components/icons';
-import AiGenerationButton from '../../../../components/AiGenerationButton';
+import { CompareArrowsIcon } from 'icons';
+import { AiGenerationButton } from 'components';
 import { useComparison } from './useComparison';
 import { ComparisonToolProps } from '../types';
 import { generateChunkNoteSummaryTextComparison } from 'services';

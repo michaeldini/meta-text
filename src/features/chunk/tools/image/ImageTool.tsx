@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { IconButton, Tooltip, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, LinearProgress, Alert, useTheme } from '@mui/material';
-import { PhotoFilterIcon } from '../../../../components/icons';
+import { PhotoFilterIcon } from 'icons';
 import { useImageTool } from './useImageTool';
 import { ImageToolProps } from '../types';
 import ChunkImageModal from './Modal';
-import AiGenerationButton from '../../../../components/AiGenerationButton';
+import { AiGenerationButton } from 'components';
 import type { Chunk } from '../../../../types/chunk';
 import { getToolsStyles } from './Image.styles';
 interface ImageToolComponentProps extends ImageToolProps {

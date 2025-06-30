@@ -1,8 +1,7 @@
 import React from 'react';
 import { Box, IconButton, Tooltip, Typography } from '@mui/material';
-import { useChunkStore } from '../../../../store/chunkStore';
-import { CopyIcon } from '../../../../components/icons';
-import { useNotifications } from '../../../../store/notificationStore';
+import { useChunkStore, useNotifications } from 'store';
+import { CopyIcon } from 'icons';
 
 interface CopyToolProps {
     /** Additional CSS class name */
