@@ -25,6 +25,7 @@ const ChunkWords = memo(function ChunkWords({
     const theme = useTheme();
     const styles = useMemo(() => getWordsStyles(theme), [theme]);
     const textSizePx = useUIPreferencesStore(state => state.textSizePx);
+    const fontFamily = useUIPreferencesStore(state => state.fontFamily);
 
     const handleWordDialogOpen = (idx: number, event: React.MouseEvent<HTMLElement>) => {
         console.log('handleWordDialogOpen', { words, idx, word: words[idx] });
@@ -54,7 +55,7 @@ const ChunkWords = memo(function ChunkWords({
                         sx={[
                             theme.typography.body2,
                             styles.chunkWordBox,
-                            { fontSize: `${textSizePx}px` }
+                            { fontSize: `${textSizePx}px`, fontFamily }
                         ]}
                     >
                         {word}
