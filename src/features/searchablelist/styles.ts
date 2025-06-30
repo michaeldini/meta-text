@@ -24,6 +24,7 @@ export const createSearchableListStyles = (theme: Theme) => ({
     transformStyle: 'preserve-3d',
   },
   searchInput: {
+    paddingX: theme.spacing(2),
     marginBottom: theme.spacing(2),
   },
   noResults: {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { Box, Paper, useTheme } from '@mui/material';
 import { PageContainer } from 'components';
 import { useDocumentsStore, useNotifications } from 'store';
 import { ToggleSelector, FlexBox } from 'components';
@@ -9,7 +9,7 @@ import { usePageLogger } from 'hooks';
 
 import WelcomeText from './WelcomeText';
 import { DocType } from '../../types/docTypes';
-
+import { getHomePageStyles } from '../../styles/styles';
 import {
     getDeleteActions,
     getRouteMap,
@@ -21,7 +21,7 @@ import {
     handleDeleteMetaTextFactory
 } from './HomePage.handlers';
 
-export enum ViewMode {
+enum ViewMode {
     Search = 'search',
     Create = 'create'
 }
@@ -53,6 +53,8 @@ export default function HomePage() {
 
     const { showSuccess, showError } = useNotifications();
     const navigate = useNavigate();
+    const theme = useTheme();
+    const styles = getHomePageStyles(theme);
     // Use a single viewKey to represent the current view
     const [docType, setDocType] = React.useState<DocType>(DocType.MetaText);
     const [viewMode, setViewMode] = React.useState<ViewMode>(ViewMode.Search);
@@ -138,28 +140,28 @@ export default function HomePage() {
 
     return (
         <PageContainer>
-            <FlexBox flexDirection="row">
+            <Box sx={styles.homePageContainer}>
                 <FlexBox flexDirection="column" alignItems="start" >
                     <WelcomeText />
-                    <FlexBox flexDirection='column'>
+                    <FlexBox flexDirection='column' sx={styles.toggleContainer}>
                         <ToggleSelector
                             value={docType}
                             onChange={handleDocTypeChange}
                             options={DOC_TYPE_OPTIONS}
-                            sx={{ my: 2 }}
                         />
                         <ToggleSelector
                             value={viewMode}
                             onChange={handleViewModeChange}
                             options={VIEW_MODE_OPTIONS}
-                            sx={{ mb: 2 }}
                         />
                     </FlexBox>
                 </FlexBox>
 
                 {/* Render the correct content for the current view */}
-                {content}
-            </FlexBox>
+                <Paper sx={styles.contentContainer}>
+                    {content}
+                </Paper>
+            </Box>
         </PageContainer >
     );
 }

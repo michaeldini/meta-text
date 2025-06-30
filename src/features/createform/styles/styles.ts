@@ -20,6 +20,7 @@ export const createFormStyles = (theme: Theme) => ({
     height: '100%',
     animation: `${flipIn} 0.3s cubic-bezier(0.4,0.2,0.2,1)`, // Use flip animation
     transformStyle: 'preserve-3d',
+    padding: theme.spacing(2),
   },
   uploadFormInner: {
     display: 'flex',
