@@ -11,6 +11,7 @@ export interface WordActionDialogProps {
     chunkIdx: number;
     context: string;
     metaTextId: string | number | undefined;
+    disableSplit?: boolean;
 }
 
 /**
@@ -24,7 +25,8 @@ const WordActionDialog: React.FC<WordActionDialogProps> = memo(({
     wordIdx,
     chunkIdx,
     context,
-    metaTextId
+    metaTextId,
+    disableSplit = false
 }) => {
     const theme = useTheme();
     const styles = getWordsStyles(theme);
@@ -63,14 +65,16 @@ const WordActionDialog: React.FC<WordActionDialogProps> = memo(({
             }}
         >
             <Box sx={styles.wordActionDialogContainer}>
-                <SplitChunkTool
-                    chunkIdx={chunkIdx}
-                    wordIdx={wordIdx}
-                    word={word}
-                    context={context}
-                    chunk={chunk}
-                    onComplete={handleSplitToolComplete}
-                />
+                {!disableSplit && (
+                    <SplitChunkTool
+                        chunkIdx={chunkIdx}
+                        wordIdx={wordIdx}
+                        word={word}
+                        context={context}
+                        chunk={chunk}
+                        onComplete={handleSplitToolComplete}
+                    />
+                )}
                 <DefineWordTool
                     chunkIdx={chunkIdx}
                     wordIdx={wordIdx}

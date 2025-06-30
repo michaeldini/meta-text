@@ -173,11 +173,16 @@ const ChunkWords = memo(function ChunkWords({
                     top: toolbarPos.top,
                     zIndex: 10
                 }}>
-                    {/* TODO: Replace with actual actions */}
-                    <Paper elevation={3} sx={{ p: 1, display: 'flex', gap: 1 }}>
-                        <span>{highlightedIndices.length} words selected</span>
-                        <IconButton size="small" onClick={clearSelection}>✕</IconButton>
-                    </Paper>
+                    <WordActionDialog
+                        anchorEl={lastSelectedWordElRef.current}
+                        onClose={clearSelection}
+                        word={highlightedIndices.map(i => words[i]).join(' ')}
+                        wordIdx={highlightedIndices[0]}
+                        chunkIdx={chunkIdx}
+                        context={words.join(' ')}
+                        metaTextId={chunk?.meta_text_id}
+                        disableSplit
+                    />
                 </Box>
             )}
 
