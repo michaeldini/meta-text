@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Typography, Button, Box, Paper, useTheme } from '@mui/material';
-import SourceDocInfo from '../../../features/sourcedoc/components/SourceDocInfo';
-import AiGenerationButton from '../../../components/AiGenerationButton';
-import ReviewButton from '../../../components/ReviewButton';
+import { Typography, Paper, useTheme } from '@mui/material';
+
+import { SourceDocInfo } from 'features';
+import { AiGenerationButton, ReviewButton, FlexBox } from 'components';
+
 import { getMetaTextContentStyles } from './MetaText.styles';
-import FlexBox from '../../../components/FlexBox';
 
 interface MetaTextHeaderProps {
     displayTitle: string;

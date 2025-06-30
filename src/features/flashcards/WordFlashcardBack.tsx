@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Box, CardActionArea, CardContent, Typography, useTheme } from '@mui/material';
-import { MenuIcon, QuestionMarkIcon } from '../../components/icons';
+import { MenuIcon, QuestionMarkIcon } from 'icons';
 import { createWordFlashcardStyles } from './WordFlashcard.styles';
 import InfoButton from './InfoPopoverButton';
 

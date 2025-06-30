@@ -10,3 +10,4 @@ export const CHUNK_WORDS_MIN_WIDTH = 600; // px, minimum width for chunk words d
 export const CHUNK_TABS_MIN_WIDTH = 500; // px, minimum width for chunk tabs
 
 export const CHUNK_TABS_MAX_WIDTH = 600; // px, maximum width for chunk tabs
+

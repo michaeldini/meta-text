@@ -1,5 +1,5 @@
 import { DocType } from '../../types/docTypes';
-import { ROUTES, MESSAGES } from '../../components/constants';
+import { ROUTES, MESSAGES } from 'constants';
 import log from '../../utils/logger';
 import { getErrorMessage } from '../../types/error';
 import { NavigateFunction } from 'react-router-dom';

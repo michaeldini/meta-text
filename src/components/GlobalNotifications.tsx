@@ -1,7 +1,8 @@
 import React from 'react';
 import { Snackbar, Alert } from '@mui/material';
-import { useNotificationStore } from '../store/notificationStore';
-import { NOTIFICATION_CONSTANTS } from './constants';
+
+import { useNotificationStore } from 'store';
+import { NOTIFICATION_CONSTANTS } from 'constants';
 
 const GlobalNotifications: React.FC = () => {
     const { notifications, hideNotification } = useNotificationStore();

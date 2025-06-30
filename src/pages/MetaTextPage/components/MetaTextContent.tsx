@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Box, useTheme, Alert, Fade } from '@mui/material';
 
-import Chunks from '../../../features/chunks/Chunks';
-import PageContainer from '../../../components/PageContainer';
-import { getMetaTextContentStyles } from './MetaText.styles';
-import { generateSourceDocInfo } from '../../../services/sourceDocInfoService';
-import { getErrorMessage } from '../../../types/error';
+import { generateSourceDocInfo } from 'services';
+import { Chunks } from 'features';
+import { PageContainer } from 'components';
+
 import MetaTextHeader from './MetaTextHeader';
+import { getErrorMessage } from '../../../types/error';
+import { getMetaTextContentStyles } from './MetaText.styles';
 
 interface MetaTextContentProps {
     metaTextId: string;

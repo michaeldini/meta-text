@@ -57,6 +57,9 @@
             "icons": [
                 "components/icons/index.tsx"
             ],
+            "services/*": [
+                "services/index.ts"
+            ],
             // "icons/*": [
             //     "components/icons/*"
             // ],

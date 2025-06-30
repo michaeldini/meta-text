@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Box, CircularProgress } from '@mui/material';
-import { LOADING_CONSTANTS } from './constants';
+import { LOADING_CONSTANTS } from 'constants';
 
 /**
  * LoadingBoundary component for showing a loading spinner while loading is true.

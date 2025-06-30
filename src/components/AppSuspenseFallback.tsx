@@ -1,6 +1,6 @@
 import { CircularProgress, Box } from '@mui/material';
 import React from 'react';
-import { LOADING_CONSTANTS } from './constants';
+import { LOADING_CONSTANTS } from 'constants';
 
 export function AppSuspenseFallback() {
     return (

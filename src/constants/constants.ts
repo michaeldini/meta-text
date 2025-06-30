@@ -1,4 +1,3 @@
-// Constants for component styling and behavior
 
 export const NOTIFICATION_CONSTANTS = {
     STACK_OFFSET: 70, // Vertical spacing between stacked notifications

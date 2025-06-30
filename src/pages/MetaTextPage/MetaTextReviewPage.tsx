@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Typography, Paper, CircularProgress, Alert, IconButton, Tooltip } from '@mui/material';
-import { fetchWordlist } from '../../services/reviewService';
-import { fetchChunks } from '../../services/chunkService';
-import logger from '../../utils/logger';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowBackIcon } from '../../components/icons';
-import { metaTextDetailRoute } from '../../routes';
-import FlashCards from '../../features/flashcards/FlashCards';
-import ChunkSummaryNotesTable from '../../features/NotesSummaryTable/ChunkSummaryNotesTable';
-import { usePageLogger } from '../../hooks/usePageLogger';
+import { Box, Typography, CircularProgress, Alert, IconButton, Tooltip } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+
+import { fetchWordlist, fetchChunks } from 'services';
+import { usePageLogger } from 'hooks';
+import { FlashCards, ChunkSummaryNotesTable } from 'features';
+import { ArrowBackIcon } from 'icons';
+import { FlexBox } from 'components';
+
+import logger from '../../utils/logger';
+import { metaTextDetailRoute } from '../../routes';
 import { getMetaTextPageStyles } from './MetaTextPage.styles';
-import Flexbox from '../../components/FlexBox';
 
 interface WordlistRow {
     id: number;
@@ -37,7 +37,7 @@ function ErrorAlert({ message }: { message: string }) {
 
 function Header({ metatextId, navigate, styles }: { metatextId?: number; navigate: (path: string) => void; styles: ReturnType<typeof getMetaTextPageStyles> }) {
     return (
-        <Flexbox sx={styles.header}>
+        <FlexBox sx={styles.header}>
             {metatextId && (
                 <Tooltip title="Back to MetaText Detail">
                     <IconButton onClick={() => navigate(metaTextDetailRoute(String(metatextId)))}>
@@ -46,7 +46,7 @@ function Header({ metatextId, navigate, styles }: { metatextId?: number; navigat
                 </Tooltip>
             )}
             <Typography variant="h4" gutterBottom sx={metatextId ? styles.title : undefined}>Review</Typography>
-        </Flexbox>
+        </FlexBox>
     );
 }
 
