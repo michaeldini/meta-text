@@ -131,7 +131,7 @@ const ChunkWords = memo(function ChunkWords({
                             key={wordIdx}
                             component="span"
                             sx={[
-                                theme.typography.body2,
+                                // theme.typography.body2,
                                 styles.chunkWordBox,
                                 isHighlighted && {
                                     backgroundColor: theme.palette.secondary.main,

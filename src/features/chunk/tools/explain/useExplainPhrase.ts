@@ -11,6 +11,7 @@ interface ExplainPhraseParams {
     phrase: string;
     context?: string;
     chunk?: any;
+    meta_text_id?: string | number;
 }
 
 interface ExplainPhraseResult {
@@ -26,12 +27,15 @@ export function useExplainPhrase() {
         async (params: ExplainPhraseParams): Promise<ToolResult<ExplainPhraseResult>> => {
             setLoading(true);
             setError(null);
+            // Ensure meta_text_id is present, fallback to chunk.meta_text_id if available
+            const meta_text_id = params.meta_text_id ?? params.chunk?.meta_text_id;
+            const payload = { ...params, meta_text_id };
             try {
                 const data = await apiPost<{
                     success: boolean;
                     data?: Partial<ExplainPhraseResult>;
                     error?: string;
-                }>('/api/explain_phrase', params);
+                }>('/api/explain-phrase-in-context', payload);
                 setLoading(false);
                 if (!data.success) {
                     setError(data.error || 'Failed to explain phrase');

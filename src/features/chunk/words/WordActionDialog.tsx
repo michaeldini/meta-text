@@ -80,6 +80,7 @@ const WordActionDialog: React.FC<WordActionDialogProps> = memo(({
                         context={context}
                         chunk={chunk}
                         onComplete={handleExplainPhraseToolComplete}
+                        metaTextId={chunk.meta_text_id}
                     />
                 ) : (
                     <>

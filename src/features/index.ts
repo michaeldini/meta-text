@@ -7,4 +7,5 @@ export * from './flashcards';
 export * from './NotesSummaryTable';
 export * from './createform';
 export * from './searchablelist';
+export * from './phrases';
 // Add more exports as you add new features

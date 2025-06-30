@@ -5,7 +5,7 @@ export const getWordsStyles = (theme: Theme) => ({
     wordsContainer: {
         display: 'flex',
         flexWrap: 'wrap' as const,
-        gap: theme.spacing(.75),
+        // gap: theme.spacing(.75),
         transition: 'all 0.3s ease',
         userSelect: 'none',
         WebkitUserSelect: 'none',
@@ -20,10 +20,11 @@ export const getWordsStyles = (theme: Theme) => ({
     },
     chunkWordBox: {
         display: 'inline-block',
-        borderRadius: 1,
+        borderRadius: 0,
         position: 'relative' as const,
         cursor: 'pointer',
         transition: 'background 0.2s',
+        paddingX: theme.spacing(1),
         '&:hover': {
             backgroundColor: theme.palette.secondary.main,
             color: theme.palette.background.paper,

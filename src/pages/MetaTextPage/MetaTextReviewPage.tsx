@@ -3,9 +3,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Typography, CircularProgress, Alert, IconButton, Tooltip } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-import { fetchWordlist, fetchChunks } from 'services';
+import { fetchWordlist, fetchChunks, fetchPhraseExplanations, PhraseExplanation } from 'services';
 import { usePageLogger } from 'hooks';
-import { FlashCards, ChunkSummaryNotesTable } from 'features';
+
+import { FlashCards, ChunkSummaryNotesTable, Phrases } from 'features';
 import { ArrowBackIcon } from 'icons';
 import { FlexBox } from 'components';
 
@@ -59,6 +60,7 @@ export default function MetaTextReviewPage() {
 
     const [wordlist, setWordlist] = useState<WordlistRow[]>([]);
     const [chunkSummariesNotes, setChunkSummariesNotes] = useState<ChunkSummaryNote[]>([]);
+    const [phraseExplanations, setPhraseExplanations] = useState<PhraseExplanation[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
@@ -90,12 +92,16 @@ export default function MetaTextReviewPage() {
                 const wordlistPromise = fetchWordlist(metatextId);
                 log.info('Fetching chunk summaries/notes...');
                 const chunkPromise = fetchChunks(metatextId);
-                const [wordlistData, chunkData] = await Promise.all([
+                log.info('Fetching phrase explanations...');
+                const phraseExplanationsPromise = fetchPhraseExplanations(metatextId);
+                const [wordlistData, chunkData, phraseExplanationsData] = await Promise.all([
                     wordlistPromise,
-                    chunkPromise
+                    chunkPromise,
+                    phraseExplanationsPromise
                 ]);
                 setWordlist(Array.isArray(wordlistData) ? wordlistData : []);
                 setChunkSummariesNotes(Array.isArray(chunkData) ? chunkData : []);
+                setPhraseExplanations(Array.isArray(phraseExplanationsData) ? phraseExplanationsData : []);
             } catch (err) {
                 setError('Failed to load wordlist or chunk summaries/notes.');
                 log.error('Failed to load wordlist or chunk summaries/notes', err);
@@ -112,6 +118,7 @@ export default function MetaTextReviewPage() {
     return (
         <Box sx={styles.root}>
             <Header metatextId={metatextId} navigate={navigate} styles={styles} />
+            <Phrases data={phraseExplanations} />
             <FlashCards wordlist={wordlist} />
             <ChunkSummaryNotesTable chunks={chunkSummariesNotes} />
         </Box>

@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends
-from sqlmodel import Session
+from sqlmodel import Session, select
 from typing import List
 
 from backend.db import get_session
-from backend.models import WordDefinition, ChunkRead
+from backend.models import WordDefinition, ChunkRead, PhraseExplanation
 from backend.services.review_service import ReviewService
 from backend.exceptions.review_exceptions import (
     WordlistNotFoundError,
@@ -47,3 +47,11 @@ def get_wordlist_summary(metatext_id: int, session: Session = Depends(get_sessio
 def get_chunks_summary(metatext_id: int, session: Session = Depends(get_session)):
     """Get a summary of chunks and their completion status for a specific meta-text."""
     return review_service.get_chunks_summary(metatext_id, session)
+
+
+@router.get("/metatext/{metatext_id}/phrase-explanations", response_model=List[PhraseExplanation], name="get_phrase_explanations")
+def get_phrase_explanations(metatext_id: int, session: Session = Depends(get_session)):
+    """Get all phrase explanations for a specific meta-text."""
+    return session.exec(
+        select(PhraseExplanation).where(PhraseExplanation.meta_text_id == metatext_id)
+    ).all()

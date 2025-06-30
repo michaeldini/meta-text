@@ -26,3 +26,28 @@ export const fetchWordlist = withCache(
     _fetchWordlist,
     5 * 60 * 1000 // 5 minutes
 );
+
+export interface PhraseExplanation {
+    id: number;
+    phrase: string;
+    context: string;
+    explanation: string;
+    explanation_with_context: string;
+    meta_text_id: number | null;
+}
+
+async function _fetchPhraseExplanations(metaTextId: number): Promise<PhraseExplanation[]> {
+    try {
+        const data = await apiGet<PhraseExplanation[]>(`/api/metatext/${metaTextId}/phrase-explanations`);
+        return data;
+    } catch (error) {
+        log.error('Failed to fetch phrase explanations', error);
+        throw error;
+    }
+}
+
+export const fetchPhraseExplanations = withCache(
+    'fetchPhraseExplanations',
+    _fetchPhraseExplanations,
+    5 * 60 * 1000 // 5 minutes
+);
