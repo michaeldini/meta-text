@@ -7,6 +7,10 @@ export const getWordsStyles = (theme: Theme) => ({
         flexWrap: 'wrap' as const,
         gap: theme.spacing(.75),
         transition: 'all 0.3s ease',
+        userSelect: 'none',
+        WebkitUserSelect: 'none',
+        MozUserSelect: 'none',
+        msUserSelect: 'none',
         '&:hover': {
             transform: 'translateY(-2px)',
         },
