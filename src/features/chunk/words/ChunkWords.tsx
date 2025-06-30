@@ -31,6 +31,11 @@ const ChunkWords = memo(function ChunkWords({
     const textSizePx = useUIPreferencesStore(state => state.textSizePx);
     const fontFamily = useUIPreferencesStore(state => state.fontFamily);
 
+    // Ref to the last selected word element
+    const lastSelectedWordElRef = useRef<HTMLElement | null>(null);
+    // Store the bounding rect for toolbar positioning
+    const [toolbarPos, setToolbarPos] = useState<{ left: number; top: number } | null>(null);
+
     // Helper: get min/max for range
     const getRange = () => {
         if (selectionStartIdx === null || selectionEndIdx === null) return [];
@@ -56,17 +61,43 @@ const ChunkWords = memo(function ChunkWords({
         }
     };
 
-    // Handlers for drag/touch selection
-    const handleWordDown = (idx: number) => {
+    // Update lastSelectedWordElRef and toolbar position on selection
+    const handleWordDown = (idx: number, event?: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>) => {
         setSelectionStartIdx(idx);
         setSelectionEndIdx(idx);
         setIsSelecting(true);
+        if (event && event.target && (event.target as HTMLElement).tagName) {
+            lastSelectedWordElRef.current = event.target as HTMLElement;
+        }
     };
-    const handleWordEnter = (idx: number) => {
-        if (isSelecting) setSelectionEndIdx(idx);
+    const handleWordEnter = (idx: number, event?: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>) => {
+        if (isSelecting) {
+            setSelectionEndIdx(idx);
+            if (event && event.target && (event.target as HTMLElement).tagName) {
+                lastSelectedWordElRef.current = event.target as HTMLElement;
+            }
+        }
     };
     const handleWordUp = () => {
         setIsSelecting(false);
+        if (
+            selectionStartIdx !== null &&
+            selectionEndIdx !== null
+        ) {
+            // Find the last word in the selection
+            const lastIdx = [selectionStartIdx, selectionEndIdx].sort((a, b) => a - b)[1];
+            // Try to get the element for the last word
+            const el = document.querySelector(`[data-word-idx='${lastIdx}']`);
+            if (el) {
+                lastSelectedWordElRef.current = el as HTMLElement;
+                const rect = el.getBoundingClientRect();
+                // Position relative to viewport, adjust for scroll
+                setToolbarPos({
+                    left: rect.left + window.scrollX,
+                    top: rect.bottom + window.scrollY
+                });
+            }
+        }
         if (
             selectionStartIdx !== null &&
             selectionEndIdx !== null &&
@@ -74,13 +105,14 @@ const ChunkWords = memo(function ChunkWords({
         ) {
             // Single word: open dialog
             setSelectedWordIdx(selectionStartIdx);
-            setAnchorEl(containerRef.current);
+            setAnchorEl(lastSelectedWordElRef.current);
         }
         // else: range is highlighted, show toolbar (handled in render)
     };
     const clearSelection = () => {
         setSelectionStartIdx(null);
         setSelectionEndIdx(null);
+        setToolbarPos(null);
     };
 
     return (
@@ -103,17 +135,17 @@ const ChunkWords = memo(function ChunkWords({
                                 },
                                 { fontSize: `${textSizePx}px`, fontFamily }
                             ]}
-                            onMouseDown={() => handleWordDown(wordIdx)}
-                            onMouseEnter={() => handleWordEnter(wordIdx)}
+                            onMouseDown={e => handleWordDown(wordIdx, e)}
+                            onMouseEnter={e => handleWordEnter(wordIdx, e)}
                             onMouseUp={handleWordUp}
-                            onTouchStart={() => handleWordDown(wordIdx)}
+                            onTouchStart={e => handleWordDown(wordIdx, e)}
                             onTouchMove={e => {
                                 // Find word under touch
                                 const touch = e.touches[0];
                                 const el = document.elementFromPoint(touch.clientX, touch.clientY);
                                 if (el && (el as HTMLElement).dataset && (el as HTMLElement).dataset.wordIdx) {
                                     const idx = parseInt((el as HTMLElement).dataset.wordIdx!, 10);
-                                    if (!isNaN(idx)) handleWordEnter(idx);
+                                    if (!isNaN(idx)) handleWordEnter(idx, e);
                                 }
                             }}
                             onTouchEnd={handleWordUp}
@@ -134,8 +166,13 @@ const ChunkWords = memo(function ChunkWords({
             </Box>
 
             {/* Floating toolbar for range actions */}
-            {highlightedIndices.length > 1 && (
-                <Box sx={{ position: 'absolute', mt: 1, zIndex: 10 }}>
+            {highlightedIndices.length > 1 && toolbarPos && (
+                <Box sx={{
+                    position: 'absolute',
+                    left: toolbarPos.left,
+                    top: toolbarPos.top,
+                    zIndex: 10
+                }}>
                     {/* TODO: Replace with actual actions */}
                     <Paper elevation={3} sx={{ p: 1, display: 'flex', gap: 1 }}>
                         <span>{highlightedIndices.length} words selected</span>
