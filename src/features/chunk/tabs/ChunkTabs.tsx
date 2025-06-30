@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import { CompareArrowsIcon, PhotoFilterIcon, NotesIcon, CompressionIcon } from '../../../components/icons';
-import log from '../../../utils/logger';
+import { log } from 'utils';
 import { NotesSummaryTab, ComparisonTab, AiImageTab, CompressionToolTab } from '../tools';
 import ExplanationTab from '../tools/explanation/ExplanationTab';
 import { useChunkStore } from '../../../store/chunkStore';

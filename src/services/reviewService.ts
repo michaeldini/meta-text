@@ -1,6 +1,6 @@
 import { handleApiResponse, apiGet } from '../utils/api';
 import { withCache } from '../utils/cache';
-import logger from '../utils/logger';
+import { log } from 'utils';
 
 interface WordlistResponse {
     words: string[];
@@ -15,7 +15,7 @@ async function _fetchWordlist(metaTextId: number): Promise<WordlistResponse> {
         const data = await apiGet<WordlistResponse>(`/api/metatext/${metaTextId}/wordlist`);
         return data as WordlistResponse;
     } catch (error) {
-        logger.error('Failed to fetch wordlist', error);
+        log.error('Failed to fetch wordlist', error);
         throw error;
     }
 }

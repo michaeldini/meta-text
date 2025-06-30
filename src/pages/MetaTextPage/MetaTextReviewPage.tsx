@@ -9,7 +9,7 @@ import { FlashCards, ChunkSummaryNotesTable } from 'features';
 import { ArrowBackIcon } from 'icons';
 import { FlexBox } from 'components';
 
-import logger from '../../utils/logger';
+import log from '../../utils/logger';
 import { metaTextDetailRoute } from '../../routes';
 import { getMetaTextPageStyles } from './MetaTextPage.styles';
 
@@ -80,15 +80,15 @@ export default function MetaTextReviewPage() {
             console.log('loadData called, metatextId:', metatextId);
             try {
                 setLoading(true);
-                logger.info('Starting to load wordlist and chunk summaries/notes', { metatextId });
+                log.info('Starting to load wordlist and chunk summaries/notes', { metatextId });
                 if (!metatextId || isNaN(metatextId)) {
                     setError('Invalid MetaText ID.');
                     setLoading(false);
                     return;
                 }
-                logger.info('Fetching wordlist...');
+                log.info('Fetching wordlist...');
                 const wordlistPromise = fetchWordlist(metatextId);
-                logger.info('Fetching chunk summaries/notes...');
+                log.info('Fetching chunk summaries/notes...');
                 const chunkPromise = fetchChunks(metatextId);
                 const [wordlistData, chunkData] = await Promise.all([
                     wordlistPromise,
@@ -98,7 +98,7 @@ export default function MetaTextReviewPage() {
                 setChunkSummariesNotes(Array.isArray(chunkData) ? chunkData : []);
             } catch (err) {
                 setError('Failed to load wordlist or chunk summaries/notes.');
-                logger.error('Failed to load wordlist or chunk summaries/notes', err);
+                log.error('Failed to load wordlist or chunk summaries/notes', err);
             } finally {
                 setLoading(false);
             }
