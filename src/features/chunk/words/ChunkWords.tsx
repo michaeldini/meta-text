@@ -54,6 +54,9 @@ const ChunkWords = memo(function ChunkWords({
     const handleDialogClose = () => {
         setAnchorEl(null);
         setSelectedWordIdx(null);
+        setSelectionStartIdx(null);
+        setSelectionEndIdx(null);
+        setToolbarPos(null);
     };
 
     const handleMergeComplete = (success: boolean, result?: any) => {
@@ -166,35 +169,16 @@ const ChunkWords = memo(function ChunkWords({
                 </Box>
             </Box>
 
-            {/* Floating toolbar for range actions */}
-            {highlightedIndices.length > 1 && toolbarPos && (
-                <Box sx={{
-                    position: 'absolute',
-                    left: toolbarPos.left,
-                    top: toolbarPos.top,
-                    zIndex: 10
-                }}>
-                    <WordActionDialog
-                        anchorEl={lastSelectedWordElRef.current}
-                        onClose={clearSelection}
-                        word={highlightedIndices.map(i => words[i]).join(' ')}
-                        wordIdx={highlightedIndices[0]}
-                        chunkIdx={chunkIdx}
-                        context={words.join(' ')}
-                        metaTextId={chunk?.meta_text_id}
-                        disableSplit
-                    />
-                </Box>
-            )}
-
+            {/* Only one WordActionDialog, handles both single and multi-word selection */}
             <WordActionDialog
-                anchorEl={anchorEl}
+                anchorEl={highlightedIndices.length > 1 && toolbarPos ? lastSelectedWordElRef.current : anchorEl}
                 onClose={handleDialogClose}
-                word={selectedWordIdx !== null ? words[selectedWordIdx] : ''}
-                wordIdx={selectedWordIdx || 0}
+                word={highlightedIndices.length > 1 ? highlightedIndices.map(i => words[i]).join(' ') : (selectedWordIdx !== null ? words[selectedWordIdx] : '')}
+                wordIdx={highlightedIndices.length > 1 ? highlightedIndices[0] : (selectedWordIdx || 0)}
                 chunkIdx={chunkIdx}
                 context={words.join(' ')}
                 metaTextId={chunk?.meta_text_id}
+                disableSplit={highlightedIndices.length > 1}
             />
         </Box>
     );
