@@ -7,7 +7,7 @@ export const getMetaTextContentStyles = (theme: Theme) => ({
         flexDirection: 'column' as const,
         alignItems: 'start',
         gap: theme.spacing(1.5), // Reduced gap between sections
-        paddingRight: theme.spacing(3), // Adjusted for floating toolbar
+        paddingRight: theme.spacing(5), // Adjusted for floating toolbar
         paddingLeft: theme.spacing(0),
     },
 
