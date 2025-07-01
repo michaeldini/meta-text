@@ -1,23 +1,25 @@
 import { ThemedIcon, ThemedIconProps } from './ThemedIcon';
-import { ArrowLeftIcon as ArrowLeftSvg } from '@heroicons/react/24/solid';
-import { Bars3Icon as Bars3Svg } from '@heroicons/react/24/solid';
-import { MagnifyingGlassIcon as MagnifyingGlassSvg } from '@heroicons/react/24/solid';
-import { XMarkIcon as XMarkSvg } from '@heroicons/react/24/solid';
-import { TrashIcon as TrashSvg } from '@heroicons/react/24/solid';
-import { ArrowUpTrayIcon as ArrowUpTraySvg } from '@heroicons/react/24/solid';
-import { ArrowUturnLeftIcon as ArrowUturnLeftSvg } from '@heroicons/react/24/solid';
-import { ArrowsRightLeftIcon as ArrowsRightLeftSvg } from '@heroicons/react/24/solid';
-import { AdjustmentsHorizontalIcon as AdjustmentsHorizontalSvg } from '@heroicons/react/24/solid';
-import { DocumentTextIcon as DocumentTextSvg } from '@heroicons/react/24/solid';
-import { ScissorsIcon as ScissorsSvg } from '@heroicons/react/24/solid';
-import { QuestionMarkCircleIcon as QuestionMarkCircleSvg } from '@heroicons/react/24/solid';
-import { DocumentDuplicateIcon as DocumentDuplicateSvg } from '@heroicons/react/24/solid';
-import { ChevronDownIcon as ChevronDownSvg } from '@heroicons/react/24/solid';
-import { ChevronUpIcon as ChevronUpSvg } from '@heroicons/react/24/solid';
-import { SparklesIcon as StarsSvg } from '@heroicons/react/24/solid';
-import { AcademicCapIcon as AcademicCapSvg } from '@heroicons/react/24/solid';
-import { PhotoIcon as PhotoSvg } from '@heroicons/react/24/solid';
-import { BeakerIcon as CompressionSvg } from '@heroicons/react/24/solid';
+import {
+    ArrowLeftIcon as ArrowLeftSvg,
+    Bars3Icon as Bars3Svg,
+    MagnifyingGlassIcon as MagnifyingGlassSvg,
+    XMarkIcon as XMarkSvg,
+    TrashIcon as TrashSvg,
+    ArrowUpTrayIcon as ArrowUpTraySvg,
+    ArrowUturnLeftIcon as ArrowUturnLeftSvg,
+    ArrowsRightLeftIcon as ArrowsRightLeftSvg,
+    AdjustmentsHorizontalIcon as AdjustmentsHorizontalSvg,
+    DocumentTextIcon as DocumentTextSvg,
+    ScissorsIcon as ScissorsSvg,
+    QuestionMarkCircleIcon as QuestionMarkCircleSvg,
+    DocumentDuplicateIcon as DocumentDuplicateSvg,
+    ChevronDownIcon as ChevronDownSvg,
+    ChevronUpIcon as ChevronUpSvg,
+    SparklesIcon as StarsSvg,
+    AcademicCapIcon as AcademicCapSvg,
+    PhotoIcon as PhotoSvg,
+    BeakerIcon as CompressionSvg,
+} from '@heroicons/react/24/solid';
 import { SVGProps } from 'react';
 
 
