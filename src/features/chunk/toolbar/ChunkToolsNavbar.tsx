@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, ToggleButtonGroup, ToggleButton, Tooltip, Typography } from '@mui/material';
-import { CompareArrowsIcon, PhotoIcon, NotesIcon, CompressionIcon } from 'icons';
+import { CompareArrowsIcon, PhotoIcon, NotesIcon, CompressionIcon, QuestionMarkIcon } from 'icons';
 import { useChunkStore } from 'store';
 import CopyTool from '../../chunk/tools/copy/CopyTool';
 import { getChunkToolsStyles } from './Toolbar.styles';
@@ -89,7 +89,7 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
             ariaLabel: 'Show Explanation',
             tooltipTitle: <Typography variant="caption">
                 Show or hide the explanation editor for all chunks</Typography>,
-            icon: <NotesIcon />
+            icon: <QuestionMarkIcon />
         },
 
     ];

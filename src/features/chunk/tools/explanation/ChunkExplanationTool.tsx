@@ -4,9 +4,9 @@ import ReactMarkdown from 'react-markdown';
 import { useTheme } from '@mui/material/styles';
 
 import { AiGenerationButton } from 'components';
-import { useExplanation } from 'hooks/useExplanation';
+import { useExplanation } from './useExplanation';
 import type { ChunkType } from 'types';
-import { getExplanationStyles } from './Explanation.styles';
+import { getExplanationStyles } from './ChunkExplanation.styles';
 
 interface ExplanationToolProps {
     chunkIdx: number;

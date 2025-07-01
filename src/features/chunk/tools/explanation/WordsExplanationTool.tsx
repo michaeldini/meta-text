@@ -10,7 +10,7 @@ import {
     Alert
 } from '@mui/material';
 import { QuestionMarkIcon } from 'icons';
-import { useExplanation } from 'hooks';
+import { useExplanation } from './useExplanation';
 import { WordToolProps } from '../types';
 
 interface ExplanationToolProps extends WordToolProps {
