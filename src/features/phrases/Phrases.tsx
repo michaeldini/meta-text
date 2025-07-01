@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Accordion, AccordionSummary, AccordionDetails, Typography, Box } from '@mui/material';
+import { ExpandMoreIcon } from 'icons';
 
 export interface PhraseExplanation {
     id: number;
@@ -19,24 +20,32 @@ const Phrases: React.FC<PhrasesProps> = ({ data }) => {
     return (
         <Box sx={{ mt: 4 }}>
             <Typography variant="h6" gutterBottom>Phrases & Explanations</Typography>
-            <Box component="table" >
-                <Box component="thead" >
-                    <Box component="tr">
-                        <Box component="th">Phrase</Box>
-                        <Box component="th">Explanation</Box>
-                        <Box component="th">Explanation in Context</Box>
-                    </Box>
-                </Box>
-                <Box component="tbody">
+            <Accordion sx={{ mb: 2 }}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography variant="subtitle1">Phrases</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
                     {data.map((row) => (
-                        <Box component="tr" key={row.id}>
-                            <Box component="td" sx={{ p: 1, verticalAlign: 'top' }}>{row.phrase}</Box>
-                            <Box component="td" sx={{ p: 1, verticalAlign: 'top' }}>{row.explanation}</Box>
-                            <Box component="td" sx={{ p: 1, verticalAlign: 'top' }}>{row.explanation_with_context}</Box>
-                        </Box>
+                        <Accordion key={row.id} sx={{ mb: 2, boxShadow: 'none' }}>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                <Typography variant="subtitle1">{row.phrase}</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                                    <Box>
+                                        <Typography variant="subtitle2" color="text.secondary">Explanation</Typography>
+                                        <Typography>{row.explanation}</Typography>
+                                    </Box>
+                                    <Box>
+                                        <Typography variant="subtitle2" color="text.secondary">Explanation in Context</Typography>
+                                        <Typography>{row.explanation_with_context}</Typography>
+                                    </Box>
+                                </Box>
+                            </AccordionDetails>
+                        </Accordion>
                     ))}
-                </Box>
-            </Box>
+                </AccordionDetails>
+            </Accordion>
         </Box>
     );
 };
