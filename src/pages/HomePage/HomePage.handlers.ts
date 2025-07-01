@@ -1,4 +1,4 @@
-import { DocType } from '../../types/docTypes';
+import { DocType } from 'types';
 import { ROUTES, MESSAGES } from 'constants';
 import log from '../../utils/logger';
 import { getErrorMessage } from '../../types/error';

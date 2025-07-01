@@ -86,6 +86,7 @@ export default defineConfig({
             store: path.resolve(__dirname, 'src/store'),
             icons: path.resolve(__dirname, 'src/components/icons'),
             services: path.resolve(__dirname, 'src/services'),
+            types: path.resolve(__dirname, 'src/types'),
         },
     },
 })

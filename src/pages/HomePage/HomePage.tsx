@@ -8,7 +8,7 @@ import { CreateForm, SearchableList } from 'features';
 import { usePageLogger } from 'hooks';
 
 import WelcomeText from './WelcomeText';
-import { DocType } from '../../types/docTypes';
+import { DocType } from 'types';
 import { getHomePageStyles } from '../../styles/styles';
 import {
     getDeleteActions,
