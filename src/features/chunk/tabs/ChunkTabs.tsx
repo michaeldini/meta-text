@@ -5,12 +5,12 @@ import { log } from 'utils';
 import { NotesSummaryTab, ComparisonTab, AiImageTab, CompressionToolTab } from '../tools';
 import ExplanationTab from '../tools/explanation/ExplanationTab';
 import { useChunkStore } from '../../../store/chunkStore';
-import type { Chunk } from '../../../types/chunk';
+import type { ChunkType } from 'types';
 import { getToolsStyles } from './ChunkTabs.styles';
 import { useTheme } from '@mui/material/styles';
 
-interface ChunkToolsDisplayProps {
-    chunk: Chunk;
+interface ChunkTabsProps {
+    chunk: ChunkType;
 }
 
 const tabOptions = [
@@ -21,7 +21,7 @@ const tabOptions = [
     { value: 'explanation', icon: <NotesIcon />, key: 'explanation' },
 ] as const;
 
-const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk }) => {
+const ChunkTabs: React.FC<ChunkTabsProps> = ({ chunk }) => {
     const theme = useTheme();
     const styles = React.useMemo(() => getToolsStyles(theme), [theme]);
 
@@ -35,7 +35,7 @@ const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk }) => {
     }, [chunk.id]);
 
     return (
-        <Box sx={styles.toolDisplayContainer}>
+        <Box sx={styles.ChunkTabsContainer}>
             {/* Show Notes/Summary if selected */}
             {activeTabs.includes('notes-summary') && (
                 <NotesSummaryTab chunk={chunk} updateChunkField={updateChunkField} />
@@ -60,4 +60,4 @@ const ChunkToolsDisplay: React.FC<ChunkToolsDisplayProps> = ({ chunk }) => {
     );
 };
 
-export default ChunkToolsDisplay;
+export default ChunkTabs;

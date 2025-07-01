@@ -42,11 +42,6 @@ const ChunkWords = memo(function ChunkWords({
     };
     const highlightedIndices = getRange();
 
-    // const handleWordDialogOpen = (idx: number, event: React.MouseEvent<HTMLElement>) => {
-    //     setSelectedWordIdx(idx);
-    //     setAnchorEl(event.currentTarget);
-    // };
-
     const handleToolbarClose = () => {
         setAnchorEl(null);
         setSelectedWordIdx(null);
@@ -95,11 +90,11 @@ const ChunkWords = memo(function ChunkWords({
         }
         // else: range is highlighted, show toolbar (handled in render)
     };
-    const clearSelection = () => {
-        setSelectionStartIdx(null);
-        setSelectionEndIdx(null);
-        setDialogAnchor(null);
-    };
+    // const clearSelection = () => {
+    //     setSelectionStartIdx(null);
+    //     setSelectionEndIdx(null);
+    //     setDialogAnchor(null);
+    // };
 
     return (
         <Box>

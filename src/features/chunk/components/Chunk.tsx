@@ -4,13 +4,13 @@ import { Paper, Slide, useTheme } from '@mui/material';
 import { useChunkStore } from 'store';
 
 import ChunkWords from '../words/ChunkWords';
-import ChunkToolsDisplay from '../../chunk/tabs/ChunkTabs';
+import ChunkTabs from '../../chunk/tabs/ChunkTabs';
 import { getChunkStyles } from './styles/Chunk.styles';
-import type { Chunk } from '../../../types/chunk';
+import type { ChunkType } from 'types';
 import type { ChunkFieldValue } from '../../../store/chunkStore';
 
 export interface ChunkProps {
-    chunk: Chunk;
+    chunk: ChunkType;
     chunkIdx: number;
     // handleChunkFieldChange: (chunkId: number, field: keyof Chunk, value: ChunkFieldValue) => void;
 }
@@ -45,7 +45,7 @@ const Chunk = memo(function Chunk({
                 chunk={chunk}
                 chunkIdx={chunkIdx}
             />
-            <ChunkToolsDisplay
+            <ChunkTabs
                 chunk={chunk}
             />
         </Paper>

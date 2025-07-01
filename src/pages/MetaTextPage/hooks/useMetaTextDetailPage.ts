@@ -1,8 +1,8 @@
 import { useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMetaTextDetail } from '../../../store/metaTextDetailStore';
+import { useMetaTextDetail } from 'store';
 import { metaTextReviewRoute } from '../../../routes';
-import log from '../../../utils/logger';
+import { log } from 'utils';
 
 // Constants
 const MESSAGES = {

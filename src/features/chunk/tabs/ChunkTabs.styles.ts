@@ -5,7 +5,7 @@ import { CHUNK_WORDS_MIN_WIDTH, CHUNK_TABS_MIN_WIDTH, CHUNK_TABS_MAX_WIDTH } fro
 export const getToolsStyles = (theme: Theme) => ({
 
     // sticky container for tools
-    toolDisplayContainer: {
+    ChunkTabsContainer: {
         display: 'flex',
         flexDirection: 'column' as const,
         alignItems: 'flex-start',

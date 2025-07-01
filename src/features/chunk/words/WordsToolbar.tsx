@@ -11,9 +11,6 @@ export interface WordsToolbarProps {
     wordIdx: number;
     chunkIdx: number;
     chunk: any;
-    // context: string;
-    // metaTextId: string | number | undefined;
-    // isPhrase?: boolean;
 }
 
 /**
@@ -27,9 +24,6 @@ const WordsToolbar: React.FC<WordsToolbarProps> = memo(({
     wordIdx,
     chunkIdx,
     chunk,
-    // context,
-    // metaTextId,
-    // isPhrase = false
 }) => {
     const theme = useTheme();
     const styles = getWordsStyles(theme);
@@ -44,12 +38,6 @@ const WordsToolbar: React.FC<WordsToolbarProps> = memo(({
     const handleDefineToolComplete = (success: boolean, result?: any) => {
         if (success) {
             // Define tool completed successfully
-        }
-    };
-
-    const handleExplainPhraseToolComplete = (success: boolean, result?: any) => {
-        if (success) {
-            // Explain phrase tool completed successfully
         }
     };
 

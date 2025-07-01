@@ -10,10 +10,7 @@ import { FADE_IN_DURATION } from 'constants';
 
 import { MetaTextContent, NotFoundDisplay } from './components';
 import { useMetaTextDetailPage } from './hooks/useMetaTextDetailPage';
-/**
- * MetaTextDetailPage - Main page component
- * Single responsibility: Coordinate page-level concerns (routing, error boundaries, logging)
- */
+
 export default function MetaTextDetailPage() {
     const { metaTextId } = useParams<{ metaTextId: string }>();
     // Add a key to force remount of MetaTextContent (and header) after refresh

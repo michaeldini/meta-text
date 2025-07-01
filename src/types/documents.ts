@@ -27,7 +27,7 @@ export type SourceDocument = {
     text?: string;
 };
 
-export type Chunk = {
+export type ChunkType = {
     id: number;
     text: string;
     position: number;
@@ -58,3 +58,6 @@ export interface ChunkCompressionCreate {
     compressed_text: string;
     chunk_id?: number; // optional for creation, will be set by backend
 }
+
+// Type for chunk field values - covers all possible field types
+export type ChunkFieldValue = string | number | boolean | null | undefined;

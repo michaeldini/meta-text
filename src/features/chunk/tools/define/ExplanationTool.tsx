@@ -97,7 +97,7 @@ const ExplanationTool: React.FC<ExplanationToolProps> = ({
                     {explanation?.explanationWithContext && (
                         <Box>
                             <Typography variant="subtitle2" gutterBottom>
-                                2Explanation in Context:
+                                Explanation in Context:
                             </Typography>
                             <Typography variant="body2">
                                 {explanation.explanationWithContext}

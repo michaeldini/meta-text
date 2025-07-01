@@ -7,3 +7,5 @@ export { default as FlexBox } from './FlexBox';
 export { default as AiGenerationButton } from './AiGenerationButton';
 export { default as ReviewButton } from './ReviewButton';
 export { default as TextSizeInput } from './TextSizeInput';
+export { default as LineHeightInput } from './LineHeightInput';
+export { default as FontFamilySelect } from './FontFamilySelect';

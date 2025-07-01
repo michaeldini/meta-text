@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Box, Pagination, Paper, Alert, Slide } from '@mui/material';
 import { LoadingBoundary, ErrorBoundary } from 'components';
-import log from '../../utils/logger';
+import { log } from 'utils';
 import { useChunkStore } from 'store';
 
 import Chunk from '../chunk/components/Chunk';
@@ -137,8 +137,6 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
                                 <Chunk
                                     chunk={chunk}
                                     chunkIdx={startIdx + chunkIdx}
-                                // handleChunkFieldChange={updateChunkField}
-                                // data-chunk-id={chunk.id}
                                 />
                             </Box>
                         ))}

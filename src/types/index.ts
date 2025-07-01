@@ -1,4 +1,5 @@
 export { DocType } from './documents';
+export * from './documents';
 export * from './error';
 // export * from './global';
 // export * from './images';

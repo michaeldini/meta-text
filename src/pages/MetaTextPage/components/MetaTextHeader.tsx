@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import { Typography, Paper, useTheme } from '@mui/material';
 
 import { SourceDocInfo } from 'features';
-import { AiGenerationButton, ReviewButton, FlexBox } from 'components';
-import { TextSizeInput } from 'components';
-import FontFamilySelect from '../../../components/FontFamilySelect';
-import LineHeightInput from '../../../components/LineHeightInput';
+import { AiGenerationButton, ReviewButton, FlexBox, TextSizeInput, FontFamilySelect, LineHeightInput } from 'components';
 
 import { getMetaTextContentStyles } from './MetaText.styles';
 

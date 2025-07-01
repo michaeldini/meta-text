@@ -4,9 +4,9 @@ import { Box, useTheme, Alert, Fade } from '@mui/material';
 import { generateSourceDocInfo } from 'services';
 import { Chunks } from 'features';
 import { PageContainer } from 'components';
+import { getErrorMessage } from 'types';
 
 import MetaTextHeader from './MetaTextHeader';
-import { getErrorMessage } from '../../../types/error';
 import { getMetaTextContentStyles } from './MetaText.styles';
 
 interface MetaTextContentProps {

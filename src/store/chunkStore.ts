@@ -2,24 +2,21 @@ import { create } from 'zustand';
 
 import { getUserChunkSession, setUserChunkSession, fetchChunks as apiFetchChunks, updateChunk, splitChunk, combineChunks } from 'services';
 
-import { getErrorMessage } from '../types/error';
-import type { Chunk } from '../types/chunk';
+import { getErrorMessage } from 'types';
+import type { ChunkType, ChunkFieldValue } from 'types';
 import { useAuthStore } from './authStore';
 
 // Specific debounce function for chunk updates
 function debounceChunkUpdate(
-    func: (chunk: Chunk) => void,
+    func: (chunk: ChunkType) => void,
     wait: number
-): (chunk: Chunk) => void {
+): (chunk: ChunkType) => void {
     let timeout: ReturnType<typeof setTimeout>;
-    return function (chunk: Chunk) {
+    return function (chunk: ChunkType) {
         clearTimeout(timeout);
         timeout = setTimeout(() => func(chunk), wait);
     };
 }
-
-// Type for chunk field values - covers all possible field types
-export type ChunkFieldValue = string | number | boolean | null | undefined;
 
 // Centralized list of available chunk tabs
 export const CHUNK_TABS = [
@@ -33,7 +30,7 @@ export const CHUNK_TABS = [
 type ChunkTab = typeof CHUNK_TABS[number];
 
 interface ChunkState {
-    chunks: Chunk[];
+    chunks: ChunkType[];
     loadingChunks: boolean;
     chunksError: string;
     activeChunkId: number | null;
@@ -41,10 +38,10 @@ interface ChunkState {
     activeTabs: ChunkTab[];
     setActiveTabs: (tabs: ChunkTab[]) => void;
     fetchChunks: (metaTextId: number) => Promise<void>;
-    updateChunkField: (chunkId: number, field: keyof Chunk, value: ChunkFieldValue) => void;
+    updateChunkField: (chunkId: number, field: keyof ChunkType, value: ChunkFieldValue) => void;
     handleWordClick: (chunkIdx: number, wordIdx: number) => Promise<void>;
     handleRemoveChunk: (chunkIdx: number) => Promise<void>;
-    setChunks: (chunks: Chunk[]) => void;
+    setChunks: (chunks: ChunkType[]) => void;
     refetchChunks: (metaTextId: number) => Promise<void>;
     resetChunkState: () => void;
 }
@@ -142,7 +139,7 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
             newChunks[idx] = updatedChunk;
             // Debounce API update
             if (!debouncers[chunkId]) {
-                debouncers[chunkId] = debounceChunkUpdate((data: Chunk) => {
+                debouncers[chunkId] = debounceChunkUpdate((data: ChunkType) => {
                     updateChunk(data.id, data);
                 }, 1200);
             }
