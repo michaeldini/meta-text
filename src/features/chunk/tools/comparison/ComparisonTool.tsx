@@ -56,7 +56,7 @@ const ComparisonTool: React.FC<ComparisonToolComponentProps> = ({
                 sx={{ ml: 1 }}
                 disabled={loading || !chunk?.id}
             />
-            <Box>
+            <Box sx={styles.comparisonTextContainer}>
                 {comparisonText ? (
                     <ReactMarkdown>{comparisonText}</ReactMarkdown>
                 ) : (

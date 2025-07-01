@@ -6,13 +6,10 @@ export const getCompressionTabStyles = (theme: Theme) => ({
     root: {
         p: theme.spacing(1),
         width: '100%',
-        border: '1px solid',
-        borderColor: yellow[300],
-        // backgroundColor: theme.palette.background.paper,
         color: theme.palette.text.primary,
-        borderRadius: theme.shape.borderRadiusSm,
         minWidth: CHUNK_TABS_MIN_WIDTH,
-        maxWidth: CHUNK_TABS_MAX_WIDTH
+        maxWidth: CHUNK_TABS_MAX_WIDTH,
+        borderLeft: `4px solid ${theme.palette.secondary.main}`,
     },
     select: {
         '& .MuiInputBase-root': {

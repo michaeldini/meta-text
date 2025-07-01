@@ -10,7 +10,9 @@ export const getToolsStyles = (theme: Theme) => ({
         display: 'flex',
         flexDirection: 'column',
         width: '100%',
-        minWidth: 400
+        minWidth: 400,
+        borderLeft: `4px solid ${theme.palette.secondary.main}`,
+
     },
     // image tool styles
     chunkImageBox: {

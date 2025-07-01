@@ -11,14 +11,14 @@ export const getExplanationStyles = (theme: Theme) => ({
         display: 'flex',
         flexDirection: 'column',
         width: '100%',
-        minWidth: 400
+        minWidth: 400,
+        borderLeft: `4px solid ${theme.palette.secondary.main}`,
+
     },
     explanationTextContainer: {
         p: 2,
-        borderRadius: 1,
-        backgroundColor: theme.palette.background.paper,
+        // borderRadius: 1,
         boxShadow: theme.shadows[1],
-        color: theme.palette.text.disabled,
         minHeight: 100,
         maxHeight: 300,
         overflowY: 'auto',
