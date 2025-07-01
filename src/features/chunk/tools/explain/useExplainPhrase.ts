@@ -1,12 +1,6 @@
 import { useState, useCallback } from 'react';
 import { apiPost } from '../../../../utils/api';
 
-interface ToolResult<T> {
-    success: boolean;
-    data?: T;
-    error?: string;
-}
-
 interface ExplainPhraseParams {
     phrase: string;
     context?: string;
@@ -14,9 +8,9 @@ interface ExplainPhraseParams {
     meta_text_id?: string | number;
 }
 
-interface ExplainPhraseResult {
+export interface ExplainPhraseResult {
     explanation: string;
-    explanationWithContext: string; // now always required
+    explanationWithContext: string;
 }
 
 export function useExplainPhrase() {
@@ -24,37 +18,28 @@ export function useExplainPhrase() {
     const [error, setError] = useState<string | null>(null);
 
     const explain = useCallback(
-        async (params: ExplainPhraseParams): Promise<ToolResult<ExplainPhraseResult>> => {
+        async (params: ExplainPhraseParams): Promise<ExplainPhraseResult | null> => {
             setLoading(true);
             setError(null);
-            // Ensure meta_text_id is present, fallback to chunk.meta_text_id if available
             const meta_text_id = params.meta_text_id ?? params.chunk?.meta_text_id;
             const payload = { ...params, meta_text_id };
             try {
-                const data = await apiPost<{
-                    success: boolean;
-                    data?: Partial<ExplainPhraseResult>;
-                    error?: string;
-                }>('/api/explain-phrase-in-context', payload);
+                const data = await apiPost<any>('/api/explain-phrase-in-context', payload);
                 setLoading(false);
-                if (!data.success) {
-                    setError(data.error || 'Failed to explain phrase');
-                }
-                // Always provide explanationWithContext as a string
-                if (data.data) {
+                // Handle direct explanation object
+                if (data && (data.explanation || data.explanationWithContext)) {
                     return {
-                        ...data,
-                        data: {
-                            explanation: data.data.explanation ?? '',
-                            explanationWithContext: data.data.explanationWithContext ?? ''
-                        }
+                        explanation: data.explanation ?? '',
+                        explanationWithContext: data.explanationWithContext ?? ''
                     };
                 }
-                return data as ToolResult<ExplainPhraseResult>;
+                // Handle error
+                setError(data?.error || 'Failed to explain phrase');
+                return null;
             } catch (err: any) {
                 setLoading(false);
                 setError(err.message || 'Failed to explain phrase');
-                return { success: false, error: err.message };
+                return null;
             }
         },
         []

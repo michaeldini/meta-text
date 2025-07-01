@@ -12,8 +12,6 @@ export const useSplitChunk = () => {
         try {
             const { chunkIdx, wordIdx, word } = props;
 
-            console.log('Splitting chunk', { chunkIdx, wordIdx, word });
-
             // Use the existing store function
             handleWordClick(chunkIdx, wordIdx);
 

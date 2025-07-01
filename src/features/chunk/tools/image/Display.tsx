@@ -20,10 +20,6 @@ const ChunkImageDisplay: React.FC<ChunkImageDisplayProps> = ({
     setLightboxOpen,
     imgPrompt,
 }) => {
-    // Debug logging
-    console.log('ChunkImageDisplay imageState.data:', imageState.data);
-    console.log('ChunkImageDisplay getImgSrc():', getImgSrc());
-
     return (
         <Paper>
             <AiGenerationButton

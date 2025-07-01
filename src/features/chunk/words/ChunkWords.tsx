@@ -32,10 +32,8 @@ const ChunkWords = memo(function ChunkWords({
     const fontFamily = useUIPreferencesStore(state => state.fontFamily);
     const lineHeight = useUIPreferencesStore(state => state.lineHeight);
 
-    // Ref to the last selected word element
-    const lastSelectedWordElRef = useRef<HTMLElement | null>(null);
-    // Store the bounding rect for toolbar positioning
-    const [toolbarPos, setToolbarPos] = useState<{ left: number; top: number } | null>(null);
+    // Unified dialog anchor state: element and position
+    const [dialogAnchor, setDialogAnchor] = useState<HTMLElement | null>(null);
 
     // Helper: get min/max for range
     const getRange = () => {
@@ -46,7 +44,6 @@ const ChunkWords = memo(function ChunkWords({
     const highlightedIndices = getRange();
 
     const handleWordDialogOpen = (idx: number, event: React.MouseEvent<HTMLElement>) => {
-        console.log('handleWordDialogOpen', { words, idx, word: words[idx] });
         setSelectedWordIdx(idx);
         setAnchorEl(event.currentTarget);
     };
@@ -56,12 +53,12 @@ const ChunkWords = memo(function ChunkWords({
         setSelectedWordIdx(null);
         setSelectionStartIdx(null);
         setSelectionEndIdx(null);
-        setToolbarPos(null);
+        setDialogAnchor(null);
     };
 
     const handleMergeComplete = (success: boolean, result?: any) => {
         if (success) {
-            console.log('Merge completed successfully:', result);
+            // Merge completed successfully
         }
     };
 
@@ -70,16 +67,12 @@ const ChunkWords = memo(function ChunkWords({
         setSelectionStartIdx(idx);
         setSelectionEndIdx(idx);
         setIsSelecting(true);
-        if (event && event.target && (event.target as HTMLElement).tagName) {
-            lastSelectedWordElRef.current = event.target as HTMLElement;
-        }
+        // Do NOT set dialog anchor here
     };
     const handleWordEnter = (idx: number, event?: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>) => {
         if (isSelecting) {
             setSelectionEndIdx(idx);
-            if (event && event.target && (event.target as HTMLElement).tagName) {
-                lastSelectedWordElRef.current = event.target as HTMLElement;
-            }
+            // Do NOT set dialog anchor here
         }
     };
     const handleWordUp = () => {
@@ -90,33 +83,23 @@ const ChunkWords = memo(function ChunkWords({
         ) {
             // Find the last word in the selection
             const lastIdx = [selectionStartIdx, selectionEndIdx].sort((a, b) => a - b)[1];
-            // Try to get the element for the last word
-            const el = document.querySelector(`[data-word-idx='${lastIdx}']`);
+            // Try to get the element for the last word in this chunk
+            const el = document.querySelector(`[data-word-idx='${chunkIdx}-${lastIdx}']`);
             if (el) {
-                lastSelectedWordElRef.current = el as HTMLElement;
-                const rect = el.getBoundingClientRect();
-                // Position relative to viewport, adjust for scroll
-                setToolbarPos({
-                    left: rect.left + window.scrollX,
-                    top: rect.bottom + window.scrollY
-                });
+                setDialogAnchor(el as HTMLElement);
+                // If single word, open dialog
+                if (selectionStartIdx === selectionEndIdx) {
+                    setSelectedWordIdx(selectionStartIdx);
+                    setAnchorEl(el as HTMLElement);
+                }
             }
-        }
-        if (
-            selectionStartIdx !== null &&
-            selectionEndIdx !== null &&
-            selectionStartIdx === selectionEndIdx
-        ) {
-            // Single word: open dialog
-            setSelectedWordIdx(selectionStartIdx);
-            setAnchorEl(lastSelectedWordElRef.current);
         }
         // else: range is highlighted, show toolbar (handled in render)
     };
     const clearSelection = () => {
         setSelectionStartIdx(null);
         setSelectionEndIdx(null);
-        setToolbarPos(null);
+        setDialogAnchor(null);
     };
 
     return (
@@ -148,12 +131,12 @@ const ChunkWords = memo(function ChunkWords({
                                 const touch = e.touches[0];
                                 const el = document.elementFromPoint(touch.clientX, touch.clientY);
                                 if (el && (el as HTMLElement).dataset && (el as HTMLElement).dataset.wordIdx) {
-                                    const idx = parseInt((el as HTMLElement).dataset.wordIdx!, 10);
+                                    const idx = parseInt((el as HTMLElement).dataset.wordIdx!.split('-')[1], 10);
                                     if (!isNaN(idx)) handleWordEnter(idx, e);
                                 }
                             }}
                             onTouchEnd={handleWordUp}
-                            data-word-idx={wordIdx}
+                            data-word-idx={`${chunkIdx}-${wordIdx}`}
                         >
                             {word}
                         </Box>
@@ -171,7 +154,7 @@ const ChunkWords = memo(function ChunkWords({
 
             {/* Only one WordActionDialog, handles both single and multi-word selection */}
             <WordActionDialog
-                anchorEl={highlightedIndices.length > 1 && toolbarPos ? lastSelectedWordElRef.current : anchorEl}
+                anchorEl={dialogAnchor}
                 onClose={handleDialogClose}
                 word={highlightedIndices.length > 1 ? highlightedIndices.map(i => words[i]).join(' ') : (selectedWordIdx !== null ? words[selectedWordIdx] : '')}
                 wordIdx={highlightedIndices.length > 1 ? highlightedIndices[0] : (selectedWordIdx || 0)}

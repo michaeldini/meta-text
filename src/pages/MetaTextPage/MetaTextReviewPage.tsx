@@ -52,11 +52,8 @@ function Header({ metatextId, navigate, styles }: { metatextId?: number; navigat
 }
 
 export default function MetaTextReviewPage() {
-    console.log('MetaTextReviewPage mounted');
-
     const { metaTextId: metatextIdParam } = useParams<{ metaTextId?: string }>();
     const metatextId = metatextIdParam ? Number(metatextIdParam) : undefined;
-    console.log('MetaTextReviewPage mounted, metatextId:', metatextId);
 
     const [wordlist, setWordlist] = useState<WordlistRow[]>([]);
     const [chunkSummariesNotes, setChunkSummariesNotes] = useState<ChunkSummaryNote[]>([]);
@@ -79,7 +76,6 @@ export default function MetaTextReviewPage() {
 
     useEffect(() => {
         async function loadData() {
-            console.log('loadData called, metatextId:', metatextId);
             try {
                 setLoading(true);
                 log.info('Starting to load wordlist and chunk summaries/notes', { metatextId });

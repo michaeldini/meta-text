@@ -39,22 +39,19 @@ const WordActionDialog: React.FC<WordActionDialogProps> = memo(({
 
     const handleSplitToolComplete = (success: boolean, result?: any) => {
         if (success) {
-            console.log('Split tool completed successfully:', result);
             onClose();
         }
     };
 
     const handleDefineToolComplete = (success: boolean, result?: any) => {
         if (success) {
-            console.log('Define tool completed successfully:', result);
-            // Don't close the dialog - let the define tool manage its own drawer
+            // Define tool completed successfully
         }
     };
 
     const handleExplainPhraseToolComplete = (success: boolean, result?: any) => {
         if (success) {
-            console.log('Explain phrase tool completed successfully:', result);
-            // Don't close the dialog - let the explain tool manage its own drawer
+            // Explain phrase tool completed successfully
         }
     };
 

@@ -16,8 +16,6 @@ export const useMergeChunks = () => {
                 throw new Error('Merge operation requires exactly 2 chunks');
             }
 
-            console.log('Merging chunks', { chunkIndices });
-
             // Use the existing store function to remove the first chunk (merge with next)
             const [firstChunk] = chunkIndices;
             handleRemoveChunk(firstChunk);
