@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 import { CompareArrowsIcon, PhotoFilterIcon, NotesIcon, CompressionIcon } from '../../../components/icons';
 import { log } from 'utils';
 import { NotesSummaryTab, ComparisonTab, AiImageTab, CompressionToolTab } from '../tools';
-import ExplanationTab from '../tools/explanation/ExplanationTab';
+import ExplanationTab from '../tools/explanation/ChunkExplanationTab';
 import { useChunkStore } from '../../../store/chunkStore';
 import type { ChunkType } from 'types';
 import { getToolsStyles } from './ChunkTabs.styles';

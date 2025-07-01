@@ -5,12 +5,12 @@ import { useTheme } from '@mui/material/styles';
 
 import { AiGenerationButton } from 'components';
 import { useExplanation } from 'hooks/useExplanation';
-import type { Chunk } from '../../../../types/chunk';
+import type { ChunkType } from 'types';
 import { getExplanationStyles } from './Explanation.styles';
 
 interface ExplanationToolProps {
     chunkIdx: number;
-    chunk: Chunk;
+    chunk: ChunkType;
     explanationText?: string;
     onExplanationUpdate?: (text: string) => void;
     onComplete?: (success: boolean, result?: any) => void;

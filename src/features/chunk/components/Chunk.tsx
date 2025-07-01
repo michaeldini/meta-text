@@ -7,7 +7,6 @@ import ChunkWords from '../words/ChunkWords';
 import ChunkTabs from '../../chunk/tabs/ChunkTabs';
 import { getChunkStyles } from './styles/Chunk.styles';
 import type { ChunkType } from 'types';
-import type { ChunkFieldValue } from '../../../store/chunkStore';
 
 export interface ChunkProps {
     chunk: ChunkType;

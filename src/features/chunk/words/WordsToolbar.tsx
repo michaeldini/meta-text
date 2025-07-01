@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Popover, Box, useTheme } from '@mui/material';
 import SplitChunkTool from '../tools/split/SplitChunkTool';
-import ExplanationTool from '../tools/define/ExplanationTool';
+import WordsExplanationTool from '../tools/explanation/WordsExplanationTool';
 // import ExplainPhraseTool from '../tools/explain/ExplainPhraseTool';
 import { getWordsStyles } from './Words.styles';
 export interface WordsToolbarProps {
@@ -63,7 +63,7 @@ const WordsToolbar: React.FC<WordsToolbarProps> = memo(({
                     chunk={chunk}
                     onComplete={handleSplitToolComplete}
                 />
-                <ExplanationTool
+                <WordsExplanationTool
                     chunkIdx={chunkIdx}
                     wordIdx={wordIdx}
                     word={word}

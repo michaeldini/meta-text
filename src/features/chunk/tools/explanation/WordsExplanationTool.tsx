@@ -21,7 +21,7 @@ interface ExplanationToolProps extends WordToolProps {
  * Explanation Tool Component
  * Provides word explanation with context
  */
-const ExplanationTool: React.FC<ExplanationToolProps> = ({
+const WordsExplanationTool: React.FC<ExplanationToolProps> = ({
     word, // The word or words to explain
     chunk,
     onComplete
@@ -110,4 +110,4 @@ const ExplanationTool: React.FC<ExplanationToolProps> = ({
     );
 };
 
-export default ExplanationTool;
+export default WordsExplanationTool;

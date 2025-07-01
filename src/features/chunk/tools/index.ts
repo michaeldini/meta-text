@@ -5,7 +5,6 @@
 
 // Individual Tools
 export * from './split';
-export * from './define';
 export * from './merge';
 export * from './comparison';
 export * from './image';
