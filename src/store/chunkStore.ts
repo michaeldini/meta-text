@@ -1,8 +1,9 @@
 import { create } from 'zustand';
-import { fetchChunks as apiFetchChunks, updateChunk, splitChunk, combineChunks } from '../services/chunkService';
+
+import { getUserChunkSession, setUserChunkSession, fetchChunks as apiFetchChunks, updateChunk, splitChunk, combineChunks } from 'services';
+
 import { getErrorMessage } from '../types/error';
 import type { Chunk } from '../types/chunk';
-import { getUserChunkSession, setUserChunkSession } from '../services/userChunkSessionService';
 import { useAuthStore } from './authStore';
 
 // Specific debounce function for chunk updates
@@ -20,14 +21,25 @@ function debounceChunkUpdate(
 // Type for chunk field values - covers all possible field types
 export type ChunkFieldValue = string | number | boolean | null | undefined;
 
+// Centralized list of available chunk tabs
+export const CHUNK_TABS = [
+    'comparison',
+    'ai-image',
+    'notes-summary',
+    'compression',
+    'explanation',
+] as const;
+
+type ChunkTab = typeof CHUNK_TABS[number];
+
 interface ChunkState {
     chunks: Chunk[];
     loadingChunks: boolean;
     chunksError: string;
     activeChunkId: number | null;
     setActiveChunk: (id: number | null) => void;
-    activeTabs: Array<'comparison' | 'ai-image' | 'notes-summary' | 'compression' | 'explanation'>;
-    setActiveTabs: (tabs: Array<'comparison' | 'ai-image' | 'notes-summary' | 'compression' | 'explanation'>) => void;
+    activeTabs: ChunkTab[];
+    setActiveTabs: (tabs: ChunkTab[]) => void;
     fetchChunks: (metaTextId: number) => Promise<void>;
     updateChunkField: (chunkId: number, field: keyof Chunk, value: ChunkFieldValue) => void;
     handleWordClick: (chunkIdx: number, wordIdx: number) => Promise<void>;

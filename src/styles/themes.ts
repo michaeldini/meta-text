@@ -242,7 +242,7 @@ export const darkTheme = createTheme({
             disabled: grey[700],
         },
         background: {
-            default: grey[900],
+            default: '#000', // changed from grey[900] to black
             paper: grey[500],
         },
         divider: grey[700],
