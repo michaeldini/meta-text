@@ -1,5 +1,26 @@
 import { handleApiResponse, apiPost, apiGet } from '../utils/api';
 
+export interface ExplanationRequest {
+    words?: string;
+    context?: string;
+    chunkId?: number | null;
+    metaTextId?: number | null;
+
+}
+export interface ExplanationResponse {
+    explanation: string;
+    explanationWithContext: string;
+}
+
+/**
+ * Calls the /api/explain endpoint to get an explanation for a word, words, or a chunk.
+ * @param {ExplanationRequest} params - The request params.
+ * @returns {Promise<ExplanationResponse>}
+ */
+export async function explainWordsOrChunk(params: ExplanationRequest): Promise<ExplanationResponse> {
+    return await apiPost('/api/explain', params);
+}
+
 export async function fetchDefinitionInContext(word: string, context: string, meta_text_id: number): Promise<{ definition: string, definitionWithContext: string }> {
     return await apiPost('/api/generate-definition-in-context', { word, context, meta_text_id });
 }

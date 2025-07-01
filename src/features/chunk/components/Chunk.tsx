@@ -1,5 +1,5 @@
 import React, { memo, useRef, useEffect, useMemo } from 'react';
-import { Box, Paper, Slide, useTheme } from '@mui/material';
+import { Paper, Slide, useTheme } from '@mui/material';
 
 import { useChunkStore } from 'store';
 
@@ -12,15 +12,14 @@ import type { ChunkFieldValue } from '../../../store/chunkStore';
 export interface ChunkProps {
     chunk: Chunk;
     chunkIdx: number;
-    handleChunkFieldChange: (chunkId: number, field: keyof Chunk, value: ChunkFieldValue) => void;
+    // handleChunkFieldChange: (chunkId: number, field: keyof Chunk, value: ChunkFieldValue) => void;
 }
 
 const Chunk = memo(function Chunk({
     chunk,
     chunkIdx,
-    handleChunkFieldChange
+    // handleChunkFieldChange
 }: ChunkProps) {
-    const words = chunk.text ? chunk.text.split(/\s+/) : [];
     const { activeChunkId, setActiveChunk } = useChunkStore();
     const isActive = activeChunkId === chunk.id;
     const chunkRef = useRef<HTMLDivElement>(null);
@@ -43,9 +42,8 @@ const Chunk = memo(function Chunk({
             onClick={() => setActiveChunk(chunk.id)}
         >
             <ChunkWords
-                words={words}
-                chunkIdx={chunkIdx}
                 chunk={chunk}
+                chunkIdx={chunkIdx}
             />
             <ChunkToolsDisplay
                 chunk={chunk}

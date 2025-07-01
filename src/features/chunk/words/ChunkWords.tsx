@@ -1,14 +1,13 @@
 import React, { memo, useState, useMemo, useRef } from 'react';
 import { Box, IconButton, Paper, useTheme } from '@mui/material';
 import { MergeChunksTool } from '../../chunk/tools';
-import WordActionDialog from './WordActionDialog';
+import WordsToolbar from './WordsToolbar';
 import { getWordsStyles } from './Words.styles';
 import { useUIPreferencesStore } from 'store';
 
 export interface ChunkWordsProps {
-    words: string[];
+    chunk: { text?: string; meta_text_id?: string | number;[key: string]: any };
     chunkIdx: number;
-    chunk?: { meta_text_id?: string | number;[key: string]: any };
 }
 
 /**
@@ -16,10 +15,10 @@ export interface ChunkWordsProps {
  * Uses the new tool system for word actions and chunk merging
  */
 const ChunkWords = memo(function ChunkWords({
-    words,
-    chunkIdx,
-    chunk
+    chunk,
+    chunkIdx
 }: ChunkWordsProps) {
+    const words = chunk.text ? chunk.text.split(/\s+/) : [];
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [selectedWordIdx, setSelectedWordIdx] = useState<number | null>(null);
     const [selectionStartIdx, setSelectionStartIdx] = useState<number | null>(null);
@@ -31,7 +30,7 @@ const ChunkWords = memo(function ChunkWords({
     const textSizePx = useUIPreferencesStore(state => state.textSizePx);
     const fontFamily = useUIPreferencesStore(state => state.fontFamily);
     const lineHeight = useUIPreferencesStore(state => state.lineHeight);
-
+    console.log(chunk.id, chunkIdx)
     // Unified dialog anchor state: element and position
     const [dialogAnchor, setDialogAnchor] = useState<HTMLElement | null>(null);
 
@@ -43,12 +42,12 @@ const ChunkWords = memo(function ChunkWords({
     };
     const highlightedIndices = getRange();
 
-    const handleWordDialogOpen = (idx: number, event: React.MouseEvent<HTMLElement>) => {
-        setSelectedWordIdx(idx);
-        setAnchorEl(event.currentTarget);
-    };
+    // const handleWordDialogOpen = (idx: number, event: React.MouseEvent<HTMLElement>) => {
+    //     setSelectedWordIdx(idx);
+    //     setAnchorEl(event.currentTarget);
+    // };
 
-    const handleDialogClose = () => {
+    const handleToolbarClose = () => {
         setAnchorEl(null);
         setSelectedWordIdx(null);
         setSelectionStartIdx(null);
@@ -153,15 +152,16 @@ const ChunkWords = memo(function ChunkWords({
             </Box>
 
             {/* Only one WordActionDialog, handles both single and multi-word selection */}
-            <WordActionDialog
+            <WordsToolbar
                 anchorEl={dialogAnchor}
-                onClose={handleDialogClose}
+                onClose={handleToolbarClose}
                 word={highlightedIndices.length > 1 ? highlightedIndices.map(i => words[i]).join(' ') : (selectedWordIdx !== null ? words[selectedWordIdx] : '')}
                 wordIdx={highlightedIndices.length > 1 ? highlightedIndices[0] : (selectedWordIdx || 0)}
                 chunkIdx={chunkIdx}
-                context={words.join(' ')}
-                metaTextId={chunk?.meta_text_id}
-                isPhrase={highlightedIndices.length > 1}
+                chunk={chunk}
+            // context={words.join(' ')}
+            // metaTextId={chunk?.meta_text_id}
+            // isPhrase={highlightedIndices.length > 1}
             />
         </Box>
     );

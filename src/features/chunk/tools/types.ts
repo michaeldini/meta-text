@@ -6,9 +6,9 @@ export interface ChunkToolProps {
     /** The chunk index */
     chunkIdx: number;
     /** Optional chunk data */
-    chunk?: {
-        id?: string | number;
-        meta_text_id?: string | number;
+    chunk: {
+        id: number;
+        meta_text_id: number;
         content?: string;
         [key: string]: any;
     };
@@ -20,7 +20,7 @@ export interface WordToolProps extends ChunkToolProps {
     /** The word index within the chunk */
     wordIdx: number;
     /** Context around the word */
-    context?: string;
+    // context: string;
 }
 
 export interface MultiChunkToolProps {
@@ -57,7 +57,7 @@ export interface ChunkTool {
 // Tool-specific interfaces
 export interface SplitChunkToolProps extends WordToolProps { }
 
-export interface DefineWordToolProps extends WordToolProps { }
+// export interface DefineWordToolProps extends WordToolProps { }
 
 export interface MergeChunksToolProps extends MultiChunkToolProps { }
 

@@ -137,8 +137,8 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
                                 <Chunk
                                     chunk={chunk}
                                     chunkIdx={startIdx + chunkIdx}
-                                    handleChunkFieldChange={updateChunkField}
-                                    data-chunk-id={chunk.id}
+                                // handleChunkFieldChange={updateChunkField}
+                                // data-chunk-id={chunk.id}
                                 />
                             </Box>
                         ))}

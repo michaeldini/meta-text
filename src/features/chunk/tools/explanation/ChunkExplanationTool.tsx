@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Box } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
 import { useTheme } from '@mui/material/styles';
 
 import { AiGenerationButton } from 'components';
-import { useExplanation } from './useExplanation';
+import { useExplanation } from 'hooks/useExplanation';
 import type { Chunk } from '../../../../types/chunk';
 import { getExplanationStyles } from './Explanation.styles';
 
@@ -16,24 +16,27 @@ interface ExplanationToolProps {
     onComplete?: (success: boolean, result?: any) => void;
 }
 
-const ExplanationTool: React.FC<ExplanationToolProps> = ({
+const ChunkExplanationTool: React.FC<ExplanationToolProps> = ({
     chunkIdx,
     chunk,
     explanationText = '',
     onExplanationUpdate,
     onComplete
 }) => {
-    const { generateExplanation, loading, error } = useExplanation();
+    const { explain, loading, error } = useExplanation();
     const theme = useTheme();
     const styles = getExplanationStyles(theme);
 
-    const handleGenerate = async () => {
-        const result = await generateExplanation({ chunkIdx, chunk });
-        if (result.success && result.data) {
-            onExplanationUpdate?.(result.data.explanationText);
+    const handleGenerate = useCallback(async () => {
+        if (!chunk?.id) return;
+        const result = await explain({ chunkId: chunk.id, context: chunk.text, words: "" });
+        if (result) {
+            onExplanationUpdate?.(result.explanation);
+            onComplete?.(true, result);
+        } else {
+            onComplete?.(false, null);
         }
-        onComplete?.(result.success, result.data);
-    };
+    }, [chunk, explain, onExplanationUpdate, onComplete]);
 
     return (
         <Box sx={styles.toolTabContainer}>
@@ -57,4 +60,4 @@ const ExplanationTool: React.FC<ExplanationToolProps> = ({
     );
 };
 
-export default ExplanationTool;
+export default ChunkExplanationTool;

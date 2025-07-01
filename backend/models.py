@@ -189,3 +189,8 @@ class PhraseExplanation(SQLModel, table=True):
     explanation: str
     explanation_with_context: str
     meta_text_id: int | None = None
+
+# New consolidated response model for explanations
+class ExplanationResponse(BaseModel):
+    explanation: str
+    explanationWithContext: str

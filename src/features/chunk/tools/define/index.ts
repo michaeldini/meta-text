@@ -1,3 +1,3 @@
-export { default as DefineWordTool } from './DefineWordTool';
+export { default as ExplanationTool } from './ExplanationTool';
 export { useDefineWord } from './useDefineWord';
-export type { DefineWordToolProps } from '../types';
+export type { WordToolProps } from '../types';
