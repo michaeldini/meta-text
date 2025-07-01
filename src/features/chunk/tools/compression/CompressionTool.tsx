@@ -96,7 +96,7 @@ const CompressionTool: React.FC<CompressionToolProps> = ({ chunk, onCompressionC
                     </TextField>
                     <Box mt={2}>
                         <Button onClick={handlePreview} disabled={loading || !style || !chunk} variant="outlined">
-                            {loading ? <CircularProgress size={20} /> : 'Preview Compression'}
+                            {loading ? <CircularProgress /> : 'Preview Compression'}
                         </Button>
                     </Box>
                     {preview && (
@@ -112,7 +112,7 @@ const CompressionTool: React.FC<CompressionToolProps> = ({ chunk, onCompressionC
                 <DialogActions>
                     <Button onClick={handleClose} disabled={saving}>Cancel</Button>
                     <Button onClick={handleSave} disabled={!preview || saving} variant="contained" color="primary">
-                        {saving ? <CircularProgress size={20} /> : 'Save Compression'}
+                        {saving ? <CircularProgress /> : 'Save Compression'}
                     </Button>
                 </DialogActions>
             </Dialog>

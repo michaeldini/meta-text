@@ -159,9 +159,6 @@ const ChunkWords = memo(function ChunkWords({
                 wordIdx={highlightedIndices.length > 1 ? highlightedIndices[0] : (selectedWordIdx || 0)}
                 chunkIdx={chunkIdx}
                 chunk={chunk}
-            // context={words.join(' ')}
-            // metaTextId={chunk?.meta_text_id}
-            // isPhrase={highlightedIndices.length > 1}
             />
         </Box>
     );

@@ -21,7 +21,7 @@ const AiGenerationButton: React.FC<AiGenerationButtonProps> = ({ label, toolTip,
             disabled={disabled || loading}
             aria-label={toolTip || 'AI Generation Button'}
         >
-            {loading ? <CircularProgress size={20} aria-label="Loading AI generation" /> :
+            {loading ? <CircularProgress aria-label="Loading AI generation" /> :
                 <>
                     <StarsIcon style={{ marginRight: 8 }} />
                     {label}

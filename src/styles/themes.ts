@@ -78,9 +78,12 @@ const baseTheme: ThemeOptions = {
             },
         },
         MuiCircularProgress: {
+            defaultProps: {
+                size: 32,
+            },
             styleOverrides: {
                 root: {
-                    color: '#9c88ff', //  #9c88ff
+                    color: "secondary.main", // Use secondary color for progress    
                 },
             },
         },

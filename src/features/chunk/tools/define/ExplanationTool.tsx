@@ -61,7 +61,7 @@ const ExplanationTool: React.FC<ExplanationToolProps> = ({
                     disabled={loading}
                     aria-label={`Define ${stripPunctuation(word)}`}
                 >
-                    {loading ? <CircularProgress size={20} /> : <QuestionMarkIcon />}
+                    {loading ? <CircularProgress /> : <QuestionMarkIcon />}
                 </IconButton>
             </Tooltip>
 
