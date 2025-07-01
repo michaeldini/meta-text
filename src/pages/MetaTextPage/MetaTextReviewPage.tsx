@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Box, Typography, CircularProgress, Alert, IconButton, Tooltip } from '@mui/material';
+import { Box, Typography, CircularProgress, Alert, IconButton, Tooltip, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { ExpandMoreIcon } from 'icons';
 
 import { fetchWordlist, fetchChunks, fetchPhraseExplanations, PhraseExplanation } from 'services';
 import { usePageLogger } from 'hooks';
@@ -114,9 +115,30 @@ export default function MetaTextReviewPage() {
     return (
         <Box sx={styles.root}>
             <Header metatextId={metatextId} navigate={navigate} styles={styles} />
-            <Phrases data={phraseExplanations} />
-            <FlashCards wordlist={wordlist} />
-            <ChunkSummaryNotesTable chunks={chunkSummariesNotes} />
+            <Accordion sx={{ mb: 2 }}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography variant="h5">Phrases & Explanations</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <Phrases data={phraseExplanations} />
+                </AccordionDetails>
+            </Accordion>
+            <Accordion sx={{ mb: 2 }}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography variant="h5">Flashcards</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <FlashCards wordlist={wordlist} />
+                </AccordionDetails>
+            </Accordion>
+            <Accordion sx={{ mb: 2 }}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography variant="h5">Chunk Summary & Notes</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <ChunkSummaryNotesTable chunks={chunkSummariesNotes} />
+                </AccordionDetails>
+            </Accordion>
         </Box>
     );
 }

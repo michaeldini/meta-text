@@ -20,32 +20,25 @@ const Phrases: React.FC<PhrasesProps> = ({ data }) => {
     return (
         <Box sx={{ mt: 4 }}>
             <Typography variant="h6" gutterBottom>Phrases & Explanations</Typography>
-            <Accordion sx={{ mb: 2 }}>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant="subtitle1">Phrases</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    {data.map((row) => (
-                        <Accordion key={row.id} sx={{ mb: 2, boxShadow: 'none' }}>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                <Typography variant="subtitle1">{row.phrase}</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                                    <Box>
-                                        <Typography variant="subtitle2" color="text.secondary">Explanation</Typography>
-                                        <Typography>{row.explanation}</Typography>
-                                    </Box>
-                                    <Box>
-                                        <Typography variant="subtitle2" color="text.secondary">Explanation in Context</Typography>
-                                        <Typography>{row.explanation_with_context}</Typography>
-                                    </Box>
-                                </Box>
-                            </AccordionDetails>
-                        </Accordion>
-                    ))}
-                </AccordionDetails>
-            </Accordion>
+            {data.map((row) => (
+                <Accordion key={row.id} sx={{ mb: 2 }}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                        <Typography variant="subtitle1">{row.phrase}</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                            <Box>
+                                <Typography variant="subtitle2" color="text.secondary">Explanation</Typography>
+                                <Typography>{row.explanation}</Typography>
+                            </Box>
+                            <Box>
+                                <Typography variant="subtitle2" color="text.secondary">Explanation in Context</Typography>
+                                <Typography>{row.explanation_with_context}</Typography>
+                            </Box>
+                        </Box>
+                    </AccordionDetails>
+                </Accordion>
+            ))}
         </Box>
     );
 };
