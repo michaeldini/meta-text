@@ -1,10 +1,10 @@
 import React from 'react';
 import { Paper, Typography, useTheme } from '@mui/material';
 import { getSourceDocumentStyles } from '../styles/styles';
-import type { SourceDocument } from '../../../types/sourceDocument';
+import type { SourceDocumentDetail } from 'types';
 
 interface SourceDocProps {
-    doc: SourceDocument;
+    doc: SourceDocumentDetail;
 }
 
 /**

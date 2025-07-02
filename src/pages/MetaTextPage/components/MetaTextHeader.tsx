@@ -5,7 +5,7 @@ import { SourceDocInfo } from 'features';
 import { ReviewButton, FlexBox, TextSizeInput, FontFamilySelect, LineHeightInput } from 'components';
 import { GenerateSourceDocInfoButton } from 'components';
 
-import { getMetaTextContentStyles } from './MetaText.styles';
+import { getMetaTextPageStyles } from '../MetaText.styles';
 import type { MetaTextDetail } from 'types';
 
 interface MetaTextHeaderProps {
@@ -16,7 +16,7 @@ const MetaTextHeader: React.FC<MetaTextHeaderProps> = ({
     metaText
 }) => {
     const theme = useTheme();
-    const styles = getMetaTextContentStyles(theme);
+    const styles = getMetaTextPageStyles(theme);
 
     return (
         <FlexBox alignItems="center" sx={styles.headerContainer}>

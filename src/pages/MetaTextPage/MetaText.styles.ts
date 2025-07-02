@@ -1,6 +1,6 @@
 import { Theme } from '@mui/material/styles';
 
-export const getMetaTextContentStyles = (theme: Theme) => ({
+export const getMetaTextPageStyles = (theme: Theme) => ({
     container: {
         display: 'flex',
         height: '100%',
@@ -24,6 +24,29 @@ export const getMetaTextContentStyles = (theme: Theme) => ({
         flexDirection: 'row',
         alignItems: 'center',
         minHeight: 'auto', // Remove default min-height
-        // width: '100%',
     },
 });
+
+
+export const getMetaTextReviewStyles = (theme: Theme) => ({
+    root: {
+        padding: theme.spacing(3),
+    },
+    header: {
+        display: 'flex',
+        flexDirection: 'row' as const,
+        alignItems: 'flex-start',
+        gap: theme.spacing(0),
+        marginBottom: theme.spacing(2),
+    },
+    title: {
+        marginLeft: theme.spacing(1),
+    },
+
+    loadingBox: {
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: theme.spacing(4),
+    },
+});
+

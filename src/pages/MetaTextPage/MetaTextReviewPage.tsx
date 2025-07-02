@@ -10,10 +10,10 @@ import { usePageLogger } from 'hooks';
 import { FlashCards, ChunkSummaryNotesTable, Phrases } from 'features';
 import { ArrowBackIcon } from 'icons';
 import { FlexBox } from 'components';
+import { log } from 'utils';
 
-import log from '../../utils/logger';
 import { metaTextDetailRoute } from '../../routes';
-import { getMetaTextPageStyles } from './MetaTextPage.styles';
+import { getMetaTextReviewStyles } from './MetaText.styles';
 
 interface WordlistRow {
     id: number;
@@ -29,7 +29,7 @@ interface ChunkSummaryNote {
     [key: string]: any;
 }
 
-function LoadingIndicator({ styles }: { styles: ReturnType<typeof getMetaTextPageStyles> }) {
+function LoadingIndicator({ styles }: { styles: ReturnType<typeof getMetaTextReviewStyles> }) {
     return <Box sx={styles.loadingBox}><CircularProgress /></Box>;
 }
 
@@ -37,7 +37,7 @@ function ErrorAlert({ message }: { message: string }) {
     return <Alert severity="error">{message}</Alert>;
 }
 
-function Header({ metatextId, navigate, styles }: { metatextId?: number; navigate: (path: string) => void; styles: ReturnType<typeof getMetaTextPageStyles> }) {
+function Header({ metatextId, navigate, styles }: { metatextId?: number; navigate: (path: string) => void; styles: ReturnType<typeof getMetaTextReviewStyles> }) {
     return (
         <FlexBox sx={styles.header}>
             {metatextId && (
@@ -63,7 +63,7 @@ export default function MetaTextReviewPage() {
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
     const theme = useTheme();
-    const styles = getMetaTextPageStyles(theme);
+    const styles = getMetaTextReviewStyles(theme);
 
     usePageLogger('MetaTextReviewPage', {
         watched: [
