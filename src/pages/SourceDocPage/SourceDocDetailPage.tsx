@@ -56,7 +56,7 @@ export default function SourceDocDetailPage() {
                                 </Alert>
                             ) : doc ? (
                                 <>
-                                    <SourceDocInfo doc={doc} />
+                                    <SourceDocInfo sourceDocumentId={doc.id} />
                                     <SourceDoc doc={doc} />
                                 </>
                             ) : (
