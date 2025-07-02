@@ -93,7 +93,38 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
     },
     activeTabs: [],
     setActiveTabs: (tabs) => set({ activeTabs: tabs }),
-    setChunks: (chunks) => set({ chunks }),
+    setChunks: async (chunks) => {
+        // Set chunks and also set activeChunkId like fetchChunks does, now with backend session support
+        const metaTextId = chunks.length > 0 ? chunks[0].meta_text_id : null;
+        let backendActiveChunkId: number | null = null;
+        const user = useAuthStore.getState().user;
+        if (user && metaTextId) {
+            try {
+                const session = await getUserChunkSession(user.id, metaTextId);
+                if (session) backendActiveChunkId = session.last_active_chunk_id;
+            } catch {
+                // fallback to localStorage below
+            }
+        }
+        set(state => {
+            const updates: Partial<ChunkState> = {
+                chunks,
+                loadingChunks: false
+            };
+            if (!state.activeChunkId) {
+                let lastActive = backendActiveChunkId;
+                if (!lastActive && metaTextId) {
+                    lastActive = getLastActiveChunkId(metaTextId);
+                }
+                if (lastActive && chunks.find(c => c.id === lastActive)) {
+                    updates.activeChunkId = lastActive;
+                } else if (chunks.length > 0) {
+                    updates.activeChunkId = chunks[0].id;
+                }
+            }
+            return { ...state, ...updates };
+        });
+    },
     fetchChunks: async (metaTextId) => {
         set({ loadingChunks: true, chunksError: '' });
         try {

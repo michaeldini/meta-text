@@ -112,9 +112,11 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
                         title={button.tooltipTitle}
                         {...styles.tooltipProps}
                     >
-                        <ToggleButton value={button.value} aria-label={button.ariaLabel} disabled={isDisabled}>
-                            {button.icon}
-                        </ToggleButton>
+                        <span>
+                            <ToggleButton value={button.value} aria-label={button.ariaLabel} disabled={isDisabled}>
+                                {button.icon}
+                            </ToggleButton>
+                        </span>
                     </Tooltip>
                 ))}
             </ToggleButtonGroup>

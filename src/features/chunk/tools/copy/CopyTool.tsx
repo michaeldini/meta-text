@@ -40,13 +40,15 @@ const CopyTool: React.FC<CopyToolProps> = ({
                     enterDelay={200}
                     placement='left'
                 >
-                    <IconButton
-                        onClick={handleCopyChunk}
-                        disabled={!activeChunkId}
-                        data-testid={dataTestId}
-                    >
-                        <CopyIcon />
-                    </IconButton>
+                    <span style={{ display: 'inline-flex' }}>
+                        <IconButton
+                            onClick={handleCopyChunk}
+                            disabled={!activeChunkId}
+                            data-testid={dataTestId}
+                        >
+                            <CopyIcon />
+                        </IconButton>
+                    </span>
                 </Tooltip>
             </Box>
         </>

@@ -34,7 +34,6 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ sourceDocumentId }) => {
     const sourceDocs = useDocumentsStore(s => s.sourceDocs);
     const loading = useDocumentsStore(s => s.sourceDocsLoading);
     const error = useDocumentsStore(s => s.sourceDocsError);
-    console.log('SourceDocInfo rendered with ID:', sourceDocumentId);
     const doc = sourceDocs.find(d => d.id === sourceDocumentId);
 
     const renderField = (config: FieldConfig) => {
@@ -84,7 +83,7 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ sourceDocumentId }) => {
     };
 
     if (loading) {
-        return <Box sx={styles.container}><CircularProgress size={28} /></Box>;
+        return <Box sx={styles.container}><CircularProgress /></Box>;
     }
     if (error) {
         return <Box sx={styles.container}><Alert severity="error">{error}</Alert></Box>;
@@ -97,7 +96,7 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ sourceDocumentId }) => {
         <Box sx={styles.container} data-testid="source-doc-info">
             <Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant="h6">Document Info</Typography>
+                    <Typography variant="h6">Document: {doc.title}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     {FIELD_CONFIG.map(config => renderField(config))}
