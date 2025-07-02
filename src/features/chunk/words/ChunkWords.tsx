@@ -30,7 +30,6 @@ const ChunkWords = memo(function ChunkWords({
     const textSizePx = useUIPreferencesStore(state => state.textSizePx);
     const fontFamily = useUIPreferencesStore(state => state.fontFamily);
     const lineHeight = useUIPreferencesStore(state => state.lineHeight);
-    console.log(chunk.id, chunkIdx)
     // Unified dialog anchor state: element and position
     const [dialogAnchor, setDialogAnchor] = useState<HTMLElement | null>(null);
 

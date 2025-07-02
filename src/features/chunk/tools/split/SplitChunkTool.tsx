@@ -3,6 +3,7 @@ import { IconButton, Tooltip } from '@mui/material';
 import { ContentCutIcon } from 'icons';
 import { useSplitChunk } from './useSplitChunk';
 import { SplitChunkToolProps } from '../types';
+import { log } from 'utils';
 
 interface SplitChunkToolComponentProps extends SplitChunkToolProps {
     onComplete?: (success: boolean, result?: any) => void;
@@ -16,18 +17,19 @@ const SplitChunkTool: React.FC<SplitChunkToolComponentProps> = ({
     chunkIdx,
     wordIdx,
     word,
-    context,
+    // context,
     chunk,
     onComplete
 }) => {
     const { splitChunk } = useSplitChunk();
 
     const handleSplit = async () => {
+        log.info(`Splitting chunk ${chunkIdx} at word "${word}"`);
         const result = await splitChunk({
             chunkIdx,
             wordIdx,
             word,
-            context,
+            // context,
             chunk
         });
 

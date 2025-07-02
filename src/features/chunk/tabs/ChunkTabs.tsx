@@ -30,8 +30,7 @@ const ChunkTabs: React.FC<ChunkTabsProps> = ({ chunk }) => {
     const updateChunkField = useChunkStore(state => state.updateChunkField);
 
     React.useEffect(() => {
-        log.info(`ChunkTools mounted (id: ${chunk.id})`);
-        return () => log.info(`ChunkTools unmounted (id: ${chunk.id})`);
+        // return () => log.info(`ChunkTools unmounted (id: ${chunk.id})`); 
     }, [chunk.id]);
 
     return (

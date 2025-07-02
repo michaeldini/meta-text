@@ -25,12 +25,6 @@ export default function MetaTextDetailPage() {
     // Fetch MetaText detail directly
     const { metaText, loading, errors } = useMetaTextDetail(metaTextId);
 
-    // Lifecycle logging
-    useEffect(() => {
-        log.info('MetaTextDetailPage mounted');
-        return () => log.info('MetaTextDetailPage unmounted');
-    }, []);
-
     // State change logging
     usePageLogger('MetaTextDetailPage', {
         watched: [
@@ -50,7 +44,7 @@ export default function MetaTextDetailPage() {
                             <PageContainer>
                                 <Box sx={styles.container}>
                                     <MetaTextHeader metaText={metaText} />
-                                    <Chunks metaTextId={metaTextId.toString()} />
+                                    <Chunks />
                                 </Box>
                             </PageContainer>
                             <FloatingChunkToolbar />

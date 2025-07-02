@@ -5,6 +5,7 @@ import { getUserChunkSession, setUserChunkSession, fetchChunks as apiFetchChunks
 import { getErrorMessage } from 'types';
 import type { ChunkType, ChunkFieldValue } from 'types';
 import { useAuthStore } from './authStore';
+import { log } from 'utils';
 
 // Specific debounce function for chunk updates
 function debounceChunkUpdate(
@@ -148,7 +149,9 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
         });
     },
     handleWordClick: async (chunkIdx, wordIdx) => {
+        log.info(`Handling word click in chunk ${chunkIdx} at word index ${wordIdx}`);
         const { chunks } = get();
+        log.info(`Current chunks:`, chunks);
         if (!chunks[chunkIdx] || !chunks[chunkIdx].id) return;
         const oldChunk = chunks[chunkIdx];
         const splitResult = await splitChunk(oldChunk.id, wordIdx + 1); // returns [updatedChunk, newChunk]

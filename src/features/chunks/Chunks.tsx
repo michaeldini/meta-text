@@ -1,12 +1,13 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Box, Pagination, Paper, Alert, Slide } from '@mui/material';
+import React, { useState, useRef, useCallback } from 'react';
+import { Box, Pagination, Alert } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { LoadingBoundary, ErrorBoundary } from 'components';
 import { log } from 'utils';
 import { useChunkStore } from 'store';
+import type { ChunkType } from 'types';
 
 import Chunk from '../chunk/components/Chunk';
 import { getChunksStyles } from './Chunks.style';
-import { useTheme } from '@mui/material/styles';
 
 interface ChunksPaginationProps {
     pageCount: number;
@@ -24,11 +25,11 @@ function ChunksPagination({ pageCount, page, handleChange }: ChunksPaginationPro
 }
 
 interface ChunksProps {
-    metaTextId: string;
+    // chunks?: ChunkType[];
 }
 
-const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
-    const { chunks, loadingChunks, chunksError, fetchChunks, updateChunkField, resetChunkState } = useChunkStore();
+const Chunks: React.FC<ChunksProps> = () => {
+    const { chunks, loadingChunks, chunksError } = useChunkStore();
     const [page, setPage] = useState(1);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const prevChunksRef = useRef<any[]>([]);
@@ -40,14 +41,6 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
     React.useEffect(() => {
         prevChunksRef.current = chunks;
     }, [chunks]);
-
-    React.useEffect(() => {
-        if (metaTextId) {
-            // Reset chunk state when navigating to a different MetaText
-            resetChunkState();
-            fetchChunks(Number(metaTextId));
-        }
-    }, [metaTextId, fetchChunks, resetChunkState]);
 
     if (!Array.isArray(chunks)) {
         log.error('Chunks prop is not an array:', chunks);
@@ -63,7 +56,6 @@ const Chunks: React.FC<ChunksProps> = ({ metaTextId }) => {
         setPage(value);
     };
 
-    // Replace hard-coded styles with theme-aware styles
     const theme = useTheme();
     const styles = getChunksStyles(theme);
 
