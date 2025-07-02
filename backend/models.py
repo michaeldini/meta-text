@@ -35,10 +35,10 @@ class SourceDocument(SourceDocumentBase, table=True):
     meta_texts: List["MetaText"] = Relationship(back_populates="source_document")
 
 
-class SourceDocumentWithText(SourceDocumentBase):
+class SourceDocumentDetail(SourceDocumentBase):
     text: str
 
-class SourceDocumentRead(SourceDocumentBase):
+class SourceDocumentSummary(SourceDocumentBase):
     pass
 
 
@@ -53,8 +53,12 @@ class MetaText(MetaTextBase, table=True):
     chunks: List["Chunk"] = Relationship(back_populates="meta_text", cascade_delete=True)
     source_document: Optional[SourceDocument] = Relationship(back_populates="meta_texts")
 
-class MetaTextRead(MetaTextBase):
+class MetaTextSummary(MetaTextBase):
     id: int
+
+class MetaTextDetail(MetaTextSummary):
+    text: str
+    chunks: List["ChunkRead"] = []
 
 class CreateMetaTextRequest(BaseModel):
     sourceDocId: int

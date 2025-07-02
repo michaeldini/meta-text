@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session
 
 from backend.db import get_session
-from backend.models import CreateMetaTextRequest, MetaTextRead
+from backend.models import CreateMetaTextRequest, MetaTextDetail, MetaTextSummary
 from backend.services.meta_text_service import MetaTextService
 from backend.exceptions.meta_text_exceptions import (
     SourceDocumentNotFoundError,
@@ -18,7 +18,7 @@ router = APIRouter()
 meta_text_service = MetaTextService()
 
 
-@router.post("/meta-text", response_model=MetaTextRead, name="create_meta_text")
+@router.post("/meta-text", response_model=MetaTextSummary, name="create_meta_text")
 async def create_meta_text(req: CreateMetaTextRequest, session: Session = Depends(get_session)):
     """Create a new meta-text from a source document."""
     try:
@@ -45,13 +45,13 @@ async def create_meta_text(req: CreateMetaTextRequest, session: Session = Depend
         )
 
 
-@router.get("/meta-text", response_model=list[MetaTextRead], name="list_meta_texts")
+@router.get("/meta-text", response_model=list[MetaTextSummary], name="list_meta_texts")
 def list_meta_texts(session: Session = Depends(get_session)):
     """List all meta-texts."""
     return meta_text_service.list_all_meta_texts(session)
 
 
-@router.get("/meta-text/{meta_text_id}", response_model=MetaTextRead, name="get_meta_text")
+@router.get("/meta-text/{meta_text_id}", response_model=MetaTextDetail, name="get_meta_text")
 def get_meta_text(meta_text_id: int, session: Session = Depends(get_session)):
     """Get a specific meta-text by ID."""
     try:

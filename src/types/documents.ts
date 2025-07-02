@@ -8,25 +8,62 @@ export enum DocType {
     MetaText = 'metaText'
 }
 
-export type MetaText = {
+// export type MetaText = {
+//     id: number;
+//     title: string;
+//     source_document_id: number;
+//     text?: string;
+// };
+
+// export type SourceDocument = {
+//     id: number;
+//     title: string;
+//     author?: string | null;
+//     summary?: string | null;
+//     characters?: string | null;
+//     locations?: string | null;
+//     themes?: string | null;
+//     symbols?: string | null;
+//     text?: string;
+// };
+
+// MetaText types
+export type MetaTextSummary = {
     id: number;
     title: string;
     source_document_id: number;
-    text?: string;
 };
 
-export type SourceDocument = {
+export type MetaTextDetail = MetaTextSummary & {
+    text: string;
+    chunks: ChunkType[];
+};
+export type MetaTextCreate = {
+    sourceDocId: number;
+    title: string;
+};
+
+// SourceDocument types
+export type SourceDocumentSummary = {
     id: number;
     title: string;
-    author?: string | null;
-    summary?: string | null;
-    characters?: string | null;
-    locations?: string | null;
-    themes?: string | null;
-    symbols?: string | null;
-    text?: string;
+    author: string | null;
+    summary: string | null;
+    characters: string | null;
+    locations: string | null;
+    themes: string | null;
+    symbols: string | null;
 };
 
+export type SourceDocumentDetail = SourceDocumentSummary & {
+    text: string;
+};
+export type SourceDocumentCreate = {
+    title: string;
+    file: File;
+};
+
+// Chunk types
 export type ChunkType = {
     id: number;
     text: string;

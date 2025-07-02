@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from sqlmodel import Session, SQLModel, create_engine
 
 from backend.api.meta_text import router
-from backend.models import MetaTextRead
+from backend.models import MetaTextSummary
 from backend.exceptions.meta_text_exceptions import (
     SourceDocumentNotFoundError,
     MetaTextNotFoundError,
@@ -54,7 +54,7 @@ class TestMetaTextEndpoints:
         """Test successful meta-text creation."""
         # Setup
         mock_get_session.return_value = test_session
-        mock_meta_text = MetaTextRead(
+        mock_meta_text = MetaTextSummary(
             id=1,
             title="Test Meta Text",
             source_document_id=1
@@ -148,9 +148,9 @@ class TestMetaTextEndpoints:
         # Setup
         mock_get_session.return_value = test_session
         mock_meta_texts = [
-            MetaTextRead(id=1, title="First Meta Text", source_document_id=1),
-            MetaTextRead(id=2, title="Second Meta Text", source_document_id=1),
-            MetaTextRead(id=3, title="Third Meta Text", source_document_id=2)
+            MetaTextSummary(id=1, title="First Meta Text", source_document_id=1),
+            MetaTextSummary(id=2, title="Second Meta Text", source_document_id=1),
+            MetaTextSummary(id=3, title="Third Meta Text", source_document_id=2)
         ]
         mock_service.list_all_meta_texts.return_value = mock_meta_texts
 
@@ -188,7 +188,7 @@ class TestMetaTextEndpoints:
         """Test successful meta-text retrieval."""
         # Setup
         mock_get_session.return_value = test_session
-        mock_meta_text = MetaTextRead(
+        mock_meta_text = MetaTextSummary(
             id=1,
             title="Test Meta Text",
             source_document_id=1

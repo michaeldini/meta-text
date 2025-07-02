@@ -8,7 +8,7 @@ from sqlmodel import Session, SQLModel, create_engine
 import io
 
 from backend.api.source_documents import router
-from backend.models import SourceDocumentRead, SourceDocumentWithText
+from backend.models import SourceDocumentSummary, SourceDocumentDetail
 from backend.exceptions.source_document_exceptions import (
     SourceDocumentNotFoundError,
     SourceDocumentTitleExistsError,
@@ -62,7 +62,7 @@ class TestSourceDocumentsEndpoints:
         """Test successful source document creation."""
         # Setup
         mock_get_session.return_value = test_session
-        mock_source_doc = SourceDocumentWithText(
+        mock_source_doc = SourceDocumentDetail(
             id=1,
             title="Test Document",
             author="Test Author",
@@ -140,7 +140,7 @@ class TestSourceDocumentsEndpoints:
         # Setup
         mock_get_session.return_value = test_session
         mock_documents = [
-            SourceDocumentRead(
+            SourceDocumentSummary(
                 id=1,
                 title="First Document",
                 author="Author 1",
@@ -150,7 +150,7 @@ class TestSourceDocumentsEndpoints:
                 themes="Themes 1",
                 symbols="Symbols 1"
             ),
-            SourceDocumentRead(
+            SourceDocumentSummary(
                 id=2,
                 title="Second Document",
                 author="Author 2",
@@ -196,7 +196,7 @@ class TestSourceDocumentsEndpoints:
         """Test successful source document retrieval."""
         # Setup
         mock_get_session.return_value = test_session
-        mock_document = SourceDocumentWithText(
+        mock_document = SourceDocumentDetail(
             id=1,
             title="Test Document",
             author="Test Author",
@@ -311,7 +311,7 @@ class TestSourceDocumentsEndpoints:
         # Setup
         mock_get_session.return_value = test_session
         # Mock successful creation since API layer doesn't validate title
-        mock_document = SourceDocumentWithText(
+        mock_document = SourceDocumentDetail(
             id=1,
             title="",
             author=None,
@@ -357,7 +357,7 @@ class TestSourceDocumentsEndpoints:
         """Test source document creation with large file."""
         # Setup
         mock_get_session.return_value = test_session
-        mock_document = SourceDocumentWithText(
+        mock_document = SourceDocumentDetail(
             id=1,
             title="Large Document",
             author=None,
@@ -390,7 +390,7 @@ class TestSourceDocumentsEndpoints:
         """Test source document creation with special characters in title."""
         # Setup
         mock_get_session.return_value = test_session
-        mock_source_doc = SourceDocumentWithText(
+        mock_source_doc = SourceDocumentDetail(
             id=1,
             title="Test Document with Special Characters: @#$%",
             author=None,

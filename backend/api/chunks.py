@@ -22,7 +22,7 @@ router = APIRouter()
 # Initialize service
 chunk_service = ChunkService()
 
-
+# consider deleting this. 
 @router.get("/chunks/all/{meta_text_id}", response_model=List[ChunkWithImagesRead], name="get_chunks")
 def get_chunks_api(meta_text_id: int, session: Session = Depends(get_session)):
     """Get all chunks for a meta-text with their AI images."""

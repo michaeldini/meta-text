@@ -2,7 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Form, File, UploadFile, status
 from sqlmodel import Session
 
-from backend.models import SourceDocumentRead, SourceDocumentWithText
+from backend.models import SourceDocumentSummary, SourceDocumentDetail
 from backend.db import get_session
 from backend.services.source_document_service import SourceDocumentService
 from backend.exceptions.source_document_exceptions import (
@@ -21,7 +21,7 @@ source_document_service = SourceDocumentService()
 
 @router.post(
     "/source-documents",
-    response_model=SourceDocumentWithText,
+    response_model=SourceDocumentDetail,
     name="create_source_document"
 )
 async def create_source_document(
@@ -48,13 +48,13 @@ async def create_source_document(
         )
 
 
-@router.get("/source-documents", response_model=list[SourceDocumentRead], name="list_source_documents")
+@router.get("/source-documents", response_model=list[SourceDocumentSummary], name="list_source_documents")
 def list_source_documents(session: Session = Depends(get_session)):
     """List all source documents with all fields."""
     return source_document_service.list_all_source_documents(session)
 
 
-@router.get("/source-documents/{doc_id}", response_model=SourceDocumentWithText, name="get_source_document")
+@router.get("/source-documents/{doc_id}", response_model=SourceDocumentDetail, name="get_source_document")
 def get_source_document(doc_id: int, session: Session = Depends(get_session)):
     """Retrieve a source document by ID."""
     try:
