@@ -45,9 +45,9 @@ export default function MetaTextDetailPage() {
                                 <Box sx={styles.container}>
                                     <MetaTextHeader metaText={metaText} />
                                     <Chunks />
+                                    <FloatingChunkToolbar />
                                 </Box>
                             </PageContainer>
-                            <FloatingChunkToolbar />
                         </Box>
                     </Fade>
                 ) : null}

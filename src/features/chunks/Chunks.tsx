@@ -24,11 +24,7 @@ function ChunksPagination({ pageCount, page, handleChange }: ChunksPaginationPro
     );
 }
 
-interface ChunksProps {
-    // chunks?: ChunkType[];
-}
-
-const Chunks: React.FC<ChunksProps> = () => {
+const Chunks = () => {
     const { chunks, loadingChunks, chunksError } = useChunkStore();
     const [page, setPage] = useState(1);
     const containerRef = useRef<HTMLDivElement | null>(null);
