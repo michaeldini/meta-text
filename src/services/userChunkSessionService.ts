@@ -1,7 +1,7 @@
 import { apiGet, apiPost } from '../utils/api';
 import type { UserChunkSessionRead, UserChunkSessionCreate } from '../types/userChunkSession';
 import { withCache, apiCache } from '../utils/cache';
-
+import { log } from 'utils';
 const API_BASE = '/api';
 
 // Base function for fetching user chunk session
@@ -23,6 +23,7 @@ export const getUserChunkSession = withCache(
 );
 
 export async function setUserChunkSession(data: UserChunkSessionCreate): Promise<UserChunkSessionRead> {
+    log.debug('Setting user chunk session:', data);
     const res = await apiPost<UserChunkSessionRead>(`${API_BASE}/user-chunk-session/`, data);
     // Invalidate cache for this user/metaText
     apiCache.invalidate(`getUserChunkSession:${data.user_id}|${data.meta_text_id}`);
