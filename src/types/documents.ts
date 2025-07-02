@@ -8,6 +8,11 @@ export enum DocType {
     MetaText = 'metaText'
 }
 
+export enum ViewMode {
+    Search = 'search',
+    Create = 'create'
+}
+
 // export type MetaText = {
 //     id: number;
 //     title: string;

@@ -1,43 +1,19 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Box, Paper, useTheme } from '@mui/material';
-import { PageContainer } from 'components';
-import { useDocumentsStore, useNotifications } from 'store';
-import { ToggleSelector, FlexBox } from 'components';
-import { CreateForm, SearchableList } from 'features';
+
+import { useDocumentsStore } from 'store';
 import { usePageLogger } from 'hooks';
+import { CreateForm, SearchableList } from 'features';
+import { PageContainer, FlexBox } from 'components';
+import { DocType, ViewMode } from 'types';
 
-import WelcomeText from './WelcomeText';
-import { DocType, MetaTextSummary, SourceDocumentSummary } from 'types';
 import { getHomePageStyles } from '../../styles/styles';
-import {
-    getDeleteActions,
-    getRouteMap,
-    handleNavigationFactory,
-    handleDeleteFactory,
-    handleSourceDocClickFactory,
-    handleMetaTextClickFactory,
-    handleDeleteSourceDocFactory,
-    handleDeleteMetaTextFactory
-} from './HomePage.handlers';
+import WelcomeText from './WelcomeText';
+import { HomePageToggles } from './HomePageToggles';
 
-enum ViewMode {
-    Search = 'search',
-    Create = 'create'
-}
-
-const DOC_TYPE_OPTIONS = [
-    { value: DocType.MetaText, label: 'Meta-Text', ariaLabel: 'Meta-Text' },
-    { value: DocType.SourceDoc, label: 'Source Document', ariaLabel: 'Source Document' },
-];
-
-const VIEW_MODE_OPTIONS = [
-    { value: ViewMode.Search, label: 'Search', ariaLabel: 'Search' },
-    { value: ViewMode.Create, label: 'Create', ariaLabel: 'Create' },
-];
 
 export default function HomePage() {
-    // Use Zustand stores
+    // Use Zustand stores to get lists of doc and meta summaries
     const {
         sourceDocs,
         sourceDocsLoading,
@@ -47,15 +23,12 @@ export default function HomePage() {
         metaTextsError,
         fetchSourceDocs,
         fetchMetaTexts,
-        deleteSourceDoc,
-        deleteMetaText,
     } = useDocumentsStore();
 
-    const { showSuccess, showError } = useNotifications();
-    const navigate = useNavigate();
+    // const { showSuccess, showError } = useNotifications();
+    // const navigate = useNavigate();
     const theme = useTheme();
     const styles = getHomePageStyles(theme);
-    // Use a single viewKey to represent the current view
     const [docType, setDocType] = React.useState<DocType>(DocType.MetaText);
     const [viewMode, setViewMode] = React.useState<ViewMode>(ViewMode.Search);
 
@@ -83,45 +56,16 @@ export default function HomePage() {
         ]
     });
 
-    const deleteActions = getDeleteActions(deleteSourceDoc, deleteMetaText);
-    const routeMap = getRouteMap();
-    const handleNavigation = React.useCallback(handleNavigationFactory(navigate, routeMap), [navigate, routeMap]);
-    const handleDelete = React.useCallback(handleDeleteFactory(deleteActions, showSuccess, showError, navigate), [deleteActions, showSuccess, showError, navigate]);
-    const handleSourceDocClick = React.useCallback(handleSourceDocClickFactory(handleNavigation), [handleNavigation]);
-    const handleMetaTextClick = React.useCallback(handleMetaTextClickFactory(handleNavigation), [handleNavigation]);
-    const handleDeleteSourceDoc = React.useCallback(handleDeleteSourceDocFactory(handleDelete), [handleDelete]);
-    const handleDeleteMetaText = React.useCallback(handleDeleteMetaTextFactory(handleDelete), [handleDelete]);
-
-    // Flip on any toggle input
-    const handleDocTypeChange = (value: DocType) => {
-        setDocType(value);
-    };
-    const handleViewModeChange = (value: ViewMode) => {
-        setViewMode(value);
-    };
-
     // Render the correct content for the current view
     const isSourceDoc = docType === DocType.SourceDoc;
 
 
     let content: React.ReactNode = null;
     if (viewMode === ViewMode.Search) {
-        content = isSourceDoc ? (
-            <SearchableList<SourceDocumentSummary>
-                items={sourceDocs as SourceDocumentSummary[]}
-                onItemClick={handleSourceDocClick}
-                onDeleteClick={handleDeleteSourceDoc}
-                loading={sourceDocsLoading}
-                filterKey={'title'}
-                title={docType}
-            />
-        ) : (
-            <SearchableList<MetaTextSummary>
-                items={metaTexts as MetaTextSummary[]}
-                onItemClick={handleMetaTextClick}
-                onDeleteClick={handleDeleteMetaText}
-                loading={metaTextsLoading}
-                filterKey={'title'}
+        content = (
+            <SearchableList
+                items={isSourceDoc ? sourceDocs : metaTexts}
+                filterKey={"title"}
                 title={docType}
             />
         );
@@ -143,18 +87,13 @@ export default function HomePage() {
             <Box sx={styles.homePageContainer}>
                 <FlexBox flexDirection="column" alignItems="start" >
                     <WelcomeText />
-                    <FlexBox flexDirection='column' sx={styles.toggleContainer}>
-                        <ToggleSelector
-                            value={docType}
-                            onChange={handleDocTypeChange}
-                            options={DOC_TYPE_OPTIONS}
-                        />
-                        <ToggleSelector
-                            value={viewMode}
-                            onChange={handleViewModeChange}
-                            options={VIEW_MODE_OPTIONS}
-                        />
-                    </FlexBox>
+                    <HomePageToggles
+                        docType={docType}
+                        setDocType={setDocType}
+                        viewMode={viewMode}
+                        setViewMode={setViewMode}
+                        styles={styles}
+                    />
                 </FlexBox>
 
                 {/* Render the correct content for the current view */}

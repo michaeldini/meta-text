@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { List, ListItem, ListItemButton, ListItemText, Paper, TextField, InputAdornment, Typography, Box, IconButton } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 import { ErrorBoundary, LoadingBoundary, DeleteButton } from 'components';
 import { SearchIcon, ClearIcon } from 'icons';
+import { useDocumentsStore, useNotifications } from 'store';
 
 import { useFilteredList } from '../hooks/useFilteredList';
 import { createSearchableListStyles } from '../styles';
 import type { MetaTextSummary, SourceDocumentSummary, } from 'types'
 
-export interface SearchableListProps<T extends Record<string, any> & { id: number }> {
+export interface SearchableListProps {
     title: string;
-    filterKey: keyof T;
-    items: T[];
-    onItemClick: (id: number) => void;
-    onDeleteClick: (id: number, event: React.MouseEvent) => void;
+    filterKey: keyof (SourceDocumentSummary | MetaTextSummary);
+    items: Array<SourceDocumentSummary | MetaTextSummary>;
+    // onItemClick: (id: number) => void;
+    // onDeleteClick: (id: number, event: React.MouseEvent) => void;
     deleteLoading?: Record<number, boolean>;
     searchPlaceholder?: string;
     emptyMessage?: string;
@@ -22,19 +24,19 @@ export interface SearchableListProps<T extends Record<string, any> & { id: numbe
     loading?: boolean;
 }
 
-function SearchableList<T extends Record<string, any> & { id: number }>({
+function SearchableList({
     items = [],
-    onItemClick,
-    onDeleteClick,
-    deleteLoading = {},
     filterKey,
-    searchPlaceholder = "Search items...",
-    emptyMessage = "No items found.",
-    ariaLabel = "searchable list",
     title,
     loading = false,
-}: SearchableListProps<T>) {
+}: SearchableListProps) {
     const [search, setSearch] = useState('');
+    const navigate = useNavigate();
+    const { deleteSourceDoc, deleteMetaText } = useDocumentsStore();
+    const { showSuccess, showError } = useNotifications();
+    console.log('SearchableList items:', items);
+    // Determine doc type by inspecting the first item or the title
+    const docType = title === 'sourceDoc' || (items[0] && 'author' in items[0]) ? 'sourceDoc' : 'metaText';
 
     // Use the existing hook for filtering
     const filteredItems = useFilteredList(items, search, filterKey);
@@ -50,7 +52,28 @@ function SearchableList<T extends Record<string, any> & { id: number }>({
     const handleItemKeyDown = (event: React.KeyboardEvent, id: number) => {
         if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault();
-            onItemClick(id);
+            handleItemClick(id);
+        }
+    };
+
+    const handleItemClick = (id: number) => {
+        if (docType === 'sourceDoc') {
+            navigate(`/source-document/${id}`);
+        } else {
+            navigate(`/metaText/${id}`);
+        }
+    };
+
+    const handleDeleteClick = async (id: number) => {
+        try {
+            if (docType === 'sourceDoc') {
+                await deleteSourceDoc(id);
+            } else {
+                await deleteMetaText(id);
+            }
+            showSuccess('Deleted successfully');
+        } catch {
+            showError('Delete failed');
         }
     };
 
@@ -92,7 +115,7 @@ function SearchableList<T extends Record<string, any> & { id: number }>({
                     <TextField
                         data-testid="search-input"
                         label="Search"
-                        placeholder={searchPlaceholder}
+                        placeholder="Search items..."
                         variant="outlined"
                         size="small"
                         fullWidth
@@ -119,7 +142,7 @@ function SearchableList<T extends Record<string, any> & { id: number }>({
                         {filteredItems.length === 0 ? (
                             <ListItem role="listitem" sx={styles.noResults}>
                                 <ListItemText
-                                    primary={emptyMessage}
+                                    primary="No items found."
                                 />
                             </ListItem>
                         ) : (
@@ -132,8 +155,8 @@ function SearchableList<T extends Record<string, any> & { id: number }>({
                                         role="listitem"
                                         secondaryAction={
                                             <DeleteButton
-                                                onClick={(e: React.MouseEvent) => onDeleteClick(item.id, e)}
-                                                disabled={!!deleteLoading[item.id]}
+                                                onClick={(e: React.MouseEvent) => handleDeleteClick(item.id)}
+                                                disabled={false}
                                                 label={`Delete ${displayText}`}
 
                                             />
@@ -142,7 +165,7 @@ function SearchableList<T extends Record<string, any> & { id: number }>({
                                         sx={styles.listItem}
                                     >
                                         <ListItemButton
-                                            onClick={() => onItemClick(item.id)}
+                                            onClick={() => handleItemClick(item.id)}
                                             onKeyDown={(e) => handleItemKeyDown(e, item.id)}
                                             aria-label={`Select ${displayText}`}
                                             role="button"
