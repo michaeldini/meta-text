@@ -4,18 +4,18 @@ import { create } from 'zustand';
 import { fetchSourceDocument } from 'services';
 
 import { getErrorMessage } from '../types/error';
-import type { SourceDocument } from '../types/sourceDocument';
+import type { SourceDocumentDetail } from 'types';
 
 interface SourceDocumentDetailState {
     // Current document being viewed
     currentDocId: string | null;
-    doc: SourceDocument | null;
+    doc: SourceDocumentDetail | null;
     loading: boolean;
     error: string;
 
     // Actions
     fetchSourceDocumentDetail: (id: string) => Promise<void>;
-    updateDoc: (doc: SourceDocument) => void;
+    updateDoc: (doc: SourceDocumentDetail) => void;
     refetch: () => Promise<void>;
     clearState: () => void;
     clearError: () => void;
@@ -56,7 +56,7 @@ export const useSourceDocumentDetailStore = create<SourceDocumentDetailState>((s
         }
     },
 
-    updateDoc: (doc: SourceDocument) => {
+    updateDoc: (doc: SourceDocumentDetail) => {
         set({ doc });
     },
 

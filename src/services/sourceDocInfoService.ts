@@ -1,6 +1,6 @@
 // src/services/sourceDocInfoService.ts
-import { handleApiResponse, apiPost } from '../utils/api';
-import type { SourceDocument } from '../types/sourceDocument';
+import { handleApiResponse, apiPost } from 'utils';
+import type { SourceDocumentSummary } from 'types';
 
 export interface SourceDocInfoRequest {
     id: number;

@@ -16,7 +16,7 @@ const MESSAGES = {
 } as const;
 
 export default function SourceDocDetailPage() {
-    const { sourceDocId } = useParams<{ sourceDocId?: string }>();    // Always call the hook to avoid conditional hook usage
+    const { sourceDocId } = useParams<{ sourceDocId?: string }>();
     // The hook handles empty/null IDs gracefully by clearing state
     const { doc, loading, error, refetch } = useSourceDocumentDetail(sourceDocId || '');
 

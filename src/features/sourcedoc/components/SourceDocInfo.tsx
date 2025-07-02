@@ -1,16 +1,16 @@
 import React from 'react';
-import { Box, useTheme, Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
+import { Box, useTheme, Accordion, AccordionSummary, AccordionDetails, Typography, CircularProgress, Alert } from '@mui/material';
 import { ExpandMoreIcon } from 'icons';
-import type { SourceDocument } from '../../../types/sourceDocument';
 import { getSourceDocumentStyles } from '../styles/styles';
+import { useDocumentsStore } from 'store/documentsStore';
 
 interface SourceDocInfoProps {
-    doc: SourceDocument;
+    sourceDocumentId: number;
     onInfoUpdate?: () => void;
 }
 
 interface FieldConfig {
-    key: keyof SourceDocument;
+    key: keyof import('types').SourceDocumentSummary;
     label: string;
 }
 
@@ -28,11 +28,17 @@ function splitToArray(str?: string | null): string[] {
     return str.split(',').map(s => s.trim()).filter(Boolean);
 }
 
-const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc }) => {
+const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ sourceDocumentId }) => {
     const theme = useTheme();
     const styles = getSourceDocumentStyles(theme);
+    const sourceDocs = useDocumentsStore(s => s.sourceDocs);
+    const loading = useDocumentsStore(s => s.sourceDocsLoading);
+    const error = useDocumentsStore(s => s.sourceDocsError);
+    console.log('SourceDocInfo rendered with ID:', sourceDocumentId);
+    const doc = sourceDocs.find(d => d.id === sourceDocumentId);
 
     const renderField = (config: FieldConfig) => {
+        if (!doc) return null;
         const value = doc[config.key];
         if (!value) return null;
 
@@ -76,6 +82,16 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc }) => {
             </Accordion>
         );
     };
+
+    if (loading) {
+        return <Box sx={styles.container}><CircularProgress size={28} /></Box>;
+    }
+    if (error) {
+        return <Box sx={styles.container}><Alert severity="error">{error}</Alert></Box>;
+    }
+    if (!doc) {
+        return <Box sx={styles.container}><Alert severity="warning">Document not found.</Alert></Box>;
+    }
 
     return (
         <Box sx={styles.container} data-testid="source-doc-info">

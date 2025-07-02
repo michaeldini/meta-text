@@ -1,7 +1,4 @@
-import { useMemo, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useMetaTextDetail } from 'store';
-import { metaTextReviewRoute } from '../../../routes';
 import { log } from 'utils';
 
 // Constants
@@ -14,18 +11,15 @@ const MESSAGES = {
 } as const;
 
 /**
- * Custom hook that handles all MetaTextDetailPage logic
- * Separates data fetching, navigation, and error handling concerns
+ * Custom hook that fetches MetaText detail only
+ * Handles only data fetching and error logging for MetaText, not source document or UI logic
  */
-export const useMetaTextDetailPage = (metaTextId: string | undefined) => {
-    const navigate = useNavigate();
+export const useMetaTextDetailPage = (metaTextId: number) => {
     const {
         metaText,
         loading,
         errors,
-        sourceDocInfo,
-        refetchSourceDoc,
-    } = useMetaTextDetail(metaTextId);
+    } = useMetaTextDetail(metaTextId.toString());
 
     // Validate metaTextId
     if (!metaTextId) {
@@ -37,50 +31,11 @@ export const useMetaTextDetailPage = (metaTextId: string | undefined) => {
         throw new Error(errors.metaText);
     }
 
-    // Log non-critical sourceDoc errors
-    if (errors.sourceDoc) {
-        log.error('Source document error:', errors.sourceDoc);
-    }
-
-    // Memoized navigation handler
-    const handleReviewClick = useCallback(() => {
-        navigate(metaTextReviewRoute(metaTextId));
-    }, [metaTextId, navigate]);
-
-    // Memoized title calculation
-    const displayTitle = useMemo(() => {
-        return metaText?.title || metaTextId || 'Unknown';
-    }, [metaText?.title, metaTextId]);
-
-    // Memoized source document section
-    const sourceDocSection = useMemo(() => {
-        return sourceDocInfo ? (
-            { doc: sourceDocInfo, onInfoUpdate: refetchSourceDoc }
-        ) : null;
-    }, [sourceDocInfo, refetchSourceDoc]);
-
-    // UI state logic
-    const uiState = useMemo(() => ({
-        shouldShowContent: !!metaText,
-        shouldShowNotFound: !loading && !errors.metaText,
-    }), [metaText, loading, errors.metaText]);
-
     return {
-        // Data
         metaText,
         loading,
         errors,
-        sourceDocSection,
-        displayTitle,
         metaTextId,
-
-        // Actions
-        handleReviewClick,
-
-        // UI State
-        ...uiState,
-
-        // Constants
         MESSAGES,
     };
 };
