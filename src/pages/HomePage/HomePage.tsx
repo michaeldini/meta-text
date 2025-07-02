@@ -8,7 +8,7 @@ import { CreateForm, SearchableList } from 'features';
 import { usePageLogger } from 'hooks';
 
 import WelcomeText from './WelcomeText';
-import { DocType } from 'types';
+import { DocType, MetaTextSummary, SourceDocumentSummary } from 'types';
 import { getHomePageStyles } from '../../styles/styles';
 import {
     getDeleteActions,
@@ -102,33 +102,33 @@ export default function HomePage() {
 
     // Render the correct content for the current view
     const isSourceDoc = docType === DocType.SourceDoc;
-    const listProps = isSourceDoc
-        ? {
-            items: sourceDocs || [],
-            onItemClick: handleSourceDocClick,
-            onDeleteClick: handleDeleteSourceDoc,
-            loading: sourceDocsLoading
-        }
-        : {
-            items: metaTexts || [],
-            onItemClick: handleMetaTextClick,
-            onDeleteClick: handleDeleteMetaText,
-            loading: metaTextsLoading
-        };
+
 
     let content: React.ReactNode = null;
     if (viewMode === ViewMode.Search) {
-        content = (
-            <SearchableList
-                {...listProps}
-                filterKey="title"
+        content = isSourceDoc ? (
+            <SearchableList<SourceDocumentSummary>
+                items={sourceDocs as SourceDocumentSummary[]}
+                onItemClick={handleSourceDocClick}
+                onDeleteClick={handleDeleteSourceDoc}
+                loading={sourceDocsLoading}
+                filterKey={'title'}
+                title={docType}
+            />
+        ) : (
+            <SearchableList<MetaTextSummary>
+                items={metaTexts as MetaTextSummary[]}
+                onItemClick={handleMetaTextClick}
+                onDeleteClick={handleDeleteMetaText}
+                loading={metaTextsLoading}
+                filterKey={'title'}
                 title={docType}
             />
         );
     } else {
         content = (
             <CreateForm
-                sourceDocs={sourceDocs || []}
+                sourceDocs={sourceDocs}
                 sourceDocsLoading={sourceDocsLoading}
                 sourceDocsError={sourceDocsError}
                 onSuccess={refreshData}

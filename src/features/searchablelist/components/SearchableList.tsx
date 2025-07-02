@@ -7,17 +7,18 @@ import { SearchIcon, ClearIcon } from 'icons';
 
 import { useFilteredList } from '../hooks/useFilteredList';
 import { createSearchableListStyles } from '../styles';
+import type { MetaTextSummary, SourceDocumentSummary, } from 'types'
 
 export interface SearchableListProps<T extends Record<string, any> & { id: number }> {
+    title: string;
+    filterKey: keyof T;
     items: T[];
     onItemClick: (id: number) => void;
     onDeleteClick: (id: number, event: React.MouseEvent) => void;
     deleteLoading?: Record<number, boolean>;
-    filterKey: keyof T;
     searchPlaceholder?: string;
     emptyMessage?: string;
     ariaLabel?: string;
-    title?: string;
     loading?: boolean;
 }
 

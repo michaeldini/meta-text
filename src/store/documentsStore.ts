@@ -1,18 +1,17 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { SourceDocument } from '../types/sourceDocument';
-import type { MetaText } from '../types/metaText';
+import type { MetaTextSummary, SourceDocumentSummary, } from 'types'
 import { getErrorMessage } from '../types/error';
 import * as sourceDocService from '../services/sourceDocumentService';
 import * as metaTextService from '../services/metaTextService';
 interface DocumentsState {
     // Source Documents
-    sourceDocs: SourceDocument[];
+    sourceDocs: SourceDocumentSummary[];
     sourceDocsLoading: boolean;
     sourceDocsError: string | null;
 
     // Meta Texts
-    metaTexts: MetaText[];
+    metaTexts: MetaTextSummary[];
     metaTextsLoading: boolean;
     metaTextsError: string | null;
 
@@ -21,8 +20,8 @@ interface DocumentsState {
     fetchMetaTexts: () => Promise<void>;
     deleteSourceDoc: (id: number) => Promise<void>;
     deleteMetaText: (id: number) => Promise<void>;
-    addSourceDoc: (doc: SourceDocument) => void;
-    addMetaText: (metaText: MetaText) => void;
+    addSourceDoc: (doc: SourceDocumentSummary) => void;
+    addMetaText: (metaText: MetaTextSummary) => void;
     clearErrors: () => void;
 }
 
@@ -93,13 +92,13 @@ export const useDocumentsStore = create<DocumentsState>()(
                 }
             },
 
-            addSourceDoc: (doc: SourceDocument) => {
+            addSourceDoc: (doc: SourceDocumentSummary) => {
                 set(state => ({
                     sourceDocs: [...state.sourceDocs, doc]
                 }));
             },
 
-            addMetaText: (metaText: MetaText) => {
+            addMetaText: (metaText: MetaTextSummary) => {
                 set(state => ({
                     metaTexts: [...state.metaTexts, metaText]
                 }));

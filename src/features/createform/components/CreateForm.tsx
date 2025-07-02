@@ -5,18 +5,21 @@ import SourceDocSelect from './Select';
 import CreateFormLayout from './CreateFormLayout';
 import SubmitButton from './SubmitButton';
 import { useCreateForm } from '../hooks/useCreateForm';
-import { SourceDocument, FormMode } from '../types';
+// import { SourceDocument, FormMode } from '../types';
 import { FORM_MODES, FORM_MESSAGES, FORM_A11Y } from '../constants';
-import { DocType } from 'types';
+import { DocType, SourceDocumentSummary, SourceDocumentCreate, MetaTextCreate } from 'types';
 
 export interface CreateFormProps {
-    sourceDocs: SourceDocument[];
+    sourceDocs: SourceDocumentSummary[];
     sourceDocsLoading: boolean;
     sourceDocsError: string | null;
     onSuccess?: () => void;
     docType: DocType;
     title?: string;
 }
+
+export type FormMode = typeof FORM_MODES.UPLOAD | typeof FORM_MODES.META_TEXT;
+
 
 const CreateForm: React.FC<CreateFormProps> = React.memo(({
     sourceDocs,
