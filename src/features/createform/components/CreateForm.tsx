@@ -1,12 +1,12 @@
 import React, { useMemo, useCallback } from 'react';
-import { TextField } from '@mui/material';
+import { TextField, Paper, Typography, Box, CircularProgress, useTheme } from '@mui/material';
 import FileUploadWidget from './FileUploadWidget';
 import SourceDocSelect from './Select';
-import CreateFormLayout from './CreateFormLayout';
 import SubmitButton from './SubmitButton';
 import { useCreateForm } from '../hooks/useCreateForm';
 import { FORM_MODES, FORM_MESSAGES, FORM_A11Y } from '../constants';
 import { DocType, SourceDocumentSummary } from 'types';
+import { createFormStyles } from '../styles/styles';
 
 export interface CreateFormProps {
     sourceDocs: SourceDocumentSummary[];
@@ -19,7 +19,6 @@ export interface CreateFormProps {
 // Define the type for form modes
 // This allows the user to switch between uploading a file or choosing a source document
 export type FormMode = typeof FORM_MODES.UPLOAD | typeof FORM_MODES.META_TEXT;
-
 
 const CreateForm: React.FC<CreateFormProps> = React.memo(({
     sourceDocs,
@@ -42,9 +41,6 @@ const CreateForm: React.FC<CreateFormProps> = React.memo(({
     });
 
     // Handlers for form interactions
-    // These handlers are memoized to prevent unnecessary re-renders
-    // They update the form state based on user input
-    // and trigger form submission when the user interacts with the form elements.
     const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files ? e.target.files[0] : null;
         form.setFile(file);
@@ -67,7 +63,6 @@ const CreateForm: React.FC<CreateFormProps> = React.memo(({
     const isSubmitDisabled = form.isSubmitDisabled;
 
     // Prepare the form content based on the current mode
-    // This includes the description, title label, submit text, and accessibility IDs
     const formContent = useMemo(() => ({
         description: FORM_MESSAGES.DESCRIPTIONS[form.mode],
         titleLabel: FORM_MESSAGES.LABELS.TITLE[form.mode],
@@ -77,57 +72,63 @@ const CreateForm: React.FC<CreateFormProps> = React.memo(({
         titleId: form.mode === FORM_MODES.UPLOAD ? FORM_A11Y.IDS.UPLOAD_TITLE : FORM_A11Y.IDS.META_TEXT_TITLE
     }), [form.mode, form.loading]);
 
+    // Inline CreateFormLayout here
+    const theme = useTheme();
+    const styles = React.useMemo(() => createFormStyles(theme), [theme]);
+
     return (
-        <CreateFormLayout
-            title={docType}
-            description={formContent.description}
-            onSubmit={handleSubmit}
-            error={form.error}
-            success={form.success}
-            loading={form.loading}
-        >
-            {form.mode === FORM_MODES.UPLOAD ? (
-                <FileUploadWidget
-                    file={form.data.file}
-                    onFileChange={handleFileChange}
-                    id={FORM_A11Y.IDS.FILE_UPLOAD}
-                />
-            ) : (
-                <SourceDocSelect
-                    value={form.data.sourceDocId || ''}
-                    onChange={handleSourceDocChange}
-                    sourceDocs={sourceDocs}
-                    loading={sourceDocsLoading}
-                    error={sourceDocsError}
-                    required
-                    id={FORM_A11Y.IDS.SOURCE_DOC_SELECT}
-                    aria-label={FORM_A11Y.LABELS.SOURCE_DOC_SELECT}
-                />
-            )}
-            <TextField
-                value={form.data.title}
-                onChange={handleTitleChange}
-                label={formContent.titleLabel}
-                fullWidth
-                margin="normal"
-                disabled={form.loading}
-                data-testid={formContent.titleId}
-                id={formContent.titleId}
-                required
-                autoComplete="off"
-            />
-            <SubmitButton
-                loading={form.loading}
-                disabled={isSubmitDisabled}
-            >
-                {formContent.submitText}
+        <Paper elevation={3} sx={styles.createFormContainer}>
+            {docType && <Typography variant="h6">{docType}</Typography>}
+            <Typography variant="body1" gutterBottom>{formContent.description}</Typography>
+            <Box component="form" onSubmit={handleSubmit} sx={styles.uploadFormInner}>
                 {form.loading && (
-                    <span id="submit-loading-text" className="sr-only">
-                        Form is being submitted, please wait.
-                    </span>
+                    <Box sx={styles.loadingBoxStyles}>
+                        <CircularProgress sx={styles.spinnerStyles} />
+                    </Box>
                 )}
-            </SubmitButton>
-        </CreateFormLayout>
+                {form.mode === FORM_MODES.UPLOAD ? (
+                    <FileUploadWidget
+                        file={form.data.file}
+                        onFileChange={handleFileChange}
+                        id={FORM_A11Y.IDS.FILE_UPLOAD}
+                    />
+                ) : (
+                    <SourceDocSelect
+                        value={form.data.sourceDocId || ''}
+                        onChange={handleSourceDocChange}
+                        sourceDocs={sourceDocs}
+                        loading={sourceDocsLoading}
+                        error={sourceDocsError}
+                        required
+                        id={FORM_A11Y.IDS.SOURCE_DOC_SELECT}
+                        aria-label={FORM_A11Y.LABELS.SOURCE_DOC_SELECT}
+                    />
+                )}
+                <TextField
+                    value={form.data.title}
+                    onChange={handleTitleChange}
+                    label={formContent.titleLabel}
+                    fullWidth
+                    margin="normal"
+                    disabled={form.loading}
+                    data-testid={formContent.titleId}
+                    id={formContent.titleId}
+                    required
+                    autoComplete="off"
+                />
+                <SubmitButton
+                    loading={form.loading}
+                    disabled={isSubmitDisabled}
+                >
+                    {formContent.submitText}
+                    {form.loading && (
+                        <span id="submit-loading-text" className="sr-only">
+                            Form is being submitted, please wait.
+                        </span>
+                    )}
+                </SubmitButton>
+            </Box>
+        </Paper>
     );
 });
 

@@ -43,7 +43,7 @@ export const FORM_STYLES = {
     FORM_SPACING: 2,
     MIN_CONTAINER_HEIGHT: '400px',
     LOADING_SPINNER_SIZE: 20,
-    SUBMIT_BUTTON_SPACING: 2
+    // SUBMIT_BUTTON_SPACING: 2
 } as const;
 
 // Form accessibility constants
