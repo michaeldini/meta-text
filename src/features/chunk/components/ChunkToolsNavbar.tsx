@@ -3,7 +3,7 @@ import { Box, ToggleButtonGroup, ToggleButton, Tooltip, Typography } from '@mui/
 import { CompareArrowsIcon, PhotoIcon, NotesIcon, CompressionIcon, QuestionMarkIcon } from 'icons';
 import { useChunkStore } from 'store';
 import CopyTool from '../../chunk/tools/copy/CopyTool';
-import { getChunkToolsStyles } from './Toolbar.styles';
+import { getChunkToolsStyles } from '../Chunk.styles';
 import { useTheme } from '@mui/material/styles';
 
 interface ChunkToolsNavbarProps {

@@ -3,9 +3,9 @@ import { Box, Paper, Slide, useTheme } from '@mui/material';
 
 import { useChunkStore } from 'store';
 
-import ChunkWords from '../words/ChunkWords';
-import ChunkTabs from '../../chunk/tabs/ChunkTabs';
-import { getChunkStyles } from './styles/Chunk.styles';
+import ChunkWords from './components/ChunkWords';
+import ChunkTabs from './components/ChunkTabs';
+import { getChunkStyles } from './Chunk.styles';
 import type { ChunkType } from 'types';
 
 export interface ChunkProps {

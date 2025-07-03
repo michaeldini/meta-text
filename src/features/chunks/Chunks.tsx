@@ -1,12 +1,12 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { Box, Pagination, Alert } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+
 import { LoadingBoundary, ErrorBoundary } from 'components';
 import { log } from 'utils';
 import { useChunkStore } from 'store';
-import type { ChunkType } from 'types';
+import { Chunk } from 'features';
 
-import Chunk from '../chunk/components/Chunk';
 import { getChunksStyles } from './Chunks.style';
 
 interface ChunksPaginationProps {

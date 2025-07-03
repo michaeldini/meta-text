@@ -1,3 +1,7 @@
-export { default as ChunkWords } from '../words/ChunkWords';
+export { default as ChunkTabs } from './ChunkTabs';
 export { default as ChunkTextField } from './ChunkTextField';
-export type { ChunkWordsProps } from '../words/ChunkWords';
+export { default as ChunkToolsNavbar } from './ChunkToolsNavbar';
+export { default as FloatingChunkToolbar } from './FloatingChunkToolbar';
+export { default as WordsToolbar } from './WordsToolbar';
+
+export type { ChunkWordsProps } from './ChunkWords';

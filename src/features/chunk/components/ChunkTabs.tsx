@@ -1,13 +1,16 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import { CompareArrowsIcon, PhotoFilterIcon, NotesIcon, CompressionIcon } from '../../../components/icons';
-import { log } from 'utils';
-import { NotesSummaryTab, ComparisonTab, AiImageTab, CompressionToolTab } from '../tools';
-import ExplanationTab from '../tools/explanation/ChunkExplanationTab';
-import { useChunkStore } from '../../../store/chunkStore';
-import type { ChunkType } from 'types';
-import { getToolsStyles } from './ChunkTabs.styles';
 import { useTheme } from '@mui/material/styles';
+
+import { CompareArrowsIcon, PhotoFilterIcon, NotesIcon, CompressionIcon } from 'icons';
+import { log } from 'utils';
+import { useChunkStore } from 'store';
+import type { ChunkType } from 'types';
+
+import { NotesSummaryTab, ComparisonTab, AiImageTab, CompressionToolTab } from '../tools'; // fix this import path
+import ExplanationTab from '../tools/explanation/ChunkExplanationTab'; // fix this import path
+
+import { getToolsStyles } from '../Chunk.styles';
 
 interface ChunkTabsProps {
     chunk: ChunkType;

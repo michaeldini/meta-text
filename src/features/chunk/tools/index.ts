@@ -13,8 +13,8 @@ export * from './compression';
 export * from './copy/CopyTool';
 // export * from './explanation'; // Not yet implemented
 // Layout Components (imported from new locations)
-export { ChunkToolsNavbar, FloatingChunkToolbar } from '../../chunk/toolbar';
-export { default as ChunkTabs } from '../tabs/ChunkTabs';
+export { ChunkToolsNavbar, FloatingChunkToolbar } from '../components';
+export { default as ChunkTabs } from '../components/ChunkTabs';
 
 // Types
 export * from './types';
