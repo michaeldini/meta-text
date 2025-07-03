@@ -18,9 +18,10 @@ export const createWordFlashcardStyles = (theme: Theme) => ({
         width: '100%',
         height: '100%',
         position: 'relative',
-        transition: 'transform 0.7s cubic-bezier(.68,-0.55,.27,1.55), box-shadow 0.4s',
+        transition: 'transform 0.7s cubic-bezier(.68,-0.55,.27,1.55), -shadow 0.4s',
         transformStyle: 'preserve-3d',
         cursor: 'pointer',
+
 
     },
     flipped: {
@@ -38,12 +39,15 @@ export const createWordFlashcardStyles = (theme: Theme) => ({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        background: theme.palette.background.paper,
+        background: theme.palette.secondary.dark,
         borderRadius: theme.shape.borderRadiusSm,
         boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
         padding: theme.spacing(2),
         zIndex: 2,
         color: theme.palette.text.primary,
+        '&:hover': {
+            transform: 'scale(1.02)',
+        },
 
     },
     back: {
@@ -57,7 +61,7 @@ export const createWordFlashcardStyles = (theme: Theme) => ({
         flexDirection: 'column',
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
-        background: theme.palette.background.paper,
+        background: theme.palette.secondary.dark,
         borderRadius: theme.shape.borderRadiusSm,
         boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
         padding: theme.spacing(2),

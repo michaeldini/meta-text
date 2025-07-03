@@ -17,7 +17,7 @@ const WordFlashcard: React.FC<WordFlashcardProps> = ({ word, definition, definit
     const styles = useMemo(() => createWordFlashcardStyles(theme), [theme]);
 
     return (
-        <Card sx={styles.flashcardContainer} elevation={3}>
+        <Card sx={styles.flashcardContainer}>
             <Box
                 sx={{
                     ...styles.flashcard,
