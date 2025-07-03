@@ -2,27 +2,17 @@ import React from 'react';
 import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-import { CompareArrowsIcon, PhotoFilterIcon, NotesIcon, CompressionIcon } from 'icons';
 import { log } from 'utils';
 import { useChunkStore } from 'store';
 import type { ChunkType } from 'types';
 
-import { NotesSummaryTab, ComparisonTab, AiImageTab, CompressionToolTab } from '../tools'; // fix this import path
-import ExplanationTab from '../tools/explanation/ChunkExplanationTab'; // fix this import path
+import { NotesSummaryTab, ComparisonTab, AiImageTab, CompressionToolTab, ExplanationTab } from '../tools';
 
 import { getToolsStyles } from '../Chunk.styles';
 
 interface ChunkTabsProps {
     chunk: ChunkType;
 }
-
-const tabOptions = [
-    { value: 'notes-summary', icon: <NotesIcon />, key: 'notes-summary' },
-    { value: 'comparison', icon: <CompareArrowsIcon />, key: 'comparison' },
-    { value: 'ai-image', icon: <PhotoFilterIcon />, key: 'ai-image' },
-    { value: 'compression', icon: <CompressionIcon />, key: 'compression' },
-    { value: 'explanation', icon: <NotesIcon />, key: 'explanation' },
-] as const;
 
 const ChunkTabs: React.FC<ChunkTabsProps> = ({ chunk }) => {
     const theme = useTheme();

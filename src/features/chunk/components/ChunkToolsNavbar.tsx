@@ -15,28 +15,6 @@ interface ChunkToolsNavbarProps {
     'data-testid'?: string;
 }
 
-interface TooltipToggleButtonProps {
-    value: string;
-    ariaLabel: string;
-    tooltipTitle: React.ReactNode;
-    icon: React.ReactNode;
-    tooltipProps: any;
-}
-
-const TooltipToggleButton: React.FC<TooltipToggleButtonProps> = ({
-    value,
-    ariaLabel,
-    tooltipTitle,
-    icon,
-    tooltipProps
-}) => (
-    <Tooltip title={tooltipTitle} {...tooltipProps}>
-        <ToggleButton value={value} aria-label={ariaLabel}>
-            {icon}
-        </ToggleButton>
-    </Tooltip>
-);
-
 const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
     className,
     'data-testid': dataTestId = 'chunk-tools-navbar'

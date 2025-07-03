@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
-import { Paper, IconButton, Tooltip, Box, useTheme } from '@mui/material';
-import { NotesIcon } from 'icons';
-import ChunkTextField from '../../../chunk/components/ChunkTextField';
-import { useNotesTool } from './useNotesTool';
+import { Box, useTheme } from '@mui/material';
+
+import { ChunkTextField } from '../../../chunk/components';
 import { NotesToolProps } from '../types';
 import { getToolsStyles } from './Tools.styles';
+
 interface NotesToolComponentProps extends NotesToolProps {
     /** Current summary text */
     summary?: string;
@@ -31,22 +31,17 @@ interface NotesToolComponentProps extends NotesToolProps {
  * Provides note-taking and summary functionality for chunks
  */
 const NotesTool: React.FC<NotesToolComponentProps> = ({
-    chunkIdx,
-    chunk,
-    userInput,
     summary = '',
     notes = '',
     onSummaryUpdate,
     onNotesUpdate,
     onSummaryBlur = () => { },
     onNotesBlur = () => { },
-    onComplete,
     summaryFieldSx,
     notesFieldSx
 }) => {
     const theme = useTheme();
     const styles = getToolsStyles(theme);
-    const { updateNotes, loading, error } = useNotesTool();
 
     const handleSummaryChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -58,15 +53,6 @@ const NotesTool: React.FC<NotesToolComponentProps> = ({
         onNotesUpdate?.(value);
     }, [onNotesUpdate]);
 
-    const handleUpdate = async (text: string) => {
-        const result = await updateNotes({
-            chunkIdx,
-            chunk,
-            userInput: text
-        });
-
-        onComplete?.(result.success, result.data);
-    };
 
     return (
         <Box sx={styles.toolTabContainer}>
@@ -76,7 +62,6 @@ const NotesTool: React.FC<NotesToolComponentProps> = ({
                 onChange={handleSummaryChange}
                 onBlur={onSummaryBlur}
                 sx={summaryFieldSx}
-                disabled={loading}
             />
             <ChunkTextField
                 label="Notes"
@@ -84,13 +69,7 @@ const NotesTool: React.FC<NotesToolComponentProps> = ({
                 onChange={handleNotesChange}
                 onBlur={onNotesBlur}
                 sx={notesFieldSx}
-                disabled={loading}
             />
-            {error && (
-                <div style={{ color: 'red', fontSize: '12px' }}>
-                    {error}
-                </div>
-            )}
         </Box>
     );
 };
