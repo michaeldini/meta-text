@@ -41,12 +41,10 @@ export default function MetaTextDetailPage() {
                 <PageContainer>
                     {metaText ? (
                         <Fade in={!loading} timeout={FADE_IN_DURATION}>
-                            <Box>
-                                <Box sx={styles.container}>
-                                    <MetaTextHeader metaText={metaText} />
-                                    <Chunks />
-                                    <FloatingChunkToolbar />
-                                </Box>
+                            <Box sx={styles.container}>
+                                <MetaTextHeader metaText={metaText} />
+                                <Chunks />
+                                <FloatingChunkToolbar />
                             </Box>
                         </Fade>
                     ) : null}

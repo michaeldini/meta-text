@@ -7,8 +7,8 @@ export const getCompressionTabStyles = (theme: Theme) => ({
         p: theme.spacing(1),
         width: '100%',
         color: theme.palette.text.primary,
-        minWidth: CHUNK_TABS_MIN_WIDTH,
-        maxWidth: CHUNK_TABS_MAX_WIDTH,
+        // minWidth: CHUNK_TABS_MIN_WIDTH,
+        // maxWidth: CHUNK_TABS_MAX_WIDTH,
         borderLeft: `4px solid ${theme.palette.secondary.main}`,
     },
     select: {

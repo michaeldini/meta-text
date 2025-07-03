@@ -11,7 +11,7 @@ const LineHeightInput: React.FC = () => {
     const setLineHeight = useUIPreferencesStore(state => state.setLineHeight);
 
     return (
-        <Box sx={{ minWidth: 120, mx: 2 }}>
+        <Box>
             <Typography variant="caption" color="text.secondary" gutterBottom>
                 Line Height
             </Typography>

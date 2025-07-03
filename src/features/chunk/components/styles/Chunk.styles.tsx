@@ -4,7 +4,7 @@ export const getChunkStyles = (theme: Theme) => ({
         display: 'flex',
         flexDirection: 'row' as const,
         alignItems: 'start',
-        gap: theme.spacing(1.5), // Reduced gap between sections
+        // gap: theme.spacing(1.5), // Reduced gap between sections
         border: `1px solid ${theme.palette.secondary.light}`,
         borderRadius: theme.shape.borderRadius,
         minHeight: 0,

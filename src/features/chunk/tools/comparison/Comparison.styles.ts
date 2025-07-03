@@ -11,7 +11,7 @@ export const getToolsStyles = (theme: Theme) => ({
         display: 'flex',
         flexDirection: 'column',
         width: '100%',
-        minWidth: 400,
+        // minWidth: 400,
         borderLeft: `4px solid ${theme.palette.secondary.main}`,
 
     },
@@ -22,7 +22,7 @@ export const getToolsStyles = (theme: Theme) => ({
         maxHeight: 400,
         overflowY: 'auto',
         width: '100%',
-        minWidth: CHUNK_TABS_MIN_WIDTH,
-        maxWidth: CHUNK_TABS_MAX_WIDTH
+        // minWidth: CHUNK_TABS_MIN_WIDTH,
+        // maxWidth: CHUNK_TABS_MAX_WIDTH
     }
 });
