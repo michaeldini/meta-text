@@ -13,25 +13,6 @@ export enum ViewMode {
     Create = 'create'
 }
 
-// export type MetaText = {
-//     id: number;
-//     title: string;
-//     source_document_id: number;
-//     text?: string;
-// };
-
-// export type SourceDocument = {
-//     id: number;
-//     title: string;
-//     author?: string | null;
-//     summary?: string | null;
-//     characters?: string | null;
-//     locations?: string | null;
-//     themes?: string | null;
-//     symbols?: string | null;
-//     text?: string;
-// };
-
 // MetaText types
 export type MetaTextSummary = {
     id: number;
