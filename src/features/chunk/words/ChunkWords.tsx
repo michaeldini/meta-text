@@ -89,52 +89,50 @@ const ChunkWords = memo(function ChunkWords({
         }
         // else: range is highlighted, show toolbar (handled in render)
     };
-    // const clearSelection = () => {
-    //     setSelectionStartIdx(null);
-    //     setSelectionEndIdx(null);
-    //     setDialogAnchor(null);
-    // };
+
 
     return (
-        <Box>
-            <Box ref={containerRef} sx={styles.wordsContainer}
+        <Box sx={{ minWidth: '50%' }}>
+            < Box ref={containerRef} sx={styles.wordsContainer}
                 onMouseLeave={() => setIsSelecting(false)}
             >
-                {words.map((word, wordIdx) => {
-                    const isHighlighted = highlightedIndices.includes(wordIdx);
-                    return (
-                        <Box
-                            key={wordIdx}
-                            component="span"
-                            sx={[
-                                // theme.typography.body2,
-                                styles.chunkWordBox,
-                                isHighlighted && {
-                                    backgroundColor: theme.palette.secondary.main,
-                                    color: theme.palette.primary.contrastText,
-                                },
-                                { fontSize: `${textSizePx}px`, fontFamily, lineHeight }
-                            ]}
-                            onMouseDown={e => handleWordDown(wordIdx, e)}
-                            onMouseEnter={e => handleWordEnter(wordIdx, e)}
-                            onMouseUp={handleWordUp}
-                            onTouchStart={e => handleWordDown(wordIdx, e)}
-                            onTouchMove={e => {
-                                // Find word under touch
-                                const touch = e.touches[0];
-                                const el = document.elementFromPoint(touch.clientX, touch.clientY);
-                                if (el && (el as HTMLElement).dataset && (el as HTMLElement).dataset.wordIdx) {
-                                    const idx = parseInt((el as HTMLElement).dataset.wordIdx!.split('-')[1], 10);
-                                    if (!isNaN(idx)) handleWordEnter(idx, e);
-                                }
-                            }}
-                            onTouchEnd={handleWordUp}
-                            data-word-idx={`${chunkIdx}-${wordIdx}`}
-                        >
-                            {word}
-                        </Box>
-                    );
-                })}
+                {
+                    words.map((word, wordIdx) => {
+                        const isHighlighted = highlightedIndices.includes(wordIdx);
+                        return (
+                            <Box
+                                key={wordIdx}
+                                component="span"
+                                sx={[
+                                    // theme.typography.body2,
+                                    styles.chunkWordBox,
+                                    isHighlighted && {
+                                        backgroundColor: theme.palette.secondary.main,
+                                        color: theme.palette.primary.contrastText,
+                                    },
+                                    { fontSize: `${textSizePx}px`, fontFamily, lineHeight }
+                                ]}
+                                onMouseDown={e => handleWordDown(wordIdx, e)}
+                                onMouseEnter={e => handleWordEnter(wordIdx, e)}
+                                onMouseUp={handleWordUp}
+                                onTouchStart={e => handleWordDown(wordIdx, e)}
+                                onTouchMove={e => {
+                                    // Find word under touch
+                                    const touch = e.touches[0];
+                                    const el = document.elementFromPoint(touch.clientX, touch.clientY);
+                                    if (el && (el as HTMLElement).dataset && (el as HTMLElement).dataset.wordIdx) {
+                                        const idx = parseInt((el as HTMLElement).dataset.wordIdx!.split('-')[1], 10);
+                                        if (!isNaN(idx)) handleWordEnter(idx, e);
+                                    }
+                                }}
+                                onTouchEnd={handleWordUp}
+                                data-word-idx={`${chunkIdx}-${wordIdx}`}
+                            >
+                                {word}
+                            </Box>
+                        );
+                    })
+                }
                 {/* Show merge tool after all words, inline with the text */}
                 <Box component="span" sx={styles.chunkUndoIconButton}>
                     <MergeChunksTool
@@ -143,10 +141,10 @@ const ChunkWords = memo(function ChunkWords({
                         onComplete={handleMergeComplete}
                     />
                 </Box>
-            </Box>
+            </Box >
 
             {/* Only one WordActionDialog, handles both single and multi-word selection */}
-            <WordsToolbar
+            < WordsToolbar
                 anchorEl={dialogAnchor}
                 onClose={handleToolbarClose}
                 word={highlightedIndices.length > 1 ? highlightedIndices.map(i => words[i]).join(' ') : (selectedWordIdx !== null ? words[selectedWordIdx] : '')}
@@ -154,7 +152,7 @@ const ChunkWords = memo(function ChunkWords({
                 chunkIdx={chunkIdx}
                 chunk={chunk}
             />
-        </Box>
+        </Box >
     );
 });
 

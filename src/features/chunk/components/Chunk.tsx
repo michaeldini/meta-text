@@ -1,5 +1,5 @@
 import React, { memo, useRef, useEffect, useMemo } from 'react';
-import { Paper, Slide, useTheme } from '@mui/material';
+import { Box, Paper, Slide, useTheme } from '@mui/material';
 
 import { useChunkStore } from 'store';
 
@@ -33,10 +33,10 @@ const Chunk = memo(function Chunk({
     }, [isActive]);
 
     return (
-        <Paper
+        <Box
             ref={chunkRef}
             data-chunk-id={chunk.id}
-            elevation={isActive ? 2 : 0}
+            // elevation={isActive ? 2 : 0}
             sx={styles.chunkContainer}
             onClick={() => setActiveChunk(chunk.id)}
         >
@@ -47,7 +47,7 @@ const Chunk = memo(function Chunk({
             <ChunkTabs
                 chunk={chunk}
             />
-        </Paper>
+        </Box>
     );
 });
 

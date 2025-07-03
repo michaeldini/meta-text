@@ -16,7 +16,7 @@ export const getWordsStyles = (theme: Theme) => ({
         },
         padding: theme.spacing(4),
         paddingRight: 0,
-        minWidth: CHUNK_WORDS_MIN_WIDTH,
+        // minWidth: CHUNK_WORDS_MIN_WIDTH,
     },
     chunkWordBox: {
         display: 'inline-block',

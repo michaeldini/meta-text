@@ -10,8 +10,9 @@ export const getToolsStyles = (theme: Theme) => ({
         display: 'flex',
         flexDirection: 'column',
         width: '100%',
-        minWidth: 400,
+        minWidth: "30vw",
         borderLeft: `4px solid ${theme.palette.secondary.main}`,
+        flex: 1,
 
     },
 });
