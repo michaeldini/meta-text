@@ -19,6 +19,8 @@ import { lightTheme, darkTheme } from './styles/themes';
 import { getTopLevelStyles } from './styles/styles';
 import { useAuthStore } from './store/authStore';
 import FlexBox from './components/FlexBox';
+import './styles/landscape.css';
+import LandscapeRequiredOverlay from './components/LandscapeRequiredOverlay';
 
 // Dynamically import pages for code splitting
 const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
@@ -108,22 +110,25 @@ function App() {
     );
 
     return (
-        <ThemeProvider theme={currentTheme}>
-            {/* CssBaseline provides consistent CSS reset and applies theme background */}
-            <CssBaseline />
-            <ErrorBoundary>
-                <Box sx={styles.appContainerStyles}>
-                    <NavBar config={navbarConfig} />
-                    <Routes>
-                        {routes.map(renderRoute)}
-                        {/* 404 Route */}
-                        <Route path="*" element={NotFoundElement} />
-                    </Routes>
-                    {/* Global components */}
-                    <GlobalNotifications />
-                </Box>
-            </ErrorBoundary>
-        </ThemeProvider>
+        <>
+            <LandscapeRequiredOverlay />
+            <ThemeProvider theme={currentTheme}>
+                {/* CssBaseline provides consistent CSS reset and applies theme background */}
+                <CssBaseline />
+                <ErrorBoundary>
+                    <Box sx={styles.appContainerStyles}>
+                        <NavBar config={navbarConfig} />
+                        <Routes>
+                            {routes.map(renderRoute)}
+                            {/* 404 Route */}
+                            <Route path="*" element={NotFoundElement} />
+                        </Routes>
+                        {/* Global components */}
+                        <GlobalNotifications />
+                    </Box>
+                </ErrorBoundary>
+            </ThemeProvider>
+        </>
     );
 }
 

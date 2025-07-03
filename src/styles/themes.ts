@@ -8,6 +8,15 @@ const baseTheme: ThemeOptions = {
         borderRadius: 8,
         borderRadiusSm: 4, // Smaller radius for specific components
     },
+    breakpoints: {
+        values: {
+            xs: 0,    // mobile
+            sm: 600,  // tablet
+            md: 900,  // small laptop
+            lg: 1200, // desktop
+            xl: 1536, // large screens
+        },
+    },
     icons: {
         default: {
             width: 24,

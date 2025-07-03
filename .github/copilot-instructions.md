@@ -8,7 +8,7 @@ The codebase uses modern best practices, but prioritizes readability, maintainab
 - State Management: Zustand
 - UI Library: Material UI (use separate files for styling to keep components clean, leverage MUI's theming)
 - Icons: Heroicons
-- Design for desktop and tablet, not mobile.
+- Design for tablet and mobile.
 - Testing: Vitest (tests colocated with components)
 - Location: `src/` folder
 - Logging: `src/utils/logger.ts`

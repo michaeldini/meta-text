@@ -38,6 +38,11 @@ export const getPageStyles = (theme: Theme) => ({
     marginLeft: 'auto',
     marginRight: 'auto',
     backgroundColor: theme.palette.background.default,
+    [theme.breakpoints.down('sm')]: {
+        maxWidth: '100%',
+        paddingLeft: theme.spacing(1),
+        paddingRight: theme.spacing(1),
+    },
 });
 
 export const getHomePageStyles = (theme: Theme) => ({
@@ -50,6 +55,11 @@ export const getHomePageStyles = (theme: Theme) => ({
         minHeight: 0,
         alignItems: 'start' as const,
         gap: theme.spacing(20),
+        [theme.breakpoints.down('sm')]: {
+            flexDirection: 'column' as const,
+            gap: theme.spacing(4),
+            alignItems: 'stretch' as const,
+        },
     },
     toggleContainer: {
         height: '100%',
@@ -60,6 +70,10 @@ export const getHomePageStyles = (theme: Theme) => ({
         flexDirection: 'column' as const,
         alignItems: 'start' as const,
         gap: theme.spacing(2),
+        [theme.breakpoints.down('sm')]: {
+            alignItems: 'stretch' as const,
+            gap: theme.spacing(1),
+        },
     },
     contentContainer: {
         height: '100vh',
@@ -67,5 +81,10 @@ export const getHomePageStyles = (theme: Theme) => ({
         flex: 1,
         minWidth: '50%',
         minHeight: '100%',
+        [theme.breakpoints.down('sm')]: {
+            minWidth: 0,
+            minHeight: 0,
+            height: 'auto',
+        },
     },
 });
