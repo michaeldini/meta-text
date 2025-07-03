@@ -5,9 +5,8 @@ import SourceDocSelect from './Select';
 import CreateFormLayout from './CreateFormLayout';
 import SubmitButton from './SubmitButton';
 import { useCreateForm } from '../hooks/useCreateForm';
-// import { SourceDocument, FormMode } from '../types';
 import { FORM_MODES, FORM_MESSAGES, FORM_A11Y } from '../constants';
-import { DocType, SourceDocumentSummary, SourceDocumentCreate, MetaTextCreate } from 'types';
+import { DocType, SourceDocumentSummary } from 'types';
 
 export interface CreateFormProps {
     sourceDocs: SourceDocumentSummary[];
@@ -15,9 +14,10 @@ export interface CreateFormProps {
     sourceDocsError: string | null;
     onSuccess?: () => void;
     docType: DocType;
-    title?: string;
 }
 
+// Define the type for form modes
+// This allows the user to switch between uploading a file or choosing a source document
 export type FormMode = typeof FORM_MODES.UPLOAD | typeof FORM_MODES.META_TEXT;
 
 
@@ -26,20 +26,25 @@ const CreateForm: React.FC<CreateFormProps> = React.memo(({
     sourceDocsLoading,
     sourceDocsError,
     onSuccess,
-    docType,
-    title
+    docType
 }) => {
+    // Determine the form mode based on the document type
     const mode: FormMode = useMemo(() =>
         docType === DocType.SourceDoc ? FORM_MODES.UPLOAD : FORM_MODES.META_TEXT,
         [docType]
     );
 
+    // Initialize the form with the appropriate mode and callbacks
     const form = useCreateForm({
         mode,
         onSuccess,
         sourceDocs
     });
 
+    // Handlers for form interactions
+    // These handlers are memoized to prevent unnecessary re-renders
+    // They update the form state based on user input
+    // and trigger form submission when the user interacts with the form elements.
     const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files ? e.target.files[0] : null;
         form.setFile(file);
@@ -58,8 +63,11 @@ const CreateForm: React.FC<CreateFormProps> = React.memo(({
         form.setTitle(e.target.value);
     }, [form.setTitle]);
 
+    // Determine if the submit button should be disabled
     const isSubmitDisabled = form.isSubmitDisabled;
 
+    // Prepare the form content based on the current mode
+    // This includes the description, title label, submit text, and accessibility IDs
     const formContent = useMemo(() => ({
         description: FORM_MESSAGES.DESCRIPTIONS[form.mode],
         titleLabel: FORM_MESSAGES.LABELS.TITLE[form.mode],
@@ -71,7 +79,7 @@ const CreateForm: React.FC<CreateFormProps> = React.memo(({
 
     return (
         <CreateFormLayout
-            title={title}
+            title={docType}
             description={formContent.description}
             onSubmit={handleSubmit}
             error={form.error}

@@ -8,8 +8,8 @@ import { PageContainer, FlexBox } from 'components';
 import { DocType, ViewMode } from 'types';
 
 import { getHomePageStyles } from '../../styles/styles';
-import WelcomeText from './WelcomeText';
-import { HomePageToggles } from './HomePageToggles';
+import WelcomeText from './components/WelcomeText';
+import { HomePageToggles } from './components/HomePageToggles';
 
 
 export default function HomePage() {
@@ -24,11 +24,12 @@ export default function HomePage() {
         fetchSourceDocs,
         fetchMetaTexts,
     } = useDocumentsStore();
-
-    // const { showSuccess, showError } = useNotifications();
-    // const navigate = useNavigate();
+    // Get the theme and styles for the home page
     const theme = useTheme();
     const styles = getHomePageStyles(theme);
+
+    // State for toggling between document types and view modes
+    // Default to MetaText and Search view
     const [docType, setDocType] = React.useState<DocType>(DocType.MetaText);
     const [viewMode, setViewMode] = React.useState<ViewMode>(ViewMode.Search);
 
@@ -77,7 +78,6 @@ export default function HomePage() {
                 sourceDocsError={sourceDocsError}
                 onSuccess={refreshData}
                 docType={docType}
-                title={docType}
             />
         );
     }
