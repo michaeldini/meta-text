@@ -1,7 +1,5 @@
-// all styles related to chunk tools
-
 import { Theme } from '@mui/material/styles';
-import { CHUNK_WORDS_MIN_WIDTH, CHUNK_TABS_MIN_WIDTH, CHUNK_TABS_MAX_WIDTH } from '../../../../constants/ui';
+
 export const getToolsStyles = (theme: Theme) => ({
 
     // styles for each tool section
@@ -22,7 +20,5 @@ export const getToolsStyles = (theme: Theme) => ({
         maxHeight: 400,
         overflowY: 'auto',
         width: '100%',
-        // minWidth: CHUNK_TABS_MIN_WIDTH,
-        // maxWidth: CHUNK_TABS_MAX_WIDTH
     }
 });

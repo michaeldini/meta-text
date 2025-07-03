@@ -1,14 +1,10 @@
 import { Theme } from '@mui/material/styles';
-import { CHUNK_TABS_MAX_WIDTH, CHUNK_TABS_MIN_WIDTH } from 'constants';
-import { grey, blue, blueGrey, deepPurple, cyan, indigo, yellow } from '@mui/material/colors';
 
 export const getCompressionTabStyles = (theme: Theme) => ({
     root: {
         p: theme.spacing(1),
         width: '100%',
         color: theme.palette.text.primary,
-        // minWidth: CHUNK_TABS_MIN_WIDTH,
-        // maxWidth: CHUNK_TABS_MAX_WIDTH,
         borderLeft: `4px solid ${theme.palette.secondary.main}`,
     },
     select: {

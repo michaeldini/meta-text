@@ -1,7 +1,6 @@
 // all styles related to chunk tools
-
 import { Theme } from '@mui/material/styles';
-import { CHUNK_WORDS_MIN_WIDTH, CHUNK_TABS_MIN_WIDTH, CHUNK_TABS_MAX_WIDTH } from '../../../constants/ui';
+
 export const getToolsStyles = (theme: Theme) => ({
 
     // sticky container for tools
@@ -16,7 +15,6 @@ export const getToolsStyles = (theme: Theme) => ({
         top: theme.spacing(5),
         alignSelf: 'flex-start',
         width: '100%',
-        maxWidth: CHUNK_TABS_MAX_WIDTH,
         zIndex: theme.zIndex.appBar,
         boxShadow: 'none',
         transition: theme.transitions.create(['opacity'], {
