@@ -1,24 +1,15 @@
 import React from 'react';
-import { Box, ToggleButtonGroup, ToggleButton, Tooltip, Typography } from '@mui/material';
+import ReactDOM from 'react-dom';
+import { Box, Fade, ToggleButtonGroup, ToggleButton, Tooltip, Typography } from '@mui/material';
 import { CompareArrowsIcon, PhotoIcon, NotesIcon, CompressionIcon, QuestionMarkIcon } from 'icons';
 import { useChunkStore } from 'store';
+import { FADE_IN_DURATION } from 'constants';
 import CopyTool from '../../chunk/tools/copy/CopyTool';
 import { getChunkToolsStyles } from '../Chunk.styles';
 import { useTheme } from '@mui/material/styles';
 
-interface ChunkToolsNavbarProps {
-    /** Whether this component is rendered as a floating element */
-    isFloating?: boolean;
-    /** Additional CSS class name */
-    className?: string;
-    /** Test ID for testing */
-    'data-testid'?: string;
-}
 
-const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
-    className,
-    'data-testid': dataTestId = 'chunk-tools-navbar'
-}) => {
+const ChunkToolsNavbar: React.FC = () => {
     const theme = useTheme();
     const styles = getChunkToolsStyles(theme);
     const activeChunkId = useChunkStore(state => state.activeChunkId);
@@ -72,11 +63,10 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
 
     ];
 
-    return (
+    const toolbar = (
         <Box
             sx={styles.toolsContainer}
-            data-testid={dataTestId}
-            className={className}
+            data-testid="chunk-tools-navbar"
         >
             <ToggleButtonGroup
                 value={activeTabs}
@@ -103,6 +93,23 @@ const ChunkToolsNavbar: React.FC<ChunkToolsNavbarProps> = ({
             </Box>
         </Box>
     );
+
+    // Always render floating toolbar
+    const floatingStyles = {
+        padding: 0,
+        width: '48px',
+        position: 'fixed' as const,
+        top: '72px',
+        right: '15px',
+        zIndex: theme.zIndex.speedDial,
+        pointerEvents: 'auto',
+    };
+    const floatingToolbar = (
+        <Fade in={true} timeout={FADE_IN_DURATION} style={{ transitionDelay: '100ms' }}>
+            <Box sx={floatingStyles}>{toolbar}</Box>
+        </Fade>
+    );
+    return ReactDOM.createPortal(floatingToolbar, document.body);
 };
 
 export default ChunkToolsNavbar;

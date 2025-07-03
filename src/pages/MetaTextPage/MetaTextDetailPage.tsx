@@ -5,7 +5,7 @@ import { Box, useTheme, Alert, Fade } from '@mui/material';
 import { log } from 'utils';
 import { ErrorBoundary, LoadingBoundary, PageContainer } from 'components';
 import { usePageLogger } from 'hooks';
-import { FloatingChunkToolbar } from 'features';
+import { ChunkToolsNavbar } from 'features';
 import { Chunks } from 'features';
 import { FADE_IN_DURATION } from 'constants';
 import { useMetaTextDetail } from 'store';
@@ -44,7 +44,7 @@ export default function MetaTextDetailPage() {
                             <Box sx={styles.container}>
                                 <MetaTextHeader metaText={metaText} />
                                 <Chunks />
-                                <FloatingChunkToolbar />
+                                <ChunkToolsNavbar />
                             </Box>
                         </Fade>
                     ) : null}
