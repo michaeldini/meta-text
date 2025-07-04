@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, MenuItem, CircularProgress, Typography, Box, Tooltip } from '@mui/material';
-import { CompressionIcon } from 'icons';
 
-import { fetchChunkCompressions, createChunkCompression, previewChunkCompression } from 'services';
-// import type { ChunkCompression, ChunkCompressionCreate } from '../../../../types/chunkCompression';
+import { CompressionIcon } from 'icons';
+import { createChunkCompression, previewChunkCompression } from 'services';
+import type { ChunkType } from 'types';
 
 const STYLE_OPTIONS = [
     { value: 'like im 5', label: 'Explain like I’m 5' },
@@ -12,7 +12,7 @@ const STYLE_OPTIONS = [
 ];
 
 interface CompressionToolProps {
-    chunk: any; // Replace with actual chunk type
+    chunk: ChunkType;
     onCompressionCreated?: () => void;
 }
 
