@@ -34,7 +34,7 @@ const CreateForm: React.FC<CreateFormProps> = React.memo((props) => {
     } = useCreateFormWithHandlers(props);
 
     const theme = useTheme();
-    const styles = React.useMemo(() => createFormStyles(theme), [theme]);
+    const styles = createFormStyles(theme);
 
     return (
         <Paper elevation={3} sx={styles.createFormContainer}>

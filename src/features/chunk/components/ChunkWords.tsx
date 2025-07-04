@@ -26,7 +26,7 @@ const ChunkWords = memo(function ChunkWords({
     const [isSelecting, setIsSelecting] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
     const theme = useTheme();
-    const styles = useMemo(() => getWordsStyles(theme), [theme]);
+    const styles = getWordsStyles(theme);
     const textSizePx = useUIPreferencesStore(state => state.textSizePx);
     const fontFamily = useUIPreferencesStore(state => state.fontFamily);
     const lineHeight = useUIPreferencesStore(state => state.lineHeight);

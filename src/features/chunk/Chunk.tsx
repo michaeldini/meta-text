@@ -19,7 +19,7 @@ const Chunk = memo(function Chunk({
 }: ChunkProps) {
     const { activeChunkId, setActiveChunk, activeTabs, updateChunkField } = useChunkStore();
     const theme = useTheme();
-    const styles = useMemo(() => getChunkStyles(theme), [theme]);
+    const styles = getChunkStyles(theme);
 
     return (
         <Box

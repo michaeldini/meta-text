@@ -17,7 +17,7 @@ interface ChunkTabsProps {
 
 const ChunkTabs: React.FC<ChunkTabsProps> = ({ chunk, activeTabs, updateChunkField }) => {
     const theme = useTheme();
-    const styles = React.useMemo(() => getToolsStyles(theme), [theme]);
+    const styles = getToolsStyles(theme);
 
     React.useEffect(() => {
         // return () => log.info(`ChunkTools unmounted (id: ${chunk.id})`); 

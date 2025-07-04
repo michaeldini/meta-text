@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
     AppBar,
     Toolbar,
@@ -21,15 +21,6 @@ import { NavBarProps, NavigationError } from './types';
 import { DEFAULT_NAVBAR_CONFIG } from './index';
 import { createNavbarStyles } from './styles';
 
-/**
- * NavBar Component - Simplified and maintainable
- * 
- * Features:
- * - Theme-aware responsive design
- * - Authentication-aware navigation
- * - Light/dark theme support
- * - Keyboard navigation
- */
 const NavBar: React.FC<NavBarProps> = ({
     config = DEFAULT_NAVBAR_CONFIG,
     renderToolbar,
@@ -48,9 +39,7 @@ const NavBar: React.FC<NavBarProps> = ({
     };
 
     // Convert readonly array to mutable array for type compatibility
-    const customItems = useMemo(() => {
-        return config?.items ? [...config.items] : undefined;
-    }, [config?.items]);
+    const customItems = config?.items ? [...config.items] : undefined;
 
     const { navigationItems, isActive, handleItemClick } = useNavigation({
         user,
@@ -59,11 +48,11 @@ const NavBar: React.FC<NavBarProps> = ({
         onError: handleNavigationError,
     });
 
-    // Memoize brand configuration
-    const brandConfig = useMemo(() => ({
+    // Brand configuration (no need for useMemo)
+    const brandConfig = {
         label: config?.brand?.label || DEFAULT_NAVBAR_CONFIG.brand.label,
         path: config?.brand?.path || DEFAULT_NAVBAR_CONFIG.brand.path,
-    }), [config?.brand]);
+    };
 
     const handleBrandClick = () => {
         if (brandConfig.path) {
@@ -80,8 +69,8 @@ const NavBar: React.FC<NavBarProps> = ({
         handleItemClick(item, closeMenu);
     };
 
-    // ✅ Simplified theme-aware styles
-    const styles = useMemo(() => createNavbarStyles(theme), [theme]);
+    // Theme-aware styles (no need for useMemo)
+    const styles = createNavbarStyles(theme);
 
     // Custom icons (Heroicons) need explicit styling since they don't inherit from MuiSvgIcon
     const menuIcon = <MenuIcon />;

@@ -14,7 +14,7 @@ interface WordFlashcardProps {
 const WordFlashcard: React.FC<WordFlashcardProps> = ({ word, definition, definitionWithContext, context }) => {
     const [flipped, setFlipped] = useState(false);
     const theme = useTheme();
-    const styles = useMemo(() => createWordFlashcardStyles(theme), [theme]);
+    const styles = createWordFlashcardStyles(theme);
 
     return (
         <Card sx={styles.flashcardContainer}>

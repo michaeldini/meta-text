@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Box, CardActionArea, CardContent, Typography, useTheme } from '@mui/material';
 import { MenuIcon, QuestionMarkIcon } from 'icons';
 import { createWordFlashcardStyles } from './WordFlashcard.styles';
@@ -20,7 +20,7 @@ const WordFlashcardBack: React.FC<WordFlashcardBackProps> = ({
     setFlipped
 }) => {
     const theme = useTheme();
-    const styles = useMemo(() => createWordFlashcardStyles(theme), [theme]);
+    const styles = createWordFlashcardStyles(theme);
 
     return (
         <CardContent sx={styles.back}>
