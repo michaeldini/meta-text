@@ -16,14 +16,6 @@ export interface NavigationItem {
     badge?: string | number;
 }
 
-export interface NavigationConfig {
-    brand: {
-        label: string;
-        path: string;
-    };
-    items: NavigationItem[];
-}
-
 /**
  * Props for the NavBar component.
  * @property config - Navigation configuration object. Must include:
@@ -32,8 +24,13 @@ export interface NavigationConfig {
  * @property data-testid - Optional test id for testing.
  */
 export interface NavBarProps {
-    config: NavigationConfig;
-    'data-testid'?: string;
+    config: {
+        brand: {
+            label: string;
+            path: string;
+        };
+        items: NavigationItem[];
+    };
 }
 
 // Enhanced types for better error handling and type safety

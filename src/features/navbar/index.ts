@@ -9,7 +9,6 @@ export { default as NavBar } from './NavBar';
 // Types
 export type {
     NavBarProps,
-    NavigationConfig,
     NavigationItem,
     User,
 } from './types';

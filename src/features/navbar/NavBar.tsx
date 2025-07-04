@@ -5,11 +5,8 @@ import {
     Button,
     Typography,
     Box,
-    Menu,
-    MenuItem,
-    Badge,
-    useTheme,
     IconButton,
+    useTheme,
 } from '@mui/material';
 import { MenuIcon } from 'icons';
 import { useAuth } from 'store';
@@ -18,15 +15,15 @@ import { useThemeContext } from '../../contexts/ThemeContext';
 
 import { useNavigation, useDropdownMenu } from './hooks';
 import { NavBarProps, NavigationError } from './types';
-import type { NavigationConfig } from './types';
 import { DEFAULT_NAVBAR_CONFIG } from './index';
 import { createNavbarStyles } from './styles';
+import NavMenu from './components/NavMenu';
+import NavBrandMenuSection from './components/NavBrandMenuSection';
 
-const NavBar: React.FC<NavBarProps> = ({
-    config,
-    'data-testid': dataTestId = 'navbar',
-}) => {
+const NavBar: React.FC<NavBarProps> = ({ config }) => {
     const theme = useTheme();
+    const styles = createNavbarStyles(theme);
+
     const { user, logout } = useAuth();
     const { anchorEl, isOpen, openMenu, closeMenu, handleKeyDown } = useDropdownMenu();
     const { toggleMode } = useThemeContext();
@@ -39,7 +36,7 @@ const NavBar: React.FC<NavBarProps> = ({
 
     // Convert readonly array to mutable array for type compatibility
     // config.items: NavigationItem[]
-    const customItems = config?.items ? [...config.items] : undefined;
+    const customItems = [...config.items];
 
     const { navigationItems, isActive, handleItemClick } = useNavigation({
         user,
@@ -50,8 +47,8 @@ const NavBar: React.FC<NavBarProps> = ({
 
     // Brand configuration (should match NavigationConfig.brand)
     const brandConfig = {
-        label: config?.brand?.label || DEFAULT_NAVBAR_CONFIG.brand.label,
-        path: config?.brand?.path || DEFAULT_NAVBAR_CONFIG.brand.path,
+        label: config.brand.label || DEFAULT_NAVBAR_CONFIG.brand.label,
+        path: config.brand.path || DEFAULT_NAVBAR_CONFIG.brand.path,
     };
 
     const handleBrandClick = () => {
@@ -69,101 +66,27 @@ const NavBar: React.FC<NavBarProps> = ({
         handleItemClick(item, closeMenu);
     };
 
-    // Theme-aware styles (no need for useMemo)
-    const styles = createNavbarStyles(theme);
-
-    // Custom icons (Heroicons) need explicit styling since they don't inherit from MuiSvgIcon
-    const menuIcon = <MenuIcon />;
-
     return (
         <AppBar
             position="static"
-            elevation={2}
             sx={styles.appBar}
-            data-testid={dataTestId}
+            data-testid="navbar"
         >
             <Toolbar sx={styles.toolbar}>
                 {/* Brand and Navigation Menu Section */}
-                <Box sx={styles.section}>
-                    {/* Brand/Logo Button - Takes user to homepage */}
-                    <Button
-                        sx={styles.brandButton}
-                        onClick={brandConfig.path ? handleBrandClick : undefined}
-                        aria-label={`Go to homepage - ${brandConfig.label}`}
-                        data-testid="nav-brand-button"
-                    >
-                        <Typography
-                            component="span"
-                            variant="h6"
-                            data-testid="nav-brand"
-                        >
-                            {brandConfig.label}
-                        </Typography>
-                    </Button>
-
-                    {/* Menu Trigger Icon - Opens dropdown */}
-                    <IconButton
-                        sx={styles.menuButton}
-                        onClick={openMenu}
-                        onKeyDown={handleKeyDown}
-                        aria-label="Open navigation menu"
-                        aria-controls={isOpen ? 'navigation-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={isOpen ? 'true' : 'false'}
-                        data-testid="nav-menu-button"
-                        size="medium"
-                    >
-                        {menuIcon}
-                    </IconButton>
-
-                    <Menu
-                        id="navigation-menu"
-                        anchorEl={anchorEl}
-                        open={isOpen}
-                        onClose={closeMenu}
-                        onKeyDown={handleKeyDown}
-                        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-                        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-                        sx={styles.dropdownMenu}
-                        data-testid="nav-menu"
-                        slotProps={{
-                            list: {
-                                'aria-label': 'Navigation items',
-                                role: 'menu',
-                            },
-                        }}
-
-                    >
-                        {navigationItems.map((item) => (
-                            <MenuItem
-                                key={item.id}
-                                onClick={() => handleMenuItemClick(item)}
-                                selected={isActive(item.path)}
-                                disabled={item.disabled}
-                                sx={styles.menuItem}
-                                data-testid={`nav-item-${item.id}`}
-                                role="menuitem"
-                                aria-label={`${item.label}${item.disabled ? ' (disabled)' : ''}`}
-                            >
-                                {item.icon && (
-                                    <Box sx={{ display: 'flex', alignItems: 'center', mr: 1 }}>
-                                        {item.icon}
-                                    </Box>
-                                )}
-                                {item.badge ? (
-                                    <Badge
-                                        badgeContent={item.badge}
-                                        color="secondary"
-                                    >
-                                        <Typography variant="body2">{item.label}</Typography>
-                                    </Badge>
-                                ) : (
-                                    <Typography variant="body2">{item.label}</Typography>
-                                )}
-                            </MenuItem>
-                        ))}
-                    </Menu>
-                </Box>
+                <NavBrandMenuSection
+                    styles={styles}
+                    brandConfig={brandConfig}
+                    handleBrandClick={handleBrandClick}
+                    openMenu={openMenu}
+                    handleKeyDown={handleKeyDown}
+                    isOpen={isOpen}
+                    anchorEl={anchorEl}
+                    closeMenu={closeMenu}
+                    navigationItems={navigationItems}
+                    isActive={isActive}
+                    handleMenuItemClick={handleMenuItemClick}
+                />
 
                 {/* Theme Toggle */}
                 <Box sx={{ ml: 'auto' }}>
