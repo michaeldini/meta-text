@@ -2,6 +2,7 @@ import React from 'react';
 import { Menu, MenuItem, Box, Badge, Typography } from '@mui/material';
 import { NavigationItem } from '../types';
 import { MenuIcon } from 'icons';
+import type { IconProps } from 'icons';
 interface NavMenuProps {
     navigationItems: NavigationItem[];
     isActive: (path?: string) => boolean;
@@ -71,9 +72,7 @@ const NavMenu: React.FC<NavMenuProps> = ({
                         role="menuitem"
                         aria-label={`${item.label}${item.disabled ? ' (disabled)' : ''}`}
                     >
-                        {item.icon && (
-                            <item.icon />
-                        )}
+                        <Box component={item.icon as React.ComponentType} />
                         <Typography variant="body2">{item.label}</Typography>
                     </MenuItem>
                 ))}

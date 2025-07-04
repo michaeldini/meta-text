@@ -24,7 +24,7 @@ import { SVGProps } from 'react';
 
 
 // All icons are typed to accept all ThemedIconProps except 'as'
-type IconProps = Omit<ThemedIconProps, 'as'>;
+export type IconProps = Omit<ThemedIconProps, 'as'>;
 
 export const ArrowBackIcon: React.FC<IconProps> = (props) => <ThemedIcon as={ArrowLeftSvg} {...props} />;
 export const MenuIcon: React.FC<IconProps> = (props) => <ThemedIcon as={Bars3Svg} {...props} />;
