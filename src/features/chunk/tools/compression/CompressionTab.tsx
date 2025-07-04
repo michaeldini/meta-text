@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Box, Typography, Select, MenuItem, FormControl, CircularProgress, Paper, useTheme } from '@mui/material';
 
 import { fetchChunkCompressions } from 'services';
-import type { ChunkCompression } from 'types';
+import type { ChunkCompression, ChunkType } from 'types';
 
 import CompressionTool from './CompressionTool';
 import { getCompressionTabStyles } from './compression.styles';
 
 interface CompressionToolTabProps {
-    chunk: any;
+    chunk: ChunkType;
 }
 const CompressionToolTab: React.FC<CompressionToolTabProps> = ({ chunk }) => {
     const [compressions, setCompressions] = useState<ChunkCompression[]>([]);
@@ -18,6 +18,7 @@ const CompressionToolTab: React.FC<CompressionToolTabProps> = ({ chunk }) => {
     const theme = useTheme();
     const styles = getCompressionTabStyles(theme);
 
+    // Reset state when chunk changes
     useEffect(() => {
         if (!chunk) {
             setCompressions([]);
@@ -30,6 +31,8 @@ const CompressionToolTab: React.FC<CompressionToolTabProps> = ({ chunk }) => {
     const fetchCompressions = () => {
         setLoading(true);
         setError(null);
+        // Set the compression to the database
+        // probably rename this because its confusing with the call to OpenAI
         fetchChunkCompressions(chunk.id)
             .then(data => {
                 setCompressions(data);
