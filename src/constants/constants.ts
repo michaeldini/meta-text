@@ -1,4 +1,3 @@
-
 export const NOTIFICATION_CONSTANTS = {
     STACK_OFFSET: 70, // Vertical spacing between stacked notifications
     POSITION_RIGHT: 16, // Right margin for notifications
@@ -27,5 +26,20 @@ export const MESSAGES = {
         metaText: 'Failed to delete the meta text. Please try again.',
     } as const,
 } as const;
+
+export const NAVBAR_CONFIG = {
+    brand: {
+        label: 'Meta-Text',
+        path: '/',
+    },
+    items: [
+        {
+            id: 'about',
+            label: 'About',
+            path: '/about',
+            showWhen: 'always' as const,
+        },
+    ],
+};
 
 

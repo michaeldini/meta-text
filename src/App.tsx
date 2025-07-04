@@ -1,26 +1,17 @@
-/**
- * Enhanced App.tsx with light/dark theme support
- * This shows how to integrate the theme system into your existing app
- */
-
 import React, { JSX } from 'react';
-import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, CssBaseline, useTheme } from '@mui/material';
-import { Fade, Box, Typography } from '@mui/material';
-import { useMemo, Suspense, lazy, ComponentType } from 'react';
+import { Box, Typography } from '@mui/material';
+import { Suspense, lazy, ComponentType } from 'react';
 
-import { NavBar } from './features/navbar';
-import { AppSuspenseFallback } from './components/AppSuspenseFallback';
-import ErrorBoundary from './components/ErrorBoundary';
-import GlobalNotifications from './components/GlobalNotifications';
+import { NAVBAR_CONFIG } from 'constants';
+import { NavBar } from 'features';
+import { LandscapeRequiredOverlay, AppSuspenseFallback, ErrorBoundary, GlobalNotifications, FlexBox } from 'components';
 
+import { getTopLevelStyles, lightTheme, darkTheme } from './styles';
+import { useAuthStore } from 'store';
 import { useThemeContext } from './contexts/ThemeContext';
-import { lightTheme, darkTheme } from './styles/themes';
-import { getTopLevelStyles } from './styles/styles';
-import { useAuthStore } from './store/authStore';
-import FlexBox from './components/FlexBox';
 import './styles/landscape.css';
-import LandscapeRequiredOverlay from './components/LandscapeRequiredOverlay';
 
 // Dynamically import pages for code splitting
 const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
@@ -61,26 +52,7 @@ function App() {
     const { mode } = useThemeContext();
     const theme = useTheme();
     const styles = getTopLevelStyles(theme);
-    // Get current theme based on mode
-    const currentTheme = useMemo(() => {
-        return mode === 'light' ? lightTheme : darkTheme;
-    }, [mode]);
-
-    // Navbar config
-    const navbarConfig = {
-        brand: {
-            label: 'Meta-Text',
-            path: '/',
-        },
-        items: [
-            {
-                id: 'about',
-                label: 'About',
-                path: '/about',
-                showWhen: 'always' as const,
-            },
-        ],
-    };
+    const currentTheme = mode === 'light' ? lightTheme : darkTheme;
 
     const renderRoute = (route: RouteConfig) => {
         const Component = route.element;
@@ -117,7 +89,7 @@ function App() {
                 <CssBaseline />
                 <ErrorBoundary>
                     <Box sx={styles.appContainerStyles}>
-                        <NavBar config={navbarConfig} />
+                        <NavBar config={NAVBAR_CONFIG} />
                         <Routes>
                             {routes.map(renderRoute)}
                             {/* 404 Route */}

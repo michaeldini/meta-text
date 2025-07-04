@@ -6,3 +6,4 @@ export { useNotificationStore } from './notificationStore';
 export { useUIPreferencesStore } from './uiPreferences';
 export { useMetaTextDetail } from './metaTextDetailStore';
 export { useAuth } from './authStore';
+export { useAuthStore } from './authStore';
