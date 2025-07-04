@@ -1,8 +1,7 @@
 import { useMemo, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { NavigationItem, User, NavigationError } from '../types';
+import { NavigationItem, User, NavigationError, NavBarProps } from '../types';
 import {
-    createDefaultNavigationItems,
     filterNavigationItems,
     isActiveRoute,
     handleNavigationClick
@@ -11,7 +10,7 @@ import {
 interface UseNavigationProps {
     user: User | null;
     onLogout: () => void;
-    customItems?: NavigationItem[];
+    config: NavBarProps['config'];
     onError?: (error: NavigationError) => void;
 }
 
@@ -23,14 +22,14 @@ interface UseNavigationReturn {
 }
 
 /**
- * Hook for managing navigation state and actions
+ * Hook for managing navigation state and actions (NavBarProps model)
  * @param props - Navigation configuration and handlers
  * @returns Navigation state and handlers
  */
 export const useNavigation = ({
     user,
     onLogout,
-    customItems,
+    config,
     onError
 }: UseNavigationProps): UseNavigationReturn => {
     const location = useLocation();
@@ -60,11 +59,12 @@ export const useNavigation = ({
         }
     }, [onLogout, onError]);
 
-    // Create navigation items with optimized dependencies
+    // Compose navigation items from config, wiring up logout action
     const allNavigationItems = useMemo(() => {
-        const defaultItems = createDefaultNavigationItems(handleNavigate, handleLogout);
-        return customItems ? [...defaultItems, ...customItems] : defaultItems;
-    }, [handleNavigate, handleLogout, customItems]);
+        return config.items.map(item =>
+            item.id === 'logout' ? { ...item, action: handleLogout } : item
+        );
+    }, [config.items, handleLogout]);
 
     // Filter items based on authentication state
     const visibleNavigationItems = useMemo(() => {

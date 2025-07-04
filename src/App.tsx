@@ -4,7 +4,6 @@ import { ThemeProvider, CssBaseline, useTheme } from '@mui/material';
 import { Box, Typography } from '@mui/material';
 import { Suspense, lazy, ComponentType } from 'react';
 
-import { NAVBAR_CONFIG } from 'constants';
 import { NavBar } from 'features';
 import { LandscapeRequiredOverlay, AppSuspenseFallback, ErrorBoundary, GlobalNotifications, FlexBox } from 'components';
 
@@ -89,7 +88,7 @@ function App() {
                 <CssBaseline />
                 <ErrorBoundary>
                     <Box sx={styles.appContainerStyles}>
-                        <NavBar config={NAVBAR_CONFIG} />
+                        <NavBar />
                         <Routes>
                             {routes.map(renderRoute)}
                             {/* 404 Route */}

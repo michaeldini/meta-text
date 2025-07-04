@@ -25,10 +25,7 @@ export interface NavigationItem {
  */
 export interface NavBarProps {
     config: {
-        brand: {
-            label: string;
-            path: string;
-        };
+        brand: NavigationItem;
         items: NavigationItem[];
     };
 }

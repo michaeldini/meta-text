@@ -6,6 +6,7 @@
 // Main Component
 export { default as NavBar } from './NavBar';
 
+export { getNavigationConfig } from './config/navigationConfig';
 // Types
 export type {
     NavBarProps,
@@ -15,7 +16,7 @@ export type {
 
 // Hooks
 export { useNavigation } from './hooks/useNavigation';
-export { useDropdownMenu } from './hooks/useDropdownMenu';
+
 
 // Utilities
 export {
@@ -25,12 +26,3 @@ export {
     handleNavigationClick,
     DEFAULT_ROUTES,
 } from './utils/navigation';
-
-// Constants for common configurations
-export const DEFAULT_NAVBAR_CONFIG = {
-    brand: {
-        label: 'Meta-Text',
-        path: '/',
-    },
-    items: [],
-} as const;

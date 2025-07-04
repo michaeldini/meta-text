@@ -26,20 +26,3 @@ export const MESSAGES = {
         metaText: 'Failed to delete the meta text. Please try again.',
     } as const,
 } as const;
-
-export const NAVBAR_CONFIG = {
-    brand: {
-        label: 'Meta-Text',
-        path: '/',
-    },
-    items: [
-        {
-            id: 'about',
-            label: 'About',
-            path: '/about',
-            showWhen: 'always' as const,
-        },
-    ],
-};
-
-
