@@ -24,7 +24,7 @@ const NavBar: React.FC = () => {
         >
             <Toolbar sx={styles.toolbar}>
                 <NavBarHeader styles={styles} />
-                <ThemeToggle onToggle={toggleMode} data-testid="nav-theme-toggle" />
+                <ThemeToggle onToggle={toggleMode} />
             </Toolbar>
         </AppBar>
     );

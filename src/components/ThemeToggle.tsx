@@ -53,7 +53,7 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
                 color="inherit"
                 size={size}
                 className={className}
-                data-testid={dataTestId}
+                data-testid="nav-theme-toggle"
                 aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
                 sx={{
                     transition: 'transform 0.2s ease-in-out',

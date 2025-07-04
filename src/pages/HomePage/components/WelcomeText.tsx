@@ -7,7 +7,7 @@ import { Box, Typography } from '@mui/material';
 const WelcomeText: React.FC = () => (
     <Box>
         <Typography variant="h4" color="secondary.dark" gutterBottom fontWeight={700}>
-            Welcome to Meta-Text!
+            Welcome!
         </Typography>
         <Typography variant="body1" sx={{ mt: 2, fontSize: 20, color: 'text.primary' }}>
             Imagine unlocking the true depth of every document you read. <b>Meta-Text</b> empowers you to upload, dissect, and truly engage with your texts—one meaningful section at a time. <br /><br />

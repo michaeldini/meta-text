@@ -72,17 +72,9 @@ const NavMenu: React.FC<NavMenuProps> = ({
                         aria-label={`${item.label}${item.disabled ? ' (disabled)' : ''}`}
                     >
                         {item.icon && (
-                            <Box sx={{ display: 'flex', alignItems: 'center', mr: 1 }}>
-                                {item.icon}
-                            </Box>
+                            <item.icon />
                         )}
-                        {item.badge ? (
-                            <Badge badgeContent={item.badge} color="secondary">
-                                <Typography variant="body2">{item.label}</Typography>
-                            </Badge>
-                        ) : (
-                            <Typography variant="body2">{item.label}</Typography>
-                        )}
+                        <Typography variant="body2">{item.label}</Typography>
                     </MenuItem>
                 ))}
             </Menu>

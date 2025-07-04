@@ -10,10 +10,9 @@ export interface NavigationItem {
     label: string;
     path: string;
     action?: () => void;
-    icon?: React.ReactNode;
+    icon?: any; // Use 'any' for icon to allow any React component
     showWhen: 'authenticated' | 'unauthenticated' | 'always';
     disabled?: boolean;
-    badge?: string | number;
 }
 
 /**

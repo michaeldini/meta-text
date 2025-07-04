@@ -25,6 +25,14 @@ export const getMetaTextPageStyles = (theme: Theme) => ({
         alignItems: 'center',
         minHeight: 'auto', // Remove default min-height
     },
+    headerTitleBox: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        flex: 1,
+        gap: theme.spacing(1),
+        minWidth: 'fit-content',
+    },
 });
 
 

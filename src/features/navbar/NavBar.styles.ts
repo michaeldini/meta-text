@@ -17,13 +17,10 @@ export const createNavbarStyles = (theme: Theme) => ({
         left: 0,
         right: 0,
         zIndex: theme.zIndex.appBar,
-        backgroundColor: theme.palette.primary.main,
-        borderBottom: `1px solid ${theme.palette.divider}`,
-        transition: theme.transitions.create(['background-color']),
         width: '100%',
         boxSizing: 'border-box',
         padding: 0,
-        marginBottom: theme.spacing(1), // Space below for content
+        marginBottom: theme.spacing(2), // Space below for content
     },
 
     // Responsive toolbar with consistent width
@@ -54,20 +51,14 @@ export const createNavbarStyles = (theme: Theme) => ({
 
     // Menu trigger button
     menuButton: {
-        color: theme.palette.primary.contrastText,
-        padding: theme.spacing(1),
-        transition: theme.transitions.create(['background-color']),
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.common.white, 0.1),
-        },
+
     },
 
     // Dropdown menu
     dropdownMenu: {
         '& .MuiPaper-root': {
-            marginTop: theme.spacing(1),
-            boxShadow: theme.shadows[8],
-            border: `1px solid ${theme.palette.divider}`,
+            backgroundColor: 'black',
+            border: `2px solid ${theme.palette.divider}`,
         },
     },
 
@@ -75,11 +66,13 @@ export const createNavbarStyles = (theme: Theme) => ({
     menuItem: {
         padding: theme.spacing(1, 2),
         margin: theme.spacing(0.25, 0),
-        '&:hover': {
-            backgroundColor: theme.palette.action.hover,
-        },
+        gap: theme.spacing(1),
+        backgroundColor: 'black',
+        // '&:hover': {
+        //     backgroundColor: theme.palette.action.hover,
+        // },
         '&.Mui-selected': {
-            backgroundColor: theme.palette.action.selected,
+            backgroundColor: theme.palette.secondary.main,
         },
     },
 
@@ -89,4 +82,15 @@ export const createNavbarStyles = (theme: Theme) => ({
         alignItems: 'center',
         gap: theme.spacing(1),
     },
+    headerContainer: {
+        px: { xs: 1, sm: 2, md: 3 }
+    },
+    brandTypography: {
+        fontFamily: 'monospace',
+        fontWeight: 700,
+        letterSpacing: '.2rem',
+        color: 'inherit',
+        textDecoration: 'none',
+    },
 });
+
