@@ -19,10 +19,6 @@ const ChunkTabs: React.FC<ChunkTabsProps> = ({ chunk, activeTabs, updateChunkFie
     const theme = useTheme();
     const styles = getToolsStyles(theme);
 
-    React.useEffect(() => {
-        // return () => log.info(`ChunkTools unmounted (id: ${chunk.id})`); 
-    }, [chunk.id]);
-
     return (
         <Box sx={styles.ChunkTabsContainer}>
             {/* Show Notes/Summary if selected */}

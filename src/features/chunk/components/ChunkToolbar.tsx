@@ -4,7 +4,7 @@ import { Box, Fade, ToggleButtonGroup, ToggleButton, Tooltip, Typography } from 
 import { CompareArrowsIcon, PhotoIcon, NotesIcon, CompressionIcon, QuestionMarkIcon } from 'icons';
 import { useChunkStore } from 'store';
 import { FADE_IN_DURATION } from 'constants';
-import CopyTool from '../../chunk/tools/copy/CopyTool';
+import CopyTool from '../tools/copy/CopyTool';
 import { getChunkToolsStyles } from '../Chunk.styles';
 import { useTheme } from '@mui/material/styles';
 
