@@ -1,4 +1,4 @@
-import { NavBarProps, NavigationItem } from './types';
+import { NavBarProps } from './types';
 import { MenuIcon } from 'icons';
 /**
  * Centralized navigation configuration for the app.
