@@ -23,6 +23,7 @@ export const createNavbarStyles = (theme: Theme) => ({
         width: '100%',
         boxSizing: 'border-box',
         padding: 0,
+        marginBottom: theme.spacing(1), // Space below for content
     },
 
     // Responsive toolbar with consistent width
