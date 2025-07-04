@@ -8,7 +8,7 @@ export interface User {
 export interface NavigationItem {
     id: string;
     label: string;
-    path?: string;
+    path: string;
     action?: () => void;
     icon?: React.ReactNode;
     showWhen: 'authenticated' | 'unauthenticated' | 'always';

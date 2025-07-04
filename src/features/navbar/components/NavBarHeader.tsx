@@ -1,6 +1,5 @@
-import React, { useState, useCallback } from 'react';
-import { Box, Button, Typography, IconButton, Container } from '@mui/material';
-import { MenuIcon } from 'icons';
+import React from 'react';
+import { Box, Button, Typography, Container } from '@mui/material';
 import NavMenu from './NavMenu';
 import { useAuth } from 'store';
 import { useNavigation } from '../hooks';
@@ -24,22 +23,6 @@ const NavBarHeader: React.FC<NavBarHeaderProps> = ({ styles }) => {
     // Brand item from config
     const brandNavItem = navConfig.brand;
 
-    // Internalize menu state
-    const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-    const isOpen = Boolean(anchorEl);
-
-    const openMenu = useCallback((event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    }, []);
-
-    const closeMenu = useCallback(() => {
-        setAnchorEl(null);
-    }, []);
-
-    const handleMenuItemClick = (item: typeof navigationItems[0]) => {
-        handleItemClick(item);
-    };
-
     return (
         <Container maxWidth="xl" sx={{ px: { xs: 1, sm: 2, md: 3 } }}>
             <Box sx={styles.section}>
@@ -61,27 +44,10 @@ const NavBarHeader: React.FC<NavBarHeaderProps> = ({ styles }) => {
                     </Typography>
                 </Button>
 
-                {/* Menu Trigger Icon - Opens dropdown */}
-                <IconButton
-                    sx={styles.menuButton}
-                    onClick={openMenu}
-                    aria-label="Open navigation menu"
-                    aria-controls={isOpen ? 'navigation-menu' : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={isOpen ? 'true' : 'false'}
-                    data-testid="nav-menu-button"
-                    size="medium"
-                >
-                    <MenuIcon />
-                </IconButton>
-
                 <NavMenu
-                    anchorEl={anchorEl}
-                    isOpen={isOpen}
-                    closeMenu={closeMenu}
                     navigationItems={navigationItems}
                     isActive={isActive}
-                    handleMenuItemClick={handleMenuItemClick}
+                    handleMenuItemClick={handleItemClick}
                     styles={styles}
                 />
             </Box>

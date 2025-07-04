@@ -43,6 +43,7 @@ export const getNavigationConfig = (logout: () => void): NavBarProps => ({
             {
                 id: 'logout',
                 label: 'Logout',
+                path: '',
                 action: logout,
                 showWhen: 'authenticated' as const,
             },
