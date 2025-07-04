@@ -17,7 +17,9 @@ interface ChunkTabsProps {
 
 const ChunkTabs: React.FC<ChunkTabsProps> = ({ chunk, activeTabs, updateChunkField }) => {
     const theme = useTheme();
-    const styles = getToolsStyles(theme);
+
+    // pass activeTabs to styles to toggle visibility
+    const styles = getToolsStyles(theme, activeTabs.length > 0);
 
     return (
         <Box sx={styles.ChunkTabsContainer}>

@@ -25,13 +25,13 @@ const ChunkWords = memo(function ChunkWords({
     const [selectionEndIdx, setSelectionEndIdx] = useState<number | null>(null);
     const [isSelecting, setIsSelecting] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
-    const theme = useTheme();
-    const styles = getWordsStyles(theme);
     const textSizePx = useUIPreferencesStore(state => state.textSizePx);
     const fontFamily = useUIPreferencesStore(state => state.fontFamily);
     const lineHeight = useUIPreferencesStore(state => state.lineHeight);
     // Unified dialog anchor state: element and position
     const [dialogAnchor, setDialogAnchor] = useState<HTMLElement | null>(null);
+    const theme = useTheme();
+    const styles = getWordsStyles(theme);
 
     // Helper: get min/max for range
     const getRange = () => {

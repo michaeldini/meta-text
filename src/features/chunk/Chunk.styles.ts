@@ -4,7 +4,6 @@ export const getChunkStyles = (theme: Theme) => ({
         display: 'flex',
         flexDirection: 'row' as const,
         alignItems: 'start',
-        // gap: theme.spacing(1.5), // Reduced gap between sections
         border: `1px solid ${theme.palette.secondary.light}`,
         borderRadius: theme.shape.borderRadius,
         minHeight: 0,
@@ -16,7 +15,7 @@ export const getChunkStyles = (theme: Theme) => ({
 
 });
 
-export const getToolsStyles = (theme: Theme) => ({
+export const getToolsStyles = (theme: Theme, isActiveTabs: boolean) => ({
 
     // sticky container for tools
     ChunkTabsContainer: {
@@ -30,7 +29,7 @@ export const getToolsStyles = (theme: Theme) => ({
         top: theme.spacing(5),
         alignSelf: 'flex-start',
         width: '100%',
-        minWidth: "30vw",
+        minWidth: isActiveTabs ? "30vw" : "0vw",
         zIndex: theme.zIndex.appBar,
         boxShadow: 'none',
         transition: theme.transitions.create(['opacity'], {
@@ -82,7 +81,6 @@ export const getWordsStyles = (theme: Theme) => ({
         },
         padding: theme.spacing(4),
         paddingRight: 0,
-        // minWidth: CHUNK_WORDS_MIN_WIDTH,
     },
     chunkWordBox: {
         display: 'inline-block',
