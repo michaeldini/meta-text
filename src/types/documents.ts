@@ -82,5 +82,8 @@ export interface ChunkCompressionCreate {
     chunk_id?: number; // optional for creation, will be set by backend
 }
 
-// Type for chunk field values - covers all possible field types
-export type ChunkFieldValue = string | number | boolean | null | undefined;
+export type UpdateChunkFieldFn = (
+    chunkId: number,
+    field: keyof ChunkType,
+    value: string
+) => void;

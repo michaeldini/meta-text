@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { getUserChunkSession, setUserChunkSession, fetchChunks as apiFetchChunks, updateChunk, splitChunk, combineChunks } from 'services';
 
 import { getErrorMessage } from 'types';
-import type { ChunkType, ChunkFieldValue } from 'types';
+import type { ChunkType, UpdateChunkFieldFn } from 'types';
 import { useAuthStore } from './authStore';
 import { log } from 'utils';
 
@@ -39,7 +39,7 @@ interface ChunkState {
     activeTabs: ChunkTab[];
     setActiveTabs: (tabs: ChunkTab[]) => void;
     fetchChunks: (metaTextId: number) => Promise<void>;
-    updateChunkField: (chunkId: number, field: keyof ChunkType, value: ChunkFieldValue) => void;
+    updateChunkField: UpdateChunkFieldFn;
     handleWordClick: (chunkIdx: number, wordIdx: number) => Promise<void>;
     handleRemoveChunk: (chunkIdx: number) => Promise<void>;
     setChunks: (chunks: ChunkType[]) => void;

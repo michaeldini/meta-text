@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
 import ComparisonTool from '../../tools/comparison/ComparisonTool';
-import type { ChunkType, ChunkFieldValue } from 'types';
+import type { ChunkType, UpdateChunkFieldFn } from 'types';
 
 interface ComparisonTabProps {
     chunk: ChunkType;
-    updateChunkField: (chunkId: number, field: keyof ChunkType, value: ChunkFieldValue) => void;
+    updateChunkField: UpdateChunkFieldFn;
 }
 
 const ComparisonTab: React.FC<ComparisonTabProps> = ({ chunk, updateChunkField }) => {

@@ -1,10 +1,10 @@
 import type { ChunkType } from 'types';
-import type { ChunkFieldValue } from 'types';
+import type { UpdateChunkFieldFn } from 'types';
 import ChunkExplanationTool from './ChunkExplanationTool';
 
 interface ExplanationTabProps {
     chunk: ChunkType;
-    updateChunkField: (chunkId: number, field: keyof ChunkType, value: ChunkFieldValue) => void;
+    updateChunkField: UpdateChunkFieldFn
 }
 
 const ExplanationTab: React.FC<ExplanationTabProps> = ({ chunk, updateChunkField }) => {

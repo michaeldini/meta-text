@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 import { log } from 'utils';
-import type { ChunkType } from 'types';
+import type { ChunkType, UpdateChunkFieldFn } from 'types';
 
 import { NotesTab, ComparisonTab, AiImageTab, CompressionToolTab, ExplanationTab } from '../tools';
 
@@ -12,7 +12,7 @@ import { getToolsStyles } from '../Chunk.styles';
 interface ChunkTabsProps {
     chunk: ChunkType;
     activeTabs: string[];
-    updateChunkField: (chunkId: number, field: keyof ChunkType, value: any) => void;
+    updateChunkField: UpdateChunkFieldFn;
 }
 
 const ChunkTabs: React.FC<ChunkTabsProps> = ({ chunk, activeTabs, updateChunkField }) => {
