@@ -10,3 +10,4 @@ export { default as TextSizeInput } from './TextSizeInput';
 export { default as LineHeightInput } from './LineHeightInput';
 export { default as FontFamilySelect } from './FontFamilySelect';
 export { default as GenerateSourceDocInfoButton } from './GenerateSourceDocInfoButton';
+export { default as ThemeToggle } from './ThemeToggle';

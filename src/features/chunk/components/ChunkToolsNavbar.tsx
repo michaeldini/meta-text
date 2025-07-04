@@ -73,6 +73,7 @@ const ChunkToolsNavbar: React.FC = () => {
                 onChange={handleTabsChange}
                 size="small"
                 orientation="vertical"
+            // color="secondary"
             >
                 {toggleButtons.map((button) => (
                     <Tooltip
@@ -81,7 +82,7 @@ const ChunkToolsNavbar: React.FC = () => {
                         {...styles.tooltipProps}
                     >
                         <span>
-                            <ToggleButton value={button.value} aria-label={button.ariaLabel} disabled={isDisabled}>
+                            <ToggleButton value={button.value} aria-label={button.ariaLabel} disabled={isDisabled} color="secondary">
                                 {button.icon}
                             </ToggleButton>
                         </span>

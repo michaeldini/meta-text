@@ -150,7 +150,7 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
                     }
                     if (lastActive && chunks.find(c => c.id === lastActive)) {
                         updates.activeChunkId = lastActive;
-                        // updates.activeTabs = ['compression'];
+                        // updates.activeTabs = ['compression']; // Uncomment if you want to auto-select compression tab when restoring last active chunk   
                     } else if (chunks.length > 0) {
                         updates.activeChunkId = chunks[0].id;
                         // updates.activeTabs = ['compression'];
@@ -173,7 +173,7 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
             if (!debouncers[chunkId]) {
                 debouncers[chunkId] = debounceChunkUpdate((data: ChunkType) => {
                     updateChunk(data.id, data);
-                }, 1200);
+                }, 1000);
             }
             debouncers[chunkId]({ ...updatedChunk });
             return { ...state, chunks: newChunks };

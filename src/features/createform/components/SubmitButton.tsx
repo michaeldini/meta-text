@@ -16,7 +16,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = React.memo(({
     return (
         <Button
             type="submit"
-            variant="contained"
+            variant="outlined"
             disabled={loading || disabled}
             sx={{ mt: 2 }}
             aria-busy={loading}

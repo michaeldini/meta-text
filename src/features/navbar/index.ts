@@ -4,7 +4,7 @@
  */
 
 // Main Component
-export { default as NavBar } from './components/NavBar';
+export { default as NavBar } from './NavBar';
 
 // Types
 export type {

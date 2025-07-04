@@ -11,15 +11,15 @@ import {
     useTheme,
     IconButton,
 } from '@mui/material';
-import { MenuIcon } from '../../../components/icons';
-import { useAuth } from '../../../store/authStore';
-import { useNavigation } from '../hooks/useNavigation';
-import { useDropdownMenu } from '../hooks/useDropdownMenu';
-import { NavBarProps, NavigationError } from '../types';
-import { DEFAULT_NAVBAR_CONFIG } from '../index';
-import ThemeToggle from '../../../components/ThemeToggle';
-import { useThemeContext } from '../../../contexts/ThemeContext';
-import { createNavbarStyles } from '../styles';
+import { MenuIcon } from 'icons';
+import { useAuth } from 'store';
+import { ThemeToggle } from 'components';
+import { useThemeContext } from '../../contexts/ThemeContext';
+
+import { useNavigation, useDropdownMenu } from './hooks';
+import { NavBarProps, NavigationError } from './types';
+import { DEFAULT_NAVBAR_CONFIG } from './index';
+import { createNavbarStyles } from './styles';
 
 /**
  * NavBar Component - Simplified and maintainable

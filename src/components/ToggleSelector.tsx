@@ -28,6 +28,7 @@ function ToggleSelector<T extends string>({ value, options, onChange, disabled, 
                 disabled={disabled}
                 aria-label="toggle selector"
                 sx={{ padding: 1 }}
+            // color="secondary"
             >
                 {options.map(opt => (
                     <ToggleButton key={opt.value} value={opt.value} aria-label={opt.ariaLabel || opt.label}>

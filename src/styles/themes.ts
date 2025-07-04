@@ -255,7 +255,7 @@ export const darkTheme = createTheme({
         },
         background: {
             default: '#000', // changed from grey[900] to black
-            paper: grey[500],
+            paper: grey[900],
         },
         divider: grey[700],
     },
@@ -286,11 +286,26 @@ export const darkTheme = createTheme({
         MuiButton: {
             styleOverrides: {
                 root: {
-                    color: grey[200],
-                    borderColor: grey[600],
+                    borderColor: blue[500],
+                    color: blue[100],
                     '&:hover': {
-                        backgroundColor: grey[700],
-                        borderColor: grey[500],
+                        backgroundColor: blue[700],
+                        transform: 'scale(1.05)',
+                    },
+                },
+            },
+        },
+        MuiToggleButton: {
+            styleOverrides: {
+                root: {
+                    borderColor: blue[500],
+                    color: blue[50],
+                    '&:hover': {
+                        transform: 'scale(1.05)',
+                    },
+                    '&.Mui-selected': {
+                        backgroundColor: blue[700],
+                        transform: 'scale(1.05)',
                     },
                 },
             },

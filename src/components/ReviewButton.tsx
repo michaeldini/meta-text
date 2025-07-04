@@ -21,8 +21,7 @@ const ReviewButton: React.FC<ReviewButtonProps> = ({ metaTextId, label = "Review
         <Tooltip title={toolTip || ''} arrow disableHoverListener={!toolTip}>
             <Button
                 variant="outlined"
-                color="primary"
-                sx={{ ...sx, opacity: disabled ? 0.5 : 1, flex: 1 }}
+                sx={{ ...sx }}
                 onClick={handleClick}
                 disabled={disabled}
                 aria-label={toolTip || 'Review Button'}

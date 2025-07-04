@@ -16,7 +16,7 @@ const AiGenerationButton: React.FC<AiGenerationButtonProps> = ({ label, toolTip,
         <Button
             variant="outlined"
             color="secondary"
-            sx={{ ...sx, opacity: loading ? 0.7 : 1, flex: 1 }}
+            sx={{ ...sx }}
             onClick={onClick}
             disabled={disabled || loading}
             aria-label={toolTip || 'AI Generation Button'}

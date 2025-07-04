@@ -5,8 +5,8 @@ import { Box, Typography } from '@mui/material';
  * WelcomeText - A highly emotive greeting and instruction for Meta-Text users.
  */
 const WelcomeText: React.FC = () => (
-    <Box sx={{ padding: 0 }}>
-        <Typography variant="h3" color="secondary" gutterBottom fontWeight={700}>
+    <Box>
+        <Typography variant="h4" color="secondary.dark" gutterBottom fontWeight={700}>
             Welcome to Meta-Text!
         </Typography>
         <Typography variant="body1" sx={{ mt: 2, fontSize: 20, color: 'text.primary' }}>

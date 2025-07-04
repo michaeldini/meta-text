@@ -58,7 +58,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
                             </Typography>
                         )}
                     </Alert>
-                    <Button variant="contained" color="primary" onClick={this.handleReload}>
+                    <Button variant="contained" onClick={this.handleReload}>
                         Reload Page
                     </Button>
                 </Box>
