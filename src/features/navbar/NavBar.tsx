@@ -18,13 +18,12 @@ import { useThemeContext } from '../../contexts/ThemeContext';
 
 import { useNavigation, useDropdownMenu } from './hooks';
 import { NavBarProps, NavigationError } from './types';
+import type { NavigationConfig } from './types';
 import { DEFAULT_NAVBAR_CONFIG } from './index';
 import { createNavbarStyles } from './styles';
 
 const NavBar: React.FC<NavBarProps> = ({
-    config = DEFAULT_NAVBAR_CONFIG,
-    renderToolbar,
-    className,
+    config,
     'data-testid': dataTestId = 'navbar',
 }) => {
     const theme = useTheme();
@@ -39,6 +38,7 @@ const NavBar: React.FC<NavBarProps> = ({
     };
 
     // Convert readonly array to mutable array for type compatibility
+    // config.items: NavigationItem[]
     const customItems = config?.items ? [...config.items] : undefined;
 
     const { navigationItems, isActive, handleItemClick } = useNavigation({
@@ -48,7 +48,7 @@ const NavBar: React.FC<NavBarProps> = ({
         onError: handleNavigationError,
     });
 
-    // Brand configuration (no need for useMemo)
+    // Brand configuration (should match NavigationConfig.brand)
     const brandConfig = {
         label: config?.brand?.label || DEFAULT_NAVBAR_CONFIG.brand.label,
         path: config?.brand?.path || DEFAULT_NAVBAR_CONFIG.brand.path,
@@ -80,7 +80,6 @@ const NavBar: React.FC<NavBarProps> = ({
             position="static"
             elevation={2}
             sx={styles.appBar}
-            className={className}
             data-testid={dataTestId}
         >
             <Toolbar sx={styles.toolbar}>
@@ -166,13 +165,6 @@ const NavBar: React.FC<NavBarProps> = ({
                     </Menu>
                 </Box>
 
-                {/* Custom Toolbar Section */}
-                {renderToolbar && (
-                    <Box sx={styles.section} data-testid="nav-toolbar">
-                        {renderToolbar()}
-                    </Box>
-                )}
-
                 {/* Theme Toggle */}
                 <Box sx={{ ml: 'auto' }}>
                     <ThemeToggle onToggle={toggleMode} data-testid="nav-theme-toggle" />
@@ -183,3 +175,12 @@ const NavBar: React.FC<NavBarProps> = ({
 };
 
 export default NavBar;
+
+/**
+ * NavBar component for application navigation.
+ *
+ * @param config - Navigation configuration object. Must include:
+ *   - brand: { label: string; path: string }
+ *   - items: Array<{ id: string; label: string; path?: string; action?: () => void; icon?: React.ReactNode; showWhen: 'authenticated' | 'unauthenticated' | 'always'; disabled?: boolean; badge?: string | number }>
+ * @param data-testid - Optional test id for testing.
+ */

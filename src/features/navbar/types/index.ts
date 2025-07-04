@@ -17,17 +17,22 @@ export interface NavigationItem {
 }
 
 export interface NavigationConfig {
-    items?: NavigationItem[];
-    brand?: {
+    brand: {
         label: string;
         path: string;
     };
+    items: NavigationItem[];
 }
 
+/**
+ * Props for the NavBar component.
+ * @property config - Navigation configuration object. Must include:
+ *   - brand: { label: string; path: string }
+ *   - items: Array<NavigationItem>
+ * @property data-testid - Optional test id for testing.
+ */
 export interface NavBarProps {
-    config?: NavigationConfig;
-    renderToolbar?: () => React.ReactNode;
-    className?: string;
+    config: NavigationConfig;
     'data-testid'?: string;
 }
 

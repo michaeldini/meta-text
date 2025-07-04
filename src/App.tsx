@@ -67,7 +67,7 @@ function App() {
     }, [mode]);
 
     // Navbar config
-    const navbarConfig = useMemo(() => ({
+    const navbarConfig = {
         brand: {
             label: 'Meta-Text',
             path: '/',
@@ -80,7 +80,7 @@ function App() {
                 showWhen: 'always' as const,
             },
         ],
-    }), []);
+    };
 
     const renderRoute = (route: RouteConfig) => {
         const Component = route.element;
