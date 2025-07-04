@@ -52,9 +52,7 @@ const CompressionToolTab: React.FC<CompressionToolTabProps> = ({ chunk }) => {
                 <Typography color="error">{error}</Typography>
             ) : compressions.length === 0 ? (
                 <Box>
-                    <Typography>No compressions available.</Typography>
-                    <Typography variant="body1" sx={{ mt: 1 }}>
-                        Use the Compression Tool below to create a new compression for this chunk.
+                    <Typography>No compressions available. Use the Compression Tool below to create a new compression for this chunk.
                     </Typography>
                     <Box sx={{ mt: 2 }}>
                         <CompressionTool chunk={chunk} onCompressionCreated={fetchCompressions} />

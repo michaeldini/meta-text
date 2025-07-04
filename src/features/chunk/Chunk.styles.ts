@@ -30,6 +30,7 @@ export const getToolsStyles = (theme: Theme) => ({
         top: theme.spacing(5),
         alignSelf: 'flex-start',
         width: '100%',
+        minWidth: "30vw",
         zIndex: theme.zIndex.appBar,
         boxShadow: 'none',
         transition: theme.transitions.create(['opacity'], {
@@ -37,9 +38,6 @@ export const getToolsStyles = (theme: Theme) => ({
         }),
         '&:hover': {
             opacity: 1,
-        },
-        compressedWords: {
-            flexWrap: 'wrap' as const,
         },
     },
 });
