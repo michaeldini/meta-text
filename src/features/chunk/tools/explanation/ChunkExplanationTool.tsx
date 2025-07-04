@@ -9,19 +9,15 @@ import type { ChunkType } from 'types';
 import { getExplanationStyles } from './ChunkExplanation.styles';
 
 interface ExplanationToolProps {
-    chunkIdx: number;
     chunk: ChunkType;
     explanationText?: string;
     onExplanationUpdate?: (text: string) => void;
-    onComplete?: (success: boolean, result?: any) => void;
 }
 
 const ChunkExplanationTool: React.FC<ExplanationToolProps> = ({
-    chunkIdx,
     chunk,
     explanationText = '',
-    onExplanationUpdate,
-    onComplete
+    onExplanationUpdate
 }) => {
     const { explain, loading, error } = useExplanation();
     const theme = useTheme();
@@ -32,11 +28,8 @@ const ChunkExplanationTool: React.FC<ExplanationToolProps> = ({
         const result = await explain({ chunkId: chunk.id, context: chunk.text, words: "" });
         if (result) {
             onExplanationUpdate?.(result.explanation);
-            onComplete?.(true, result);
-        } else {
-            onComplete?.(false, null);
         }
-    }, [chunk, explain, onExplanationUpdate, onComplete]);
+    }, [chunk, explain, onExplanationUpdate]);
 
     return (
         <Box sx={styles.toolTabContainer}>

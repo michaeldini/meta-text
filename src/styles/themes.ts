@@ -295,6 +295,13 @@ export const darkTheme = createTheme({
                 },
             },
         },
+        MuiCircularProgress: {
+            styleOverrides: {
+                root: {
+                    color: blue[300], // Use a lighter blue for progress in dark mode
+                },
+            },
+        },
     },
 });
 

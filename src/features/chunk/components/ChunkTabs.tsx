@@ -3,7 +3,6 @@ import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 import { log } from 'utils';
-import { useChunkStore } from 'store';
 import type { ChunkType } from 'types';
 
 import { NotesSummaryTab, ComparisonTab, AiImageTab, CompressionToolTab, ExplanationTab } from '../tools';
@@ -12,15 +11,13 @@ import { getToolsStyles } from '../Chunk.styles';
 
 interface ChunkTabsProps {
     chunk: ChunkType;
+    activeTabs: string[];
+    updateChunkField: (chunkId: number, field: keyof ChunkType, value: any) => void;
 }
 
-const ChunkTabs: React.FC<ChunkTabsProps> = ({ chunk }) => {
+const ChunkTabs: React.FC<ChunkTabsProps> = ({ chunk, activeTabs, updateChunkField }) => {
     const theme = useTheme();
     const styles = React.useMemo(() => getToolsStyles(theme), [theme]);
-
-    // Use store selectors directly instead of wrapper hooks
-    const activeTabs = useChunkStore(state => state.activeTabs);
-    const updateChunkField = useChunkStore(state => state.updateChunkField);
 
     React.useEffect(() => {
         // return () => log.info(`ChunkTools unmounted (id: ${chunk.id})`); 

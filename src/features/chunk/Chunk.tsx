@@ -1,4 +1,4 @@
-import React, { memo, useRef, useEffect, useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { Box, Paper, Slide, useTheme } from '@mui/material';
 
 import { useChunkStore } from 'store';
@@ -11,32 +11,19 @@ import type { ChunkType } from 'types';
 export interface ChunkProps {
     chunk: ChunkType;
     chunkIdx: number;
-    // handleChunkFieldChange: (chunkId: number, field: keyof Chunk, value: ChunkFieldValue) => void;
 }
 
 const Chunk = memo(function Chunk({
     chunk,
     chunkIdx,
-    // handleChunkFieldChange
 }: ChunkProps) {
-    const { activeChunkId, setActiveChunk } = useChunkStore();
-    const isActive = activeChunkId === chunk.id;
-    const chunkRef = useRef<HTMLDivElement>(null);
+    const { activeChunkId, setActiveChunk, activeTabs, updateChunkField } = useChunkStore();
     const theme = useTheme();
     const styles = useMemo(() => getChunkStyles(theme), [theme]);
 
-    useEffect(() => {
-        if (isActive && chunkRef.current) {
-            const navbarHeight = 64; // Adjust if your AppBar is a different height
-            const rect = chunkRef.current.getBoundingClientRect();
-        }
-    }, [isActive]);
-
     return (
         <Box
-            ref={chunkRef}
             data-chunk-id={chunk.id}
-            // elevation={isActive ? 2 : 0}
             sx={styles.chunkContainer}
             onClick={() => setActiveChunk(chunk.id)}
         >
@@ -46,6 +33,8 @@ const Chunk = memo(function Chunk({
             />
             <ChunkTabs
                 chunk={chunk}
+                activeTabs={activeTabs}
+                updateChunkField={updateChunkField}
             />
         </Box>
     );
