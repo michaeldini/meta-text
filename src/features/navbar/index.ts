@@ -6,7 +6,7 @@
 // Main Component
 export { default as NavBar } from './NavBar';
 
-export { getNavigationConfig } from './config/navigationConfig';
+export { getNavigationConfig } from './navigationConfig';
 // Types
 export type {
     NavBarProps,

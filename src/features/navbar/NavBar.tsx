@@ -10,10 +10,9 @@ import { ThemeToggle } from 'components';
 import { useThemeContext } from '../../contexts/ThemeContext';
 
 import { useNavigation } from './hooks';
-import { NavigationError } from './types';
-import { createNavbarStyles } from './styles';
+import { createNavbarStyles } from './NavBar.styles';
 import NavBrandMenuSection from './components/NavBrandMenuSection';
-import { getNavigationConfig } from './config/navigationConfig';
+import { getNavigationConfig } from './navigationConfig';
 
 const NavBar: React.FC = () => {
     const theme = useTheme();
@@ -22,11 +21,6 @@ const NavBar: React.FC = () => {
     const { user, logout } = useAuth();
     const { toggleMode } = useThemeContext();
 
-    // Handle navigation errors
-    const handleNavigationError = (error: NavigationError) => {
-        console.error('Navigation error:', error);
-    };
-
     // Get navigation config (NavBarProps model)
     const navConfig = getNavigationConfig(logout).config;
 
@@ -34,7 +28,6 @@ const NavBar: React.FC = () => {
         user,
         onLogout: logout,
         config: navConfig,
-        onError: handleNavigationError,
     });
 
     // Brand item from config
@@ -57,20 +50,8 @@ const NavBar: React.FC = () => {
             data-testid="navbar"
         >
             <Toolbar sx={styles.toolbar}>
-                {/* Brand and Navigation Menu Section */}
-                <NavBrandMenuSection
-                    styles={styles}
-                    brandConfig={{ label: brandNavItem?.label || '', path: brandNavItem?.path }}
-                    handleBrandClick={handleBrandClick}
-                    navigationItems={navigationItems}
-                    isActive={isActive}
-                    handleMenuItemClick={handleMenuItemClick}
-                />
-
-                {/* Theme Toggle */}
-                <Box sx={{ ml: 'auto' }}>
-                    <ThemeToggle onToggle={toggleMode} data-testid="nav-theme-toggle" />
-                </Box>
+                <NavBrandMenuSection styles={styles} />
+                <ThemeToggle onToggle={toggleMode} data-testid="nav-theme-toggle" />
             </Toolbar>
         </AppBar>
     );

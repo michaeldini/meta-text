@@ -1,6 +1,6 @@
 import { useMemo, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { NavigationItem, User, NavigationError, NavBarProps } from '../types';
+import { NavigationItem, User, NavBarProps } from '../types';
 import {
     filterNavigationItems,
     isActiveRoute,
@@ -11,7 +11,6 @@ interface UseNavigationProps {
     user: User | null;
     onLogout: () => void;
     config: NavBarProps['config'];
-    onError?: (error: NavigationError) => void;
 }
 
 interface UseNavigationReturn {
@@ -29,35 +28,20 @@ interface UseNavigationReturn {
 export const useNavigation = ({
     user,
     onLogout,
-    config,
-    onError
-}: UseNavigationProps): UseNavigationReturn => {
+    config
+}: Omit<UseNavigationProps, 'onError'>): UseNavigationReturn => {
     const location = useLocation();
     const navigate = useNavigate();
 
     // Memoize navigation handler to prevent unnecessary re-renders
     const handleNavigate = useCallback((path: string) => {
-        try {
-            navigate(path);
-        } catch (error) {
-            onError?.({
-                type: 'navigation',
-                message: `Failed to navigate to ${path}: ${error instanceof Error ? error.message : 'Unknown error'}`,
-            });
-        }
-    }, [navigate, onError]);
+        navigate(path);
+    }, [navigate]);
 
     // Memoize logout handler
     const handleLogout = useCallback(() => {
-        try {
-            onLogout();
-        } catch (error) {
-            onError?.({
-                type: 'authentication',
-                message: `Logout failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
-            });
-        }
-    }, [onLogout, onError]);
+        onLogout();
+    }, [onLogout]);
 
     // Compose navigation items from config, wiring up logout action
     const allNavigationItems = useMemo(() => {
@@ -76,10 +60,10 @@ export const useNavigation = ({
         return isActiveRoute(location.pathname, path);
     }, [location.pathname]);
 
-    // Handle navigation item click with error handling
+    // Handle navigation item click
     const handleItemClick = useCallback((item: NavigationItem, onClose?: () => void) => {
-        handleNavigationClick(item, handleNavigate, onClose, onError);
-    }, [handleNavigate, onError]);
+        handleNavigationClick(item, handleNavigate, onClose);
+    }, [handleNavigate]);
 
     return {
         navigationItems: visibleNavigationItems,

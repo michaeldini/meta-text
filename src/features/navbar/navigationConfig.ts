@@ -1,4 +1,4 @@
-import { NavBarProps, NavigationItem } from '../types';
+import { NavBarProps, NavigationItem } from './types';
 
 /**
  * Centralized navigation configuration for the app.
