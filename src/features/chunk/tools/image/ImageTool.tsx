@@ -10,15 +10,11 @@ import { ChunkType } from 'types';
 
 export interface ImageToolComponentProps {
     chunk: ChunkType;
-    prompt?: string;
-    onComplete?: (success: boolean, result?: any) => void;
 }
 
 
 const ImageTool: React.FC<ImageToolComponentProps> = ({
     chunk,
-    prompt: initialPrompt = '',
-    onComplete
 }) => {
     const {
         generateImage,
@@ -41,7 +37,6 @@ const ImageTool: React.FC<ImageToolComponentProps> = ({
             prompt: state.prompt
         });
 
-        onComplete?.(result.success, result.data);
     };
 
     const handleDialogSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
