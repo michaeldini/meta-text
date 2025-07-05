@@ -1,33 +1,22 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-
-import { AiGenerationButton } from 'components';
-import { ComparisonToolProps } from '../types';
-
-import { useComparison } from './useComparison';
-import { generateChunkNoteSummaryTextComparison } from 'services';
-import { getToolsStyles } from './Comparison.styles';
 import { useTheme } from '@mui/material/styles';
 import ReactMarkdown from 'react-markdown';
 
+import { AiGenerationButton } from 'components';
+import { generateChunkNoteSummaryTextComparison } from 'services';
+
+import { ComparisonToolProps } from '../types';
+import { useComparison } from './useComparison';
+import { getToolsStyles } from './Comparison.styles';
+
 interface ComparisonToolComponentProps extends ComparisonToolProps {
-    /** Current comparison text */
-    comparisonText?: string;
-    /** Callback when comparison is updated */
-    onComparisonUpdate?: (text: string) => void;
-    /** Callback when action completes */
-    onComplete?: (success: boolean, result?: any) => void;
+    onComparisonUpdate: (text: string) => void;
 }
 
-/**
- * Comparison Tool Component
- * Generates AI-powered comparisons for chunks
- */
 const ComparisonTool: React.FC<ComparisonToolComponentProps> = ({
     chunk,
-    comparisonText = '',
     onComparisonUpdate,
-    onComplete
 }) => {
     const { generateComparison, loading, error } = useComparison();
     const theme = useTheme();
@@ -39,10 +28,8 @@ const ComparisonTool: React.FC<ComparisonToolComponentProps> = ({
         });
 
         if (result.success && result.data) {
-            onComparisonUpdate?.(result.data.comparisonText);
+            onComparisonUpdate(result.data.comparisonText);
         }
-
-        onComplete?.(result.success, result.data);
     };
 
     return (
@@ -56,8 +43,8 @@ const ComparisonTool: React.FC<ComparisonToolComponentProps> = ({
                 disabled={loading || !chunk?.id}
             />
             <Box sx={styles.comparisonTextContainer}>
-                {comparisonText ? (
-                    <ReactMarkdown>{comparisonText}</ReactMarkdown>
+                {chunk.comparison ? (
+                    <ReactMarkdown>{chunk.comparison}</ReactMarkdown>
                 ) : (
                     <span style={{ color: '#aaa' }}>No comparison yet.</span>
                 )}

@@ -59,11 +59,9 @@ export interface ChunkTool {
 // Tool-specific interfaces
 export interface SplitChunkToolProps extends WordToolProps { }
 
-// export interface DefineWordToolProps extends WordToolProps { }
 
 export interface MergeChunksToolProps extends MultiChunkToolProps { }
 
-// export interface ComparisonToolProps extends ChunkToolProps { }
 
 export interface ImageToolProps extends ChunkToolProps {
     /** Prompt for image generation */
