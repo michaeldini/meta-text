@@ -31,6 +31,7 @@ const ImageTool: React.FC<ImageToolComponentProps> = ({
 
     const theme = useTheme();
     const styles = getToolsStyles(theme);
+
     const handleGenerate = async () => {
         const result = await generateImage({
             chunk,

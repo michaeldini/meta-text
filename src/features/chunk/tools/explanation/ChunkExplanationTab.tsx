@@ -14,7 +14,6 @@ const ExplanationTab: React.FC<ExplanationTabProps> = ({ chunk, updateChunkField
     return (
         <ChunkExplanationTool
             chunk={chunk}
-            explanationText={chunk.explanation}
             onExplanationUpdate={handleExplanationUpdate}
         />
     );

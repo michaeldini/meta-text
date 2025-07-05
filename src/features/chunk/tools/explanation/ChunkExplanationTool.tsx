@@ -10,13 +10,11 @@ import { getExplanationStyles } from './ChunkExplanation.styles';
 
 interface ExplanationToolProps {
     chunk: ChunkType;
-    explanationText?: string;
     onExplanationUpdate?: (text: string) => void;
 }
 
 const ChunkExplanationTool: React.FC<ExplanationToolProps> = ({
     chunk,
-    explanationText = '',
     onExplanationUpdate
 }) => {
     const { explain, loading, error } = useExplanation();
@@ -42,8 +40,8 @@ const ChunkExplanationTool: React.FC<ExplanationToolProps> = ({
                 disabled={loading || !chunk?.id}
             />
             <Box sx={styles.explanationTextContainer}>
-                {explanationText ? (
-                    <ReactMarkdown>{explanationText}</ReactMarkdown>
+                {chunk.explanation ? (
+                    <ReactMarkdown>{chunk.explanation}</ReactMarkdown>
                 ) : (
                     <span >No explanation yet.</span>
                 )}

@@ -5,7 +5,7 @@ import { useTheme } from '@mui/material/styles';
 import { log } from 'utils';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 
-import { NotesTab, ComparisonTab, AiImageTab, CompressionToolTab, ExplanationTab } from '../tools';
+import { NotesTab, ComparisonTab, AiImageTab, CompressionTab, ExplanationTab } from '../tools';
 
 import { getToolsStyles } from '../Chunk.styles';
 
@@ -37,7 +37,7 @@ const ChunkTabs: React.FC<ChunkTabsProps> = ({ chunk, activeTabs, updateChunkFie
             )}
             {/* Show Compression if selected */}
             {activeTabs.includes('compression') && (
-                <CompressionToolTab chunk={chunk} />
+                <CompressionTab chunk={chunk} />
             )}
             {/* Show Explanation if selected */}
             {activeTabs.includes('explanation') && (
