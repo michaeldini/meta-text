@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, LinearProgress, Alert, useTheme } from '@mui/material';
 
 import { AiGenerationButton } from 'components';
 
 import { useImageTool } from './useImageTool';
-import { ImageToolProps } from '../types';
 import ChunkImageModal from './Modal';
 import { getToolsStyles } from './Image.styles';
 import { ChunkType } from 'types';
 
-interface ImageToolComponentProps extends ImageToolProps {
-    /** Callback when action completes */
+export interface ImageToolComponentProps {
+    chunk: ChunkType;
+    prompt?: string;
     onComplete?: (success: boolean, result?: any) => void;
 }
+
 
 const ImageTool: React.FC<ImageToolComponentProps> = ({
     chunk,
@@ -30,15 +31,14 @@ const ImageTool: React.FC<ImageToolComponentProps> = ({
         handlePromptChange,
         loading,
         error
-    } = useImageTool(chunk as ChunkType);
+    } = useImageTool(chunk);
 
-    const [localPrompt, setLocalPrompt] = useState(initialPrompt);
     const theme = useTheme();
     const styles = getToolsStyles(theme);
     const handleGenerate = async () => {
         const result = await generateImage({
             chunk,
-            prompt: localPrompt || state.prompt
+            prompt: state.prompt
         });
 
         onComplete?.(result.success, result.data);
@@ -50,7 +50,6 @@ const ImageTool: React.FC<ImageToolComponentProps> = ({
     };
 
     const handlePromptChangeLocal = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setLocalPrompt(e.target.value);
         handlePromptChange(e);
     };
 
