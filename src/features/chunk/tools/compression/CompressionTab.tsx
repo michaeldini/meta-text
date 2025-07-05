@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Select, MenuItem, FormControl, CircularProgress, Paper, useTheme } from '@mui/material';
+import { Box, Typography, CircularProgress, useTheme } from '@mui/material';
 
 import { fetchChunkCompressions } from 'services';
 import type { ChunkCompression } from 'types';
@@ -7,6 +7,9 @@ import type { ChunkCompression } from 'types';
 import CompressionTool from './CompressionTool';
 import { getCompressionTabStyles } from './compression.styles';
 import { BaseChunkProps } from '../types';
+import CompressionSelect from './components/CompressionSelect';
+import CompressionDisplay from './components/CompressionDisplay';
+import CompressionEmptyState from './components/CompressionEmptyState';
 
 const CompressionTab: React.FC<BaseChunkProps> = ({ chunk }) => {
     const [compressions, setCompressions] = useState<ChunkCompression[]>([]);
@@ -49,40 +52,19 @@ const CompressionTab: React.FC<BaseChunkProps> = ({ chunk }) => {
             ) : error ? (
                 <Typography color="error">{error}</Typography>
             ) : compressions.length === 0 ? (
-                <Box>
-                    <Typography>No compressions available. Use the Compression Tool below to create a new compression for this chunk.
-                    </Typography>
-                    <Box sx={{ mt: 2 }}>
-                        <CompressionTool chunk={chunk} onCompressionCreated={fetchCompressions} />
-                    </Box>
-                </Box>
+                <CompressionEmptyState chunk={chunk} fetchCompressions={fetchCompressions} />
             ) : (
                 <>
                     <Box flexDirection="row" display="flex" alignItems="center" >
                         <CompressionTool chunk={chunk} onCompressionCreated={fetchCompressions} />
-                        <Typography variant="subtitle1" id="compression-select-label">
-                            Compression
-                        </Typography>
-                        <FormControl sx={styles.form} margin="none">
-                            <Select
-                                labelId="compression-select-label"
-                                value={selectedId}
-                                onChange={e => setSelectedId(Number(e.target.value))}
-                                aria-labelledby="compression-select-label"
-                                sx={styles.select}
-                            >
-                                {compressions.map(c => (
-                                    <MenuItem key={c.id} value={c.id}>{c.title}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-
+                        <CompressionSelect
+                            compressions={compressions}
+                            selectedId={selectedId}
+                            setSelectedId={setSelectedId}
+                            styles={styles}
+                        />
                     </Box>
-                    {selected && (
-                        <Box sx={styles.compressedWords}>
-                            <Typography variant="body1">{selected.compressed_text}</Typography>
-                        </Box>
-                    )}
+                    <CompressionDisplay selected={selected} styles={styles} />
                 </>
             )}
         </Box>
