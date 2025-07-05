@@ -7,18 +7,6 @@ import type { ChunkType, UpdateChunkFieldFn } from 'types';
 import { useAuthStore } from './authStore';
 import { log } from 'utils';
 
-// Specific debounce function for chunk updates
-function debounceChunkUpdate(
-    func: (chunk: ChunkType) => void,
-    wait: number
-): (chunk: ChunkType) => void {
-    let timeout: ReturnType<typeof setTimeout>;
-    return function (chunk: ChunkType) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func(chunk), wait);
-    };
-}
-
 // Centralized list of available chunk tabs
 export const CHUNK_TABS = [
     'comparison',
@@ -46,8 +34,6 @@ interface ChunkState {
     refetchChunks: (metaTextId: number) => Promise<void>;
     resetChunkState: () => void;
 }
-
-const debouncers: Record<number, ReturnType<typeof debounceChunkUpdate>> = {};
 
 // Utility for localStorage persistence of last active chunk per MetaText
 function getLastActiveChunkId(metaTextId: number): number | null {
@@ -150,10 +136,10 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
                     }
                     if (lastActive && chunks.find(c => c.id === lastActive)) {
                         updates.activeChunkId = lastActive;
-                        // updates.activeTabs = ['compression']; // Uncomment if you want to auto-select compression tab when restoring last active chunk   
+                        // updates.activeTabs = ['notes-summary']; // Uncomment if you want to auto-select notes-summary tab when restoring last active chunk
                     } else if (chunks.length > 0) {
                         updates.activeChunkId = chunks[0].id;
-                        // updates.activeTabs = ['compression'];
+                        // updates.activeTabs = ['notes-summary']; // Default to notes-summary tab if no last active chunk
                     }
                 }
                 return { ...state, ...updates };
@@ -169,13 +155,8 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
             const updatedChunk = { ...state.chunks[idx], [field]: value };
             const newChunks = [...state.chunks];
             newChunks[idx] = updatedChunk;
-            // Debounce API update
-            if (!debouncers[chunkId]) {
-                debouncers[chunkId] = debounceChunkUpdate((data: ChunkType) => {
-                    updateChunk(data.id, data);
-                }, 1000);
-            }
-            debouncers[chunkId]({ ...updatedChunk });
+            // Directly update API (no debounce needed)
+            updateChunk(updatedChunk.id, updatedChunk);
             return { ...state, chunks: newChunks };
         });
     },
