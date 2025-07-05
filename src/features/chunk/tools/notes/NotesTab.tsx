@@ -1,13 +1,8 @@
 import React, { useCallback } from 'react';
 import NotesTool from './NotesTool';
-import type { ChunkType, UpdateChunkFieldFn } from 'types';
+import { SimpleTabProps } from '../types';
 
-interface NotesSummaryTabProps {
-    chunk: ChunkType;
-    updateChunkField: UpdateChunkFieldFn
-}
-
-const NotesTab: React.FC<NotesSummaryTabProps> = ({ chunk, updateChunkField }) => {
+const NotesTab: React.FC<SimpleTabProps> = ({ chunk, updateChunkField }) => {
     // Save summary/notes only on blur
     const handleSummaryBlur = useCallback(
         (val: string) => updateChunkField(chunk.id, 'summary', val),

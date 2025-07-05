@@ -1,17 +1,10 @@
-/**
- * Common types and interfaces for chunk tools
- */
+import { ChunkType, UpdateChunkFieldFn } from 'types';
 
 export interface ChunkToolProps {
     /** The chunk index */
     chunkIdx: number;
     /** Optional chunk data */
-    chunk: {
-        id: number;
-        meta_text_id: number;
-        content?: string;
-        [key: string]: any;
-    };
+    chunk: ChunkType;
 }
 
 
@@ -81,21 +74,16 @@ export interface ExplainPhraseToolProps extends ChunkToolProps {
 }
 
 export interface ComparisonToolProps {
-    chunk: {
-        id: number;
-        meta_text_id: number;
-        content?: string;
-        [key: string]: any;
-    };
+    chunk: ChunkType;
 }
 
 
 export interface ImageToolProps {
-    chunk: {
-        id: number;
-        meta_text_id: number;
-        content?: string;
-        [key: string]: any;
-    };
+    chunk: ChunkType;
     prompt?: string;
+}
+
+export interface SimpleTabProps {
+    chunk: ChunkType;
+    updateChunkField: UpdateChunkFieldFn;
 }

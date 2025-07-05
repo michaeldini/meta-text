@@ -1,13 +1,8 @@
 import React, { useCallback } from 'react';
 import ComparisonTool from '../../tools/comparison/ComparisonTool';
-import type { ChunkType, UpdateChunkFieldFn } from 'types';
+import { SimpleTabProps } from '../types';
 
-interface ComparisonTabProps {
-    chunk: ChunkType;
-    updateChunkField: UpdateChunkFieldFn;
-}
-
-const ComparisonTab: React.FC<ComparisonTabProps> = ({ chunk, updateChunkField }) => {
+const ComparisonTab: React.FC<SimpleTabProps> = ({ chunk, updateChunkField }) => {
     const handleComparisonUpdate = useCallback(
         (newComparison: string) => updateChunkField(chunk.id, 'comparison', newComparison),
         [chunk.id, updateChunkField]
