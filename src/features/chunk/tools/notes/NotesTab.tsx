@@ -8,19 +8,22 @@ interface NotesSummaryTabProps {
 }
 
 const NotesTab: React.FC<NotesSummaryTabProps> = ({ chunk, updateChunkField }) => {
-    const setSummary = useCallback((val: string) => updateChunkField(chunk.id, 'summary', val), [chunk.id, updateChunkField]);
-    const setNotes = useCallback((val: string) => updateChunkField(chunk.id, 'notes', val), [chunk.id, updateChunkField]);
+    // Save summary/notes only on blur
+    const handleSummaryBlur = useCallback(
+        (val: string) => updateChunkField(chunk.id, 'summary', val),
+        [chunk.id, updateChunkField]
+    );
+    const handleNotesBlur = useCallback(
+        (val: string) => updateChunkField(chunk.id, 'notes', val),
+        [chunk.id, updateChunkField]
+    );
 
     return (
         <NotesTool
-            chunkIdx={chunk.id}
-            chunk={chunk}
             summary={chunk.summary}
             notes={chunk.notes}
-            onSummaryUpdate={setSummary}
-            onNotesUpdate={setNotes}
-            onSummaryBlur={() => { }}
-            onNotesBlur={() => { }}
+            onSummaryBlur={handleSummaryBlur as (val: string) => void}
+            onNotesBlur={handleNotesBlur as (val: string) => void}
         />
     );
 };

@@ -1,28 +1,15 @@
-import React, { useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, useTheme } from '@mui/material';
 
 import { ChunkTextField } from '../../../chunk/components';
-import { NotesToolProps } from '../types';
 import { getToolsStyles } from './Tools.styles';
 
-interface NotesToolComponentProps extends NotesToolProps {
-    /** Current summary text */
+interface NotesToolComponentProps {
     summary?: string;
-    /** Current notes text */
     notes?: string;
-    /** Callback when summary is updated */
-    onSummaryUpdate?: (text: string) => void;
-    /** Callback when notes are updated */
-    onNotesUpdate?: (text: string) => void;
-    /** Callback when summary field loses focus */
-    onSummaryBlur?: () => void;
-    /** Callback when notes field loses focus */
-    onNotesBlur?: () => void;
-    /** Callback when action completes */
-    onComplete?: (success: boolean, result?: any) => void;
-    /** Custom styles for summary field */
+    onSummaryBlur?: (val: string) => void;
+    onNotesBlur?: (val: string) => void;
     summaryFieldSx?: object;
-    /** Custom styles for notes field */
     notesFieldSx?: object;
 }
 
@@ -33,8 +20,6 @@ interface NotesToolComponentProps extends NotesToolProps {
 const NotesTool: React.FC<NotesToolComponentProps> = ({
     summary = '',
     notes = '',
-    onSummaryUpdate,
-    onNotesUpdate,
     onSummaryBlur = () => { },
     onNotesBlur = () => { },
     summaryFieldSx,
@@ -43,31 +28,26 @@ const NotesTool: React.FC<NotesToolComponentProps> = ({
     const theme = useTheme();
     const styles = getToolsStyles(theme);
 
-    const handleSummaryChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        onSummaryUpdate?.(value);
-    }, [onSummaryUpdate]);
+    const [localSummary, setLocalSummary] = useState(summary);
+    const [localNotes, setLocalNotes] = useState(notes);
 
-    const handleNotesChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        onNotesUpdate?.(value);
-    }, [onNotesUpdate]);
-
+    useEffect(() => { setLocalSummary(summary); }, [summary]);
+    useEffect(() => { setLocalNotes(notes); }, [notes]);
 
     return (
         <Box sx={styles.toolTabContainer}>
             <ChunkTextField
                 label="Summary"
-                value={summary}
-                onChange={handleSummaryChange}
-                onBlur={onSummaryBlur}
+                value={localSummary}
+                onChange={e => setLocalSummary(e.target.value)}
+                onBlur={() => onSummaryBlur(localSummary)}
                 sx={summaryFieldSx}
             />
             <ChunkTextField
                 label="Notes"
-                value={notes}
-                onChange={handleNotesChange}
-                onBlur={onNotesBlur}
+                value={localNotes}
+                onChange={e => setLocalNotes(e.target.value)}
+                onBlur={() => onNotesBlur(localNotes)}
                 sx={notesFieldSx}
             />
         </Box>
