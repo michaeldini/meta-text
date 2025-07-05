@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Typography } from '@mui/material';
 import { AiGenerationButton } from 'components';
 import { generateSourceDocInfo } from 'services';
+import { useDocumentsStore } from 'store/documentsStore';
 
 interface GenerateSourceDocInfoButtonProps {
     sourceDocumentId: number;
-    prompt: string;
     label?: string;
     toolTip?: string;
     onSuccess?: () => void;
@@ -13,19 +13,20 @@ interface GenerateSourceDocInfoButtonProps {
 
 const GenerateSourceDocInfoButton: React.FC<GenerateSourceDocInfoButtonProps> = ({
     sourceDocumentId,
-    prompt,
     label = 'Generate Info',
     toolTip = 'Generate or update document info using AI',
     onSuccess,
 }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const fetchSourceDocs = useDocumentsStore(s => s.fetchSourceDocs);
 
     const handleClick = async () => {
         setLoading(true);
         setError(null);
         try {
-            await generateSourceDocInfo({ id: sourceDocumentId, prompt });
+            await generateSourceDocInfo(sourceDocumentId);
+            await fetchSourceDocs(); // Refresh after update
             if (onSuccess) onSuccess();
         } catch (err: any) {
             setError(err.message || 'Failed to generate info');

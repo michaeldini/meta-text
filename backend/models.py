@@ -111,9 +111,9 @@ class SourceDocInfoAiResponse(SQLModel):
     themes: list[str]
     symbols: list[str]
 
-class SourceDocInfoRequest(SQLModel):
-    prompt: str
-    id: int | None = None
+# class SourceDocInfoRequest(SQLModel):
+#     prompt: str
+#     id: int | None = None
 
 class SourceDocInfoResponse(SQLModel):
     result: SourceDocInfoAiResponse

@@ -33,8 +33,8 @@ export async function generateChunkNoteSummaryTextComparison(chunkId: number): P
     return await apiGet<{ result: string }>(`/api/generate-chunk-note-summary-text-comparison/${chunkId}`);
 }
 
-export async function generateSourceDocInfo(request: SourceDocInfoRequest): Promise<SourceDocInfoResponse> {
-    const data = await apiPost<SourceDocInfoResponse>('/api/source-doc-info', request);
+export async function generateSourceDocInfo(sourceDocumentId: number): Promise<SourceDocInfoResponse> {
+    const data = await apiPost<SourceDocInfoResponse>(`/api/source-doc-info/${sourceDocumentId}`);
     if (!data || Object.keys(data).length === 0) {
         throw new Error('No data returned from source doc info endpoint');
     }

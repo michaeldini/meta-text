@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends, Form, status
 from sqlmodel import Session
 
 from backend.models import (
-    SourceDocInfoRequest, SourceDocInfoResponse, AiImageRead,
+     SourceDocInfoResponse, AiImageRead,
     ExplainRequest
 )
 from backend.db import get_session
@@ -55,11 +55,11 @@ async def generate_chunk_note_summary_text_comparison(chunk_id: int, session: Se
         )
 
 
-@router.post("/source-doc-info")
-async def source_doc_info(request: SourceDocInfoRequest, session: Session = Depends(get_session)) -> SourceDocInfoResponse:
+@router.post("/source-doc-info/{doc_id}")
+async def source_doc_info(doc_id: int, session: Session = Depends(get_session)) -> SourceDocInfoResponse:
     """Generate source document information using AI."""
     try:
-        return get_ai_service().generate_source_document_info(request, session)
+        return get_ai_service().generate_source_document_info(doc_id, session)
     except PromptValidationError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, 

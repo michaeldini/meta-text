@@ -5,7 +5,7 @@ from loguru import logger
 from backend.models import (
     Chunk, WordDefinition, SourceDocument, AiImage,
     WordDefinitionResponse, WordDefinitionWithContextRequest,
-    SourceDocInfoRequest, SourceDocInfoResponse, SourceDocInfoAiResponse,
+    SourceDocInfoResponse, SourceDocInfoAiResponse,
     ExplainPhraseWithContextRequest, ExplainPhraseResponse, PhraseExplanation
 )
 from backend.services.openai_service import OpenAIService
@@ -124,12 +124,12 @@ class AIService:
             definitionWithContext=ai_data.definitionWithContext
         )
     
-    def generate_source_document_info(self, request: SourceDocInfoRequest, session: Session) -> SourceDocInfoResponse:
+    def generate_source_document_info(self, doc_id: int, session: Session) -> SourceDocInfoResponse:
         """
         Generate source document information using AI.
         
         Args:
-            request: Source document info request
+            doc_id: Source document id
             session: Database session
             
         Returns:
@@ -139,41 +139,30 @@ class AIService:
             PromptValidationError: If prompt validation fails
             SourceDocumentNotFoundError: If source document is not found
         """
-        logger.info(f"Generating source doc info for doc_id: {request.id}")
-        
-        # Validate request
-        if not request.prompt:
-            raise PromptValidationError("Missing prompt")
-        
-        # Truncate prompt to reasonable length
-        prompt = request.prompt[:10_000]
-        
-        # Generate AI response
+        logger.info(f"Generating source doc info for doc_id: {doc_id}")
+        doc = session.get(SourceDocument, doc_id)
+        if not doc:
+            logger.warning(f"Source document not found for doc_id: {doc_id}")
+            raise SourceDocumentNotFoundError(doc_id)
+        # Use the document title as the prompt
+        prompt = doc.title if doc.title else ""
+        if not prompt:
+            raise PromptValidationError("Missing prompt (document title)")
         ai_data = self.openai_service.generate_parsed_response(
             "instructions/source_doc_info_instructions.txt",
             prompt,
             SourceDocInfoAiResponse
         )
-        
-        # Update source document if ID provided
-        if request.id is not None:
-            doc = session.get(SourceDocument, request.id)
-            if not doc:
-                logger.warning(f"Source document not found for doc_id: {request.id}")
-                raise SourceDocumentNotFoundError(request.id)
-            
-            # Update document fields
-            doc.summary = ai_data.summary
-            doc.characters = ", ".join(ai_data.characters) if ai_data.characters else None
-            doc.locations = ", ".join(ai_data.locations) if ai_data.locations else None
-            doc.themes = ", ".join(ai_data.themes) if ai_data.themes else None
-            doc.symbols = ", ".join(ai_data.symbols) if ai_data.symbols else None
-            
-            session.add(doc)
-            session.commit()
-            
-            logger.info(f"Source doc info updated in DB for doc_id: {request.id}")
-        
+        logger.debug(f"AI data generated: {ai_data}")
+        # Update document fields
+        doc.summary = ai_data.summary
+        doc.characters = ", ".join(ai_data.characters) if ai_data.characters else None
+        doc.locations = ", ".join(ai_data.locations) if ai_data.locations else None
+        doc.themes = ", ".join(ai_data.themes) if ai_data.themes else None
+        doc.symbols = ", ".join(ai_data.symbols) if ai_data.symbols else None
+        session.add(doc)
+        session.commit()
+        logger.info(f"Source doc info updated in DB for doc_id: {doc_id}")
         return SourceDocInfoResponse(result=ai_data)
     
     def generate_image(self, prompt: str, chunk_id: int | None, session: Session) -> AiImage:

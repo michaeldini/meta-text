@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, useTheme, Accordion, AccordionSummary, AccordionDetails, Typography, CircularProgress, Alert } from '@mui/material';
 import { ExpandMoreIcon } from 'icons';
 import { getSourceDocumentStyles } from '../styles/styles';
@@ -34,7 +34,13 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ sourceDocumentId }) => {
     const sourceDocs = useDocumentsStore(s => s.sourceDocs);
     const loading = useDocumentsStore(s => s.sourceDocsLoading);
     const error = useDocumentsStore(s => s.sourceDocsError);
+    const fetchSourceDocs = useDocumentsStore(s => s.fetchSourceDocs);
     const doc = sourceDocs.find(d => d.id === sourceDocumentId);
+
+    useEffect(() => {
+        fetchSourceDocs();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sourceDocumentId]);
 
     const renderField = (config: FieldConfig) => {
         if (!doc) return null;

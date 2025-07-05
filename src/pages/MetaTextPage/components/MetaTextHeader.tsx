@@ -29,7 +29,6 @@ const MetaTextHeader: React.FC<MetaTextHeaderProps> = ({
                 <ReviewButton metaTextId={metaText.id} />
                 <GenerateSourceDocInfoButton
                     sourceDocumentId={metaText.source_document_id}
-                    prompt={metaText.title}
                 />
                 <TextSizeInput />
                 <LineHeightInput />
