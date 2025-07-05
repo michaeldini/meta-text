@@ -1,11 +1,19 @@
 import { useCallback, useState } from 'react';
 import { generateChunkNoteSummaryTextComparison } from 'services';
-import { ComparisonToolProps, ToolResult } from '../types';
+import { ToolResult } from '../types';
 
 interface ComparisonResult {
     comparisonText: string;
 }
 
+export interface ComparisonToolProps {
+    chunk: {
+        id: number;
+        meta_text_id: number;
+        content?: string;
+        [key: string]: any;
+    };
+}
 /**
  * Hook for comparison tool functionality
  */

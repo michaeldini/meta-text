@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Box, Paper, IconButton, Tooltip } from '@mui/material';
-import { CompareArrowsIcon } from 'icons';
+import { Box } from '@mui/material';
+
 import { AiGenerationButton } from 'components';
-import { useComparison } from './useComparison';
 import { ComparisonToolProps } from '../types';
+
+import { useComparison } from './useComparison';
 import { generateChunkNoteSummaryTextComparison } from 'services';
 import { getToolsStyles } from './Comparison.styles';
 import { useTheme } from '@mui/material/styles';
@@ -23,7 +24,6 @@ interface ComparisonToolComponentProps extends ComparisonToolProps {
  * Generates AI-powered comparisons for chunks
  */
 const ComparisonTool: React.FC<ComparisonToolComponentProps> = ({
-    chunkIdx,
     chunk,
     comparisonText = '',
     onComparisonUpdate,
@@ -35,7 +35,6 @@ const ComparisonTool: React.FC<ComparisonToolComponentProps> = ({
 
     const handleGenerate = async () => {
         const result = await generateComparison({
-            chunkIdx,
             chunk
         });
 

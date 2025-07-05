@@ -9,8 +9,6 @@ import { useAuthStore } from 'store';
 
 import type { ChunkTab } from '../features/chunk/components/chunkToolbarConfig';
 
-// Centralized list of available chunk tabs
-
 type ChunkState = {
     chunks: ChunkType[];
     loadingChunks: boolean;

@@ -14,6 +14,8 @@ export interface ChunkToolProps {
     };
 }
 
+
+
 export interface WordToolProps extends ChunkToolProps {
     /** The word to operate on */
     word: string;
@@ -61,7 +63,7 @@ export interface SplitChunkToolProps extends WordToolProps { }
 
 export interface MergeChunksToolProps extends MultiChunkToolProps { }
 
-export interface ComparisonToolProps extends ChunkToolProps { }
+// export interface ComparisonToolProps extends ChunkToolProps { }
 
 export interface ImageToolProps extends ChunkToolProps {
     /** Prompt for image generation */
@@ -78,4 +80,13 @@ export interface ExplainPhraseToolProps extends ChunkToolProps {
     phrase: string;
     /** Context around the phrase */
     context?: string;
+}
+
+export interface ComparisonToolProps {
+    chunk: {
+        id: number;
+        meta_text_id: number;
+        content?: string;
+        [key: string]: any;
+    };
 }

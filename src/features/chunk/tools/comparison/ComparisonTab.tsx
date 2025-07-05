@@ -15,7 +15,6 @@ const ComparisonTab: React.FC<ComparisonTabProps> = ({ chunk, updateChunkField }
 
     return (
         <ComparisonTool
-            chunkIdx={chunk.id}
             chunk={chunk}
             comparisonText={chunk.comparison}
             onComparisonUpdate={handleComparisonUpdate}
