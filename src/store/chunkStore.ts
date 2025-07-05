@@ -2,23 +2,14 @@ import { create } from 'zustand';
 
 import { getUserChunkSession, setUserChunkSession, fetchChunks as apiFetchChunks, updateChunk, splitChunk, combineChunks } from 'services';
 
-import { getErrorMessage } from 'types';
+import { getErrorMessage, CHUNK_TABS, ChunkTab } from 'types';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 import { useAuthStore } from './authStore';
 import { log } from 'utils';
 
 // Centralized list of available chunk tabs
-export const CHUNK_TABS = [
-    'comparison',
-    'ai-image',
-    'notes-summary',
-    'compression',
-    'explanation',
-] as const;
 
-type ChunkTab = typeof CHUNK_TABS[number];
-
-interface ChunkState {
+type ChunkState = {
     chunks: ChunkType[];
     loadingChunks: boolean;
     chunksError: string;
@@ -33,7 +24,7 @@ interface ChunkState {
     setChunks: (chunks: ChunkType[]) => void;
     refetchChunks: (metaTextId: number) => Promise<void>;
     resetChunkState: () => void;
-}
+};
 
 // Utility for localStorage persistence of last active chunk per MetaText
 function getLastActiveChunkId(metaTextId: number): number | null {
@@ -92,17 +83,17 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
                 // fallback to localStorage below
             }
         }
-        set(state => {
+        set((state) => {
             const updates: Partial<ChunkState> = {
                 chunks,
-                loadingChunks: false
+                loadingChunks: false,
             };
             if (!state.activeChunkId) {
                 let lastActive = backendActiveChunkId;
                 if (!lastActive && metaTextId) {
                     lastActive = getLastActiveChunkId(metaTextId);
                 }
-                if (lastActive && chunks.find(c => c.id === lastActive)) {
+                if (lastActive && chunks.find((c) => c.id === lastActive)) {
                     updates.activeChunkId = lastActive;
                 } else if (chunks.length > 0) {
                     updates.activeChunkId = chunks[0].id;
@@ -124,17 +115,17 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
                     if (session) backendActiveChunkId = session.last_active_chunk_id;
                 } catch { }
             }
-            set(state => {
+            set((state) => {
                 const updates: Partial<ChunkState> = {
                     chunks,
-                    loadingChunks: false
+                    loadingChunks: false,
                 };
                 if (!state.activeChunkId) {
                     let lastActive = backendActiveChunkId;
                     if (!lastActive) {
                         lastActive = getLastActiveChunkId(metaTextId);
                     }
-                    if (lastActive && chunks.find(c => c.id === lastActive)) {
+                    if (lastActive && chunks.find((c) => c.id === lastActive)) {
                         updates.activeChunkId = lastActive;
                         // updates.activeTabs = ['notes-summary']; // Uncomment if you want to auto-select notes-summary tab when restoring last active chunk
                     } else if (chunks.length > 0) {
@@ -145,12 +136,15 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
                 return { ...state, ...updates };
             });
         } catch (e: unknown) {
-            set({ chunksError: getErrorMessage(e, 'Failed to load chunks.'), loadingChunks: false });
+            set({
+                chunksError: getErrorMessage(e, 'Failed to load chunks.'),
+                loadingChunks: false,
+            });
         }
     },
     updateChunkField: (chunkId, field, value) => {
-        set(state => {
-            const idx = state.chunks.findIndex(c => c.id === chunkId);
+        set((state) => {
+            const idx = state.chunks.findIndex((c) => c.id === chunkId);
             if (idx === -1) return state;
             const updatedChunk = { ...state.chunks[idx], [field]: value };
             const newChunks = [...state.chunks];
@@ -168,7 +162,7 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
         const oldChunk = chunks[chunkIdx];
         const splitResult = await splitChunk(oldChunk.id, wordIdx + 1); // returns [updatedChunk, newChunk]
         if (!Array.isArray(splitResult) || splitResult.length < 2) return;
-        set(state => {
+        set((state) => {
             const newChunks = [...state.chunks];
             // Replace the old chunk with the updated one
             newChunks[chunkIdx] = splitResult[0];
@@ -184,7 +178,7 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
         if (!first || !second) return;
         const combineResult = await combineChunks(first.id, second.id); // returns a single combined Chunk
         if (!combineResult || !combineResult.id) return;
-        set(state => {
+        set((state) => {
             const newChunks = [...state.chunks];
             // Replace the first chunk with the combined one
             newChunks[chunkIdx] = combineResult;
@@ -197,14 +191,17 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
         set({ loadingChunks: true, chunksError: '' });
         try {
             const chunks = await apiFetchChunks(metaTextId);
-            set(state => {
+            set((state) => {
                 const updates: Partial<ChunkState> = {
                     chunks,
-                    loadingChunks: false
+                    loadingChunks: false,
                 };
 
                 // Only auto-select first chunk if current active chunk no longer exists
-                if (state.activeChunkId && !chunks.find(c => c.id === state.activeChunkId)) {
+                if (
+                    state.activeChunkId &&
+                    !chunks.find((c) => c.id === state.activeChunkId)
+                ) {
                     if (chunks.length > 0) {
                         updates.activeChunkId = chunks[0].id;
                         // Reset to default tabs when auto-selecting due to chunk no longer existing
@@ -222,7 +219,10 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
                 return { ...state, ...updates };
             });
         } catch (e: unknown) {
-            set({ chunksError: getErrorMessage(e, 'Failed to reload chunks.'), loadingChunks: false });
+            set({
+                chunksError: getErrorMessage(e, 'Failed to reload chunks.'),
+                loadingChunks: false,
+            });
         }
     },
     resetChunkState: () => {
@@ -231,7 +231,7 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
             loadingChunks: false,
             chunksError: '',
             activeChunkId: null,
-            activeTabs: []
+            activeTabs: [],
         });
     },
 }));
