@@ -198,3 +198,11 @@ class PhraseExplanation(SQLModel, table=True):
 class ExplanationResponse(BaseModel):
     explanation: str
     explanationWithContext: str
+
+
+class ExplainRequest(BaseModel):
+    words: str = Field(..., description="Word(s) to explain")
+    context: str = Field(..., description="Context for the explanation")
+    chunkId: Optional[int] = Field(None, description="Chunk ID for chunk explanation")
+    metaTextId: Optional[int] = Field(None, description="MetaText ID for explanation")
+    

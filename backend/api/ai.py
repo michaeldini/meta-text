@@ -2,15 +2,14 @@ from fastapi import APIRouter, HTTPException, Depends, Form, status
 from sqlmodel import Session
 
 from backend.models import (
-    WordDefinitionResponse, WordDefinitionWithContextRequest, 
     SourceDocInfoRequest, SourceDocInfoResponse, AiImageRead,
-    ExplainPhraseWithContextRequest, ExplainPhraseResponse
+    ExplainRequest
 )
 from backend.db import get_session
 from backend.services.ai_service import AIService
+from backend.services.words_explanation_service import WordsExplanationService
 from backend.exceptions.ai_exceptions import (
     ChunkNotFoundError,
-    WordDefinitionValidationError,
     SourceDocumentNotFoundError,
     PromptValidationError,
     OpenAIClientError,
@@ -19,6 +18,7 @@ from backend.exceptions.ai_exceptions import (
     InstructionsFileNotFoundError,
     FileOperationError
 )
+
 
 router = APIRouter()
 
@@ -47,22 +47,6 @@ async def generate_chunk_note_summary_text_comparison(chunk_id: int, session: Se
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 
             detail="Chunk not found"
-        )
-    except (OpenAIClientError, OpenAIResponseParsingError, InstructionsFileNotFoundError) as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
-            detail=f"AI service error: {str(e)}"
-        )
-    
-@router.post("/generate-definition-in-context")
-async def generate_definition_in_context(request: WordDefinitionWithContextRequest, session: Session = Depends(get_session)) -> WordDefinitionResponse:
-    """Generate word definition with context using AI."""
-    try:
-        return get_ai_service().generate_word_definition(request, session)
-    except WordDefinitionValidationError as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, 
-            detail=f"Validation error - {e.field}: {e.message}"
         )
     except (OpenAIClientError, OpenAIResponseParsingError, InstructionsFileNotFoundError) as e:
         raise HTTPException(
@@ -131,38 +115,27 @@ async def generate_chunk_compression(chunk_id: int, style_title: str, session: S
             detail=f"AI service error: {str(e)}"
         )
 
-
-@router.get("/generate-chunk-explanation/{chunk_id}")
-async def generate_chunk_explanation(chunk_id: int, session: Session = Depends(get_session)) -> dict:
-    """Generate and save a detailed AI explanation for a chunk's text."""
-    try:
-        return get_ai_service().generate_chunk_explanation(chunk_id, session)
-    except ChunkNotFoundError:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Chunk not found"
+@router.post("/explain")
+def explain(
+    request: ExplainRequest,
+    session: Session = Depends(get_session)
+):
+    """
+    Consolidated endpoint for explaining words or a chunk.
+    Determines the operation based on which fields are provided.
+    """
+    words_explanation_service = WordsExplanationService()
+    
+    if request.chunkId is not None:
+        # Chunk explanation
+        return get_ai_service().generate_chunk_explanation(request.chunkId, session)
+    elif request.metaTextId is not None and request.words:
+        # Use the new consolidated words explanation service
+        return words_explanation_service.explain(
+            words=request.words,
+            context=request.context,
+            meta_text_id=request.metaTextId,
+            session=session
         )
-    except (OpenAIClientError, OpenAIResponseParsingError, InstructionsFileNotFoundError) as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"AI service error: {str(e)}"
-        )
-
-
-@router.post("/explain-phrase-in-context")
-async def explain_phrase_in_context(request: ExplainPhraseWithContextRequest, session: Session = Depends(get_session)) -> ExplainPhraseResponse:
-    """Generate phrase explanation with context using AI."""
-    try:
-        return get_ai_service().generate_phrase_explanation(request, session)
-    except WordDefinitionValidationError as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, 
-            detail=f"Validation error - {e.field}: {e.message}"
-        )
-    except (OpenAIClientError, OpenAIResponseParsingError, InstructionsFileNotFoundError) as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
-            detail=f"AI service error: {str(e)}"
-        )
-
-
+    else:
+        raise HTTPException(status_code=400, detail="Insufficient data to determine explanation type.")
