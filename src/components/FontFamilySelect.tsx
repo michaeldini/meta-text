@@ -11,7 +11,7 @@ const FontFamilySelect: React.FC = () => {
     };
 
     return (
-        <FormControl size="small" sx={{ minWidth: 160, ml: 2 }}>
+        <FormControl size="small" sx={{ ml: 2 }}>
             <InputLabel id="font-family-label">Font</InputLabel>
             <Select
                 labelId="font-family-label"

@@ -9,13 +9,21 @@ export const getMetaTextPageStyles = (theme: Theme) => ({
         gap: theme.spacing(1.5), // Reduced gap between sections
         paddingRight: theme.spacing(5), // Adjusted for floating toolbar
         paddingLeft: theme.spacing(0),
+
     },
 
     headerContainer: {
-        width: '100%',
         padding: theme.spacing(2),
         gap: theme.spacing(6),
-        marginBottom: theme.spacing(20)
+        marginBottom: theme.spacing(20),
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap', // Allow wrapping on small screens
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        width: '100%',
+        boxSizing: 'border-box',
+        flex: 1,
     },
 
     headerPaper: {
@@ -24,12 +32,14 @@ export const getMetaTextPageStyles = (theme: Theme) => ({
         flexDirection: 'row',
         alignItems: 'center',
         minHeight: 'auto', // Remove default min-height
+        flexWrap: 'wrap', // Allow wrapping on small screens
+        width: '100%',
+        gap: theme.spacing(2),
     },
     headerTitleBox: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        flex: 1,
         gap: theme.spacing(1),
         minWidth: 'fit-content',
     },

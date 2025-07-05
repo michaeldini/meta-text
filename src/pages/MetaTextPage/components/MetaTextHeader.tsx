@@ -19,27 +19,26 @@ const MetaTextHeader: React.FC<MetaTextHeaderProps> = ({
     const styles = getMetaTextPageStyles(theme);
 
     return (
-        <FlexBox alignItems="center" sx={styles.headerContainer}>
+        <Box sx={styles.headerContainer}>
             <Paper elevation={10} sx={styles.headerPaper}>
                 <Box sx={styles.headerTitleBox}>
                     <Typography variant="subtitle1" color={theme.palette.text.secondary}>Editing meta-text</Typography>
                     <Typography variant="h5" sx={{ mx: 1, flex: 1 }}>{metaText.title}</Typography>
                 </Box>
-                <FlexBox flexDirection="row" >
-                    <ReviewButton metaTextId={metaText.id} />
-                    <GenerateSourceDocInfoButton
-                        sourceDocumentId={metaText.source_document_id}
-                        prompt={metaText.title}
-                    />
-                    <TextSizeInput />
-                    <LineHeightInput />
-                    <FontFamilySelect />
-                </FlexBox>
+
+                <ReviewButton metaTextId={metaText.id} />
+                <GenerateSourceDocInfoButton
+                    sourceDocumentId={metaText.source_document_id}
+                    prompt={metaText.title}
+                />
+                <TextSizeInput />
+                <LineHeightInput />
+                <FontFamilySelect />
             </Paper>
             <SourceDocInfo
                 sourceDocumentId={metaText.source_document_id}
             />
-        </FlexBox >
+        </Box >
     );
 };
 
