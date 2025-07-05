@@ -3,18 +3,13 @@ import { IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, 
 
 import { CompressionIcon } from 'icons';
 import { createChunkCompression, previewChunkCompression } from 'services';
-import type { ChunkType } from 'types';
+import type { CompressionToolProps } from '../types';
 
 const STYLE_OPTIONS = [
     { value: 'like im 5', label: 'Explain like I’m 5' },
     { value: 'like a bro', label: 'Like a bro' },
     { value: 'academic', label: 'Academic' },
 ];
-
-interface CompressionToolProps {
-    chunk: ChunkType;
-    onCompressionCreated?: () => void;
-}
 
 const CompressionTool: React.FC<CompressionToolProps> = ({ chunk, onCompressionCreated }) => {
     const [open, setOpen] = useState(false);

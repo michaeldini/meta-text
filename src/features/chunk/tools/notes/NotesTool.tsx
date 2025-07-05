@@ -3,20 +3,8 @@ import { Box, useTheme } from '@mui/material';
 
 import { ChunkTextField } from '../../../chunk/components';
 import { getToolsStyles } from './Tools.styles';
+import { NotesToolComponentProps } from '../types';
 
-interface NotesToolComponentProps {
-    summary?: string;
-    notes?: string;
-    onSummaryBlur?: (val: string) => void;
-    onNotesBlur?: (val: string) => void;
-    summaryFieldSx?: object;
-    notesFieldSx?: object;
-}
-
-/**
- * Notes/Summary Tool Component
- * Provides note-taking and summary functionality for chunks
- */
 const NotesTool: React.FC<NotesToolComponentProps> = ({
     summary = '',
     notes = '',

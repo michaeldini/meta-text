@@ -6,12 +6,7 @@ import { AiGenerationButton } from 'components';
 import { useImageTool } from './useImageTool';
 import ChunkImageModal from './Modal';
 import { getToolsStyles } from './Image.styles';
-import { ChunkType } from 'types';
-
-export interface ImageToolComponentProps {
-    chunk: ChunkType;
-}
-
+import { ImageToolComponentProps } from '../types';
 
 const ImageTool: React.FC<ImageToolComponentProps> = ({
     chunk,

@@ -1,5 +1,3 @@
-import type { ChunkType } from 'types';
-import type { UpdateChunkFieldFn } from 'types';
 import ChunkExplanationTool from './ChunkExplanationTool';
 import { SimpleTabProps } from '../types';
 

@@ -2,12 +2,8 @@ import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { UndoArrowIcon } from 'icons';
 import { useMergeChunks } from './useMergeChunks';
-import { MergeChunksToolProps } from '../types';
 
-interface MergeChunksToolComponentProps extends MergeChunksToolProps {
-    onComplete?: (success: boolean, result?: any) => void;
-}
-
+import { MergeChunksToolComponentProps } from '../types';
 /**
  * Merge Chunks Tool Component
  * Allows merging two consecutive chunks

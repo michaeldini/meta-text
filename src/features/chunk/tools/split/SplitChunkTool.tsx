@@ -2,12 +2,8 @@ import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { ContentCutIcon } from 'icons';
 import { useSplitChunk } from './useSplitChunk';
-import { SplitChunkToolProps } from '../types';
 import { log } from 'utils';
-
-interface SplitChunkToolComponentProps extends SplitChunkToolProps {
-    onComplete?: (success: boolean, result?: any) => void;
-}
+import { SplitChunkToolComponentProps } from '../types';
 
 /**
  * Split Chunk Tool Component

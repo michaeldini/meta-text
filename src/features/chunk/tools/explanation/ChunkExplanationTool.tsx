@@ -5,13 +5,8 @@ import { useTheme } from '@mui/material/styles';
 
 import { AiGenerationButton } from 'components';
 import { useExplanation } from './useExplanation';
-import type { ChunkType } from 'types';
+import { ExplanationToolProps } from '../types';
 import { getExplanationStyles } from './ChunkExplanation.styles';
-
-interface ExplanationToolProps {
-    chunk: ChunkType;
-    onExplanationUpdate?: (text: string) => void;
-}
 
 const ChunkExplanationTool: React.FC<ExplanationToolProps> = ({
     chunk,

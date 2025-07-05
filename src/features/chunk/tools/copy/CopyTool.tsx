@@ -4,8 +4,6 @@ import { useChunkStore, useNotifications } from 'store';
 import { CopyIcon } from 'icons';
 
 interface CopyToolProps {
-    /** Additional CSS class name */
-    className?: string;
     /** Test ID for testing */
     'data-testid'?: string;
 }

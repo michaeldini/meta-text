@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Box, Typography, Select, MenuItem, FormControl, CircularProgress, Paper, useTheme } from '@mui/material';
 
 import { fetchChunkCompressions } from 'services';
-import type { ChunkCompression, ChunkType } from 'types';
+import type { ChunkCompression } from 'types';
 
 import CompressionTool from './CompressionTool';
 import { getCompressionTabStyles } from './compression.styles';
+import { BaseTabProps } from '../types';
 
-interface CompressionTabProps {
-    chunk: ChunkType;
-}
-const CompressionTab: React.FC<CompressionTabProps> = ({ chunk }) => {
+const CompressionTab: React.FC<BaseTabProps> = ({ chunk }) => {
     const [compressions, setCompressions] = useState<ChunkCompression[]>([]);
     const [selectedId, setSelectedId] = useState<number | ''>('');
     const [loading, setLoading] = useState(false);

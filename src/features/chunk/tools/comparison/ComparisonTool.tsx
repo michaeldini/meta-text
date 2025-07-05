@@ -5,13 +5,9 @@ import ReactMarkdown from 'react-markdown';
 
 import { AiGenerationButton } from 'components';
 
-import { ComparisonToolProps } from '../types';
+import { ComparisonToolComponentProps } from '../types';
 import { useComparison } from './useComparison';
 import { getToolsStyles } from './Comparison.styles';
-
-interface ComparisonToolComponentProps extends ComparisonToolProps {
-    onComparisonUpdate: (text: string) => void;
-}
 
 const ComparisonTool: React.FC<ComparisonToolComponentProps> = ({
     chunk,
