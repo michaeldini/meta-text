@@ -6,9 +6,9 @@ import type { ChunkCompression } from 'types';
 
 import CompressionTool from './CompressionTool';
 import { getCompressionTabStyles } from './compression.styles';
-import { BaseTabProps } from '../types';
+import { BaseChunkProps } from '../types';
 
-const CompressionTab: React.FC<BaseTabProps> = ({ chunk }) => {
+const CompressionTab: React.FC<BaseChunkProps> = ({ chunk }) => {
     const [compressions, setCompressions] = useState<ChunkCompression[]>([]);
     const [selectedId, setSelectedId] = useState<number | ''>('');
     const [loading, setLoading] = useState(false);

@@ -8,36 +8,36 @@ export interface ToolResult<T = any> {
     error?: string;
 }
 
-export interface BaseChunk {
+export interface BaseChunkProps {
     chunk: ChunkType;
 }
 
-export interface ImageToolProps extends BaseChunk {
+export interface ImageToolProps extends BaseChunkProps {
     prompt?: string;
 }
 
 // Tab-specific props
 
-export interface SimpleTabProps extends BaseChunk {
+export interface SimpleTabProps extends BaseChunkProps {
     updateChunkField: UpdateChunkFieldFn;
 }
 
 
 // Tool-specific props
-export interface CompressionToolProps extends BaseChunk {
+export interface CompressionToolProps extends BaseChunkProps {
     onCompressionCreated?: () => void;
 }
-export interface ComparisonToolComponentProps extends BaseChunk {
+export interface ComparisonToolComponentProps extends BaseChunkProps {
     onComparisonUpdate: (text: string) => void;
 }
 
 
-export interface ExplanationToolProps extends BaseChunk {
+export interface ExplanationToolProps extends BaseChunkProps {
     onExplanationUpdate?: (text: string) => void;
 }
 
 
-export interface ImageToolComponentProps extends BaseChunk {
+export interface ImageToolComponentProps extends BaseChunkProps {
     prompt?: string;
 }
 
@@ -59,7 +59,7 @@ export interface MergeChunksToolComponentProps {
     onComplete?: (success: boolean, result?: any) => void;
 }
 
-export interface SplitChunkToolComponentProps extends BaseChunk {
+export interface SplitChunkToolComponentProps extends BaseChunkProps {
     chunk: ChunkType;
     chunkIdx: number;
     word: string;
