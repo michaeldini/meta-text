@@ -56,17 +56,7 @@ const ChunkImageModal: React.FC<ChunkImageDisplayProps> = ({
                 <Fade in={lightboxOpen}>
                     <Box
                         onClick={() => setLightboxOpen(false)}
-                        sx={{
-                            position: 'fixed',
-                            top: 0,
-                            left: 0,
-                            width: '100vw',
-                            height: '100vh',
-                            bgcolor: 'rgba(0,0,0,0.7)',
-                            zIndex: 1300,
-                            outline: 'none',
-                            ...styles.chunkLightboxModal
-                        }}
+                        sx={styles.chunkLightboxModal}
                     >
                         <Box
                             onClick={e => e.stopPropagation()}

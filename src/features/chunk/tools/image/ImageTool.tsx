@@ -58,7 +58,6 @@ const ImageTool: React.FC<ImageToolComponentProps> = ({
                     onClick={openDialog}
                     disabled={loading}
                 />
-                {/* Modal for full-size image */}
                 {state.data && (
                     <ChunkImageModal
                         imgSrc={getImgSrc()}
