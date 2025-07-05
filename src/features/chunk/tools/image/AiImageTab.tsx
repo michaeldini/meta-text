@@ -1,15 +1,14 @@
 import React from 'react';
+import type { ChunkType } from 'types';
 import ImageTool from '../../tools/image/ImageTool';
-import type { Chunk } from '../../../../types/chunk';
 
 interface AiImageTabProps {
-    chunk: Chunk;
+    chunk: ChunkType;
 }
 
 const AiImageTab: React.FC<AiImageTabProps> = ({ chunk }) => {
     return (
         <ImageTool
-            chunkIdx={chunk.id}
             chunk={chunk}
         />
     );

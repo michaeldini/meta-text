@@ -1,23 +1,20 @@
 import React, { useState } from 'react';
-import { IconButton, Tooltip, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, LinearProgress, Alert, useTheme } from '@mui/material';
-import { PhotoFilterIcon } from 'icons';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, LinearProgress, Alert, useTheme } from '@mui/material';
+
+import { AiGenerationButton } from 'components';
+
 import { useImageTool } from './useImageTool';
 import { ImageToolProps } from '../types';
 import ChunkImageModal from './Modal';
-import { AiGenerationButton } from 'components';
-import type { Chunk } from '../../../../types/chunk';
 import { getToolsStyles } from './Image.styles';
+import { ChunkType } from 'types';
+
 interface ImageToolComponentProps extends ImageToolProps {
     /** Callback when action completes */
     onComplete?: (success: boolean, result?: any) => void;
 }
 
-/**
- * Image Tool Component
- * Generates AI images for chunks
- */
 const ImageTool: React.FC<ImageToolComponentProps> = ({
-    chunkIdx,
     chunk,
     prompt: initialPrompt = '',
     onComplete
@@ -33,14 +30,13 @@ const ImageTool: React.FC<ImageToolComponentProps> = ({
         handlePromptChange,
         loading,
         error
-    } = useImageTool(chunk as Chunk);
+    } = useImageTool(chunk as ChunkType);
 
     const [localPrompt, setLocalPrompt] = useState(initialPrompt);
     const theme = useTheme();
     const styles = getToolsStyles(theme);
     const handleGenerate = async () => {
         const result = await generateImage({
-            chunkIdx,
             chunk,
             prompt: localPrompt || state.prompt
         });

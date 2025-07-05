@@ -1,8 +1,10 @@
 import { useCallback, useState, useEffect } from 'react';
+
 import { generateAiImage } from 'services';
-import log from '../../../../utils/logger';
+import { log } from 'utils';
+import type { ChunkType, AiImage } from 'types';
+
 import { ImageToolProps, ToolResult } from '../types';
-import type { Chunk, AiImage } from '../../../../types/chunk';
 
 interface ImageResult {
     imagePath: string;
@@ -27,7 +29,7 @@ function getLatestAiImage(ai_images?: AiImage[]): AiImage | undefined {
 /**
  * Hook for image tool functionality
  */
-export const useImageTool = (chunk?: Chunk) => {
+export const useImageTool = (chunk?: ChunkType) => {
     const [state, setState] = useState<ImageToolState>({
         loading: false,
         error: null,

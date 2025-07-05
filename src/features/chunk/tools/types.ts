@@ -63,10 +63,10 @@ export interface SplitChunkToolProps extends WordToolProps { }
 export interface MergeChunksToolProps extends MultiChunkToolProps { }
 
 
-export interface ImageToolProps extends ChunkToolProps {
-    /** Prompt for image generation */
-    prompt?: string;
-}
+// export interface ImageToolProps extends ChunkToolProps {
+//     /** Prompt for image generation */
+//     prompt?: string;
+// }
 
 export interface NotesToolProps extends ChunkToolProps {
     /** User input for notes/summary */
@@ -87,4 +87,15 @@ export interface ComparisonToolProps {
         content?: string;
         [key: string]: any;
     };
+}
+
+
+export interface ImageToolProps {
+    chunk: {
+        id: number;
+        meta_text_id: number;
+        content?: string;
+        [key: string]: any;
+    };
+    prompt?: string;
 }

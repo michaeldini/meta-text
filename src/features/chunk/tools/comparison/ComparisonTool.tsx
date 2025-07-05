@@ -4,7 +4,6 @@ import { useTheme } from '@mui/material/styles';
 import ReactMarkdown from 'react-markdown';
 
 import { AiGenerationButton } from 'components';
-import { generateChunkNoteSummaryTextComparison } from 'services';
 
 import { ComparisonToolProps } from '../types';
 import { useComparison } from './useComparison';
@@ -36,7 +35,7 @@ const ComparisonTool: React.FC<ComparisonToolComponentProps> = ({
         <Box sx={styles.toolTabContainer}>
             <AiGenerationButton
                 label="What Did I Miss?"
-                toolTip="Generate a summary of what you might have missed in this chunk based on your notes and summary."
+                toolTip="Generate a summary of what you might have missed based on your notes and summary."
                 loading={loading}
                 onClick={handleGenerate}
                 sx={{ ml: 1 }}
@@ -46,7 +45,7 @@ const ComparisonTool: React.FC<ComparisonToolComponentProps> = ({
                 {chunk.comparison ? (
                     <ReactMarkdown>{chunk.comparison}</ReactMarkdown>
                 ) : (
-                    <span style={{ color: '#aaa' }}>No comparison yet.</span>
+                    <span>No comparison yet.</span>
                 )}
             </Box>
             {error && <Box sx={{ color: 'error.main', fontSize: 12 }}>{error}</Box>}
@@ -54,9 +53,4 @@ const ComparisonTool: React.FC<ComparisonToolComponentProps> = ({
     );
 };
 
-interface ChunkComparisonProps {
-    chunkId: number;
-    comparisonText: string;
-    onComparisonUpdate: (text: string) => void;
-}
 export default ComparisonTool;
