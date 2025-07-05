@@ -92,7 +92,7 @@ const ChunkWords = memo(function ChunkWords({
 
 
     return (
-        <Box sx={{ minWidth: '50%' }}>
+        <Box>
             < Box ref={containerRef} sx={styles.wordsContainer}
                 onMouseLeave={() => setIsSelecting(false)}
             >
