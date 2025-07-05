@@ -2,10 +2,12 @@ import { create } from 'zustand';
 
 import { getUserChunkSession, setUserChunkSession, fetchChunks as apiFetchChunks, updateChunk, splitChunk, combineChunks } from 'services';
 
-import { getErrorMessage, CHUNK_TABS, ChunkTab } from 'types';
+import { getErrorMessage } from 'types';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
-import { useAuthStore } from './authStore';
 import { log } from 'utils';
+import { useAuthStore } from 'store';
+
+import type { ChunkTab } from '../features/chunk/components/chunkToolbarConfig';
 
 // Centralized list of available chunk tabs
 

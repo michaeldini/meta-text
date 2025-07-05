@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { useTheme } from '@mui/material/styles';
 import { Box, Fade, ToggleButtonGroup, ToggleButton, Tooltip, Typography } from '@mui/material';
-import { CompareArrowsIcon, PhotoIcon, NotesIcon, CompressionIcon, QuestionMarkIcon } from 'icons';
+
 import { useChunkStore } from 'store';
 import { FADE_IN_DURATION } from 'constants';
+
 import CopyTool from '../tools/copy/CopyTool';
 import { getChunkToolsStyles } from '../Chunk.styles';
-import { useTheme } from '@mui/material/styles';
+import { toggleButtons, ChunkTab } from './chunkToolbarConfig';
 
 
 const ChunkToolsNavbar: React.FC = () => {
@@ -20,48 +22,9 @@ const ChunkToolsNavbar: React.FC = () => {
 
 
     // Allow multiple selection
-    const handleTabsChange = (_: any, tabs: Array<'comparison' | 'ai-image' | 'notes-summary' | 'compression' | 'explanation'>) => {
+    const handleTabsChange = (_: any, tabs: ChunkTab[]) => {
         setActiveTabs(tabs);
     };
-
-    const toggleButtons = [
-        {
-            value: 'notes-summary',
-            ariaLabel: 'Show Notes/Summary',
-            tooltipTitle: <Typography variant="caption">
-                Show or hide the Notes/Summary editor for all chunks</Typography>,
-            icon: <NotesIcon />
-        },
-        {
-            value: 'comparison',
-            ariaLabel: 'Show Comparison',
-            tooltipTitle: <Typography variant="caption">
-                Show or hide the AI-generated comparison panel for all chunks</Typography>,
-            icon: <CompareArrowsIcon />
-        },
-        {
-            value: 'ai-image',
-            ariaLabel: 'Show AI Image',
-            tooltipTitle: <Typography variant="caption">
-                Show or hide the AI image panel for all chunks</Typography>,
-            icon: <PhotoIcon />
-        },
-        {
-            value: 'compression',
-            ariaLabel: 'Compress Chunk',
-            tooltipTitle: <Typography variant="caption">
-                Show or hide the compressions for all chunks</Typography>,
-            icon: <CompressionIcon />
-        },
-        {
-            value: 'explanation',
-            ariaLabel: 'Show Explanation',
-            tooltipTitle: <Typography variant="caption">
-                Show or hide the explanation editor for all chunks</Typography>,
-            icon: <QuestionMarkIcon />
-        },
-
-    ];
 
     const toolbar = (
         <Box
