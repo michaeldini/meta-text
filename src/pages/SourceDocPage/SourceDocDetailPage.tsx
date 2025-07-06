@@ -7,13 +7,7 @@ import { useSourceDocumentDetailStore } from 'store';
 import { log } from 'utils';
 import { ErrorBoundary, LoadingBoundary, PageContainer } from 'components';
 import { usePageLogger } from 'hooks';
-
-// Constants
-const MESSAGES = {
-    NO_DOC_ID: 'No document ID provided.',
-    DOC_NOT_FOUND: 'Document not found.',
-    RETRY: 'Retry',
-} as const;
+import { GenerateSourceDocInfoButton, StyleControls, DocumentHeader } from 'components';
 
 export default function SourceDocDetailPage() {
     const { sourceDocId } = useParams<{ sourceDocId?: string }>();
@@ -30,10 +24,6 @@ export default function SourceDocDetailPage() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sourceDocId]);
 
-    // If the document ID is not provided, we show a specific error message
-    // If an error occurs, we show that instead
-    const displayError = !sourceDocId ? MESSAGES.NO_DOC_ID : error;
-
     usePageLogger('SourceDocDetailPage', {
         watched: [
             ['loading', loading],
@@ -42,33 +32,32 @@ export default function SourceDocDetailPage() {
         ]
     });
     return (
-        <Slide in={true} direction="up" timeout={500}>
-            <PageContainer>
-                <div>
-                    <ErrorBoundary>
-                        <LoadingBoundary loading={loading}>
-                            {/* Show error if present */}
-                            {displayError ? (
-                                <Alert severity="error" sx={{ mb: 2 }}>
-                                    {displayError}
-                                    {sourceDocId && (
-                                        <Button onClick={refetch} size="small" sx={{ ml: 2 }} variant="outlined">
-                                            {MESSAGES.RETRY}
-                                        </Button>
-                                    )}
-                                </Alert>
-                            ) : doc ? (
-                                <>
+        <ErrorBoundary>
+            <LoadingBoundary loading={loading}>
+                <Slide in={true} direction="up" timeout={500}>
+                    <PageContainer>
+                        {error ? (
+                            <Alert severity="error">
+                                {error}
+                            </Alert>
+                        ) : doc ? (
+                            <>
+                                <DocumentHeader title={doc.title}>
+                                    <GenerateSourceDocInfoButton
+                                        sourceDocumentId={doc.id}
+                                    />
+                                    <StyleControls />
                                     <SourceDocInfo sourceDocumentId={doc.id} />
-                                    <SourceDoc doc={doc} />
-                                </>
-                            ) : (
-                                <Alert severity="info">{MESSAGES.DOC_NOT_FOUND}</Alert>
-                            )}
-                        </LoadingBoundary>
-                    </ErrorBoundary>
-                </div>
-            </PageContainer>
-        </Slide>
+                                </DocumentHeader>
+                                <SourceDoc doc={doc} />
+                            </>
+                        ) : (
+                            <Alert severity="info">Document not found.</Alert>
+                        )}
+
+                    </PageContainer>
+                </Slide>
+            </LoadingBoundary>
+        </ErrorBoundary>
     );
 }

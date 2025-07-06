@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, useTheme, Alert, Fade } from '@mui/material';
+import { Box, useTheme, Alert, Fade, Typography } from '@mui/material';
 
 import { log } from 'utils';
-import { ErrorBoundary, LoadingBoundary, PageContainer } from 'components';
+import { ErrorBoundary, LoadingBoundary, PageContainer, ReviewButton } from 'components';
 import { usePageLogger } from 'hooks';
-import { ChunkToolsNavbar } from 'features';
+import { ChunkToolsNavbar, SourceDocInfo } from 'features';
 import { Chunks } from 'features';
 import { FADE_IN_DURATION } from 'constants';
 import { useMetaTextDetail } from 'store';
 
-import { MetaTextHeader } from './components';
 import { getMetaTextPageStyles } from './MetaText.styles';
+import { GenerateSourceDocInfoButton, StyleControls, DocumentHeader } from 'components';
 
 export default function MetaTextDetailPage() {
     const { metaTextId } = useParams<{ metaTextId: string }>();
@@ -42,7 +42,16 @@ export default function MetaTextDetailPage() {
                     {metaText ? (
                         <Fade in={!loading} timeout={FADE_IN_DURATION}>
                             <Box sx={styles.container}>
-                                <MetaTextHeader metaText={metaText} />
+                                <DocumentHeader title={metaText.title} >
+                                    <ReviewButton metaTextId={metaText.id} />
+                                    <GenerateSourceDocInfoButton
+                                        sourceDocumentId={metaText.source_document_id}
+                                    />
+                                    <StyleControls />
+                                    <SourceDocInfo
+                                        sourceDocumentId={metaText.source_document_id}
+                                    />
+                                </DocumentHeader>
                                 <Chunks />
                                 <ChunkToolsNavbar />
                             </Box>

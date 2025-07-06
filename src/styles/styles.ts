@@ -12,14 +12,9 @@ const flipIn = keyframes`
   }
 `;
 export const getTopLevelStyles = (theme: Theme) => ({
-
     appContainerStyles: {
         height: '100%',
         width: '100%',
-        display: 'flex',
-        flexDirection: 'column' as const,
-        flex: 1,
-        minHeight: 0,
         padding: theme.spacing(0),
     },
 });
@@ -47,18 +42,17 @@ export const getPageStyles = (theme: Theme) => ({
 export const getHomePageStyles = (theme: Theme) => ({
     homePageContainer: {
         display: 'flex',
-        flexDirection: { xs: 'column', md: 'row' },
-        alignItems: { xs: 'stretch', md: 'start' },
-        gap: 2,
-        width: '100%',
-        mb: 2,
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: theme.spacing(5),
     },
     toggleContainer: {
-        flexDirection: 'column' as const,
-        alignItems: 'start' as const,
-        gap: theme.spacing(2),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
     },
     contentContainer: {
-        minWidth: '50%',
+        width: '100%',
+        minWidth: 'fit-content',
     },
 });

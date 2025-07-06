@@ -1,5 +1,6 @@
 import React from 'react';
-import { ToggleSelector, FlexBox } from 'components';
+import { Box } from '@mui/material';
+import { ToggleSelector } from 'components';
 import { DocType, ViewMode } from 'types';
 
 export const DOC_TYPE_OPTIONS = [
@@ -25,7 +26,7 @@ export function HomePageToggles({ docType, setDocType, viewMode, setViewMode, st
     const handleViewModeChange = (value: ViewMode) => setViewMode(value);
 
     return (
-        <FlexBox flexDirection="column" sx={styles.toggleContainer}>
+        <Box sx={styles.toggleContainer}>
             <ToggleSelector
                 value={docType}
                 onChange={handleDocTypeChange}
@@ -36,6 +37,6 @@ export function HomePageToggles({ docType, setDocType, viewMode, setViewMode, st
                 onChange={handleViewModeChange}
                 options={VIEW_MODE_OPTIONS}
             />
-        </FlexBox>
+        </Box>
     );
 }
