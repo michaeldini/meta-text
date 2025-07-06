@@ -82,7 +82,7 @@ function App() {
 
     return (
         <>
-            <LandscapeRequiredOverlay />
+            {/* <LandscapeRequiredOverlay /> */}
             <ThemeProvider theme={currentTheme}>
                 {/* CssBaseline provides consistent CSS reset and applies theme background */}
                 <CssBaseline />

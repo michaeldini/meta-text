@@ -14,11 +14,10 @@ const flipIn = keyframes`
 export const getTopLevelStyles = (theme: Theme) => ({
 
     appContainerStyles: {
-
-        height: '100%', // Full viewport height
-        width: '100%', // Full viewport width
+        height: '100%',
+        width: '100%',
         display: 'flex',
-        flexDirection: 'column' as const, // Column layout for header, main content, and footer
+        flexDirection: 'column' as const,
         flex: 1,
         minHeight: 0,
         padding: theme.spacing(0),
@@ -28,7 +27,7 @@ export const getTopLevelStyles = (theme: Theme) => ({
 export const getPageStyles = (theme: Theme) => ({
     // Layout structure
     display: 'flex',
-    flexDirection: 'column' as const,
+    flexDirection: 'row' as const,
     width: '100%',
     height: '100%', // Ensure full viewport height
     flex: 1,
@@ -47,44 +46,19 @@ export const getPageStyles = (theme: Theme) => ({
 
 export const getHomePageStyles = (theme: Theme) => ({
     homePageContainer: {
-        height: '100%',
         display: 'flex',
-        flexDirection: 'row' as const,
-        flex: 1,
-        minWidth: 0,
-        minHeight: 0,
-        alignItems: 'start' as const,
-        gap: theme.spacing(20),
-        [theme.breakpoints.down('sm')]: {
-            flexDirection: 'column' as const,
-            gap: theme.spacing(4),
-            alignItems: 'stretch' as const,
-        },
+        flexDirection: { xs: 'column', md: 'row' },
+        alignItems: { xs: 'stretch', md: 'start' },
+        gap: 2,
+        width: '100%',
+        mb: 2,
     },
     toggleContainer: {
-        height: '100%',
-        display: 'flex',
-        flex: 1,
-        minWidth: 0,
-        minHeight: 0,
         flexDirection: 'column' as const,
         alignItems: 'start' as const,
         gap: theme.spacing(2),
-        [theme.breakpoints.down('sm')]: {
-            alignItems: 'stretch' as const,
-            gap: theme.spacing(1),
-        },
     },
     contentContainer: {
-        height: '100vh',
-        width: '100%',
-        flex: 1,
         minWidth: '50%',
-        minHeight: '100%',
-        [theme.breakpoints.down('sm')]: {
-            minWidth: 0,
-            minHeight: 0,
-            height: 'auto',
-        },
     },
 });
