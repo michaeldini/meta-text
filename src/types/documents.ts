@@ -1,8 +1,5 @@
 // Consolidated types for document-related entities
 
-
-
-// Shared DocType enum for use across the app
 export enum DocType {
     SourceDoc = 'sourceDoc',
     MetaText = 'metaText'
@@ -57,9 +54,9 @@ export type ChunkType = {
     notes: string;
     summary: string;
     comparison: string;
-    explanation?: string;
+    explanation: string;
     meta_text_id: number;
-    ai_images?: AiImage[];
+    ai_images: AiImage[];
 };
 
 export type AiImage = {

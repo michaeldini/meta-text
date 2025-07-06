@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { create } from 'zustand';
 
 import { fetchSourceDocument } from 'services';
@@ -82,25 +81,3 @@ export const useSourceDocumentDetailStore = create<SourceDocumentDetailState>((s
         set({ error: '' });
     },
 }));
-
-// Convenience hook that provides the same interface as the old useSourceDocumentDetail
-export const useSourceDocumentDetail = (id: string) => {
-    const store = useSourceDocumentDetailStore();
-
-    // Fetch data when id changes
-    useEffect(() => {
-        if (id) {
-            store.fetchSourceDocumentDetail(id);
-        } else {
-            store.clearState();
-        }
-    }, [id, store.fetchSourceDocumentDetail]);
-
-    return {
-        doc: store.doc,
-        loading: store.loading,
-        error: store.error,
-        setDoc: store.updateDoc,
-        refetch: store.refetch,
-    };
-};

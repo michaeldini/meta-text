@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Alert, Button, Slide } from '@mui/material';
 
 import { SourceDocInfo, SourceDoc } from 'features';
-import { useSourceDocumentDetail } from 'store';
+import { useSourceDocumentDetailStore } from 'store';
 import { log } from 'utils';
 import { ErrorBoundary, LoadingBoundary, PageContainer } from 'components';
 import { usePageLogger } from 'hooks';
@@ -17,13 +17,22 @@ const MESSAGES = {
 
 export default function SourceDocDetailPage() {
     const { sourceDocId } = useParams<{ sourceDocId?: string }>();
-    // The hook handles empty/null IDs gracefully by clearing state
-    const { doc, loading, error, refetch } = useSourceDocumentDetail(sourceDocId || '');
+    const store = useSourceDocumentDetailStore();
+    const { doc, loading, error, refetch } = store;
 
-    // Memoize error display logic for performance
-    const displayError = useMemo(() => {
-        return !sourceDocId ? MESSAGES.NO_DOC_ID : error;
-    }, [sourceDocId, error]);
+    // Fetch data when id changes (which is on mount and when the ID changes)
+    useEffect(() => {
+        if (sourceDocId) {
+            store.fetchSourceDocumentDetail(sourceDocId);
+        } else {
+            store.clearState();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sourceDocId]);
+
+    // If the document ID is not provided, we show a specific error message
+    // If an error occurs, we show that instead
+    const displayError = !sourceDocId ? MESSAGES.NO_DOC_ID : error;
 
     usePageLogger('SourceDocDetailPage', {
         watched: [
@@ -32,15 +41,9 @@ export default function SourceDocDetailPage() {
             ['doc', doc?.id]
         ]
     });
-
-    useEffect(() => {
-        log.info('SourceDocDetailPage mounted');
-        return () => log.info('SourceDocDetailPage unmounted');
-    }, []);
-
     return (
-        <PageContainer>
-            <Slide in={true} direction="up" timeout={500}>
+        <Slide in={true} direction="up" timeout={500}>
+            <PageContainer>
                 <div>
                     <ErrorBoundary>
                         <LoadingBoundary loading={loading}>
@@ -65,7 +68,7 @@ export default function SourceDocDetailPage() {
                         </LoadingBoundary>
                     </ErrorBoundary>
                 </div>
-            </Slide>
-        </PageContainer>
+            </PageContainer>
+        </Slide>
     );
 }
