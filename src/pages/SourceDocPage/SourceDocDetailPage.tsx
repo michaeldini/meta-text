@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Alert, Button, Slide } from '@mui/material';
+import { Alert, Box, Slide } from '@mui/material';
 
 import { SourceDocInfo, SourceDoc } from 'features';
 import { useSourceDocumentDetailStore } from 'store';
@@ -34,29 +34,27 @@ export default function SourceDocDetailPage() {
     return (
         <ErrorBoundary>
             <LoadingBoundary loading={loading}>
-                <Slide in={true} direction="up" timeout={500}>
-                    <PageContainer>
-                        {error ? (
-                            <Alert severity="error">
-                                {error}
-                            </Alert>
-                        ) : doc ? (
-                            <>
-                                <DocumentHeader title={doc.title}>
-                                    <GenerateSourceDocInfoButton
-                                        sourceDocumentId={doc.id}
-                                    />
-                                    <StyleControls />
-                                    <SourceDocInfo sourceDocumentId={doc.id} />
-                                </DocumentHeader>
-                                <SourceDoc doc={doc} />
-                            </>
-                        ) : (
-                            <Alert severity="info">Document not found.</Alert>
-                        )}
+                <PageContainer>
+                    <Slide in={true} direction="up" timeout={500}>
+                        <Box>
+                            {doc ? (
+                                <>
+                                    <DocumentHeader title={doc.title}>
+                                        <GenerateSourceDocInfoButton
+                                            sourceDocumentId={doc.id}
+                                        />
+                                        <StyleControls />
+                                        <SourceDocInfo sourceDocumentId={doc.id} />
+                                    </DocumentHeader>
+                                    <SourceDoc doc={doc} />
+                                </>
+                            ) : (
+                                <Alert severity="info">Document not found.</Alert>
+                            )}
+                        </Box>
 
-                    </PageContainer>
-                </Slide>
+                    </Slide>
+                </PageContainer>
             </LoadingBoundary>
         </ErrorBoundary>
     );
