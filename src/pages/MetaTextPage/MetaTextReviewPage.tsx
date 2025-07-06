@@ -12,7 +12,7 @@ import { ArrowBackIcon } from 'icons';
 import { FlexBox } from 'components';
 import { log } from 'utils';
 
-import { metaTextDetailRoute } from '../../routes';
+
 import { getMetaTextReviewStyles } from './MetaText.styles';
 
 interface WordlistRow {
@@ -42,7 +42,7 @@ function Header({ metatextId, navigate, styles }: { metatextId?: number; navigat
         <FlexBox sx={styles.header}>
             {metatextId && (
                 <Tooltip title="Back to MetaText Detail">
-                    <IconButton onClick={() => navigate(metaTextDetailRoute(String(metatextId)))}>
+                    <IconButton onClick={() => navigate(`/metaText/${metatextId}`)}>
                         <ArrowBackIcon />
                     </IconButton>
                 </Tooltip>
