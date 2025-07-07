@@ -22,7 +22,6 @@ const baseTheme: ThemeOptions = {
             width: 24,
             height: 24,
         },
-        className: 'size-6 text-blue-500', // this doesnt work, maybe can be later
     },
     typography: {
         fontFamily: 'Arial, sans-serif, system-ui',
