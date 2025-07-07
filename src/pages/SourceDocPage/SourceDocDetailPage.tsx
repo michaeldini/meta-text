@@ -4,7 +4,7 @@ import { Alert, Box, Slide } from '@mui/material';
 import { SourceDocInfo, SourceDoc } from 'features';
 import { useSourceDocDetailData } from './useSourceDocDetailData';
 import { log } from 'utils';
-import { ErrorBoundary, LoadingBoundary, PageContainer } from 'components';
+import { PageContainer } from 'components';
 import { usePageLogger } from 'hooks';
 import { GenerateSourceDocInfoButton, StyleControls, DocumentHeader } from 'components';
 
@@ -32,9 +32,7 @@ export default function SourceDocDetailPage() {
                         <Alert severity="info">Document not found.</Alert>
                     )}
                 </Box>
-
             </Slide>
         </PageContainer>
-
     );
 }
