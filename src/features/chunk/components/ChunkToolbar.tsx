@@ -14,12 +14,8 @@ import { toggleButtons, ChunkTab } from './chunkToolbarConfig';
 const ChunkToolsNavbar: React.FC = () => {
     const theme = useTheme();
     const styles = getChunkToolsStyles(theme);
-    const activeChunkId = useChunkStore(state => state.activeChunkId);
     const activeTabs = useChunkStore(state => state.activeTabs);
     const setActiveTabs = useChunkStore(state => state.setActiveTabs);
-
-    const isDisabled = !activeChunkId;
-
 
     // Allow multiple selection
     const handleTabsChange = (_: any, tabs: ChunkTab[]) => {
@@ -45,7 +41,7 @@ const ChunkToolsNavbar: React.FC = () => {
                         {...styles.tooltipProps}
                     >
                         <span>
-                            <ToggleButton value={button.value} aria-label={button.ariaLabel} disabled={isDisabled} color="secondary">
+                            <ToggleButton value={button.value} aria-label={button.ariaLabel} color="secondary">
                                 {button.icon}
                             </ToggleButton>
                         </span>
