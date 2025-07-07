@@ -29,7 +29,7 @@ const Chunk = memo(function Chunk({
             <Box sx={{ paddingLeft: 10 }}>
                 <p>{chunk.id}</p>
                 <p>{chunk.position}</p>
-                <p>{typeof chunk.position}</p>
+
             </Box>
             <ChunkWords
                 chunk={chunk}
