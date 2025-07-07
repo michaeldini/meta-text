@@ -14,13 +14,13 @@ const CompressionSelect: React.FC<CompressionSelectProps> = ({ compressions, sel
         <Typography variant="subtitle1" id="compression-select-label">
             Compression
         </Typography>
-        <FormControl sx={styles.form} margin="none">
+        <FormControl sx={styles.horizontalForm} margin="none">
             <Select
                 labelId="compression-select-label"
                 value={selectedId}
                 onChange={e => setSelectedId(Number(e.target.value))}
                 aria-labelledby="compression-select-label"
-                sx={styles.select}
+                sx={styles.selectField}
             >
                 {compressions.map(c => (
                     <MenuItem key={c.id} value={c.id}>{c.title}</MenuItem>

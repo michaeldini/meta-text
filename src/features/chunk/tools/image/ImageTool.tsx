@@ -5,7 +5,7 @@ import { AiGenerationButton } from 'components';
 
 import { useImageTool } from './useImageTool';
 import ChunkImageModal from './Modal';
-import { getToolsStyles } from './Image.styles';
+import { getSharedToolStyles } from '../shared.styles';
 import { ImageToolComponentProps } from '../types';
 
 const ImageTool: React.FC<ImageToolComponentProps> = ({
@@ -25,7 +25,7 @@ const ImageTool: React.FC<ImageToolComponentProps> = ({
     } = useImageTool(chunk);
 
     const theme = useTheme();
-    const styles = getToolsStyles(theme);
+    const styles = getSharedToolStyles(theme);
 
     const handleGenerate = async () => {
         const result = await generateImage({

@@ -28,7 +28,7 @@ const ChunkImageModal: React.FC<ChunkImageDisplayProps> = ({
 
     return (
         <>
-            <Box sx={styles.toolTabContainerWide}
+            <Box
                 onClick={() => setLightboxOpen(true)}
                 tabIndex={0}
                 aria-label="Expand image"

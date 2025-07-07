@@ -26,11 +26,6 @@ const Chunk = memo(function Chunk({
             data-chunk-id={chunk.id}
             sx={styles.chunkContainer}
         >
-            <Box sx={{ paddingLeft: 10 }}>
-                <p>{chunk.id}</p>
-                <p>{chunk.position}</p>
-
-            </Box>
             <ChunkWords
                 chunk={chunk}
                 chunkIdx={chunkIdx}

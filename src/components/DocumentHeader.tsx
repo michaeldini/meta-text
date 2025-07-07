@@ -19,7 +19,7 @@ const DocumentHeader: React.FC<DocumentHeaderProps> = ({ title, children, sx = {
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignItems: 'center',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         // width: '100%',
         boxSizing: 'border-box',
         flex: 1,

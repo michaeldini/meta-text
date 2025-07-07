@@ -5,7 +5,7 @@ import { fetchChunkCompressions } from 'services';
 import type { ChunkCompression } from 'types';
 
 import CompressionTool from './CompressionTool';
-import { getCompressionTabStyles } from './compression.styles';
+import { getSharedToolStyles } from '../shared.styles';
 import { BaseChunkProps } from '../types';
 import CompressionSelect from './components/CompressionSelect';
 import CompressionDisplay from './components/CompressionDisplay';
@@ -17,7 +17,7 @@ const CompressionTab: React.FC<BaseChunkProps> = ({ chunk }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const theme = useTheme();
-    const styles = getCompressionTabStyles(theme);
+    const styles = getSharedToolStyles(theme);
 
     // Reset state when chunk changes
     useEffect(() => {
@@ -46,7 +46,7 @@ const CompressionTab: React.FC<BaseChunkProps> = ({ chunk }) => {
     const selected = compressions.find(c => c.id === selectedId);
 
     return (
-        <Box sx={styles.root}>
+        <Box sx={styles.toolTabContainerWide}>
             {loading ? (
                 <CircularProgress />
             ) : error ? (

@@ -5,7 +5,7 @@ export const getMetaTextPageStyles = (theme: Theme) => ({
         display: 'flex',
         height: '100%',
         flexDirection: 'column' as const,
-        alignItems: 'start',
+        alignItems: 'center',
         gap: theme.spacing(1.5), // Reduced gap between sections
         paddingRight: theme.spacing(5), // Adjusted for floating toolbar
         paddingLeft: theme.spacing(0),
@@ -20,7 +20,7 @@ export const getMetaTextPageStyles = (theme: Theme) => ({
         flexDirection: 'row',
         flexWrap: 'wrap', // Allow wrapping on small screens
         alignItems: 'center',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         width: '100%',
         boxSizing: 'border-box',
         flex: 1,
