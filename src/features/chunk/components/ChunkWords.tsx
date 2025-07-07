@@ -4,9 +4,9 @@ import { MergeChunksTool } from '../tools';
 import WordsToolbar from '../components/WordsToolbar';
 import { getWordsStyles } from '../Chunk.styles';
 import { useUIPreferencesStore } from 'store';
-
+import type { ChunkType } from 'types';
 export interface ChunkWordsProps {
-    chunk: { text?: string; meta_text_id?: string | number;[key: string]: any };
+    chunk: ChunkType;
     chunkIdx: number;
 }
 
