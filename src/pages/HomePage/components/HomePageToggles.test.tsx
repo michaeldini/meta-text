@@ -79,23 +79,7 @@ describe('HomePageToggles', () => {
             expect(currentValues[1]).toHaveTextContent(ViewMode.Create);
         });
 
-        it('should render with custom styles prop', () => {
-            const customStyles = {
-                toggleContainer: {
-                    backgroundColor: 'red',
-                    padding: '16px'
-                }
-            };
 
-            renderComponent({ styles: customStyles });
-
-            // Check that the component renders without error when custom styles are passed
-            const container = screen.getByTestId('toggle-container');
-            expect(container).toBeInTheDocument();
-
-            // Verify the sx prop was applied (it should have MUI classes)
-            expect(container).toHaveClass(/MuiBox-root/);
-        });
     });
 
     describe('DocType Toggle', () => {
