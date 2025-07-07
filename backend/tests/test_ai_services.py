@@ -308,9 +308,9 @@ class TestAIService:
         # Mock source document
         mock_doc = Mock(spec=SourceDocument)
         self.mock_session.get.return_value = mock_doc
-        
-        result = self.service.generate_source_document_info(request, self.mock_session)
-        
+
+        result = self.service.generate_source_document_info(mock_doc.id, self.mock_session)
+
         assert result.result == mock_ai_response
         assert mock_doc.summary == "Test summary"
         assert mock_doc.characters == "Character 1"
@@ -322,7 +322,7 @@ class TestAIService:
         request = SourceDocInfoRequest(prompt="", id=1)
         
         with pytest.raises(PromptValidationError) as exc_info:
-            self.service.generate_source_document_info(request, self.mock_session)
+            self.service.generate_source_document_info(1, self.mock_session)
         
         assert exc_info.value.message == "Missing prompt"
     
@@ -341,8 +341,8 @@ class TestAIService:
         self.mock_session.get.return_value = None
         
         with pytest.raises(SourceDocumentNotFoundError) as exc_info:
-            self.service.generate_source_document_info(request, self.mock_session)
-        
+            self.service.generate_source_document_info(999, self.mock_session)
+
         assert exc_info.value.doc_id == 999
     
     def test_generate_image_success(self):
