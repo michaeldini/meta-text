@@ -24,6 +24,10 @@ import { useHomePageContent } from './useHomePageContent';
 
 export default function HomePage() {
 
+    // Get the theme and styles for the home page
+    const theme = useTheme();
+    const styles = getHomePageStyles(theme);
+
     // Get the document type and view mode state, along with the data fetching functions
     const {
         docType,
@@ -39,9 +43,6 @@ export default function HomePage() {
         refreshData,
     } = useHomePageData();
 
-    // Get the theme and styles for the home page
-    const theme = useTheme();
-    const styles = getHomePageStyles(theme);
 
     // Render the correct content for the current view
     const content = useHomePageContent({

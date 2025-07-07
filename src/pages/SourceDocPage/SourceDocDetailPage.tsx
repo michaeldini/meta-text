@@ -11,7 +11,9 @@ import { GenerateSourceDocInfoButton, StyleControls, DocumentHeader } from 'comp
 
 export default function SourceDocDetailPage() {
     const { sourceDocId } = useParams<{ sourceDocId?: string }>();
+
     const store = useSourceDocumentDetailStore();
+
     const { doc, loading, error, refetch } = store;
 
     // Fetch data when id changes (which is on mount and when the ID changes)
