@@ -26,7 +26,7 @@ export function HomePageToggles({ docType, setDocType, viewMode, setViewMode, st
     const handleViewModeChange = (value: ViewMode) => setViewMode(value);
 
     return (
-        <Box sx={styles.toggleContainer}>
+        <Box sx={styles?.toggleContainer} data-testid="toggle-container">
             <ToggleSelector
                 value={docType}
                 onChange={handleDocTypeChange}
