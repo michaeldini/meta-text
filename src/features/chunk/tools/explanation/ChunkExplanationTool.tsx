@@ -6,7 +6,7 @@ import { useTheme } from '@mui/material/styles';
 import { AiGenerationButton } from 'components';
 import { useExplanation } from './useExplanation';
 import { ExplanationToolProps } from '../types';
-import { getExplanationStyles } from './ChunkExplanation.styles';
+import { getSharedToolStyles } from '../shared.styles';
 
 const ChunkExplanationTool: React.FC<ExplanationToolProps> = ({
     chunk,
@@ -14,7 +14,7 @@ const ChunkExplanationTool: React.FC<ExplanationToolProps> = ({
 }) => {
     const { explain, loading, error } = useExplanation();
     const theme = useTheme();
-    const styles = getExplanationStyles(theme);
+    const styles = getSharedToolStyles(theme);
 
     const handleGenerate = useCallback(async () => {
         if (!chunk?.id) return;
@@ -34,7 +34,7 @@ const ChunkExplanationTool: React.FC<ExplanationToolProps> = ({
                 sx={{ ml: 1 }}
                 disabled={loading || !chunk?.id}
             />
-            <Box sx={styles.explanationTextContainer}>
+            <Box sx={styles.scrollableContentContainerWide}>
                 {chunk.explanation ? (
                     <ReactMarkdown>{chunk.explanation}</ReactMarkdown>
                 ) : (

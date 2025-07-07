@@ -7,7 +7,7 @@ import { AiGenerationButton } from 'components';
 
 import { ComparisonToolComponentProps } from '../types';
 import { useComparison } from './useComparison';
-import { getToolsStyles } from './Comparison.styles';
+import { getSharedToolStyles } from '../shared.styles';
 
 const ComparisonTool: React.FC<ComparisonToolComponentProps> = ({
     chunk,
@@ -15,7 +15,7 @@ const ComparisonTool: React.FC<ComparisonToolComponentProps> = ({
 }) => {
     const { generateComparison, loading, error } = useComparison();
     const theme = useTheme();
-    const styles = getToolsStyles(theme);
+    const styles = getSharedToolStyles(theme);
 
     const handleGenerate = async () => {
         const result = await generateComparison({
@@ -37,7 +37,7 @@ const ComparisonTool: React.FC<ComparisonToolComponentProps> = ({
                 sx={{ ml: 1 }}
                 disabled={loading || !chunk?.id}
             />
-            <Box sx={styles.comparisonTextContainer}>
+            <Box sx={styles.scrollableContentContainerWide}>
                 {chunk.comparison ? (
                     <ReactMarkdown>{chunk.comparison}</ReactMarkdown>
                 ) : (

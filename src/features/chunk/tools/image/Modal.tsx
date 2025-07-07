@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, CircularProgress, Modal, Fade, useTheme } from '@mui/material';
-import { getToolsStyles } from './Image.styles';
+import { getSharedToolStyles } from '../shared.styles';
 
 export interface ChunkImageDisplayProps {
     imgSrc: string;
@@ -24,17 +24,17 @@ const ChunkImageModal: React.FC<ChunkImageDisplayProps> = ({
     height = '300px',
 }) => {
     const theme = useTheme();
-    const styles = getToolsStyles(theme);
+    const styles = getSharedToolStyles(theme);
 
     return (
         <>
-            <Box sx={styles.chunkImageBox}
+            <Box sx={styles.toolTabContainerWide}
                 onClick={() => setLightboxOpen(true)}
                 tabIndex={0}
                 aria-label="Expand image"
             >
                 {!imgLoaded && (
-                    <Box sx={styles.chunkImageLoadingOverlay}>
+                    <Box sx={styles.loadingOverlay}>
                         <CircularProgress />
                     </Box>
                 )}
@@ -56,11 +56,11 @@ const ChunkImageModal: React.FC<ChunkImageDisplayProps> = ({
                 <Fade in={lightboxOpen}>
                     <Box
                         onClick={() => setLightboxOpen(false)}
-                        sx={styles.chunkLightboxModal}
+                        sx={styles.modalOverlay}
                     >
                         <Box
                             onClick={e => e.stopPropagation()}
-                            sx={styles.chunkLightboxImgBox}
+                            sx={styles.centeredModalContent}
                         >
                             <img
                                 src={imgSrc}
@@ -73,7 +73,7 @@ const ChunkImageModal: React.FC<ChunkImageDisplayProps> = ({
                                     background: '#fafafa',
                                 }}
                             />
-                            <Box sx={styles.chunkLightboxPromptBox}>
+                            <Box sx={styles.centeredModalContent}>
                                 {imgPrompt && <div><b>Prompt:</b> {imgPrompt}</div>}
                             </Box>
                         </Box>

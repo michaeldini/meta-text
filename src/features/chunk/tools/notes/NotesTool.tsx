@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, useTheme } from '@mui/material';
 
 import { ChunkTextField } from '../../../chunk/components';
-import { getToolsStyles } from './Tools.styles';
+import { getSharedToolStyles } from '../shared.styles';
 import { NotesToolComponentProps } from '../types';
 
 const NotesTool: React.FC<NotesToolComponentProps> = ({
@@ -14,7 +14,7 @@ const NotesTool: React.FC<NotesToolComponentProps> = ({
     notesFieldSx
 }) => {
     const theme = useTheme();
-    const styles = getToolsStyles(theme);
+    const styles = getSharedToolStyles(theme);
 
     const [localSummary, setLocalSummary] = useState(summary);
     const [localNotes, setLocalNotes] = useState(notes);
@@ -23,7 +23,7 @@ const NotesTool: React.FC<NotesToolComponentProps> = ({
     useEffect(() => { setLocalNotes(notes); }, [notes]);
 
     return (
-        <Box sx={styles.toolTabContainer}>
+        <Box sx={styles.toolTabContainerWide}>
             <ChunkTextField
                 label="Summary"
                 value={localSummary}
