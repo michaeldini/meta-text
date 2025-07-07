@@ -18,6 +18,7 @@ export const getExplanationStyles = (theme: Theme) => ({
         p: 2,
         // borderRadius: 1,
         boxShadow: theme.shadows[1],
+        minWidth: 400,
         minHeight: 100,
         maxHeight: 300,
         overflowY: 'auto',

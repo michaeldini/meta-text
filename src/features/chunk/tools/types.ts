@@ -37,6 +37,7 @@ export interface ExplanationToolProps extends BaseChunkProps {
     chunkIdx: number;
     word: string;
     wordIdx: number;
+    onExplanationUpdate?: (explanation: string) => void;
     onComplete?: (success: boolean, result?: any) => void;
 }
 

@@ -16,6 +16,7 @@ export const getToolsStyles = (theme: Theme) => ({
     comparisonTextContainer: {
         p: 2,
         boxShadow: theme.shadows[1],
+        minWidth: 400,
         minHeight: 100,
         maxHeight: 400,
         overflowY: 'auto',
