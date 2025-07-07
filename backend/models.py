@@ -58,7 +58,7 @@ class MetaTextSummary(MetaTextBase):
 
 class MetaTextDetail(MetaTextSummary):
     text: str
-    chunks: List["ChunkRead"] = []
+    # chunks: List["ChunkRead"] = []
 
 class CreateMetaTextRequest(BaseModel):
     sourceDocId: int

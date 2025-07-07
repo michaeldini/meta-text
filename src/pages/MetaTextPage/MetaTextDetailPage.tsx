@@ -42,7 +42,7 @@ export default function MetaTextDetailPage() {
                                         sourceDocumentId={metaText.source_document_id}
                                     />
                                 </DocumentHeader>
-                                <Chunks />
+                                <Chunks metaTextId={metaText.id} />
                                 <ChunkToolsNavbar />
                             </Box>
                         </Fade>

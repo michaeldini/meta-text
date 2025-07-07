@@ -58,10 +58,10 @@ export const useMetaTextDetailStore = create<MetaTextDetailState>((set, get) => 
                 }
 
                 set({ metaText, loading: false });
-                // Set chunks in chunk store if metaText and chunks exist
-                if (metaText && Array.isArray(metaText.chunks)) {
-                    setChunks(metaText.chunks);
-                }
+                // // Set chunks in chunk store if metaText and chunks exist
+                // if (metaText && Array.isArray(metaText.chunks)) {
+                //     setChunks(metaText.chunks);
+                // }
             } catch (error: unknown) {
                 set({
                     loading: false,

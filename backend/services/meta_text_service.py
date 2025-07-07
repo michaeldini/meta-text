@@ -2,7 +2,7 @@
 from sqlmodel import select, Session
 from loguru import logger
 
-from backend.models import MetaText, SourceDocument, Chunk
+from backend.models import MetaText, SourceDocument
 from backend.exceptions.meta_text_exceptions import (
     SourceDocumentNotFoundError,
     MetaTextNotFoundError,
@@ -80,10 +80,6 @@ class MetaTextService:
         if not meta_text:
             logger.warning(f"Meta-text not found: id={meta_text_id}")
             raise MetaTextNotFoundError(meta_text_id)
-        
-        # Sort related chunks by position (ascending)
-        if hasattr(meta_text, "chunks") and meta_text.chunks:
-            meta_text.chunks.sort(key=lambda c: c.position)
         
         logger.info(f"Meta-text found: id={meta_text.id}, title='{meta_text.title}'")
         return meta_text
