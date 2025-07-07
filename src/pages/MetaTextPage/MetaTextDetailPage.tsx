@@ -25,16 +25,6 @@ export default function MetaTextDetailPage() {
     // Fetch MetaText detail directly
     const { metaText, loading, errors } = useMetaTextDetail(metaTextId);
 
-    // State change logging
-    usePageLogger('MetaTextDetailPage', {
-        watched: [
-            ['loading', loading],
-            ['metaText', metaText?.id],
-            ['errors', errors?.metaText],
-        ]
-    });
-
-
     return (
         <ErrorBoundary>
             <LoadingBoundary loading={loading}>

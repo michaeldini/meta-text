@@ -33,7 +33,11 @@ export interface ComparisonToolComponentProps extends BaseChunkProps {
 
 
 export interface ExplanationToolProps extends BaseChunkProps {
-    onExplanationUpdate?: (text: string) => void;
+    chunkId: number;
+    chunkIdx: number;
+    word: string;
+    wordIdx: number;
+    onComplete?: (success: boolean, result?: any) => void;
 }
 
 
@@ -60,6 +64,7 @@ export interface MergeChunksToolComponentProps {
 }
 
 export interface SplitChunkToolComponentProps extends BaseChunkProps {
+    chunkId: number;
     chunk: ChunkType;
     chunkIdx: number;
     word: string;

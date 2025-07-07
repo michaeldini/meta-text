@@ -17,7 +17,7 @@ const Chunk = memo(function Chunk({
     chunk,
     chunkIdx,
 }: ChunkProps) {
-    const { setActiveChunk, activeTabs, updateChunkField } = useChunkStore();
+    const { activeTabs, updateChunkField } = useChunkStore();
     const theme = useTheme();
     const styles = getChunkStyles(theme);
 
@@ -25,8 +25,12 @@ const Chunk = memo(function Chunk({
         <Box
             data-chunk-id={chunk.id}
             sx={styles.chunkContainer}
-            onClick={() => setActiveChunk(chunk.id)}
         >
+            <Box sx={{ paddingLeft: 10 }}>
+                <p>{chunk.id}</p>
+                <p>{chunk.position}</p>
+                <p>{typeof chunk.position}</p>
+            </Box>
             <ChunkWords
                 chunk={chunk}
                 chunkIdx={chunkIdx}

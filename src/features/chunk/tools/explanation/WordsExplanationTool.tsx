@@ -11,9 +11,10 @@ import {
 } from '@mui/material';
 import { QuestionMarkIcon } from 'icons';
 import { useExplanation } from './useExplanation';
-import { WordToolProps } from '../types';
 
-interface ExplanationToolProps extends WordToolProps {
+interface ExplanationToolProps {
+    word: string;
+    chunk: any;
     onComplete?: (success: boolean, result?: any) => void;
 }
 

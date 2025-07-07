@@ -10,26 +10,27 @@ import { SplitChunkToolComponentProps } from '../types';
  * Allows splitting a chunk at a specific word
  */
 const SplitChunkTool: React.FC<SplitChunkToolComponentProps> = ({
+    chunkId,
     chunkIdx,
     wordIdx,
     word,
-    // context,
     chunk,
     onComplete
 }) => {
     const { splitChunk } = useSplitChunk();
 
     const handleSplit = async () => {
-        log.info(`Splitting chunk ${chunkIdx} at word "${word}"`);
+        log.info(`Splitting chunk ${chunkId} at word "${word}"`);
         const result = await splitChunk({
+            chunkId,
             chunkIdx,
             wordIdx,
             word,
-            // context,
-            chunk
+            chunk,
+            onComplete
         });
 
-        onComplete?.(result.success, result.data);
+        // onComplete?.(result.success, result.data);
     };
 
     return (

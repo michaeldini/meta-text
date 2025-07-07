@@ -57,6 +57,7 @@ const WordsToolbar: React.FC<WordsToolbarProps> = memo(({
         >
             <Box sx={styles.wordActionDialogContainer}>
                 <SplitChunkTool
+                    chunkId={chunk.id}
                     chunkIdx={chunkIdx}
                     wordIdx={wordIdx}
                     word={word}
@@ -64,8 +65,9 @@ const WordsToolbar: React.FC<WordsToolbarProps> = memo(({
                     onComplete={handleSplitToolComplete}
                 />
                 <WordsExplanationTool
-                    chunkIdx={chunkIdx}
-                    wordIdx={wordIdx}
+                    // chunkId={chunk.id}
+                    // chunkIdx={chunkIdx}
+                    // wordIdx={wordIdx}
                     word={word}
                     chunk={chunk}
                     onComplete={handleDefineToolComplete}

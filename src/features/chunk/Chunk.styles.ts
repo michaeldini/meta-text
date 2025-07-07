@@ -78,9 +78,9 @@ export const getWordsStyles = (theme: Theme) => ({
         WebkitUserSelect: 'none',
         MozUserSelect: 'none',
         msUserSelect: 'none',
-        '&:hover': {
-            transform: 'translateY(-2px)',
-        },
+        // '&:hover': {
+        //     transform: 'translateY(-2px)',
+        // },
         padding: theme.spacing(4),
         paddingRight: 0,
     },

@@ -80,7 +80,7 @@ class ChunkCompressionRead(ChunkCompressionBase):
 # --- Chunk Schemas ---
 class ChunkBase(SQLModel):
     text: str
-    position: float = 0.0
+    position: float = Field(default=0.0, index=True)  # Position in the text
     notes: str = ""
     summary: str = ""
     comparison: str = ""
