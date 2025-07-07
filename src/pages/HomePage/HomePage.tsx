@@ -9,7 +9,7 @@
 
 
 import React from 'react';
-import { Box, Paper, useTheme } from '@mui/material';
+import { Box, Paper, Slide, useTheme } from '@mui/material';
 
 import { usePageLogger } from 'hooks';
 import { PageContainer, FlexBox } from 'components';
@@ -56,20 +56,24 @@ export default function HomePage() {
     });
 
     return (
-        <PageContainer>
-            <Box sx={styles.homePageContainer}>
-                <WelcomeText />
-                <HomePageToggles
-                    docType={docType}
-                    setDocType={setDocType}
-                    viewMode={viewMode}
-                    setViewMode={setViewMode}
-                    styles={styles}
-                />
-                <Paper sx={styles.contentContainer}>
-                    {content}
-                </Paper>
-            </Box>
-        </PageContainer >
+        <PageContainer loading={
+            sourceDocsLoading || metaTextsLoading
+        }>
+            <Slide in={true} direction="up" timeout={500}>
+                <Box sx={styles.homePageContainer}>
+                    <WelcomeText />
+                    <HomePageToggles
+                        docType={docType}
+                        setDocType={setDocType}
+                        viewMode={viewMode}
+                        setViewMode={setViewMode}
+                        styles={styles}
+                    />
+                    <Paper sx={styles.contentContainer}>
+                        {content}
+                    </Paper>
+                </Box>
+            </Slide>
+        </PageContainer>
     );
 }

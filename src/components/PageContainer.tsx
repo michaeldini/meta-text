@@ -1,23 +1,24 @@
 import React, { ReactNode } from 'react';
 import { Container, useTheme } from '@mui/material';
 import { getPageStyles, getTopLevelStyles } from '../styles/styles';
-import ErrorBoundary from './ErrorBoundary';
 
+import { ErrorBoundary, LoadingBoundary } from 'components'
 /**
  * Generic page container for consistent layout.
- * Wraps children in a centered, max-width Material UI Container.
- * Now also wraps children in an ErrorBoundary for global error handling.
+ * Wraps children in a Container with error boundary and theme-based styles.
  */
 
 
-export default function PageContainer({ children }: { children: ReactNode }) {
+export default function PageContainer({ children, loading }: { children: ReactNode, loading: boolean }) {
     const theme = useTheme();
 
     return (
-        <Container maxWidth={false} sx={getPageStyles(theme)}>
-            <ErrorBoundary>
-                {children}
-            </ErrorBoundary>
-        </Container>
+        <ErrorBoundary>
+            <Container maxWidth={false} sx={getPageStyles(theme)}>
+                <LoadingBoundary loading={loading}>
+                    {children}
+                </LoadingBoundary>
+            </Container>
+        </ErrorBoundary>
     );
 }

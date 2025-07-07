@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useSourceDocumentDetailStore } from 'store';
 
 // Custom hook to encapsulate data fetching and state logic for SourceDocDetailPage
-export function useSourceDocDetailPage(sourceDocId?: string) {
+export function useSourceDocDetailData(sourceDocId?: string) {
     const store = useSourceDocumentDetailStore();
     const { doc, loading, error, refetch } = store;
 
@@ -12,7 +12,6 @@ export function useSourceDocDetailPage(sourceDocId?: string) {
         } else {
             store.clearState();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sourceDocId]);
 
     return { doc, loading, error, refetch };

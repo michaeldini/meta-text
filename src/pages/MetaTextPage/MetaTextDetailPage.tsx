@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, useTheme, Alert, Fade, Typography } from '@mui/material';
+import { Box, useTheme, Alert, Fade, Typography, Slide } from '@mui/material';
 
 import { log } from 'utils';
-import { ErrorBoundary, LoadingBoundary, PageContainer, ReviewButton } from 'components';
+import { LoadingBoundary, PageContainer, ReviewButton } from 'components';
 import { usePageLogger } from 'hooks';
 import { ChunkToolsNavbar, SourceDocInfo } from 'features';
 import { Chunks } from 'features';
 import { FADE_IN_DURATION } from 'constants';
-import { useMetaTextDetailData } from 'store';
+import { useMetaTextDetailData } from './useMetaTextDetailData';
 
 import { getMetaTextPageStyles } from './MetaText.styles';
 import { GenerateSourceDocInfoButton, StyleControls, DocumentHeader } from 'components';
@@ -26,29 +26,25 @@ export default function MetaTextDetailPage() {
     const { metaText, loading, errors } = useMetaTextDetailData(metaTextId);
 
     return (
-        <ErrorBoundary>
-            <LoadingBoundary loading={loading}>
-                <PageContainer>
-                    {metaText ? (
-                        <Fade in={!loading} timeout={FADE_IN_DURATION}>
-                            <Box sx={styles.container}>
-                                <DocumentHeader title={metaText.title} >
-                                    <ReviewButton metaTextId={metaText.id} />
-                                    <GenerateSourceDocInfoButton
-                                        sourceDocumentId={metaText.source_document_id}
-                                    />
-                                    <StyleControls />
-                                    <SourceDocInfo
-                                        sourceDocumentId={metaText.source_document_id}
-                                    />
-                                </DocumentHeader>
-                                <Chunks metaTextId={metaText.id} />
-                                <ChunkToolsNavbar />
-                            </Box>
-                        </Fade>
-                    ) : null}
-                </PageContainer>
-            </LoadingBoundary>
-        </ErrorBoundary>
+        <PageContainer loading={loading}>
+            {metaText ? (
+                <Slide in={true} direction="up" timeout={500}>
+                    <Box sx={styles.container}>
+                        <DocumentHeader title={metaText.title} >
+                            <ReviewButton metaTextId={metaText.id} />
+                            <GenerateSourceDocInfoButton
+                                sourceDocumentId={metaText.source_document_id}
+                            />
+                            <StyleControls />
+                            <SourceDocInfo
+                                sourceDocumentId={metaText.source_document_id}
+                            />
+                        </DocumentHeader>
+                        <Chunks metaTextId={metaText.id} />
+                        <ChunkToolsNavbar />
+                    </Box>
+                </Slide>
+            ) : null}
+        </PageContainer>
     );
 }

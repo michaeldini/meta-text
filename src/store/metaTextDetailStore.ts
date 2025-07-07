@@ -3,7 +3,6 @@ import { fetchMetaText } from 'services';
 import { getErrorMessage } from 'types';
 import type { MetaTextDetail } from 'types';
 import { useChunkStore } from './chunkStore';
-import { useEffect } from 'react';
 
 interface MetaTextDetailErrors {
     metaText: string;
@@ -81,23 +80,3 @@ export const useMetaTextDetailStore = create<MetaTextDetailState>((set, get) => 
         },
     };
 });
-
-// Rename the hook to useMetaTextDetailData for clarity and consistency
-export const useMetaTextDetailData = (metaTextId?: string) => {
-    const store = useMetaTextDetailStore();
-
-    // Fetch data when metaTextId changes
-    useEffect(() => {
-        if (metaTextId) {
-            store.fetchMetaTextDetail(metaTextId);
-        } else {
-            store.clearState();
-        }
-    }, [metaTextId, store.fetchMetaTextDetail]);
-
-    return {
-        metaText: store.metaText,
-        loading: store.loading,
-        errors: store.errors,
-    };
-};
