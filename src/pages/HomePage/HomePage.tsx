@@ -8,12 +8,9 @@
 // useHomePageContent: custom hook to determine the content to be displayed on the homepage based on the current state
 
 
-import React from 'react';
 import { Box, Paper, Slide, useTheme } from '@mui/material';
 
-import { usePageLogger } from 'hooks';
-import { PageContainer, FlexBox } from 'components';
-import { DocType, ViewMode } from 'types';
+import { PageContainer } from 'components';
 
 import { getHomePageStyles } from '../../styles/styles';
 import WelcomeText from './components/WelcomeText';
@@ -23,6 +20,8 @@ import { useHomePageContent } from './useHomePageContent';
 
 
 export default function HomePage() {
+
+
 
     // Get the theme and styles for the home page
     const theme = useTheme();

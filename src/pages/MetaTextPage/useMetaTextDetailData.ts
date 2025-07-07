@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useMetaTextDetailStore } from 'store';
+import { useMetaTextDetailStore } from '../../store';
 
 /**
  * Hook for MetaText detail data and page logic.
