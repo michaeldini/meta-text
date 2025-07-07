@@ -56,7 +56,7 @@ export interface NotesToolComponentProps {
 export interface MergeChunksToolComponentProps {
     chunkIndices: number[];
     chunks?: ChunkType[];
-    onComplete?: (success: boolean, result?: any) => void;
+    // onComplete?: (success: boolean, result?: any) => void;
 }
 
 export interface SplitChunkToolComponentProps extends BaseChunkProps {

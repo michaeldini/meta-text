@@ -1,9 +1,10 @@
-import React, { memo, useState, useMemo, useRef } from 'react';
-import { Box, IconButton, Paper, useTheme } from '@mui/material';
+import React, { memo, useRef } from 'react';
+import { Box, Paper, useTheme } from '@mui/material';
 import { MergeChunksTool } from '../tools';
 import WordsToolbar from '../components/WordsToolbar';
 import { getWordsStyles } from '../Chunk.styles';
 import { useUIPreferencesStore } from 'store';
+import { useWordSelection } from '../hooks/useWordSelection';
 import type { ChunkType } from 'types';
 export interface ChunkWordsProps {
     chunk: ChunkType;
@@ -19,132 +20,83 @@ const ChunkWords = memo(function ChunkWords({
     chunkIdx
 }: ChunkWordsProps) {
     const words = chunk.text ? chunk.text.split(/\s+/) : [];
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [selectedWordIdx, setSelectedWordIdx] = useState<number | null>(null);
-    const [selectionStartIdx, setSelectionStartIdx] = useState<number | null>(null);
-    const [selectionEndIdx, setSelectionEndIdx] = useState<number | null>(null);
-    const [isSelecting, setIsSelecting] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
     const textSizePx = useUIPreferencesStore(state => state.textSizePx);
     const fontFamily = useUIPreferencesStore(state => state.fontFamily);
     const lineHeight = useUIPreferencesStore(state => state.lineHeight);
-    // Unified dialog anchor state: element and position
-    const [dialogAnchor, setDialogAnchor] = useState<HTMLElement | null>(null);
     const theme = useTheme();
     const styles = getWordsStyles(theme);
 
-    // Helper: get min/max for range
-    const getRange = () => {
-        if (selectionStartIdx === null || selectionEndIdx === null) return [];
-        const [start, end] = [selectionStartIdx, selectionEndIdx].sort((a, b) => a - b);
-        return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-    };
-    const highlightedIndices = getRange();
+    // Use custom hook for word selection logic
+    const {
+        selectionStartIdx,
+        selectionEndIdx,
+        isSelecting,
+        dialogAnchor,
+        selectedWordIdx,
+        anchorEl,
+        highlightedIndices,
+        setAnchorEl,
+        setSelectedWordIdx,
+        handleWordDown,
+        handleWordEnter,
+        handleWordUp,
+        handleToolbarClose,
+    } = useWordSelection(chunkIdx);
 
-    const handleToolbarClose = () => {
-        setAnchorEl(null);
-        setSelectedWordIdx(null);
-        setSelectionStartIdx(null);
-        setSelectionEndIdx(null);
-        setDialogAnchor(null);
-    };
-
-    const handleMergeComplete = (success: boolean, result?: any) => {
-        if (success) {
-            // Merge completed successfully
+    // Extracted touch move handler for readability
+    const handleTouchMove = (e: React.TouchEvent<HTMLElement>) => {
+        const touch = e.touches[0];
+        const el = document.elementFromPoint(touch.clientX, touch.clientY);
+        if (el && (el as HTMLElement).dataset && (el as HTMLElement).dataset.wordIdx) {
+            const idx = parseInt((el as HTMLElement).dataset.wordIdx!.split('-')[1], 10);
+            if (!isNaN(idx)) handleWordEnter(idx, e);
         }
     };
 
-    // Update lastSelectedWordElRef and toolbar position on selection
-    const handleWordDown = (idx: number, event?: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>) => {
-        setSelectionStartIdx(idx);
-        setSelectionEndIdx(idx);
-        setIsSelecting(true);
-        // Do NOT set dialog anchor here
-    };
-    const handleWordEnter = (idx: number, event?: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>) => {
-        if (isSelecting) {
-            setSelectionEndIdx(idx);
-            // Do NOT set dialog anchor here
-        }
-    };
-    const handleWordUp = () => {
-        setIsSelecting(false);
-        if (
-            selectionStartIdx !== null &&
-            selectionEndIdx !== null
-        ) {
-            // Find the last word in the selection
-            const lastIdx = [selectionStartIdx, selectionEndIdx].sort((a, b) => a - b)[1];
-            // Try to get the element for the last word in this chunk
-            const el = document.querySelector(`[data-word-idx='${chunkIdx}-${lastIdx}']`);
-            if (el) {
-                setDialogAnchor(el as HTMLElement);
-                // If single word, open dialog
-                if (selectionStartIdx === selectionEndIdx) {
-                    setSelectedWordIdx(selectionStartIdx);
-                    setAnchorEl(el as HTMLElement);
-                }
-            }
-        }
-        // else: range is highlighted, show toolbar (handled in render)
-    };
-
+    // Extracted word rendering for readability
+    const wordsElements = words.map((word, wordIdx) => {
+        const isHighlighted = highlightedIndices.includes(wordIdx);
+        return (
+            <Box
+                key={wordIdx}
+                component="span"
+                sx={[
+                    styles.chunkWordBox,
+                    isHighlighted && {
+                        backgroundColor: theme.palette.secondary.main,
+                        color: theme.palette.primary.contrastText,
+                    },
+                    { fontSize: `${textSizePx}px`, fontFamily, lineHeight }
+                ]}
+                onMouseDown={e => handleWordDown(wordIdx, e)}
+                onMouseEnter={e => handleWordEnter(wordIdx, e)}
+                onMouseUp={handleWordUp}
+                onTouchStart={e => handleWordDown(wordIdx, e)}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleWordUp}
+                data-word-idx={`${chunkIdx}-${wordIdx}`}
+            >
+                {word}
+            </Box>
+        );
+    });
 
     return (
-        <Box>
-            < Box ref={containerRef} sx={styles.wordsContainer}
-                onMouseLeave={() => setIsSelecting(false)}
-            >
-                {
-                    words.map((word, wordIdx) => {
-                        const isHighlighted = highlightedIndices.includes(wordIdx);
-                        return (
-                            <Box
-                                key={wordIdx}
-                                component="span"
-                                sx={[
-                                    // theme.typography.body2,
-                                    styles.chunkWordBox,
-                                    isHighlighted && {
-                                        backgroundColor: theme.palette.secondary.main,
-                                        color: theme.palette.primary.contrastText,
-                                    },
-                                    { fontSize: `${textSizePx}px`, fontFamily, lineHeight }
-                                ]}
-                                onMouseDown={e => handleWordDown(wordIdx, e)}
-                                onMouseEnter={e => handleWordEnter(wordIdx, e)}
-                                onMouseUp={handleWordUp}
-                                onTouchStart={e => handleWordDown(wordIdx, e)}
-                                onTouchMove={e => {
-                                    // Find word under touch
-                                    const touch = e.touches[0];
-                                    const el = document.elementFromPoint(touch.clientX, touch.clientY);
-                                    if (el && (el as HTMLElement).dataset && (el as HTMLElement).dataset.wordIdx) {
-                                        const idx = parseInt((el as HTMLElement).dataset.wordIdx!.split('-')[1], 10);
-                                        if (!isNaN(idx)) handleWordEnter(idx, e);
-                                    }
-                                }}
-                                onTouchEnd={handleWordUp}
-                                data-word-idx={`${chunkIdx}-${wordIdx}`}
-                            >
-                                {word}
-                            </Box>
-                        );
-                    })
-                }
-                {/* Show merge tool after all words, inline with the text */}
-                <Box component="span" sx={styles.chunkUndoIconButton}>
-                    <MergeChunksTool
-                        chunkIndices={[chunkIdx, chunkIdx + 1]}
-                        chunks={chunk ? [chunk] : undefined}
-                        onComplete={handleMergeComplete}
-                    />
-                </Box>
-            </Box >
+        <Box ref={containerRef} sx={styles.wordsContainer}
+            onMouseLeave={() => handleWordUp()}
+        >
+            {wordsElements}
+            <Box component="span" sx={styles.chunkUndoIconButton}>
+                <MergeChunksTool
+                    chunkIndices={[chunkIdx, chunkIdx + 1]}
+                    chunks={chunk ? [chunk] : undefined}
+                />
+
+            </Box>
 
             {/* Only one WordActionDialog, handles both single and multi-word selection */}
-            < WordsToolbar
+            <WordsToolbar
                 anchorEl={dialogAnchor}
                 onClose={handleToolbarClose}
                 word={highlightedIndices.length > 1 ? highlightedIndices.map(i => words[i]).join(' ') : (selectedWordIdx !== null ? words[selectedWordIdx] : '')}
@@ -152,7 +104,7 @@ const ChunkWords = memo(function ChunkWords({
                 chunkIdx={chunkIdx}
                 chunk={chunk}
             />
-        </Box >
+        </Box>
     );
 });
 

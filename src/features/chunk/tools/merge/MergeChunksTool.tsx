@@ -11,7 +11,7 @@ import { MergeChunksToolComponentProps } from '../types';
 const MergeChunksTool: React.FC<MergeChunksToolComponentProps> = ({
     chunkIndices,
     chunks,
-    onComplete
+    // onComplete
 }) => {
     const { mergeChunks } = useMergeChunks();
 
@@ -23,7 +23,7 @@ const MergeChunksTool: React.FC<MergeChunksToolComponentProps> = ({
             chunks
         });
 
-        onComplete?.(result.success, result.data);
+        // onComplete?.(result.success, result.data);
     };
 
     if (chunkIndices.length !== 2) {
@@ -31,6 +31,7 @@ const MergeChunksTool: React.FC<MergeChunksToolComponentProps> = ({
     }
 
     return (
+
         <Tooltip title="Undo split (merge with next chunk)">
             <IconButton
                 size="small"
