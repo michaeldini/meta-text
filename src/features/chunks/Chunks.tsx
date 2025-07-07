@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { ReactNode, useState, useRef, useCallback } from 'react';
 import { Box, Pagination, Alert } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
@@ -13,30 +13,37 @@ interface ChunksPaginationProps {
     pageCount: number;
     page: number;
     handleChange: (event: React.ChangeEvent<unknown>, value: number) => void;
+    children?: ReactNode;
 }
 
-function ChunksPagination({ pageCount, page, handleChange }: ChunksPaginationProps) {
-    if (pageCount <= 1) return null;
+function ChunksPagination({ pageCount, page, handleChange, children }: ChunksPaginationProps) {
+    if (pageCount <= 1) return <>{children}</>;
     return (
-        <Box>
+        <>
             <Pagination count={pageCount} page={page} onChange={handleChange} color="secondary" />
-        </Box>
+            {children}
+            <Pagination count={pageCount} page={page} onChange={handleChange} color="secondary" />
+        </>
     );
 }
 
 const Chunks = () => {
     const { chunks, loadingChunks, chunksError } = useChunkStore();
-    const [page, setPage] = useState(1);
-    const containerRef = useRef<HTMLDivElement | null>(null);
-    const prevChunksRef = useRef<any[]>([]);
     const setActiveChunk = useChunkStore(state => state.setActiveChunk);
     const activeChunkId = useChunkStore(state => state.activeChunkId);
-    const chunkRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-    // Preserve scroll position on chunk updates
-    React.useEffect(() => {
-        prevChunksRef.current = chunks;
-    }, [chunks]);
+    const [page, setPage] = useState(1);
+
+    // Refs for scroll position and chunk elements
+    const containerRef = useRef<HTMLDivElement | null>(null);
+
+
+    // const chunkRefs = useRef<(HTMLDivElement | null)[]>([]);
+    // const prevChunksRef = useRef<any[]>([]);
+    // // Preserve scroll position on chunk updates
+    // React.useEffect(() => {
+    //     prevChunksRef.current = chunks;
+    // }, [chunks]);
 
     if (!Array.isArray(chunks)) {
         log.error('Chunks prop is not an array:', chunks);
@@ -112,23 +119,14 @@ const Chunks = () => {
                         tabIndex={0}
                         onKeyDown={handleKeyDown}
                     >
-                        <ChunksPagination pageCount={pageCount} page={page} handleChange={handleChange} />
-                        {paginatedChunks.map((chunk, chunkIdx) => (
-                            <Box
-                                component="div"
-                                key={startIdx + chunkIdx}
-                                ref={el => { chunkRefs.current[chunkIdx] = el as HTMLDivElement; }}
-                                data-chunk-id={chunk.id}
-                                data-chunk-idx={chunkIdx}
-                                sx={{ height: '100%', width: '100%' }}
-                            >
+                        <ChunksPagination pageCount={pageCount} page={page} handleChange={handleChange}>
+                            {paginatedChunks.map((chunk, chunkIdx) => (
                                 <Chunk
                                     chunk={chunk}
                                     chunkIdx={startIdx + chunkIdx}
                                 />
-                            </Box>
-                        ))}
-                        <ChunksPagination pageCount={pageCount} page={page} handleChange={handleChange} />
+                            ))}
+                        </ChunksPagination>
                     </Box>
                 )}
             </LoadingBoundary>

@@ -17,7 +17,7 @@ const Chunk = memo(function Chunk({
     chunk,
     chunkIdx,
 }: ChunkProps) {
-    const { activeChunkId, setActiveChunk, activeTabs, updateChunkField } = useChunkStore();
+    const { setActiveChunk, activeTabs, updateChunkField } = useChunkStore();
     const theme = useTheme();
     const styles = getChunkStyles(theme);
 
