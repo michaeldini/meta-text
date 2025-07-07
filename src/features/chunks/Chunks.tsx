@@ -28,6 +28,10 @@ function ChunksPagination({ pageCount, page, handleChange, children }: ChunksPag
 }
 
 const Chunks = () => {
+
+    const theme = useTheme();
+    const styles = getChunksStyles(theme);
+
     const { chunks, loadingChunks, chunksError } = useChunkStore();
     const setActiveChunk = useChunkStore(state => state.setActiveChunk);
     const activeChunkId = useChunkStore(state => state.activeChunkId);
@@ -37,30 +41,15 @@ const Chunks = () => {
     // Refs for scroll position and chunk elements
     const containerRef = useRef<HTMLDivElement | null>(null);
 
-
-    // const chunkRefs = useRef<(HTMLDivElement | null)[]>([]);
-    // const prevChunksRef = useRef<any[]>([]);
-    // // Preserve scroll position on chunk updates
-    // React.useEffect(() => {
-    //     prevChunksRef.current = chunks;
-    // }, [chunks]);
-
-    if (!Array.isArray(chunks)) {
-        log.error('Chunks prop is not an array:', chunks);
-        throw new Error('Chunks prop must be an array. Received: ' + typeof chunks);
-    }
+    // Pagination logic
     const chunksPerPage = 5;
     const pageCount = Math.ceil(chunks.length / chunksPerPage);
     const startIdx = (page - 1) * chunksPerPage;
     const endIdx = startIdx + chunksPerPage;
     const paginatedChunks = chunks.slice(startIdx, endIdx);
-
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
     };
-
-    const theme = useTheme();
-    const styles = getChunksStyles(theme);
 
     // Keyboard navigation with j/k and scroll into view
     const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
