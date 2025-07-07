@@ -8,7 +8,7 @@ import { usePageLogger } from 'hooks';
 import { ChunkToolsNavbar, SourceDocInfo } from 'features';
 import { Chunks } from 'features';
 import { FADE_IN_DURATION } from 'constants';
-import { useMetaTextDetail } from 'store';
+import { useMetaTextDetailData } from 'store';
 
 import { getMetaTextPageStyles } from './MetaText.styles';
 import { GenerateSourceDocInfoButton, StyleControls, DocumentHeader } from 'components';
@@ -22,8 +22,8 @@ export default function MetaTextDetailPage() {
     const theme = useTheme();
     const styles = getMetaTextPageStyles(theme);
 
-    // Fetch MetaText detail directly
-    const { metaText, loading, errors } = useMetaTextDetail(metaTextId);
+    // Fetch MetaText detail using unified naming
+    const { metaText, loading, errors } = useMetaTextDetailData(metaTextId);
 
     return (
         <ErrorBoundary>

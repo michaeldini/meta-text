@@ -82,8 +82,8 @@ export const useMetaTextDetailStore = create<MetaTextDetailState>((set, get) => 
     };
 });
 
-// Convenience hook for MetaText detail only
-export const useMetaTextDetail = (metaTextId?: string) => {
+// Rename the hook to useMetaTextDetailData for clarity and consistency
+export const useMetaTextDetailData = (metaTextId?: string) => {
     const store = useMetaTextDetailStore();
 
     // Fetch data when metaTextId changes

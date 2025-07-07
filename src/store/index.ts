@@ -1,9 +1,11 @@
+import { useMetaTextDetailData } from './metaTextDetailStore';
+
 export { useDocumentsStore } from './documentsStore';
 export { useNotifications } from './notificationStore';
 export { useSourceDocumentDetailStore } from './sourceDocumentDetailStore';
 export { useChunkStore } from './chunkStore';
 export { useNotificationStore } from './notificationStore';
 export { useUIPreferencesStore } from './uiPreferences';
-export { useMetaTextDetail } from './metaTextDetailStore';
 export { useAuth } from './authStore';
 export { useAuthStore } from './authStore';
+export { useMetaTextDetailData };
