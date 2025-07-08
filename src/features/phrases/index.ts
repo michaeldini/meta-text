@@ -1,1 +1,0 @@
-export { default as Phrases } from './Phrases';

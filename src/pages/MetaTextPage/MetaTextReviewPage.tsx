@@ -21,7 +21,7 @@ import { ExpandMoreIcon } from 'icons';
 import { fetchWordlist, fetchChunks, fetchPhraseExplanations, PhraseExplanation } from 'services';
 import { usePageLogger } from 'hooks';
 
-import { FlashCards, ChunkSummaryNotesTable, Phrases } from 'features';
+import { FlashCards, ChunkSummaryNotesTable, ExplanationReview } from 'features';
 import { ArrowBackIcon } from 'icons';
 import { FlexBox } from 'components';
 import { log } from 'utils';
@@ -339,7 +339,7 @@ function MetaTextReviewPage(): ReactElement {
                     <Typography variant="h5">Phrases & Explanations</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Phrases data={phraseExplanations} />
+                    <ExplanationReview data={phraseExplanations} />
                 </AccordionDetails>
             </Accordion>
 

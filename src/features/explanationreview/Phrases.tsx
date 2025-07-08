@@ -2,7 +2,7 @@ import React from 'react';
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Box } from '@mui/material';
 import { ExpandMoreIcon } from 'icons';
 
-export interface PhraseExplanation {
+export interface Explanation {
     id: number;
     phrase: string;
     context: string;
@@ -11,11 +11,11 @@ export interface PhraseExplanation {
     meta_text_id: number | null;
 }
 
-interface PhrasesProps {
-    data: PhraseExplanation[];
+interface ExplanationReviewProps {
+    data: Explanation[];
 }
 
-const Phrases: React.FC<PhrasesProps> = ({ data }) => {
+const ExplanationReview: React.FC<ExplanationReviewProps> = ({ data }) => {
     if (!data.length) return null;
     return (
         <Box sx={{ mt: 4 }}>
@@ -43,4 +43,4 @@ const Phrases: React.FC<PhrasesProps> = ({ data }) => {
     );
 };
 
-export default Phrases;
+export default ExplanationReview;
