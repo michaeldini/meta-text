@@ -6,7 +6,6 @@ import { Box, Fade, ToggleButtonGroup, ToggleButton, Tooltip, Typography } from 
 import { useChunkStore } from 'store';
 import { FADE_IN_DURATION } from 'constants';
 
-import CopyTool from '../tools/copy/CopyTool';
 import { getChunkComponentsStyles } from '../Chunk.styles';
 import { toggleButtons, ChunkTab } from './chunkToolButtonsConfig';
 
@@ -48,9 +47,6 @@ const ChunkToolButtons: React.FC = () => {
                     </Tooltip>
                 ))}
             </ToggleButtonGroup>
-            <Box sx={styles.chunkToolButtonsContainerExtra}>
-                <CopyTool />
-            </Box>
         </Box>
     );
 

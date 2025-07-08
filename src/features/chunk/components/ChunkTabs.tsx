@@ -6,6 +6,7 @@ import { log } from 'utils';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 
 import { NotesTab, ComparisonTab, AiImageTab, CompressionTab, ExplanationTab } from '../tools';
+import CopyTool from '../tools/copy/CopyTool';
 
 import { getChunkComponentsStyles } from '../Chunk.styles';
 
@@ -24,6 +25,12 @@ const ChunkTabs: React.FC<ChunkTabsProps> = ({ chunk, activeTabs, updateChunkFie
 
     return (
         <Box sx={styles.chunkTabsContainer}>
+            {/* Copy Tool - Always visible at the top */}
+            <CopyTool
+                chunkText={chunk.text}
+                sx={styles.copyToolContainer}
+            />
+
             {/* Show Notes if selected */}
             {activeTabs.includes('notes-summary') && (
                 <NotesTab chunk={chunk} updateChunkField={updateChunkField} />

@@ -128,4 +128,11 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
             transform: 'rotate(-45deg)',
         },
     },
+
+    // container for copy tool in chunk tabs
+    copyToolContainer: {
+        padding: theme.spacing(2, 2, 0, 0),
+        alignSelf: 'flex-end',
+        marginBottom: 1
+    },
 });

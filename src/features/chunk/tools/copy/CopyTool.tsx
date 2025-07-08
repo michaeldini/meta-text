@@ -1,22 +1,27 @@
 import React from 'react';
 import { Box, IconButton, Tooltip, Typography } from '@mui/material';
-import { useChunkStore, useNotifications } from 'store';
+import { useTheme } from '@mui/material/styles';
+import { useNotifications } from 'store';
 import { CopyIcon } from 'icons';
+import { getSharedToolStyles } from '../shared.styles';
 
 interface CopyToolProps {
+    /** The chunk text to copy */
+    chunkText: string;
     /** Test ID for testing */
     'data-testid'?: string;
+    /** Custom styling for the copy button */
+    sx?: object;
 }
 
 const CopyTool: React.FC<CopyToolProps> = ({
-    'data-testid': dataTestId = 'copy-tool'
+    chunkText,
+    'data-testid': dataTestId = 'copy-tool',
+    sx = {}
 }) => {
-    const activeChunkId = useChunkStore(state => state.activeChunkId);
-    const chunkText = useChunkStore(state => {
-        const chunk = state.chunks.find(c => c.id === activeChunkId);
-        return chunk ? chunk.text : '';
-    });
     const { showSuccess, showError } = useNotifications();
+    const theme = useTheme();
+    const styles = getSharedToolStyles(theme);
 
     const handleCopyChunk = async () => {
         if (!chunkText) return;
@@ -30,26 +35,25 @@ const CopyTool: React.FC<CopyToolProps> = ({
     };
 
     return (
-        <>
-            <Box>
-                <Tooltip
-                    title={<Typography variant="caption">Copy the active chunk</Typography>}
-                    arrow
-                    enterDelay={200}
-                    placement='left'
-                >
-                    <span style={{ display: 'inline-flex' }}>
-                        <IconButton
-                            onClick={handleCopyChunk}
-                            disabled={!activeChunkId}
-                            data-testid={dataTestId}
-                        >
-                            <CopyIcon />
-                        </IconButton>
-                    </span>
-                </Tooltip>
-            </Box>
-        </>
+        <Box sx={sx}>
+            <Tooltip
+                title={<Typography variant="caption">Copy chunk text</Typography>}
+                arrow
+                enterDelay={200}
+                placement='left'
+            >
+                <span style={{ display: 'inline-flex' }}>
+                    <IconButton
+                        onClick={handleCopyChunk}
+                        disabled={!chunkText}
+                        data-testid={dataTestId}
+                        sx={styles.copyToolButton}
+                    >
+                        <CopyIcon />
+                    </IconButton>
+                </span>
+            </Tooltip>
+        </Box>
     );
 };
 
