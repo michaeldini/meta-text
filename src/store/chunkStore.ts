@@ -7,7 +7,7 @@ import type { ChunkType, UpdateChunkFieldFn } from 'types';
 import { log } from 'utils';
 import { useAuthStore } from 'store';
 
-import type { ChunkTab } from '../features/chunk/components/chunkToolbarConfig';
+import type { ChunkTab } from '../features/chunk/components/chunkToolButtonsConfig';
 
 type ChunkState = {
     chunks: ChunkType[];
