@@ -143,7 +143,6 @@ function HomePage(): ReactElement {
 }
 
 // Export with a more descriptive name for TypeDoc
-export { HomePage };
 
 // Default export for React component usage
 export default HomePage;

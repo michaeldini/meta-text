@@ -12,6 +12,7 @@
     "entryPointStrategy": "resolve",
     "out": "docs/api",
     "theme": "default",
+    "customCss": "docs/custom-typedoc.css",
     "includeVersion": true,
     "excludePrivate": true,
     "excludeProtected": true,
@@ -49,6 +50,16 @@
     "excludeNotDocumented": false,
     "excludeInternal": false,
     "skipErrorChecking": true,
+    "navigation": {
+        "includeCategories": true,
+        "includeGroups": true
+    },
+    "visibilityFilters": {
+        "protected": false,
+        "private": false,
+        "inherited": true,
+        "external": false
+    },
     "sort": [
         "source-order"
     ],

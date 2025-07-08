@@ -66,10 +66,8 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
     },
     handleWordClick: async (chunkId, chunkIdx, wordIdx) => {
         const { chunks } = get();
-        // Assume chunkIdx is always provided and valid
         const idx = chunkIdx;
         if (idx === -1 || !chunks[idx] || !chunks[idx].id) return;
-        // const oldChunk = chunks[idx];
         const splitResult = await splitChunk(chunkId, wordIdx + 1); // returns [updatedChunk, newChunk]
         if (!Array.isArray(splitResult) || splitResult.length < 2) return;
         set((state) => {

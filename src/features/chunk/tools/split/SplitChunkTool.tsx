@@ -6,8 +6,28 @@ import { log } from 'utils';
 import { SplitChunkToolComponentProps } from '../types';
 
 /**
- * Split Chunk Tool Component
- * Allows splitting a chunk at a specific word
+ * A tool component that provides functionality to split a text chunk at a specific word position.
+ * 
+ * This component renders an icon button with a scissors icon that, when clicked, will split
+ * the current chunk into two separate chunks at the specified word position. The split operation
+ * is performed asynchronously and the result is communicated back through the onComplete callback.
+ * 
+ * @component
+ * @example
+ * ```tsx
+ * <SplitChunkTool
+ *   chunkId="chunk_123"
+ *   chunkIdx={0}
+ *   wordIdx={15}
+ *   word="example"
+ *   chunk={chunkData}
+ *   onComplete={(success, data) => {
+ *     if (success) {
+ *       console.log('Chunk split successfully:', data);
+ *     }
+ *   }}
+ * />
+ * ```
  */
 const SplitChunkTool: React.FC<SplitChunkToolComponentProps> = ({
     chunkId,
@@ -19,6 +39,17 @@ const SplitChunkTool: React.FC<SplitChunkToolComponentProps> = ({
 }) => {
     const { splitChunk } = useSplitChunk();
 
+    /**
+     * Handles the chunk splitting operation when the button is clicked.
+     * 
+     * This function logs the split operation, calls the splitChunk hook with the
+     * current component props, and then invokes the onComplete callback with the
+     * operation result.
+     * 
+     * @async
+     * @function handleSplit
+     * @returns {Promise<void>} A promise that resolves when the split operation is complete
+     */
     const handleSplit = async () => {
         log.info(`Splitting chunk ${chunkId} at word "${word}"`);
         const result = await splitChunk({
