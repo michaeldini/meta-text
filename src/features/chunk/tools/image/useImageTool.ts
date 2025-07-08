@@ -3,6 +3,7 @@ import { useCallback, useState, useEffect } from 'react';
 import { generateAiImage } from 'services';
 import { log } from 'utils';
 import type { ChunkType, AiImage } from 'types';
+import { pollImageAvailability } from './utils/imagePolling';
 
 import { ImageToolProps, ToolResult } from '../types';
 
@@ -16,8 +17,6 @@ interface ImageToolState {
     error: string | null;
     data: string | null;
     prompt: string;
-    loaded: boolean;
-    lightboxOpen: boolean;
     dialogOpen: boolean;
 }
 
@@ -35,8 +34,6 @@ export const useImageTool = (chunk?: ChunkType) => {
         error: null,
         data: null,
         prompt: '',
-        loaded: false,
-        lightboxOpen: false,
         dialogOpen: false,
     });
 
@@ -56,11 +53,6 @@ export const useImageTool = (chunk?: ChunkType) => {
         }
     }, [chunk?.ai_images]);
 
-    // Reset loaded when data changes
-    useEffect(() => {
-        setState(s => ({ ...s, loaded: false }));
-    }, [state.data]);
-
     const generateImage = useCallback(async (props: ImageToolProps): Promise<ToolResult<ImageResult>> => {
         const { prompt = '', chunk } = props;
 
@@ -76,27 +68,9 @@ export const useImageTool = (chunk?: ChunkType) => {
         try {
             const result = await generateAiImage(prompt, chunk.id);
 
-            // Poll for image availability
-            const pollImage = (url: string, timeout = 10000, interval = 300) =>
-                new Promise<void>((resolve, reject) => {
-                    const start = Date.now();
-                    const check = () => {
-                        const img = new window.Image();
-                        img.onload = () => resolve();
-                        img.onerror = () => {
-                            if (Date.now() - start >= timeout) {
-                                reject(new Error('Timed out waiting for image to be available'));
-                            } else {
-                                setTimeout(check, interval);
-                            }
-                        };
-                        img.src = url + '?cacheBust=' + Date.now();
-                    };
-                    check();
-                });
-
+            // Wait for image to be available
             const imgUrl = `/${result.path}`;
-            await pollImage(imgUrl, 10000, 300);
+            await pollImageAvailability(imgUrl, 10000, 300);
 
             setState(s => ({
                 ...s,
@@ -128,8 +102,6 @@ export const useImageTool = (chunk?: ChunkType) => {
 
     // Helper functions
     const getImgSrc = useCallback(() => (state.data ? `/${state.data}` : ''), [state.data]);
-    const setLightboxOpen = useCallback((open: boolean) => setState(s => ({ ...s, lightboxOpen: open })), []);
-    const setImageLoaded = useCallback((loaded: boolean) => setState(s => ({ ...s, loaded })), []);
     const openDialog = useCallback(() => setState(s => ({ ...s, dialogOpen: true, error: null, prompt: '' })), []);
     const closeDialog = useCallback(() => setState(s => ({ ...s, dialogOpen: false, error: null, prompt: '' })), []);
     const handlePromptChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setState(s => ({ ...s, prompt: e.target.value })), []);
@@ -138,8 +110,6 @@ export const useImageTool = (chunk?: ChunkType) => {
         generateImage,
         state,
         getImgSrc,
-        setLightboxOpen,
-        setImageLoaded,
         openDialog,
         closeDialog,
         handlePromptChange,

@@ -17,20 +17,18 @@ export interface ImageToolProps extends BaseChunkProps {
 }
 
 // Tab-specific props
-
 export interface SimpleTabProps extends BaseChunkProps {
     updateChunkField: UpdateChunkFieldFn;
 }
-
 
 // Tool-specific props
 export interface CompressionToolProps extends BaseChunkProps {
     onCompressionCreated?: () => void;
 }
+
 export interface ComparisonToolComponentProps extends BaseChunkProps {
     onComparisonUpdate: (text: string) => void;
 }
-
 
 export interface ExplanationToolProps extends BaseChunkProps {
     chunkId: number;
@@ -39,11 +37,6 @@ export interface ExplanationToolProps extends BaseChunkProps {
     wordIdx: number;
     onExplanationUpdate?: (explanation: string) => void;
     onComplete?: (success: boolean, result?: any) => void;
-}
-
-
-export interface ImageToolComponentProps extends BaseChunkProps {
-    prompt?: string;
 }
 
 

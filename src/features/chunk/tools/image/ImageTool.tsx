@@ -1,22 +1,21 @@
 import React from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, LinearProgress, Alert, useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 
 import { AiGenerationButton } from 'components';
 
 import { useImageTool } from './useImageTool';
-import ChunkImageModal from './components/Modal';
+import ImageDisplay from './components/ImageDisplay';
+import ImageGenerationDialog from './components/ImageGenerationDialog';
 import { getSharedToolStyles } from '../shared.styles';
-import { ImageToolComponentProps } from '../types';
+import { ImageToolProps } from '../types';
 
-const ImageTool: React.FC<ImageToolComponentProps> = ({
+const ImageTool: React.FC<ImageToolProps> = ({
     chunk,
 }) => {
     const {
         generateImage,
         state,
         getImgSrc,
-        setLightboxOpen,
-        setImageLoaded,
         openDialog,
         closeDialog,
         handlePromptChange,
@@ -27,21 +26,12 @@ const ImageTool: React.FC<ImageToolComponentProps> = ({
     const theme = useTheme();
     const styles = getSharedToolStyles(theme);
 
-    const handleGenerate = async () => {
-        const result = await generateImage({
+    const handleDialogSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        await generateImage({
             chunk,
             prompt: state.prompt
         });
-
-    };
-
-    const handleDialogSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        await handleGenerate();
-    };
-
-    const handlePromptChangeLocal = (e: React.ChangeEvent<HTMLInputElement>) => {
-        handlePromptChange(e);
     };
 
     return (
@@ -55,41 +45,24 @@ const ImageTool: React.FC<ImageToolComponentProps> = ({
                     disabled={loading}
                 />
                 {state.data && (
-                    <ChunkImageModal
-                        imgSrc={getImgSrc()}
-                        imgPrompt={state.prompt}
-                        imgLoaded={state.loaded}
-                        onLoad={() => setImageLoaded(true)}
-                        onError={() => setImageLoaded(true)}
-                        lightboxOpen={state.lightboxOpen}
-                        setLightboxOpen={setLightboxOpen}
+                    <ImageDisplay
+                        src={getImgSrc()}
+                        alt={state.prompt}
+                        height="300px"
+                        showModal={true}
                     />
                 )}
             </Box>
 
-            <Dialog open={state.dialogOpen} onClose={closeDialog} maxWidth="xs" fullWidth>
-                <DialogTitle>Generate Image</DialogTitle>
-                <form onSubmit={handleDialogSubmit}>
-                    <DialogContent>
-                        <TextField
-                            label="Image Prompt"
-                            value={state.prompt}
-                            onChange={handlePromptChangeLocal}
-                            fullWidth
-                            autoFocus
-                            multiline
-                            minRows={2}
-                            disabled={loading}
-                        />
-                        {loading && <Box sx={{ mt: 2 }}><LinearProgress /></Box>}
-                        {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={closeDialog} disabled={loading}>Cancel</Button>
-                        <Button type="submit" variant="contained" disabled={loading || !state.prompt.trim()}>Generate</Button>
-                    </DialogActions>
-                </form>
-            </Dialog>
+            <ImageGenerationDialog
+                open={state.dialogOpen}
+                prompt={state.prompt}
+                loading={loading}
+                error={error}
+                onClose={closeDialog}
+                onPromptChange={handlePromptChange}
+                onSubmit={handleDialogSubmit}
+            />
         </>
     );
 };
