@@ -12,7 +12,7 @@ node_modules
 dist
 dist-ssr
 *.local
-
+/docs
 # Environment files
 .env
 backend/.env
