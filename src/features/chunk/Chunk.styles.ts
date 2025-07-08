@@ -43,7 +43,7 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
         display: 'flex',
         flexDirection: 'column' as const,
         alignItems: 'flex-start',
-        gap: theme.spacing(5),
+        gap: theme.spacing(1),
         padding: isActiveTabs ? theme.spacing(2) : 0,
         marginLeft: isActiveTabs ? theme.spacing(2) : 0,
         position: 'sticky' as const,
@@ -133,6 +133,5 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
     copyToolContainer: {
         padding: theme.spacing(2, 2, 0, 0),
         alignSelf: 'flex-end',
-        marginBottom: 1
     },
 });

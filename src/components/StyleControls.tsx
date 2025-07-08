@@ -4,11 +4,11 @@ import { TextSizeInput, LineHeightInput, FontFamilySelect } from 'components';
 
 const StyleControls: React.FC = () => {
     return (
-        <Paper sx={{ display: 'flex', gap: 2, alignItems: 'center', padding: 2 }}>
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
             <TextSizeInput />
             <LineHeightInput />
             <FontFamilySelect />
-        </Paper>
+        </Box>
     );
 };
 
