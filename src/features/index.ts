@@ -1,6 +1,5 @@
 // Centralized exports for all features
 export * from './navbar';
-export * from './chunks';
 export * from './chunk';
 export * from './sourcedoc';
 export * from './flashcards';

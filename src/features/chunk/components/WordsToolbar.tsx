@@ -3,7 +3,7 @@ import { Popover, Box, useTheme } from '@mui/material';
 import SplitChunkTool from '../tools/split/SplitChunkTool';
 import WordsExplanationTool from '../tools/explanation/WordsExplanationTool';
 // import ExplainPhraseTool from '../tools/explain/ExplainPhraseTool';
-import { getWordsStyles } from '../Chunk.styles';
+import { getChunkComponentsStyles } from '../Chunk.styles';
 export interface WordsToolbarProps {
     anchorEl: HTMLElement | null;
     onClose: () => void;
@@ -26,7 +26,7 @@ const WordsToolbar: React.FC<WordsToolbarProps> = memo(({
     chunk,
 }) => {
     const theme = useTheme();
-    const styles = getWordsStyles(theme);
+    const styles = getChunkComponentsStyles(theme);
     const open = Boolean(anchorEl);
 
     const handleSplitToolComplete = (success: boolean, result?: any) => {

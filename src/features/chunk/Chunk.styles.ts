@@ -1,5 +1,28 @@
 import { Theme } from '@mui/material/styles';
-export const getChunkStyles = (theme: Theme) => ({
+export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) => ({
+
+    // container for paginated chunks
+    chunksContainer: {
+        display: 'flex',
+        flexDirection: 'column' as const,
+        alignItems: 'center',
+        gap: theme.spacing(2),
+        padding: 0,
+        backgroundColor: theme.palette.background.default,
+        height: '100%',
+        width: '100%',
+        borderRadius: theme.shape.borderRadius,
+        outline: 'none',
+        boxShadow: 'none',
+        '&:focus': {
+            outline: 'none',
+            boxShadow: 'none',
+        },
+        flex: 1,
+        minHeight: 0,
+    },
+
+    // container for each chunk (ChunkWords and ChunkTabs)
     chunkContainer: {
         display: 'flex',
         flexDirection: 'row' as const,
@@ -15,12 +38,8 @@ export const getChunkStyles = (theme: Theme) => ({
         boxSizing: 'border-box',
     },
 
-});
-
-export const getToolsStyles = (theme: Theme, isActiveTabs: boolean) => ({
-
     // sticky container for tools
-    ChunkTabsContainer: {
+    chunkTabsContainer: {
         display: 'flex',
         flexDirection: 'column' as const,
         alignItems: 'flex-start',
@@ -41,11 +60,6 @@ export const getToolsStyles = (theme: Theme, isActiveTabs: boolean) => ({
             opacity: 1,
         },
     },
-});
-
-
-export const getChunkToolsStyles = (theme: Theme) => ({
-
     toolsContainer: {
         display: 'flex',
         alignItems: 'center',
@@ -65,10 +79,6 @@ export const getChunkToolsStyles = (theme: Theme) => ({
         enterDelay: 200,
         placement: 'left' as const,
     },
-});
-
-
-export const getWordsStyles = (theme: Theme) => ({
     wordsContainer: {
         display: 'flex',
         flexWrap: 'wrap' as const,
@@ -111,23 +121,23 @@ export const getWordsStyles = (theme: Theme) => ({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    toolsContainer: {
-        display: 'flex',
-        alignItems: 'center',
-        flexDirection: 'column',
-        borderRadius: 2,
-        padding: 0,
-        margin: 0
-    },
-    toolButtonsContainer: {
-        borderRadius: 2,
-        border: '1px solid',
-        borderColor: 'divider',
-        marginTop: 1,
-    },
-    tooltipProps: {
-        arrow: true,
-        enterDelay: 200,
-        placement: 'left' as const,
-    },
+    // toolsContainer: {
+    //     display: 'flex',
+    //     alignItems: 'center',
+    //     flexDirection: 'column',
+    //     borderRadius: 2,
+    //     padding: 0,
+    //     margin: 0
+    // },
+    // toolButtonsContainer: {
+    //     borderRadius: 2,
+    //     border: '1px solid',
+    //     borderColor: 'divider',
+    //     marginTop: 1,
+    // },
+    // tooltipProps: {
+    //     arrow: true,
+    //     enterDelay: 200,
+    //     placement: 'left' as const,
+    // },
 });

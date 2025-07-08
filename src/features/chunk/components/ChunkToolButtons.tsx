@@ -7,13 +7,13 @@ import { useChunkStore } from 'store';
 import { FADE_IN_DURATION } from 'constants';
 
 import CopyTool from '../tools/copy/CopyTool';
-import { getChunkToolsStyles } from '../Chunk.styles';
+import { getChunkComponentsStyles } from '../Chunk.styles';
 import { toggleButtons, ChunkTab } from './chunkToolButtonsConfig';
 
 
 const ChunkToolButtons: React.FC = () => {
     const theme = useTheme();
-    const styles = getChunkToolsStyles(theme);
+    const styles = getChunkComponentsStyles(theme);
     const activeTabs = useChunkStore(state => state.activeTabs);
     const setActiveTabs = useChunkStore(state => state.setActiveTabs);
 

@@ -7,7 +7,7 @@ import { log } from 'utils';
 import { useChunkStore } from 'store';
 import { Chunk } from 'features';
 
-import { getChunksStyles } from './Chunks.style';
+import { getChunkComponentsStyles } from './Chunk.styles';
 
 interface ChunksPaginationProps {
     pageCount: number;
@@ -31,9 +31,9 @@ function ChunksPagination({ pageCount, page, handleChange, children }: ChunksPag
     );
 }
 
-const Chunks = ({ metaTextId }: ChunksProps) => {
+const PaginatedChunks = ({ metaTextId }: ChunksProps) => {
     const theme = useTheme();
-    const styles = getChunksStyles(theme);
+    const styles = getChunkComponentsStyles(theme);
 
     const { chunks, loadingChunks, chunksError, fetchChunks, resetChunkState } = useChunkStore();
 
@@ -69,12 +69,12 @@ const Chunks = ({ metaTextId }: ChunksProps) => {
         <ErrorBoundary>
             <LoadingBoundary loading={loadingChunks}>
                 {chunksError ? (
-                    <Box sx={styles.container} data-testid="chunks-container-error">
+                    <Box data-testid="chunks-container-error">
                         <Alert severity="error">{chunksError}</Alert>
                     </Box>
                 ) : (
                     <Box
-                        sx={styles.container}
+                        sx={styles.chunksContainer}
                         data-testid="chunks-container"
                         tabIndex={0}
                     >
@@ -94,5 +94,5 @@ const Chunks = ({ metaTextId }: ChunksProps) => {
     );
 };
 
-export default Chunks;
+export default PaginatedChunks;
 

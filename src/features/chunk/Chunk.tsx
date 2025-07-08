@@ -5,7 +5,7 @@ import { useChunkStore } from 'store';
 
 import ChunkWords from './components/ChunkWords';
 import ChunkTabs from './components/ChunkTabs';
-import { getChunkStyles } from './Chunk.styles';
+import { getChunkComponentsStyles } from './Chunk.styles';
 import type { ChunkType } from 'types';
 
 export interface ChunkProps {
@@ -19,7 +19,7 @@ const Chunk = memo(function Chunk({
 }: ChunkProps) {
     const { activeTabs, updateChunkField } = useChunkStore();
     const theme = useTheme();
-    const styles = getChunkStyles(theme);
+    const styles = getChunkComponentsStyles(theme);
 
     return (
         <Box

@@ -7,7 +7,8 @@ import type { ChunkType, UpdateChunkFieldFn } from 'types';
 
 import { NotesTab, ComparisonTab, AiImageTab, CompressionTab, ExplanationTab } from '../tools';
 
-import { getToolsStyles } from '../Chunk.styles';
+import { getChunkComponentsStyles } from '../Chunk.styles';
+
 
 interface ChunkTabsProps {
     chunk: ChunkType;
@@ -19,10 +20,10 @@ const ChunkTabs: React.FC<ChunkTabsProps> = ({ chunk, activeTabs, updateChunkFie
     const theme = useTheme();
 
     // pass activeTabs to styles to toggle visibility
-    const styles = getToolsStyles(theme, activeTabs.length > 0);
+    const styles = getChunkComponentsStyles(theme, activeTabs.length > 0);
 
     return (
-        <Box sx={styles.ChunkTabsContainer}>
+        <Box sx={styles.chunkTabsContainer}>
             {/* Show Notes if selected */}
             {activeTabs.includes('notes-summary') && (
                 <NotesTab chunk={chunk} updateChunkField={updateChunkField} />

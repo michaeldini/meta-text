@@ -1,5 +1,5 @@
 /**
- * Chunks Tools Exports
+ * Chunk Tools Exports
  * Centralized exports for chunk tools components
  */
 

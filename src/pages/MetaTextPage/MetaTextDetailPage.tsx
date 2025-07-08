@@ -20,7 +20,7 @@ import { log } from 'utils';
 import { LoadingBoundary, PageContainer, ReviewButton } from 'components';
 import { usePageLogger } from 'hooks';
 import { ChunkToolButtons, SourceDocInfo } from 'features';
-import { Chunks } from 'features';
+import { PaginatedChunks } from 'features';
 import { FADE_IN_DURATION } from 'constants';
 import { useMetaTextDetailData } from './useMetaTextDetailData';
 
@@ -128,7 +128,7 @@ function MetaTextDetailPage(): ReactElement | null {
                         </DocumentHeader>
 
                         {/* Main content area displaying document chunks */}
-                        <Chunks metaTextId={metaText.id} />
+                        <PaginatedChunks metaTextId={metaText.id} />
 
                         {/* Floating navigation toolbar for chunk tools */}
                         <ChunkToolButtons />
