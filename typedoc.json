@@ -1,8 +1,15 @@
 {
     "entryPoints": [
-        "src"
+        "src/components/index.ts",
+        "src/pages/index.ts",
+        "src/features",
+        "src/hooks/index.ts",
+        "src/services",
+        "src/store",
+        "src/types/index.ts",
+        "src/utils"
     ],
-    "entryPointStrategy": "expand",
+    "entryPointStrategy": "resolve",
     "out": "docs/api",
     "theme": "default",
     "includeVersion": true,
@@ -39,6 +46,8 @@
         "**/dist/**",
         "**/*.stories.tsx"
     ],
+    "excludeNotDocumented": false,
+    "excludeInternal": false,
     "skipErrorChecking": true,
     "sort": [
         "source-order"
