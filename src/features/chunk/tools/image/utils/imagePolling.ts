@@ -24,7 +24,8 @@ export const pollImageAvailability = (
             };
 
             // Add cache-busting parameter to ensure fresh requests
-            img.src = url + '?cacheBust=' + Date.now();
+            const separator = url.includes('?') ? '&' : '?';
+            img.src = url + separator + 'cacheBust=' + Date.now();
         };
 
         check();

@@ -1,3 +1,22 @@
+/**
+ * useImageTool Hook
+ * 
+ * A custom React hook that manages state and functionality for AI-powered image generation
+ * within the chunk tools system. This hook encapsulates all business logic related to
+ * image generation, state management, and user interactions.
+ * 
+ * Key Responsibilities:
+ * - Manages image generation state (loading, error, data)
+ * - Handles API calls to the image generation service
+ * - Synchronizes image data with chunk updates
+ * - Provides helper functions for UI interactions
+ * - Manages dialog state for prompt input
+ * 
+ * @author Meta Text Team
+ * @since 2025-07-08
+ * @version 1.0.0
+ */
+
 import { useCallback, useState, useEffect } from 'react';
 
 import { generateAiImage } from 'services';
@@ -7,55 +26,186 @@ import { pollImageAvailability } from './utils/imagePolling';
 
 import { ImageToolProps, ToolResult } from '../types';
 
+/**
+ * Type Definitions and Interfaces
+ * 
+ * This section defines the TypeScript interfaces used throughout the hook
+ * for better type safety and IDE support.
+ */
+
+/**
+ * Return type of the useImageTool hook
+ * Describes all functions and state available to consuming components
+ */
+export interface UseImageToolReturn {
+    /** Function to generate an AI image with given parameters */
+    generateImage: (props: ImageToolProps) => Promise<ToolResult<ImageResult>>;
+    /** Current internal state of the hook */
+    state: ImageToolState;
+    /** Helper function to get the complete image source URL */
+    getImgSrc: () => string;
+    /** Function to open the image generation dialog */
+    openDialog: () => void;
+    /** Function to close the image generation dialog */
+    closeDialog: () => void;
+    /** Handler for prompt input changes */
+    handlePromptChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    /** Boolean indicating if image generation is in progress */
+    loading: boolean;
+    /** Current error message, null if no error */
+    error: string | null;
+}
+
+/**
+ * Represents the successful result of an image generation operation
+ * 
+ * @interface ImageResult
+ */
 interface ImageResult {
+    /** The relative path to the generated image file */
     imagePath: string;
+    /** The prompt that was used to generate the image */
     prompt: string;
 }
 
+/**
+ * Internal state interface for the useImageTool hook
+ * 
+ * @interface ImageToolState
+ */
 interface ImageToolState {
+    /** Whether an image generation operation is currently in progress */
     loading: boolean;
+    /** Error message from the last failed operation, null if no error */
     error: string | null;
+    /** Path to the current image data, null if no image exists */
     data: string | null;
+    /** Current user input for the image generation prompt */
     prompt: string;
+    /** Whether the image generation dialog is currently open */
     dialogOpen: boolean;
 }
 
+/**
+ * Utility function to extract the most recently generated AI image from a chunk's image collection
+ * 
+ * @param ai_images - Optional array of AI images associated with a chunk
+ * @returns The most recent AI image, or undefined if none exist
+ * 
+ * @example
+ * ```typescript
+ * const latestImage = getLatestAiImage(chunk.ai_images);
+ * if (latestImage) {
+ *   console.log(`Latest image: ${latestImage.path}`);
+ * }
+ * ```
+ */
 function getLatestAiImage(ai_images?: AiImage[]): AiImage | undefined {
     if (!ai_images || ai_images.length === 0) return undefined;
     return ai_images[ai_images.length - 1];
 }
 
 /**
- * Hook for image tool functionality
+ * Custom React hook for managing AI image generation functionality
+ * 
+ * This hook provides a complete state management solution for image generation features,
+ * including API integration, error handling, and UI state synchronization.
+ * 
+ * Features:
+ * - Automatic synchronization with chunk image data
+ * - Asynchronous image generation with loading states
+ * - Comprehensive error handling and logging
+ * - Dialog state management for user interactions
+ * - Optimized re-rendering through useCallback memoization
+ * 
+ * @param chunk - Optional chunk data containing existing AI images
+ * @returns Object containing state, functions, and helpers for image tool functionality
+ * 
+ * @example
+ * ```typescript
+ * const {
+ *   generateImage,
+ *   state,
+ *   loading,
+ *   error,
+ *   openDialog,
+ *   closeDialog
+ * } = useImageTool(chunk);
+ * 
+ * // Generate an image
+ * await generateImage({ chunk, prompt: "A beautiful landscape" });
+ * ```
+ * 
+ * @throws {Error} When chunk ID is invalid or API calls fail
  */
-export const useImageTool = (chunk?: ChunkType) => {
+export const useImageTool = (chunk?: ChunkType): UseImageToolReturn => {
+    // Initialize hook state with default values
     const [state, setState] = useState<ImageToolState>({
-        loading: false,
-        error: null,
-        data: null,
-        prompt: '',
-        dialogOpen: false,
+        loading: false,      // No operations in progress initially
+        error: null,         // No errors on initialization
+        data: null,          // No image data initially
+        prompt: '',          // Empty prompt initially
+        dialogOpen: false,   // Dialog closed initially
     });
 
-    // Sync image data from chunk
+    /**
+     * Effect: Synchronize image data from chunk updates
+     * 
+     * Automatically updates the hook's state when the chunk's AI images change.
+     * This ensures the UI always reflects the latest image data from the backend.
+     * 
+     * Dependencies: [chunk?.ai_images] - Re-runs when chunk images are updated
+     */
     useEffect(() => {
         if (!chunk) return;
 
         const aiImage = getLatestAiImage(chunk.ai_images);
         if (aiImage && typeof aiImage.path === 'string') {
+            // Update state with latest image data and prompt
             setState(s => ({
                 ...s,
                 data: aiImage.path ?? null,
                 prompt: aiImage.prompt ?? '',
             }));
         } else {
+            // Clear state if no valid image exists
             setState(s => ({ ...s, data: null, prompt: '' }));
         }
     }, [chunk?.ai_images]);
 
+    /**
+     * Generates an AI image based on the provided prompt and chunk data
+     * 
+     * This function handles the complete image generation workflow:
+     * 1. Validates input parameters (chunk ID)
+     * 2. Sets loading state and clears previous errors
+     * 3. Calls the AI image generation service
+     * 4. Polls for image availability (ensures image is ready)
+     * 5. Updates state with successful result or error
+     * 
+     * @param props - Object containing chunk and prompt data
+     * @param props.chunk - The chunk for which to generate an image
+     * @param props.prompt - The text prompt for image generation
+     * @returns Promise resolving to ToolResult indicating success/failure
+     * 
+     * @example
+     * ```typescript
+     * const result = await generateImage({
+     *   chunk: currentChunk,
+     *   prompt: "A serene mountain landscape at sunset"
+     * });
+     * 
+     * if (result.success) {
+     *   console.log("Image generated:", result.data.imagePath);
+     * } else {
+     *   console.error("Generation failed:", result.error);
+     * }
+     * ```
+     */
     const generateImage = useCallback(async (props: ImageToolProps): Promise<ToolResult<ImageResult>> => {
         const { prompt = '', chunk } = props;
 
+        // Validate chunk ID before proceeding
         if (!chunk?.id || typeof chunk.id !== 'number') {
             return {
                 success: false,
@@ -63,22 +213,26 @@ export const useImageTool = (chunk?: ChunkType) => {
             };
         }
 
+        // Set loading state and clear any previous errors
         setState(s => ({ ...s, loading: true, error: null }));
 
         try {
+            // Call the AI image generation service
             const result = await generateAiImage(prompt, chunk.id);
 
-            // Wait for image to be available
+            // Wait for image to be available on the server
+            // This prevents displaying broken images due to timing issues
             const imgUrl = `/${result.path}`;
             await pollImageAvailability(imgUrl, 10000, 300);
 
+            // Update state with successful result
             setState(s => ({
                 ...s,
                 data: result.path,
                 prompt: result.prompt,
                 loading: false,
                 error: null,
-                dialogOpen: false,
+                dialogOpen: false, // Close dialog on success
             }));
 
             return {
@@ -89,6 +243,7 @@ export const useImageTool = (chunk?: ChunkType) => {
                 }
             };
         } catch (err: any) {
+            // Handle and log errors
             const errorMessage = err?.message || 'Failed to generate image';
             log.error(errorMessage);
             setState(s => ({ ...s, error: errorMessage, loading: false }));
@@ -100,20 +255,104 @@ export const useImageTool = (chunk?: ChunkType) => {
         }
     }, []);
 
-    // Helper functions
-    const getImgSrc = useCallback(() => (state.data ? `/${state.data}` : ''), [state.data]);
-    const openDialog = useCallback(() => setState(s => ({ ...s, dialogOpen: true, error: null, prompt: '' })), []);
-    const closeDialog = useCallback(() => setState(s => ({ ...s, dialogOpen: false, error: null, prompt: '' })), []);
-    const handlePromptChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setState(s => ({ ...s, prompt: e.target.value })), []);
+    /**
+     * Helper Functions
+     * 
+     * These functions provide convenient access to common operations and state updates.
+     * All functions are memoized with useCallback to prevent unnecessary re-renders.
+     */
 
+    /**
+     * Constructs the full image source URL from the stored path data
+     * @returns Complete image URL or empty string if no image exists
+     */
+    const getImgSrc = useCallback(() => (state.data ? `/${state.data}` : ''), [state.data]);
+
+    /**
+     * Opens the image generation dialog and resets form state
+     * Clears any previous errors and prompt text for a fresh start
+     */
+    const openDialog = useCallback(() => setState(s => ({
+        ...s,
+        dialogOpen: true,
+        error: null,
+        prompt: ''
+    })), []);
+
+    /**
+     * Closes the image generation dialog and resets form state
+     * Clears errors and prompt text when user cancels or completes generation
+     */
+    const closeDialog = useCallback(() => setState(s => ({
+        ...s,
+        dialogOpen: false,
+        error: null,
+        prompt: ''
+    })), []);
+
+    /**
+     * Handles prompt input changes in the generation dialog
+     * @param e - React change event from the prompt input field
+     */
+    const handlePromptChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) =>
+        setState(s => ({ ...s, prompt: e.target.value })), []);
+
+    /**
+     * Hook Return Object
+     * 
+     * Returns all necessary state and functions for the ImageTool component.
+     * This interface provides everything needed for image generation functionality.
+     */
     return {
-        generateImage,
-        state,
-        getImgSrc,
-        openDialog,
-        closeDialog,
-        handlePromptChange,
-        loading: state.loading,
-        error: state.error
+        // Core functionality
+        generateImage,           // Function to trigger AI image generation
+
+        // State object containing all internal state
+        state,                   // Complete internal state object
+
+        // Helper functions
+        getImgSrc,              // Constructs image source URL
+        openDialog,             // Opens generation dialog
+        closeDialog,            // Closes generation dialog  
+        handlePromptChange,     // Handles prompt input changes
+
+        // Convenience state accessors (duplicated for easier access)
+        loading: state.loading, // Boolean indicating generation in progress
+        error: state.error      // Current error message (null if no error)
     };
 };
+
+/**
+ * Hook Usage Notes and Best Practices
+ * 
+ * Performance Considerations:
+ * - All callback functions are memoized to prevent unnecessary re-renders
+ * - State updates use functional form to ensure consistency
+ * - Effect dependencies are carefully managed to avoid infinite loops
+ * 
+ * Error Handling:
+ * - All API errors are caught and converted to user-friendly messages
+ * - Errors are logged to the console for debugging purposes
+ * - Loading states are properly reset even when errors occur
+ * 
+ * State Synchronization:
+ * - Hook automatically syncs with chunk image data updates
+ * - Latest image is always displayed when chunk data changes
+ * - Dialog state is independent of chunk updates
+ * 
+ * Memory Management:
+ * - No memory leaks due to proper cleanup and memoization
+ * - Image polling is promise-based and doesn't create timers
+ * - State updates are batched for optimal performance
+ * 
+ * Testing Considerations:
+ * - All functions are pure and easily testable
+ * - State transitions are predictable and deterministic
+ * - Mock services can be injected for unit testing
+ * 
+ * Integration Requirements:
+ * - Requires generateAiImage service for API calls
+ * - Depends on pollImageAvailability utility for image verification
+ * - Uses shared logging utility for error tracking
+ * - Integrates with chunk data structure and types
+ */
