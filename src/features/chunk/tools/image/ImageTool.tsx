@@ -4,7 +4,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, B
 import { AiGenerationButton } from 'components';
 
 import { useImageTool } from './useImageTool';
-import ChunkImageModal from './Modal';
+import ChunkImageModal from './components/Modal';
 import { getSharedToolStyles } from '../shared.styles';
 import { ImageToolComponentProps } from '../types';
 

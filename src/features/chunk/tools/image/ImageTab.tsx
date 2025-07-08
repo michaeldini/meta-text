@@ -1,5 +1,5 @@
 import React from 'react';
-import ImageTool from '../../tools/image/ImageTool';
+import ImageTool from './ImageTool';
 import { BaseChunkProps } from '../types';
 
 

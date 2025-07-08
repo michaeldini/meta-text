@@ -11,7 +11,7 @@ import { FlashCards, ChunkSummaryNotesTable, Phrases } from 'features';
 import { ArrowBackIcon } from 'icons';
 import { FlexBox } from 'components';
 import { log } from 'utils';
-
+import { ChunkType } from 'types';
 
 import { getMetaTextReviewStyles } from './MetaText.styles';
 
@@ -57,7 +57,7 @@ export default function MetaTextReviewPage() {
     const metatextId = metatextIdParam ? Number(metatextIdParam) : undefined;
 
     const [wordlist, setWordlist] = useState<WordlistRow[]>([]);
-    const [chunkSummariesNotes, setChunkSummariesNotes] = useState<ChunkSummaryNote[]>([]);
+    const [chunkSummariesNotes, setChunkSummariesNotes] = useState<ChunkType[]>([]);
     const [phraseExplanations, setPhraseExplanations] = useState<PhraseExplanation[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);

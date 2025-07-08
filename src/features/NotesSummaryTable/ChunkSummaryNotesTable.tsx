@@ -1,19 +1,9 @@
 import React from 'react';
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import { ChunkImageDisplay } from 'features/chunk';
-
+import { ImageTool } from 'features/chunk';
+import { ChunkType } from 'types';
 export interface ChunkSummaryNotesTableProps {
-    chunks: Array<{
-        id: number;
-        summary?: string;
-        notes?: string;
-        ai_image?: {
-            path: string;
-            prompt: string;
-            created_at?: string;
-        } | null;
-        [key: string]: any;
-    }>;
+    chunks: ChunkType[];
 }
 
 export default function ChunkSummaryNotesTable({ chunks }: ChunkSummaryNotesTableProps) {
@@ -46,21 +36,7 @@ export default function ChunkSummaryNotesTable({ chunks }: ChunkSummaryNotesTabl
                                 <TableCell sx={{ whiteSpace: 'pre-line' }}>{chunk.summary || <span style={{ color: '#aaa' }}>No summary</span>}</TableCell>
                                 <TableCell sx={{ whiteSpace: 'pre-line' }}>{chunk.notes || <span style={{ color: '#aaa' }}>No notes</span>}</TableCell>
                                 <TableCell sx={{ whiteSpace: 'pre-line' }}>
-                                    {chunk.ai_image && chunk.ai_image.path ? (
-                                        <ChunkImageDisplay
-                                            imgSrc={chunk.ai_image.path.startsWith('/') ? chunk.ai_image.path : `/${chunk.ai_image.path}`}
-                                            imgPrompt={chunk.ai_image.prompt}
-                                            imgLoaded={true}
-                                            onLoad={() => { }}
-                                            onError={() => { }}
-                                            lightboxOpen={!!lightboxOpenStates[chunk.id]}
-                                            setLightboxOpen={(open: boolean) => setLightboxOpenStates(s => ({ ...s, [chunk.id]: open }))}
-                                            createdAt={chunk.ai_image.created_at}
-                                            height="100px"
-                                        />
-                                    ) : (
-                                        <span style={{ color: '#aaa' }}>No image</span>
-                                    )}
+                                    <ImageTool chunk={chunk} />
                                 </TableCell>
                             </TableRow>
                         ))}
