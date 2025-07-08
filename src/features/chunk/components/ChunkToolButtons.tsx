@@ -11,7 +11,7 @@ import { getChunkToolsStyles } from '../Chunk.styles';
 import { toggleButtons, ChunkTab } from './chunkToolbarConfig';
 
 
-const ChunkToolsNavbar: React.FC = () => {
+const ChunkToolButtons: React.FC = () => {
     const theme = useTheme();
     const styles = getChunkToolsStyles(theme);
     const activeTabs = useChunkStore(state => state.activeTabs);
@@ -72,4 +72,4 @@ const ChunkToolsNavbar: React.FC = () => {
     return ReactDOM.createPortal(floatingToolbar, document.body);
 };
 
-export default ChunkToolsNavbar;
+export default ChunkToolButtons;

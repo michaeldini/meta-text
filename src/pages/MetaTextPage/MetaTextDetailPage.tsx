@@ -19,7 +19,7 @@ import type { ReactElement } from 'react';
 import { log } from 'utils';
 import { LoadingBoundary, PageContainer, ReviewButton } from 'components';
 import { usePageLogger } from 'hooks';
-import { ChunkToolsNavbar, SourceDocInfo } from 'features';
+import { ChunkToolButtons, SourceDocInfo } from 'features';
 import { Chunks } from 'features';
 import { FADE_IN_DURATION } from 'constants';
 import { useMetaTextDetailData } from './useMetaTextDetailData';
@@ -131,7 +131,7 @@ function MetaTextDetailPage(): ReactElement | null {
                         <Chunks metaTextId={metaText.id} />
 
                         {/* Floating navigation toolbar for chunk tools */}
-                        <ChunkToolsNavbar />
+                        <ChunkToolButtons />
                     </Box>
                 </Slide>
             ) : null}
