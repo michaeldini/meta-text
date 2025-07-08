@@ -57,7 +57,7 @@ const WordsToolbar: React.FC<WordsToolbarProps> = memo(({
                 horizontal: 'center',
             }}
         >
-            <Box sx={styles.wordActionDialogContainer}>
+            <Box sx={styles.wordsToolBarContainer}>
                 <SplitChunkTool
                     chunkId={chunk.id}
                     chunkIdx={chunkIdx}

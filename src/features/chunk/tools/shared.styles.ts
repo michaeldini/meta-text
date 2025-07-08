@@ -12,16 +12,6 @@ export const getSharedToolStyles = (theme: Theme) => ({
         display: 'flex',
         flexDirection: 'column' as const,
         width: '100%',
-        borderLeft: `4px solid ${theme.palette.secondary.main}`,
-    },
-
-    // Extended version with minimum width for larger tools
-    toolTabContainerWide: {
-        p: 1,
-        gap: 2,
-        display: 'flex',
-        flexDirection: 'column' as const,
-        width: '100%',
         minWidth: '30vw',
         borderLeft: `4px solid ${theme.palette.secondary.main}`,
         flex: 1,
@@ -75,8 +65,21 @@ export const getSharedToolStyles = (theme: Theme) => ({
         },
     },
 
-    // Flex wrap container for tags/chips
-    flexWrapContainer: {
+    // wraps compressed words in a flex container
+    compressionDisplayWordsContainer: {
+        flexWrap: 'wrap' as const,
+        display: 'flex',
+        p: theme.spacing(2),
+        borderRadius: theme.shape.borderRadiusSm,
+        boxShadow: theme.shadows[1],
+        minHeight: 100,
+        maxHeight: 300,
+        overflowY: 'auto' as const,
+        width: '100%',
+    },
+
+    // Flex wrap container optimized for word/chip display
+    flexWrapContainerCompact: {
         flexWrap: 'wrap' as const,
         display: 'flex',
         p: theme.spacing(2),

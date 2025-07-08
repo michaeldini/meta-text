@@ -10,7 +10,7 @@ interface CompressionDisplayProps {
 const CompressionDisplay: React.FC<CompressionDisplayProps> = ({ selected, styles }) => {
     if (!selected) return null;
     return (
-        <Box sx={styles.flexWrapContainer}>
+        <Box sx={styles.compressionDisplayWordsContainer}>
             <Typography variant="body1">{selected.compressed_text}</Typography>
         </Box>
     );

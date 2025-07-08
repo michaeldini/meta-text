@@ -23,7 +23,7 @@ const NotesTool: React.FC<NotesToolComponentProps> = ({
     useEffect(() => { setLocalNotes(notes); }, [notes]);
 
     return (
-        <Box sx={styles.toolTabContainerWide}>
+        <Box sx={styles.toolTabContainer}>
             <ChunkTextField
                 label="Summary"
                 value={localSummary}

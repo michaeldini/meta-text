@@ -60,7 +60,8 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
             opacity: 1,
         },
     },
-    toolsContainer: {
+    // container for floating visibility buttons
+    chunkToolButtonsContainer: {
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'column',
@@ -68,17 +69,23 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
         padding: 0,
         margin: 0
     },
-    toolButtonsContainer: {
+    // container for floating extra buttons (e.g. copy)
+    chunkToolButtonsContainerExtra: {
         borderRadius: 2,
         border: '1px solid',
         borderColor: 'divider',
         marginTop: 1,
     },
-    tooltipProps: {
-        arrow: true,
-        enterDelay: 200,
-        placement: 'left' as const,
+    // container for the words toolbar (e.g. split and define tools )
+    wordsToolBarContainer: {
+        padding: theme.spacing(1),
+        display: 'flex',
+        gap: theme.spacing(1),
+        flexDirection: 'row' as const,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
+    // container that wraps all words in a chunk
     wordsContainer: {
         display: 'flex',
         flexWrap: 'wrap' as const,
@@ -94,7 +101,8 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
         padding: theme.spacing(4),
         paddingRight: 0,
     },
-    chunkWordBox: {
+    // wraps each word in a chunk
+    chunkWord: {
         display: 'inline-block',
         borderRadius: 0,
         position: 'relative' as const,
@@ -106,38 +114,18 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
             color: theme.palette.background.paper,
         },
     },
+    // tooltip styles for chunk tool buttons
+    chunkToolButtonsToolTip: {
+        arrow: true,
+        enterDelay: 200,
+        placement: 'left' as const,
+    },
+
+    // styles for the undo icon button in the chunk
     chunkUndoIconButton: {
         transition: 'transform 0.2s',
         '&:hover': {
             transform: 'rotate(-45deg)',
         },
     },
-
-    wordActionDialogContainer: {
-        padding: theme.spacing(1),
-        display: 'flex',
-        gap: theme.spacing(1),
-        flexDirection: 'row' as const,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    // toolsContainer: {
-    //     display: 'flex',
-    //     alignItems: 'center',
-    //     flexDirection: 'column',
-    //     borderRadius: 2,
-    //     padding: 0,
-    //     margin: 0
-    // },
-    // toolButtonsContainer: {
-    //     borderRadius: 2,
-    //     border: '1px solid',
-    //     borderColor: 'divider',
-    //     marginTop: 1,
-    // },
-    // tooltipProps: {
-    //     arrow: true,
-    //     enterDelay: 200,
-    //     placement: 'left' as const,
-    // },
 });

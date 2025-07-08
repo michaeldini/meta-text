@@ -27,7 +27,7 @@ const CompressionDisplayTool: React.FC<CompressionDisplayToolProps> = ({ chunk }
     } = useCompression(chunk);
 
     return (
-        <Box sx={styles.toolTabContainerWide}>
+        <Box sx={styles.toolTabContainer}>
             {loading ? (
                 <CircularProgress />
             ) : error ? (

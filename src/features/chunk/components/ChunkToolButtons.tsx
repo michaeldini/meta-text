@@ -24,7 +24,7 @@ const ChunkToolButtons: React.FC = () => {
 
     const toolbar = (
         <Box
-            sx={styles.toolsContainer}
+            sx={styles.chunkToolButtonsContainer}
             data-testid="chunk-tools-navbar"
         >
             <ToggleButtonGroup
@@ -38,7 +38,7 @@ const ChunkToolButtons: React.FC = () => {
                     <Tooltip
                         key={button.value}
                         title={button.tooltipTitle}
-                        {...styles.tooltipProps}
+                        {...styles.chunkToolButtonsToolTip}
                     >
                         <span>
                             <ToggleButton value={button.value} aria-label={button.ariaLabel} color="secondary">
@@ -48,7 +48,7 @@ const ChunkToolButtons: React.FC = () => {
                     </Tooltip>
                 ))}
             </ToggleButtonGroup>
-            <Box sx={styles.toolButtonsContainer}>
+            <Box sx={styles.chunkToolButtonsContainerExtra}>
                 <CopyTool />
             </Box>
         </Box>
