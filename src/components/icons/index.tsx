@@ -19,6 +19,11 @@ import {
     AcademicCapIcon as AcademicCapSvg,
     PhotoIcon as PhotoSvg,
     BeakerIcon as CompressionSvg,
+    HomeIcon as HomeSvg,
+    ArrowLeftEndOnRectangleIcon as LoginSvg,
+    ArrowLeftStartOnRectangleIcon as LogoutSvg,
+    PlusIcon as PlusSvg,
+    TicketIcon as TicketSvg,
 } from '@heroicons/react/24/solid';
 import { SVGProps } from 'react';
 
@@ -44,6 +49,11 @@ export const StarsIcon: React.FC<IconProps> = (props) => <ThemedIcon as={StarsSv
 export const AcademicCapIcon: React.FC<IconProps> = (props) => <ThemedIcon as={AcademicCapSvg} {...props} />;
 export const PhotoIcon: React.FC<IconProps> = (props) => <ThemedIcon as={PhotoSvg} {...props} />;
 export const CompressionIcon: React.FC<IconProps> = (props) => <ThemedIcon as={CompressionSvg} {...props} />;
+export const HomeIcon: React.FC<IconProps> = (props) => <ThemedIcon as={HomeSvg} {...props} />;
+export const LoginIcon: React.FC<IconProps> = (props) => <ThemedIcon as={LoginSvg} {...props} />;
+export const LogoutIcon: React.FC<IconProps> = (props) => <ThemedIcon as={LogoutSvg} {...props} />;
+export const PlusIcon: React.FC<IconProps> = (props) => <ThemedIcon as={PlusSvg} {...props} />;
+export const TicketIcon: React.FC<IconProps> = (props) => <ThemedIcon as={TicketSvg} {...props} />;
 
 // unused icons but may be needed later
 export const PhotoFilterIcon: React.FC<IconProps> = (props) => <ThemedIcon as={AdjustmentsHorizontalSvg} {...props} />;

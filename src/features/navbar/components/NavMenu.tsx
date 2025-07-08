@@ -1,7 +1,7 @@
 import React from 'react';
 import { Menu, MenuItem, Box, Badge, Typography } from '@mui/material';
 import { NavigationItem } from '../types';
-import { MenuIcon } from 'icons';
+import { MenuIcon, LoginIcon, LogoutIcon } from 'icons';
 import type { IconProps } from 'icons';
 interface NavMenuProps {
     navigationItems: NavigationItem[];

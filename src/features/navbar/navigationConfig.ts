@@ -1,5 +1,7 @@
 import { NavBarProps } from './types';
-import { MenuIcon } from 'icons';
+
+import { MenuIcon, LoginIcon, LogoutIcon, HomeIcon, PlusIcon, TicketIcon } from 'icons';
+
 /**
  * Centralized navigation configuration for the app.
  * All navigation items, including brand, are defined here.
@@ -21,14 +23,14 @@ export const getNavigationConfig = (logout: () => void): NavBarProps => ({
                 label: 'About',
                 path: '/about',
                 showWhen: 'always' as const,
-                icon: MenuIcon,
+                icon: TicketIcon,
             },
             {
                 id: 'home',
                 label: 'Home',
                 path: '/',
                 showWhen: 'authenticated' as const,
-                icon: MenuIcon,
+                icon: HomeIcon,
 
             },
             {
@@ -36,20 +38,20 @@ export const getNavigationConfig = (logout: () => void): NavBarProps => ({
                 label: 'Login',
                 path: '/login',
                 showWhen: 'unauthenticated' as const,
-                icon: MenuIcon,
+                icon: LoginIcon,
             },
             {
                 id: 'register',
                 label: 'Register',
                 path: '/register',
                 showWhen: 'unauthenticated' as const,
-                icon: MenuIcon,
+                icon: PlusIcon,
             },
             {
                 id: 'logout',
                 label: 'Logout',
                 path: '',
-                icon: MenuIcon,
+                icon: LogoutIcon,
                 action: logout,
                 showWhen: 'authenticated' as const,
             },
