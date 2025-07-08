@@ -1,0 +1,63 @@
+import { useEffect, useState } from 'react';
+import { fetchChunkCompressions } from 'services';
+import type { ChunkCompression, ChunkType } from 'types';
+
+interface UseCompressionState {
+    compressions: ChunkCompression[];
+    selectedId: number | '';
+    loading: boolean;
+    error: string | null;
+}
+
+interface UseCompressionActions {
+    setSelectedId: (id: number | '') => void;
+    fetchCompressions: () => void;
+}
+
+interface UseCompressionReturn extends UseCompressionState, UseCompressionActions {
+    selected: ChunkCompression | undefined;
+}
+
+export const useCompression = (chunk: ChunkType | null): UseCompressionReturn => {
+    const [compressions, setCompressions] = useState<ChunkCompression[]>([]);
+    const [selectedId, setSelectedId] = useState<number | ''>('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    // Reset state when chunk changes
+    useEffect(() => {
+        if (!chunk) {
+            setCompressions([]);
+            setSelectedId('');
+            return;
+        }
+        fetchCompressions();
+    }, [chunk]);
+
+    const fetchCompressions = () => {
+        if (!chunk) return;
+
+        setLoading(true);
+        setError(null);
+
+        fetchChunkCompressions(chunk.id)
+            .then(data => {
+                setCompressions(data);
+                setSelectedId(data.length > 0 ? data[0].id : '');
+            })
+            .catch(() => setError('Failed to load compressions.'))
+            .finally(() => setLoading(false));
+    };
+
+    const selected = compressions.find(c => c.id === selectedId);
+
+    return {
+        compressions,
+        selectedId,
+        loading,
+        error,
+        selected,
+        setSelectedId,
+        fetchCompressions
+    };
+};
