@@ -8,9 +8,9 @@ import theme from '../../styles/themes';
 
 // Mock child components to isolate the test to this page
 vi.mock('features', () => ({
-    ChunkToolsNavbar: () => <div data-testid="ChunkToolsNavbar" />,
+    ChunkToolButtons: () => <div data-testid="ChunkToolButtons" />,
     SourceDocInfo: ({ sourceDocumentId }: any) => <div data-testid="SourceDocInfo">{sourceDocumentId}</div>,
-    Chunks: ({ metaTextId }: any) => <div data-testid="Chunks">{metaTextId}</div>,
+    PaginatedChunks: ({ metaTextId }: any) => <div data-testid="PaginatedChunks">{metaTextId}</div>,
 }));
 
 vi.mock('components', () => ({
@@ -155,8 +155,8 @@ describe('MetaTextDetailPage', () => {
             expect(screen.getByTestId('GenerateSourceDocInfoButton')).toHaveTextContent('456');
             expect(screen.getByTestId('StyleControls')).toBeInTheDocument();
             expect(screen.getByTestId('SourceDocInfo')).toHaveTextContent('456');
-            expect(screen.getByTestId('Chunks')).toHaveTextContent('123');
-            expect(screen.getByTestId('ChunkToolsNavbar')).toBeInTheDocument();
+            expect(screen.getByTestId('PaginatedChunks')).toHaveTextContent('123');
+            expect(screen.getByTestId('ChunkToolButtons')).toBeInTheDocument();
         });
 
         it('should not render content when metaText is null', () => {
@@ -171,8 +171,8 @@ describe('MetaTextDetailPage', () => {
             expect(screen.queryByTestId('GenerateSourceDocInfoButton')).not.toBeInTheDocument();
             expect(screen.queryByTestId('StyleControls')).not.toBeInTheDocument();
             expect(screen.queryByTestId('SourceDocInfo')).not.toBeInTheDocument();
-            expect(screen.queryByTestId('Chunks')).not.toBeInTheDocument();
-            expect(screen.queryByTestId('ChunkToolsNavbar')).not.toBeInTheDocument();
+            expect(screen.queryByTestId('PaginatedChunks')).not.toBeInTheDocument();
+            expect(screen.queryByTestId('ChunkToolButtons')).not.toBeInTheDocument();
         });
     });
 
@@ -217,7 +217,7 @@ describe('MetaTextDetailPage', () => {
                 errors: { metaText: '' },
             });
 
-            const chunks = screen.getByTestId('Chunks');
+            const chunks = screen.getByTestId('PaginatedChunks');
             expect(chunks).toHaveTextContent('123'); // metaText.id
         });
 
@@ -273,7 +273,7 @@ describe('MetaTextDetailPage', () => {
 
             // Since we can't easily test MUI animations, we just verify the content structure
             expect(screen.getByTestId('DocumentHeader')).toBeInTheDocument();
-            expect(screen.getByTestId('Chunks')).toBeInTheDocument();
+            expect(screen.getByTestId('PaginatedChunks')).toBeInTheDocument();
         });
 
         it('should not render Slide animation when metaText is null', () => {
@@ -308,7 +308,7 @@ describe('MetaTextDetailPage', () => {
 
             // Content should still render if metaText is available
             expect(screen.getByTestId('DocumentHeader')).toBeInTheDocument();
-            expect(screen.getByTestId('Chunks')).toBeInTheDocument();
+            expect(screen.getByTestId('PaginatedChunks')).toBeInTheDocument();
         });
     });
 
@@ -332,7 +332,7 @@ describe('MetaTextDetailPage', () => {
             expect(screen.getByTestId('ReviewButton')).toHaveTextContent('1');
             expect(screen.getByTestId('GenerateSourceDocInfoButton')).toHaveTextContent('0');
             expect(screen.getByTestId('SourceDocInfo')).toHaveTextContent('0');
-            expect(screen.getByTestId('Chunks')).toHaveTextContent('1');
+            expect(screen.getByTestId('PaginatedChunks')).toHaveTextContent('1');
         });
 
         it('should handle metaText with very long title', () => {
@@ -367,7 +367,7 @@ describe('MetaTextDetailPage', () => {
             expect(screen.getByTestId('ReviewButton')).toHaveTextContent('999999999');
             expect(screen.getByTestId('GenerateSourceDocInfoButton')).toHaveTextContent('888888888');
             expect(screen.getByTestId('SourceDocInfo')).toHaveTextContent('888888888');
-            expect(screen.getByTestId('Chunks')).toHaveTextContent('999999999');
+            expect(screen.getByTestId('PaginatedChunks')).toHaveTextContent('999999999');
         });
     });
 });

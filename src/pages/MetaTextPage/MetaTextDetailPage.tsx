@@ -17,7 +17,7 @@ import type { Theme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
 
 import { log } from 'utils';
-import { LoadingBoundary, PageContainer, ReviewButton } from 'components';
+import { PageContainer, ReviewButton } from 'components';
 import { usePageLogger } from 'hooks';
 import { ChunkToolButtons, SourceDocInfo } from 'features';
 import { PaginatedChunks } from 'features';
