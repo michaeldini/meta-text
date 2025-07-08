@@ -46,11 +46,13 @@ const WordsExplanationTool: React.FC<ExplanationToolProps> = ({
         if (result) {
             setShowDefinition(true);
         }
-        onComplete?.(!!result, result);
+        // Don't call onComplete here - call it when the drawer is closed
     };
 
     const handleCloseDefinition = () => {
         setShowDefinition(false);
+        // Call onComplete when user closes the explanation drawer
+        onComplete?.(true, explanation);
     };
 
     return (

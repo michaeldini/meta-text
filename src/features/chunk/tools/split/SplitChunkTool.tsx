@@ -30,7 +30,7 @@ const SplitChunkTool: React.FC<SplitChunkToolComponentProps> = ({
             onComplete
         });
 
-        // onComplete?.(result.success, result.data);
+        onComplete?.(result.success, result.data);
     };
 
     return (

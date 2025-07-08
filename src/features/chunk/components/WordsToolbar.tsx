@@ -30,14 +30,16 @@ const WordsToolbar: React.FC<WordsToolbarProps> = memo(({
     const open = Boolean(anchorEl);
 
     const handleSplitToolComplete = (success: boolean, result?: any) => {
+        console.log('SplitChunkTool completed:', { success, result });
         if (success) {
             onClose();
         }
     };
 
     const handleDefineToolComplete = (success: boolean, result?: any) => {
+        console.log('WordsExplanationTool completed:', { success, result });
         if (success) {
-            // Define tool completed successfully
+            onClose();
         }
     };
 
