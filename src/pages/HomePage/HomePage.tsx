@@ -125,6 +125,13 @@ function HomePage(): ReactElement {
         navigate('/sourcedoc');
     };
 
+    /**
+     * Navigate to the MetaText list page
+     */
+    const handleNavigateToMetaTexts = () => {
+        navigate('/metatext');
+    };
+
     return (
         <PageContainer
             loading={sourceDocsLoading || metaTextsLoading}
@@ -141,7 +148,8 @@ function HomePage(): ReactElement {
                         display: 'flex',
                         justifyContent: 'center',
                         my: 3,
-                        gap: 2
+                        gap: 2,
+                        flexWrap: 'wrap'
                     }}>
                         <Button
                             variant="contained"
@@ -165,6 +173,30 @@ function HomePage(): ReactElement {
                             }}
                         >
                             Browse Source Documents
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            color="secondary"
+                            size="large"
+                            onClick={handleNavigateToMetaTexts}
+                            data-testid="navigate-to-metatexts"
+                            sx={{
+                                fontWeight: 'bold',
+                                px: 4,
+                                py: 1.5,
+                                borderRadius: 2,
+                                textTransform: 'none',
+                                fontSize: '1.1rem',
+                                borderWidth: 2,
+                                '&:hover': {
+                                    borderWidth: 2,
+                                    transform: 'translateY(-1px)',
+                                    boxShadow: 2,
+                                },
+                                transition: 'all 0.2s ease-in-out'
+                            }}
+                        >
+                            Browse MetaTexts
                         </Button>
                     </Box>
 

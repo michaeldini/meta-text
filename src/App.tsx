@@ -16,6 +16,7 @@ import './styles/landscape.css';
 const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
 const SourceDocListPage = lazy(() => import('./pages/SourceDocPage/SourceDocListPage'));
 const SourceDocDetailPage = lazy(() => import('./pages/SourceDocPage/SourceDocDetailPage'));
+const MetaTextListPage = lazy(() => import('./pages/MetaTextPage/MetaTextListPage'));
 const MetaTextDetailPage = lazy(() => import('./pages/MetaTextPage/MetaTextDetailPage'));
 const MetaTextReviewPage = lazy(() => import('./pages/MetaTextPage/MetaTextReviewPage'));
 const LoginPage = lazy(() => import('./pages/Auth/LoginPage'));
@@ -35,6 +36,7 @@ const routes: RouteConfig[] = [
     { path: '/register', element: RegisterPage, protected: false },
     { path: '/sourcedoc', element: SourceDocListPage, protected: true },
     { path: '/sourcedoc/:sourceDocId', element: SourceDocDetailPage, protected: true },
+    { path: '/metatext', element: MetaTextListPage, protected: true },
     { path: '/metaText/:metaTextId', element: MetaTextDetailPage, protected: true },
     { path: '/metaText/:metaTextId/review', element: MetaTextReviewPage, protected: true },
     { path: '/experiments', element: ExperimentsPage, protected: false },

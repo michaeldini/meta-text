@@ -1,0 +1,154 @@
+/**
+ * @fileoverview MetaTextListPage component for the MetaText application
+ * 
+ * This page component displays a list of all available MetaText documents, providing
+ * users with the ability to search, browse, and create new MetaText documents.
+ * Users can then navigate to the detailed view of any selected document.
+ * 
+ * @author MetaText Development Team
+ * @version 1.0.0
+ * @since 2025-07-09
+ */
+
+import { useEffect } from 'react';
+import { Box, Typography, Slide } from '@mui/material';
+import type { ReactElement } from 'react';
+
+import { SearchableList } from 'features';
+import { PageContainer, MetaTextCreateForm } from 'components';
+import { useDocumentsStore } from 'store';
+import { usePageLogger } from 'hooks';
+
+/**
+ * MetaTextListPage Component
+ * 
+ * A comprehensive page component that displays a searchable list of MetaText documents.
+ * This component serves as the entry point for users to browse, create, and select 
+ * MetaText documents for detailed viewing and analysis.
+ * 
+ * Features:
+ * - Create form for new MetaText documents
+ * - Searchable list of all MetaText documents
+ * - Document filtering and search functionality
+ * - Navigation to detailed document view
+ * - Loading states during data fetching
+ * - Error handling for API failures
+ * - Delete functionality for document management
+ * - Responsive design with smooth animations
+ * 
+ * @category Components
+ * @subcategory Pages
+ * @component
+ * @example
+ * ```tsx
+ * // Used in React Router configuration
+ * <Route 
+ *   path="/metatext" 
+ *   component={MetaTextListPage} 
+ * />
+ * ```
+ * 
+ * @returns {ReactElement} The rendered MetaTextListPage component
+ */
+function MetaTextListPage(): ReactElement {
+    // Initialize page logging
+    usePageLogger('MetaTextListPage');
+
+    /**
+     * Documents data and state management
+     * 
+     * This manages:
+     * - Fetching MetaText documents list from the API
+     * - Fetching source documents for the create form
+     * - Loading state management during data fetch
+     * - Error handling and user feedback
+     * - Document deletion operations
+     */
+    const {
+        metaTexts,
+        metaTextsLoading,
+        metaTextsError,
+        fetchMetaTexts,
+        sourceDocs,
+        sourceDocsLoading,
+        sourceDocsError,
+        fetchSourceDocs
+    } = useDocumentsStore();
+
+    /**
+     * Fetch documents when component mounts
+     */
+    useEffect(() => {
+        fetchMetaTexts();
+        fetchSourceDocs(); // Needed for the create form
+    }, [fetchMetaTexts, fetchSourceDocs]);
+
+    /**
+     * Refresh data after successful creation
+     */
+    const handleCreateSuccess = () => {
+        fetchMetaTexts();
+    };
+
+    return (
+        <PageContainer
+            loading={metaTextsLoading}
+            data-testid="metatext-list-page"
+        >
+            {/* Smooth slide-up animation for the page content */}
+            <Slide in={true} direction="up" timeout={500}>
+                <Box data-testid="metatext-list-content">
+                    {/* Page header */}
+                    <Box sx={{ mb: 3 }}>
+                        <Typography
+                            variant="h4"
+                            component="h1"
+                            sx={{
+                                fontWeight: 'bold',
+                                mb: 1,
+                                color: 'text.primary'
+                            }}
+                        >
+                            MetaText Documents
+                        </Typography>
+                        <Typography
+                            variant="body1"
+                            color="text.secondary"
+                            sx={{ mb: 2 }}
+                        >
+                            Create new MetaText documents from source documents and browse existing ones for detailed analysis.
+                        </Typography>
+                    </Box>
+
+                    {/* Create form for new MetaText documents */}
+                    <Box sx={{ mb: 4 }}>
+                        <MetaTextCreateForm
+                            sourceDocs={sourceDocs}
+                            sourceDocsLoading={sourceDocsLoading}
+                            sourceDocsError={sourceDocsError}
+                            onSuccess={handleCreateSuccess}
+                            sx={{ mb: 3 }}
+                        />
+                    </Box>
+
+                    {/* Searchable list of MetaText documents */}
+                    <SearchableList
+                        items={metaTexts}
+                        filterKey="title"
+                        title="metaText"
+                        loading={metaTextsLoading}
+                        searchPlaceholder="Search MetaText documents..."
+                        emptyMessage="No MetaText documents found. Create some MetaTexts from your source documents to get started."
+                        ariaLabel="List of MetaText documents"
+                    />
+                </Box>
+            </Slide>
+        </PageContainer>
+    );
+}
+
+// Export with a more descriptive name for TypeDoc
+export { MetaTextListPage };
+
+// Default export for React component usage
+export default MetaTextListPage;
