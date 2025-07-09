@@ -26,9 +26,9 @@ import {
     MenuItem,
     FormHelperText
 } from '@mui/material';
-import { StarsIcon } from './icons';
+import { StarsIcon } from '../../../components/icons';
 
-import { useMetaTextCreate } from './hooks/useMetaTextCreate';
+import { useMetaTextCreate } from '../../../components/hooks/useMetaTextCreate';
 import { SourceDocumentSummary } from 'types';
 
 /**
@@ -144,8 +144,8 @@ function MetaTextCreateForm({
                 <Typography variant="h5" component="h2" gutterBottom fontWeight="bold">
                     Create MetaText
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    Select a source document and create a new MetaText for analysis and processing.
+                <Typography variant="subtitle1" color="text.secondary">
+                    Select a source document and create a new MetaText.
                 </Typography>
             </Box>
 

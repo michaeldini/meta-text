@@ -11,15 +11,15 @@
  * @since 2025-07-08
  */
 
-import { Box, Slide, useTheme, Button } from '@mui/material';
+import { Box, Slide, useTheme } from '@mui/material';
 import type { Theme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { PageContainer } from 'components';
 
 import { getAppStyles } from '../../styles/styles';
 import WelcomeText from './components/WelcomeText';
+import NavigationButtons from './components/NavigationButtons';
 
 /**
  * HomePage Component
@@ -60,29 +60,10 @@ function HomePage(): ReactElement {
     const theme: Theme = useTheme();
 
     /**
-     * Navigation hook for programmatic routing
-     */
-    const navigate = useNavigate();
-
-    /**
      * Computed styles for the HomePage component based on the current theme
      * @type {ReturnType<typeof getAppStyles>}
      */
     const styles = getAppStyles(theme);
-
-    /**
-     * Navigate to the source documents list page
-     */
-    const handleNavigateToSourceDocs = () => {
-        navigate('/sourcedoc');
-    };
-
-    /**
-     * Navigate to the MetaText list page
-     */
-    const handleNavigateToMetaTexts = () => {
-        navigate('/metatext');
-    };
 
     return (
         <PageContainer
@@ -96,26 +77,7 @@ function HomePage(): ReactElement {
                     <WelcomeText welcomeTextStyles={styles.welcomeText} />
 
                     {/* Quick navigation section */}
-                    <Box sx={styles.homePage.navigationButtons}>
-                        <Button
-                            variant="outlined"
-                            color="secondary"
-                            size="large"
-                            onClick={handleNavigateToSourceDocs}
-                            data-testid="navigate-to-source-docs"
-                        >
-                            Browse Source Documents
-                        </Button>
-                        <Button
-                            variant="outlined"
-                            color="secondary"
-                            size="large"
-                            onClick={handleNavigateToMetaTexts}
-                            data-testid="navigate-to-metatexts"
-                        >
-                            Browse MetaTexts
-                        </Button>
-                    </Box>
+                    <NavigationButtons styles={styles.homePage.navigationButtons} />
 
 
                 </Box>

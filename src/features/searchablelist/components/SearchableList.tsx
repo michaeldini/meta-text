@@ -104,13 +104,19 @@ function SearchableList({
     return (
         <ErrorBoundary>
             <LoadingBoundary loading={loading}>
-                <Box sx={styles.root}>
-                    {/* Title (optional) */}
-                    {title && (
-                        <Typography variant="h6" fontWeight={600} component="div">
-                            {title}
-                        </Typography>
-                    )}
+                <Paper sx={{
+                    p: 3,
+                    maxWidth: 600,
+                    margin: '0 auto',
+                }}>
+                    <Box sx={{ mb: 3 }}>
+                        {/* Title (optional) */}
+                        {title && (
+                            <Typography variant="h5" component="h2" gutterBottom fontWeight="bold">
+                                Browse {title}
+                            </Typography>
+                        )}
+                    </Box>
                     {/* Search Input */}
                     <TextField
                         data-testid="search-input"
@@ -186,7 +192,7 @@ function SearchableList({
                             })
                         )}
                     </List>
-                </Box>
+                </Paper>
             </LoadingBoundary>
         </ErrorBoundary>
     );

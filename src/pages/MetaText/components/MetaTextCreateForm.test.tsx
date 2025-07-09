@@ -4,7 +4,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { MemoryRouter } from 'react-router-dom';
 import { vi } from 'vitest';
 import MetaTextCreateForm from './MetaTextCreateForm';
-import theme from '../styles/themes';
+import theme from '../../../styles/themes';
 
 // Mock the hook
 let mockHook = {

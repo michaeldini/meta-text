@@ -103,28 +103,28 @@ function SourceDocPage(): ReactElement {
                             color="text.secondary"
                             sx={{ mb: 2 }}
                         >
-                            Browse and select source documents to view their detailed content and analysis.
+                            Upload or Browse source documents.
                         </Typography>
                     </Box>
 
                     {/* Upload form for new documents */}
-                    <Box sx={{ mb: 4 }}>
+                    <Box sx={{ mb: 4, display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 10 }}>
                         <SourceDocUploadForm
                             onSuccess={fetchSourceDocs}
                             sx={{ mb: 3 }}
                         />
-                    </Box>
 
-                    {/* Searchable list of source documents */}
-                    <SearchableList
-                        items={sourceDocs}
-                        filterKey="title"
-                        title="sourceDoc"
-                        loading={sourceDocsLoading}
-                        searchPlaceholder="Search source documents..."
-                        emptyMessage="No source documents found. Upload some documents to get started."
-                        ariaLabel="List of source documents"
-                    />
+                        {/* Searchable list of source documents */}
+                        <SearchableList
+                            items={sourceDocs}
+                            filterKey="title"
+                            title="Source Documents"
+                            loading={sourceDocsLoading}
+                            searchPlaceholder="Search source documents..."
+                            emptyMessage="No source documents found. Upload some documents to get started."
+                            ariaLabel="List of source documents"
+                        />
+                    </Box>
                 </Box>
             </Slide>
         </PageContainer>

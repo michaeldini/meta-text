@@ -146,8 +146,8 @@ function SourceDocUploadForm({ onSuccess, sx = {} }: SourceDocUploadFormProps): 
                 <Typography variant="h5" component="h2" gutterBottom fontWeight="bold">
                     Upload Source Document
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    Upload a text file to create a new source document for analysis and processing.
+                <Typography variant="subtitle1" color="text.secondary">
+                    Upload a text file to create a new source document.
                 </Typography>
             </Box>
 

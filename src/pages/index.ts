@@ -8,9 +8,9 @@
 export { default as HomePage } from './HomePage/HomePage';
 
 // Meta text pages - for managing and reviewing meta text documents
-export { default as MetaTextPage } from './MetaTextPage/MetaTextPage';
-export { default as MetaTextDetailPage } from './MetaTextPage/MetaTextDetailPage';
-export { default as MetaTextReviewPage } from './MetaTextPage/MetaTextReviewPage';
+export { default as MetaTextPage } from './MetaText/MetaTextPage';
+export { default as MetaTextDetailPage } from './MetaText/MetaTextDetailPage';
+export { default as MetaTextReviewPage } from './MetaText/MetaTextReviewPage';
 
 // Source document pages - for managing source documents
 export { default as SourceDocPage } from './SourceDocPage/SourceDocPage';

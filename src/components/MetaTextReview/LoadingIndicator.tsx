@@ -11,7 +11,7 @@
 
 import { Box, CircularProgress } from '@mui/material';
 import type { ReactElement } from 'react';
-import { getMetaTextReviewStyles } from '../../pages/MetaTextPage/MetaText.styles';
+import { getMetaTextReviewStyles } from '../../pages/MetaText/MetaText.styles';
 
 /**
  * LoadingIndicator Component Props

@@ -116,31 +116,31 @@ function MetaTextPage(): ReactElement {
                             color="text.secondary"
                             sx={{ mb: 2 }}
                         >
-                            Create new MetaText documents from source documents and browse existing ones for detailed analysis.
+                            Create new MetaText from a source document or browse existing ones.
                         </Typography>
                     </Box>
 
                     {/* Create form for new MetaText documents */}
-                    <Box sx={{ mb: 4 }}>
+                    <Box sx={{ mb: 4, display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 10 }}>
                         <MetaTextCreateForm
                             sourceDocs={sourceDocs}
                             sourceDocsLoading={sourceDocsLoading}
                             sourceDocsError={sourceDocsError}
                             onSuccess={handleCreateSuccess}
-                            sx={{ mb: 3 }}
+                            sx={{ mb: { xs: 3, md: 0 } }}
+                        />
+
+                        {/* Searchable list of MetaText documents */}
+                        <SearchableList
+                            items={metaTexts}
+                            filterKey="title"
+                            title="MetaText"
+                            loading={metaTextsLoading}
+                            searchPlaceholder="Search MetaText documents..."
+                            emptyMessage="No MetaText documents found. Create some MetaTexts from your source documents to get started."
+                            ariaLabel="List of MetaText documents"
                         />
                     </Box>
-
-                    {/* Searchable list of MetaText documents */}
-                    <SearchableList
-                        items={metaTexts}
-                        filterKey="title"
-                        title="metaText"
-                        loading={metaTextsLoading}
-                        searchPlaceholder="Search MetaText documents..."
-                        emptyMessage="No MetaText documents found. Create some MetaTexts from your source documents to get started."
-                        ariaLabel="List of MetaText documents"
-                    />
                 </Box>
             </Slide>
         </PageContainer>
