@@ -15,7 +15,7 @@ export interface ToggleSelectorProps<T extends string> {
     sx?: object;
 }
 
-function ToggleSelector<T extends string>({ value, options, onChange, disabled, sx }: ToggleSelectorProps<T>) {
+const ToggleSelector = <T extends string>({ value, options, onChange, disabled, sx }: ToggleSelectorProps<T>) => {
     const handleChange = (_event: React.MouseEvent<HTMLElement>, newValue: T | null) => {
         if (newValue) onChange(newValue);
     };
@@ -38,6 +38,6 @@ function ToggleSelector<T extends string>({ value, options, onChange, disabled, 
             </ToggleButtonGroup>
         </Box>
     );
-}
+};
 
 export default ToggleSelector;

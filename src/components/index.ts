@@ -1,5 +1,5 @@
 export { default as ErrorBoundary } from './ErrorBoundary';
-export { AppSuspenseFallback } from './AppSuspenseFallback';
+export { default as AppSuspenseFallback } from './AppSuspenseFallback';
 export { default as LoadingBoundary } from './LoadingBoundary';
 export { default as PageContainer } from './PageContainer';
 export { default as ToggleSelector } from './ToggleSelector';

@@ -3,6 +3,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { DeleteIcon } from './icons';
 import { useTheme } from '@mui/material/styles';
+
 export interface DeleteButtonProps {
     onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
     disabled: boolean;
@@ -10,7 +11,7 @@ export interface DeleteButtonProps {
     icon?: React.ReactNode;
 }
 
-export default function DeleteButton({ onClick, disabled, label = "Delete", icon }: DeleteButtonProps) {
+const DeleteButton: React.FC<DeleteButtonProps> = ({ onClick, disabled, label = "Delete", icon }) => {
     const theme = useTheme();
     return (
         <Tooltip title={label} placement="top">
@@ -29,4 +30,6 @@ export default function DeleteButton({ onClick, disabled, label = "Delete", icon
             </span>
         </Tooltip>
     );
-}
+};
+
+export default DeleteButton;

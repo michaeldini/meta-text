@@ -3,13 +3,17 @@ import { Container, useTheme } from '@mui/material';
 import { getPageStyles, getTopLevelStyles } from '../styles/styles';
 
 import { ErrorBoundary, LoadingBoundary } from 'components'
+
+interface PageContainerProps {
+    children: ReactNode;
+    loading: boolean;
+}
+
 /**
  * Generic page container for consistent layout.
  * Wraps children in a Container with error boundary and theme-based styles.
  */
-
-
-export default function PageContainer({ children, loading }: { children: ReactNode, loading: boolean }) {
+const PageContainer: React.FC<PageContainerProps> = ({ children, loading }) => {
     const theme = useTheme();
 
     return (
@@ -21,4 +25,6 @@ export default function PageContainer({ children, loading }: { children: ReactNo
             </Container>
         </ErrorBoundary>
     );
-}
+};
+
+export default PageContainer;
