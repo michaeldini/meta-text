@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
-import { Box, useTheme, Accordion, AccordionSummary, AccordionDetails, Typography, CircularProgress, Alert } from '@mui/material';
+import { Box, useTheme, Accordion, AccordionSummary, AccordionDetails, Typography, Alert } from '@mui/material';
 import { ExpandMoreIcon } from 'icons';
 import { getSourceDocumentStyles } from '../styles/styles';
 import { useDocumentsStore } from 'store/documentsStore';
+import { LoadingSpinner } from 'components';
 
 interface SourceDocInfoProps {
     sourceDocumentId: number;
@@ -89,7 +90,7 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ sourceDocumentId }) => {
     };
 
     if (loading) {
-        return <Box sx={styles.container}><CircularProgress /></Box>;
+        return <LoadingSpinner />;
     }
     if (error) {
         return <Box sx={styles.container}><Alert severity="error">{error}</Alert></Box>;

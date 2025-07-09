@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
-import { TextField, Paper, Typography, Box, CircularProgress, useTheme } from '@mui/material';
+import { TextField, Paper, Typography, Box, useTheme } from '@mui/material';
 
-import { SubmitButton, ModeSection } from './components';
+import { LoadingSpinner } from 'components';
+
+import { SubmitButton, ModeSection, } from './components';
 import { useCreateFormWithHandlers } from './hooks/useCreateFormWithHandlers';
 import { FORM_MODES } from './constants';
 import { DocType, SourceDocumentSummary } from 'types';
@@ -42,9 +44,7 @@ const CreateForm: React.FC<CreateFormProps> = React.memo((props) => {
             <Typography variant="body1" gutterBottom>{formContent.description}</Typography>
             <Box component="form" onSubmit={handleSubmit} sx={styles.uploadFormInner}>
                 {form.loading && (
-                    <Box sx={styles.loadingBoxStyles}>
-                        <CircularProgress sx={styles.spinnerStyles} />
-                    </Box>
+                    <LoadingSpinner />
                 )}
                 <ModeSection
                     mode={form.mode}

@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
-import { Box, CircularProgress, Modal, Fade, useTheme } from '@mui/material';
+import { Box, Modal, Fade, useTheme } from '@mui/material';
 import { getSharedToolStyles } from '../../shared.styles';
-
+import { LoadingSpinner } from 'components';
 interface ImageDisplayProps {
     src: string;
     alt?: string;
@@ -38,9 +38,7 @@ const ImageDisplay: React.FC<ImageDisplayProps> = ({
                 }}
             >
                 {!loaded && (
-                    <Box sx={styles.loadingOverlay}>
-                        <CircularProgress />
-                    </Box>
+                    <LoadingSpinner />
                 )}
                 <img
                     src={src}
