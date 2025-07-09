@@ -6,7 +6,7 @@ import { Box, Typography } from '@mui/material';
  */
 const WelcomeText: React.FC = () => (
     <Box sx={{
-        minWidth: '25%',
+        minWidth: '25%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', maxWidth: 800
     }}>
         <Typography variant="h4" color="secondary.dark" gutterBottom fontWeight={700}>
             Welcome!

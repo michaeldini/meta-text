@@ -12,17 +12,17 @@ import { useAuthStore } from 'store';
 import { useThemeContext } from './contexts/ThemeContext';
 import './styles/landscape.css';
 
-// Dynamically import pages for code splitting
-const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
-const SourceDocPage = lazy(() => import('./pages/SourceDocPage/SourceDocPage'));
-const SourceDocDetailPage = lazy(() => import('./pages/SourceDocPage/SourceDocDetailPage'));
-const MetaTextPage = lazy(() => import('./pages/MetaTextPage/MetaTextPage'));
-const MetaTextDetailPage = lazy(() => import('./pages/MetaTextPage/MetaTextDetailPage'));
-const MetaTextReviewPage = lazy(() => import('./pages/MetaTextPage/MetaTextReviewPage'));
-const LoginPage = lazy(() => import('./pages/Auth/LoginPage'));
-const RegisterPage = lazy(() => import('./pages/Auth/RegisterPage'));
-const ExperimentsPage = lazy(() => import('./pages/ExperimentsPage'));
-const AboutPage = lazy(() => import('./pages/AboutPage'));
+// Dynamically import pages for code splitting using barrel exports
+const HomePage = lazy(() => import('pages').then(module => ({ default: module.HomePage })));
+const SourceDocPage = lazy(() => import('pages').then(module => ({ default: module.SourceDocPage })));
+const SourceDocDetailPage = lazy(() => import('pages').then(module => ({ default: module.SourceDocDetailPage })));
+const MetaTextPage = lazy(() => import('pages').then(module => ({ default: module.MetaTextPage })));
+const MetaTextDetailPage = lazy(() => import('pages').then(module => ({ default: module.MetaTextDetailPage })));
+const MetaTextReviewPage = lazy(() => import('pages').then(module => ({ default: module.MetaTextReviewPage })));
+const LoginPage = lazy(() => import('pages').then(module => ({ default: module.LoginPage })));
+const RegisterPage = lazy(() => import('pages').then(module => ({ default: module.RegisterPage })));
+const ExperimentsPage = lazy(() => import('pages').then(module => ({ default: module.ExperimentsPage })));
+const AboutPage = lazy(() => import('pages').then(module => ({ default: module.AboutPage })));
 
 interface RouteConfig {
     path: string;
