@@ -16,3 +16,6 @@ export { default as GlobalNotifications } from './GlobalNotifications';
 export { default as LandscapeRequiredOverlay } from './LandscapeRequiredOverlay';
 export { default as DocumentHeader } from './DocumentHeader';
 export { default as StyleControls } from './StyleControls';
+
+// MetaTextReview components
+export * from './MetaTextReview';

@@ -1,3 +1,3 @@
 // Centralized exports for the NotesSummaryTable feature
-export { default as ChunkSummaryNotesTable } from './ReviewTable';
+export { default as ReviewTable } from './ReviewTable';
 // Add more exports as needed

@@ -35,6 +35,26 @@
 export * from './documents';
 
 /**
+ * MetaText Review type definitions
+ * 
+ * Exports all types related to MetaText review functionality:
+ * - WordlistRow: Interface for wordlist entries used in flashcards
+ * 
+ * @example
+ * ```typescript
+ * import { WordlistRow } from 'types';
+ * 
+ * const word: WordlistRow = {
+ *   id: 1,
+ *   word: "example",
+ *   definition: "a thing characteristic of its kind",
+ *   definition_with_context: "an example of good writing"
+ * };
+ * ```
+ */
+export * from './MetaTextReview.types';
+
+/**
  * Error handling type definitions
  * 
  * Exports all error-related types and utilities:
