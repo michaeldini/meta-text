@@ -14,9 +14,9 @@ import './styles/landscape.css';
 
 // Dynamically import pages for code splitting
 const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
-const SourceDocListPage = lazy(() => import('./pages/SourceDocPage/SourceDocListPage'));
+const SourceDocPage = lazy(() => import('./pages/SourceDocPage/SourceDocPage'));
 const SourceDocDetailPage = lazy(() => import('./pages/SourceDocPage/SourceDocDetailPage'));
-const MetaTextListPage = lazy(() => import('./pages/MetaTextPage/MetaTextListPage'));
+const MetaTextPage = lazy(() => import('./pages/MetaTextPage/MetaTextPage'));
 const MetaTextDetailPage = lazy(() => import('./pages/MetaTextPage/MetaTextDetailPage'));
 const MetaTextReviewPage = lazy(() => import('./pages/MetaTextPage/MetaTextReviewPage'));
 const LoginPage = lazy(() => import('./pages/Auth/LoginPage'));
@@ -34,9 +34,9 @@ const routes: RouteConfig[] = [
     { path: '/', element: HomePage, protected: true },
     { path: '/login', element: LoginPage, protected: false },
     { path: '/register', element: RegisterPage, protected: false },
-    { path: '/sourcedoc', element: SourceDocListPage, protected: true },
+    { path: '/sourcedoc', element: SourceDocPage, protected: true },
     { path: '/sourcedoc/:sourceDocId', element: SourceDocDetailPage, protected: true },
-    { path: '/metatext', element: MetaTextListPage, protected: true },
+    { path: '/metatext', element: MetaTextPage, protected: true },
     { path: '/metaText/:metaTextId', element: MetaTextDetailPage, protected: true },
     { path: '/metaText/:metaTextId/review', element: MetaTextReviewPage, protected: true },
     { path: '/experiments', element: ExperimentsPage, protected: false },

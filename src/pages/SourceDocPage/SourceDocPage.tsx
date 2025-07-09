@@ -1,9 +1,9 @@
 /**
- * @fileoverview SourceDocListPage component for the MetaText application
+ * @fileoverview SourceDocPage component for the MetaText application
  * 
- * This page component displays a list of all available source documents, providing
- * users with the ability to search, browse, and select source documents for viewing.
- * Users can then navigate to the detailed view of any selected document.
+ * This page component provides a comprehensive interface for source document management,
+ * including uploading new source documents and browsing/searching existing ones.
+ * Users can upload documents and navigate to detailed views for analysis.
  * 
  * @author MetaText Development Team
  * @version 1.0.0
@@ -20,13 +20,14 @@ import { useDocumentsStore } from 'store';
 import { usePageLogger } from 'hooks';
 
 /**
- * SourceDocListPage Component
+ * SourceDocPage Component
  * 
- * A comprehensive page component that displays a searchable list of source documents.
- * This component serves as the entry point for users to browse and select source
- * documents for detailed viewing and analysis.
+ * A comprehensive page component that provides the main interface for source document
+ * management. This component serves as the central hub for users to upload new source
+ * documents and browse/search existing source documents.
  * 
  * Features:
+ * - Upload form for new source documents
  * - Searchable list of all source documents
  * - Document filtering and search functionality
  * - Navigation to detailed document view
@@ -43,15 +44,15 @@ import { usePageLogger } from 'hooks';
  * // Used in React Router configuration
  * <Route 
  *   path="/sourcedoc" 
- *   component={SourceDocListPage} 
+ *   component={SourceDocPage} 
  * />
  * ```
  * 
- * @returns {ReactElement} The rendered SourceDocListPage component
+ * @returns {ReactElement} The rendered SourceDocPage component
  */
-function SourceDocListPage(): ReactElement {
+function SourceDocPage(): ReactElement {
     // Initialize page logging
-    usePageLogger('SourceDocListPage');
+    usePageLogger('SourceDocPage');
 
     /**
      * Source documents data and state management
@@ -131,7 +132,7 @@ function SourceDocListPage(): ReactElement {
 }
 
 // Export with a more descriptive name for TypeDoc
-export { SourceDocListPage };
+export { SourceDocPage };
 
 // Default export for React component usage
-export default SourceDocListPage;
+export default SourceDocPage;

@@ -1,9 +1,9 @@
 /**
- * @fileoverview MetaTextListPage component for the MetaText application
+ * @fileoverview MetaTextPage component for the MetaText application
  * 
- * This page component displays a list of all available MetaText documents, providing
- * users with the ability to search, browse, and create new MetaText documents.
- * Users can then navigate to the detailed view of any selected document.
+ * This page component provides a comprehensive interface for MetaText document management,
+ * including creation of new MetaText documents and browsing/searching existing ones.
+ * Users can create MetaTexts from source documents and navigate to detailed views.
  * 
  * @author MetaText Development Team
  * @version 1.0.0
@@ -20,14 +20,14 @@ import { useDocumentsStore } from 'store';
 import { usePageLogger } from 'hooks';
 
 /**
- * MetaTextListPage Component
+ * MetaTextPage Component
  * 
- * A comprehensive page component that displays a searchable list of MetaText documents.
- * This component serves as the entry point for users to browse, create, and select 
- * MetaText documents for detailed viewing and analysis.
+ * A comprehensive page component that provides the main interface for MetaText document
+ * management. This component serves as the central hub for users to create new MetaText
+ * documents from source documents and browse/search existing MetaText documents.
  * 
  * Features:
- * - Create form for new MetaText documents
+ * - Create form for new MetaText documents from source documents
  * - Searchable list of all MetaText documents
  * - Document filtering and search functionality
  * - Navigation to detailed document view
@@ -44,15 +44,15 @@ import { usePageLogger } from 'hooks';
  * // Used in React Router configuration
  * <Route 
  *   path="/metatext" 
- *   component={MetaTextListPage} 
+ *   component={MetaTextPage} 
  * />
  * ```
  * 
- * @returns {ReactElement} The rendered MetaTextListPage component
+ * @returns {ReactElement} The rendered MetaTextPage component
  */
-function MetaTextListPage(): ReactElement {
+function MetaTextPage(): ReactElement {
     // Initialize page logging
-    usePageLogger('MetaTextListPage');
+    usePageLogger('MetaTextPage');
 
     /**
      * Documents data and state management
@@ -148,7 +148,7 @@ function MetaTextListPage(): ReactElement {
 }
 
 // Export with a more descriptive name for TypeDoc
-export { MetaTextListPage };
+export { MetaTextPage };
 
 // Default export for React component usage
-export default MetaTextListPage;
+export default MetaTextPage;
