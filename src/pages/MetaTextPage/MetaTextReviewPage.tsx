@@ -19,7 +19,6 @@ import type { ReactElement } from 'react';
 import { ExpandMoreIcon } from 'icons';
 
 import { fetchWordlist, fetchChunks, fetchPhraseExplanations, PhraseExplanation } from 'services';
-import { usePageLogger } from 'hooks';
 
 import { FlashCards, ChunkSummaryNotesTable, ExplanationReview } from 'features';
 import { ArrowBackIcon } from 'icons';
@@ -149,6 +148,86 @@ function Header({
 }
 
 /**
+ * ReviewSection Component
+ * 
+ * A reusable component that wraps content in a consistent accordion structure.
+ * Eliminates code duplication and provides a standard layout for review sections.
+ * 
+ * @param props - Component props
+ * @param props.title - The section title displayed in the accordion header
+ * @param props.testId - Test ID for the accordion element
+ * @param props.children - The content to display inside the accordion
+ * @returns {ReactElement} The accordion section component
+ */
+function ReviewSection({
+    title,
+    testId,
+    children
+}: {
+    title: string;
+    testId: string;
+    children: ReactElement
+}): ReactElement {
+    return (
+        <Accordion sx={{ mb: 2 }} data-testid={testId}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography variant="h5">{title}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+                {children}
+            </AccordionDetails>
+        </Accordion>
+    );
+}
+
+/**
+ * ReviewContent Component
+ * 
+ * Renders the main content sections of the review page in a clean, organized layout.
+ * Separates the content structure from the main component logic.
+ * 
+ * @param props - Component props
+ * @param props.phraseExplanations - Array of phrase explanations to display
+ * @param props.wordlist - Array of words for flashcard generation
+ * @param props.chunkSummariesNotes - Array of chunk summaries and notes
+ * @returns {ReactElement} The review content sections
+ */
+function ReviewContent({
+    phraseExplanations,
+    wordlist,
+    chunkSummariesNotes
+}: {
+    phraseExplanations: PhraseExplanation[];
+    wordlist: WordlistRow[];
+    chunkSummariesNotes: ChunkType[];
+}): ReactElement {
+    return (
+        <>
+            <ReviewSection
+                title="Explanations"
+                testId="explanations-accordion"
+            >
+                <ExplanationReview data={phraseExplanations} />
+            </ReviewSection>
+
+            <ReviewSection
+                title="Flashcards"
+                testId="flashcards-accordion"
+            >
+                <FlashCards wordlist={wordlist} />
+            </ReviewSection>
+
+            <ReviewSection
+                title="ReviewTable"
+                testId="chunks-accordion"
+            >
+                <ChunkSummaryNotesTable chunks={chunkSummariesNotes} />
+            </ReviewSection>
+        </>
+    );
+}
+
+/**
  * MetaTextReviewPage Component
  * 
  * A comprehensive review page that provides multiple learning and analysis tools
@@ -186,75 +265,52 @@ function Header({
 function MetaTextReviewPage(): ReactElement {
     /**
      * Extract MetaText ID from URL parameters and convert to number
-     * @type {number | undefined}
      */
     const { metaTextId: metatextIdParam } = useParams<{ metaTextId?: string }>();
-    const metatextId = metatextIdParam ? Number(metatextIdParam) : undefined;
+    const metatextId: number | undefined = metatextIdParam ? Number(metatextIdParam) : undefined;
 
     /**
      * State management for wordlist data
      * Contains vocabulary words with definitions for flashcard generation
-     * @type {[WordlistRow[], React.Dispatch<React.SetStateAction<WordlistRow[]>>]}
      */
     const [wordlist, setWordlist] = useState<WordlistRow[]>([]);
 
     /**
      * State management for chunk summaries and notes
      * Contains processed chunks with summaries and analysis notes
-     * @type {[ChunkType[], React.Dispatch<React.SetStateAction<ChunkType[]>>]}
      */
     const [chunkSummariesNotes, setChunkSummariesNotes] = useState<ChunkType[]>([]);
 
     /**
      * State management for phrase explanations
      * Contains contextual explanations for important phrases in the document
-     * @type {[PhraseExplanation[], React.Dispatch<React.SetStateAction<PhraseExplanation[]>>]}
      */
     const [phraseExplanations, setPhraseExplanations] = useState<PhraseExplanation[]>([]);
 
     /**
      * Loading state for data fetching operations
-     * @type {[boolean, React.Dispatch<React.SetStateAction<boolean>>]}
      */
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState<boolean>(true);
 
     /**
      * Error state for handling and displaying fetch errors
-     * @type {[string | null, React.Dispatch<React.SetStateAction<string | null>>]}
      */
     const [error, setError] = useState<string | null>(null);
 
     /**
      * React Router navigation function for programmatic navigation
-     * @type {NavigateFunction}
      */
     const navigate = useNavigate();
 
     /**
      * Material-UI theme object for accessing design tokens
-     * @type {Theme}
      */
     const theme: Theme = useTheme();
 
     /**
      * Computed styles for the MetaTextReviewPage based on the current theme
-     * @type {ReturnType<typeof getMetaTextReviewStyles>}
      */
     const styles = getMetaTextReviewStyles(theme);
-
-    /**
-     * Page logging for debugging and analytics
-     * Tracks component state and user interactions for development insights
-     */
-    usePageLogger('MetaTextReviewPage', {
-        watched: [
-            ['metatextId', metatextId],
-            ['loading', loading],
-            ['error', error],
-            ['wordlist', wordlist.length],
-            ['chunkSummariesNotes', chunkSummariesNotes.length]
-        ]
-    });
 
     /**
      * Data loading effect
@@ -333,35 +389,12 @@ function MetaTextReviewPage(): ReactElement {
             {/* Page header with navigation and title */}
             <Header metatextId={metatextId} navigate={navigate} styles={styles} />
 
-            {/* Explanations Section */}
-            <Accordion sx={{ mb: 2 }} data-testid="explanations-accordion">
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant="h5">Explanations</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <ExplanationReview data={phraseExplanations} />
-                </AccordionDetails>
-            </Accordion>
-
-            {/* Flashcards Section */}
-            <Accordion sx={{ mb: 2 }} data-testid="flashcards-accordion">
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant="h5">Flashcards</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <FlashCards wordlist={wordlist} />
-                </AccordionDetails>
-            </Accordion>
-
-            {/* Chunk Summary & Notes Section */}
-            <Accordion sx={{ mb: 2 }} data-testid="chunks-accordion">
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant="h5">ReviewTable</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <ChunkSummaryNotesTable chunks={chunkSummariesNotes} />
-                </AccordionDetails>
-            </Accordion>
+            {/* Review content sections */}
+            <ReviewContent
+                phraseExplanations={phraseExplanations}
+                wordlist={wordlist}
+                chunkSummariesNotes={chunkSummariesNotes}
+            />
         </Box>
     );
 }

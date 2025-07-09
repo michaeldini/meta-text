@@ -14,11 +14,12 @@
     "theme": "default",
     "customCss": "docs/custom-typedoc.css",
     "includeVersion": true,
-    "excludePrivate": true,
-    "excludeProtected": true,
+    "excludePrivate": false,
+    "excludeProtected": false,
     "excludeExternals": true,
+    "excludeInternal": false,
     "readme": "README.md",
-    "name": "Meta-Text API Documentation",
+    "name": "Meta-Text Component Documentation",
     "tsconfig": "tsconfig.json",
     "categorizeByGroup": true,
     "defaultCategory": "Components",
@@ -48,8 +49,13 @@
         "**/*.stories.tsx"
     ],
     "excludeNotDocumented": false,
-    "excludeInternal": false,
     "skipErrorChecking": true,
+    "validation": {
+        "invalidLink": false,
+        "notExported": false,
+        "notDocumented": false
+    },
+    "treatWarningsAsErrors": false,
     "navigation": {
         "includeCategories": true,
         "includeGroups": true

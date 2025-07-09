@@ -12,7 +12,12 @@ The codebase uses modern best practices, but prioritizes readability, maintainab
 - Testing: Vitest (tests colocated with components)
 - Location: `src/` folder
 - Logging: `src/utils/logger.ts`
-- Documentation: TypeDoc for API interface and type definitions, with a focus on clarity and usability
+
+### Documentation
+- Use TypeDoc for generating documentation.
+- Use TypeScript's native type annotations (: boolean, <string>, etc.)
+- Use JSDoc comments for documentation purposes.
+
 
 ## Backend Stack
 - Framework: FastAPI with SQLModel
