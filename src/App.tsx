@@ -7,7 +7,7 @@ import { Suspense, lazy, ComponentType } from 'react';
 import { NavBar } from 'features';
 import { LandscapeRequiredOverlay, AppSuspenseFallback, ErrorBoundary, GlobalNotifications, FlexBox } from 'components';
 
-import { getTopLevelStyles, lightTheme, darkTheme } from './styles';
+import { getAppStyles, lightTheme, darkTheme } from './styles';
 import { useAuthStore } from 'store';
 import { useThemeContext } from './contexts/ThemeContext';
 import './styles/landscape.css';
@@ -54,7 +54,7 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
 function App() {
     const { mode } = useThemeContext();
     const theme = useTheme();
-    const styles = getTopLevelStyles(theme);
+    const styles = getAppStyles(theme);
     const currentTheme = mode === 'light' ? lightTheme : darkTheme;
 
     const renderRoute = (route: RouteConfig) => {
@@ -91,7 +91,7 @@ function App() {
                 {/* CssBaseline provides consistent CSS reset and applies theme background */}
                 <CssBaseline />
                 <ErrorBoundary>
-                    <Box sx={styles.appContainerStyles}>
+                    <Box sx={styles.appContainer}>
                         <NavBar />
                         <Routes>
                             {routes.map(renderRoute)}

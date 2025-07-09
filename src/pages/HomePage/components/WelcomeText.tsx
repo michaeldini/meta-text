@@ -1,22 +1,31 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, SxProps, Theme } from '@mui/material';
+
+interface WelcomeTextProps {
+    welcomeTextStyles?: {
+        container?: SxProps<Theme>;
+        title?: SxProps<Theme>;
+        text?: SxProps<Theme>;
+    }
+}
 
 /**
  * WelcomeText - A highly emotive greeting and instruction for Meta-Text users.
+ * @param welcomeTextStyles - Style overrides for the container (typically provided by parent)
  */
-const WelcomeText: React.FC = () => (
-    <Box sx={{
-        minWidth: '25%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', maxWidth: 800
-    }}>
-        <Typography variant="h4" color="secondary.dark" gutterBottom fontWeight={700}>
-            Welcome!
-        </Typography>
-        <Typography variant="body1" sx={{ mt: 2, fontSize: 20, color: 'text.primary' }}>
-            Imagine unlocking the true depth of every document you read. <b>Meta-Text</b> empowers you to upload, dissect, and truly engage with your texts—one meaningful section at a time. <br /><br />
-            <b>How does it work?</b> Upload a document that sparks your curiosity. Break it into sections that matter to you. Annotate each part with your thoughts, questions, and insights. <br /><br />
-            <i>Transform passive reading into an active, personal journey of discovery. Your ideas belong here.</i>
-        </Typography>
-    </Box>
-);
+const WelcomeText: React.FC<WelcomeTextProps> = ({ welcomeTextStyles = {} }) => {
+    return (
+        <Box sx={welcomeTextStyles.container}>
+            <Typography variant="h4" sx={welcomeTextStyles.title} gutterBottom>
+                Welcome!
+            </Typography>
+            <Typography variant="body1" sx={welcomeTextStyles.text} >
+                Imagine unlocking the true depth of every document you read. <b>Meta-Text</b> empowers you to upload, dissect, and truly engage with your texts—one meaningful section at a time. <br /><br />
+                <b>How does it work?</b> Upload a document that sparks your curiosity. Break it into sections that matter to you. Annotate each part with your thoughts, questions, and insights. <br /><br />
+                <i>Transform passive reading into an active, personal journey of discovery. Your ideas belong here.</i>
+            </Typography>
+        </Box>
+    );
+};
 
 export default WelcomeText;

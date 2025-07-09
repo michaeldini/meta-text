@@ -1,58 +1,75 @@
 import { Theme, keyframes } from '@mui/material/styles';
-import { alpha } from '@mui/material/styles';
 
-const flipIn = keyframes`
-  from {
-    opacity: 0;
-    transform: perspective(600px) rotateY(90deg);
-  }
-  to {
-    opacity: 1;
-    transform: perspective(600px) rotateY(0deg);
-  }
-`;
-export const getTopLevelStyles = (theme: Theme) => ({
-    appContainerStyles: {
+/**
+ * Unified styles function that provides all application-level styles
+ * @param theme - Material-UI theme object
+ * @returns Object containing all style categories
+ */
+export const getAppStyles = (theme: Theme) => ({
+    // Top-level app container styles
+    appContainer: {
         height: '100%',
         width: '100%',
         padding: theme.spacing(0),
     },
-});
 
-export const getPageStyles = (theme: Theme) => ({
-    // Layout structure
-    display: 'flex',
-    flexDirection: 'row' as const,
-    width: '100%',
-    height: '100%', // Ensure full viewport height
-    flex: 1,
-    minHeight: 0, // Allow children to shrink if needed
-    minWidth: 0, // Allow children to shrink if needed
-    maxWidth: 1400,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    backgroundColor: theme.palette.background.default,
-    [theme.breakpoints.down('sm')]: {
-        maxWidth: '100%',
-        paddingLeft: theme.spacing(1),
-        paddingRight: theme.spacing(1),
-    },
-});
-
-export const getHomePageStyles = (theme: Theme) => ({
-    homePageContainer: {
+    // Page layout styles
+    pageLayout: {
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: theme.spacing(5),
-    },
-    toggleContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    contentContainer: {
+        flexDirection: 'row' as const,
         width: '100%',
-        minWidth: 'fit-content',
+        height: '100%', // Ensure full viewport height
+        flex: 1,
+        minHeight: 0, // Allow children to shrink if needed
+        minWidth: 0, // Allow children to shrink if needed
+        maxWidth: 1400,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        backgroundColor: theme.palette.background.default,
+        [theme.breakpoints.down('sm')]: {
+            maxWidth: '100%',
+            paddingLeft: theme.spacing(1),
+            paddingRight: theme.spacing(1),
+        },
+    },
+
+    // Home page specific styles
+    homePage: {
+        container: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: theme.spacing(5),
+        },
+        navigationButtons: {
+            display: 'flex',
+            justifyContent: 'center',
+            my: 3,
+            gap: 2,
+            flexWrap: 'wrap',
+        },
+    },
+    welcomeText: {
+        container: {
+            minWidth: '25%',
+            display: 'flex',
+            flexDirection: 'column' as const,
+            alignItems: 'center',
+            justifyContent: 'center',
+            maxWidth: 800,
+            textAlign: 'center' as const,
+            margin: theme.spacing(2, 0),
+        },
+        title: {
+            fontSize: 32,
+            color: theme.palette.secondary.dark,
+            fontWeight: 700,
+            marginBottom: theme.spacing(2),
+        },
+        text: {
+            mt: 2,
+            fontSize: 20,
+            color: theme.palette.text.primary,
+        },
     },
 });

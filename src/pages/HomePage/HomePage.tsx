@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { PageContainer } from 'components';
 
-import { getHomePageStyles } from '../../styles/styles';
+import { getAppStyles } from '../../styles/styles';
 import WelcomeText from './components/WelcomeText';
 
 /**
@@ -66,9 +66,9 @@ function HomePage(): ReactElement {
 
     /**
      * Computed styles for the HomePage component based on the current theme
-     * @type {ReturnType<typeof getHomePageStyles>}
+     * @type {ReturnType<typeof getAppStyles>}
      */
-    const styles = getHomePageStyles(theme);
+    const styles = getAppStyles(theme);
 
     /**
      * Navigate to the source documents list page
@@ -91,18 +91,12 @@ function HomePage(): ReactElement {
         >
             {/* Smooth slide-up animation for the entire page content */}
             <Slide in={true} direction="up" timeout={500}>
-                <Box sx={styles.homePageContainer} data-testid="homepage-content">
+                <Box sx={styles.homePage.container} data-testid="homepage-content">
                     {/* Welcome section with branding and introductory text */}
-                    <WelcomeText />
+                    <WelcomeText welcomeTextStyles={styles.welcomeText} />
 
                     {/* Quick navigation section */}
-                    <Box sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        my: 3,
-                        gap: 2,
-                        flexWrap: 'wrap'
-                    }}>
+                    <Box sx={styles.homePage.navigationButtons}>
                         <Button
                             variant="outlined"
                             color="secondary"
