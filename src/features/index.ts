@@ -3,7 +3,7 @@ export * from './navbar';
 export * from './chunk';
 export * from './sourcedoc';
 export * from './flashcards';
-export * from './NotesSummaryTable';
+export * from './reviewtable';
 export * from './createform';
 export * from './searchablelist';
 export * from './explanationreview';

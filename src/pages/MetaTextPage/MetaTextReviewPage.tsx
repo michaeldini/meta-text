@@ -356,7 +356,7 @@ function MetaTextReviewPage(): ReactElement {
             {/* Chunk Summary & Notes Section */}
             <Accordion sx={{ mb: 2 }} data-testid="chunks-accordion">
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant="h5">Chunk Summary & Notes</Typography>
+                    <Typography variant="h5">ReviewTable</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <ChunkSummaryNotesTable chunks={chunkSummariesNotes} />
