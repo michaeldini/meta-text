@@ -84,9 +84,10 @@ function SourceDocPage(): ReactElement {
         >
             {/* Smooth slide-up animation for the page content */}
             <Slide in={true} direction="up" timeout={500}>
-                <Box data-testid="sourcedoc-list-content">
+                <Box data-testid="sourcedoc-list-content"
+                    sx={{ mb: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
                     {/* Page header */}
-                    <Box sx={{ mb: 3 }}>
+                    <Box sx={{ mb: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <Typography
                             variant="h4"
                             component="h1"
@@ -103,7 +104,7 @@ function SourceDocPage(): ReactElement {
                             color="text.secondary"
                             sx={{ mb: 2 }}
                         >
-                            Upload or Browse source documents.
+                            Upload a new source document or browse existing ones.
                         </Typography>
                     </Box>
 

@@ -97,9 +97,10 @@ function MetaTextPage(): ReactElement {
         >
             {/* Smooth slide-up animation for the page content */}
             <Slide in={true} direction="up" timeout={500}>
-                <Box data-testid="metatext-list-content">
+                <Box data-testid="metatext-list-content"
+                    sx={{ mb: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
                     {/* Page header */}
-                    <Box sx={{ mb: 3 }}>
+                    <Box sx={{ mb: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
                         <Typography
                             variant="h4"
                             component="h1"

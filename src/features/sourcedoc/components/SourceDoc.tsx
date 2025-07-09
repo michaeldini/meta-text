@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paper, Typography, useTheme } from '@mui/material';
+import { Box, Paper, Typography, useTheme } from '@mui/material';
 import { getSourceDocumentStyles } from '../styles/styles';
 import type { SourceDocumentDetail } from 'types';
 import { useUIPreferencesStore } from 'store';
@@ -21,13 +21,13 @@ export default function SourceDoc({ doc }: SourceDocProps) {
     const lineHeight = useUIPreferencesStore(state => state.lineHeight);
     console.log('Rendering SourceDoc with styles:', lineHeight, textSizePx, fontFamily);
     return (
-        <Paper sx={{ ...styles.container }} elevation={3}>
+        <Box sx={{ ...styles.container }}>
             <Typography
                 aria-label="Document Text"
                 sx={{ fontSize: textSizePx, fontFamily, lineHeight }}
             >
                 {doc.text || 'No content available'}
             </Typography>
-        </Paper>
+        </Box>
     );
 }
