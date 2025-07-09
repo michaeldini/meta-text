@@ -24,7 +24,6 @@ const FlashCards: React.FC<FlashCardsProps> = ({ wordlist }) => {
     }
     return (
         <>
-            <Typography variant="h5" gutterBottom sx={styles.wordlistTitle}>Flashcards</Typography>
             <Box sx={styles.wordlistWrap}>
                 {wordlist.map(row => (
                     <WordFlashcard

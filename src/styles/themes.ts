@@ -316,6 +316,27 @@ export const darkTheme = createTheme({
                 },
             },
         },
+        MuiAccordion: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: '#000',
+                },
+            },
+        },
+        MuiAccordionSummary: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: '#000',
+                },
+            },
+        },
+        MuiAccordionDetails: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: '#000',
+                },
+            },
+        },
     },
 });
 

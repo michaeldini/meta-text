@@ -11,8 +11,6 @@ export const createWordFlashcardStyles = (theme: Theme) => ({
         alignItems: 'start',
         padding: 0,
         borderRadius: theme.shape.borderRadiusSm,
-        // border: '1px solid',
-        // borderColor: theme.palette.secondary.main
     },
     flashcard: {
         width: '100%',
@@ -21,8 +19,6 @@ export const createWordFlashcardStyles = (theme: Theme) => ({
         transition: 'transform 0.7s cubic-bezier(.68,-0.55,.27,1.55), -shadow 0.4s',
         transformStyle: 'preserve-3d',
         cursor: 'pointer',
-
-
     },
     flipped: {
         transform: 'rotateY(180deg) scale(1.04)',

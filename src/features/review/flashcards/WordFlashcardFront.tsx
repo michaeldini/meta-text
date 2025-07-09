@@ -13,7 +13,7 @@ const WordFlashcardFront: React.FC<WordFlashcardFrontProps> = ({ word, styles, s
             sx={styles.flashcard}
             onClick={() => setFlipped(true)}
         >
-            <CardContent>
+            <CardContent sx={styles.front}>
                 <Typography variant="h4" fontWeight={700} align="center">{word}</Typography>
             </CardContent>
         </CardActionArea>
