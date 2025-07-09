@@ -1,1 +1,1 @@
-export { default as ExplanationReview } from './Phrases';
+export { default as ExplanationReview } from './ExplanationReview';

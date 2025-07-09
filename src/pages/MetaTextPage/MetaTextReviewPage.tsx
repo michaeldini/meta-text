@@ -333,10 +333,10 @@ function MetaTextReviewPage(): ReactElement {
             {/* Page header with navigation and title */}
             <Header metatextId={metatextId} navigate={navigate} styles={styles} />
 
-            {/* Phrases & Explanations Section */}
-            <Accordion sx={{ mb: 2 }} data-testid="phrases-accordion">
+            {/* Explanations Section */}
+            <Accordion sx={{ mb: 2 }} data-testid="explanations-accordion">
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant="h5">Phrases & Explanations</Typography>
+                    <Typography variant="h5">Explanations</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <ExplanationReview data={phraseExplanations} />
