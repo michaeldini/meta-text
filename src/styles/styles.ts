@@ -72,4 +72,29 @@ export const getAppStyles = (theme: Theme) => ({
             color: theme.palette.text.primary,
         },
     },
+
+    sharedStyles: {
+        container: {
+            mb: 3,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            width: '100%'
+        },
+        title: {
+            fontWeight: 'bold',
+            mb: 1,
+            color: 'text.primary',
+        },
+        subtitle: {
+            mb: 2,
+            color: 'text.secondary',
+        },
+        containerBreakpoint: {
+            mb: 4,
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            gap: 10,
+        },
+    },
 });

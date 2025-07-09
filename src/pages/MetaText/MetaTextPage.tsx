@@ -18,7 +18,8 @@ import { SearchableList } from 'features';
 import { PageContainer, MetaTextCreateForm } from 'components';
 import { useDocumentsStore } from 'store';
 import { usePageLogger } from 'hooks';
-
+import { useTheme } from '@mui/material/styles';
+import { getAppStyles } from '../../styles/styles';
 /**
  * MetaTextPage Component
  * 
@@ -90,6 +91,11 @@ function MetaTextPage(): ReactElement {
         fetchMetaTexts();
     };
 
+    /**
+     * Get the current theme for styling
+     */
+    const theme = useTheme();
+    const styles = getAppStyles(theme);
     return (
         <PageContainer
             loading={metaTextsLoading}
@@ -98,37 +104,31 @@ function MetaTextPage(): ReactElement {
             {/* Smooth slide-up animation for the page content */}
             <Slide in={true} direction="up" timeout={500}>
                 <Box data-testid="metatext-list-content"
-                    sx={{ mb: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+                    sx={styles.sharedStyles.container}>
                     {/* Page header */}
-                    <Box sx={{ mb: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+                    <Box sx={styles.sharedStyles.container}>
                         <Typography
                             variant="h4"
                             component="h1"
-                            sx={{
-                                fontWeight: 'bold',
-                                mb: 1,
-                                color: 'text.primary'
-                            }}
+                            sx={styles.sharedStyles.title}
                         >
                             MetaText Documents
                         </Typography>
                         <Typography
-                            variant="body1"
-                            color="text.secondary"
-                            sx={{ mb: 2 }}
+                            variant="subtitle1"
+                            sx={styles.sharedStyles.subtitle}
                         >
                             Create new MetaText from a source document or browse existing ones.
                         </Typography>
                     </Box>
 
                     {/* Create form for new MetaText documents */}
-                    <Box sx={{ mb: 4, display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 10 }}>
+                    <Box sx={styles.sharedStyles.containerBreakpoint}>
                         <MetaTextCreateForm
                             sourceDocs={sourceDocs}
                             sourceDocsLoading={sourceDocsLoading}
                             sourceDocsError={sourceDocsError}
                             onSuccess={handleCreateSuccess}
-                            sx={{ mb: { xs: 3, md: 0 } }}
                         />
 
                         {/* Searchable list of MetaText documents */}

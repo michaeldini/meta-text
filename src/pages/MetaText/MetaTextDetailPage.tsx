@@ -24,7 +24,7 @@ import { PaginatedChunks } from 'features';
 import { FADE_IN_DURATION } from 'constants';
 import { useMetaTextDetailData } from './useMetaTextDetailData';
 
-import { getMetaTextPageStyles } from './MetaText.styles';
+import { getMetaTextDetailStyles } from './MetaText.styles';
 import { GenerateSourceDocInfoButton, StyleControls, DocumentHeader } from 'components';
 
 /**
@@ -84,9 +84,9 @@ function MetaTextDetailPage(): ReactElement | null {
 
     /**
      * Computed styles for the MetaTextDetailPage based on the current theme
-     * @type {ReturnType<typeof getMetaTextPageStyles>}
+     * @type {ReturnType<typeof getMetaTextDetailStyles>}
      */
-    const styles = getMetaTextPageStyles(theme);
+    const styles = getMetaTextDetailStyles(theme);
 
     /**
      * MetaText data, loading state, and error handling

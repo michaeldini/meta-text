@@ -12,13 +12,14 @@
 
 import { useEffect } from 'react';
 import { Box, Typography, Slide } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
 
 import { SearchableList } from 'features';
 import { PageContainer, SourceDocUploadForm } from 'components';
 import { useDocumentsStore } from 'store';
 import { usePageLogger } from 'hooks';
-
+import { getAppStyles } from '../../styles/styles';
 /**
  * SourceDocPage Component
  * 
@@ -77,6 +78,11 @@ function SourceDocPage(): ReactElement {
         fetchSourceDocs();
     }, [fetchSourceDocs]);
 
+    /**
+     * Get the current theme for styling
+     */
+    const theme = useTheme();
+    const styles = getAppStyles(theme);
     return (
         <PageContainer
             loading={sourceDocsLoading}
@@ -85,34 +91,28 @@ function SourceDocPage(): ReactElement {
             {/* Smooth slide-up animation for the page content */}
             <Slide in={true} direction="up" timeout={500}>
                 <Box data-testid="sourcedoc-list-content"
-                    sx={{ mb: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+                    sx={styles.sharedStyles.container}>
                     {/* Page header */}
-                    <Box sx={{ mb: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <Box sx={styles.sharedStyles.container}>
                         <Typography
                             variant="h4"
                             component="h1"
-                            sx={{
-                                fontWeight: 'bold',
-                                mb: 1,
-                                color: 'text.primary'
-                            }}
+                            sx={styles.sharedStyles.title}
                         >
                             Source Documents
                         </Typography>
                         <Typography
-                            variant="body1"
-                            color="text.secondary"
-                            sx={{ mb: 2 }}
+                            variant="subtitle1"
+                            sx={styles.sharedStyles.subtitle}
                         >
                             Upload a new source document or browse existing ones.
                         </Typography>
                     </Box>
 
                     {/* Upload form for new documents */}
-                    <Box sx={{ mb: 4, display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 10 }}>
+                    <Box sx={styles.sharedStyles.containerBreakpoint}>
                         <SourceDocUploadForm
                             onSuccess={fetchSourceDocs}
-                            sx={{ mb: 3 }}
                         />
 
                         {/* Searchable list of source documents */}

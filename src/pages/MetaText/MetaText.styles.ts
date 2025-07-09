@@ -1,6 +1,7 @@
 import { Theme } from '@mui/material/styles';
 
-export const getMetaTextPageStyles = (theme: Theme) => ({
+
+export const getMetaTextDetailStyles = (theme: Theme) => ({
     container: {
         display: 'flex',
         height: '100%',
