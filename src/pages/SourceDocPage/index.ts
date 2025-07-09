@@ -9,8 +9,8 @@
  * @since 2025-07-09
  */
 
-// Export the source document list page component
-export { default as SourceDocListPage } from './SourceDocListPage';
+// Export the source document page component
+export { default as SourceDocPage } from './SourceDocPage';
 
 // Export the source document detail page component  
 export { default as SourceDocDetailPage } from './SourceDocDetailPage';

@@ -17,6 +17,7 @@ export { default as LandscapeRequiredOverlay } from './LandscapeRequiredOverlay'
 export { default as DocumentHeader } from './DocumentHeader';
 export { default as StyleControls } from './StyleControls';
 export { default as SourceDocUploadForm } from './SourceDocUploadForm';
+export { default as DocumentListLayout } from './DocumentListLayout';
 export { default as MetaTextCreateForm } from '../pages/MetaText/components/MetaTextCreateForm';
 
 export { LoadingSpinner } from './LoadingSpinner';

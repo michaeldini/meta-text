@@ -10,16 +10,18 @@
  * @since 2025-07-09
  */
 
-import { useEffect } from 'react';
-import { Box, Typography, Slide } from '@mui/material';
-import type { ReactElement } from 'react';
-
-import { SearchableList } from 'features';
-import { PageContainer, MetaTextCreateForm } from 'components';
-import { useDocumentsStore } from 'store';
-import { usePageLogger } from 'hooks';
+import React, { ReactElement, useEffect } from 'react';
+import { useDocumentsStore } from '../../store/documentsStore';
+import { Slide } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { getAppStyles } from '../../styles/styles';
+import { usePageLogger } from '../../hooks/usePageLogger';
+import {
+    PageContainer,
+    DocumentListLayout,
+} from '../../components';
+import MetaTextCreateForm from './components/MetaTextCreateForm';
+import SearchableList from '../../features/searchablelist/components/SearchableList';
+
 /**
  * MetaTextPage Component
  * 
@@ -73,7 +75,7 @@ function MetaTextPage(): ReactElement {
         sourceDocs,
         sourceDocsLoading,
         sourceDocsError,
-        fetchSourceDocs
+        fetchSourceDocs,
     } = useDocumentsStore();
 
     /**
@@ -95,7 +97,6 @@ function MetaTextPage(): ReactElement {
      * Get the current theme for styling
      */
     const theme = useTheme();
-    const styles = getAppStyles(theme);
     return (
         <PageContainer
             loading={metaTextsLoading}
@@ -103,35 +104,18 @@ function MetaTextPage(): ReactElement {
         >
             {/* Smooth slide-up animation for the page content */}
             <Slide in={true} direction="up" timeout={500}>
-                <Box data-testid="metatext-list-content"
-                    sx={styles.sharedStyles.container}>
-                    {/* Page header */}
-                    <Box sx={styles.sharedStyles.container}>
-                        <Typography
-                            variant="h4"
-                            component="h1"
-                            sx={styles.sharedStyles.title}
-                        >
-                            MetaText Documents
-                        </Typography>
-                        <Typography
-                            variant="subtitle1"
-                            sx={styles.sharedStyles.subtitle}
-                        >
-                            Create new MetaText from a source document or browse existing ones.
-                        </Typography>
-                    </Box>
-
-                    {/* Create form for new MetaText documents */}
-                    <Box sx={styles.sharedStyles.containerBreakpoint}>
+                <DocumentListLayout
+                    title="MetaText Documents"
+                    subtitle="Create new MetaText from a source document or browse existing ones."
+                    formComponent={
                         <MetaTextCreateForm
                             sourceDocs={sourceDocs}
                             sourceDocsLoading={sourceDocsLoading}
                             sourceDocsError={sourceDocsError}
                             onSuccess={handleCreateSuccess}
                         />
-
-                        {/* Searchable list of MetaText documents */}
+                    }
+                    listComponent={
                         <SearchableList
                             items={metaTexts}
                             filterKey="title"
@@ -141,8 +125,8 @@ function MetaTextPage(): ReactElement {
                             emptyMessage="No MetaText documents found. Create some MetaTexts from your source documents to get started."
                             ariaLabel="List of MetaText documents"
                         />
-                    </Box>
-                </Box>
+                    }
+                />
             </Slide>
         </PageContainer>
     );

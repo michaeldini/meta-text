@@ -10,16 +10,17 @@
  * @since 2025-07-09
  */
 
-import { useEffect } from 'react';
-import { Box, Typography, Slide } from '@mui/material';
+import React, { ReactElement, useEffect } from 'react';
+import { useDocumentsStore } from '../../store/documentsStore';
+import { Slide } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import type { ReactElement } from 'react';
-
-import { SearchableList } from 'features';
-import { PageContainer, SourceDocUploadForm } from 'components';
-import { useDocumentsStore } from 'store';
-import { usePageLogger } from 'hooks';
 import { getAppStyles } from '../../styles/styles';
+import { usePageLogger } from '../../hooks/usePageLogger';
+import PageContainer from '../../components/PageContainer';
+import SourceDocUploadForm from '../../components/SourceDocUploadForm';
+import SearchableList from '../../features/searchablelist/components/SearchableList';
+import DocumentListLayout from '../../components/DocumentListLayout';
+
 /**
  * SourceDocPage Component
  * 
@@ -90,32 +91,15 @@ function SourceDocPage(): ReactElement {
         >
             {/* Smooth slide-up animation for the page content */}
             <Slide in={true} direction="up" timeout={500}>
-                <Box data-testid="sourcedoc-list-content"
-                    sx={styles.sharedStyles.container}>
-                    {/* Page header */}
-                    <Box sx={styles.sharedStyles.container}>
-                        <Typography
-                            variant="h4"
-                            component="h1"
-                            sx={styles.sharedStyles.title}
-                        >
-                            Source Documents
-                        </Typography>
-                        <Typography
-                            variant="subtitle1"
-                            sx={styles.sharedStyles.subtitle}
-                        >
-                            Upload a new source document or browse existing ones.
-                        </Typography>
-                    </Box>
-
-                    {/* Upload form for new documents */}
-                    <Box sx={styles.sharedStyles.containerBreakpoint}>
+                <DocumentListLayout
+                    title="Source Documents"
+                    subtitle="Upload a new source document or browse existing ones."
+                    formComponent={
                         <SourceDocUploadForm
                             onSuccess={fetchSourceDocs}
                         />
-
-                        {/* Searchable list of source documents */}
+                    }
+                    listComponent={
                         <SearchableList
                             items={sourceDocs}
                             filterKey="title"
@@ -125,15 +109,11 @@ function SourceDocPage(): ReactElement {
                             emptyMessage="No source documents found. Upload some documents to get started."
                             ariaLabel="List of source documents"
                         />
-                    </Box>
-                </Box>
+                    }
+                />
             </Slide>
         </PageContainer>
     );
 }
 
-// Export with a more descriptive name for TypeDoc
-export { SourceDocPage };
-
-// Default export for React component usage
 export default SourceDocPage;
