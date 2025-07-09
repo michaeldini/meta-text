@@ -9,10 +9,9 @@
  * @since 2025-07-09
  */
 
-import { Typography, IconButton, Tooltip } from '@mui/material';
+import { Typography, IconButton, Tooltip, Box } from '@mui/material';
 import type { ReactElement } from 'react';
 import { ArrowBackIcon } from 'icons';
-import { FlexBox } from 'components';
 import { getMetaTextReviewStyles } from '../../pages/MetaText/MetaText.styles';
 
 /**
@@ -50,7 +49,7 @@ interface HeaderProps {
  */
 export function Header({ metatextId, navigate, styles }: HeaderProps): ReactElement {
     return (
-        <FlexBox sx={styles.header}>
+        <Box sx={styles.header}>
             {metatextId && (
                 <Tooltip title="Back to MetaText Detail">
                     <IconButton onClick={() => navigate(`/metaText/${metatextId}`)}>
@@ -61,6 +60,6 @@ export function Header({ metatextId, navigate, styles }: HeaderProps): ReactElem
             <Typography variant="h4" gutterBottom sx={metatextId ? styles.title : undefined}>
                 Review
             </Typography>
-        </FlexBox>
+        </Box>
     );
 }

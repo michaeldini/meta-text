@@ -1,16 +1,15 @@
-import React, { JSX } from 'react';
+import { JSX } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, CssBaseline, useTheme } from '@mui/material';
 import { Box, Typography } from '@mui/material';
 import { Suspense, lazy, ComponentType } from 'react';
 
 import { NavBar } from 'features';
-import { LandscapeRequiredOverlay, AppSuspenseFallback, ErrorBoundary, GlobalNotifications, FlexBox } from 'components';
+import { AppSuspenseFallback, ErrorBoundary, GlobalNotifications } from 'components';
 
 import { getAppStyles, lightTheme, darkTheme } from './styles';
 import { useAuthStore } from 'store';
 import { useThemeContext } from './contexts/ThemeContext';
-import './styles/landscape.css';
 
 // Dynamically import pages for code splitting using barrel exports
 const HomePage = lazy(() => import('pages').then(module => ({ default: module.HomePage })));
@@ -77,11 +76,11 @@ function App() {
     };
 
     const NotFoundElement = (
-        <FlexBox>
+        <Box>
             <Typography variant="h4" color="text.secondary">
                 Page not found
             </Typography>
-        </FlexBox>
+        </Box>
     );
 
     return (
