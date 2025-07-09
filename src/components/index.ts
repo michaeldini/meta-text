@@ -16,6 +16,7 @@ export { default as GlobalNotifications } from './GlobalNotifications';
 export { default as LandscapeRequiredOverlay } from './LandscapeRequiredOverlay';
 export { default as DocumentHeader } from './DocumentHeader';
 export { default as StyleControls } from './StyleControls';
+export { default as SourceDocUploadForm } from './SourceDocUploadForm';
 
 export { LoadingSpinner } from './LoadingSpinner';
 export type { LoadingSpinnerProps } from './LoadingSpinner';

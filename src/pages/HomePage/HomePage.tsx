@@ -11,9 +11,10 @@
  * @since 2025-07-08
  */
 
-import { Box, Paper, Slide, useTheme } from '@mui/material';
+import { Box, Paper, Slide, useTheme, Button } from '@mui/material';
 import type { Theme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { PageContainer } from 'components';
 
@@ -64,6 +65,11 @@ function HomePage(): ReactElement {
     const theme: Theme = useTheme();
 
     /**
+     * Navigation hook for programmatic routing
+     */
+    const navigate = useNavigate();
+
+    /**
      * Computed styles for the HomePage component based on the current theme
      * @type {ReturnType<typeof getHomePageStyles>}
      */
@@ -112,6 +118,13 @@ function HomePage(): ReactElement {
         refreshData,
     });
 
+    /**
+     * Navigate to the source documents list page
+     */
+    const handleNavigateToSourceDocs = () => {
+        navigate('/sourcedoc');
+    };
+
     return (
         <PageContainer
             loading={sourceDocsLoading || metaTextsLoading}
@@ -122,6 +135,38 @@ function HomePage(): ReactElement {
                 <Box sx={styles.homePageContainer} data-testid="homepage-content">
                     {/* Welcome section with branding and introductory text */}
                     <WelcomeText />
+
+                    {/* Quick navigation section */}
+                    <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        my: 3,
+                        gap: 2
+                    }}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="large"
+                            onClick={handleNavigateToSourceDocs}
+                            data-testid="navigate-to-source-docs"
+                            sx={{
+                                fontWeight: 'bold',
+                                px: 4,
+                                py: 1.5,
+                                borderRadius: 2,
+                                textTransform: 'none',
+                                fontSize: '1.1rem',
+                                boxShadow: 2,
+                                '&:hover': {
+                                    boxShadow: 4,
+                                    transform: 'translateY(-1px)',
+                                },
+                                transition: 'all 0.2s ease-in-out'
+                            }}
+                        >
+                            Browse Source Documents
+                        </Button>
+                    </Box>
 
                     {/* Control toggles for document type and view mode selection */}
                     <HomePageToggles

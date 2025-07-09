@@ -58,7 +58,7 @@ function SearchableList({
 
     const handleItemClick = (id: number) => {
         if (docType === 'sourceDoc') {
-            navigate(`/source-document/${id}`);
+            navigate(`/sourcedoc/${id}`);
         } else {
             navigate(`/metaText/${id}`);
         }

@@ -18,6 +18,13 @@ vi.mock('./useHomePageContent', () => ({
     useHomePageContent: vi.fn(),
 }));
 
+// Mock react-router-dom
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', async () => ({
+    ...(await vi.importActual('react-router-dom')),
+    useNavigate: () => mockNavigate,
+}));
+
 // Mock the style function
 vi.mock('../../styles/styles', () => ({
     getHomePageStyles: vi.fn(() => ({
@@ -478,6 +485,36 @@ describe('HomePage', () => {
 
                 expect(screen.getByTestId('page-container')).toBeInTheDocument();
             }
+        });
+    });
+
+    describe('Navigation Features', () => {
+        it('renders the source documents navigation button', () => {
+            render(
+                <TestWrapper>
+                    <HomePage />
+                </TestWrapper>
+            );
+
+            const navButton = screen.getByTestId('navigate-to-source-docs');
+            expect(navButton).toBeInTheDocument();
+            expect(navButton).toHaveTextContent('Browse Source Documents');
+        });
+
+        it('navigates to source documents page when button is clicked', async () => {
+            const userEvent = await import('@testing-library/user-event');
+            const user = userEvent.default.setup();
+
+            render(
+                <TestWrapper>
+                    <HomePage />
+                </TestWrapper>
+            );
+
+            const navButton = screen.getByTestId('navigate-to-source-docs');
+            await user.click(navButton);
+
+            expect(mockNavigate).toHaveBeenCalledWith('/sourcedoc');
         });
     });
 });

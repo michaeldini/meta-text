@@ -14,6 +14,7 @@ import './styles/landscape.css';
 
 // Dynamically import pages for code splitting
 const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
+const SourceDocListPage = lazy(() => import('./pages/SourceDocPage/SourceDocListPage'));
 const SourceDocDetailPage = lazy(() => import('./pages/SourceDocPage/SourceDocDetailPage'));
 const MetaTextDetailPage = lazy(() => import('./pages/MetaTextPage/MetaTextDetailPage'));
 const MetaTextReviewPage = lazy(() => import('./pages/MetaTextPage/MetaTextReviewPage'));
@@ -32,7 +33,8 @@ const routes: RouteConfig[] = [
     { path: '/', element: HomePage, protected: true },
     { path: '/login', element: LoginPage, protected: false },
     { path: '/register', element: RegisterPage, protected: false },
-    { path: '/source-document/:sourceDocId', element: SourceDocDetailPage, protected: true },
+    { path: '/sourcedoc', element: SourceDocListPage, protected: true },
+    { path: '/sourcedoc/:sourceDocId', element: SourceDocDetailPage, protected: true },
     { path: '/metaText/:metaTextId', element: MetaTextDetailPage, protected: true },
     { path: '/metaText/:metaTextId/review', element: MetaTextReviewPage, protected: true },
     { path: '/experiments', element: ExperimentsPage, protected: false },

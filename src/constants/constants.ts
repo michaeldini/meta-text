@@ -12,7 +12,7 @@ export const LOADING_CONSTANTS = {
 } as const;
 
 export const ROUTES = {
-    SOURCE_DOC: '/source-document',
+    SOURCE_DOC: '/sourcedoc',
     META_TEXT: '/metaText',
 } as const;
 

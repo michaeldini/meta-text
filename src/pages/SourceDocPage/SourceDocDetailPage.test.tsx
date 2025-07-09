@@ -28,9 +28,9 @@ describe('SourceDocDetailPage', () => {
         vi.mocked(useSourceDocDetailData).mockReturnValue(mockData);
         return render(
             <ThemeProvider theme={theme}>
-                <MemoryRouter initialEntries={["/docs/123"]}>
+                <MemoryRouter initialEntries={["/sourcedoc/123"]}>
                     <Routes>
-                        <Route path="/docs/:sourceDocId" element={<SourceDocDetailPage />} />
+                        <Route path="/sourcedoc/:sourceDocId" element={<SourceDocDetailPage />} />
                     </Routes>
                 </MemoryRouter>
             </ThemeProvider>
