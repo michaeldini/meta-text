@@ -1,8 +1,9 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import { useAuth } from '../../store/authStore';
-import { Button, TextField, Box, Typography, Alert, Paper } from '@mui/material';
+import { Button, TextField, Box, Typography, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import log from '../../utils/logger';
+import { AppAlert } from 'components';
 
 interface RegisterPageProps {
     onRegisterSuccess?: () => void;
@@ -51,7 +52,7 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ onRegisterSuccess }) => {
                         margin="normal"
                         required
                     />
-                    {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
+                    {error && <AppAlert severity="error">{error}</AppAlert>}
                     <Button
                         type="submit"
                         variant="contained"

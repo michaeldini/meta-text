@@ -4,7 +4,7 @@
 
 
 import React, { ReactElement, useEffect } from 'react';
-import { Slide, Alert } from '@mui/material';
+import { Slide } from '@mui/material';
 
 import { useDocumentsStore } from 'store';
 
@@ -12,7 +12,8 @@ import {
     DocumentManagementLayout,
     PageContainer,
     SourceDocUploadForm,
-    SearchableList
+    SearchableList,
+    AppAlert
 } from 'components';
 import { FADE_IN_DURATION } from 'constants';
 
@@ -36,32 +37,34 @@ function SourceDocPage(): ReactElement {
             data-testid="sourcedoc-list-page"
         >
             {sourceDocsError && (
-                <Alert severity="error" style={{ marginBottom: '1rem' }}>
+                <AppAlert severity="error">
                     {sourceDocsError}
-                </Alert>
+                </AppAlert>
             )}
             {/* Smooth slide-up animation for the page content */}
             <Slide in={true} direction="up" timeout={FADE_IN_DURATION}>
-                <DocumentManagementLayout
-                    title="Source Documents"
-                    subtitle="Upload a new source document or browse existing ones."
-                    formComponent={
-                        <SourceDocUploadForm
-                            onSuccess={fetchSourceDocs}
-                        />
-                    }
-                    listComponent={
-                        <SearchableList
-                            items={sourceDocs}
-                            filterKey="title"
-                            title="Source Documents"
-                            loading={sourceDocsLoading}
-                            searchPlaceholder="Search source documents..."
-                            emptyMessage="No source documents found. Upload some documents to get started."
-                            ariaLabel="List of source documents"
-                        />
-                    }
-                />
+                <div>
+                    <DocumentManagementLayout
+                        title="Source Documents"
+                        subtitle="Upload a new source document or browse existing ones."
+                        formComponent={
+                            <SourceDocUploadForm
+                                onSuccess={fetchSourceDocs}
+                            />
+                        }
+                        listComponent={
+                            <SearchableList
+                                items={sourceDocs}
+                                filterKey="title"
+                                title="Source Documents"
+                                loading={sourceDocsLoading}
+                                searchPlaceholder="Search source documents..."
+                                emptyMessage="No source documents found. Upload some documents to get started."
+                                ariaLabel="List of source documents"
+                            />
+                        }
+                    />
+                </div>
             </Slide>
         </PageContainer>
     );

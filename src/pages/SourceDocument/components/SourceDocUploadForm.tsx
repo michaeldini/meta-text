@@ -9,11 +9,11 @@ import {
     Button,
     useTheme,
     LinearProgress,
-    Alert
 } from '@mui/material';
 import { FileUploadIcon } from 'icons';
 
 import { useSourceDocUpload } from '../hooks/useSourceDocUpload';
+import { AppAlert } from 'components';
 
 /**
  * Props for the SourceDocUploadForm component
@@ -88,7 +88,7 @@ function SourceDocUploadForm({ onSuccess, sx = {} }: SourceDocUploadFormProps): 
         },
         form: {
             display: 'flex',
-            flexDirection: 'column',
+            flexDirection: 'column' as const,
             gap: 2,
         },
         fileInputContainer: {
@@ -153,20 +153,20 @@ function SourceDocUploadForm({ onSuccess, sx = {} }: SourceDocUploadFormProps): 
 
             {/* Success Message */}
             {success && (
-                <Alert severity="success" sx={{ mb: 2 }} onClose={clearMessages}>
+                <AppAlert severity="success" onClose={clearMessages}>
                     {success}
-                </Alert>
+                </AppAlert>
             )}
 
             {/* Error Message */}
             {error && (
-                <Alert severity="error" sx={{ mb: 2 }} onClose={clearMessages}>
+                <AppAlert severity="error" onClose={clearMessages}>
                     {error}
-                </Alert>
+                </AppAlert>
             )}
 
             {/* Upload Form */}
-            <Box component="form" onSubmit={handleSubmit} sx={styles.form}>
+            <form onSubmit={handleSubmit} style={styles.form}>
                 {/* File Upload Section */}
                 <Box>
                     <Typography variant="subtitle1" component="label" htmlFor="file-input" gutterBottom>
@@ -235,7 +235,7 @@ function SourceDocUploadForm({ onSuccess, sx = {} }: SourceDocUploadFormProps): 
                 >
                     {loading ? 'Uploading...' : 'Upload Document'}
                 </Button>
-            </Box>
+            </form>
         </Paper>
     );
 }

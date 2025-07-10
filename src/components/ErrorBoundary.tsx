@@ -1,6 +1,7 @@
 import React from 'react';
-import { Box, Typography, Button, Alert } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
 import type { Logger } from '../types/global';
+import { AppAlert } from 'components';
 
 interface ErrorBoundaryState {
     hasError: boolean;
@@ -48,17 +49,16 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
         if (this.state.hasError) {
             return (
                 <Box sx={{ textAlign: 'center' }}>
-                    <Alert severity="error" sx={{ mb: 2 }}>
-                        <Typography variant="h6" color="error" gutterBottom>
-                            Something went wrong.
+                    <AppAlert severity="error" title="Something went wrong.">
+                        <Typography variant="body1" color="text.secondary">
+                            An unexpected error occurred. Please try reloading the page.
                         </Typography>
-                        {this.state.error && (
-                            <Typography variant="body2" sx={{ mt: 1 }}>
-                                {this.state.error.toString()}
-                            </Typography>
-                        )}
-                    </Alert>
-                    <Button variant="contained" onClick={this.handleReload}>
+                    </AppAlert>
+                    <Button
+                        variant="contained"
+                        onClick={this.handleReload}
+                        sx={{ mt: 2 }}
+                    >
                         Reload Page
                     </Button>
                 </Box>

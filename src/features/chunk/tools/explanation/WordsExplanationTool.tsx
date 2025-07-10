@@ -25,13 +25,12 @@ import {
     Box,
     Typography,
     Divider,
-    Alert
 } from '@mui/material';
 import { QuestionMarkIcon } from 'icons';
 import { useExplanation } from './useExplanation';
 import { ChunkType } from 'types';
 import { ExplanationResponse } from 'services';
-import { LoadingSpinner } from 'components';
+import { LoadingSpinner, AppAlert } from 'components';
 
 /**
  * UI Configuration Constants
@@ -351,21 +350,9 @@ const WordsExplanationTool: React.FC<ExplanationToolProps> = React.memo(({
                         Uses Material-UI Alert component for consistent styling.
                     */}
                     {error && (
-                        <Alert severity="error" sx={{ mb: 2 }}>
+                        <AppAlert severity="error">
                             {error}
-                        </Alert>
-                    )}
-
-                    {/* 
-                        Loading State Display
-                        
-                        Shows a centered spinner while explanation is being fetched.
-                        Separate from the icon loading state for better UX.
-                    */}
-                    {loading && (
-                        <Box sx={{ p: 2, display: 'flex', justifyContent: 'center' }}>
-                            <LoadingSpinner size={SPINNER_SIZE} />
-                        </Box>
+                        </AppAlert>
                     )}
 
                     {/* 

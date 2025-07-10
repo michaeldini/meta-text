@@ -8,8 +8,8 @@ import {
     TextField,
     Box,
     LinearProgress,
-    Alert
 } from '@mui/material';
+import { AppAlert } from 'components';
 
 interface ImageGenerationDialogProps {
     open: boolean;
@@ -52,9 +52,9 @@ const ImageGenerationDialog: React.FC<ImageGenerationDialogProps> = ({
                         </Box>
                     )}
                     {error && (
-                        <Alert severity="error" sx={{ mt: 2 }}>
+                        <AppAlert severity="error">
                             {error}
-                        </Alert>
+                        </AppAlert>
                     )}
                 </DialogContent>
                 <DialogActions>

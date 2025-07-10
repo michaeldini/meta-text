@@ -10,7 +10,6 @@ import {
     Button,
     useTheme,
     LinearProgress,
-    Alert,
     FormControl,
     InputLabel,
     Select,
@@ -21,6 +20,7 @@ import { StarsIcon } from 'icons';
 
 import { useMetaTextCreate } from '../hooks/useMetaTextCreate';
 import { SourceDocumentSummary } from 'types';
+import { AppAlert } from 'components';
 
 /**
  * Props for the MetaTextCreateForm component
@@ -152,23 +152,23 @@ function MetaTextCreateForm({
 
             {/* Success Message */}
             {success && (
-                <Alert severity="success" sx={{ mb: 2 }} onClose={clearMessages}>
+                <AppAlert severity="success" onClose={clearMessages}>
                     {success}
-                </Alert>
+                </AppAlert>
             )}
 
             {/* Error Message */}
             {error && (
-                <Alert severity="error" sx={{ mb: 2 }} onClose={clearMessages}>
+                <AppAlert severity="error" onClose={clearMessages}>
                     {error}
-                </Alert>
+                </AppAlert>
             )}
 
             {/* Source Documents Error */}
             {sourceDocsError && (
-                <Alert severity="warning" sx={{ mb: 2 }}>
+                <AppAlert severity="warning">
                     {sourceDocsError}
-                </Alert>
+                </AppAlert>
             )}
 
             {/* Create Form */}

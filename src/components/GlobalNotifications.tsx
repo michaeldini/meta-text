@@ -1,8 +1,9 @@
 import React from 'react';
-import { Snackbar, Alert } from '@mui/material';
+import { Snackbar } from '@mui/material';
 
 import { useNotificationStore } from 'store';
 import { NOTIFICATION_CONSTANTS } from 'constants';
+import { AppAlert } from 'components';
 
 const GlobalNotifications: React.FC = () => {
     const { notifications, hideNotification } = useNotificationStore();
@@ -23,14 +24,12 @@ const GlobalNotifications: React.FC = () => {
                         zIndex: NOTIFICATION_CONSTANTS.Z_INDEX
                     }}
                 >
-                    <Alert
+                    <AppAlert
                         onClose={() => hideNotification(notification.id)}
                         severity={notification.type}
-                        variant="filled"
-                        sx={{ minWidth: NOTIFICATION_CONSTANTS.MIN_WIDTH }}
                     >
                         {notification.message}
-                    </Alert>
+                    </AppAlert>
                 </Snackbar>
             ))}
         </>

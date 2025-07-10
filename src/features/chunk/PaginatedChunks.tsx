@@ -1,8 +1,8 @@
 import React, { ReactNode, useState, useRef } from 'react';
-import { Box, Pagination, Alert } from '@mui/material';
+import { Box, Pagination } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-import { LoadingBoundary, ErrorBoundary } from 'components';
+import { LoadingBoundary, ErrorBoundary, AppAlert } from 'components';
 import { log } from 'utils';
 import { useChunkStore } from 'store';
 import { Chunk } from 'features';
@@ -70,7 +70,7 @@ const PaginatedChunks = ({ metaTextId }: ChunksProps) => {
             <LoadingBoundary loading={loadingChunks}>
                 {chunksError ? (
                     <Box data-testid="chunks-container-error">
-                        <Alert severity="error">{chunksError}</Alert>
+                        <AppAlert severity="error">{chunksError}</AppAlert>
                     </Box>
                 ) : (
                     <Box

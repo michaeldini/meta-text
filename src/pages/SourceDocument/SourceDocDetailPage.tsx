@@ -2,11 +2,11 @@
 // This includes a header section, meta-data about the document, and the full document content.
 
 import { useParams } from 'react-router-dom';
-import { Alert, Box, Slide } from '@mui/material';
+import { Box, Slide } from '@mui/material';
 import type { ReactElement } from 'react';
 
 import SourceDoc from './components/SourceDoc';
-import { PageContainer, SourceDocInfo } from 'components';
+import { PageContainer, SourceDocInfo, AppAlert } from 'components';
 import { GenerateSourceDocInfoButton, StyleControls, DocumentHeader } from 'components';
 import { FADE_IN_DURATION } from 'constants';
 
@@ -49,12 +49,11 @@ function SourceDocDetailPage(): ReactElement {
                         </>
                     ) : (
                         // Error state when document is not found
-                        <Alert
+                        <AppAlert
                             severity="info"
-                            data-testid="sourcedoc-not-found"
                         >
-                            Document not found.
-                        </Alert>
+                            Source document not found.
+                        </AppAlert>
                     )}
                 </Box>
             </Slide>

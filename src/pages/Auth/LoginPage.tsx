@@ -1,9 +1,10 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import { useAuth } from '../../store/authStore';
-import { Button, TextField, Box, Typography, Alert, Paper, Zoom, Grow } from '@mui/material';
+import { Button, TextField, Box, Typography, Paper, Zoom, Grow } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import log from '../../utils/logger';
 import { FADE_IN_DURATION } from 'constants';
+import { AppAlert } from 'components';
 
 interface LoginPageProps {
     onLoginSuccess?: () => void;
@@ -53,7 +54,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
                             margin="normal"
                             required
                         />
-                        {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
+                        {error && <AppAlert severity="error">{error}</AppAlert>}
                         <Button
                             type="submit"
                             variant="contained"

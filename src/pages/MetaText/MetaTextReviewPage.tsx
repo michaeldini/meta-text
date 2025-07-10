@@ -6,8 +6,8 @@ import { useTheme } from '@mui/material/styles';
 import type { Theme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
 
-import { LoadingIndicator, ErrorAlert, Header, ReviewContent } from './components';
-
+import { AppAlert } from 'components';
+import { LoadingIndicator, Header, ReviewContent } from './components';
 import { useMetaTextReviewData } from './hooks/useMetaTextReviewData';
 
 import { getMetaTextReviewStyles } from './MetaText.styles';
@@ -40,7 +40,9 @@ function MetaTextReviewPage(): ReactElement {
 
     if (error) return (
         <Box sx={styles.root} data-testid="metatext-review-error">
-            <ErrorAlert message={error} />
+            <AppAlert severity="error" >
+                {error}
+            </AppAlert>
         </Box>
     );
 

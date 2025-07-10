@@ -13,6 +13,7 @@ export { default as GenerateSourceDocInfoButton } from './GenerateSourceDocInfoB
 export { default as ThemeToggle } from './ThemeToggle';
 export { default as GlobalNotifications } from './GlobalNotifications';
 export { default as DocumentHeader } from './DocumentHeader';
+export { AppAlert } from './AppAlert';
 
 export { default as SourceDocUploadForm } from '../pages/SourceDocument/components/SourceDocUploadForm';
 export { default as DocumentManagementLayout } from './DocumentManagementLayout';
