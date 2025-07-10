@@ -1,3 +1,5 @@
+// Ai generated component for toggling between light and dark themes
+
 import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { useTheme } from '@mui/material/styles';

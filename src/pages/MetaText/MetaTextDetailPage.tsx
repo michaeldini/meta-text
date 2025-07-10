@@ -50,6 +50,7 @@ function MetaTextDetailPage(): ReactElement | null {
                                     }
                                 />
                                 <StyleControls />
+
                                 <SourceDocInfo
                                     sourceDocumentId={
                                         metaText.source_document_id
