@@ -223,29 +223,6 @@ export const cacheUtils = {
             log.info('Cache Entries:', entries);
         }
     },
-
-    /**
-     * Warm up cache with commonly accessed data
-     */
-    warmUp: async () => {
-        try {
-            log.info('Cache: Warming up with commonly accessed data...');
-
-            // Import services dynamically to avoid circular dependencies
-            const { fetchSourceDocuments } = await import('../services/sourceDocumentService');
-            const { fetchMetaTexts } = await import('../services/metaTextService');
-
-            // Pre-load common data
-            await Promise.allSettled([
-                fetchSourceDocuments(),
-                fetchMetaTexts()
-            ]);
-
-            log.info('Cache: Warm-up completed');
-        } catch (error) {
-            log.error('Cache: Warm-up failed', error);
-        }
-    }
 };
 
 // Expose cache utilities in development mode only

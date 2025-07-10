@@ -24,7 +24,7 @@ export default function SourceDoc({ doc }: SourceDocProps) {
         <Box sx={{ ...styles.container }}>
             <Typography
                 aria-label="Document Text"
-                sx={{ fontSize: textSizePx, fontFamily, lineHeight }}
+                sx={{ fontSize: textSizePx, fontFamily, lineHeight, whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}
             >
                 {doc.text || 'No content available'}
             </Typography>

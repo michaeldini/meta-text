@@ -29,29 +29,34 @@ function MetaTextDetailPage(): ReactElement | null {
 
     return (
         <PageContainer loading={loading} data-testid="metatext-detail-page">
-            {metaText ? (
-                <Slide in={true} direction="up" timeout={500}>
-                    <Box
-                        sx={styles.container}
-                        data-testid="metatext-detail-content"
-                    >
-                        <DocumentHeader title={metaText.title}>
-                            <ReviewButton metaTextId={metaText.id} />
-                            <GenerateSourceDocInfoButton
-                                sourceDocumentId={metaText.source_document_id}
-                            />
-                            <StyleControls />
-                            <SourceDocInfo
-                                sourceDocumentId={metaText.source_document_id}
-                            />
-                        </DocumentHeader>
+            <Slide in={!!metaText} direction="up" timeout={500}>
+                <Box sx={styles.container} data-testid="metatext-detail-content">
+                    {metaText ? (
+                        <>
+                            <DocumentHeader title={metaText.title}>
+                                <ReviewButton metaTextId={metaText.id} />
+                                <GenerateSourceDocInfoButton
+                                    sourceDocumentId={
+                                        metaText.source_document_id
+                                    }
+                                />
+                                <StyleControls />
+                                <SourceDocInfo
+                                    sourceDocumentId={
+                                        metaText.source_document_id
+                                    }
+                                />
+                            </DocumentHeader>
 
-                        <PaginatedChunks metaTextId={metaText.id} />
+                            <PaginatedChunks metaTextId={metaText.id} />
 
-                        <ChunkToolButtons />
-                    </Box>
-                </Slide>
-            ) : null}
+                            <ChunkToolButtons />
+                        </>
+                    ) : (
+                        <div />
+                    )}
+                </Box>
+            </Slide>
         </PageContainer>
     );
 }
