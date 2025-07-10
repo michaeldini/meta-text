@@ -12,7 +12,7 @@
 import { Typography, IconButton, Tooltip, Box } from '@mui/material';
 import type { ReactElement } from 'react';
 import { ArrowBackIcon } from 'icons';
-import { getMetaTextReviewStyles } from '../../pages/MetaText/MetaText.styles';
+import { getMetaTextReviewStyles } from '../../../pages/MetaText/MetaText.styles';
 
 /**
  * Header Component Props

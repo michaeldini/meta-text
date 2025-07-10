@@ -6,7 +6,7 @@ import { useTheme } from '@mui/material/styles';
 import type { Theme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
 
-import { LoadingIndicator, ErrorAlert, Header, ReviewContent } from 'components';
+import { LoadingIndicator, ErrorAlert, Header, ReviewContent } from '../../features/review/components';
 
 import { useMetaTextReviewData } from './hooks/useMetaTextReviewData';
 
