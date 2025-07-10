@@ -10,7 +10,7 @@ import type { ReactElement } from 'react';
 import { PageContainer, ReviewButton } from 'components';
 import { ChunkToolButtons, SourceDocInfo } from 'features';
 import { PaginatedChunks } from 'features';
-import { useMetaTextDetailData } from './useMetaTextDetailData';
+import { useMetaTextDetailData } from './hooks/useMetaTextDetailData';
 
 import { getMetaTextDetailStyles } from './MetaText.styles';
 import {

@@ -1,7 +1,7 @@
 // Custom hook for fetching MetaText details
 
 import { useEffect } from 'react';
-import { useMetaTextDetailStore } from '../../store';
+import { useMetaTextDetailStore } from '../../../store';
 
 export const useMetaTextDetailData = (metaTextId: number | string | undefined) => {
     // UI message constants

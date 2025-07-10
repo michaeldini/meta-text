@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 import { StarsIcon } from 'icons';
 
-import { useMetaTextCreate } from './useMetaTextCreate';
+import { useMetaTextCreate } from '../hooks/useMetaTextCreate';
 import { SourceDocumentSummary } from 'types';
 
 /**
