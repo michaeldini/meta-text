@@ -1,39 +1,23 @@
-/**
- * @fileoverview Custom hook for MetaText creation functionality
- * 
- * A streamlined hook that manages the state and logic for creating MetaText documents
- * from existing source documents. This hook is simplified compared to the original 
- * CreateForm hooks and focuses solely on MetaText creation operations.
- * 
- * @author MetaText Development Team
- * @version 1.0.0
- * @since 2025-07-09
- */
-
+// TODO I don't know how this file works. 
+// Custom hook for managing MetaText creation form state and operations
 import { useState, useCallback } from 'react';
 import { createMetaText } from 'services';
 import { useNotifications } from 'store';
 import { log } from 'utils';
 
-/**
- * Options for the useMetaTextCreate hook
- */
+// i don't know why this is needed.
 export interface UseMetaTextCreateOptions {
-    /** Callback function called when creation succeeds */
     onSuccess?: () => void;
 }
 
-/**
- * Form data structure for MetaText creation
- */
+
+// Form data structure for MetaText creation
 export interface MetaTextCreateData {
     title: string;
     sourceDocId: number | null;
 }
 
-/**
- * Return type for the useMetaTextCreate hook
- */
+// Return type for the useMetaTextCreate hook
 export interface UseMetaTextCreateResult {
     // Form data
     title: string;
@@ -52,66 +36,23 @@ export interface UseMetaTextCreateResult {
     clearMessages: () => void;
 }
 
-/**
- * Custom hook for managing MetaText creation form state and operations
- * 
- * This hook provides a complete solution for MetaText creation, including:
- * - Form state management (title, source document selection)
- * - Validation and error handling
- * - API integration for MetaText creation
- * - Loading states and user feedback
- * - Success/error notifications
- * 
- * @param options - Configuration options for the hook
- * @returns Hook result object with form state and handlers
- * 
- * @example
- * ```tsx
- * function MetaTextForm() {
- *   const {
- *     title,
- *     sourceDocId,
- *     loading,
- *     error,
- *     handleSubmit,
- *     handleTitleChange,
- *     handleSourceDocChange
- *   } = useMetaTextCreate({
- *     onSuccess: () => refetchMetaTexts()
- *   });
- * 
- *   return (
- *     <form onSubmit={handleSubmit}>
- *       // Form fields...
- *     </form>
- *   );
- * }
- * ```
- */
 export function useMetaTextCreate({ onSuccess }: UseMetaTextCreateOptions = {}): UseMetaTextCreateResult {
-    /**
-     * Form data state
-     */
+
+    // Initial form data state
     const [data, setData] = useState<MetaTextCreateData>({
         title: '',
         sourceDocId: null
     });
 
-    /**
-     * Form state management
-     */
+    // Form state management
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
 
-    /**
-     * Notification system integration
-     */
+    // Notification system integration
     const { showSuccess, showError } = useNotifications();
 
-    /**
-     * Handle title input changes
-     */
+    // Handle title input changes
     const handleTitleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         const title = event.target.value;
         setData(prev => ({ ...prev, title }));
@@ -123,9 +64,7 @@ export function useMetaTextCreate({ onSuccess }: UseMetaTextCreateOptions = {}):
         }
     }, [error, success]);
 
-    /**
-     * Handle source document selection changes
-     */
+    // Handle source document selection changes
     const handleSourceDocChange = useCallback((event: any) => {
         const sourceDocId = event.target.value ? Number(event.target.value) : null;
         setData(prev => ({ ...prev, sourceDocId }));
@@ -137,9 +76,7 @@ export function useMetaTextCreate({ onSuccess }: UseMetaTextCreateOptions = {}):
         }
     }, [error, success]);
 
-    /**
-     * Validate form data
-     */
+    // Validate form data
     const validateForm = useCallback((): string | null => {
         if (!data.title.trim()) {
             return 'Please enter a title for your MetaText';
@@ -152,9 +89,7 @@ export function useMetaTextCreate({ onSuccess }: UseMetaTextCreateOptions = {}):
         return null;
     }, [data]);
 
-    /**
-     * Handle form submission
-     */
+    // Handle form submission
     const handleSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 

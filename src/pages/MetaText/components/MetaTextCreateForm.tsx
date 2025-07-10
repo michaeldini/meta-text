@@ -1,14 +1,5 @@
-/**
- * @fileoverview MetaTextCreateForm component for streamlined MetaText creation
- * 
- * A simplified, focused component for creating MetaText documents from existing
- * source documents. This component removes the complex mode switching from the 
- * original CreateForm and focuses solely on MetaText creation functionality.
- * 
- * @author MetaText Development Team
- * @version 1.0.0
- * @since 2025-07-09
- */
+// Provides a form for creating MetaText documents from source documents.
+// The user selects a source document, enters a title, and submits the form.
 
 import React from 'react';
 import {
@@ -26,9 +17,9 @@ import {
     MenuItem,
     FormHelperText
 } from '@mui/material';
-import { StarsIcon } from '../../../components/icons';
+import { StarsIcon } from 'icons';
 
-import { useMetaTextCreate } from '../../../components/hooks/useMetaTextCreate';
+import { useMetaTextCreate } from './useMetaTextCreate';
 import { SourceDocumentSummary } from 'types';
 
 /**

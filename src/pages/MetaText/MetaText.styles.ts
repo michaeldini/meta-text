@@ -1,3 +1,6 @@
+// Contains styles for MetaText details and review pages.
+//  (NOT for the MetaText landing page, which uses DocumentManagementLayout)
+
 import { Theme } from '@mui/material/styles';
 
 

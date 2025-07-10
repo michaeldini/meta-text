@@ -1,10 +1,8 @@
+// Custom hook for fetching MetaText details
+
 import { useEffect } from 'react';
 import { useMetaTextDetailStore } from '../../store';
 
-/**
- * Hook for MetaText detail data and page logic.
- * Handles data fetching, error handling, and provides UI messages.
- */
 export const useMetaTextDetailData = (metaTextId: number | string | undefined) => {
     // UI message constants
     const MESSAGES = {

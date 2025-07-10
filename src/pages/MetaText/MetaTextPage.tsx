@@ -1,7 +1,10 @@
+// Landing page for managing MetaText documents, allowing users to create and browse existing MetaTexts.
+// Uses DocumentManagementLayout for consistent layout with other document management pages.
+// Provides a searchable list of MetaTexts and a form to create new MetaTexts from source documents.
+
 import React, { ReactElement, useEffect } from 'react';
 import { useDocumentsStore } from '../../store/documentsStore';
 import { Slide } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import {
     PageContainer,
     DocumentManagementLayout,
@@ -14,7 +17,7 @@ function MetaTextPage(): ReactElement {
     const {
         metaTexts,
         metaTextsLoading,
-        metaTextsError,
+        metaTextsError, // TODO
         fetchMetaTexts,
         sourceDocs,
         sourceDocsLoading,

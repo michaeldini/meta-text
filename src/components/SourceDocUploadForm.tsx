@@ -1,14 +1,4 @@
-/**
- * @fileoverview SourceDocUploadForm component for streamlined file uploads
- * 
- * A simplified, focused component for uploading source documents. This component
- * removes the complex mode switching from the original CreateForm and focuses
- * solely on file upload functionality.
- * 
- * @author MetaText Development Team
- * @version 1.0.0
- * @since 2025-07-09
- */
+// Custom React component for uploading source documents
 
 import React from 'react';
 import {
@@ -23,7 +13,7 @@ import {
 } from '@mui/material';
 import { FileUploadIcon } from './icons';
 
-import { useSourceDocUpload } from './hooks/useSourceDocUpload';
+import { useSourceDocUpload } from '../pages/SourceDocPage/useSourceDocUpload';
 
 /**
  * Props for the SourceDocUploadForm component

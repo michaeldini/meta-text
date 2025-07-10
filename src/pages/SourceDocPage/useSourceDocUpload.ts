@@ -1,15 +1,5 @@
-/**
- * @fileoverview Custom hook for source document upload functionality
- * 
- * A streamlined hook that manages the state and logic for uploading source documents.
- * This hook is simplified compared to the original CreateForm hooks and focuses
- * solely on file upload operations.
- * 
- * @author MetaText Development Team
- * @version 1.0.0
- * @since 2025-07-09
- */
-
+// TODO I don't know how this file works.
+// Custom hook for managing source document upload
 import { useState, useCallback } from 'react';
 import { createSourceDocument } from 'services';
 import { useNotifications } from 'store';
@@ -52,51 +42,6 @@ export interface UseSourceDocUploadResult {
     clearMessages: () => void;
 }
 
-/**
- * Custom hook for managing source document upload
- * 
- * This hook provides a complete solution for handling file uploads to create
- * source documents. It manages form state, validation, submission, and user feedback.
- * 
- * Features:
- * - Form state management (title, file, loading, errors)
- * - Form validation (required fields, file type checking)
- * - File upload submission with API integration
- * - Success/error notifications
- * - Loading states during upload
- * - Form reset after successful submission
- * 
- * @category Hooks
- * @subcategory Forms
- * @hook
- * @example
- * ```tsx
- * function UploadForm() {
- *   const {
- *     title,
- *     file,
- *     loading,
- *     handleTitleChange,
- *     handleFileChange,
- *     handleSubmit,
- *     isSubmitDisabled
- *   } = useSourceDocUpload({
- *     onSuccess: () => refetchDocuments()
- *   });
- * 
- *   return (
- *     <form onSubmit={handleSubmit}>
- *       <input value={title} onChange={handleTitleChange} />
- *       <input type="file" onChange={handleFileChange} />
- *       <button disabled={isSubmitDisabled}>Upload</button>
- *     </form>
- *   );
- * }
- * ```
- * 
- * @param options - Configuration options for the hook
- * @returns {UseSourceDocUploadResult} Hook state and handlers
- */
 export function useSourceDocUpload(options: UseSourceDocUploadOptions = {}): UseSourceDocUploadResult {
     const { onSuccess } = options;
     const { showSuccess, showError } = useNotifications();
