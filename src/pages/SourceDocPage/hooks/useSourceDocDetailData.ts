@@ -1,7 +1,7 @@
 // Custom hook to encapsulate data fetching and state logic for SourceDocDetailPage
 
 import { useEffect } from 'react';
-import { useSourceDocumentDetailStore } from '../../store';
+import { useSourceDocumentDetailStore } from 'store';
 
 export function useSourceDocDetailData(sourceDocId?: string) {
     const store = useSourceDocumentDetailStore();

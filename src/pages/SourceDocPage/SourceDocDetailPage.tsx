@@ -9,7 +9,7 @@ import SourceDoc from './components/SourceDoc';
 import { PageContainer, SourceDocInfo } from 'components';
 import { GenerateSourceDocInfoButton, StyleControls, DocumentHeader } from 'components';
 
-import { useSourceDocDetailData } from './useSourceDocDetailData';
+import { useSourceDocDetailData } from './hooks/useSourceDocDetailData';
 
 function SourceDocDetailPage(): ReactElement {
 

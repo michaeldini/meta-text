@@ -1,3 +1,6 @@
+// A list component that allows searching and displaying a list of items with delete functionality.
+//  TODO: Add more detailed comments and documentation for each function and prop.
+
 import React, { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { List, ListItem, ListItemButton, ListItemText, Paper, TextField, InputAdornment, Typography, Box, IconButton } from '@mui/material';

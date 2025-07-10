@@ -6,4 +6,4 @@ export { default as SourceDocPage } from './SourceDocPage';
 export { default as SourceDocDetailPage } from './SourceDocDetailPage';
 
 // Export custom hooks
-export { useSourceDocDetailData } from './useSourceDocDetailData';
+export { useSourceDocDetailData } from './hooks/useSourceDocDetailData';

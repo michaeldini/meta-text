@@ -11,9 +11,9 @@ import {
     LinearProgress,
     Alert
 } from '@mui/material';
-import { FileUploadIcon } from './icons';
+import { FileUploadIcon } from 'icons';
 
-import { useSourceDocUpload } from '../pages/SourceDocPage/useSourceDocUpload';
+import { useSourceDocUpload } from '../hooks/useSourceDocUpload';
 
 /**
  * Props for the SourceDocUploadForm component
