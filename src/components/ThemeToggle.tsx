@@ -24,17 +24,6 @@ interface ThemeToggleProps {
     'data-testid'?: string;
 }
 
-/**
- * ThemeToggle Component
- * 
- * A button that toggles between light and dark themes.
- * Shows appropriate icon based on current theme mode.
- * 
- * @param onToggle - Function called when theme should be toggled
- * @param size - Size of the icon button
- * @param className - Additional CSS class
- * @param data-testid - Test identifier
- */
 export const ThemeToggle: React.FC<ThemeToggleProps> = ({
     onToggle,
     size = 'medium',

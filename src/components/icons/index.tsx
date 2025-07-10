@@ -24,6 +24,9 @@ import {
     ArrowLeftStartOnRectangleIcon as LogoutSvg,
     PlusIcon as PlusSvg,
     TicketIcon as TicketSvg,
+    ChatBubbleLeftIcon as ChatBubbleLeftSvg,
+    DocumentArrowUpIcon as DocumentArrowUpSvg,
+    DocumentArrowDownIcon as DocumentArrowDownSvg,
 } from '@heroicons/react/24/solid';
 import { SVGProps } from 'react';
 
@@ -54,7 +57,8 @@ export const LoginIcon: React.FC<IconProps> = (props) => <ThemedIcon as={LoginSv
 export const LogoutIcon: React.FC<IconProps> = (props) => <ThemedIcon as={LogoutSvg} {...props} />;
 export const PlusIcon: React.FC<IconProps> = (props) => <ThemedIcon as={PlusSvg} {...props} />;
 export const TicketIcon: React.FC<IconProps> = (props) => <ThemedIcon as={TicketSvg} {...props} />;
-
-// unused icons but may be needed later
+export const ChatBubbleLeftIcon: React.FC<IconProps> = (props) => <ThemedIcon as={ChatBubbleLeftSvg} {...props} />;
 export const PhotoFilterIcon: React.FC<IconProps> = (props) => <ThemedIcon as={AdjustmentsHorizontalSvg} {...props} />;
+export const DocumentUploadIcon: React.FC<IconProps> = (props) => <ThemedIcon as={DocumentArrowUpSvg} {...props} />;
+export const DocumentDownloadIcon: React.FC<IconProps> = (props) => <ThemedIcon as={DocumentArrowDownSvg} {...props} />;
 

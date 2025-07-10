@@ -1,12 +1,12 @@
+// Centralized navigation configuration for the app.
+// All navigation items, including brand, are defined here.
+// Use this as the single source of truth for navigation structure.
+
+
 import { NavBarProps } from './types';
 
-import { MenuIcon, LoginIcon, LogoutIcon, HomeIcon, PlusIcon, TicketIcon } from 'icons';
+import { MenuIcon, LoginIcon, LogoutIcon, HomeIcon, PlusIcon, ChatBubbleLeftIcon, DocumentUploadIcon, DocumentDownloadIcon } from 'icons';
 
-/**
- * Centralized navigation configuration for the app.
- * All navigation items, including brand, are defined here.
- * Use this as the single source of truth for navigation structure.
- */
 
 export const getNavigationConfig = (logout: () => void): NavBarProps => ({
     config: {
@@ -23,7 +23,21 @@ export const getNavigationConfig = (logout: () => void): NavBarProps => ({
                 label: 'About',
                 path: '/about',
                 showWhen: 'always' as const,
-                icon: TicketIcon,
+                icon: ChatBubbleLeftIcon,
+            },
+            {
+                id: 'metatext',
+                label: 'MetaTexts',
+                path: '/metatext',
+                showWhen: 'authenticated' as const,
+                icon: DocumentUploadIcon,
+            },
+            {
+                id: 'sourcedoc',
+                label: 'SourceDocs',
+                path: '/sourcedoc',
+                showWhen: 'authenticated' as const,
+                icon: DocumentDownloadIcon,
             },
             {
                 id: 'home',

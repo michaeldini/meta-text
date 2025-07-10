@@ -1,3 +1,5 @@
+// Navigation bar that sites at the top of the application, providing navigation links and theme toggle functionality.
+
 import React from 'react';
 import {
     AppBar,
@@ -31,12 +33,3 @@ const NavBar: React.FC = () => {
 };
 
 export default NavBar;
-
-/**
- * NavBar component for application navigation.
- *
- * @param config - Navigation configuration object. Must include:
- *   - brand: { label: string; path: string }
- *   - items: Array<{ id: string; label: string; path?: string; action?: () => void; icon?: React.ReactNode; showWhen: 'authenticated' | 'unauthenticated' | 'always'; disabled?: boolean; badge?: string | number }>
- * @param data-testid - Optional test id for testing.
- */

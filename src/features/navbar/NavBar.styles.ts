@@ -1,14 +1,6 @@
 import { Theme } from '@mui/material/styles';
 import { alpha } from '@mui/material/styles';
 
-/**
- * Simplified navbar styles - theme-aware and maintainable
- * Focus on responsive feel without unnecessary complexity
- */
-
-/**
- * Creates all navbar styles in one simple function
- */
 export const createNavbarStyles = (theme: Theme) => ({
     // App bar with theme-aware background and transitions - full width for smooth loading
     appBar: {
@@ -68,9 +60,6 @@ export const createNavbarStyles = (theme: Theme) => ({
         margin: theme.spacing(0.25, 0),
         gap: theme.spacing(1),
         backgroundColor: 'black',
-        // '&:hover': {
-        //     backgroundColor: theme.palette.action.hover,
-        // },
         '&.Mui-selected': {
             backgroundColor: theme.palette.secondary.main,
         },
