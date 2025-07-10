@@ -5,8 +5,8 @@ import { useParams } from 'react-router-dom';
 import { Alert, Box, Slide } from '@mui/material';
 import type { ReactElement } from 'react';
 
-import { SourceDocInfo, SourceDoc } from 'features';
-import { PageContainer } from 'components';
+import SourceDoc from './components/SourceDoc';
+import { PageContainer, SourceDocInfo } from 'components';
 import { GenerateSourceDocInfoButton, StyleControls, DocumentHeader } from 'components';
 
 import { useSourceDocDetailData } from './useSourceDocDetailData';

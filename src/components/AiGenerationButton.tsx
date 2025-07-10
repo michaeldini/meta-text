@@ -1,7 +1,12 @@
+// A button component styled with a StarIcon for AI generation actions, with loading and tooltip support.
+// Designed to be reusable.
+// Used wherever the app requires a button to trigger AI generation tasks, such as generating summaries, explanations, or other AI-driven content. 
+
 import React from 'react';
 import { Button, CircularProgress, Tooltip } from '@mui/material';
 import type { SxProps, Theme } from '@mui/material/styles';
 import { StarsIcon } from 'icons';
+
 export interface AiGenerationButtonProps {
     label: string;
     toolTip?: string;

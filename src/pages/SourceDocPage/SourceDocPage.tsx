@@ -7,11 +7,12 @@ import React, { ReactElement, useEffect } from 'react';
 import { Slide, Alert } from '@mui/material';
 
 import { useDocumentsStore } from 'store';
-import { SearchableList } from 'features';
+
 import {
     DocumentManagementLayout,
     PageContainer,
-    SourceDocUploadForm
+    SourceDocUploadForm,
+    SearchableList
 } from 'components';
 
 function SourceDocPage(): ReactElement {

@@ -1,3 +1,5 @@
+// TODO I don't know how this works. 
+
 import { CircularProgress, Box } from '@mui/material';
 import React from 'react';
 import { LOADING_CONSTANTS } from 'constants';

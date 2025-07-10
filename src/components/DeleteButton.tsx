@@ -17,7 +17,6 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ onClick, disabled, label = 
         <Tooltip title={label} placement="top">
             <span>
                 <IconButton
-                    // sx={{ color: theme.palette.text.primary, opacity: .5 }}
                     data-testid="delete-button"
                     onClick={onClick}
                     disabled={disabled}

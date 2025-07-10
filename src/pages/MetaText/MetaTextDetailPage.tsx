@@ -7,8 +7,8 @@ import { Box, useTheme, Slide } from '@mui/material';
 import type { Theme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
 
-import { PageContainer, ReviewButton } from 'components';
-import { ChunkToolButtons, SourceDocInfo } from 'features';
+import { PageContainer, ReviewButton, SourceDocInfo } from 'components';
+import { ChunkToolButtons } from 'features';
 import { PaginatedChunks } from 'features';
 import { useMetaTextDetailData } from './hooks/useMetaTextDetailData';
 

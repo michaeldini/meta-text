@@ -7,8 +7,8 @@ import { ErrorBoundary, LoadingBoundary, DeleteButton } from 'components';
 import { SearchIcon, ClearIcon } from 'icons';
 import { useDocumentsStore, useNotifications } from 'store';
 
-import { useFilteredList } from '../hooks/useFilteredList';
-import { createSearchableListStyles } from '../styles';
+import { useFilteredList } from 'hooks';
+import { getAppStyles } from 'styles';
 import type { MetaTextSummary, SourceDocumentSummary, } from 'types'
 
 export interface SearchableListProps {
@@ -78,7 +78,7 @@ function SearchableList({
     };
 
     const theme = useTheme();
-    const styles = createSearchableListStyles(theme);
+    const styles = getAppStyles(theme);
 
     // Extract adornments to constants for better readability
     const startAdornment = (
@@ -129,7 +129,7 @@ function SearchableList({
                         value={search}
                         onChange={handleSearchChange}
                         aria-label="Search items"
-                        sx={styles.searchInput}
+                        sx={styles.searchableList.searchInput}
                         slotProps={{
                             input: {
                                 startAdornment,
@@ -146,7 +146,7 @@ function SearchableList({
                     >
                         {/* No Results */}
                         {filteredItems.length === 0 ? (
-                            <ListItem role="listitem" sx={styles.noResults}>
+                            <ListItem role="listitem" sx={styles.searchableList.noResults}>
                                 <ListItemText
                                     primary="No items found."
                                 />
@@ -168,7 +168,7 @@ function SearchableList({
                                             />
                                         }
                                         disablePadding
-                                        sx={styles.listItem}
+                                        sx={styles.searchableList.listItem}
                                     >
                                         <ListItemButton
                                             onClick={() => handleItemClick(item.id)}

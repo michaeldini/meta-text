@@ -3,14 +3,16 @@
 // Provides a searchable list of MetaTexts and a form to create new MetaTexts from source documents.
 
 import React, { ReactElement, useEffect } from 'react';
-import { useDocumentsStore } from '../../store/documentsStore';
 import { Slide } from '@mui/material';
+
+import { useDocumentsStore } from 'store';
 import {
     PageContainer,
     DocumentManagementLayout,
+    SearchableList
 } from 'components';
+
 import MetaTextCreateForm from './components/MetaTextCreateForm';
-import { SearchableList } from 'features';
 
 function MetaTextPage(): ReactElement {
 

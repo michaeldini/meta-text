@@ -1,4 +1,4 @@
-import { Theme, keyframes } from '@mui/material/styles';
+import { Theme, alpha, keyframes } from '@mui/material/styles';
 
 /**
  * Unified styles function that provides all application-level styles
@@ -103,6 +103,28 @@ export const getAppStyles = (theme: Theme) => ({
         subtitle: {
             mb: 2,
             color: 'text.secondary',
+        },
+    },
+
+    // styles for SearchableList component
+    searchableList: {
+        root: {
+            padding: theme.spacing(2),
+        },
+        searchInput: {
+            paddingX: theme.spacing(2),
+            marginBottom: theme.spacing(2),
+        },
+        noResults: {
+            textAlign: 'center',
+            fontStyle: 'italic',
+            color: theme.palette.text.secondary,
+        },
+        listItem: {
+            padding: theme.spacing(2),
+            '&:hover': {
+                backgroundColor: alpha(theme.palette.primary.main, 0.1),
+            },
         },
     },
 });

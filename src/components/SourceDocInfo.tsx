@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Box, useTheme, Accordion, AccordionSummary, AccordionDetails, Typography, Alert } from '@mui/material';
 import { ExpandMoreIcon } from 'icons';
-import { getSourceDocumentStyles } from '../styles/styles';
+
 import { useDocumentsStore } from 'store/documentsStore';
 import { LoadingSpinner } from 'components';
 
@@ -31,7 +31,7 @@ function splitToArray(str?: string | null): string[] {
 
 const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ sourceDocumentId }) => {
     const theme = useTheme();
-    const styles = getSourceDocumentStyles(theme);
+
     const sourceDocs = useDocumentsStore(s => s.sourceDocs);
     const loading = useDocumentsStore(s => s.sourceDocsLoading);
     const error = useDocumentsStore(s => s.sourceDocsError);
@@ -93,14 +93,17 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ sourceDocumentId }) => {
         return <LoadingSpinner />;
     }
     if (error) {
-        return <Box sx={styles.container}><Alert severity="error">{error}</Alert></Box>;
+        return <Box><Alert severity="error">{error}</Alert></Box>;
     }
     if (!doc) {
-        return <Box sx={styles.container}><Alert severity="warning">Document not found.</Alert></Box>;
+        return <Box><Alert severity="warning">Document not found.</Alert></Box>;
     }
 
     return (
-        <Box sx={styles.container} data-testid="source-doc-info">
+        <Box sx={{
+            width: '100%',
+            paddingX: theme.spacing(2),
+        }} data-testid="source-doc-info">
             <Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography variant="h6">Document: {doc.title}</Typography>

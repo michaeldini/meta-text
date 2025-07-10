@@ -1,3 +1,5 @@
+export { default as SourceDocInfo } from './SourceDocInfo';
+export { default as SearchableList } from './SearchableList';
 export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as AppSuspenseFallback } from './AppSuspenseFallback';
 export { default as LoadingBoundary } from './LoadingBoundary';

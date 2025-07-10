@@ -7,7 +7,8 @@ import type { Theme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
 
 import { LoadingIndicator, ErrorAlert, Header, ReviewContent } from 'components';
-import { useMetaTextReviewData } from 'hooks';
+
+import { useMetaTextReviewData } from './hooks/useMetaTextReviewData';
 
 import { getMetaTextReviewStyles } from './MetaText.styles';
 
@@ -16,7 +17,7 @@ function MetaTextReviewPage(): ReactElement {
     // Extract MetaText ID from URL parameters and convert to number
     const { metaTextId: metatextIdParam } = useParams<{ metaTextId?: string }>();
 
-    // Convert the metatextIdParam to a number, or undefined if not present
+    // Convert the metatextIdParam to a number, or undefined if not present TODO: handle invalid IDs gracefully
     const metatextId: number | undefined = metatextIdParam ? Number(metatextIdParam) : undefined;
 
     // React Router navigation function for programmatic navigation
