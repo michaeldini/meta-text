@@ -25,13 +25,13 @@ import {
     Box,
     Typography,
     Divider,
-    CircularProgress,
     Alert
 } from '@mui/material';
 import { QuestionMarkIcon } from 'icons';
 import { useExplanation } from './useExplanation';
 import { ChunkType } from 'types';
 import { ExplanationResponse } from 'services';
+import { LoadingSpinner } from 'components';
 
 /**
  * UI Configuration Constants
@@ -41,7 +41,7 @@ import { ExplanationResponse } from 'services';
  */
 const DRAWER_WIDTH = 500; // Width of the explanation drawer on desktop (px)
 const DRAWER_Z_INDEX = 1300; // Z-index to ensure drawer appears above other content
-const ICON_SIZE = 20; // Size of the loading spinner icon (px)
+const SPINNER_SIZE = 20; // Size of the loading spinner icon (px)
 
 /**
  * Utility function to clean text input by removing non-ASCII punctuation
@@ -295,7 +295,7 @@ const WordsExplanationTool: React.FC<ExplanationToolProps> = React.memo(({
                     aria-label={`Define ${cleanedWord}`}
                 >
                     {loading ? (
-                        <CircularProgress size={ICON_SIZE} />
+                        <LoadingSpinner size={SPINNER_SIZE} />
                     ) : (
                         <QuestionMarkIcon />
                     )}
@@ -363,8 +363,8 @@ const WordsExplanationTool: React.FC<ExplanationToolProps> = React.memo(({
                         Separate from the icon loading state for better UX.
                     */}
                     {loading && (
-                        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
-                            <CircularProgress />
+                        <Box sx={{ p: 2, display: 'flex', justifyContent: 'center' }}>
+                            <LoadingSpinner size={SPINNER_SIZE} />
                         </Box>
                     )}
 

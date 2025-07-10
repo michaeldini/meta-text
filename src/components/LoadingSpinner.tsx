@@ -25,6 +25,8 @@ export interface LoadingSpinnerProps {
     sx?: SxProps<Theme>;
     /** Minimum height of the loading container */
     minHeight?: number | string;
+    /** Accessibility label for the spinner */
+    'aria-label'?: string;
 }
 
 /**
@@ -50,6 +52,7 @@ const defaultStyles: SxProps<Theme> = {
  * @param props.color - Color of the spinner (default: 'primary')
  * @param props.sx - Custom styles to apply to the container
  * @param props.minHeight - Minimum height of the loading container (default: '200px')
+ * @param props['aria-label'] - Accessibility label for the spinner (default: 'Loading content')
  * @returns {ReactElement} The loading spinner component
  * 
  * @example
@@ -69,6 +72,7 @@ export function LoadingSpinner({
     color = 'primary',
     sx,
     minHeight = '200px',
+    'aria-label': ariaLabel = 'Loading content',
 }: LoadingSpinnerProps): ReactElement {
     const combinedStyles: SxProps<Theme> = [
         defaultStyles,
@@ -78,7 +82,7 @@ export function LoadingSpinner({
 
     return (
         <Box sx={combinedStyles}>
-            <CircularProgress size={size} color={color} />
+            <CircularProgress size={size} color={color} aria-label={ariaLabel} />
         </Box>
     );
 }

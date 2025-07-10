@@ -3,9 +3,10 @@
 // Used wherever the app requires a button to trigger AI generation tasks, such as generating summaries, explanations, or other AI-driven content. 
 
 import React from 'react';
-import { Button, CircularProgress, Tooltip } from '@mui/material';
+import { Button, Tooltip } from '@mui/material';
 import type { SxProps, Theme } from '@mui/material/styles';
 import { StarsIcon } from 'icons';
+import { LoadingSpinner } from 'components';
 
 export interface AiGenerationButtonProps {
     label: string;
@@ -27,7 +28,7 @@ const AiGenerationButton: React.FC<AiGenerationButtonProps> = ({ label, toolTip,
             aria-label={toolTip || 'AI Generation Button'}
             data-testid="ai-generation-button"
         >
-            {loading ? <CircularProgress aria-label="Loading AI generation" /> :
+            {loading ? <LoadingSpinner size={24} minHeight="auto" aria-label="Loading AI generation" /> :
                 <>
                     <StarsIcon style={{ marginRight: 8 }} />
                     {label}

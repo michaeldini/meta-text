@@ -1,10 +1,8 @@
-import { Box, CircularProgress } from '@mui/material';
 import type { ReactElement } from 'react';
+import { LoadingSpinner } from 'components';
 
 export function LoadingIndicator(): ReactElement {
     return (
-        <Box>
-            <CircularProgress />
-        </Box>
+        <LoadingSpinner />
     );
 }

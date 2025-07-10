@@ -1,7 +1,8 @@
 import React from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Box, CircularProgress, Typography } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Box, Typography } from '@mui/material';
 import CompressionStyleSelect from './CompressionStyleSelect';
 import CompressionPreview from './CompressionPreview';
+import { LoadingSpinner } from 'components';
 
 /**
  * Configuration object for compression style options
@@ -72,7 +73,7 @@ const CompressionDialog: React.FC<CompressionDialogProps> = ({
             {/* Preview generation section */}
             <Box mt={2}>
                 <Button onClick={onPreview} disabled={!canPreview} variant="outlined">
-                    {loading ? <CircularProgress size={20} /> : 'Preview Compression'}
+                    {loading ? <LoadingSpinner size={20} minHeight="auto" /> : 'Preview Compression'}
                 </Button>
             </Box>
 
@@ -87,7 +88,7 @@ const CompressionDialog: React.FC<CompressionDialogProps> = ({
         <DialogActions>
             <Button onClick={onClose} disabled={saving}>Cancel</Button>
             <Button onClick={onSave} disabled={!canSave} variant="contained" color="primary">
-                {saving ? <CircularProgress size={20} /> : 'Save Compression'}
+                {saving ? <LoadingSpinner size={20} minHeight="auto" /> : 'Save Compression'}
             </Button>
         </DialogActions>
     </Dialog>
