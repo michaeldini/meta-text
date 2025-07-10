@@ -11,6 +11,7 @@ import { PageContainer, ReviewButton, SourceDocInfo } from 'components';
 import { ChunkToolButtons } from 'features';
 import { PaginatedChunks } from 'features';
 import { useMetaTextDetailData } from './hooks/useMetaTextDetailData';
+import { useSourceDocDetailData } from 'hooks';
 
 import { getMetaTextDetailStyles } from './MetaText.styles';
 import {
@@ -20,7 +21,6 @@ import {
 } from 'components';
 
 function MetaTextDetailPage(): ReactElement | null {
-
     // Extract the metaTextId from the URL parameters
     const { metaTextId } = useParams<{ metaTextId: string }>();
 
@@ -32,6 +32,11 @@ function MetaTextDetailPage(): ReactElement | null {
 
     // Fetch the metaText details using the custom hook
     const { metaText, loading } = useMetaTextDetailData(metaTextId); // Todo handle errors
+
+    // Fetch the source document details using the custom hook unconditionally
+    const { doc: sourceDoc } = useSourceDocDetailData(
+        metaText ? String(metaText.source_document_id) : ""
+    );
 
     const theme: Theme = useTheme();
     const styles = getMetaTextDetailStyles(theme);
@@ -45,17 +50,13 @@ function MetaTextDetailPage(): ReactElement | null {
                             <DocumentHeader title={metaText.title}>
                                 <ReviewButton metaTextId={metaText.id} />
                                 <GenerateSourceDocInfoButton
-                                    sourceDocumentId={
-                                        metaText.source_document_id
-                                    }
+                                    sourceDocumentId={metaText.source_document_id}
                                 />
                                 <StyleControls />
 
-                                <SourceDocInfo
-                                    sourceDocumentId={
-                                        metaText.source_document_id
-                                    }
-                                />
+                                {sourceDoc && (
+                                    <SourceDocInfo doc={sourceDoc} />
+                                )}
                             </DocumentHeader>
 
                             <PaginatedChunks metaTextId={metaText.id} />

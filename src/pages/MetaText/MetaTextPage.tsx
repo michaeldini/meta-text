@@ -27,6 +27,8 @@ function MetaTextPage(): ReactElement {
         fetchSourceDocs,
     } = useDocumentsStore();
 
+
+
     // Fetch documents when component mounts
     useEffect(() => {
         fetchMetaTexts();

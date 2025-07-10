@@ -9,7 +9,7 @@ import SourceDoc from './components/SourceDoc';
 import { PageContainer, SourceDocInfo } from 'components';
 import { GenerateSourceDocInfoButton, StyleControls, DocumentHeader } from 'components';
 
-import { useSourceDocDetailData } from './hooks/useSourceDocDetailData';
+import { useSourceDocDetailData } from '../../hooks/useSourceDocDetailData';
 
 function SourceDocDetailPage(): ReactElement {
 
@@ -41,7 +41,7 @@ function SourceDocDetailPage(): ReactElement {
                                 <StyleControls />
 
                                 {/* this should prob be passed the source doc instead of fetching it again inside the component. */}
-                                <SourceDocInfo sourceDocumentId={doc.id}
+                                <SourceDocInfo doc={doc}
                                 />
                             </DocumentHeader>
                             <SourceDoc doc={doc} />

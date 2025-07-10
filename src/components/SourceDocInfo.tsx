@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 import { Box, useTheme, Accordion, AccordionSummary, AccordionDetails, Typography, Alert } from '@mui/material';
 import { ExpandMoreIcon } from 'icons';
 
-import { useDocumentsStore } from 'store/documentsStore';
-import { LoadingSpinner } from 'components';
 import { splitToArray } from 'utils';
+import { SourceDocumentDetail } from 'types';
 
 interface SourceDocInfoProps {
-    sourceDocumentId: number;
+    doc: SourceDocumentDetail;
 }
 
 // Configuration for rendering fields in the document info
@@ -25,25 +24,13 @@ const FIELD_CONFIG: FieldConfig[] = [
     { key: 'symbols', label: 'Symbols', isListField: true },
 ];
 
-const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ sourceDocumentId }) => {
+const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc }) => {
 
     const theme = useTheme();
     const containerStyles = {
         width: '100%',
         paddingX: theme.spacing(2),
     };
-
-    // Access the documents store to get source documents, loading state, error, and fetch function
-    const sourceDocs = useDocumentsStore(s => s.sourceDocs);
-    const loading = useDocumentsStore(s => s.sourceDocsLoading);
-    const error = useDocumentsStore(s => s.sourceDocsError);
-    const fetchSourceDocs = useDocumentsStore(s => s.fetchSourceDocs);
-    const doc = sourceDocs.find(d => d.id === sourceDocumentId);
-
-    // Fetch source documents when the component mounts or when the sourceDocumentId changes
-    useEffect(() => {
-        fetchSourceDocs();
-    }, [sourceDocumentId]);
 
 
     // Render each field in the document info
@@ -91,15 +78,6 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ sourceDocumentId }) => {
         );
     };
 
-    if (loading) {
-        return <LoadingSpinner />;
-    }
-    if (error) {
-        return <Box><Alert severity="error">{error}</Alert></Box>;
-    }
-    if (!doc) {
-        return <Box><Alert severity="warning">Document not found.</Alert></Box>;
-    }
 
     return (
         <Box sx={containerStyles} data-testid="source-doc-info">
