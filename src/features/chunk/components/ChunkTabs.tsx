@@ -1,3 +1,7 @@
+// Tabs that appear in the Chunk component
+// Each tab corresponds to a specific tool or feature related to the chunk
+// This component renders the tabs based on the activeTabs prop
+
 import React from 'react';
 import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';

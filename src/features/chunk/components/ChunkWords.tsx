@@ -1,3 +1,7 @@
+// Contains the words for a chunk, allowing for word selection and actions
+// Each word in the chunk can be selected, and actions can be performed on the selected words
+// At the end of the chunk, there is a button to merge the current chunk with the next one
+
 import React, { memo, useRef } from 'react';
 import { Box, Paper, useTheme } from '@mui/material';
 import { MergeChunksTool } from '../tools';
@@ -10,10 +14,6 @@ export interface ChunkWordsProps {
     chunkIdx: number;
 }
 
-/**
- * ChunkWords - Layout component for displaying words within a chunk
- * Uses the new tool system for word actions and chunk merging
- */
 const ChunkWords = memo(function ChunkWords({
     chunk,
     chunkIdx
@@ -28,22 +28,22 @@ const ChunkWords = memo(function ChunkWords({
 
     // Use custom hook for word selection logic
     const {
-        selectionStartIdx,
-        selectionEndIdx,
-        isSelecting,
+        selectionStartIdx, // Todo
+        selectionEndIdx, // Todo
+        isSelecting, // Todo
         dialogAnchor,
         selectedWordIdx,
-        anchorEl,
+        anchorEl, // Todo
         highlightedIndices,
-        setAnchorEl,
-        setSelectedWordIdx,
+        setAnchorEl, // Todo
+        setSelectedWordIdx, // Todo
         handleWordDown,
         handleWordEnter,
         handleWordUp,
         handleToolbarClose,
     } = useWordSelection(chunkIdx);
 
-    // Extracted touch move handler for readability
+    // Allows user to click and drag to select words
     const handleTouchMove = (e: React.TouchEvent<HTMLElement>) => {
         const touch = e.touches[0];
         const el = document.elementFromPoint(touch.clientX, touch.clientY);
@@ -94,7 +94,7 @@ const ChunkWords = memo(function ChunkWords({
 
             </Box>
 
-            {/* Only one WordActionDialog, handles both single and multi-word selection */}
+            {/* Displays on word click or select */}
             <WordsToolbar
                 anchorEl={dialogAnchor}
                 onClose={handleToolbarClose}

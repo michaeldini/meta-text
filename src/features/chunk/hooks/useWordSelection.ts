@@ -1,3 +1,6 @@
+// Mostly Ai-generated code
+// Main feature of the app is to allow users to select words in a chunk and perform actions on them
+
 import { useState, useCallback } from 'react';
 
 /**

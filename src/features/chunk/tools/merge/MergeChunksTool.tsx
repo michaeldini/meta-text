@@ -1,3 +1,7 @@
+// Merge Chunks Tool Component
+// Provides functionality to merge two consecutive chunks into one  
+// Strictly removes meta-data from the other chunk when merging.
+
 import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { UndoArrowIcon } from 'icons';
@@ -23,7 +27,6 @@ const MergeChunksTool: React.FC<MergeChunksToolComponentProps> = ({
             chunks
         });
 
-        // onComplete?.(result.success, result.data);
     };
 
     if (chunkIndices.length !== 2) {

@@ -1,3 +1,7 @@
+// Floating toolbar for chunk tool visibility
+// This component renders a floating toolbar with toggle buttons for chunk tools
+// It allows users to select multiple tools at once and displays them in a vertical orientation inside each chunk
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { useTheme } from '@mui/material/styles';
@@ -31,7 +35,6 @@ const ChunkToolButtons: React.FC = () => {
                 onChange={handleTabsChange}
                 size="small"
                 orientation="vertical"
-            // color="secondary"
             >
                 {toggleButtons.map((button) => (
                     <Tooltip

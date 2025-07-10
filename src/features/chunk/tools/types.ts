@@ -30,11 +30,12 @@ export interface ComparisonToolComponentProps extends BaseChunkProps {
     onComparisonUpdate: (text: string) => void;
 }
 
+// TODO - consider refactor 
 export interface ExplanationToolProps extends BaseChunkProps {
-    chunkId: number;
-    chunkIdx: number;
-    word: string;
-    wordIdx: number;
+    chunkId?: number;
+    chunkIdx?: number;
+    word?: string;
+    wordIdx?: number;
     onExplanationUpdate?: (explanation: string) => void;
     onComplete?: (success: boolean, result?: any) => void;
 }

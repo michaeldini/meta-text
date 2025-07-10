@@ -1,9 +1,12 @@
+// Toolbar for word-level tools in a chunk
+// This component provides a popover with tools for splitting and defining words in a chunk
+
 import React, { memo } from 'react';
 import { Popover, Box, useTheme } from '@mui/material';
 import SplitChunkTool from '../tools/split/SplitChunkTool';
 import WordsExplanationTool from '../tools/explanation/WordsExplanationTool';
-// import ExplainPhraseTool from '../tools/explain/ExplainPhraseTool';
 import { getChunkComponentsStyles } from '../Chunk.styles';
+
 export interface WordsToolbarProps {
     anchorEl: HTMLElement | null;
     onClose: () => void;
@@ -67,9 +70,6 @@ const WordsToolbar: React.FC<WordsToolbarProps> = memo(({
                     onComplete={handleSplitToolComplete}
                 />
                 <WordsExplanationTool
-                    // chunkId={chunk.id}
-                    // chunkIdx={chunkIdx}
-                    // wordIdx={wordIdx}
                     word={word}
                     chunk={chunk}
                     onComplete={handleDefineToolComplete}
