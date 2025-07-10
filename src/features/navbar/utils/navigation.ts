@@ -1,49 +1,6 @@
+// Ai generated code i don't know how it works
+
 import { NavigationItem, User, NavigationError } from '../types';
-
-/**
- * Default navigation configuration
- */
-export const DEFAULT_ROUTES = {
-    HOME: '/',
-    LOGIN: '/login',
-    REGISTER: '/register',
-} as const;
-
-/**
- * Creates navigation items based on authentication state
- * @param onNavigate - Function to handle navigation
- * @param onLogout - Function to handle logout
- * @returns Array of default navigation items
- */
-export const createDefaultNavigationItems = (
-    onNavigate: (path: string) => void,
-    onLogout: () => void
-): NavigationItem[] => [
-        {
-            id: 'home',
-            label: 'Home',
-            path: DEFAULT_ROUTES.HOME,
-            showWhen: 'authenticated',
-        },
-        {
-            id: 'login',
-            label: 'Login',
-            path: DEFAULT_ROUTES.LOGIN,
-            showWhen: 'unauthenticated',
-        },
-        {
-            id: 'register',
-            label: 'Register',
-            path: DEFAULT_ROUTES.REGISTER,
-            showWhen: 'unauthenticated',
-        },
-        {
-            id: 'logout',
-            label: 'Logout',
-            action: onLogout,
-            showWhen: 'authenticated',
-        },
-    ];
 
 /**
  * Filters navigation items based on authentication state

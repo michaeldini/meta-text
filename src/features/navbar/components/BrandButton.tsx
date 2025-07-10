@@ -1,9 +1,14 @@
+// Brand button that returns to the homepage on click.
+
 import React from 'react';
 import { Button, Typography } from '@mui/material';
 
 interface BrandButtonProps {
     brandNavItem: { label: string };
-    styles: any;
+    styles: {
+        brandButton: React.CSSProperties;
+        brandTypography: React.CSSProperties;
+    };
     handleClick: () => void;
 }
 

@@ -1,3 +1,6 @@
+// Header component for the navigation bar
+// Provides the brand button and navigation menu, integrating with authentication and navigation hooks.
+
 import React from 'react';
 import { Box, Container } from '@mui/material';
 import NavMenu from './NavMenu';
@@ -25,18 +28,20 @@ const NavBarHeader: React.FC<NavBarHeaderProps> = ({ styles }) => {
     const brandNavItem = navConfig.brand;
 
     return (
-        <Container maxWidth="xl" sx={styles.headerContainer} data-testid="navbar-header">
-            <Box sx={styles.section}>
+        <Container maxWidth="xl" data-testid="navbar-header">
+            <Box sx={styles.container}>
                 <BrandButton
                     brandNavItem={brandNavItem}
-                    styles={styles}
+                    styles={{
+                        brandButton: styles.brandButton,
+                        brandTypography: styles.brandTypography,
+                    }}
                     handleClick={() => handleItemClick(brandNavItem)}
                 />
                 <NavMenu
                     navigationItems={navigationItems}
                     isActive={isActive}
                     handleMenuItemClick={handleItemClick}
-                    styles={styles}
                 />
             </Box>
         </Container>
