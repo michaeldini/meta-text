@@ -1,3 +1,6 @@
+// Simple About Page Component
+// This component provides information about the application and its usage.
+
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 
