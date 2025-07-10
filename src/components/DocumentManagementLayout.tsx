@@ -1,7 +1,13 @@
+// Main component for managing documents, including a form and a list of documents.
+// Reused across both SourceDocs and MetaText landing pages.
+// This component is designed to be flexible and reusable, allowing for different forms and lists to be
+// passed in as props, making it suitable for various document management scenarios.
+
 import React, { ReactElement, ReactNode, forwardRef } from 'react';
 import { Box, Typography } from '@mui/material';
-import { getAppStyles } from '../styles/styles';
 import { useTheme } from '@mui/material/styles';
+
+import { getAppStyles } from 'styles';
 
 interface DocumentManagementLayoutProps {
     title: string;
@@ -10,8 +16,14 @@ interface DocumentManagementLayoutProps {
     listComponent: ReactNode;
 }
 
+// Main component for managing documents
+// forwardRef is used to allow the parent component to access the ref of the container
+//  The ref is used for scrolling or other DOM manipulations if needed (in our case it is used by a Slide component)
 const DocumentManagementLayout = forwardRef<HTMLDivElement, DocumentManagementLayoutProps>(
     ({ title, subtitle, formComponent, listComponent }, ref): ReactElement => {
+
+        // Use the theme to get styles from the top-level style function 
+        // This allows for consistent styling across the SourceDocs and MetaText landing pages
         const theme = useTheme();
         const styles = getAppStyles(theme);
 
@@ -46,7 +58,5 @@ const DocumentManagementLayout = forwardRef<HTMLDivElement, DocumentManagementLa
         );
     }
 );
-
-DocumentManagementLayout.displayName = 'DocumentListLayout';
 
 export default DocumentManagementLayout;

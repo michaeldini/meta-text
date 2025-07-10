@@ -1,3 +1,7 @@
+// WelcomeText - A highly emotive greeting and instruction for Meta-Text users.
+// Displayed on the HomePage, it introduces the concept of Meta-Text and guides users on how to engage with their documents meaningfully.
+
+
 import React from 'react';
 import { Box, Typography, SxProps, Theme } from '@mui/material';
 
@@ -9,10 +13,7 @@ interface WelcomeTextProps {
     }
 }
 
-/**
- * WelcomeText - A highly emotive greeting and instruction for Meta-Text users.
- * @param welcomeTextStyles - Style overrides for the container (typically provided by parent)
- */
+
 const WelcomeText: React.FC<WelcomeTextProps> = ({ welcomeTextStyles = {} }) => {
     return (
         <Box sx={welcomeTextStyles.container}>

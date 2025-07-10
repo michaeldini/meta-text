@@ -63,6 +63,9 @@
             "types/*": [
                 "types/index.ts"
             ],
+            "styles/*": [
+                "styles/index.ts"
+            ],
         }
     },
     "include": [

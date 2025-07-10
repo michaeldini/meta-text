@@ -49,6 +49,8 @@ export const getAppStyles = (theme: Theme) => ({
             flexWrap: 'wrap',
         },
     },
+
+    // Welcome text styles for the home page
     welcomeText: {
         container: {
             minWidth: '25%',
@@ -73,9 +75,11 @@ export const getAppStyles = (theme: Theme) => ({
         },
     },
 
-    // Shared styles among the SourceDocs and MetaText landing pages
+    // Shared styles among the SourceDocs and MetaText landing pages. They exist in the DocumentManagementLayout component.
     // The styles are shared to avoid duplication and ensure consistency
     sharedStyles: {
+
+        // Container styles for document management layouts
         container: {
             mb: 3,
             display: 'flex',
@@ -83,6 +87,14 @@ export const getAppStyles = (theme: Theme) => ({
             alignItems: 'center',
             width: '100%'
         },
+        containerBreakpoint: {
+            mb: 4,
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            gap: 10,
+        },
+
+        // Typography styles for titles and subtitles
         title: {
             fontWeight: 'bold',
             mb: 1,
@@ -91,12 +103,6 @@ export const getAppStyles = (theme: Theme) => ({
         subtitle: {
             mb: 2,
             color: 'text.secondary',
-        },
-        containerBreakpoint: {
-            mb: 4,
-            display: 'flex',
-            flexDirection: { xs: 'column', md: 'row' },
-            gap: 10,
         },
     },
 });
