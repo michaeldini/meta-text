@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
-import { useUIPreferencesStore, AVAILABLE_FONT_FAMILIES } from '../store/uiPreferences';
+import { useUIPreferencesStore, FONT_FAMILIES } from 'store/uiPreferences';
 
 const FontFamilySelect: React.FC = () => {
     const fontFamily = useUIPreferencesStore(state => state.fontFamily);
@@ -19,7 +19,7 @@ const FontFamilySelect: React.FC = () => {
                 label="Font"
                 onChange={handleChange}
             >
-                {AVAILABLE_FONT_FAMILIES.map((font) => (
+                {FONT_FAMILIES.map((font) => (
                     <MenuItem key={font} value={font} style={{ fontFamily: font }}>
                         {font.split(',')[0]}
                     </MenuItem>

@@ -16,6 +16,7 @@ export { useSourceDocumentDetailStore } from './sourceDocumentDetailStore';
 export { useMetaTextDetailStore } from './metaTextDetailStore';
 export { useChunkStore } from './chunkStore';
 
+export { FONT_FAMILIES } from './uiPreferences';
 export { useUIPreferencesStore } from './uiPreferences';
 export { useNotificationStore } from './notificationStore';
 

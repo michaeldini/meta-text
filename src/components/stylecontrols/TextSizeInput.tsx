@@ -1,6 +1,6 @@
 import React from 'react';
 import { Slider, Box, Typography } from '@mui/material';
-import { useUIPreferencesStore } from '../store/uiPreferences';
+import { useUIPreferencesStore } from 'store/uiPreferences';
 
 const MIN_SIZE = 8;
 const MAX_SIZE = 72;

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-const FONT_FAMILIES = [
+export const FONT_FAMILIES = [
     'Inter, sans-serif',
     'Roboto, sans-serif',
     'Arial, sans-serif',
@@ -30,4 +30,4 @@ export const useUIPreferencesStore = create<UIPreferencesState>((set) => ({
     setLineHeight: (lh) => set({ lineHeight: lh }),
 }));
 
-export const AVAILABLE_FONT_FAMILIES = FONT_FAMILIES;
+
