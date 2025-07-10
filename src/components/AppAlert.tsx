@@ -9,7 +9,7 @@
  * @version 1.0.0
  * @since 2025-07-10
  */
-import { Alert, AlertTitle } from '@mui/material';
+import { Alert, AlertTitle, Collapse } from '@mui/material';
 import type { ReactElement, ReactNode } from 'react';
 
 export interface AppAlertProps {
@@ -43,15 +43,13 @@ export interface AppAlertProps {
  * </AppAlert>
  * ```
  */
-export function AppAlert({ severity, children, title, onClose }: AppAlertProps): ReactElement | null {
-    if (!children) {
-        return null;
-    }
-
+export function AppAlert({ severity, children, title, onClose }: AppAlertProps): ReactElement {
     return (
-        <Alert severity={severity} sx={{ mb: 2 }} onClose={onClose}>
-            {title && <AlertTitle>{title}</AlertTitle>}
-            {children}
-        </Alert>
+        <Collapse in={!!children}>
+            <Alert severity={severity} sx={{ mb: 2 }} onClose={onClose}>
+                {title && <AlertTitle>{title}</AlertTitle>}
+                {children}
+            </Alert>
+        </Collapse>
     );
 }
