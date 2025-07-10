@@ -6,15 +6,15 @@ import React from 'react';
 import { Box, Typography, SxProps, Theme } from '@mui/material';
 
 interface WelcomeTextProps {
-    welcomeTextStyles?: {
-        container?: SxProps<Theme>;
-        title?: SxProps<Theme>;
-        text?: SxProps<Theme>;
+    welcomeTextStyles: {
+        container: SxProps<Theme>;
+        title: SxProps<Theme>;
+        text: SxProps<Theme>;
     }
 }
 
 
-const WelcomeText: React.FC<WelcomeTextProps> = ({ welcomeTextStyles = {} }) => {
+const WelcomeText: React.FC<WelcomeTextProps> = ({ welcomeTextStyles }) => {
     return (
         <Box sx={welcomeTextStyles.container}>
             <Typography variant="h4" sx={welcomeTextStyles.title} gutterBottom>
