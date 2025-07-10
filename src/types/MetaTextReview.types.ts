@@ -27,7 +27,7 @@
  * };
  * ```
  */
-export interface WordlistRow {
+export interface FlashcardItem {
     /** Unique identifier for the word entry */
     id: number;
     /** The word or term */
@@ -37,5 +37,5 @@ export interface WordlistRow {
     /** Definition with contextual usage */
     definition_with_context: string;
     /** Optional context where the word appears in the document */
-    context?: string;
+    context: string;
 }

@@ -1,3 +1,5 @@
+// Front of a flashcard component that displays a word and allows flipping to see its definition
+
 import React from 'react';
 import { Box, CardActionArea, CardContent, Typography } from '@mui/material';
 

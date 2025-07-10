@@ -11,7 +11,7 @@
 
 import { useEffect, useState } from 'react';
 import { fetchWordlist, fetchChunks, fetchPhraseExplanations, PhraseExplanation } from 'services';
-import { ChunkType, WordlistRow } from 'types';
+import { ChunkType, FlashcardItem } from 'types';
 import { log } from 'utils';
 
 /**
@@ -19,7 +19,7 @@ import { log } from 'utils';
  */
 interface UseMetaTextReviewDataReturn {
     /** Array of words for flashcard generation */
-    wordlist: WordlistRow[];
+    wordlist: FlashcardItem[];
     /** Array of chunk summaries and notes */
     chunkSummariesNotes: ChunkType[];
     /** Array of phrase explanations */
@@ -57,7 +57,7 @@ export function useMetaTextReviewData(metatextId?: number): UseMetaTextReviewDat
      * State management for wordlist data
      * Contains vocabulary words with definitions for flashcard generation
      */
-    const [wordlist, setWordlist] = useState<WordlistRow[]>([]);
+    const [wordlist, setWordlist] = useState<FlashcardItem[]>([]);
 
     /**
      * State management for chunk summaries and notes

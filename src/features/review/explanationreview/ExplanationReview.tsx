@@ -1,6 +1,11 @@
+// Component to review explanations of phrases with context and explanations
+// This component displays a list of explanations, each with its own context and explanation details.
+// Extensive use of Material-UI Accordion components for a collapsible view.
+
 import React from 'react';
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Box, Paper } from '@mui/material';
 import { ExpandMoreIcon } from 'icons';
+import styles from './styles';
 
 export interface Explanation {
     id: number;
@@ -15,6 +20,10 @@ interface ExplanationReviewProps {
     data: Explanation[];
 }
 
+interface ExplanationItemProps {
+    explanation: Explanation;
+}
+
 interface ExplanationCardProps {
     title: string;
     content: string;
@@ -22,7 +31,7 @@ interface ExplanationCardProps {
 }
 
 const ExplanationCard: React.FC<ExplanationCardProps> = ({ title, content, elevation = 5 }) => (
-    <Paper elevation={elevation} sx={{ p: 2 }}>
+    <Paper elevation={elevation} sx={styles.paper}>
         <Typography variant="subtitle2" color="text.secondary">
             {title}
         </Typography>
@@ -30,28 +39,22 @@ const ExplanationCard: React.FC<ExplanationCardProps> = ({ title, content, eleva
     </Paper>
 );
 
-interface ExplanationItemProps {
-    explanation: Explanation;
-}
-
 const ExplanationItem: React.FC<ExplanationItemProps> = ({ explanation }) => (
-    <Accordion sx={{ mb: 5 }}>
+    <Accordion sx={styles.accordion}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography variant="subtitle1">{explanation.phrase}</Typography>
         </AccordionSummary>
-        <AccordionDetails >
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pl: 2 }}>
-                <ExplanationCard
-                    title="Explanation"
-                    content={explanation.explanation}
-                    elevation={5}
-                />
-                <ExplanationCard
-                    title="Explanation in Context"
-                    content={explanation.explanation_with_context}
-                    elevation={20}
-                />
-            </Box>
+        <AccordionDetails sx={styles.accordionDetails}>
+            <ExplanationCard
+                title="Explanation"
+                content={explanation.explanation}
+                elevation={5}
+            />
+            <ExplanationCard
+                title="Explanation in Context"
+                content={explanation.explanation_with_context}
+                elevation={20}
+            />
         </AccordionDetails>
     </Accordion>
 );

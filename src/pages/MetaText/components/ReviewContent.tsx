@@ -1,21 +1,24 @@
+// A component to display review content including explanations, flashcards, and a review table
+// Composed of multiple accordion sections for better organization and user experience
+
 import type { ReactElement } from 'react';
 import { FlashCards, ReviewTable, ExplanationReview } from 'features';
 import { PhraseExplanation } from 'services';
-import { ChunkType, WordlistRow } from 'types';
+import { ChunkType, FlashcardItem } from 'types';
 import { ReviewSection } from './ReviewSection';
 
 interface ReviewContentProps {
     // Array of phrase explanations to display
     phraseExplanations: PhraseExplanation[];
     // Array of words for flashcard generation
-    wordlist: WordlistRow[];
+    flashcards: FlashcardItem[];
     // Array of chunk summaries and notes
     chunkSummariesNotes: ChunkType[];
 }
 
 export function ReviewContent({
     phraseExplanations,
-    wordlist,
+    flashcards,
     chunkSummariesNotes
 }: ReviewContentProps): ReactElement {
     return (
@@ -31,7 +34,7 @@ export function ReviewContent({
                 title="Flashcards"
                 testId="flashcards-accordion"
             >
-                <FlashCards wordlist={wordlist} />
+                <FlashCards flashcardItems={flashcards} />
             </ReviewSection>
 
             <ReviewSection

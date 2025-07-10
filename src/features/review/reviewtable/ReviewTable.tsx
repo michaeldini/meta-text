@@ -1,26 +1,30 @@
+// A basic review table component to display summaries, notes, and images for chunks
+
 import React from 'react';
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { ImageDisplay } from 'features/chunk';
 import { ChunkType } from 'types';
+import { tableContainerStyles, tableCellStyles, noChunksBoxStyles, tableBoxStyles } from './ReviewTable.styles';
+
 export interface ReviewTableProps {
     chunks: ChunkType[];
 }
 
 export default function ReviewTable({ chunks }: ReviewTableProps) {
-    // const [lightboxOpenStates, setLightboxOpenStates] = React.useState<Record<number, boolean>>({});
-
+    // If no chunks are provided, display a message
     if (!chunks || chunks.length === 0) {
         return (
-            <Box sx={{ mt: 3 }}>
+            <Box sx={noChunksBoxStyles}>
                 <Typography variant="h5" gutterBottom>Summaries & Notes</Typography>
                 <Typography variant="body2" color="text.secondary">No chunk summaries or notes found.</Typography>
             </Box>
         );
     }
 
+    // If chunks are provided, render the table
     return (
-        <Box sx={{ mt: 4 }}>
-            <TableContainer component={Paper} sx={{ borderRadius: 3, boxShadow: 2 }}>
+        <Box sx={tableBoxStyles}>
+            <TableContainer component={Paper} sx={tableContainerStyles}>
                 <Table>
                     <TableHead>
                         <TableRow>
@@ -38,18 +42,16 @@ export default function ReviewTable({ chunks }: ReviewTableProps) {
 
                             return (
                                 <TableRow key={chunk.id}>
-                                    <TableCell sx={{ whiteSpace: 'pre-line' }}>{chunk.summary || <span style={{ color: '#aaa' }}>No summary</span>}</TableCell>
-                                    <TableCell sx={{ whiteSpace: 'pre-line' }}>{chunk.notes || <span style={{ color: '#aaa' }}>No notes</span>}</TableCell>
+                                    <TableCell sx={tableCellStyles}>{chunk.summary}</TableCell>
+                                    <TableCell sx={tableCellStyles}>{chunk.notes}</TableCell>
                                     <TableCell>
-                                        {latestImage ? (
+                                        {latestImage && (
                                             <ImageDisplay
                                                 src={`/${latestImage.path}`}
                                                 alt={latestImage.prompt}
-                                                height="200px"
+                                                height="100px"
                                                 showModal={true}
                                             />
-                                        ) : (
-                                            <span style={{ color: '#aaa' }}>No image</span>
                                         )}
                                     </TableCell>
                                 </TableRow>

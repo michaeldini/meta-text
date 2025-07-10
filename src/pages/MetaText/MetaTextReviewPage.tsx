@@ -52,15 +52,12 @@ function MetaTextReviewPage(): ReactElement {
             {/* Review content sections */}
             <ReviewContent
                 phraseExplanations={phraseExplanations}
-                wordlist={wordlist}
+                flashcards={wordlist}
                 chunkSummariesNotes={chunkSummariesNotes}
             />
         </Box>
     );
 }
-
-// Export with a more descriptive name for TypeDoc
-export { MetaTextReviewPage };
 
 // Default export for React component usage
 export default MetaTextReviewPage;

@@ -8,7 +8,7 @@ interface WordFlashcardProps {
     word: string;
     definition: string;
     definitionWithContext: string;
-    context?: string;
+    context: string;
 }
 
 const WordFlashcard: React.FC<WordFlashcardProps> = ({ word, definition, definitionWithContext, context }) => {
