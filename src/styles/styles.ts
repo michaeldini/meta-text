@@ -73,6 +73,8 @@ export const getAppStyles = (theme: Theme) => ({
         },
     },
 
+    // Shared styles among the SourceDocs and MetaText landing pages
+    // The styles are shared to avoid duplication and ensure consistency
     sharedStyles: {
         container: {
             mb: 3,

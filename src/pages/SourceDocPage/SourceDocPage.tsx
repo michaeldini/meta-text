@@ -19,7 +19,7 @@ import { usePageLogger } from '../../hooks/usePageLogger';
 import PageContainer from '../../components/PageContainer';
 import SourceDocUploadForm from '../../components/SourceDocUploadForm';
 import SearchableList from '../../features/searchablelist/components/SearchableList';
-import DocumentListLayout from '../../components/DocumentListLayout';
+import DocumentManagementLayout from '../../components/DocumentManagementLayout';
 
 /**
  * SourceDocPage Component
@@ -91,7 +91,7 @@ function SourceDocPage(): ReactElement {
         >
             {/* Smooth slide-up animation for the page content */}
             <Slide in={true} direction="up" timeout={500}>
-                <DocumentListLayout
+                <DocumentManagementLayout
                     title="Source Documents"
                     subtitle="Upload a new source document or browse existing ones."
                     formComponent={

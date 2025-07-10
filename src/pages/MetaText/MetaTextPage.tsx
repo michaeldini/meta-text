@@ -4,7 +4,7 @@ import { Slide } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import {
     PageContainer,
-    DocumentListLayout,
+    DocumentManagementLayout,
 } from 'components';
 import MetaTextCreateForm from './components/MetaTextCreateForm';
 import { SearchableList } from 'features';
@@ -39,7 +39,7 @@ function MetaTextPage(): ReactElement {
         >
             {/* Smooth slide-up animation for the page content */}
             <Slide in={true} direction="up" timeout={500}>
-                <DocumentListLayout
+                <DocumentManagementLayout
                     title="MetaText Documents"
                     subtitle="Create new MetaText from a source document or browse existing ones."
                     formComponent={

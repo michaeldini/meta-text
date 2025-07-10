@@ -3,14 +3,14 @@ import { Box, Typography } from '@mui/material';
 import { getAppStyles } from '../styles/styles';
 import { useTheme } from '@mui/material/styles';
 
-interface DocumentListLayoutProps {
+interface DocumentManagementLayoutProps {
     title: string;
     subtitle: string;
     formComponent: ReactNode;
     listComponent: ReactNode;
 }
 
-const DocumentListLayout = forwardRef<HTMLDivElement, DocumentListLayoutProps>(
+const DocumentManagementLayout = forwardRef<HTMLDivElement, DocumentManagementLayoutProps>(
     ({ title, subtitle, formComponent, listComponent }, ref): ReactElement => {
         const theme = useTheme();
         const styles = getAppStyles(theme);
@@ -47,6 +47,6 @@ const DocumentListLayout = forwardRef<HTMLDivElement, DocumentListLayoutProps>(
     }
 );
 
-DocumentListLayout.displayName = 'DocumentListLayout';
+DocumentManagementLayout.displayName = 'DocumentListLayout';
 
-export default DocumentListLayout;
+export default DocumentManagementLayout;
