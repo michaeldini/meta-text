@@ -14,9 +14,8 @@ The codebase uses modern best practices, but prioritizes readability, maintainab
 - Logging: `src/utils/logger.ts`
 
 ### Documentation
-- Use TypeDoc for generating documentation.
-- Use TypeScript's native type annotations (: boolean, <string>, etc.)
-- Use JSDoc comments for documentation purposes.
+- Write brief comments at the top of each file explaining its purpose
+- Comment complex logic or non-obvious code sections
 
 
 ## Backend Stack
