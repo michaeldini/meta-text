@@ -10,15 +10,17 @@ import type { ReactElement } from 'react';
 import { PageContainer, ReviewButton, SourceDocInfo } from 'components';
 import { ChunkToolButtons } from 'features';
 import { PaginatedChunks } from 'features';
-import { useMetaTextDetailData } from './hooks/useMetaTextDetailData';
 import { useSourceDocDetailData } from 'hooks';
+import { FADE_IN_DURATION } from 'constants';
 
+import { useMetaTextDetailData } from './hooks/useMetaTextDetailData';
 import { getMetaTextDetailStyles } from './MetaText.styles';
 import {
     GenerateSourceDocInfoButton,
     StyleControls,
     DocumentHeader,
 } from 'components';
+
 
 function MetaTextDetailPage(): ReactElement | null {
     // Extract the metaTextId from the URL parameters
@@ -43,7 +45,7 @@ function MetaTextDetailPage(): ReactElement | null {
 
     return (
         <PageContainer loading={loading} data-testid="metatext-detail-page">
-            <Slide in={!!metaText} direction="up" timeout={500}>
+            <Slide in={!!metaText} direction="up" timeout={FADE_IN_DURATION}>
                 <Box sx={styles.container} data-testid="metatext-detail-content">
                     {metaText ? (
                         <>

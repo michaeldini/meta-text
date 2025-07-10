@@ -11,6 +11,7 @@ import { getAppStyles } from 'styles';
 
 import WelcomeText from './components/WelcomeText';
 import NavigationButtons from './components/NavigationButtons';
+import { FADE_IN_DURATION } from 'constants';
 
 function HomePage(): ReactElement {
 
@@ -23,7 +24,7 @@ function HomePage(): ReactElement {
             loading={false}
             data-testid="homepage-container"
         >
-            <Slide in={true} direction="up" timeout={500}>
+            <Slide in={true} direction="up" timeout={FADE_IN_DURATION}>
                 <Box
                     sx={styles.homePage.container}
                     data-testid="homepage-content"

@@ -3,6 +3,7 @@ import { useAuth } from '../../store/authStore';
 import { Button, TextField, Box, Typography, Alert, Paper, Zoom, Grow } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import log from '../../utils/logger';
+import { FADE_IN_DURATION } from 'constants';
 
 interface LoginPageProps {
     onLoginSuccess?: () => void;
@@ -31,7 +32,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
 
     return (
         <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-            <Grow in={true} timeout={500}>
+            <Grow in={true} timeout={FADE_IN_DURATION}>
                 <Paper elevation={3} sx={{ p: 4, minWidth: 320 }}>
                     <Typography variant="h5" mb={2}>Login</Typography>
                     <form onSubmit={handleSubmit}>

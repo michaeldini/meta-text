@@ -8,6 +8,7 @@ import type { ReactElement } from 'react';
 import SourceDoc from './components/SourceDoc';
 import { PageContainer, SourceDocInfo } from 'components';
 import { GenerateSourceDocInfoButton, StyleControls, DocumentHeader } from 'components';
+import { FADE_IN_DURATION } from 'constants';
 
 import { useSourceDocDetailData } from '../../hooks/useSourceDocDetailData';
 
@@ -30,7 +31,7 @@ function SourceDocDetailPage(): ReactElement {
             data-testid="sourcedoc-detail-page"
         >
             {/* Smooth slide-up animation for the page content */}
-            <Slide in={true} direction="up" timeout={500}>
+            <Slide in={true} direction="up" timeout={FADE_IN_DURATION}>
                 <Box data-testid="sourcedoc-detail-content">
                     {doc ? (
                         <>

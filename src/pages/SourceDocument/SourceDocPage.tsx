@@ -14,6 +14,7 @@ import {
     SourceDocUploadForm,
     SearchableList
 } from 'components';
+import { FADE_IN_DURATION } from 'constants';
 
 function SourceDocPage(): ReactElement {
 
@@ -40,7 +41,7 @@ function SourceDocPage(): ReactElement {
                 </Alert>
             )}
             {/* Smooth slide-up animation for the page content */}
-            <Slide in={true} direction="up" timeout={500}>
+            <Slide in={true} direction="up" timeout={FADE_IN_DURATION}>
                 <DocumentManagementLayout
                     title="Source Documents"
                     subtitle="Upload a new source document or browse existing ones."

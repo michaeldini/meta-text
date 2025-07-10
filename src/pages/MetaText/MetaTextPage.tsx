@@ -11,6 +11,7 @@ import {
     DocumentManagementLayout,
     SearchableList
 } from 'components';
+import { FADE_IN_DURATION } from 'constants';
 
 import MetaTextCreateForm from './components/MetaTextCreateForm';
 
@@ -45,7 +46,7 @@ function MetaTextPage(): ReactElement {
             data-testid="metatext-list-page"
         >
             {/* Smooth slide-up animation for the page content */}
-            <Slide in={true} direction="up" timeout={500}>
+            <Slide in={true} direction="up" timeout={FADE_IN_DURATION}>
                 <DocumentManagementLayout
                     title="MetaText Documents"
                     subtitle="Create new MetaText from a source document or browse existing ones."
