@@ -35,30 +35,19 @@ const SplitChunkTool: React.FC<SplitChunkToolProps> = ({
     wordIdx,
     word,
     chunk,
-    onComplete
+    onComplete // closes the popover after split
 }) => {
+
     const { splitChunk } = useSplitChunk();
 
-    /**
-     * Handles the chunk splitting operation when the button is clicked.
-     * 
-     * This function logs the split operation, calls the splitChunk hook with the
-     * current component props, and then invokes the onComplete callback with the
-     * operation result.
-     * 
-     * @async
-     * @function handleSplit
-     * @returns {Promise<void>} A promise that resolves when the split operation is complete
-     */
     const handleSplit = async () => {
-        log.info(`Splitting chunk ${chunkId} at word "${word}"`);
+        log.debug(`Splitting chunk ${chunkId} at word "${word}"`);
         const result = await splitChunk({
             chunkId,
             chunkIdx,
             wordIdx,
             word,
             chunk,
-            onComplete
         });
 
         onComplete?.(result.success, result.data);
@@ -69,7 +58,7 @@ const SplitChunkTool: React.FC<SplitChunkToolProps> = ({
             <IconButton
                 onClick={handleSplit}
                 size="small"
-                aria-label={`Split chunk at ${word}`}
+                aria-label={`Split chunk at word "${word}"`}
             >
                 <ContentCutIcon />
             </IconButton>

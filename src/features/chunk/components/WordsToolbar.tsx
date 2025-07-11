@@ -32,18 +32,8 @@ const WordsToolbar: React.FC<WordsToolbarProps> = memo(({
     const styles = getChunkComponentsStyles(theme);
     const open = Boolean(anchorEl);
 
-    const handleSplitToolComplete = (success: boolean, result?: any) => {
-        console.log('SplitChunkTool completed:', { success, result });
-        if (success) {
-            onClose();
-        }
-    };
-
-    const handleDefineToolComplete = (success: boolean, result?: any) => {
-        console.log('WordsExplanationTool completed:', { success, result });
-        if (success) {
-            onClose();
-        }
+    const handleToolComplete = () => {
+        onClose();
     };
 
     return (
@@ -67,12 +57,12 @@ const WordsToolbar: React.FC<WordsToolbarProps> = memo(({
                     wordIdx={wordIdx}
                     word={word}
                     chunk={chunk}
-                    onComplete={handleSplitToolComplete}
+                    onComplete={handleToolComplete}
                 />
                 <WordsExplanationTool
                     word={word}
                     chunk={chunk}
-                    onComplete={handleDefineToolComplete}
+                    onComplete={handleToolComplete}
                 />
             </Box>
         </Popover >
