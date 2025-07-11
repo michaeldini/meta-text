@@ -16,10 +16,10 @@ export const useCompression = (chunk: ChunkType | null): UseCompressionReturn =>
             setSelectedId('');
             return;
         }
-        fetchCompressions();
+        onCompressionCreated();
     }, [chunk]);
 
-    const fetchCompressions = () => {
+    const onCompressionCreated = () => {
         if (!chunk) return;
 
         setLoading(true);
@@ -43,6 +43,6 @@ export const useCompression = (chunk: ChunkType | null): UseCompressionReturn =>
         error,
         selected,
         setSelectedId,
-        fetchCompressions
+        onCompressionCreated
     };
 };

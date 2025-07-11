@@ -3,7 +3,7 @@ import { Box, Typography, useTheme } from '@mui/material';
 
 import { getSharedToolStyles } from '../shared.styles';
 import type { CompressionDisplayToolProps } from '../types';
-import CompressionToolButton from './CompressionTool';
+import CompressionTool from './CompressionTool';
 import CompressionSelect from './components/CompressionSelect';
 import CompressionDisplay from './components/CompressionDisplay';
 import CompressionEmptyState from './components/CompressionEmptyState';
@@ -20,7 +20,7 @@ const CompressionDisplayTool: React.FC<CompressionDisplayToolProps> = ({ chunk }
         error,
         selected,
         setSelectedId,
-        fetchCompressions
+        onCompressionCreated
     } = useCompression(chunk);
 
     return (
@@ -30,11 +30,11 @@ const CompressionDisplayTool: React.FC<CompressionDisplayToolProps> = ({ chunk }
             ) : error ? (
                 <Typography color="error">{error}</Typography>
             ) : compressions.length === 0 ? (
-                <CompressionEmptyState chunk={chunk} fetchCompressions={fetchCompressions} />
+                <CompressionEmptyState chunk={chunk} onCompressionCreated={onCompressionCreated} />
             ) : (
                 <>
                     <Box flexDirection="row" display="flex" alignItems="center">
-                        <CompressionToolButton chunk={chunk} onCompressionCreated={fetchCompressions} />
+                        <CompressionTool chunk={chunk} onCompressionCreated={onCompressionCreated} />
                         <CompressionSelect
                             compressions={compressions}
                             selectedId={selectedId}

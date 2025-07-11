@@ -186,7 +186,7 @@ export interface UseCompressionState {
  */
 export interface UseCompressionActions {
     setSelectedId: (id: number | '') => void;
-    fetchCompressions: () => void;
+    onCompressionCreated: () => void;
 }
 
 /**
@@ -306,7 +306,7 @@ export interface CompressionDisplayToolProps extends BaseChunkProps {
  * Props for compression empty state component
  */
 export interface CompressionEmptyStateProps extends BaseChunkProps {
-    fetchCompressions: () => void;
+    onCompressionCreated: () => void;
 }
 
 /**
