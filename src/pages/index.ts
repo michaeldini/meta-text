@@ -6,8 +6,8 @@ export * from './MetaText';
 export * from './SourceDocument';
 
 // Static/informational pages
-export * from './AboutPage';
-export * from './ExperimentsPage';
+export { default as AboutPage } from './AboutPage';
+export { default as ExperimentsPage } from './ExperimentsPage';
 
 // Authentication pages
 export * from './Auth';
