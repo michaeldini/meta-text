@@ -4,15 +4,7 @@ import { useTheme } from '@mui/material/styles';
 import { useNotifications } from 'store';
 import { CopyIcon } from 'icons';
 import { getSharedToolStyles } from '../shared.styles';
-
-interface CopyToolProps {
-    /** The chunk text to copy */
-    chunkText: string;
-    /** Test ID for testing */
-    'data-testid'?: string;
-    /** Custom styling for the copy button */
-    sx?: object;
-}
+import type { CopyToolProps } from '../types';
 
 const CopyTool: React.FC<CopyToolProps> = ({
     chunkText,

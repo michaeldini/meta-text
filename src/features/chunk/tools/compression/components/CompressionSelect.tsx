@@ -1,13 +1,6 @@
 import React from 'react';
 import { FormControl, Select, MenuItem, Typography } from '@mui/material';
-import type { ChunkCompression } from 'types';
-
-interface CompressionSelectProps {
-    compressions: ChunkCompression[];
-    selectedId: number | '';
-    setSelectedId: (id: number) => void;
-    styles: any;
-}
+import type { CompressionSelectProps } from '../../types';
 
 const CompressionSelect: React.FC<CompressionSelectProps> = ({ compressions, selectedId, setSelectedId, styles }) => (
     <>

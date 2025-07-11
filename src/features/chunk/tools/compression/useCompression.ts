@@ -1,22 +1,7 @@
 import { useEffect, useState } from 'react';
 import { fetchChunkCompressions } from 'services';
 import type { ChunkCompression, ChunkType } from 'types';
-
-interface UseCompressionState {
-    compressions: ChunkCompression[];
-    selectedId: number | '';
-    loading: boolean;
-    error: string | null;
-}
-
-interface UseCompressionActions {
-    setSelectedId: (id: number | '') => void;
-    fetchCompressions: () => void;
-}
-
-interface UseCompressionReturn extends UseCompressionState, UseCompressionActions {
-    selected: ChunkCompression | undefined;
-}
+import type { UseCompressionReturn } from '../types';
 
 export const useCompression = (chunk: ChunkType | null): UseCompressionReturn => {
     const [compressions, setCompressions] = useState<ChunkCompression[]>([]);

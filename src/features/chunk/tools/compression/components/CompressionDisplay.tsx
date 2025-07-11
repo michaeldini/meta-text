@@ -1,11 +1,6 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import type { ChunkCompression } from 'types';
-
-interface CompressionDisplayProps {
-    selected: ChunkCompression | undefined;
-    styles: any;
-}
+import type { CompressionDisplayProps } from '../../types';
 
 const CompressionDisplay: React.FC<CompressionDisplayProps> = ({ selected, styles }) => {
     if (!selected) return null;

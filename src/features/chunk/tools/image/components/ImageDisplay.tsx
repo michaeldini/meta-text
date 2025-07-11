@@ -2,12 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Box, Modal, Fade, useTheme } from '@mui/material';
 import { getSharedToolStyles } from '../../shared.styles';
 import { LoadingSpinner } from 'components';
-interface ImageDisplayProps {
-    src: string;
-    alt?: string;
-    height?: string | number;
-    showModal?: boolean;
-}
+import type { ImageDisplayProps } from '../../types';
 
 const ImageDisplay: React.FC<ImageDisplayProps> = ({
     src,

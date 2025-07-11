@@ -3,7 +3,7 @@ import { IconButton, Tooltip } from '@mui/material';
 import { ContentCutIcon } from 'icons';
 import { useSplitChunk } from './useSplitChunk';
 import { log } from 'utils';
-import { SplitChunkToolComponentProps } from '../types';
+import { SplitChunkToolProps } from '../types';
 
 /**
  * A tool component that provides functionality to split a text chunk at a specific word position.
@@ -29,7 +29,7 @@ import { SplitChunkToolComponentProps } from '../types';
  * />
  * ```
  */
-const SplitChunkTool: React.FC<SplitChunkToolComponentProps> = ({
+const SplitChunkTool: React.FC<SplitChunkToolProps> = ({
     chunkId,
     chunkIdx,
     wordIdx,

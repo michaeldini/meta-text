@@ -1,16 +1,6 @@
 import React from 'react';
 import { TextField, MenuItem } from '@mui/material';
-
-interface StyleOption {
-    value: string;
-    label: string;
-}
-
-interface CompressionStyleSelectProps {
-    style: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    options: StyleOption[];
-}
+import type { CompressionStyleSelectProps } from '../../types';
 
 const CompressionStyleSelect: React.FC<CompressionStyleSelectProps> = ({ style, onChange, options }) => (
     <TextField

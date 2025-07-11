@@ -3,48 +3,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Box, Typogra
 import CompressionStyleSelect from './CompressionStyleSelect';
 import CompressionPreview from './CompressionPreview';
 import { LoadingSpinner } from 'components';
-
-/**
- * Configuration object for compression style options
- */
-interface StyleOption {
-    /** The internal value used for the compression style */
-    value: string;
-    /** The human-readable label displayed to the user */
-    label: string;
-}
-
-/**
- * Props interface for the CompressionDialog component
- */
-interface CompressionDialogProps {
-    /** Controls whether the dialog is open or closed */
-    open: boolean;
-    /** Callback function to close the dialog */
-    onClose: () => void;
-    /** The currently selected compression style */
-    style: string;
-    /** Callback function to handle style selection changes */
-    onStyleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    /** Array of available compression style options */
-    options: StyleOption[];
-    /** Callback function to trigger compression preview generation */
-    onPreview: () => void;
-    /** Loading state for preview generation */
-    loading: boolean;
-    /** The generated preview text (null if no preview available) */
-    preview: string | null;
-    /** Error message (null if no error) */
-    error: string | null;
-    /** Callback function to save the compression */
-    onSave: () => void;
-    /** Loading state for save operation */
-    saving: boolean;
-    /** Whether the preview button should be enabled */
-    canPreview: boolean;
-    /** Whether the save button should be enabled */
-    canSave: boolean;
-}
+import type { CompressionDialogProps } from '../../types';
 
 /**
  * CompressionDialog - A modal dialog for compressing text chunks

@@ -31,6 +31,7 @@ import { useExplanation } from './useExplanation';
 import { ChunkType } from 'types';
 import { ExplanationResponse } from 'services';
 import { LoadingSpinner, AppAlert } from 'components';
+import type { ExplanationToolProps } from '../types';
 
 /**
  * UI Configuration Constants
@@ -62,54 +63,6 @@ const SPINNER_SIZE = 20; // Size of the loading spinner icon (px)
 const stripPunctuation = (text: string): string => {
     return text.replace(/[^\u0000-\u007F\w\s]/g, '').trim();
 };
-
-/**
- * Props interface for the WordsExplanationTool component
- * 
- * @interface ExplanationToolProps
- */
-interface ExplanationToolProps {
-    /** 
-     * The word or phrase to explain
-     * 
-     * This can be a single word or multiple words that the user wants to understand.
-     * The component will automatically clean punctuation from this input.
-     * 
-     * @example "hello" | "machine learning" | "café!"
-     */
-    word: string;
-
-    /** 
-     * The chunk containing context for the explanation
-     * 
-     * Provides the surrounding text context that helps the AI generate more accurate
-     * and contextually relevant explanations. Must contain at least the `text` and
-     * `meta_text_id` properties.
-     */
-    chunk: ChunkType;
-
-    /** 
-     * Optional callback fired when explanation interaction completes
-     * 
-     * Called when the user closes the explanation drawer. Provides feedback about
-     * whether the explanation was successful and includes the explanation data.
-     * 
-     * @param success - Whether the explanation was successfully retrieved
-     * @param result - The explanation data (undefined if unsuccessful)
-     * 
-     * @example
-     * ```typescript
-     * const handleComplete = (success: boolean, result?: ExplanationResponse) => {
-     *   if (success && result) {
-     *     console.log('Explanation retrieved:', result.explanation);
-     *   } else {
-     *     console.log('Explanation failed or was cancelled');
-     *   }
-     * };
-     * ```
-     */
-    onComplete?: (success: boolean, result?: ExplanationResponse) => void;
-}
 
 /**
  * WordsExplanationTool Component

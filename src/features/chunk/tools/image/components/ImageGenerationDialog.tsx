@@ -10,16 +10,7 @@ import {
     LinearProgress,
 } from '@mui/material';
 import { AppAlert } from 'components';
-
-interface ImageGenerationDialogProps {
-    open: boolean;
-    prompt: string;
-    loading: boolean;
-    error: string | null;
-    onClose: () => void;
-    onPromptChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-}
+import type { ImageGenerationDialogProps } from '../../types';
 
 const ImageGenerationDialog: React.FC<ImageGenerationDialogProps> = ({
     open,

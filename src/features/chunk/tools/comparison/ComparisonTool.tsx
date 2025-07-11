@@ -5,11 +5,11 @@ import ReactMarkdown from 'react-markdown';
 
 import { AiGenerationButton } from 'components';
 
-import { ComparisonToolComponentProps } from '../types';
+import { ComparisonToolProps } from '../types';
 import { useComparison } from './useComparison';
 import { getSharedToolStyles } from '../shared.styles';
 
-const ComparisonTool: React.FC<ComparisonToolComponentProps> = ({
+const ComparisonTool: React.FC<ComparisonToolProps> = ({
     chunk,
     onComparisonUpdate,
 }) => {
@@ -23,7 +23,7 @@ const ComparisonTool: React.FC<ComparisonToolComponentProps> = ({
         });
 
         if (result.success && result.data) {
-            onComparisonUpdate(result.data.comparisonText);
+            onComparisonUpdate?.(result.data.comparisonText);
         }
     };
 

@@ -3,9 +3,9 @@ import { Box, useTheme } from '@mui/material';
 
 import { ChunkTextField } from '../../../chunk/components';
 import { getSharedToolStyles } from '../shared.styles';
-import { NotesToolComponentProps } from '../types';
+import { NotesToolProps } from '../types';
 
-const NotesTool: React.FC<NotesToolComponentProps> = ({
+const NotesTool: React.FC<NotesToolProps> = ({
     summary = '',
     notes = '',
     onSummaryBlur = () => { },

@@ -24,67 +24,7 @@ import { log } from 'utils';
 import type { ChunkType, AiImage } from 'types';
 import { pollImageAvailability } from './utils/imagePolling';
 
-import { ImageToolProps, ToolResult } from '../types';
-
-/**
- * Type Definitions and Interfaces
- * 
- * This section defines the TypeScript interfaces used throughout the hook
- * for better type safety and IDE support.
- */
-
-/**
- * Return type of the useImageTool hook
- * Describes all functions and state available to consuming components
- */
-export interface UseImageToolReturn {
-    /** Function to generate an AI image with given parameters */
-    generateImage: (props: ImageToolProps) => Promise<ToolResult<ImageResult>>;
-    /** Current internal state of the hook */
-    state: ImageToolState;
-    /** Helper function to get the complete image source URL */
-    getImgSrc: () => string;
-    /** Function to open the image generation dialog */
-    openDialog: () => void;
-    /** Function to close the image generation dialog */
-    closeDialog: () => void;
-    /** Handler for prompt input changes */
-    handlePromptChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    /** Boolean indicating if image generation is in progress */
-    loading: boolean;
-    /** Current error message, null if no error */
-    error: string | null;
-}
-
-/**
- * Represents the successful result of an image generation operation
- * 
- * @interface ImageResult
- */
-interface ImageResult {
-    /** The relative path to the generated image file */
-    imagePath: string;
-    /** The prompt that was used to generate the image */
-    prompt: string;
-}
-
-/**
- * Internal state interface for the useImageTool hook
- * 
- * @interface ImageToolState
- */
-interface ImageToolState {
-    /** Whether an image generation operation is currently in progress */
-    loading: boolean;
-    /** Error message from the last failed operation, null if no error */
-    error: string | null;
-    /** Path to the current image data, null if no image exists */
-    data: string | null;
-    /** Current user input for the image generation prompt */
-    prompt: string;
-    /** Whether the image generation dialog is currently open */
-    dialogOpen: boolean;
-}
+import { ImageToolProps, ToolResult, UseImageToolReturn, ImageResult, ImageToolState } from '../types';
 
 /**
  * Utility function to extract the most recently generated AI image from a chunk's image collection

@@ -2,17 +2,13 @@ import React from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
 
 import { getSharedToolStyles } from '../shared.styles';
-import { BaseChunkProps } from '../types';
+import type { CompressionDisplayToolProps } from '../types';
 import CompressionToolButton from './CompressionTool';
 import CompressionSelect from './components/CompressionSelect';
 import CompressionDisplay from './components/CompressionDisplay';
 import CompressionEmptyState from './components/CompressionEmptyState';
 import { useCompression } from './useCompression';
 import { LoadingSpinner } from 'components';
-
-interface CompressionDisplayToolProps extends BaseChunkProps {
-    onCompressionCreated?: () => void;
-}
 
 const CompressionDisplayTool: React.FC<CompressionDisplayToolProps> = ({ chunk }) => {
     const theme = useTheme();

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useChunkStore } from 'store';
-import { SplitChunkToolComponentProps, ToolResult } from '../types';
+import { SplitChunkToolProps, ToolResult } from '../types';
 
 /**
  * Hook for split chunk tool functionality
@@ -8,7 +8,7 @@ import { SplitChunkToolComponentProps, ToolResult } from '../types';
 export const useSplitChunk = () => {
     const handleWordClick = useChunkStore(state => state.handleWordClick);
 
-    const splitChunk = useCallback(async (props: SplitChunkToolComponentProps): Promise<ToolResult> => {
+    const splitChunk = useCallback(async (props: SplitChunkToolProps): Promise<ToolResult> => {
         try {
             const { chunkId, chunkIdx, wordIdx, word } = props;
 

@@ -1,11 +1,7 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import CompressionTool from '../CompressionTool';
-import { BaseChunkProps } from '../../types';
-
-interface CompressionEmptyStateProps extends BaseChunkProps {
-    fetchCompressions: () => void;
-}
+import type { CompressionEmptyStateProps } from '../../types';
 
 const CompressionEmptyState: React.FC<CompressionEmptyStateProps> = ({ chunk, fetchCompressions }) => (
     <Box>

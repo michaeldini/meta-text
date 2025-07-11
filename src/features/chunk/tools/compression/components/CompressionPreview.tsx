@@ -1,9 +1,6 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-
-interface CompressionPreviewProps {
-    preview: string | null;
-}
+import type { CompressionPreviewProps } from '../../types';
 
 const CompressionPreview: React.FC<CompressionPreviewProps> = ({ preview }) => {
     if (!preview) return null;
