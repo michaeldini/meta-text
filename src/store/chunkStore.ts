@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { getUserChunkSession, setUserChunkSession, fetchChunks as apiFetchChunks, updateChunk, splitChunk, combineChunks } from 'services';
+import { fetchChunks as apiFetchChunks, updateChunk, splitChunk, combineChunks } from 'services';
 
 import { getErrorMessage } from 'types';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';

@@ -1,11 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException, Body, status, Query
-from sqlmodel import Session, select
+from fastapi import APIRouter, Depends, HTTPException, Body, status
+from sqlmodel import Session
 from typing import List
-from datetime import datetime
 
 from backend.db import get_session
 from backend.models import (
-    ChunkRead, UserChunkSession, UserChunkSessionRead, UserChunkSessionCreate
+    ChunkRead
 )
 from backend.services.chunk_service import ChunkService
 from backend.exceptions.chunk_exceptions import (
@@ -97,46 +96,3 @@ def update_chunk(chunk_id: int, chunk_data: dict = Body(...), session: Session =
             detail=f"Update failed: {e.reason}"
         )
 
-
-@router.get("/user-chunk-session/", response_model=UserChunkSessionRead, name="get_user_chunk_session")
-def get_user_chunk_session(
-    user_id: int = Query(...),
-    meta_text_id: int = Query(...),
-    session: Session = Depends(get_session)
-):
-    db_obj = session.exec(
-        select(UserChunkSession).where(
-            UserChunkSession.user_id == user_id,
-            UserChunkSession.meta_text_id == meta_text_id
-        )
-    ).first()
-    if not db_obj:
-        raise HTTPException(status_code=404, detail="Session not found")
-    return db_obj
-
-@router.post("/user-chunk-session/", response_model=UserChunkSessionRead, name="set_user_chunk_session")
-def set_user_chunk_session(
-    data: UserChunkSessionCreate,
-    session: Session = Depends(get_session)
-):
-    # Upsert: update if exists, else create
-    db_obj = session.exec(
-        select(UserChunkSession).where(
-            UserChunkSession.user_id == data.user_id,
-            UserChunkSession.meta_text_id == data.meta_text_id
-        )
-    ).first()
-    if db_obj:
-        db_obj.last_active_chunk_id = data.last_active_chunk_id
-        db_obj.updated_at = datetime.now()
-        session.add(db_obj)
-    else:
-        db_obj = UserChunkSession(
-            user_id=data.user_id,
-            meta_text_id=data.meta_text_id,
-            last_active_chunk_id=data.last_active_chunk_id
-        )
-        session.add(db_obj)
-    session.commit()
-    session.refresh(db_obj)
-    return db_obj

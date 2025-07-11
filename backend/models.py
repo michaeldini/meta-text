@@ -153,26 +153,6 @@ class AiImageRead(SQLModel):
     path: str
     chunk_id: Optional[int] = None
 
-# --- UserChunkSession Schemas ---
-class UserChunkSession(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    user_id: int = Field(foreign_key="user.id")
-    meta_text_id: int = Field(foreign_key="metatext.id")
-    last_active_chunk_id: int = Field(foreign_key="chunk.id")
-    updated_at: datetime = Field(default_factory=datetime.now, nullable=False)
-
-class UserChunkSessionRead(SQLModel):
-    id: int
-    user_id: int
-    meta_text_id: int
-    last_active_chunk_id: int
-    updated_at: datetime
-
-class UserChunkSessionCreate(SQLModel):
-    user_id: int
-    meta_text_id: int
-    last_active_chunk_id: int
-
 # --- Phrase Explanation Schemas ---
 class ExplainPhraseWithContextRequest(SQLModel):
     phrase: str
