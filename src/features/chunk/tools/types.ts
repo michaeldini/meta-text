@@ -109,7 +109,6 @@ export interface NotesToolProps {
  */
 export interface MergeChunksToolProps {
     chunkIndices: number[];
-    chunks?: ChunkType[];
     onComplete?: (success: boolean, result?: any) => void;
 }
 

@@ -14,7 +14,6 @@ import { MergeChunksToolProps } from '../types';
  */
 const MergeChunksTool: React.FC<MergeChunksToolProps> = ({
     chunkIndices,
-    chunks,
     onComplete
 }) => {
     const { mergeChunks } = useMergeChunks();
@@ -28,8 +27,7 @@ const MergeChunksTool: React.FC<MergeChunksToolProps> = ({
         setIsLoading(true);
         try {
             const result = await mergeChunks({
-                chunkIndices,
-                chunks
+                chunkIndices
             });
 
             // Call completion callback if provided

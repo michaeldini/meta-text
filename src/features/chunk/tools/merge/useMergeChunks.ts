@@ -6,19 +6,23 @@ import { MergeChunksToolProps, ToolResult } from '../types';
  * Hook for merge chunks tool functionality
  */
 export const useMergeChunks = () => {
-    const handleRemoveChunk = useChunkStore(state => state.handleRemoveChunk);
+    const handleMergeChunks = useChunkStore(state => state.mergeChunks);
 
     const mergeChunks = useCallback(async (props: MergeChunksToolProps): Promise<ToolResult> => {
         try {
             const { chunkIndices } = props;
 
-            // Use the existing store function to remove the first chunk (merge with next)
-            const [firstChunk] = chunkIndices;
-            await handleRemoveChunk(firstChunk);
+            // Validate that we have exactly 2 consecutive chunks to merge
+            if (chunkIndices.length !== 2) {
+                throw new Error('Exactly 2 consecutive chunks must be selected for merging');
+            }
+
+            // Use the existing store function with the first chunk index
+            const [firstChunkIndex] = chunkIndices;
+            await handleMergeChunks(firstChunkIndex);
 
             return {
-                success: true,
-                data: { mergedChunks: chunkIndices }
+                success: true
             };
         } catch (error) {
             return {
@@ -26,7 +30,7 @@ export const useMergeChunks = () => {
                 error: error instanceof Error ? error.message : 'Failed to merge chunks'
             };
         }
-    }, [handleRemoveChunk]);
+    }, [handleMergeChunks]);
 
     return {
         mergeChunks

@@ -18,7 +18,7 @@ type ChunkState = {
     fetchChunks: (metaTextId: number) => Promise<void>;
     updateChunkField: UpdateChunkFieldFn;
     handleWordClick: (chunkId: number, chunkIdx: number, wordIdx: number) => Promise<void>;
-    handleRemoveChunk: (chunkIdx: number) => Promise<void>;
+    mergeChunks: (chunkIdx: number) => Promise<void>;
     setChunks: (chunks: ChunkType[]) => void;
     refetchChunks: (metaTextId: number) => Promise<void>;
     resetChunkState: () => void;
@@ -79,7 +79,7 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
             return { ...state, chunks: newChunks };
         });
     },
-    handleRemoveChunk: async (chunkIdx) => {
+    mergeChunks: async (chunkIdx) => {
         const { chunks } = get();
         const first = chunks[chunkIdx];
         const second = chunks[chunkIdx + 1];
