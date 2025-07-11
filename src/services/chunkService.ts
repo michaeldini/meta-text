@@ -1,4 +1,32 @@
-import { handleApiResponse, apiGet, apiPost, apiPut } from '../utils/api';
+/**
+ * Chunk Service - Manages document chunk operations with intelligent caching
+ * 
+ * This service provides a comprehensive API for managing document chunks and their compressions.
+ * It implements a two-tier caching strategy to optimize performance:
+ * 
+ * CACHING STRATEGY:
+ * - Individual chunks: Cached for 10 minutes (frequently accessed, less likely to change)
+ * - Chunk lists: Cached for 5 minutes (more dynamic, needs fresher data)
+ * - Cache invalidation: Automatically clears related caches when chunks are modified
+ * 
+ * CORE OPERATIONS:
+ * - Fetch chunks (with caching): Retrieves all chunks for a meta-text document
+ * - Fetch individual chunk (with caching): Gets a specific chunk by ID
+ * - Split chunks: Divides a chunk at a specified word index
+ * - Combine chunks: Merges two adjacent chunks into one
+ * - Update chunks: Modifies chunk properties with cache invalidation
+ * 
+ * COMPRESSION FEATURES:
+ * - Create/read/update/delete chunk compressions
+ * - Preview compression styles before saving
+ * - Multiple compression styles per chunk support
+ * 
+ * The service uses a base function + cached wrapper pattern where base functions
+ * (prefixed with _) perform the actual API calls, and exported functions add caching.
+ * Cache invalidation patterns ensure data consistency when chunks are modified.
+ */
+
+import { apiGet, apiPost, apiPut } from '../utils/api';
 import { withCache, apiCache } from '../utils/cache';
 import type { ChunkCompression, ChunkCompressionCreate, ChunkType } from 'types';
 

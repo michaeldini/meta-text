@@ -2,7 +2,7 @@
 from sqlmodel import select, Session
 from loguru import logger
 
-from backend.models import Chunk, ChunkRead, ChunkWithImagesRead
+from backend.models import Chunk, ChunkRead
 from backend.exceptions.chunk_exceptions import (
     ChunkNotFoundError,
     InvalidSplitIndexError,
@@ -73,7 +73,7 @@ class ChunkService:
         logger.debug(f"Chunk found: id={chunk.id}, meta_text_id={chunk.meta_text_id}")
         return chunk
     
-    def get_chunk_with_images(self, chunk_id: int, session: Session) -> ChunkWithImagesRead:
+    def get_chunk_with_images(self, chunk_id: int, session: Session) -> ChunkRead:
         """
         Get a chunk with its AI images.
         
@@ -82,14 +82,15 @@ class ChunkService:
             session: Database session
             
         Returns:
-            ChunkWithImagesRead object
+            ChunkRead object
             
         Raises:
             ChunkNotFoundError: If chunk is not found
         """
         chunk = self.get_chunk_by_id(chunk_id, session)
-        ai_images = self.ai_image_service.get_all_images_for_chunk(session, chunk_id)
-        return ChunkWithImagesRead.model_validate(chunk, update={"ai_images": ai_images})
+        # The relationship should load the images automatically if configured with lazy='selectin' or similar
+        # or we can manually validate it.
+        return ChunkRead.model_validate(chunk, from_attributes=True)
     
     def get_all_chunks_for_meta_text(self, meta_text_id: int, session: Session) -> list[ChunkRead]:
         """
@@ -100,7 +101,7 @@ class ChunkService:
             session: Database session
             
         Returns:
-            List of ChunkWithImagesRead objects ordered by position
+            List of ChunkRead objects ordered by position
             
         Raises:
             NoChunksFoundError: If no chunks are found
@@ -117,20 +118,8 @@ class ChunkService:
             logger.warning(f"No chunks found for meta_text_id: {meta_text_id}")
             raise NoChunksFoundError(meta_text_id)
         
-        result = [ChunkRead.model_validate(chunk, from_attributes=True) for chunk in chunks]
-        # Get all AI images for these chunks efficiently
-        # chunk_ids = [chunk.id for chunk in chunks]  
-        # images_by_chunk = self.ai_image_service.get_images_for_chunks(session, chunk_ids)
-        
-        # Build result with images
-        # result = []
-        # for chunk in chunks:
-        #     ai_images = images_by_chunk.get(chunk.id, [])
-        #     result.append(ChunkWithImagesRead.model_validate(chunk, update={"ai_images": ai_images}))
-        
-        logger.info(f"Found {len(result)} chunks for meta_text_id: {meta_text_id}")
-        return result
-    
+        return [ChunkRead.model_validate(chunk, from_attributes=True) for chunk in chunks]
+
     def split_chunk(self, chunk_id: int, word_index: int, session: Session) -> list[Chunk]:
         """
         Split a chunk at the specified word index.

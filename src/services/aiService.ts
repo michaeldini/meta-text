@@ -1,5 +1,22 @@
-import { handleApiResponse, apiPost, apiGet } from '../utils/api';
+/**
+ * AI Service Module
+ * 
+ * This module provides functions for interacting with AI-powered endpoints including:
+ * - Text explanation and analysis (words, chunks, context)
+ * - Source document analysis (summaries, characters, themes, etc.)
+ * - AI image generation from prompts
+ * - Chunk comparison and note summary generation
+ * 
+ * All functions return properly typed responses and handle API communication
+ * through the centralized API utilities.
+ */
 
+import { apiPost, apiGet } from '../utils/api';
+
+
+// ExplanationRequest defines the parameters for requesting an explanation.
+// the fields are optional because the request can be made with multiple combinations
+// of parameters, e.g. just words, or words with context, or chunkId, etc.
 export interface ExplanationRequest {
     words?: string;
     context?: string;
@@ -7,16 +24,21 @@ export interface ExplanationRequest {
     metaTextId?: number | null;
 
 }
+
+// ExplanationResponse defines the structure of the response from the explanation endpoint.
 export interface ExplanationResponse {
     explanation: string;
     explanationWithContext: string;
 }
 
+// SourceDocInfoRequest defines the request parameters for generating source document info.
 export interface SourceDocInfoRequest {
     id: number;
     prompt: string;
 }
 
+// SourceDocInfoAIResult defines the structure of the AI-generated result for source document info.
+// TODO - consider removing endpoint and use sourceDoc endpoint instead
 export interface SourceDocInfoAIResult {
     summary: string;
     characters: string[];
@@ -25,6 +47,7 @@ export interface SourceDocInfoAIResult {
     symbols: string[];
 }
 
+// TODO - consider removing endpoint and use sourceDoc endpoint instead
 export interface SourceDocInfoResponse {
     result: SourceDocInfoAIResult;
 }
@@ -48,21 +71,11 @@ export async function generateAiImage(prompt: string, chunkId: number): Promise<
     return await apiPost('/api/generate-image', formData);
 }
 
-/**
- * Generates an AI comparison summary between chunk text, summary, and notes.
- * @param {number} chunkId - The chunk id to compare.
- * @returns {Promise<{result: string}>}
- */
 export async function generateChunkComparison(chunkId: number): Promise<{ result: string }> {
     return await apiGet(`/api/generate-chunk-comparison/${chunkId}`);
 }
 
 
-/**
- * Calls the /api/explain endpoint to get an explanation for a word, words, or a chunk.
- * @param {ExplanationRequest} params - The request params.
- * @returns {Promise<ExplanationResponse>}
-*/
 export async function explainWordsOrChunk(params: ExplanationRequest): Promise<ExplanationResponse> {
     return await apiPost('/api/explain', params);
 }

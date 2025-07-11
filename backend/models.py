@@ -98,9 +98,6 @@ class ChunkRead(ChunkBase):
     ai_images: list["AiImageRead"] = []
     compressions: list["ChunkCompressionRead"] = []
     
-class ChunkWithImagesRead(ChunkRead):
-    ai_images: list["AiImageRead"] = []
-
 
 # --- AI Response Schemas ---
 # --- SourceDocInfo Schemas ---
@@ -205,4 +202,3 @@ class ExplainRequest(BaseModel):
     context: str = Field(..., description="Context for the explanation")
     chunkId: Optional[int] = Field(None, description="Chunk ID for chunk explanation")
     metaTextId: Optional[int] = Field(None, description="MetaText ID for explanation")
-    

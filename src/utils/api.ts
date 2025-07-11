@@ -97,8 +97,8 @@ export async function apiPost<T>(
     data?: unknown,
     options?: RequestInit
 ): Promise<T> {
-    const body = data instanceof FormData || data instanceof URLSearchParams 
-        ? data 
+    const body = data instanceof FormData || data instanceof URLSearchParams
+        ? data
         : JSON.stringify(data);
     return apiRequest<T>(url, { ...options, method: 'POST', body });
 }
@@ -124,6 +124,3 @@ export async function apiPut<T>(
 export async function apiDelete<T>(url: string, options?: RequestInit): Promise<T> {
     return apiRequest<T>(url, { ...options, method: 'DELETE' });
 }
-
-// Legacy export for backward compatibility (to be removed)
-export default handleApiResponse;

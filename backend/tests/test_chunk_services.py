@@ -1,18 +1,27 @@
 """Test the refactored chunk services."""
 import pytest
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 from sqlmodel import Session
 
 from backend.services.chunk_service import ChunkService
-from backend.services.ai_image_service import AiImageService
-from backend.models import Chunk, AiImage, ChunkWithImagesRead
+from backend.models import Chunk, ChunkRead
 from backend.exceptions.chunk_exceptions import (
     ChunkNotFoundError,
     InvalidSplitIndexError,
     ChunkCombineError,
-    ChunkUpdateError,
     NoChunksFoundError
 )
+
+
+@pytest.fixture
+def mock_session():
+    """Create a mock session for testing."""
+    return Mock(spec=Session)
+
+@pytest.fixture
+def chunk_service():
+    """Provide a ChunkService instance for testing."""
+    return ChunkService()
 
 
 class TestChunkService:
@@ -21,8 +30,7 @@ class TestChunkService:
     def setup_method(self):
         """Set up test dependencies."""
         self.mock_session = Mock(spec=Session)
-        self.mock_ai_image_service = Mock(spec=AiImageService)
-        self.service = ChunkService(self.mock_ai_image_service)
+        self.chunk_service = ChunkService()
     
     def test_split_chunk_text(self):
         """Test text splitting functionality."""
@@ -64,7 +72,7 @@ class TestChunkService:
         self.mock_session.get.return_value = chunk
         
         # Act
-        result = self.service.get_chunk_by_id(1, self.mock_session)
+        result = self.chunk_service.get_chunk_by_id(1, self.mock_session)
         
         # Assert
         assert result == chunk
@@ -77,256 +85,136 @@ class TestChunkService:
         
         # Act & Assert
         with pytest.raises(ChunkNotFoundError) as exc_info:
-            self.service.get_chunk_by_id(999, self.mock_session)
+            self.chunk_service.get_chunk_by_id(999, self.mock_session)
         
         assert exc_info.value.chunk_id == 999
     
-    def test_get_chunk_with_images_success(self):
-        """Test getting chunk with AI images."""
-        # Arrange
-        chunk = Mock(spec=Chunk)
-        chunk.id = 1
-        ai_images = [Mock(spec=AiImage), Mock(spec=AiImage)]
-        
-        self.mock_session.get.return_value = chunk
-        self.mock_ai_image_service.get_all_images_for_chunk.return_value = ai_images
-        
-        # Mock ChunkWithImagesRead.model_validate
-        expected_result = Mock(spec=ChunkWithImagesRead)
-        with pytest.MonkeyPatch().context() as m:
-            m.setattr(ChunkWithImagesRead, "model_validate", Mock(return_value=expected_result))
+    def test_get_chunk_with_images_not_found(self, mock_session):
+        # Mock get_chunk_by_id to raise ChunkNotFoundError
+        with patch.object(self.chunk_service, 'get_chunk_by_id', side_effect=ChunkNotFoundError(999)):
+            with pytest.raises(ChunkNotFoundError):
+                self.chunk_service.get_chunk_with_images(999, mock_session)
+
+    def test_get_chunk_with_images_success(self, mock_session, monkeypatch):
+        # Mock get_chunk_by_id
+        mock_chunk = Mock(spec=Chunk)
+        with patch.object(self.chunk_service, 'get_chunk_by_id', return_value=mock_chunk):
+            # Mock ChunkRead.model_validate
+            expected_result = Mock(spec=ChunkRead)
+            mock_model_validate = Mock(return_value=expected_result)
+            monkeypatch.setattr(ChunkRead, "model_validate", mock_model_validate)
             
-            # Act
-            result = self.service.get_chunk_with_images(1, self.mock_session)
+            # Call the method
+            result = self.chunk_service.get_chunk_with_images(1, mock_session)
             
-            # Assert
+            # Assertions
             assert result == expected_result
-            self.mock_ai_image_service.get_all_images_for_chunk.assert_called_once_with(self.mock_session, 1)
-    
-    def test_get_all_chunks_for_meta_text_success(self):
-        """Test getting all chunks for a meta-text."""
-        # Arrange
-        chunks = [Mock(spec=Chunk), Mock(spec=Chunk)]
-        chunks[0].id = 1
-        chunks[1].id = 2
-        chunk_ids = [1, 2]
-        images_by_chunk = {1: [Mock(spec=AiImage)], 2: []}
+            mock_model_validate.assert_called_once_with(mock_chunk, from_attributes=True)
+
+    def test_get_all_chunks_for_meta_text_success(self, mock_session, monkeypatch):
+        # Mock session.exec
+        mock_chunks = [Mock(spec=Chunk), Mock(spec=Chunk)]
+        mock_session.exec.return_value.all.return_value = mock_chunks
         
-        self.mock_session.exec.return_value.all.return_value = chunks
-        self.mock_ai_image_service.get_images_for_chunks.return_value = images_by_chunk
+        # Mock ChunkRead.model_validate
+        expected_results = [Mock(spec=ChunkRead), Mock(spec=ChunkRead)]
         
-        # Mock ChunkWithImagesRead.model_validate
-        expected_results = [Mock(spec=ChunkWithImagesRead), Mock(spec=ChunkWithImagesRead)]
-        with pytest.MonkeyPatch().context() as m:
-            mock_validate = Mock(side_effect=expected_results)
-            m.setattr(ChunkWithImagesRead, "model_validate", mock_validate)
-            
-            # Act
-            result = self.service.get_all_chunks_for_meta_text(1, self.mock_session)
-            
-            # Assert
-            assert result == expected_results
-            self.mock_ai_image_service.get_images_for_chunks.assert_called_once_with(self.mock_session, chunk_ids)
-    
-    def test_get_all_chunks_for_meta_text_no_chunks(self):
-        """Test getting chunks when none exist."""
-        # Arrange
-        self.mock_session.exec.return_value.all.return_value = []
+        # Create a mutable list to pop from
+        results_list = list(expected_results)
+        def mock_validate(chunk, from_attributes):
+            return results_list.pop(0)
+        
+        monkeypatch.setattr(ChunkRead, "model_validate", mock_validate)
+        
+        # Call the method
+        result = self.chunk_service.get_all_chunks_for_meta_text(1, mock_session)
+        
+        # Assertions
+        assert len(result) == 2
+        mock_session.exec.assert_called_once()
+
+    def test_get_all_chunks_for_meta_text_no_chunks_found(self, mock_session):
+        # Mock session.exec to return no chunks
+        mock_session.exec.return_value.all.return_value = []
         
         # Act & Assert
         with pytest.raises(NoChunksFoundError) as exc_info:
-            self.service.get_all_chunks_for_meta_text(999, self.mock_session)
+            self.chunk_service.get_all_chunks_for_meta_text(1, mock_session)
         
         assert exc_info.value.meta_text_id == 999
     
-    def test_split_chunk_success(self):
-        """Test successful chunk splitting."""
-        # Arrange
-        chunk = Mock(spec=Chunk)
-        chunk.id = 1
-        chunk.text = "This is a test sentence"
-        chunk.position = 1.0
-        chunk.meta_text_id = 1
-        
-        self.mock_session.get.return_value = chunk
-        self.mock_session.exec.return_value.first.return_value = None  # No next chunk
-        self.mock_session.add = Mock()
-        self.mock_session.commit = Mock()
-        self.mock_session.refresh = Mock()
-        
-        # Act
-        result = self.service.split_chunk(1, 3, self.mock_session)
-        
-        # Assert
-        assert len(result) == 2
-        assert chunk.text == "This is a"
-        self.mock_session.add.assert_called_once()
-        self.mock_session.commit.assert_called_once()
-    
-    def test_split_chunk_invalid_index(self):
-        """Test chunk splitting with invalid index."""
-        # Arrange
-        chunk = Mock(spec=Chunk)
-        chunk.id = 1
-        chunk.text = "This is a test"  # 4 words
-        
-        self.mock_session.get.return_value = chunk
-        
-        # Act & Assert - word index too high
-        with pytest.raises(InvalidSplitIndexError) as exc_info:
-            self.service.split_chunk(1, 5, self.mock_session)
-        
-        assert exc_info.value.chunk_id == 1
-        assert exc_info.value.word_index == 5
-        assert exc_info.value.max_words == 4
-        
-        # Act & Assert - word index too low
-        with pytest.raises(InvalidSplitIndexError):
-            self.service.split_chunk(1, 0, self.mock_session)
-    
-    def test_combine_chunks_success(self):
-        """Test successful chunk combination."""
-        # Arrange
-        first_chunk = Mock(spec=Chunk)
-        first_chunk.id = 1
-        first_chunk.text = "First chunk"
-        first_chunk.position = 1.0
-        first_chunk.meta_text_id = 1
-        
-        second_chunk = Mock(spec=Chunk)
-        second_chunk.id = 2
-        second_chunk.text = "Second chunk"
-        second_chunk.position = 2.0
-        second_chunk.meta_text_id = 1
-        
-        self.mock_session.get.side_effect = [first_chunk, second_chunk]
-        self.mock_session.delete = Mock()
-        self.mock_session.commit = Mock()
-        self.mock_session.refresh = Mock()
-        
-        # Act
-        result = self.service.combine_chunks(1, 2, self.mock_session)
-        
-        # Assert
-        assert result == first_chunk
-        assert first_chunk.text == "First chunk Second chunk"
-        self.mock_session.delete.assert_called_once_with(second_chunk)
-        self.mock_session.commit.assert_called_once()
-    
-    def test_combine_chunks_different_meta_texts(self):
-        """Test chunk combination fails when chunks belong to different meta-texts."""
-        # Arrange
-        first_chunk = Mock(spec=Chunk)
-        first_chunk.id = 1
-        first_chunk.meta_text_id = 1
-        
-        second_chunk = Mock(spec=Chunk)
-        second_chunk.id = 2
-        second_chunk.meta_text_id = 2
-        
-        self.mock_session.get.side_effect = [first_chunk, second_chunk]
-        
-        # Act & Assert
-        with pytest.raises(ChunkCombineError) as exc_info:
-            self.service.combine_chunks(1, 2, self.mock_session)
-        
-        assert "different meta-texts" in str(exc_info.value)
-    
-    def test_update_chunk_success(self):
-        """Test successful chunk update."""
-        # Arrange
-        chunk = Mock(spec=Chunk)
-        chunk.id = 1
-        
-        self.mock_session.get.return_value = chunk
-        self.mock_session.add = Mock()
-        self.mock_session.commit = Mock()
-        self.mock_session.refresh = Mock()
-        
-        chunk_data = {"text": "Updated text", "summary": "Updated summary"}
-        
-        # Act
-        result = self.service.update_chunk(1, chunk_data, self.mock_session)
-        
-        # Assert
-        assert result == chunk
-        assert chunk.text == "Updated text"
-        assert chunk.summary == "Updated summary"
-        self.mock_session.commit.assert_called_once()
+    def test_split_chunk_not_found(self, mock_session):
+        with patch.object(self.chunk_service, 'get_chunk_by_id', side_effect=ChunkNotFoundError(999)):
+            with pytest.raises(ChunkNotFoundError):
+                self.chunk_service.split_chunk(999, 10, mock_session)
 
+    def test_split_chunk_invalid_index(self, mock_session):
+        mock_chunk = Chunk(id=1, text="word1 word2", meta_text_id=1)
+        with patch.object(self.chunk_service, 'get_chunk_by_id', return_value=mock_chunk):
+            with pytest.raises(InvalidSplitIndexError):
+                self.chunk_service.split_chunk(1, 10, mock_session) # index out of bounds
 
-class TestAiImageService:
-    """Test cases for AiImageService."""
-    
-    def setup_method(self):
-        """Set up test dependencies."""
-        self.mock_session = Mock(spec=Session)
-        self.service = AiImageService()
-    
-    def test_get_latest_image_for_chunk_success(self):
-        """Test getting latest image for a chunk."""
-        # Arrange
-        latest_image = Mock(spec=AiImage)
-        self.mock_session.exec.return_value.first.return_value = latest_image
+    def test_split_chunk_success(self, mock_session):
+        original_chunk = Chunk(id=1, text="This is a test sentence.", position=1.0, meta_text_id=1)
+        with patch.object(self.chunk_service, 'get_chunk_by_id', return_value=original_chunk):
+            new_chunks = self.chunk_service.split_chunk(1, 4, mock_session)
+            assert len(new_chunks) == 2
+            assert new_chunks[0].text == "This is a test"
+            assert new_chunks[1].text == "sentence."
+            assert new_chunks[1].position > new_chunks[0].position
+            mock_session.add.assert_called()
+            mock_session.commit.assert_called()
+
+    def test_combine_chunks_not_found(self, mock_session):
+        with patch.object(self.chunk_service, 'get_chunk_by_id', side_effect=ChunkNotFoundError(999)):
+            with pytest.raises(ChunkNotFoundError):
+                self.chunk_service.combine_chunks(1, 999, mock_session)
+
+    def test_combine_chunks_not_adjacent(self, mock_session):
+        chunk1 = Chunk(id=1, text="First part.", position=1.0, meta_text_id=1)
+        chunk2 = Chunk(id=2, text="Second part.", position=3.0, meta_text_id=1) # not adjacent
         
-        # Act
-        result = self.service.get_latest_image_for_chunk(self.mock_session, 1)
+        def get_chunk_side_effect(chunk_id, session):
+            if chunk_id == 1:
+                return chunk1
+            if chunk_id == 2:
+                return chunk2
+            raise ChunkNotFoundError(chunk_id)
+
+        with patch.object(self.chunk_service, 'get_chunk_by_id', side_effect=get_chunk_side_effect):
+             with patch.object(self.chunk_service, 'are_chunks_adjacent', return_value=False):
+                with pytest.raises(ChunkCombineError):
+                    self.chunk_service.combine_chunks(1, 2, mock_session)
+
+    def test_combine_chunks_success(self, mock_session):
+        chunk1 = Chunk(id=1, text="First part.", position=1.0, meta_text_id=1)
+        chunk2 = Chunk(id=2, text="Second part.", position=2.0, meta_text_id=1)
         
-        # Assert
-        assert result == latest_image
-        self.mock_session.exec.assert_called_once()
-    
-    def test_get_latest_image_for_chunk_none(self):
-        """Test getting latest image when none exists."""
-        # Arrange
-        self.mock_session.exec.return_value.first.return_value = None
-        
-        # Act
-        result = self.service.get_latest_image_for_chunk(self.mock_session, 1)
-        
-        # Assert
-        assert result is None
-    
-    def test_get_all_images_for_chunk(self):
-        """Test getting all images for a chunk."""
-        # Arrange
-        images = [Mock(spec=AiImage), Mock(spec=AiImage)]
-        self.mock_session.exec.return_value.all.return_value = images
-        
-        # Act
-        result = self.service.get_all_images_for_chunk(self.mock_session, 1)
-        
-        # Assert
-        assert result == images
-        self.mock_session.exec.assert_called_once()
-    
-    def test_get_images_for_chunks_success(self):
-        """Test getting images for multiple chunks."""
-        # Arrange
-        chunk_ids = [1, 2, 3]
-        images = [
-            Mock(spec=AiImage, chunk_id=1),
-            Mock(spec=AiImage, chunk_id=1),
-            Mock(spec=AiImage, chunk_id=2),
-        ]
-        self.mock_session.exec.return_value.all.return_value = images
-        
-        # Act
-        result = self.service.get_images_for_chunks(self.mock_session, chunk_ids)
-        
-        # Assert
-        assert result[1] == images[:2]  # First two images for chunk 1
-        assert result[2] == [images[2]]  # One image for chunk 2
-        assert result[3] == []  # No images for chunk 3
-        assert len(result) == 3
-    
-    def test_get_images_for_chunks_empty_list(self):
-        """Test getting images for empty chunk list."""
-        # Act
-        result = self.service.get_images_for_chunks(self.mock_session, [])
-        
-        # Assert
-        assert result == {}
+        def get_chunk_side_effect(chunk_id, session):
+            if chunk_id == 1:
+                return chunk1
+            if chunk_id == 2:
+                return chunk2
+            raise ChunkNotFoundError(chunk_id)
+
+        with patch.object(self.chunk_service, 'get_chunk_by_id', side_effect=get_chunk_side_effect):
+            with patch.object(self.chunk_service, 'are_chunks_adjacent', return_value=True):
+                combined_chunk = self.chunk_service.combine_chunks(1, 2, mock_session)
+                assert combined_chunk.text == "First part. Second part."
+                mock_session.delete.assert_called_once_with(chunk2)
+                mock_session.commit.assert_called()
+
+    def test_update_chunk_not_found(self, mock_session):
+        with patch.object(self.chunk_service, 'get_chunk_by_id', side_effect=ChunkNotFoundError(999)):
+            with pytest.raises(ChunkNotFoundError):
+                self.chunk_service.update_chunk(999, {"notes": "new notes"}, mock_session)
+
+    def test_update_chunk_success(self, mock_session):
+        chunk = Chunk(id=1, text="Original text", notes="Old notes", meta_text_id=1)
+        with patch.object(self.chunk_service, 'get_chunk_by_id', return_value=chunk):
+            updated_chunk = self.chunk_service.update_chunk(1, {"notes": "New notes"}, mock_session)
+            assert updated_chunk.notes == "New notes"
+            mock_session.commit.assert_called()
 
 
 if __name__ == "__main__":

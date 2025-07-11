@@ -1,4 +1,6 @@
-import { handleApiResponse, apiPost, apiGet } from '../utils/api';
+// Ai generated code 
+
+import { apiPost, apiGet } from '../utils/api';
 
 const API_BASE = '/api/auth';
 

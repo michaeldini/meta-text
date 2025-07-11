@@ -1,4 +1,4 @@
-import { handleApiResponse, apiGet } from '../utils/api';
+import { apiGet } from '../utils/api';
 import { withCache } from '../utils/cache';
 import { log } from 'utils';
 

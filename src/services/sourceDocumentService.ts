@@ -1,4 +1,27 @@
-import { handleApiResponse, apiGet, apiPost, apiDelete } from '../utils/api';
+/**
+ * Source Document Service
+ * 
+ * This service provides a caching layer for source document operations with the backend API.
+ * It implements a two-tier architecture:
+ * 
+ * 1. Base functions (_fetchSourceDocuments, _fetchSourceDocument) that make direct API calls
+ * 2. Cached wrapper functions that use the withCache utility for performance optimization
+ * 
+ * Caching Strategy:
+ * - Source document lists are cached for 10 minutes (fetchSourceDocuments)
+ * - Individual documents are cached for 15 minutes (fetchSourceDocument)
+ * - Cache is automatically invalidated when documents are created or deleted
+ * 
+ * The service handles:
+ * - Fetching paginated lists of source documents with summaries
+ * - Retrieving detailed information for individual documents
+ * - Creating new documents via file upload with FormData
+ * - Deleting documents and cleaning up associated cache entries
+ * 
+ * All functions include proper error handling and type safety with TypeScript interfaces.
+ */
+
+import { apiGet, apiPost, apiDelete } from '../utils/api';
 import { withCache, apiCache } from '../utils/cache';
 import type { SourceDocumentSummary, SourceDocumentDetail, SourceDocumentCreate } from 'types';
 

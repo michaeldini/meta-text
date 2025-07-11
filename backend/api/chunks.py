@@ -5,7 +5,7 @@ from datetime import datetime
 
 from backend.db import get_session
 from backend.models import (
-    ChunkRead, ChunkWithImagesRead, UserChunkSession, UserChunkSessionRead, UserChunkSessionCreate
+    ChunkRead, UserChunkSession, UserChunkSessionRead, UserChunkSessionCreate
 )
 from backend.services.chunk_service import ChunkService
 from backend.exceptions.chunk_exceptions import (
@@ -22,8 +22,8 @@ router = APIRouter()
 # Initialize service
 chunk_service = ChunkService()
 
-# consider deleting this. 
-@router.get("/chunks/all/{meta_text_id}", response_model=List[ChunkWithImagesRead], name="get_chunks")
+
+@router.get("/chunks/all/{meta_text_id}", response_model=List[ChunkRead], name="get_chunks")
 def get_chunks_api(meta_text_id: int, session: Session = Depends(get_session)):
     """Get all chunks for a meta-text with their AI images."""
     try:
@@ -35,7 +35,7 @@ def get_chunks_api(meta_text_id: int, session: Session = Depends(get_session)):
         )
 
 
-@router.get("/chunk/{chunk_id}", response_model=ChunkWithImagesRead, name="get_chunk")
+@router.get("/chunk/{chunk_id}", response_model=ChunkRead, name="get_chunk")
 def get_chunk(chunk_id: int, session: Session = Depends(get_session)):
     """Get a specific chunk with its AI images."""
     try:
