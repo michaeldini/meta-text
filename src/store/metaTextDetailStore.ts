@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { fetchMetaText } from 'services';
 import { getErrorMessage } from 'types';
 import type { MetaTextDetail } from 'types';
-import { useChunkStore } from './chunkStore';
+// import { useChunkStore } from './chunkStore';
 
 interface MetaTextDetailErrors {
     metaText: string;
@@ -26,7 +26,7 @@ interface MetaTextDetailState {
 }
 
 export const useMetaTextDetailStore = create<MetaTextDetailState>((set, get) => {
-    const setChunks = useChunkStore.getState().setChunks;
+    // const setChunks = useChunkStore.getState().setChunks;
     return {
         // Initial state
         currentMetaTextId: null,

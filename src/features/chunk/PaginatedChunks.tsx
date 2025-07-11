@@ -1,3 +1,7 @@
+// A component to display paginated chunks of a meta text
+// It handles loading states, errors, and pagination of chunks
+
+
 import React, { ReactNode, useState, useRef } from 'react';
 import { Box, Pagination } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -9,6 +13,11 @@ import { Chunk } from 'features';
 
 import { getChunkComponentsStyles } from './Chunk.styles';
 
+// handleChange: Function to handle when user changes the page
+// This is typically called when the user clicks on a pagination button
+// or changes the page number in the pagination component
+// Children: Optional children to render alongside the pagination
+// The children will be a mapping of the chunks to be displayed
 interface ChunksPaginationProps {
     pageCount: number;
     page: number;
@@ -16,10 +25,12 @@ interface ChunksPaginationProps {
     children?: ReactNode;
 }
 
-interface ChunksProps {
-    metaTextId: string | number;
+interface PaginationProps {
+    metaTextId: number;
 }
 
+
+// component to handle pagination of chunks with two pagination controls and the children chunks
 function ChunksPagination({ pageCount, page, handleChange, children }: ChunksPaginationProps) {
     if (pageCount <= 1) return <>{children}</>;
     return (
@@ -31,7 +42,9 @@ function ChunksPagination({ pageCount, page, handleChange, children }: ChunksPag
     );
 }
 
-const PaginatedChunks = ({ metaTextId }: ChunksProps) => {
+
+// Main component to display paginated chunks
+const PaginatedChunks = ({ metaTextId }: PaginationProps) => {
     const theme = useTheme();
     const styles = getChunkComponentsStyles(theme);
 
@@ -60,11 +73,14 @@ const PaginatedChunks = ({ metaTextId }: ChunksProps) => {
         setPage(value);
     };
 
+    // I dont know why this is needed, but it preserves the previous chunks
+    // when the chunks are updated
     const prevChunksRef = useRef<any[]>([]);
     // Preserve scroll position on chunk updates
     React.useEffect(() => {
         prevChunksRef.current = chunks;
     }, [chunks]);
+
     return (
         <ErrorBoundary>
             <LoadingBoundary loading={loadingChunks}>
