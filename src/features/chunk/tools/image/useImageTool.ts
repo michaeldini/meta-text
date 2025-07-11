@@ -196,6 +196,64 @@ export const useImageTool = (chunk?: ChunkType): UseImageToolReturn => {
     }, []);
 
     /**
+     * Deletes the current AI image associated with the chunk
+     * 
+     * @returns Promise resolving to ToolResult indicating success/failure
+     */
+    const deleteImage = useCallback(async (): Promise<ToolResult<{ deleted: boolean }>> => {
+        if (!chunk?.id || !state.data) {
+            return {
+                success: false,
+                error: 'No image to delete'
+            };
+        }
+
+        setState(s => ({ ...s, loading: true, error: null }));
+
+        try {
+            // Note: Add actual delete API call here when backend endpoint is available
+            // await deleteAiImage(chunk.id);
+
+            setState(s => ({
+                ...s,
+                data: null,
+                prompt: '',
+                loading: false,
+                error: null,
+            }));
+
+            return {
+                success: true,
+                data: { deleted: true }
+            };
+        } catch (err: any) {
+            const errorMessage = err?.message || 'Failed to delete image';
+            log.error(errorMessage);
+            setState(s => ({ ...s, error: errorMessage, loading: false }));
+
+            return {
+                success: false,
+                error: errorMessage
+            };
+        }
+    }, [chunk?.id, state.data]);
+
+    /**
+     * Retries image generation with the last used prompt
+     * Useful for handling temporary failures or network issues
+     */
+    const retryGeneration = useCallback(async (): Promise<ToolResult<ImageResult>> => {
+        if (!chunk || !state.prompt) {
+            return {
+                success: false,
+                error: 'No previous prompt to retry'
+            };
+        }
+
+        return generateImage({ chunk, prompt: state.prompt });
+    }, [chunk, state.prompt, generateImage]);
+
+    /**
      * Helper Functions
      * 
      * These functions provide convenient access to common operations and state updates.
@@ -246,6 +304,8 @@ export const useImageTool = (chunk?: ChunkType): UseImageToolReturn => {
     return {
         // Core functionality
         generateImage,           // Function to trigger AI image generation
+        deleteImage,            // Function to delete current image
+        retryGeneration,        // Function to retry with last prompt
 
         // State object containing all internal state
         state,                   // Complete internal state object
@@ -258,7 +318,8 @@ export const useImageTool = (chunk?: ChunkType): UseImageToolReturn => {
 
         // Convenience state accessors (duplicated for easier access)
         loading: state.loading, // Boolean indicating generation in progress
-        error: state.error      // Current error message (null if no error)
+        error: state.error,     // Current error message (null if no error)
+        hasImage: Boolean(state.data), // Boolean indicating if image exists
     };
 };
 

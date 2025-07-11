@@ -133,6 +133,10 @@ export interface SplitChunkToolProps extends BaseChunkProps {
 export interface UseImageToolReturn {
     /** Function to generate an AI image with given parameters */
     generateImage: (props: ImageToolProps) => Promise<ToolResult<ImageResult>>;
+    /** Function to delete the current image */
+    deleteImage: () => Promise<ToolResult<{ deleted: boolean }>>;
+    /** Function to retry generation with the last used prompt */
+    retryGeneration: () => Promise<ToolResult<ImageResult>>;
     /** Current internal state of the hook */
     state: ImageToolState;
     /** Helper function to get the complete image source URL */
@@ -147,6 +151,8 @@ export interface UseImageToolReturn {
     loading: boolean;
     /** Current error message, null if no error */
     error: string | null;
+    /** Boolean indicating if an image currently exists */
+    hasImage: boolean;
 }
 
 /**
