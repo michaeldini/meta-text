@@ -32,7 +32,7 @@ const WordsToolbar: React.FC<WordsToolbarProps> = memo(({
     const styles = getChunkComponentsStyles(theme);
     const open = Boolean(anchorEl);
 
-    const handleToolComplete = () => {
+    const handleToolComplete = (success: boolean, result?: any) => {
         onClose();
     };
 
