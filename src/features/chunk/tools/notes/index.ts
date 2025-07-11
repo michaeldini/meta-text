@@ -1,3 +1,7 @@
+/**
+ * Notes tool exports
+ * Provides components for managing chunk summaries and notes
+ */
 export { default as NotesTool } from './NotesTool';
-export type { NotesToolProps } from '../types';
 export { default as NotesTab } from './NotesTab';
+export type { NotesToolProps } from '../types';

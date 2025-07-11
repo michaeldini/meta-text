@@ -4,10 +4,10 @@ import userEvent from '@testing-library/user-event';
 import { ThemeProvider } from '@mui/material/styles';
 import { vi } from 'vitest';
 import NotesTool from './NotesTool';
-import { NotesToolComponentProps } from '../types';
+import { NotesToolProps } from '../types';
 import theme from '../../../../styles/themes';
 
-const defaultProps: NotesToolComponentProps = {
+const defaultProps: NotesToolProps = {
     summary: '',
     notes: '',
     onSummaryBlur: vi.fn(),
@@ -223,6 +223,8 @@ describe('NotesTool', () => {
             const props = {
                 summary: null as any,
                 notes: null as any,
+                onSummaryBlur: vi.fn(),
+                onNotesBlur: vi.fn(),
             };
 
             renderWithTheme(<NotesTool {...props} />);
