@@ -1,19 +1,40 @@
 // This page serves as the entry point for users, guiding them to the main functionalities of the application.
 // It includes a welcome message and navigation buttons to direct users to the SourceDocs and MetaText pages.
+// Data prefetching: This page proactively loads data for both SourceDoc and MetaText pages in the background,
+// improving perceived performance when users navigate to those pages.
 
 
 import { Box, Slide, useTheme } from '@mui/material';
 import type { Theme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
+import { useEffect } from 'react';
 
 import { PageContainer } from 'components';
 import { getAppStyles } from 'styles';
+import { useDocumentsStore } from 'store';
 
 import WelcomeText from './components/WelcomeText';
 import NavigationButtons from './components/NavigationButtons';
 import { FADE_IN_DURATION } from 'constants';
 
 function HomePage(): ReactElement {
+
+    // Prefetch data for both SourceDoc and MetaText pages in the background
+    // This improves perceived performance when users navigate to those pages
+    const { fetchSourceDocs, fetchMetaTexts } = useDocumentsStore();
+
+    useEffect(() => {
+        // Prefetch data without blocking the UI or showing loading states
+        // Only fetch if not already loading to avoid duplicate requests
+        const { sourceDocsLoading, metaTextsLoading } = useDocumentsStore.getState();
+
+        if (!sourceDocsLoading) {
+            fetchSourceDocs();
+        }
+        if (!metaTextsLoading) {
+            fetchMetaTexts();
+        }
+    }, [fetchSourceDocs, fetchMetaTexts]);
 
     // Set up the theme and styles for the HomePage component
     const theme: Theme = useTheme();

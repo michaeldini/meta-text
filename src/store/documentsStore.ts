@@ -1,3 +1,8 @@
+/**
+ * Zustand store for managing document state in the application.
+ * Handles both source documents and meta texts with loading states, error handling,
+ * and persistence. Provides actions for fetching, adding, and deleting documents.
+ */
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { MetaTextSummary, SourceDocumentSummary, } from 'types'
