@@ -1,3 +1,5 @@
+// Component used to display a document header with a title and children components for consistent styling across pages.
+
 import React from 'react';
 import { Box, Paper, Typography, useTheme } from '@mui/material';
 
