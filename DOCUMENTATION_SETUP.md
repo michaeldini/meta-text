@@ -80,7 +80,7 @@ A `typedoc.json` file has been created with optimal settings for your project.
 ### 3. Component Stories
 
 Storybook stories help document component usage. Example created at:
-`src/features/chunk/tools/explanation/WordsExplanationTool.stories.tsx`
+`src/features/chunk-explanation/WordsExplanationTool.stories.tsx`
 
 ## 🔧 Usage Examples
 

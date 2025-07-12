@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import { ImageDisplay } from 'features/chunk';
+import { ImageDisplay } from 'features/chunk-image';
 import { ChunkType } from 'types';
 import { tableContainerStyles, tableCellStyles, noChunksBoxStyles, tableBoxStyles } from './ReviewTable.styles';
 

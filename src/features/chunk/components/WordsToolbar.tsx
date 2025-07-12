@@ -3,8 +3,8 @@
 
 import React, { memo } from 'react';
 import { Popover, Box, useTheme } from '@mui/material';
-import SplitChunkTool from '../tools/split/SplitChunkTool';
-import WordsExplanationTool from '../tools/explanation/WordsExplanationTool';
+import { SplitChunkTool } from 'features/chunk-split';
+import { WordsExplanationTool } from 'features/chunk-explanation';
 import { getChunkComponentsStyles } from '../Chunk.styles';
 
 export interface WordsToolbarProps {

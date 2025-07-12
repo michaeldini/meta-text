@@ -1,4 +1,19 @@
 // Centralized exports for all features
+
+// Core features
 export * from './chunk';
 export * from './review';
 export * from './navbar';
+
+// Chunk tools
+export * from './chunk-explanation';
+export * from './chunk-comparison';
+export * from './chunk-compression';
+export * from './chunk-merge';
+export * from './chunk-split';
+export * from './chunk-copy';
+export * from './chunk-notes';
+export * from './chunk-image';
+
+// Shared utilities
+export * from './chunk-shared';

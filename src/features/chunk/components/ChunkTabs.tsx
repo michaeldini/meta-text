@@ -9,8 +9,12 @@ import { useTheme } from '@mui/material/styles';
 import { log } from 'utils';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 
-import { NotesTab, ComparisonTab, AiImageTab, CompressionTab, ExplanationTab } from '../tools';
-import CopyTool from '../tools/copy/CopyTool';
+import { NotesTab } from 'features/chunk-notes';
+import { ComparisonTab } from 'features/chunk-comparison';
+import { ImageTab as AiImageTab } from 'features/chunk-image';
+import { CompressionTab } from 'features/chunk-compression';
+import { ExplanationTab } from 'features/chunk-explanation';
+import { CopyTool } from 'features/chunk-copy';
 
 import { getChunkComponentsStyles } from '../Chunk.styles';
 
