@@ -43,8 +43,7 @@ function SourceDocDetailPage(): ReactElement {
                                 <StyleControls />
 
                                 {/* this should prob be passed the source doc instead of fetching it again inside the component. */}
-                                <SourceDocInfo doc={doc}
-                                />
+                                <SourceDocInfo doc={doc} onDocumentUpdate={updateDoc} />
                             </DocumentHeader>
                             <SourceDoc doc={doc} onDocumentUpdate={updateDoc} />
                         </>

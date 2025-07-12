@@ -11,6 +11,7 @@ import { PageContainer, ReviewButton, SourceDocInfo } from 'components';
 import { ChunkToolsPanel } from 'features';
 import { PaginatedChunks } from 'features';
 import { useSourceDocDetailData } from 'hooks';
+import { useSourceDocumentDetailStore } from 'store';
 import { FADE_IN_DURATION } from 'constants';
 
 import { useMetaTextDetailData } from './hooks/useMetaTextDetailData';
@@ -40,6 +41,9 @@ function MetaTextDetailPage(): ReactElement | null {
         metaText ? String(metaText.source_document_id) : ""
     );
 
+    // Get the updateDoc function from the store for updating source document
+    const { updateDoc } = useSourceDocumentDetailStore();
+
     const theme: Theme = useTheme();
     const styles = getMetaTextDetailStyles(theme);
 
@@ -57,7 +61,7 @@ function MetaTextDetailPage(): ReactElement | null {
                                 <StyleControls />
 
                                 {sourceDoc && (
-                                    <SourceDocInfo doc={sourceDoc} />
+                                    <SourceDocInfo doc={sourceDoc} onDocumentUpdate={updateDoc} />
                                 )}
                             </DocumentHeader>
 
