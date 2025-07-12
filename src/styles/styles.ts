@@ -17,6 +17,7 @@ export const getAppStyles = (theme: Theme) => ({
     pageLayout: {
         display: 'flex',
         flexDirection: 'row' as const,
+        justifyContent: 'center',
         width: '100%',
         height: '100%', // Ensure full viewport height
         flex: 1,

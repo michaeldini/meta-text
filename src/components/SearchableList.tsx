@@ -1,5 +1,5 @@
 // A list component that allows searching and displaying a list of items with delete functionality.
-//  TODO: Add more detailed comments and documentation for each function and prop.
+// This component supports filtering, navigation, and deletion of items.
 
 import React, { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
@@ -12,14 +12,12 @@ import { useDocumentsStore, useNotifications } from 'store';
 
 import { useFilteredList } from 'hooks';
 import { getAppStyles } from 'styles';
-import type { MetaTextSummary, SourceDocumentSummary, } from 'types'
+import type { MetaTextSummary, SourceDocumentSummary } from 'types';
 
 export interface SearchableListProps {
     title: string;
     filterKey: keyof (SourceDocumentSummary | MetaTextSummary);
     items: Array<SourceDocumentSummary | MetaTextSummary>;
-    // onItemClick: (id: number) => void;
-    // onDeleteClick: (id: number, event: React.MouseEvent) => void;
     deleteLoading?: Record<number, boolean>;
     searchPlaceholder?: string;
     emptyMessage?: string;
@@ -28,30 +26,27 @@ export interface SearchableListProps {
 }
 
 function SearchableList({
-    items = [],
-    filterKey,
     title,
+    filterKey,
+    items = [],
     loading = false,
 }: SearchableListProps) {
     const [search, setSearch] = useState('');
     const navigate = useNavigate();
     const { deleteSourceDoc, deleteMetaText } = useDocumentsStore();
     const { showSuccess, showError } = useNotifications();
-    console.log('SearchableList items:', items);
-    // Determine doc type by inspecting the first item or the title
-    const docType = title === 'sourceDoc' || (items[0] && 'author' in items[0]) ? 'sourceDoc' : 'metaText';
 
-    // Use the existing hook for filtering
+    // Determine document type based on title or item properties
+    const docType = title === 'sourceDoc' ? 'sourceDoc' : 'metaText';
+
+    // Filter items using the provided hook
     const filteredItems = useFilteredList(items, search, filterKey);
 
-    const handleClearSearch = () => {
-        setSearch('');
-    };
+    // Handlers for search input
+    const handleClearSearch = () => setSearch('');
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => setSearch(event.target.value);
 
-    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearch(event.target.value);
-    };
-
+    // Handlers for item interactions
     const handleItemKeyDown = (event: React.KeyboardEvent, id: number) => {
         if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault();
@@ -60,11 +55,7 @@ function SearchableList({
     };
 
     const handleItemClick = (id: number) => {
-        if (docType === 'sourceDoc') {
-            navigate(`/sourcedoc/${id}`);
-        } else {
-            navigate(`/metaText/${id}`);
-        }
+        navigate(docType === 'sourceDoc' ? `/sourcedoc/${id}` : `/metaText/${id}`);
     };
 
     const handleDeleteClick = async (id: number) => {
@@ -83,7 +74,7 @@ function SearchableList({
     const theme = useTheme();
     const styles = getAppStyles(theme);
 
-    // Extract adornments to constants for better readability
+    // Input adornments for search field
     const startAdornment = (
         <InputAdornment position="start">
             <SearchIcon />
@@ -107,19 +98,16 @@ function SearchableList({
     return (
         <ErrorBoundary>
             <LoadingBoundary loading={loading}>
-                <Paper sx={{
-                    p: 3,
-                    maxWidth: 600,
-                    margin: '0 auto',
-                }}>
+                <Paper sx={{ p: 3, maxWidth: 600, margin: '0 auto' }}>
                     <Box sx={{ mb: 3 }}>
-                        {/* Title (optional) */}
+                        {/* Display title if provided */}
                         {title && (
                             <Typography variant="h5" component="h2" gutterBottom fontWeight="bold">
                                 Browse {title}
                             </Typography>
                         )}
                     </Box>
+
                     {/* Search Input */}
                     <TextField
                         data-testid="search-input"
@@ -150,9 +138,7 @@ function SearchableList({
                         {/* No Results */}
                         {filteredItems.length === 0 ? (
                             <ListItem role="listitem" sx={styles.searchableList.noResults}>
-                                <ListItemText
-                                    primary="No items found."
-                                />
+                                <ListItemText primary="No items found." />
                             </ListItem>
                         ) : (
                             // Render Results
@@ -167,7 +153,6 @@ function SearchableList({
                                                 onClick={(e: React.MouseEvent) => handleDeleteClick(item.id)}
                                                 disabled={false}
                                                 label={`Delete ${displayText}`}
-
                                             />
                                         }
                                         disablePadding
@@ -185,8 +170,8 @@ function SearchableList({
                                                 slotProps={{
                                                     primary: {
                                                         typography: 'h6',
-                                                        sx: { fontWeight: 'medium' }
-                                                    }
+                                                        sx: { fontWeight: 'medium' },
+                                                    },
                                                 }}
                                             />
                                         </ListItemButton>
