@@ -4,7 +4,7 @@ import { Box, Paper, Slide, useTheme } from '@mui/material';
 import { useChunkStore } from 'store';
 
 import ChunkWords from './components/ChunkWords';
-import ChunkTabs from './components/ChunkTabs';
+import { ChunkToolsContainer } from 'features/chunk-tools';
 import { getChunkComponentsStyles } from './Chunk.styles';
 import type { ChunkType } from 'types';
 
@@ -30,9 +30,9 @@ const Chunk = memo(function Chunk({
                 chunk={chunk}
                 chunkIdx={chunkIdx}
             />
-            <ChunkTabs
+            <ChunkToolsContainer
                 chunk={chunk}
-                activeTabs={activeTabs}
+                activeTools={activeTabs}
                 updateChunkField={updateChunkField}
             />
         </Box>

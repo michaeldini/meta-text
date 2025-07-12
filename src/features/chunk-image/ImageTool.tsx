@@ -30,7 +30,13 @@ import { useImageTool } from './hooks/useImageTool';
 import ImageDisplay from './components/ImageDisplay';
 import ImageGenerationDialog from './components/ImageGenerationDialog';
 import { getSharedToolStyles } from 'features/chunk-shared/styles';
-import { ImageToolProps } from 'features/chunk-shared/types';
+import type { ChunkType, UpdateChunkFieldFn } from 'types';
+
+interface ImageToolProps {
+    chunk: ChunkType;
+    updateChunkField: UpdateChunkFieldFn;
+    isVisible: boolean;
+}
 
 /**
  * ImageTool Component
@@ -65,7 +71,10 @@ import { ImageToolProps } from 'features/chunk-shared/types';
  */
 const ImageTool: React.FC<ImageToolProps> = ({
     chunk,
+    updateChunkField,
+    isVisible,
 }) => {
+    if (!isVisible) return null;
     // Initialize hook with chunk data - provides state management and API integration
     const {
         generateImage,    // Function to trigger AI image generation

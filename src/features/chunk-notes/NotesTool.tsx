@@ -8,22 +8,31 @@ import { Box, useTheme } from '@mui/material';
 
 import { ChunkTextField } from 'features/chunk/components';
 import { getSharedToolStyles } from 'features/chunk-shared/styles';
-import { NotesToolProps } from 'features/chunk-shared/types';
+import type { ChunkType, UpdateChunkFieldFn } from 'types';
+
+interface NotesToolProps {
+    chunk: ChunkType;
+    updateChunkField: UpdateChunkFieldFn;
+    isVisible: boolean;
+    summaryFieldSx?: object;
+    notesFieldSx?: object;
+}
 
 const NotesTool: React.FC<NotesToolProps> = React.memo(({
-    summary = '',
-    notes = '',
-    onSummaryBlur = () => { },
-    onNotesBlur = () => { },
+    chunk,
+    updateChunkField,
+    isVisible,
     summaryFieldSx,
     notesFieldSx
 }) => {
+    if (!isVisible) return null;
+
     const theme = useTheme();
     const styles = getSharedToolStyles(theme);
 
     // Handle null/undefined values by converting to empty string
-    const sanitizedSummary = summary ?? '';
-    const sanitizedNotes = notes ?? '';
+    const sanitizedSummary = chunk.summary ?? '';
+    const sanitizedNotes = chunk.notes ?? '';
 
     const [localSummary, setLocalSummary] = useState(sanitizedSummary);
     const [localNotes, setLocalNotes] = useState(sanitizedNotes);
@@ -47,12 +56,12 @@ const NotesTool: React.FC<NotesToolProps> = React.memo(({
     }, []);
 
     const handleSummaryBlur = useCallback(() => {
-        onSummaryBlur(localSummary);
-    }, [localSummary, onSummaryBlur]);
+        updateChunkField(chunk.id, 'summary', localSummary);
+    }, [chunk.id, updateChunkField, localSummary]);
 
     const handleNotesBlur = useCallback(() => {
-        onNotesBlur(localNotes);
-    }, [localNotes, onNotesBlur]);
+        updateChunkField(chunk.id, 'notes', localNotes);
+    }, [chunk.id, updateChunkField, localNotes]);
 
     // Handle keyboard shortcuts for better UX
     const handleKeyDown = useCallback((e: React.KeyboardEvent) => {

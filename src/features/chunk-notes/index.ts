@@ -4,4 +4,3 @@
  */
 
 export { default as NotesTool } from './NotesTool';
-export { default as NotesTab } from './NotesTab';

@@ -8,7 +8,7 @@ import type { Theme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
 
 import { PageContainer, ReviewButton, SourceDocInfo } from 'components';
-import { ChunkToolButtons } from 'features';
+import { ChunkToolsPanel } from 'features';
 import { PaginatedChunks } from 'features';
 import { useSourceDocDetailData } from 'hooks';
 import { FADE_IN_DURATION } from 'constants';
@@ -63,7 +63,7 @@ function MetaTextDetailPage(): ReactElement | null {
 
                             <PaginatedChunks metaTextId={metaText.id} />
 
-                            <ChunkToolButtons />
+                            <ChunkToolsPanel />
                         </>
                     ) : (
                         <div />

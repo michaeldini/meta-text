@@ -2,6 +2,7 @@
 
 // Core features
 export * from './chunk';
+export * from './chunk-tools';
 export * from './review';
 export * from './navbar';
 

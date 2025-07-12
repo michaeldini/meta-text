@@ -4,6 +4,5 @@
  */
 
 export { default as WordsExplanationTool } from './WordsExplanationTool';
-export { default as ExplanationTab } from './ExplanationTab';
 export { default as ExplanationTool } from './ExplanationTool';
 export * from './hooks';

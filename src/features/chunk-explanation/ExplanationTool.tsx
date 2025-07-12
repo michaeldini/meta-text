@@ -5,13 +5,22 @@ import { useTheme } from '@mui/material/styles';
 
 import { AiGenerationButton } from 'components';
 import { useExplanation } from './hooks/useExplanation';
-import { ExplanationToolProps } from 'features/chunk-shared/types';
+import type { ChunkType, UpdateChunkFieldFn } from 'types';
 import { getSharedToolStyles } from 'features/chunk-shared/styles';
 
-const ChunkExplanationTool: React.FC<ExplanationToolProps> = ({
+interface ExplanationToolProps {
+    chunk: ChunkType;
+    updateChunkField: UpdateChunkFieldFn;
+    isVisible: boolean;
+}
+
+const ExplanationTool: React.FC<ExplanationToolProps> = ({
     chunk,
-    onExplanationUpdate
+    updateChunkField,
+    isVisible
 }) => {
+    if (!isVisible) return null;
+
     const { explain, loading, error } = useExplanation();
     const theme = useTheme();
     const styles = getSharedToolStyles(theme);
@@ -20,9 +29,9 @@ const ChunkExplanationTool: React.FC<ExplanationToolProps> = ({
         if (!chunk?.id) return;
         const result = await explain({ chunkId: chunk.id, context: chunk.text, words: "" });
         if (result) {
-            onExplanationUpdate?.(result.explanation);
+            updateChunkField(chunk.id, 'explanation', result.explanation);
         }
-    }, [chunk, explain, onExplanationUpdate]);
+    }, [chunk, explain, updateChunkField]);
 
     return (
         <Box sx={styles.toolTabContainer}>
@@ -46,4 +55,4 @@ const ChunkExplanationTool: React.FC<ExplanationToolProps> = ({
     );
 };
 
-export default ChunkExplanationTool;
+export default ExplanationTool;

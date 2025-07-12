@@ -7,14 +7,14 @@ import type { ChunkType, UpdateChunkFieldFn } from 'types';
 import { log } from 'utils';
 import { useAuthStore } from 'store';
 
-import type { ChunkTab } from '../features/chunk/components/chunkToolButtonsConfig';
+import type { ChunkToolId } from '../features/chunk-tools/toolsRegistry';
 
 type ChunkState = {
     chunks: ChunkType[];
     loadingChunks: boolean;
     chunksError: string;
-    activeTabs: ChunkTab[];
-    setActiveTabs: (tabs: ChunkTab[]) => void;
+    activeTabs: ChunkToolId[];
+    setActiveTabs: (tabs: ChunkToolId[]) => void;
     fetchChunks: (metaTextId: number) => Promise<void>;
     updateChunkField: UpdateChunkFieldFn;
     handleWordClick: (chunkId: number, chunkIdx: number, wordIdx: number) => Promise<void>;
