@@ -22,6 +22,17 @@ export type SourceDocumentCreate = {
     file: File;
 };
 
+export type SourceDocumentUpdate = {
+    title?: string;
+    author?: string | null;
+    summary?: string | null;
+    characters?: string | null;
+    locations?: string | null;
+    themes?: string | null;
+    symbols?: string | null;
+    text?: string;
+};
+
 
 // Meta Text types
 // Types for listing, detailing, and creating meta texts

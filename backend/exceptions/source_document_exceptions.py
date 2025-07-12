@@ -34,3 +34,8 @@ class SourceDocumentHasDependenciesError(SourceDocumentServiceError):
         self.doc_id = doc_id
         self.meta_text_count = meta_text_count
         super().__init__(f"Cannot delete source document {doc_id}: {meta_text_count} MetaText records exist")
+
+
+class SourceDocumentUpdateError(SourceDocumentServiceError):
+    """Raised when source document update fails."""
+    pass

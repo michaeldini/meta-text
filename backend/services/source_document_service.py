@@ -7,7 +7,8 @@ from backend.exceptions.source_document_exceptions import (
     SourceDocumentNotFoundError,
     SourceDocumentTitleExistsError,
     SourceDocumentCreationError,
-    SourceDocumentHasDependenciesError
+    SourceDocumentHasDependenciesError,
+    SourceDocumentUpdateError
 )
 from backend.services.text_processing_service import TextProcessingService
 
@@ -92,3 +93,56 @@ class SourceDocumentService:
         
         logger.info(f"Source document deleted successfully: id={doc_id}, title='{title}'")
         return {"success": True, "id": doc_id, "title": title}
+
+    def update_source_document(
+        self, 
+        doc_id: int, 
+        update_data: dict, 
+        session: Session
+    ) -> SourceDocument:
+        """Update a source document with provided fields."""
+        logger.info(f"Updating source document with id: {doc_id}")
+        
+        try:
+            # Check if document exists
+            doc = session.get(SourceDocument, doc_id)
+            if not doc:
+                logger.warning(f"Source document not found for update: id={doc_id}")
+                raise SourceDocumentNotFoundError(doc_id)
+            
+            # Update only provided fields
+            updated_fields = []
+            for field, value in update_data.items():
+                if value is not None and hasattr(doc, field):
+                    setattr(doc, field, value)
+                    updated_fields.append(field)
+            
+            if not updated_fields:
+                logger.info(f"No fields to update for source document id={doc_id}")
+                return doc
+            
+            # Handle title uniqueness check if title is being updated
+            if 'title' in updated_fields:
+                existing_doc = session.exec(
+                    select(SourceDocument).where(
+                        SourceDocument.title == update_data['title'],
+                        SourceDocument.id != doc_id
+                    )
+                ).first()
+                if existing_doc:
+                    logger.warning(f"Title already exists: {update_data['title']}")
+                    raise SourceDocumentTitleExistsError(update_data['title'])
+            
+            session.commit()
+            session.refresh(doc)
+            
+            logger.info(f"Source document updated successfully: id={doc.id}, updated_fields={updated_fields}")
+            return doc
+            
+        except (SourceDocumentNotFoundError, SourceDocumentTitleExistsError):
+            session.rollback()
+            raise
+        except Exception as e:
+            session.rollback()
+            logger.error(f"Error updating source document: {e}")
+            raise SourceDocumentUpdateError(f"Failed to update source document: {str(e)}")

@@ -42,6 +42,18 @@ class SourceDocumentSummary(SourceDocumentBase):
     pass
 
 
+class SourceDocumentUpdate(SQLModel):
+    """Model for updating source documents - all fields are optional."""
+    title: str | None = None
+    author: str | None = None
+    summary: str | None = None
+    characters: str | None = None
+    locations: str | None = None
+    themes: str | None = None
+    symbols: str | None = None
+    text: str | None = None
+
+
 # --- MetaText Schemas ---
 class MetaTextBase(SQLModel):
     title: str

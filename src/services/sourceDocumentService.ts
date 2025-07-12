@@ -21,9 +21,9 @@
  * All functions include proper error handling and type safety with TypeScript interfaces.
  */
 
-import { apiGet, apiPost, apiDelete } from '../utils/api';
+import { apiGet, apiPost, apiDelete, apiPut } from '../utils/api';
 import { withCache, apiCache } from '../utils/cache';
-import type { SourceDocumentSummary, SourceDocumentDetail, SourceDocumentCreate } from 'types';
+import type { SourceDocumentSummary, SourceDocumentDetail, SourceDocumentCreate, SourceDocumentUpdate } from 'types';
 
 // Base functions without caching
 async function _fetchSourceDocuments(): Promise<SourceDocumentSummary[]> {
@@ -73,6 +73,16 @@ export async function deleteSourceDocument(docId: number): Promise<{ success: bo
     const data = await apiDelete<{ success: boolean }>(`/api/source-documents/${encodeURIComponent(String(docId))}`);
 
     // Invalidate both list and individual document caches
+    apiCache.invalidate('fetchSourceDocuments');
+    apiCache.invalidate(`fetchSourceDocument:${docId}`);
+
+    return data;
+}
+
+export async function updateSourceDocument(docId: number, updateData: SourceDocumentUpdate): Promise<SourceDocumentDetail> {
+    const data = await apiPut<SourceDocumentDetail>(`/api/source-documents/${encodeURIComponent(String(docId))}`, updateData);
+
+    // Invalidate both list and individual document caches since we updated a document
     apiCache.invalidate('fetchSourceDocuments');
     apiCache.invalidate(`fetchSourceDocument:${docId}`);
 

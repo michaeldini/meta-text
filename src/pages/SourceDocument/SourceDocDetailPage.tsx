@@ -9,13 +9,14 @@ import SourceDoc from './components/SourceDoc';
 import { PageContainer, SourceDocInfo, AppAlert } from 'components';
 import { GenerateSourceDocInfoButton, StyleControls, DocumentHeader } from 'components';
 import { FADE_IN_DURATION } from 'constants';
+import { useSourceDocumentDetailStore } from 'store';
 
 import { useSourceDocDetailData } from '../../hooks/useSourceDocDetailData';
 
 function SourceDocDetailPage(): ReactElement {
 
     const { sourceDocId } = useParams<{ sourceDocId?: string }>();
-
+    const { updateDoc } = useSourceDocumentDetailStore();
 
     const {
         doc,
@@ -45,7 +46,7 @@ function SourceDocDetailPage(): ReactElement {
                                 <SourceDocInfo doc={doc}
                                 />
                             </DocumentHeader>
-                            <SourceDoc doc={doc} />
+                            <SourceDoc doc={doc} onDocumentUpdate={updateDoc} />
                         </>
                     ) : (
                         // Error state when document is not found

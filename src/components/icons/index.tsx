@@ -27,6 +27,8 @@ import {
     ChatBubbleLeftIcon as ChatBubbleLeftSvg,
     DocumentArrowUpIcon as DocumentArrowUpSvg,
     DocumentArrowDownIcon as DocumentArrowDownSvg,
+    PencilIcon as PencilSvg,
+    CheckIcon as CheckSvg,
 } from '@heroicons/react/24/solid';
 import { SVGProps } from 'react';
 
@@ -61,4 +63,5 @@ export const ChatBubbleLeftIcon: React.FC<IconProps> = (props) => <ThemedIcon as
 export const PhotoFilterIcon: React.FC<IconProps> = (props) => <ThemedIcon as={AdjustmentsHorizontalSvg} {...props} />;
 export const DocumentUploadIcon: React.FC<IconProps> = (props) => <ThemedIcon as={DocumentArrowUpSvg} {...props} />;
 export const DocumentDownloadIcon: React.FC<IconProps> = (props) => <ThemedIcon as={DocumentArrowDownSvg} {...props} />;
-
+export const PencilIcon: React.FC<IconProps> = (props) => <ThemedIcon as={PencilSvg} {...props} />;
+export const CheckIcon: React.FC<IconProps> = (props) => <ThemedIcon as={CheckSvg} {...props} />;

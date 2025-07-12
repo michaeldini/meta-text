@@ -2,14 +2,15 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Form, File, UploadFile, status
 from sqlmodel import Session
 
-from backend.models import SourceDocumentSummary, SourceDocumentDetail
+from backend.models import SourceDocumentSummary, SourceDocumentDetail, SourceDocumentUpdate
 from backend.db import get_session
 from backend.services.source_document_service import SourceDocumentService
 from backend.exceptions.source_document_exceptions import (
     SourceDocumentNotFoundError,
     SourceDocumentTitleExistsError,
     SourceDocumentCreationError,
-    SourceDocumentHasDependenciesError
+    SourceDocumentHasDependenciesError,
+    SourceDocumentUpdateError
 )
 
 
@@ -80,4 +81,37 @@ def delete_source_document(doc_id: int, session: Session = Depends(get_session))
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, 
             detail=f"Cannot delete: {e.meta_text_count} MetaText records exist for this document."
+        )
+
+
+@router.put("/source-documents/{doc_id}", response_model=SourceDocumentDetail, name="update_source_document")
+def update_source_document(
+    doc_id: int, 
+    update_data: SourceDocumentUpdate,
+    session: Session = Depends(get_session)
+):
+    """Update a source document with provided fields."""
+    try:
+        # Convert to dict and exclude None values for partial updates
+        update_dict = update_data.model_dump(exclude_unset=True, exclude_none=True)
+        
+        return source_document_service.update_source_document(
+            doc_id=doc_id,
+            update_data=update_dict,
+            session=session
+        )
+    except SourceDocumentNotFoundError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail="Source document not found."
+        )
+    except SourceDocumentTitleExistsError:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT, 
+            detail="Title already exists."
+        )
+    except SourceDocumentUpdateError as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+            detail=str(e)
         )
