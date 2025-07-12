@@ -3,6 +3,7 @@ import { Box, Typography, useTheme } from '@mui/material';
 
 import { getSharedToolStyles } from 'features/chunk-shared/styles';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
+import { useChunkStore } from 'store';
 import CompressionTool from './CompressionTool';
 import CompressionSelect from './components/CompressionSelect';
 import CompressionDisplay from './components/CompressionDisplay';
@@ -24,28 +25,32 @@ const CompressionDisplayTool: React.FC<CompressionDisplayToolProps> = ({
     if (!isVisible) return null;
     const theme = useTheme();
     const styles = getSharedToolStyles(theme);
+    const { refetchChunk } = useChunkStore();
     const {
         compressions,
         selectedId,
-        loading,
-        error,
         selected,
         setSelectedId,
         onCompressionCreated
     } = useCompression(chunk);
 
+    // Handle compression creation by refetching only the specific chunk
+    const handleCompressionCreated = async () => {
+        try {
+            await refetchChunk(chunk.id);
+        } catch (error) {
+            console.error('Failed to refetch chunk after compression creation:', error);
+        }
+    };
+
     return (
         <Box sx={styles.toolTabContainer}>
-            {loading ? (
-                <LoadingSpinner />
-            ) : error ? (
-                <Typography color="error">{error}</Typography>
-            ) : compressions.length === 0 ? (
-                <CompressionEmptyState chunk={chunk} onCompressionCreated={onCompressionCreated} />
+            {compressions.length === 0 ? (
+                <CompressionEmptyState chunk={chunk} onCompressionCreated={handleCompressionCreated} />
             ) : (
                 <>
                     <Box flexDirection="row" display="flex" alignItems="center">
-                        <CompressionTool chunk={chunk} onCompressionCreated={onCompressionCreated} />
+                        <CompressionTool chunk={chunk} onCompressionCreated={handleCompressionCreated} />
                         <CompressionSelect
                             compressions={compressions}
                             selectedId={selectedId}

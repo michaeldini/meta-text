@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { fetchChunks as apiFetchChunks, updateChunk, splitChunk, combineChunks } from 'services';
+import { fetchChunks as apiFetchChunks, fetchChunk, updateChunk, splitChunk, combineChunks } from 'services';
 
 import { getErrorMessage } from 'types';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
@@ -16,6 +16,7 @@ type ChunkState = {
     activeTabs: ChunkToolId[];
     setActiveTabs: (tabs: ChunkToolId[]) => void;
     fetchChunks: (metaTextId: number) => Promise<void>;
+    refetchChunk: (chunkId: number) => Promise<void>;
     updateChunkField: UpdateChunkFieldFn;
     handleWordClick: (chunkId: number, chunkIdx: number, wordIdx: number) => Promise<void>;
     mergeChunks: (chunkIdx: number) => Promise<void>;
@@ -51,6 +52,21 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
                 chunksError: getErrorMessage(e, 'Failed to load chunks.'),
                 loadingChunks: false,
             });
+        }
+    },
+    refetchChunk: async (chunkId) => {
+        try {
+            const updatedChunk = await fetchChunk(chunkId);
+            set((state) => {
+                const idx = state.chunks.findIndex((c) => c.id === chunkId);
+                if (idx === -1) return state; // Chunk not found in current list
+                const newChunks = [...state.chunks];
+                newChunks[idx] = updatedChunk;
+                return { ...state, chunks: newChunks };
+            });
+        } catch (e: unknown) {
+            log.error('Failed to refetch chunk:', e);
+            // Optionally set an error state or handle silently
         }
     },
     updateChunkField: (chunkId, field, value) => {

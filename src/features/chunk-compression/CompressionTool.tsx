@@ -53,6 +53,7 @@ const CompressionTool: React.FC<CompressionToolProps> = ({ chunk, onCompressionC
         try {
             await createChunkCompression(chunk.id, { title: style, compressed_text: preview });
             handleClose();
+            // Trigger refetch of the specific chunk to include the new compression data
             if (onCompressionCreated) onCompressionCreated();
         } catch (err: any) {
             setError('Failed to save compression.');
@@ -63,7 +64,11 @@ const CompressionTool: React.FC<CompressionToolProps> = ({ chunk, onCompressionC
 
     return (
         <>
+
+            {/* the user clicks this button to create a new compression (open dialog) */}
             <CompressionToolButton onClick={handleOpen} disabled={!chunk} />
+
+            {/* Compression dialog for generating and saving compressions */}
             <CompressionDialog
                 open={open}
                 onClose={handleClose}

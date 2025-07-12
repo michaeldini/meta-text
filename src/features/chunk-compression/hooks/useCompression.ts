@@ -1,37 +1,26 @@
 import { useEffect, useState } from 'react';
-import { fetchChunkCompressions } from 'services';
 import type { ChunkCompression, ChunkType } from 'types';
 import type { UseCompressionReturn } from 'features/chunk-shared/types';
 
 export const useCompression = (chunk: ChunkType | null): UseCompressionReturn => {
-    const [compressions, setCompressions] = useState<ChunkCompression[]>([]);
     const [selectedId, setSelectedId] = useState<number | ''>('');
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
 
-    // Reset state when chunk changes
+    // Get compressions directly from chunk data
+    const compressions = chunk?.compressions || [];
+
+    // Reset selectedId when chunk changes and set to first compression if available
     useEffect(() => {
-        if (!chunk) {
-            setCompressions([]);
+        if (!chunk || compressions.length === 0) {
             setSelectedId('');
-            return;
+        } else {
+            setSelectedId(compressions[0].id);
         }
-        onCompressionCreated();
-    }, [chunk]);
+    }, [chunk, compressions]);
 
+    // Placeholder function for compatibility - actual refetching is handled by the parent component
     const onCompressionCreated = () => {
-        if (!chunk) return;
-
-        setLoading(true);
-        setError(null);
-
-        fetchChunkCompressions(chunk.id)
-            .then(data => {
-                setCompressions(data);
-                setSelectedId(data.length > 0 ? data[0].id : '');
-            })
-            .catch(() => setError('Failed to load compressions.'))
-            .finally(() => setLoading(false));
+        // The parent component (CompressionDisplayTool) handles the actual refetch
+        // This function is kept for interface compatibility
     };
 
     const selected = compressions.find(c => c.id === selectedId);
@@ -39,8 +28,8 @@ export const useCompression = (chunk: ChunkType | null): UseCompressionReturn =>
     return {
         compressions,
         selectedId,
-        loading,
-        error,
+        loading: false, // No loading needed since data comes from chunk
+        error: null, // No error handling needed since data comes from chunk
         selected,
         setSelectedId,
         onCompressionCreated
