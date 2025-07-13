@@ -10,6 +10,7 @@ import { PageContainer, SourceDocInfo, AppAlert } from 'components';
 import { GenerateSourceDocInfoButton, StyleControls, DocumentHeader } from 'components';
 import { FADE_IN_DURATION } from 'constants';
 import { useSourceDocumentDetailStore } from 'store';
+import { useValidatedIdParam } from 'utils/urlValidation';
 
 import { useSourceDocDetailData } from '../../hooks/useSourceDocDetailData';
 
@@ -18,12 +19,15 @@ function SourceDocDetailPage(): ReactElement {
     const { sourceDocId } = useParams<{ sourceDocId?: string }>();
     const { updateDoc } = useSourceDocumentDetailStore();
 
+    // Validate the sourceDocId parameter using robust validation utility
+    const { id: validatedSourceDocId, isValid } = useValidatedIdParam(sourceDocId);
+
     const {
         doc,
         loading,
         error, // TODO
         refetch // TODO
-    } = useSourceDocDetailData(sourceDocId);
+    } = useSourceDocDetailData(validatedSourceDocId);
 
 
     return (
@@ -47,8 +51,15 @@ function SourceDocDetailPage(): ReactElement {
                             </DocumentHeader>
                             <SourceDoc doc={doc} onDocumentUpdate={updateDoc} />
                         </>
+                    ) : !isValid ? (
+                        // Error state when sourceDocId is invalid
+                        <AppAlert
+                            severity="error"
+                        >
+                            Invalid source document ID provided.
+                        </AppAlert>
                     ) : (
-                        // Error state when document is not found
+                        // Info state when document is not found (but ID is valid)
                         <AppAlert
                             severity="info"
                         >

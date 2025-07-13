@@ -5,20 +5,22 @@ import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import type { Theme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
+import { useMemo } from 'react';
 
 import { AppAlert } from 'components';
 import { LoadingIndicator, Header, ReviewContent } from './components';
 import { useMetaTextReviewData } from './hooks/useMetaTextReviewData';
+import { useValidatedIdParam } from 'utils';
 
 import { getMetaTextReviewStyles } from './MetaText.styles';
 
 function MetaTextReviewPage(): ReactElement {
 
-    // Extract MetaText ID from URL parameters and convert to number
+    // Extract MetaText ID from URL parameters and validate it
     const { metaTextId: metatextIdParam } = useParams<{ metaTextId?: string }>();
 
-    // Convert the metatextIdParam to a number, or undefined if not present TODO: handle invalid IDs gracefully
-    const metatextId: number | undefined = metatextIdParam ? Number(metatextIdParam) : undefined;
+    // Validate and parse the ID parameter using utility hook
+    const { id: metatextId, isValid: isValidId, originalValue } = useValidatedIdParam(metatextIdParam);
 
     // React Router navigation function for programmatic navigation
     const navigate = useNavigate();
@@ -29,6 +31,17 @@ function MetaTextReviewPage(): ReactElement {
 
     const theme: Theme = useTheme();
     const styles = getMetaTextReviewStyles(theme);
+
+    // Handle invalid ID parameter
+    if (metatextIdParam && !isValidId) {
+        return (
+            <Box sx={styles.root} data-testid="metatext-review-invalid-id">
+                <AppAlert severity="error">
+                    Invalid MetaText ID "{originalValue}". Please provide a valid positive number.
+                </AppAlert>
+            </Box>
+        );
+    }
 
     // Early returns for loading and error states
     if (loading) return (

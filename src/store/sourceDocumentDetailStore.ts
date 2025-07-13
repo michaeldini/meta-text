@@ -7,13 +7,13 @@ import type { SourceDocumentDetail } from 'types';
 
 interface SourceDocumentDetailState {
     // Current document being viewed
-    currentDocId: string | null;
+    currentDocId: number | null;
     doc: SourceDocumentDetail | null;
     loading: boolean;
     error: string;
 
     // Actions
-    fetchSourceDocumentDetail: (id: string) => Promise<void>;
+    fetchSourceDocumentDetail: (id: number) => Promise<void>;
     updateDoc: (doc: SourceDocumentDetail) => void;
     refetch: () => Promise<void>;
     clearState: () => void;
@@ -27,7 +27,7 @@ export const useSourceDocumentDetailStore = create<SourceDocumentDetailState>((s
     loading: false,
     error: '',
 
-    fetchSourceDocumentDetail: async (id: string) => {
+    fetchSourceDocumentDetail: async (id: number) => {
         // Don't refetch if we're already viewing this document
         const { currentDocId } = get();
         if (currentDocId === id) return;
@@ -40,7 +40,7 @@ export const useSourceDocumentDetailStore = create<SourceDocumentDetailState>((s
         });
 
         try {
-            const doc = await fetchSourceDocument(id);
+            const doc = await fetchSourceDocument(String(id));
             set({
                 doc,
                 loading: false,

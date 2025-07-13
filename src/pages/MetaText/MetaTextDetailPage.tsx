@@ -13,6 +13,7 @@ import { PaginatedChunks } from 'features';
 import { useSourceDocDetailData } from 'hooks';
 import { useSourceDocumentDetailStore } from 'store';
 import { FADE_IN_DURATION } from 'constants';
+import { useValidatedIdParam } from 'utils/urlValidation';
 
 import { useMetaTextDetailData } from './hooks/useMetaTextDetailData';
 import { getMetaTextDetailStyles } from './MetaText.styles';
@@ -27,14 +28,15 @@ function MetaTextDetailPage(): ReactElement | null {
     // Extract the metaTextId from the URL parameters
     const { metaTextId } = useParams<{ metaTextId: string }>();
 
-    // Validate the metaTextId to ensure it's a number
-    // If it's not a valid number, return null to avoid rendering the page
-    if (!metaTextId || Number.isNaN(Number(metaTextId))) {
-        return null;
+    // Validate the metaTextId parameter using robust validation utility
+    const { id: validatedMetaTextId, isValid } = useValidatedIdParam(metaTextId);
+
+    if (!isValid) {
+        return null; // Could render a proper error component instead
     }
 
     // Fetch the metaText details using the custom hook
-    const { metaText, loading } = useMetaTextDetailData(metaTextId); // Todo handle errors
+    const { metaText, loading } = useMetaTextDetailData(validatedMetaTextId ? String(validatedMetaTextId) : ""); // Todo handle errors
 
     // Fetch the source document details using the custom hook unconditionally
     const { doc: sourceDoc } = useSourceDocDetailData(

@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useSourceDocumentDetailStore } from 'store';
 
-export function useSourceDocDetailData(sourceDocId?: string) {
+export function useSourceDocDetailData(sourceDocId?: number) {
     const store = useSourceDocumentDetailStore();
     const { doc, loading, error, refetch } = store;
 
