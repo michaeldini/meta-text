@@ -1,7 +1,7 @@
 import { Typography, IconButton, Tooltip, Box } from '@mui/material';
 import type { ReactElement } from 'react';
 import { ArrowBackIcon } from 'icons';
-import { getMetatextReviewStyles } from '../temp_Metatext.styles';
+import { getMetatextReviewStyles } from '../Metatext.styles';
 
 interface HeaderProps {
     metatextId?: number;
