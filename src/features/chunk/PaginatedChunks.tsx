@@ -26,7 +26,7 @@ interface ChunksPaginationProps {
 }
 
 interface PaginationProps {
-    metaTextId: number;
+    metatextId: number;
 }
 
 
@@ -44,7 +44,7 @@ function ChunksPagination({ pageCount, page, handleChange, children }: ChunksPag
 
 
 // Main component to display paginated chunks
-const PaginatedChunks = ({ metaTextId }: PaginationProps) => {
+const PaginatedChunks = ({ metatextId }: PaginationProps) => {
     const theme = useTheme();
     const styles = getChunkComponentsStyles(theme);
 
@@ -52,16 +52,16 @@ const PaginatedChunks = ({ metaTextId }: PaginationProps) => {
 
     const [page, setPage] = useState(1);
 
-    // Fetch chunks when metaTextId changes
+    // Fetch chunks when metatextId changes
     React.useEffect(() => {
-        if (metaTextId) {
-            fetchChunks(Number(metaTextId));
+        if (metatextId) {
+            fetchChunks(Number(metatextId));
         }
         return () => {
             resetChunkState();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [metaTextId]);
+    }, [metatextId]);
 
     // Pagination logic
     const chunksPerPage = 5;

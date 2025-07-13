@@ -35,12 +35,12 @@ function MetaTextDetailPage(): ReactElement | null {
         return null; // Could render a proper error component instead
     }
 
-    // Fetch the metaText details using the custom hook
-    const { metaText, loading } = useMetaTextDetailData(validatedMetaTextId ? String(validatedMetaTextId) : ""); // Todo handle errors
+    // Fetch the metatext details using the custom hook
+    const { metatext, loading } = useMetaTextDetailData(validatedMetaTextId ? String(validatedMetaTextId) : ""); // Todo handle errors
 
     // Fetch the source document details using the custom hook unconditionally
     const { doc: sourceDoc } = useSourceDocDetailData(
-        metaText ? metaText.source_document_id : undefined
+        metatext ? metatext.source_document_id : undefined
     );
 
     // Get the updateDoc function from the store for updating source document
@@ -51,14 +51,14 @@ function MetaTextDetailPage(): ReactElement | null {
 
     return (
         <PageContainer loading={loading} data-testid="metatext-detail-page">
-            <Slide in={!!metaText} direction="up" timeout={FADE_IN_DURATION}>
+            <Slide in={!!metatext} direction="up" timeout={FADE_IN_DURATION}>
                 <Box sx={styles.container} data-testid="metatext-detail-content">
-                    {metaText ? (
+                    {metatext ? (
                         <>
-                            <DocumentHeader title={metaText.title}>
-                                <ReviewButton metaTextId={metaText.id} />
+                            <DocumentHeader title={metatext.title}>
+                                <ReviewButton metatextId={metatext.id} />
                                 <GenerateSourceDocInfoButton
-                                    sourceDocumentId={metaText.source_document_id}
+                                    sourceDocumentId={metatext.source_document_id}
                                 />
                                 <StyleControls />
 
@@ -67,7 +67,7 @@ function MetaTextDetailPage(): ReactElement | null {
                                 )}
                             </DocumentHeader>
 
-                            <PaginatedChunks metaTextId={metaText.id} />
+                            <PaginatedChunks metatextId={metatext.id} />
 
                             <ChunkToolsPanel />
                         </>

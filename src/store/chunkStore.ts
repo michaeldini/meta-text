@@ -15,13 +15,13 @@ type ChunkState = {
     chunksError: string;
     activeTabs: ChunkToolId[];
     setActiveTabs: (tabs: ChunkToolId[]) => void;
-    fetchChunks: (metaTextId: number) => Promise<void>;
+    fetchChunks: (metatextId: number) => Promise<void>;
     refetchChunk: (chunkId: number) => Promise<void>;
     updateChunkField: UpdateChunkFieldFn;
     handleWordClick: (chunkId: number, chunkIdx: number, wordIdx: number) => Promise<void>;
     mergeChunks: (chunkIdx: number) => Promise<void>;
     setChunks: (chunks: ChunkType[]) => void;
-    refetchChunks: (metaTextId: number) => Promise<void>;
+    refetchChunks: (metatextId: number) => Promise<void>;
     resetChunkState: () => void;
 };
 
@@ -38,10 +38,10 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
             loadingChunks: false,
         }));
     },
-    fetchChunks: async (metaTextId) => {
+    fetchChunks: async (metatextId) => {
         set({ loadingChunks: true, chunksError: '' });
         try {
-            const chunks = await apiFetchChunks(metaTextId);
+            const chunks = await apiFetchChunks(metatextId);
             set((state) => ({
                 ...state,
                 chunks,
@@ -111,10 +111,10 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
             return { ...state, chunks: newChunks };
         });
     },
-    refetchChunks: async (metaTextId) => {
+    refetchChunks: async (metatextId) => {
         set({ loadingChunks: true, chunksError: '' });
         try {
-            const chunks = await apiFetchChunks(metaTextId);
+            const chunks = await apiFetchChunks(metatextId);
             set((state) => ({
                 ...state,
                 chunks,

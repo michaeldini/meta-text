@@ -13,9 +13,9 @@ interface WordlistResponse {
 }
 
 // Base function without caching
-async function _fetchWordlist(metaTextId: number): Promise<WordlistResponse> {
+async function _fetchWordlist(metatextId: number): Promise<WordlistResponse> {
     try {
-        return await apiGet<WordlistResponse>(`/api/metatext/${metaTextId}/wordlist`);
+        return await apiGet<WordlistResponse>(`/api/metatext/${metatextId}/wordlist`);
     } catch (error) {
         log.error('Failed to fetch wordlist', error);
         throw error;
@@ -39,9 +39,9 @@ export interface PhraseExplanation {
 }
 
 
-async function _fetchPhraseExplanations(metaTextId: number): Promise<PhraseExplanation[]> {
+async function _fetchPhraseExplanations(metatextId: number): Promise<PhraseExplanation[]> {
     try {
-        const data = await apiGet<PhraseExplanation[]>(`/api/metatext/${metaTextId}/explanations`);
+        const data = await apiGet<PhraseExplanation[]>(`/api/metatext/${metatextId}/explanations`);
         return data;
     } catch (error) {
         log.error('Failed to fetch phrase explanations', error);

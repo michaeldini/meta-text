@@ -18,9 +18,9 @@ import MetaTextCreateForm from './components/MetaTextCreateForm';
 function MetaTextPage(): ReactElement {
 
     const {
-        metaTexts,
-        metaTextsLoading,
-        metaTextsError, // TODO
+        metatexts,
+        metatextsLoading,
+        metatextsError, // TODO
         fetchMetaTexts,
         sourceDocs,
         sourceDocsLoading,
@@ -32,13 +32,13 @@ function MetaTextPage(): ReactElement {
 
     // Fetch documents when component mounts, but only if not already loaded or loading
     useEffect(() => {
-        if (!metaTexts.length && !metaTextsLoading) {
+        if (!metatexts.length && !metatextsLoading) {
             fetchMetaTexts();
         }
         if (!sourceDocs.length && !sourceDocsLoading) {
             fetchSourceDocs(); // Needed for the create form
         }
-    }, [fetchMetaTexts, fetchSourceDocs, metaTexts.length, metaTextsLoading, sourceDocs.length, sourceDocsLoading]);
+    }, [fetchMetaTexts, fetchSourceDocs, metatexts.length, metatextsLoading, sourceDocs.length, sourceDocsLoading]);
 
     // Refresh data after successful creation
     const handleCreateSuccess = () => {
@@ -46,7 +46,7 @@ function MetaTextPage(): ReactElement {
     };
     return (
         <PageContainer
-            loading={metaTextsLoading}
+            loading={metatextsLoading}
             data-testid="metatext-list-page"
         >
             {/* Smooth slide-up animation for the page content */}
@@ -64,10 +64,10 @@ function MetaTextPage(): ReactElement {
                     }
                     listComponent={
                         <SearchableList
-                            items={metaTexts}
+                            items={metatexts}
                             filterKey="title"
                             title="MetaText"
-                            loading={metaTextsLoading}
+                            loading={metatextsLoading}
                             searchPlaceholder="Search MetaText documents..."
                             emptyMessage="No MetaText documents found. Create some MetaTexts from your source documents to get started."
                             ariaLabel="List of MetaText documents"

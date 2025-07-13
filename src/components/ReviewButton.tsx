@@ -5,17 +5,17 @@ import { AcademicCapIcon } from './icons'; // Use a random icon for now
 import { useNavigate } from 'react-router-dom';
 
 export interface ReviewButtonProps {
-    metaTextId: number;
+    metatextId: number;
     label?: string;
     toolTip?: string;
     disabled?: boolean;
     sx?: SxProps<Theme>;
 }
 
-const ReviewButton: React.FC<ReviewButtonProps> = ({ metaTextId, label = "Review", toolTip = "Review this meta-text", disabled = false, sx }) => {
+const ReviewButton: React.FC<ReviewButtonProps> = ({ metatextId, label = "Review", toolTip = "Review this meta-text", disabled = false, sx }) => {
     const navigate = useNavigate();
     const handleClick = () => {
-        navigate(`/metatext/${metaTextId}/review`);
+        navigate(`/metatext/${metatextId}/review`);
     };
     return (
         <Tooltip title={toolTip || ''} arrow disableHoverListener={!toolTip}>

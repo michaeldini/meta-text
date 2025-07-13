@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useMetaTextDetailStore } from '../../../store';
 
-export const useMetaTextDetailData = (metaTextId: number | string | undefined) => {
+export const useMetaTextDetailData = (metatextId: number | string | undefined) => {
     // UI message constants
     const MESSAGES = {
         NO_ID_ERROR: 'No MetaText ID provided in URL',
@@ -15,32 +15,32 @@ export const useMetaTextDetailData = (metaTextId: number | string | undefined) =
 
     const store = useMetaTextDetailStore();
 
-    // Validate metaTextId
-    if (!metaTextId) {
+    // Validate metatextId
+    if (!metatextId) {
         throw new Error(MESSAGES.NO_ID_ERROR);
     }
 
     // Always use string for store
-    const metaTextIdStr = typeof metaTextId === 'number' ? metaTextId.toString() : metaTextId;
+    const metatextIdStr = typeof metatextId === 'number' ? metatextId.toString() : metatextId;
 
     useEffect(() => {
-        if (metaTextIdStr) {
-            store.fetchMetaTextDetail(metaTextIdStr);
+        if (metatextIdStr) {
+            store.fetchMetaTextDetail(metatextIdStr);
         } else {
             store.clearState();
         }
-    }, [metaTextIdStr, store.fetchMetaTextDetail]);
+    }, [metatextIdStr, store.fetchMetaTextDetail]);
 
     // Handle critical MetaText errors
-    if (!store.loading && store.errors.metaText) {
-        throw new Error(store.errors.metaText);
+    if (!store.loading && store.errors.metatext) {
+        throw new Error(store.errors.metatext);
     }
 
     return {
-        metaText: store.metaText,
+        metatext: store.metatext,
         loading: store.loading,
         errors: store.errors,
-        metaTextId: metaTextIdStr,
+        metatextId: metatextIdStr,
         MESSAGES,
     };
 };

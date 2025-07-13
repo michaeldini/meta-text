@@ -79,11 +79,11 @@ export function useMetaTextReviewData(metatextId?: number): UseMetaTextReviewDat
      */
     const [error, setError] = useState<string | null>(null);
 
-    // Use the MetaText detail data hook to get metaText and chunks
-    const { metaText, loading: detailLoading, errors: detailErrors } = useMetaTextDetailData(metatextId);
+    // Use the MetaText detail data hook to get metatext and chunks
+    const { metatext, loading: detailLoading, errors: detailErrors } = useMetaTextDetailData(metatextId);
 
-    // Extract chunks from metaText
-    const chunks: ChunkType[] = metaText?.chunks || [];
+    // Extract chunks from metatext
+    const chunks: ChunkType[] = metatext?.chunks || [];
 
     // Combined loading state
     const loading = detailLoading || additionalLoading;
@@ -147,10 +147,10 @@ export function useMetaTextReviewData(metatextId?: number): UseMetaTextReviewDat
 
     // Handle errors from detail hook
     useEffect(() => {
-        if (detailErrors.metaText) {
-            setError(detailErrors.metaText);
+        if (detailErrors.metatext) {
+            setError(detailErrors.metatext);
         }
-    }, [detailErrors.metaText]);
+    }, [detailErrors.metatext]);
 
     return {
         wordlist,

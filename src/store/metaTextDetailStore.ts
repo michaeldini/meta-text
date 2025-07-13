@@ -5,13 +5,13 @@ import type { MetaTextDetail } from 'types';
 // import { useChunkStore } from './chunkStore';
 
 interface MetaTextDetailErrors {
-    metaText: string;
+    metatext: string;
 }
 
 interface MetaTextDetailState {
     // Current MetaText being viewed
     currentMetaTextId: string | null;
-    metaText: MetaTextDetail | null;
+    metatext: MetaTextDetail | null;
 
     // Loading states
     loading: boolean;
@@ -20,7 +20,7 @@ interface MetaTextDetailState {
     errors: MetaTextDetailErrors;
 
     // Actions
-    fetchMetaTextDetail: (metaTextId: string) => Promise<void>;
+    fetchMetaTextDetail: (metatextId: string) => Promise<void>;
     clearState: () => void;
     clearErrors: () => void;
 }
@@ -30,39 +30,39 @@ export const useMetaTextDetailStore = create<MetaTextDetailState>((set, get) => 
     return {
         // Initial state
         currentMetaTextId: null,
-        metaText: null,
+        metatext: null,
         loading: false,
-        errors: { metaText: '' },
+        errors: { metatext: '' },
 
-        fetchMetaTextDetail: async (metaTextId: string) => {
+        fetchMetaTextDetail: async (metatextId: string) => {
             // Don't refetch if we're already viewing this MetaText
             const { currentMetaTextId } = get();
-            if (currentMetaTextId === metaTextId) return;
+            if (currentMetaTextId === metatextId) return;
 
             set({
                 loading: true,
-                errors: { metaText: '' },
-                currentMetaTextId: metaTextId,
-                metaText: null
+                errors: { metatext: '' },
+                currentMetaTextId: metatextId,
+                metatext: null
             });
 
             try {
-                if (!metaTextId) {
-                    throw new Error('No metaTextId provided');
+                if (!metatextId) {
+                    throw new Error('No metatextId provided');
                 }
 
-                const metaText = await fetchMetaText(Number(metaTextId));
-                if (!metaText) {
-                    throw new Error(`MetaText with ID ${metaTextId} not found`);
+                const metatext = await fetchMetaText(Number(metatextId));
+                if (!metatext) {
+                    throw new Error(`MetaText with ID ${metatextId} not found`);
                 }
 
-                set({ metaText, loading: false });
+                set({ metatext, loading: false });
 
             } catch (error: unknown) {
                 set({
                     loading: false,
                     errors: {
-                        metaText: getErrorMessage(error, 'Failed to load meta text.')
+                        metatext: getErrorMessage(error, 'Failed to load meta text.')
                     }
                 });
             }
@@ -70,13 +70,13 @@ export const useMetaTextDetailStore = create<MetaTextDetailState>((set, get) => 
         clearState: () => {
             set({
                 currentMetaTextId: null,
-                metaText: null,
+                metatext: null,
                 loading: false,
-                errors: { metaText: '' }
+                errors: { metatext: '' }
             });
         },
         clearErrors: () => {
-            set({ errors: { metaText: '' } });
+            set({ errors: { metatext: '' } });
         },
     };
 });

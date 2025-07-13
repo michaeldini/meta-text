@@ -197,7 +197,7 @@ const WordsExplanationTool: React.FC<ExplanationToolProps> = React.memo(({
         const result = await explain({
             words: cleanedWord,
             context: chunk.text,
-            metaTextId: chunk.meta_text_id,
+            metatextId: chunk.meta_text_id,
             chunkId: null
         });
         if (result) {

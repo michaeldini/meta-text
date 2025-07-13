@@ -7,8 +7,8 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { MetaTextSummary, SourceDocumentSummary, } from 'types'
 import { getErrorMessage } from '../types/error';
-import * as sourceDocService from '../services/sourceDocumentService';
-import * as metaTextService from '../services/metaTextService';
+import * as sourceDocService from 'services';
+import * as metatextService from 'services';
 interface DocumentsState {
     // Source Documents
     sourceDocs: SourceDocumentSummary[];
@@ -16,9 +16,9 @@ interface DocumentsState {
     sourceDocsError: string | null;
 
     // Meta Texts
-    metaTexts: MetaTextSummary[];
-    metaTextsLoading: boolean;
-    metaTextsError: string | null;
+    metatexts: MetaTextSummary[];
+    metatextsLoading: boolean;
+    metatextsError: string | null;
 
     // Actions
     fetchSourceDocs: () => Promise<void>;
@@ -26,7 +26,7 @@ interface DocumentsState {
     deleteSourceDoc: (id: number) => Promise<void>;
     deleteMetaText: (id: number) => Promise<void>;
     addSourceDoc: (doc: SourceDocumentSummary) => void;
-    addMetaText: (metaText: MetaTextSummary) => void;
+    addMetaText: (metatext: MetaTextSummary) => void;
     clearErrors: () => void;
 }
 
@@ -37,9 +37,9 @@ export const useDocumentsStore = create<DocumentsState>()(
             sourceDocs: [],
             sourceDocsLoading: false,
             sourceDocsError: null,
-            metaTexts: [],
-            metaTextsLoading: false,
-            metaTextsError: null,
+            metatexts: [],
+            metatextsLoading: false,
+            metatextsError: null,
 
             fetchSourceDocs: async () => {
                 set({ sourceDocsLoading: true, sourceDocsError: null });
@@ -59,18 +59,18 @@ export const useDocumentsStore = create<DocumentsState>()(
             },
 
             fetchMetaTexts: async () => {
-                set({ metaTextsLoading: true, metaTextsError: null });
+                set({ metatextsLoading: true, metatextsError: null });
                 try {
-                    const texts = await metaTextService.fetchMetaTexts();
+                    const texts = await metatextService.fetchMetaTexts();
                     set({
-                        metaTexts: texts,
-                        metaTextsLoading: false,
-                        metaTextsError: null
+                        metatexts: texts,
+                        metatextsLoading: false,
+                        metatextsError: null
                     });
                 } catch (error: unknown) {
                     set({
-                        metaTextsError: getErrorMessage(error, 'Failed to fetch meta texts'),
-                        metaTextsLoading: false
+                        metatextsError: getErrorMessage(error, 'Failed to fetch meta texts'),
+                        metatextsLoading: false
                     });
                 }
             },
@@ -88,9 +88,9 @@ export const useDocumentsStore = create<DocumentsState>()(
 
             deleteMetaText: async (id: number) => {
                 try {
-                    await metaTextService.deleteMetaText(id);
+                    await metatextService.deleteMetaText(id);
                     set(state => ({
-                        metaTexts: state.metaTexts.filter(text => text.id !== id)
+                        metatexts: state.metatexts.filter(text => text.id !== id)
                     }));
                 } catch (error: unknown) {
                     throw new Error(getErrorMessage(error, 'Failed to delete meta text'));
@@ -103,16 +103,16 @@ export const useDocumentsStore = create<DocumentsState>()(
                 }));
             },
 
-            addMetaText: (metaText: MetaTextSummary) => {
+            addMetaText: (metatext: MetaTextSummary) => {
                 set(state => ({
-                    metaTexts: [...state.metaTexts, metaText]
+                    metatexts: [...state.metatexts, metatext]
                 }));
             },
 
             clearErrors: () => {
                 set({
                     sourceDocsError: null,
-                    metaTextsError: null
+                    metatextsError: null
                 });
             },
         }),
@@ -121,7 +121,7 @@ export const useDocumentsStore = create<DocumentsState>()(
             partialize: (state) => ({
                 // Only persist the actual data, not loading/error states
                 sourceDocs: state.sourceDocs,
-                metaTexts: state.metaTexts,
+                metatexts: state.metatexts,
             }),
         }
     )
