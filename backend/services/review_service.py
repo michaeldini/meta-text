@@ -2,7 +2,7 @@
 from sqlmodel import select, Session, desc
 from loguru import logger
 
-from backend.models import WordDefinition, Chunk
+from backend.models import WordDefinition, Chunk, PhraseExplanation
 from backend.exceptions.review_exceptions import (
     WordlistNotFoundError,
     ChunksNotFoundError
@@ -156,3 +156,23 @@ class ReviewService:
                     "comparison": 0
                 }
             }
+    
+    def get_phrase_explanations(self, meta_text_id: int, session: Session) -> list[PhraseExplanation]:
+        """
+        Retrieve all phrase explanations for a specific meta-text.
+        
+        Args:
+            meta_text_id: The ID of the meta-text
+            session: Database session
+            
+        Returns:
+            List of PhraseExplanation objects
+        """
+        logger.info(f"Retrieving phrase explanations for meta_text_id={meta_text_id}")
+        
+        phrase_explanations = list(session.exec(
+            select(PhraseExplanation).where(PhraseExplanation.meta_text_id == meta_text_id)
+        ).all())
+        
+        logger.info(f"Found {len(phrase_explanations)} phrase explanations for meta_text_id={meta_text_id}")
+        return phrase_explanations

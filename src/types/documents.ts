@@ -44,7 +44,7 @@ export type MetaTextSummary = {
 
 export type MetaTextDetail = MetaTextSummary & {
     text: string;
-    // chunks: ChunkType[];
+    chunks: ChunkType[];
 };
 
 export type MetaTextCreate = {

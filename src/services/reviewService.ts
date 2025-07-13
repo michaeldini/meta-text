@@ -3,17 +3,19 @@ import { withCache } from '../utils/cache';
 import { log } from 'utils';
 
 interface WordlistResponse {
-    words: string[];
+    id: number;
+    word: string[];
+    context: string;
+    definition: string;
+    definition_with_context: string;
     meta_text_id: number;
-    created_at?: string;
-    [key: string]: unknown; // Allow for additional fields
+    created_at: string;
 }
 
 // Base function without caching
 async function _fetchWordlist(metaTextId: number): Promise<WordlistResponse> {
     try {
-        const data = await apiGet<WordlistResponse>(`/api/metatext/${metaTextId}/wordlist`);
-        return data as WordlistResponse;
+        return await apiGet<WordlistResponse>(`/api/metatext/${metaTextId}/wordlist`);
     } catch (error) {
         log.error('Failed to fetch wordlist', error);
         throw error;
@@ -36,9 +38,10 @@ export interface PhraseExplanation {
     meta_text_id: number | null;
 }
 
+
 async function _fetchPhraseExplanations(metaTextId: number): Promise<PhraseExplanation[]> {
     try {
-        const data = await apiGet<PhraseExplanation[]>(`/api/metatext/${metaTextId}/phrase-explanations`);
+        const data = await apiGet<PhraseExplanation[]>(`/api/metatext/${metaTextId}/explanations`);
         return data;
     } catch (error) {
         log.error('Failed to fetch phrase explanations', error);

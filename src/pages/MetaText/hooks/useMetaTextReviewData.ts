@@ -1,18 +1,21 @@
 /**
  * @fileoverview Custom hook for MetaText Review data fetching
  * 
- * This hook encapsulates all the data fetching logic for the MetaText Review page,
- * including loading states, error handling, and concurrent data fetching.
+ * This hook encapsulates the data fetching logic for the MetaText Review page,
+ * including loading states, error handling, and efficient data access.
+ * Uses the MetaText detail data hook to avoid redundant chunk fetching.
  * 
  * @author MetaText Development Team
- * @version 1.0.0
+ * @version 2.0.0
  * @since 2025-07-09
+ * @updated 2025-07-13 - Refactored to use MetaText detail data for chunks
  */
 
 import { useEffect, useState } from 'react';
-import { fetchWordlist, fetchChunks, fetchPhraseExplanations, PhraseExplanation } from 'services';
+import { fetchWordlist, fetchPhraseExplanations, PhraseExplanation } from 'services';
 import { ChunkType, FlashcardItem } from 'types';
 import { log } from 'utils';
+import { useMetaTextDetailData } from './useMetaTextDetailData';
 
 /**
  * Hook return type interface
@@ -34,7 +37,8 @@ interface UseMetaTextReviewDataReturn {
  * Custom hook for fetching MetaText Review data
  * 
  * Handles concurrent data fetching for wordlist, chunks, and phrase explanations
- * with proper loading states and error handling.
+ * with proper loading states and error handling. Uses the MetaText detail data
+ * to avoid redundant chunk fetching.
  * 
  * @param metatextId - The MetaText ID to fetch data for
  * @returns Object containing data, loading state, and error state
@@ -60,90 +64,93 @@ export function useMetaTextReviewData(metatextId?: number): UseMetaTextReviewDat
     const [wordlist, setWordlist] = useState<FlashcardItem[]>([]);
 
     /**
-     * State management for chunk summaries and notes
-     * Contains processed chunks with summaries and analysis notes
-     */
-    const [chunkSummariesNotes, setChunkSummariesNotes] = useState<ChunkType[]>([]);
-
-    /**
      * State management for phrase explanations
      * Contains contextual explanations for important phrases in the document
      */
     const [phraseExplanations, setPhraseExplanations] = useState<PhraseExplanation[]>([]);
 
     /**
-     * Loading state for data fetching operations
+     * Additional loading state for data fetching operations not covered by detail hook
      */
-    const [loading, setLoading] = useState<boolean>(true);
+    const [additionalLoading, setAdditionalLoading] = useState<boolean>(true);
 
     /**
      * Error state for handling and displaying fetch errors
      */
     const [error, setError] = useState<string | null>(null);
 
+    // Use the MetaText detail data hook to get metaText and chunks
+    const { metaText, loading: detailLoading, errors: detailErrors } = useMetaTextDetailData(metatextId);
+
+    // Extract chunks from metaText
+    const chunkSummariesNotes: ChunkType[] = metaText?.chunks || [];
+
+    // Combined loading state
+    const loading = detailLoading || additionalLoading;
+
     /**
-     * Data loading effect
+     * Data loading effect for wordlist and phrase explanations
      * 
-     * Fetches all required data concurrently when the component mounts or
-     * when the MetaText ID changes. Handles loading states, error conditions,
-     * and data validation.
+     * Fetches wordlist and phrase explanations concurrently while chunks
+     * are obtained from the MetaText detail data.
      */
     useEffect(() => {
         /**
-         * Async function to load all review data concurrently
+         * Async function to load wordlist and phrase explanations
          * 
-         * Fetches wordlist, chunk data, and phrase explanations in parallel
-         * for optimal performance. Includes comprehensive error handling
-         * and data validation.
+         * Fetches wordlist and phrase explanations in parallel for optimal performance.
+         * Chunks are now obtained from the MetaText detail data to avoid redundancy.
          */
-        async function loadData() {
+        async function loadAdditionalData() {
             try {
-                setLoading(true);
+                setAdditionalLoading(true);
                 setError(null);
-                log.info('Starting to load wordlist and chunk summaries/notes', { metatextId });
+                log.info('Starting to load wordlist and phrase explanations', { metatextId });
 
                 // Validate MetaText ID
                 if (!metatextId || isNaN(metatextId)) {
                     setError('Invalid MetaText ID.');
-                    setLoading(false);
+                    setAdditionalLoading(false);
                     return;
                 }
 
-                // Fetch all data concurrently for better performance
+                // Fetch wordlist and phrase explanations concurrently
                 log.info('Fetching wordlist...');
                 const wordlistPromise = fetchWordlist(metatextId);
-
-                log.info('Fetching chunk summaries/notes...');
-                const chunkPromise = fetchChunks(metatextId);
 
                 log.info('Fetching phrase explanations...');
                 const phraseExplanationsPromise = fetchPhraseExplanations(metatextId);
 
-                const [wordlistData, chunkData, phraseExplanationsData] = await Promise.all([
+                const [wordlistData, phraseExplanationsData] = await Promise.all([
                     wordlistPromise,
-                    chunkPromise,
                     phraseExplanationsPromise
                 ]);
 
                 // Validate and set data with fallbacks
                 setWordlist(Array.isArray(wordlistData) ? wordlistData : []);
-                setChunkSummariesNotes(Array.isArray(chunkData) ? chunkData : []);
                 setPhraseExplanations(Array.isArray(phraseExplanationsData) ? phraseExplanationsData : []);
 
             } catch (err) {
-                setError('Failed to load wordlist or chunk summaries/notes.');
-                log.error('Failed to load wordlist or chunk summaries/notes', err);
+                setError('Failed to load wordlist or phrase explanations.');
+                log.error('Failed to load wordlist or phrase explanations', err);
             } finally {
-                setLoading(false);
+                setAdditionalLoading(false);
             }
         }
 
         if (metatextId) {
-            loadData();
+            loadAdditionalData();
         } else {
-            setLoading(false);
+            setAdditionalLoading(false);
         }
     }, [metatextId]);
+
+    // Handle errors from detail hook
+    useEffect(() => {
+        if (detailErrors.metaText) {
+            setError(detailErrors.metaText);
+        }
+    }, [detailErrors.metaText]);
 
     return {
         wordlist,
