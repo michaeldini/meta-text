@@ -37,7 +37,7 @@ function SearchableList({
     const { showSuccess, showError } = useNotifications();
 
     // Determine document type based on title or item properties
-    const docType = title === 'sourceDoc' ? 'sourceDoc' : 'metaText';
+    const docType = title === 'Source Documents' ? 'sourceDoc' : 'metaText';
 
     // Filter items using the provided hook
     const filteredItems = useFilteredList(items, search, filterKey);

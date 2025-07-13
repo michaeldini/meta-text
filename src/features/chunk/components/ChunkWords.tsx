@@ -6,7 +6,8 @@ import React, { memo, useRef } from 'react';
 import { Box, Paper, useTheme } from '@mui/material';
 import { MergeChunksTool } from 'features/chunk-merge';
 import WordsToolbar from '../components/WordsToolbar';
-import { getChunkComponentsStyles } from '../Chunk.styles'; import { useUIPreferencesStore } from 'store';
+import { getChunkComponentsStyles } from '../Chunk.styles';
+import { useUIPreferencesStore } from 'store';
 import { useWordSelection } from '../hooks/useWordSelection';
 import type { ChunkType } from 'types';
 export interface ChunkWordsProps {

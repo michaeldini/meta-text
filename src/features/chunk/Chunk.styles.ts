@@ -31,8 +31,6 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
         borderRadius: theme.shape.borderRadius,
         minHeight: 0,
         height: '100%',
-        // width: '100%',
-        backgroundColor: 'black',
         padding: 0,
         overflow: 'hidden', // Prevent children from overflowing
         boxSizing: 'border-box',
