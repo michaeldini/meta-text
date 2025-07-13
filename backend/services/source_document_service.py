@@ -1,14 +1,19 @@
 """Source document service for business logic operations."""
+import os
 from sqlmodel import select, Session
 from loguru import logger
 
+from backend.config import BackendConfig as CONFIG
 from backend.models import SourceDocument, MetaText, DeleteResponse
 from backend.exceptions.source_document_exceptions import (
     SourceDocumentNotFoundError,
     SourceDocumentTitleExistsError,
     SourceDocumentCreationError,
     SourceDocumentHasDependenciesError,
-    SourceDocumentUpdateError
+    SourceDocumentUpdateError,
+    FileValidationError,
+    InvalidFileExtensionError,
+    FileSizeExceededError
 )
 from backend.services.text_processing_service import TextProcessingService
 
@@ -29,6 +34,9 @@ class SourceDocumentService:
         logger.info(f"Creating source document with title: '{title}'")
         
         try:
+            # Validate the uploaded file
+            self._validate_upload_file(file)
+            
             # Process the uploaded file
             processed_text = await self.text_processing_service.process_uploaded_file(file)
             
@@ -149,3 +157,22 @@ class SourceDocumentService:
             session.rollback()
             logger.error(f"Error updating source document: {e}")
             raise SourceDocumentUpdateError(f"Failed to update source document: {str(e)}")
+    
+    def _validate_upload_file(self, file) -> None:
+        """Validate uploaded file type and size."""
+        # Validate filename exists
+        if not file.filename:
+            raise FileValidationError("Filename is required")
+        
+        # Validate file extension
+        file_extension = os.path.splitext(file.filename)[1].lower()
+        if file_extension not in CONFIG.ALLOWED_EXTENSIONS:
+            raise InvalidFileExtensionError(
+                f"File extension {file_extension} not allowed. Allowed: {', '.join(CONFIG.ALLOWED_EXTENSIONS)}"
+            )
+        
+        # Validate file size
+        if file.size and file.size > CONFIG.MAX_FILE_SIZE:
+            raise FileSizeExceededError(
+                f"File size {file.size} bytes exceeds maximum allowed size of {CONFIG.MAX_FILE_SIZE} bytes"
+            )

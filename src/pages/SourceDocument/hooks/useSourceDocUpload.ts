@@ -81,7 +81,7 @@ export function useSourceDocUpload(options: UseSourceDocUploadOptions = {}): Use
             const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase();
 
             if (!allowedTypes.includes(fileExtension)) {
-                setError('Please select a valid file type (.txt, .doc, .docx, .pdf)');
+                setError('Please select a valid file type (.txt)');
                 return;
             }
 

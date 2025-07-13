@@ -39,3 +39,13 @@ class SourceDocumentHasDependenciesError(SourceDocumentServiceError):
 class SourceDocumentUpdateError(SourceDocumentServiceError):
     """Raised when source document update fails."""
     pass
+
+# Validation errors for file uploads
+class FileValidationError(Exception):
+    pass
+
+class InvalidFileExtensionError(FileValidationError):
+    pass
+
+class FileSizeExceededError(FileValidationError):
+    pass

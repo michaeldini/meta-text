@@ -205,7 +205,7 @@ function SourceDocUploadForm({ onSuccess, sx = {} }: SourceDocUploadFormProps): 
                             }
                         </Typography>
                         <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-                            Supported formats: .txt, .doc, .docx, .pdf
+                            Supported formats: .txt
                         </Typography>
                     </Box>
                 </Box>
