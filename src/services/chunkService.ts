@@ -32,8 +32,10 @@ import type { ChunkCompression, ChunkCompressionCreate, ChunkType } from 'types'
 
 // Base functions without caching
 async function _fetchChunks(metaTextId: number): Promise<ChunkType[]> {
-    const data = await apiGet<ChunkType[]>(`/api/chunks/all/${metaTextId}`);
-    return Array.isArray(data) ? data : [];
+    // TODO: Refactor to use meta_text service instead of chunk service
+    // This should eventually be moved to metaTextService.ts and get chunks from MetaTextDetail
+    const metaText = await apiGet<{ chunks?: ChunkType[] }>(`/api/meta-text/${metaTextId}`);
+    return Array.isArray(metaText.chunks) ? metaText.chunks : [];
 }
 
 // Cached version (5 minutes for chunks list)

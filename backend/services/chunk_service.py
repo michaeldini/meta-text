@@ -7,8 +7,7 @@ from backend.exceptions.chunk_exceptions import (
     ChunkNotFoundError,
     InvalidSplitIndexError,
     ChunkCombineError,
-    ChunkUpdateError,
-    NoChunksFoundError
+    ChunkUpdateError
 )
 from backend.services.ai_image_service import AiImageService
 
@@ -91,34 +90,6 @@ class ChunkService:
         # The relationship should load the images automatically if configured with lazy='selectin' or similar
         # or we can manually validate it.
         return ChunkRead.model_validate(chunk, from_attributes=True)
-    
-    def get_all_chunks_for_meta_text(self, meta_text_id: int, session: Session) -> list[ChunkRead]:
-        """
-        Get all chunks for a meta-text with their AI images.
-        
-        Args:
-            meta_text_id: The ID of the meta-text
-            session: Database session
-            
-        Returns:
-            List of ChunkRead objects ordered by position
-            
-        Raises:
-            NoChunksFoundError: If no chunks are found
-        """
-        logger.info(f"Listing all chunks for meta_text_id: {meta_text_id}")
-        
-        chunks = list(session.exec(
-            select(Chunk)
-            .where(Chunk.meta_text_id == meta_text_id)
-            .order_by(Chunk.position)  # type: ignore
-        ).all())
-        
-        if not chunks:
-            logger.warning(f"No chunks found for meta_text_id: {meta_text_id}")
-            raise NoChunksFoundError(meta_text_id)
-        
-        return [ChunkRead.model_validate(chunk, from_attributes=True) for chunk in chunks]
 
     def split_chunk(self, chunk_id: int, word_index: int, session: Session) -> list[Chunk]:
         """

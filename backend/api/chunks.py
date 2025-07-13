@@ -1,44 +1,41 @@
-from fastapi import APIRouter, Depends, HTTPException, Body, status
+"""
+API router for chunk operations.
+Handles CRUD operations for text chunks including splitting and combining operations.
+"""
+
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session
 from typing import List
 
 from backend.db import get_session
-from backend.models import (
-    ChunkRead
-)
+from backend.models import ChunkRead, ChunkUpdate
 from backend.services.chunk_service import ChunkService
 from backend.exceptions.chunk_exceptions import (
     ChunkNotFoundError,
     InvalidSplitIndexError,
     ChunkCombineError,
-    ChunkUpdateError,
-    NoChunksFoundError
+    ChunkUpdateError
 )
 
 
 router = APIRouter()
 
-# Initialize service
-chunk_service = ChunkService()
+# Dependency injection function
+def get_chunk_service() -> ChunkService:
+    """Dependency injection function for ChunkService."""
+    return ChunkService()
 
-
-@router.get("/chunks/all/{meta_text_id}", response_model=List[ChunkRead], name="get_chunks")
-def get_chunks_api(meta_text_id: int, session: Session = Depends(get_session)):
-    """Get all chunks for a meta-text with their AI images."""
-    try:
-        return chunk_service.get_all_chunks_for_meta_text(meta_text_id, session)
-    except NoChunksFoundError:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, 
-            detail=f"No chunks found for meta_text_id: {meta_text_id}"
-        )
 
 
 @router.get("/chunk/{chunk_id}", response_model=ChunkRead, name="get_chunk")
-def get_chunk(chunk_id: int, session: Session = Depends(get_session)):
+async def get_chunk(
+    chunk_id: int, 
+    session: Session = Depends(get_session), 
+    service: ChunkService = Depends(get_chunk_service)
+):
     """Get a specific chunk with its AI images."""
     try:
-        return chunk_service.get_chunk_with_images(chunk_id, session)
+        return service.get_chunk_with_images(chunk_id, session)
     except ChunkNotFoundError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 
@@ -47,10 +44,15 @@ def get_chunk(chunk_id: int, session: Session = Depends(get_session)):
 
 
 @router.post("/chunk/{chunk_id}/split", response_model=List[ChunkRead], name="split_chunk")
-def split_chunk(chunk_id: int, word_index: int, session: Session = Depends(get_session)):
+async def split_chunk(
+    chunk_id: int, 
+    word_index: int, 
+    session: Session = Depends(get_session), 
+    service: ChunkService = Depends(get_chunk_service)
+):
     """Split a chunk at the specified word index."""
     try:
-        return chunk_service.split_chunk(chunk_id, word_index, session)
+        return service.split_chunk(chunk_id, word_index, session)
     except ChunkNotFoundError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 
@@ -64,10 +66,15 @@ def split_chunk(chunk_id: int, word_index: int, session: Session = Depends(get_s
 
 
 @router.post("/chunk/combine", response_model=ChunkRead, name="combine_chunks")
-def combine_chunks(first_chunk_id: int, second_chunk_id: int, session: Session = Depends(get_session)):
+async def combine_chunks(
+    first_chunk_id: int, 
+    second_chunk_id: int, 
+    session: Session = Depends(get_session), 
+    service: ChunkService = Depends(get_chunk_service)
+):
     """Combine two chunks into one."""
     try:
-        return chunk_service.combine_chunks(first_chunk_id, second_chunk_id, session)
+        return service.combine_chunks(first_chunk_id, second_chunk_id, session)
     except ChunkNotFoundError as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 
@@ -81,10 +88,18 @@ def combine_chunks(first_chunk_id: int, second_chunk_id: int, session: Session =
 
 
 @router.put("/chunk/{chunk_id}", response_model=ChunkRead, name="update_chunk")
-def update_chunk(chunk_id: int, chunk_data: dict = Body(...), session: Session = Depends(get_session)):
+async def update_chunk(
+    chunk_id: int, 
+    update_data: ChunkUpdate, 
+    session: Session = Depends(get_session), 
+    service: ChunkService = Depends(get_chunk_service)
+):
     """Update a chunk with new data."""
     try:
-        return chunk_service.update_chunk(chunk_id, chunk_data, session)
+        # Convert to dict and exclude None values for partial updates
+        update_dict = update_data.model_dump(exclude_unset=True, exclude_none=True)
+        
+        return service.update_chunk(chunk_id, update_dict, session)
     except ChunkNotFoundError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 

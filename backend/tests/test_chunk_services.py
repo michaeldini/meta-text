@@ -8,8 +8,7 @@ from backend.models import Chunk, ChunkRead
 from backend.exceptions.chunk_exceptions import (
     ChunkNotFoundError,
     InvalidSplitIndexError,
-    ChunkCombineError,
-    NoChunksFoundError
+    ChunkCombineError
 )
 
 
@@ -110,38 +109,6 @@ class TestChunkService:
             # Assertions
             assert result == expected_result
             mock_model_validate.assert_called_once_with(mock_chunk, from_attributes=True)
-
-    def test_get_all_chunks_for_meta_text_success(self, mock_session, monkeypatch):
-        # Mock session.exec
-        mock_chunks = [Mock(spec=Chunk), Mock(spec=Chunk)]
-        mock_session.exec.return_value.all.return_value = mock_chunks
-        
-        # Mock ChunkRead.model_validate
-        expected_results = [Mock(spec=ChunkRead), Mock(spec=ChunkRead)]
-        
-        # Create a mutable list to pop from
-        results_list = list(expected_results)
-        def mock_validate(chunk, from_attributes):
-            return results_list.pop(0)
-        
-        monkeypatch.setattr(ChunkRead, "model_validate", mock_validate)
-        
-        # Call the method
-        result = self.chunk_service.get_all_chunks_for_meta_text(1, mock_session)
-        
-        # Assertions
-        assert len(result) == 2
-        mock_session.exec.assert_called_once()
-
-    def test_get_all_chunks_for_meta_text_no_chunks_found(self, mock_session):
-        # Mock session.exec to return no chunks
-        mock_session.exec.return_value.all.return_value = []
-        
-        # Act & Assert
-        with pytest.raises(NoChunksFoundError) as exc_info:
-            self.chunk_service.get_all_chunks_for_meta_text(1, mock_session)
-        
-        assert exc_info.value.meta_text_id == 999
     
     def test_split_chunk_not_found(self, mock_session):
         with patch.object(self.chunk_service, 'get_chunk_by_id', side_effect=ChunkNotFoundError(999)):
@@ -156,6 +123,12 @@ class TestChunkService:
 
     def test_split_chunk_success(self, mock_session):
         original_chunk = Chunk(id=1, text="This is a test sentence.", position=1.0, meta_text_id=1)
+        
+        # Mock session.exec for finding next chunk
+        mock_result = Mock()
+        mock_result.first.return_value = None  # No next chunk
+        mock_session.exec.return_value = mock_result
+        
         with patch.object(self.chunk_service, 'get_chunk_by_id', return_value=original_chunk):
             new_chunks = self.chunk_service.split_chunk(1, 4, mock_session)
             assert len(new_chunks) == 2
@@ -166,43 +139,34 @@ class TestChunkService:
             mock_session.commit.assert_called()
 
     def test_combine_chunks_not_found(self, mock_session):
-        with patch.object(self.chunk_service, 'get_chunk_by_id', side_effect=ChunkNotFoundError(999)):
-            with pytest.raises(ChunkNotFoundError):
-                self.chunk_service.combine_chunks(1, 999, mock_session)
+        # Mock session.get to return None for the chunk we want to test as not found
+        mock_session.get.side_effect = [None, None]  # Both chunks not found
+        
+        with pytest.raises(ChunkNotFoundError):
+            self.chunk_service.combine_chunks(1, 999, mock_session)
 
     def test_combine_chunks_not_adjacent(self, mock_session):
         chunk1 = Chunk(id=1, text="First part.", position=1.0, meta_text_id=1)
-        chunk2 = Chunk(id=2, text="Second part.", position=3.0, meta_text_id=1) # not adjacent
+        chunk2 = Chunk(id=2, text="Second part.", position=3.0, meta_text_id=2)  # Different meta_text_id
         
-        def get_chunk_side_effect(chunk_id, session):
-            if chunk_id == 1:
-                return chunk1
-            if chunk_id == 2:
-                return chunk2
-            raise ChunkNotFoundError(chunk_id)
-
-        with patch.object(self.chunk_service, 'get_chunk_by_id', side_effect=get_chunk_side_effect):
-             with patch.object(self.chunk_service, 'are_chunks_adjacent', return_value=False):
-                with pytest.raises(ChunkCombineError):
-                    self.chunk_service.combine_chunks(1, 2, mock_session)
+        # Mock session.get to return the chunks
+        mock_session.get.side_effect = [chunk1, chunk2]
+        
+        with pytest.raises(ChunkCombineError):
+            self.chunk_service.combine_chunks(1, 2, mock_session)
 
     def test_combine_chunks_success(self, mock_session):
         chunk1 = Chunk(id=1, text="First part.", position=1.0, meta_text_id=1)
         chunk2 = Chunk(id=2, text="Second part.", position=2.0, meta_text_id=1)
         
-        def get_chunk_side_effect(chunk_id, session):
-            if chunk_id == 1:
-                return chunk1
-            if chunk_id == 2:
-                return chunk2
-            raise ChunkNotFoundError(chunk_id)
-
-        with patch.object(self.chunk_service, 'get_chunk_by_id', side_effect=get_chunk_side_effect):
-            with patch.object(self.chunk_service, 'are_chunks_adjacent', return_value=True):
-                combined_chunk = self.chunk_service.combine_chunks(1, 2, mock_session)
-                assert combined_chunk.text == "First part. Second part."
-                mock_session.delete.assert_called_once_with(chunk2)
-                mock_session.commit.assert_called()
+        # Mock session.get to return the chunks
+        mock_session.get.side_effect = [chunk1, chunk2]
+        
+        combined_chunk = self.chunk_service.combine_chunks(1, 2, mock_session)
+        assert combined_chunk.text == "First part. Second part."
+        mock_session.delete.assert_called_once_with(chunk2)
+        mock_session.commit.assert_called()
+        mock_session.refresh.assert_called_once_with(chunk1)
 
     def test_update_chunk_not_found(self, mock_session):
         with patch.object(self.chunk_service, 'get_chunk_by_id', side_effect=ChunkNotFoundError(999)):

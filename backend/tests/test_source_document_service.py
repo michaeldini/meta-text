@@ -8,7 +8,8 @@ from backend.services.text_processing_service import TextProcessingService
 from backend.models import SourceDocument, MetaText
 from backend.exceptions.source_document_exceptions import (
     SourceDocumentNotFoundError,
-    SourceDocumentHasDependenciesError
+    SourceDocumentHasDependenciesError,
+    SourceDocumentCreationError
 )
 
 
@@ -50,6 +51,8 @@ class TestSourceDocumentService:
         """Test successful source document creation from upload."""
         # Arrange
         mock_file = AsyncMock()
+        mock_file.filename = "test_document.txt"  # Set a valid filename with allowed extension
+        mock_file.size = 1024  # Set a size within limits
         self.mock_text_processing_service.process_uploaded_file = AsyncMock(
             return_value="Processed text content"
         )
@@ -74,6 +77,57 @@ class TestSourceDocumentService:
         self.mock_session.refresh.assert_called_once()
         assert result.title == "Test Doc"
         assert result.text == "Processed text content"
+    
+    @pytest.mark.asyncio
+    async def test_create_source_document_from_upload_invalid_extension(self):
+        """Test source document creation fails with invalid file extension."""
+        # Arrange
+        mock_file = AsyncMock()
+        mock_file.filename = "test_document.pdf"  # Invalid extension
+        mock_file.size = 1024
+        
+        # Act & Assert
+        with pytest.raises(SourceDocumentCreationError) as exc_info:
+            await self.service.create_source_document_from_upload(
+                "Test Doc", mock_file, self.mock_session
+            )
+        
+        # Should fail with SourceDocumentCreationError containing InvalidFileExtensionError message
+        assert "File extension .pdf not allowed" in str(exc_info.value)
+    
+    @pytest.mark.asyncio
+    async def test_create_source_document_from_upload_no_filename(self):
+        """Test source document creation fails when filename is missing."""
+        # Arrange
+        mock_file = AsyncMock()
+        mock_file.filename = None  # No filename
+        mock_file.size = 1024
+        
+        # Act & Assert
+        with pytest.raises(SourceDocumentCreationError) as exc_info:
+            await self.service.create_source_document_from_upload(
+                "Test Doc", mock_file, self.mock_session
+            )
+        
+        # Should fail with SourceDocumentCreationError containing FileValidationError message
+        assert "Filename is required" in str(exc_info.value)
+    
+    @pytest.mark.asyncio
+    async def test_create_source_document_from_upload_file_too_large(self):
+        """Test source document creation fails when file size exceeds limit."""
+        # Arrange
+        mock_file = AsyncMock()
+        mock_file.filename = "test_document.txt"  # Valid extension
+        mock_file.size = 11 * 1024 * 1024  # 11MB - exceeds 10MB limit
+        
+        # Act & Assert
+        with pytest.raises(SourceDocumentCreationError) as exc_info:
+            await self.service.create_source_document_from_upload(
+                "Test Doc", mock_file, self.mock_session
+            )
+        
+        # Should fail with SourceDocumentCreationError containing FileSizeExceededError message
+        assert "File size" in str(exc_info.value) and "exceeds maximum allowed size" in str(exc_info.value)
     
     def test_delete_source_document_with_dependencies(self):
         """Test deletion fails when MetaText records exist."""

@@ -7,7 +7,7 @@ from sqlmodel import Session, SQLModel, create_engine
 
 from backend.api.meta_text import router, get_meta_text_service
 from backend.db import get_session
-from backend.models import MetaTextSummary, MetaTextDetail
+from backend.models import MetaTextSummary, MetaTextDetail, ChunkRead
 from backend.exceptions.meta_text_exceptions import (
     SourceDocumentNotFoundError,
     MetaTextNotFoundError,
@@ -212,7 +212,11 @@ class TestMetaTextEndpoints:
             id=1,
             title="Test Meta Text",
             source_document_id=1,
-            text="Full meta text content"
+            text="Full meta text content",
+            chunks=[
+                ChunkRead(id=1, text="Chunk 1 text", meta_text_id=1),
+                ChunkRead(id=2, text="Chunk 2 text", meta_text_id=1)
+            ]
         )
         mock_service.get_meta_text_by_id.return_value = mock_meta_text
         

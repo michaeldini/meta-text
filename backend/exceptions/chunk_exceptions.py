@@ -41,11 +41,3 @@ class ChunkUpdateError(ChunkServiceError):
         self.chunk_id = chunk_id
         self.reason = reason
         super().__init__(f"Cannot update chunk {chunk_id}: {reason}")
-
-
-class NoChunksFoundError(ChunkServiceError):
-    """Raised when no chunks are found for a meta-text."""
-    
-    def __init__(self, meta_text_id: int):
-        self.meta_text_id = meta_text_id
-        super().__init__(f"No chunks found for meta_text_id={meta_text_id}")

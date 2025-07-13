@@ -70,7 +70,7 @@ class MetaTextSummary(MetaTextBase):
 
 class MetaTextDetail(MetaTextSummary):
     text: str
-    # chunks: List["ChunkRead"] = []
+    chunks: List["ChunkRead"]
 
 class CreateMetaTextRequest(BaseModel):
     sourceDocId: int
@@ -110,6 +110,15 @@ class ChunkRead(ChunkBase):
     ai_images: list["AiImageRead"] = []
     compressions: list["ChunkCompressionRead"] = []
     
+
+class ChunkUpdate(SQLModel):
+    """Model for updating chunks - all fields are optional."""
+    text: str | None = None
+    position: float | None = None
+    notes: str | None = None
+    summary: str | None = None
+    comparison: str | None = None
+    explanation: str | None = None
 
 # --- AI Response Schemas ---
 # --- SourceDocInfo Schemas ---
