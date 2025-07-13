@@ -1,3 +1,10 @@
+"""
+Consolidated endpoint for defining/explaining words or a chunk.
+This endpoint determines the operation based on which fields are provided.
+If `chunkId` is provided, it generates a chunk explanation.
+If `metaTextId` and `words` are provided, it uses the consolidated words explanation service.
+"""
+
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 from typing import Optional

@@ -4,11 +4,10 @@ from sqlmodel import Session
 from typing import List
 
 from backend.db import get_session
-from backend.models import WordDefinition, ChunkRead, PhraseExplanation
+from backend.models import WordDefinition, PhraseExplanation
 from backend.services.review_service import ReviewService
 from backend.exceptions.review_exceptions import (
-    WordlistNotFoundError,
-    ChunksNotFoundError
+    WordlistNotFoundError
 )
 
 

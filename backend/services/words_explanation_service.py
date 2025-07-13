@@ -1,5 +1,14 @@
+"""
+A service to handle explanations for one or more words:
+
+Single word inputs will be saved as `WordDefinition`.
+Multiple word inputs will be saved as `PhraseExplanation`.
+
+Returns a consistent `ExplanationResponse` regardless of input type.
+"""
+
 from sqlmodel import Session
-from backend.models import ExplanationResponse, WordDefinitionResponse, ExplainPhraseResponse
+from backend.models import ExplanationResponse
 from backend.services.openai_service import OpenAIService
 from backend.models import PhraseExplanation, WordDefinition
 from backend.exceptions.ai_exceptions import WordDefinitionValidationError
@@ -9,12 +18,13 @@ class WordsExplanationService:
     """
     Service to handle explanations for one or more words using a single instruction file.
     Decides internally whether to treat input as a single word or multiple words.
+    Returns a consistent ExplanationResponse regardless of input type.
     """
     def __init__(self, openai_service: OpenAIService | None = None):
         self.openai_service = openai_service or OpenAIService()
         self.instruction_file = "instructions/explain_words_with_context.txt"
 
-    def explain(self, words: str, context: str, meta_text_id: int, session: Session):
+    def explain(self, words: str, context: str, meta_text_id: int, session: Session) -> ExplanationResponse:
         if not words:
             raise WordDefinitionValidationError("words", "Missing words")
         if meta_text_id is None:
@@ -40,10 +50,6 @@ class WordsExplanationService:
             session.add(log_entry)
             session.commit()
             logger.info(f"Word definition generated and saved for word: '{words}'")
-            return ExplanationResponse(
-                explanation=ai_data.explanation,
-                explanationWithContext=ai_data.explanationWithContext
-            )
         else:
             log_entry = PhraseExplanation(
                 phrase=words,
@@ -55,7 +61,8 @@ class WordsExplanationService:
             session.add(log_entry)
             session.commit()
             logger.info(f"Words explanation generated and saved for: '{words}'")
-            return ExplainPhraseResponse(
-                explanation=ai_data.explanation,
-                explanationWithContext=ai_data.explanationWithContext
-            )
+        
+        return ExplanationResponse(
+            explanation=ai_data.explanation,
+            explanationWithContext=ai_data.explanationWithContext
+        )
