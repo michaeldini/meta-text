@@ -12,7 +12,7 @@ import { LoadingIndicator, Header, ReviewContent } from './components';
 import { useMetatextReviewData } from './hooks/useMetatextReviewData';
 import { useValidatedIdParam } from 'utils';
 
-import { getMetatextReviewStyles } from './temp_Metatext.styles';
+import { getMetatextReviewStyles } from './Metatext.styles';
 
 function MetatextReviewPage(): ReactElement {
 
