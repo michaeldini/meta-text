@@ -21,7 +21,7 @@ export interface ExplanationRequest {
     words?: string;
     context?: string;
     chunkId?: number | null;
-    metatextId?: number | null;
+    metaTextId?: number | null;
 
 }
 

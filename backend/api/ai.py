@@ -129,8 +129,8 @@ def explain(
     if request.chunkId is not None:
         # Chunk explanation
         return get_ai_service().generate_chunk_explanation(request.chunkId, session)
-    elif request.metaTextId is not None and request.words:
-        # Use the new consolidated words explanation service
+    elif request.metaTextId is not None:
+        # Words explanation (words and context are required fields, so they'll always be present)
         return words_explanation_service.explain(
             words=request.words,
             context=request.context,
@@ -138,4 +138,4 @@ def explain(
             session=session
         )
     else:
-        raise HTTPException(status_code=400, detail="Insufficient data to determine explanation type.")
+        raise HTTPException(status_code=400, detail="Either chunkId or metaTextId must be provided.")
