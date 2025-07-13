@@ -13,7 +13,7 @@
 
 export { useDocumentsStore } from './documentsStore';
 export { useSourceDocumentDetailStore } from './sourceDocumentDetailStore';
-export { useMetatextDetailStore } from './temp_metatextDetailStore';
+export { useMetatextDetailStore } from './metatextDetailStore';
 export { useChunkStore } from './chunkStore';
 
 export { FONT_FAMILIES } from './uiPreferences';
