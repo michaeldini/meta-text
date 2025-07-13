@@ -14,7 +14,7 @@ export function Header({ metatextId, navigate, styles }: HeaderProps): ReactElem
         <Box sx={styles.header}>
             {metatextId && (
                 <Tooltip title="Back to MetaText Detail">
-                    <IconButton onClick={() => navigate(`/metaText/${metatextId}`)}>
+                    <IconButton onClick={() => navigate(`/metatext/${metatextId}`)}>
                         <ArrowBackIcon />
                     </IconButton>
                 </Tooltip>

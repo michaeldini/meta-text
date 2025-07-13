@@ -15,7 +15,7 @@ export interface ReviewButtonProps {
 const ReviewButton: React.FC<ReviewButtonProps> = ({ metaTextId, label = "Review", toolTip = "Review this meta-text", disabled = false, sx }) => {
     const navigate = useNavigate();
     const handleClick = () => {
-        navigate(`/metaText/${metaTextId}/review`);
+        navigate(`/metatext/${metaTextId}/review`);
     };
     return (
         <Tooltip title={toolTip || ''} arrow disableHoverListener={!toolTip}>

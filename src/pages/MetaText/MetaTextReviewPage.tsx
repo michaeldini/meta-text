@@ -17,7 +17,7 @@ import { getMetaTextReviewStyles } from './MetaText.styles';
 function MetaTextReviewPage(): ReactElement {
 
     // Extract MetaText ID from URL parameters and validate it
-    const { metaTextId: metatextIdParam } = useParams<{ metaTextId?: string }>();
+    const { metatextId: metatextIdParam } = useParams<{ metatextId?: string }>();
 
     // Validate and parse the ID parameter using utility hook
     const { id: metatextId, isValid: isValidId, originalValue } = useValidatedIdParam(metatextIdParam);

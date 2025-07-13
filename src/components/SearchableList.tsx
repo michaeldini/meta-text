@@ -55,7 +55,7 @@ function SearchableList({
     };
 
     const handleItemClick = (id: number) => {
-        navigate(docType === 'sourceDoc' ? `/sourcedoc/${id}` : `/metaText/${id}`);
+        navigate(docType === 'sourceDoc' ? `/sourcedoc/${id}` : `/metatext/${id}`);
     };
 
     const handleDeleteClick = async (id: number) => {

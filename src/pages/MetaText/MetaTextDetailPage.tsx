@@ -25,11 +25,11 @@ import {
 
 
 function MetaTextDetailPage(): ReactElement | null {
-    // Extract the metaTextId from the URL parameters
-    const { metaTextId } = useParams<{ metaTextId: string }>();
+    // Extract the metatextId from the URL parameters
+    const { metatextId } = useParams<{ metatextId: string }>();
 
-    // Validate the metaTextId parameter using robust validation utility
-    const { id: validatedMetaTextId, isValid } = useValidatedIdParam(metaTextId);
+    // Validate the metatextId parameter using robust validation utility
+    const { id: validatedMetaTextId, isValid } = useValidatedIdParam(metatextId);
 
     if (!isValid) {
         return null; // Could render a proper error component instead
@@ -40,7 +40,7 @@ function MetaTextDetailPage(): ReactElement | null {
 
     // Fetch the source document details using the custom hook unconditionally
     const { doc: sourceDoc } = useSourceDocDetailData(
-        metaText ? String(metaText.source_document_id) : ""
+        metaText ? metaText.source_document_id : undefined
     );
 
     // Get the updateDoc function from the store for updating source document

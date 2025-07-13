@@ -1,8 +1,7 @@
-import { JSX } from 'react';
+// Main React app component providing routing, theming, and authentication
+import { JSX, Suspense, lazy, ComponentType } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider, CssBaseline, useTheme } from '@mui/material';
-import { Box, Typography } from '@mui/material';
-import { Suspense, lazy, ComponentType } from 'react';
+import { ThemeProvider, CssBaseline, useTheme, Box, Typography } from '@mui/material';
 
 import { NavBar } from 'features';
 import { AppSuspenseFallback, ErrorBoundary, GlobalNotifications } from 'components';
@@ -25,7 +24,7 @@ const AboutPage = lazy(() => import('pages').then(module => ({ default: module.A
 
 interface RouteConfig {
     path: string;
-    element: ComponentType<any>;
+    element: ComponentType<{}>;
     protected?: boolean;
 }
 
@@ -36,25 +35,62 @@ const routes: RouteConfig[] = [
     { path: '/sourcedoc', element: SourceDocPage, protected: true },
     { path: '/sourcedoc/:sourceDocId', element: SourceDocDetailPage, protected: true },
     { path: '/metatext', element: MetaTextPage, protected: true },
-    { path: '/metaText/:metaTextId', element: MetaTextDetailPage, protected: true },
-    { path: '/metaText/:metaTextId/review', element: MetaTextReviewPage, protected: true },
+    { path: '/metatext/:metatextId', element: MetaTextDetailPage, protected: true },
+    { path: '/metatext/:metatextId/review', element: MetaTextReviewPage, protected: true },
     { path: '/experiments', element: ExperimentsPage, protected: false },
     { path: '/about', element: AboutPage, protected: false },
 ];
 
-const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-    const { user } = useAuthStore();
+interface ProtectedRouteProps {
+    children: JSX.Element;
+}
+
+const ProtectedRoute = ({ children }: ProtectedRouteProps): JSX.Element => {
+    const { user, loading } = useAuthStore();
+
+    // Show loading state while checking authentication
+    if (loading) {
+        return <AppSuspenseFallback />;
+    }
+
     if (!user) {
         return <Navigate to="/login" replace />;
     }
+
     return children;
 };
 
+// Static 404 component to prevent recreation on each render
+const NotFoundElement = (
+    <Box>
+        <Typography variant="h4" color="text.secondary">
+            Page not found
+        </Typography>
+    </Box>
+);
+
 function App() {
     const { mode } = useThemeContext();
+    const currentTheme = mode === 'light' ? lightTheme : darkTheme;
+
+    return (
+        <>
+            {/* <LandscapeRequiredOverlay /> */}
+            <ThemeProvider theme={currentTheme}>
+                {/* CssBaseline provides consistent CSS reset and applies theme background */}
+                <CssBaseline />
+                <ErrorBoundary>
+                    <AppContent />
+                </ErrorBoundary>
+            </ThemeProvider>
+        </>
+    );
+}
+
+// Separate component that uses the theme after it's provided
+const AppContent = () => {
     const theme = useTheme();
     const styles = getAppStyles(theme);
-    const currentTheme = mode === 'light' ? lightTheme : darkTheme;
 
     const renderRoute = (route: RouteConfig) => {
         const Component = route.element;
@@ -75,35 +111,18 @@ function App() {
         );
     };
 
-    const NotFoundElement = (
-        <Box>
-            <Typography variant="h4" color="text.secondary">
-                Page not found
-            </Typography>
+    return (
+        <Box sx={styles.appContainer}>
+            <NavBar />
+            <Routes>
+                {routes.map(renderRoute)}
+                {/* 404 Route */}
+                <Route path="*" element={NotFoundElement} />
+            </Routes>
+            {/* Global components */}
+            <GlobalNotifications />
         </Box>
     );
-
-    return (
-        <>
-            {/* <LandscapeRequiredOverlay /> */}
-            <ThemeProvider theme={currentTheme}>
-                {/* CssBaseline provides consistent CSS reset and applies theme background */}
-                <CssBaseline />
-                <ErrorBoundary>
-                    <Box sx={styles.appContainer}>
-                        <NavBar />
-                        <Routes>
-                            {routes.map(renderRoute)}
-                            {/* 404 Route */}
-                            <Route path="*" element={NotFoundElement} />
-                        </Routes>
-                        {/* Global components */}
-                        <GlobalNotifications />
-                    </Box>
-                </ErrorBoundary>
-            </ThemeProvider>
-        </>
-    );
-}
+};
 
 export default App;
