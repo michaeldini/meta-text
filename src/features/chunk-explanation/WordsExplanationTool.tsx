@@ -17,7 +17,7 @@ import type { ExplanationToolProps } from 'features/chunk-shared/types';
 
 const DRAWER_WIDTH = 500; // Width of the explanation drawer on desktop (px)
 const DRAWER_Z_INDEX = 1300; // Z-index to ensure drawer appears above other content
-// const SPINNER_SIZE = 20; // Size of the loading spinner icon (px)
+
 
 const stripPunctuation = (text: string): string => {
     return text.replace(/[^\u0000-\u007F\w\s]/g, '').trim();

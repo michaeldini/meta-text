@@ -36,7 +36,7 @@ export function LoadingSpinner({
 }: LoadingSpinnerProps): ReactElement {
     const combinedStyles: SxProps<Theme> = [
         defaultStyles,
-        // { minHeight },
+        { minHeight: '40px' },
         ...(Array.isArray(sx) ? sx : [sx]),
     ];
 
