@@ -194,3 +194,8 @@ class ExplainRequest(BaseModel):
     context: str = Field(..., description="Context for the explanation")
     chunkId: Optional[int] = Field(None, description="Chunk ID for chunk explanation")
     metaTextId: Optional[int] = Field(None, description="MetaText ID for explanation")
+
+# Generic error response model
+class DeleteResponse(BaseModel):
+    message: str
+    deleted_id: int

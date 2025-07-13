@@ -2,7 +2,7 @@
 from sqlmodel import select, Session
 from loguru import logger
 
-from backend.models import SourceDocument, MetaText
+from backend.models import SourceDocument, MetaText, DeleteResponse
 from backend.exceptions.source_document_exceptions import (
     SourceDocumentNotFoundError,
     SourceDocumentTitleExistsError,
@@ -69,8 +69,8 @@ class SourceDocumentService:
         docs = list(session.exec(select(SourceDocument)).all())
         logger.info(f"Found {len(docs)} source documents")
         return docs
-    
-    def delete_source_document(self, doc_id: int, session: Session) -> dict:
+
+    def delete_source_document(self, doc_id: int, session: Session) -> DeleteResponse:
         """Delete a source document if no related MetaText records exist."""
         logger.info(f"Attempting to delete source document with id: {doc_id}")
         
@@ -92,7 +92,10 @@ class SourceDocumentService:
         session.commit()
         
         logger.info(f"Source document deleted successfully: id={doc_id}, title='{title}'")
-        return {"success": True, "id": doc_id, "title": title}
+        return DeleteResponse(
+            message="Source document deleted successfully.",
+            deleted_id=doc_id
+        )
 
     def update_source_document(
         self, 
