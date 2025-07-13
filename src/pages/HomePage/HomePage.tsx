@@ -5,7 +5,6 @@
 
 
 import { Box, Slide, useTheme } from '@mui/material';
-import type { Theme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
 import { useEffect } from 'react';
 
@@ -18,26 +17,30 @@ import NavigationButtons from './components/NavigationButtons';
 import { FADE_IN_DURATION } from 'constants';
 
 function HomePage(): ReactElement {
+    // Get store state and actions
+    const {
+        fetchSourceDocs,
+        fetchMetaTexts,
+        sourceDocsLoading,
+        metaTextsLoading,
+        sourceDocsError,
+        metaTextsError
+    } = useDocumentsStore();
 
     // Prefetch data for both SourceDoc and MetaText pages in the background
     // This improves perceived performance when users navigate to those pages
-    const { fetchSourceDocs, fetchMetaTexts } = useDocumentsStore();
-
     useEffect(() => {
-        // Prefetch data without blocking the UI or showing loading states
         // Only fetch if not already loading to avoid duplicate requests
-        const { sourceDocsLoading, metaTextsLoading } = useDocumentsStore.getState();
-
-        if (!sourceDocsLoading) {
+        if (!sourceDocsLoading && !sourceDocsError) {
             fetchSourceDocs();
         }
-        if (!metaTextsLoading) {
+        if (!metaTextsLoading && !metaTextsError) {
             fetchMetaTexts();
         }
-    }, [fetchSourceDocs, fetchMetaTexts]);
+    }, [fetchSourceDocs, fetchMetaTexts, sourceDocsLoading, metaTextsLoading, sourceDocsError, metaTextsError]);
 
-    // Set up the theme and styles for the HomePage component
-    const theme: Theme = useTheme();
+    // Set up styles for the HomePage component
+    const theme = useTheme();
     const styles = getAppStyles(theme);
 
     return (
