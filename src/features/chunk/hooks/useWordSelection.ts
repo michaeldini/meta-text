@@ -68,6 +68,16 @@ export function useWordSelection(chunkIdx: number) {
         setDialogAnchor(null);
     }, []);
 
+    // Handle touch move for mobile word selection
+    const handleTouchMove = useCallback((e: React.TouchEvent<HTMLElement>) => {
+        const touch = e.touches[0];
+        const el = document.elementFromPoint(touch.clientX, touch.clientY);
+        if (el && (el as HTMLElement).dataset && (el as HTMLElement).dataset.wordIdx) {
+            const idx = parseInt((el as HTMLElement).dataset.wordIdx!.split('-')[1], 10);
+            if (!isNaN(idx)) handleWordEnter(idx, e);
+        }
+    }, [handleWordEnter]);
+
     return {
         selectionStartIdx,
         selectionEndIdx,
@@ -82,5 +92,6 @@ export function useWordSelection(chunkIdx: number) {
         handleWordEnter,
         handleWordUp,
         handleToolbarClose,
+        handleTouchMove,
     };
 }
