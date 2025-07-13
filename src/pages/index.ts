@@ -2,7 +2,7 @@
 // Home page
 export { default as HomePage } from './HomePage/HomePage';
 
-export * from './temp_Metatext';
+export * from './Metatext';
 export * from './SourceDocument';
 
 // Static/informational pages
