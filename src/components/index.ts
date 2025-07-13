@@ -17,7 +17,7 @@ export { AppAlert } from './AppAlert';
 
 export { default as SourceDocUploadForm } from '../pages/SourceDocument/components/SourceDocUploadForm';
 export { default as DocumentManagementLayout } from './DocumentManagementLayout';
-export { default as MetatextCreateForm } from '../pages/Metatext/components/MetatextCreateForm';
+// export { default as MetatextCreateForm } from '../pages/Metatext/components/MetaTextCreateForm';
 
 export { LoadingSpinner } from './LoadingSpinner';
 export type { LoadingSpinnerProps } from './LoadingSpinner';
