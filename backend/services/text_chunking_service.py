@@ -3,14 +3,16 @@ from sqlmodel import Session
 from loguru import logger
 
 from backend.models import Chunk
-from backend.config import DEFAULT_CHUNK_SIZE
+from backend.config import BackendConfig as CONFIG
+
+
 
 
 class TextChunkingService:
     """Service for handling text chunking operations."""
     
     @staticmethod
-    def split_text_into_chunks(text: str, chunk_size: int = DEFAULT_CHUNK_SIZE) -> list[str]:
+    def split_text_into_chunks(text: str, chunk_size: int = CONFIG.DEFAULT_CHUNK_SIZE) -> list[str]:
         """Split text into a list of chunk_size-word strings."""
         words = text.split()
         return [' '.join(words[i:i+chunk_size]) for i in range(0, len(words), chunk_size)]
@@ -20,7 +22,7 @@ class TextChunkingService:
         text: str, 
         meta_text_id: int, 
         session: Session, 
-        chunk_size: int = DEFAULT_CHUNK_SIZE
+        chunk_size: int = CONFIG.DEFAULT_CHUNK_SIZE
     ) -> list[Chunk]:
         """Create and persist chunks for a meta-text."""
         chunk_texts = TextChunkingService.split_text_into_chunks(text, chunk_size)

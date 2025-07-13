@@ -10,7 +10,7 @@ from backend.exceptions.meta_text_exceptions import (
     MetaTextCreationError
 )
 from backend.services.text_chunking_service import TextChunkingService
-from backend.config import DEFAULT_CHUNK_SIZE
+from backend.config import BackendConfig as CONFIG
 
 
 class MetaTextService:
@@ -31,8 +31,8 @@ class MetaTextService:
         self, 
         title: str, 
         source_doc_id: int, 
-        session: Session,
-        chunk_size: int = DEFAULT_CHUNK_SIZE
+        session: Session,   
+        chunk_size: int = CONFIG.DEFAULT_CHUNK_SIZE
     ) -> MetaText:
         """Create a new meta-text with associated chunks from a source document."""
         logger.info(f"Creating meta-text with title: '{title}' from source_doc_id: {source_doc_id}")

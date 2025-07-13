@@ -14,15 +14,21 @@ from backend.exceptions.meta_text_exceptions import (
 
 router = APIRouter()
 
-# Initialize service
-meta_text_service = MetaTextService()
+# Dependency injection function
+def get_meta_text_service() -> MetaTextService:
+    """Dependency injection function for MetaTextService."""
+    return MetaTextService()
 
 
 @router.post("/meta-text", response_model=MetaTextSummary, name="create_meta_text")
-async def create_meta_text(req: CreateMetaTextRequest, session: Session = Depends(get_session)):
+def create_meta_text(
+    req: CreateMetaTextRequest, 
+    session: Session = Depends(get_session),
+    service: MetaTextService = Depends(get_meta_text_service)
+):
     """Create a new meta-text from a source document."""
     try:
-        meta_text = meta_text_service.create_meta_text_with_chunks(
+        meta_text = service.create_meta_text_with_chunks(
             title=req.title,
             source_doc_id=req.sourceDocId,
             session=session
@@ -46,16 +52,23 @@ async def create_meta_text(req: CreateMetaTextRequest, session: Session = Depend
 
 
 @router.get("/meta-text", response_model=list[MetaTextSummary], name="list_meta_texts")
-def list_meta_texts(session: Session = Depends(get_session)):
+def list_meta_texts(
+    session: Session = Depends(get_session),
+    service: MetaTextService = Depends(get_meta_text_service)
+):
     """List all meta-texts."""
-    return meta_text_service.list_all_meta_texts(session)
+    return service.list_all_meta_texts(session)
 
 
 @router.get("/meta-text/{meta_text_id}", response_model=MetaTextDetail, name="get_meta_text")
-def get_meta_text(meta_text_id: int, session: Session = Depends(get_session)):
+def get_meta_text(
+    meta_text_id: int, 
+    session: Session = Depends(get_session),
+    service: MetaTextService = Depends(get_meta_text_service)
+):
     """Get a specific meta-text by ID."""
     try:
-        return meta_text_service.get_meta_text_by_id(meta_text_id, session)
+        return service.get_meta_text_by_id(meta_text_id, session)
     except MetaTextNotFoundError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 
@@ -64,10 +77,14 @@ def get_meta_text(meta_text_id: int, session: Session = Depends(get_session)):
 
 
 @router.delete("/meta-text/{meta_text_id}", name="delete_meta_text")
-def delete_meta_text(meta_text_id: int, session: Session = Depends(get_session)) -> dict:
+def delete_meta_text(
+    meta_text_id: int, 
+    session: Session = Depends(get_session),
+    service: MetaTextService = Depends(get_meta_text_service)
+) -> dict:
     """Delete a meta-text by ID."""
     try:
-        return meta_text_service.delete_meta_text(meta_text_id, session)
+        return service.delete_meta_text(meta_text_id, session)
     except MetaTextNotFoundError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 
