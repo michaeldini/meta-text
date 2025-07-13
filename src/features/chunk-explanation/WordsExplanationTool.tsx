@@ -10,14 +10,14 @@ import {
 } from '@mui/material';
 import { QuestionMarkIcon } from 'icons';
 import { useExplanation } from './hooks/useExplanation';
-import { ChunkType } from 'types';
-import { ExplanationResponse } from 'services';
+// import { ChunkType } from 'types';
+// import { ExplanationResponse } from 'services';
 import { LoadingSpinner, AppAlert } from 'components';
 import type { ExplanationToolProps } from 'features/chunk-shared/types';
 
 const DRAWER_WIDTH = 500; // Width of the explanation drawer on desktop (px)
 const DRAWER_Z_INDEX = 1300; // Z-index to ensure drawer appears above other content
-const SPINNER_SIZE = 20; // Size of the loading spinner icon (px)
+// const SPINNER_SIZE = 20; // Size of the loading spinner icon (px)
 
 const stripPunctuation = (text: string): string => {
     return text.replace(/[^\u0000-\u007F\w\s]/g, '').trim();
@@ -83,7 +83,7 @@ const WordsExplanationTool: React.FC<ExplanationToolProps> = React.memo(({
                     aria-label={`Define ${cleanedWord}`}
                 >
                     {loading ? (
-                        <LoadingSpinner size={SPINNER_SIZE} />
+                        <LoadingSpinner />
                     ) : (
                         <QuestionMarkIcon />
                     )}
