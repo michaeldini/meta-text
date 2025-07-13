@@ -72,6 +72,7 @@ const ChunkWords = memo(function ChunkWords({
             onMouseLeave={() => handleWordUp()}
         >
             {wordsElements}
+
             <Box component="span" sx={styles.chunkUndoIconButton}>
                 <MergeChunksTool
                     chunkIndices={[chunkIdx, chunkIdx + 1]}
