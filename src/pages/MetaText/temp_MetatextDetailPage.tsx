@@ -16,7 +16,7 @@ import { FADE_IN_DURATION } from 'constants';
 import { useValidatedIdParam } from 'utils/urlValidation';
 
 import { useMetatextDetailData } from './hooks/useMetatextDetailData';
-import { getMetatextDetailStyles } from './Metatext.styles';
+import { getMetatextDetailStyles } from './temp_Metatext.styles';
 import {
     GenerateSourceDocInfoButton,
     StyleControls,
