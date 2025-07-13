@@ -24,7 +24,7 @@ interface UseMetaTextReviewDataReturn {
     /** Array of words for flashcard generation */
     wordlist: FlashcardItem[];
     /** Array of chunk summaries and notes */
-    chunkSummariesNotes: ChunkType[];
+    chunks: ChunkType[];
     /** Array of phrase explanations */
     phraseExplanations: PhraseExplanation[];
     /** Loading state for data fetching operations */
@@ -46,7 +46,7 @@ interface UseMetaTextReviewDataReturn {
  * @example
  * ```tsx
  * function MyComponent() {
- *   const { wordlist, chunkSummariesNotes, phraseExplanations, loading, error } = 
+ *   const { wordlist, chunks, phraseExplanations, loading, error } = 
  *     useMetaTextReviewData(123);
  *   
  *   if (loading) return <div>Loading...</div>;
@@ -83,7 +83,7 @@ export function useMetaTextReviewData(metatextId?: number): UseMetaTextReviewDat
     const { metaText, loading: detailLoading, errors: detailErrors } = useMetaTextDetailData(metatextId);
 
     // Extract chunks from metaText
-    const chunkSummariesNotes: ChunkType[] = metaText?.chunks || [];
+    const chunks: ChunkType[] = metaText?.chunks || [];
 
     // Combined loading state
     const loading = detailLoading || additionalLoading;
@@ -154,7 +154,7 @@ export function useMetaTextReviewData(metatextId?: number): UseMetaTextReviewDat
 
     return {
         wordlist,
-        chunkSummariesNotes,
+        chunks,
         phraseExplanations,
         loading,
         error

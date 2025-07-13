@@ -12,14 +12,14 @@ interface ReviewContentProps {
     phraseExplanations: PhraseExplanation[];
     // Array of words for flashcard generation
     flashcards: FlashcardItem[];
-    // Array of chunk summaries and notes
-    chunkSummariesNotes: ChunkType[];
+    // Array of chunk data for the review table
+    chunkReviewTable: ChunkType[];
 }
 
 export function ReviewContent({
     phraseExplanations,
     flashcards,
-    chunkSummariesNotes
+    chunkReviewTable
 }: ReviewContentProps): ReactElement {
     return (
         <>
@@ -41,7 +41,7 @@ export function ReviewContent({
                 title="ReviewTable"
                 testId="chunks-accordion"
             >
-                <ReviewTable chunks={chunkSummariesNotes} />
+                <ReviewTable chunks={chunkReviewTable} />
             </ReviewSection>
         </>
     );

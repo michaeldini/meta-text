@@ -23,9 +23,8 @@ function MetaTextReviewPage(): ReactElement {
     // React Router navigation function for programmatic navigation
     const navigate = useNavigate();
 
-
     // Custom hook for fetching all review data
-    const { wordlist, chunkSummariesNotes, phraseExplanations, loading, error } =
+    const { wordlist, chunks, phraseExplanations, loading, error } =
         useMetaTextReviewData(metatextId);
 
     const theme: Theme = useTheme();
@@ -55,7 +54,7 @@ function MetaTextReviewPage(): ReactElement {
             <ReviewContent
                 phraseExplanations={phraseExplanations}
                 flashcards={wordlist}
-                chunkSummariesNotes={chunkSummariesNotes}
+                chunkReviewTable={chunks}
             />
         </Box>
     );
