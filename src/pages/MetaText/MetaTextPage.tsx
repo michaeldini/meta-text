@@ -13,7 +13,7 @@ import {
 } from 'components';
 import { FADE_IN_DURATION } from 'constants';
 
-import MetatextCreateForm from './components/MetaTextCreateForm';
+import MetatextCreateForm from './components/MetatextCreateForm';
 
 function MetatextPage(): ReactElement {
 
