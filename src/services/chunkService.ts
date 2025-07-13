@@ -10,7 +10,7 @@
  * - Cache invalidation: Automatically clears related caches when chunks are modified
  * 
  * CORE OPERATIONS:
- * - Fetch chunks (with caching): Retrieves all chunks for a meta-text document
+ * - Fetch chunks (with caching): Retrieves all chunks for a metatext document
  * - Fetch individual chunk (with caching): Gets a specific chunk by ID
  * - Split chunks: Divides a chunk at a specified word index
  * - Combine chunks: Merges two adjacent chunks into one
@@ -34,7 +34,7 @@ import type { ChunkCompression, ChunkCompressionCreate, ChunkType } from 'types'
 async function _fetchChunks(metatextId: number): Promise<ChunkType[]> {
     // TODO: Refactor to use meta_text service instead of chunk service
     // This should eventually be moved to metatextService.ts and get chunks from MetatextDetail
-    const metatext = await apiGet<{ chunks?: ChunkType[] }>(`/api/meta-text/${metatextId}`);
+    const metatext = await apiGet<{ chunks?: ChunkType[] }>(`/api/metatext/${metatextId}`);
     return Array.isArray(metatext.chunks) ? metatext.chunks : [];
 }
 

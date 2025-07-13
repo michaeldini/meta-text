@@ -1,5 +1,5 @@
 def main():
-    print("Hello from meta-text!")
+    print("Hello from metatext!")
 
 
 if __name__ == "__main__":

@@ -18,13 +18,13 @@ class TextChunkingService:
         return [' '.join(words[i:i+chunk_size]) for i in range(0, len(words), chunk_size)]
     
     @staticmethod
-    def create_chunks_for_meta_text(
+    def create_chunks_for_metatext(
         text: str, 
         meta_text_id: int, 
         session: Session, 
         chunk_size: int = CONFIG.DEFAULT_CHUNK_SIZE
     ) -> list[Chunk]:
-        """Create and persist chunks for a meta-text."""
+        """Create and persist chunks for a metatext."""
         chunk_texts = TextChunkingService.split_text_into_chunks(text, chunk_size)
         logger.info(f"Creating {len(chunk_texts)} chunks of size {chunk_size} for meta_text_id={meta_text_id}")
         

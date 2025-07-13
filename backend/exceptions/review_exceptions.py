@@ -7,7 +7,7 @@ class ReviewServiceError(Exception):
 
 
 class WordlistNotFoundError(ReviewServiceError):
-    """Raised when no words are found in the wordlist for a meta-text."""
+    """Raised when no words are found in the wordlist for a metatext."""
     
     def __init__(self, meta_text_id: int):
         self.meta_text_id = meta_text_id
@@ -15,7 +15,7 @@ class WordlistNotFoundError(ReviewServiceError):
 
 
 class ChunksNotFoundError(ReviewServiceError):
-    """Raised when no chunks are found for a meta-text."""
+    """Raised when no chunks are found for a metatext."""
     
     def __init__(self, meta_text_id: int):
         self.meta_text_id = meta_text_id
@@ -23,7 +23,7 @@ class ChunksNotFoundError(ReviewServiceError):
 
 
 class MetaTextNotFoundError(ReviewServiceError):
-    """Raised when a meta-text is not found during review operations."""
+    """Raised when a metatext is not found during review operations."""
     
     def __init__(self, meta_text_id: int):
         self.meta_text_id = meta_text_id

@@ -2,7 +2,7 @@ import backend.env_setup  # noqa: F401
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.db import init_db
-from backend.api import ai, review, source_documents, meta_text, chunks, auth, logs, chunk_compressions, explain
+from backend.api import ai, metatext, review, source_documents, chunks, auth, logs, chunk_compressions, explain
 from fastapi.staticfiles import StaticFiles
 import os
 from loguru import logger
@@ -30,7 +30,7 @@ app.add_middleware(
 init_db()
 
 app.include_router(source_documents.router, prefix="/api", tags=["source_documents"])
-app.include_router(meta_text.router, prefix="/api", tags=["meta_text"])
+app.include_router(metatext.router, prefix="/api", tags=["meta_text"])
 app.include_router(chunks.router, prefix="/api", tags=["chunks"])
 app.include_router(ai.router, prefix="/api", tags=["ai"])
 app.include_router(auth.router, prefix="/api", tags=["auth"])

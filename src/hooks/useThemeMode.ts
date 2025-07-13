@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 // Storage key for theme preference
-const THEME_STORAGE_KEY = 'meta-text-theme-mode';
+const THEME_STORAGE_KEY = 'metatext-theme-mode';
 
 // Save theme preference to localStorage
 export const saveThemeMode = (mode: 'light' | 'dark') => {

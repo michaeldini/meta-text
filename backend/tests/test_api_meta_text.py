@@ -5,14 +5,14 @@ from fastapi.testclient import TestClient
 from fastapi import FastAPI
 from sqlmodel import Session, SQLModel, create_engine
 
-from backend.api.meta_text import router, get_meta_text_service
+from backend.api.metatext import router, get_metatext_service
 from backend.db import get_session
 from backend.models import MetaTextSummary, MetaTextDetail, ChunkRead
-from backend.exceptions.meta_text_exceptions import (
+from backend.exceptions.metatext_exceptions import (
     SourceDocumentNotFoundError,
-    MetaTextNotFoundError,
-    MetaTextTitleExistsError,
-    MetaTextCreationError
+    MetatextNotFoundError,
+    MetatextTitleExistsError,
+    MetatextCreationError
 )
 
 
@@ -55,23 +55,23 @@ def override_dependencies(app):
     cleanup()
 
 
-class TestMetaTextEndpoints:
-    """Test cases for MetaText API endpoints."""
+class TestMetatextEndpoints:
+    """Test cases for Metatext API endpoints."""
 
-    def test_create_meta_text_success(self, app, client, test_session, override_dependencies):
-        """Test successful meta-text creation."""
+    def test_create_metatext_success(self, app, client, test_session, override_dependencies):
+        """Test successful metatext creation."""
         # Setup mocks
         mock_service = unittest.mock.Mock()
-        mock_meta_text = MetaTextSummary(
+        mock_metatext = MetaTextSummary(
             id=1,
             title="Test Meta Text",
             source_document_id=1
         )
-        mock_service.create_meta_text_with_chunks.return_value = mock_meta_text
+        mock_service.create_metatext_with_chunks.return_value = mock_metatext
         
         # Override dependencies
         app.dependency_overrides[get_session] = lambda: test_session
-        app.dependency_overrides[get_meta_text_service] = lambda: mock_service
+        app.dependency_overrides[get_metatext_service] = lambda: mock_service
 
         request_data = {
             "title": "Test Meta Text",
@@ -79,7 +79,7 @@ class TestMetaTextEndpoints:
         }
 
         # Execute
-        response = client.post("/api/meta-text", json=request_data)
+        response = client.post("/api/metatext", json=request_data)
 
         # Assert
         assert response.status_code == 200
@@ -87,21 +87,21 @@ class TestMetaTextEndpoints:
         assert result["id"] == 1
         assert result["title"] == "Test Meta Text"
         assert result["source_document_id"] == 1
-        mock_service.create_meta_text_with_chunks.assert_called_once_with(
+        mock_service.create_metatext_with_chunks.assert_called_once_with(
             title="Test Meta Text",
             source_doc_id=1,
             session=unittest.mock.ANY
         )
 
-    def test_create_meta_text_source_doc_not_found(self, app, client, test_session, override_dependencies):
-        """Test meta-text creation when source document not found."""
+    def test_create_metatext_source_doc_not_found(self, app, client, test_session, override_dependencies):
+        """Test metatext creation when source document not found."""
         # Setup mocks
         mock_service = unittest.mock.Mock()
-        mock_service.create_meta_text_with_chunks.side_effect = SourceDocumentNotFoundError(999)
+        mock_service.create_metatext_with_chunks.side_effect = SourceDocumentNotFoundError(999)
         
         # Override dependencies
         app.dependency_overrides[get_session] = lambda: test_session
-        app.dependency_overrides[get_meta_text_service] = lambda: mock_service
+        app.dependency_overrides[get_metatext_service] = lambda: mock_service
 
         request_data = {
             "title": "Test Meta Text",
@@ -109,21 +109,21 @@ class TestMetaTextEndpoints:
         }
 
         # Execute
-        response = client.post("/api/meta-text", json=request_data)
+        response = client.post("/api/metatext", json=request_data)
 
         # Assert
         assert response.status_code == 404
         assert response.json()["detail"] == "Source document not found."
 
-    def test_create_meta_text_title_exists(self, app, client, test_session, override_dependencies):
-        """Test meta-text creation when title already exists."""
+    def test_create_metatext_title_exists(self, app, client, test_session, override_dependencies):
+        """Test metatext creation when title already exists."""
         # Setup mocks
         mock_service = unittest.mock.Mock()
-        mock_service.create_meta_text_with_chunks.side_effect = MetaTextTitleExistsError("Test Meta Text")
+        mock_service.create_metatext_with_chunks.side_effect = MetatextTitleExistsError("Test Meta Text")
         
         # Override dependencies
         app.dependency_overrides[get_session] = lambda: test_session
-        app.dependency_overrides[get_meta_text_service] = lambda: mock_service
+        app.dependency_overrides[get_metatext_service] = lambda: mock_service
 
         request_data = {
             "title": "Test Meta Text",
@@ -131,21 +131,21 @@ class TestMetaTextEndpoints:
         }
 
         # Execute
-        response = client.post("/api/meta-text", json=request_data)
+        response = client.post("/api/metatext", json=request_data)
 
         # Assert
         assert response.status_code == 409
         assert response.json()["detail"] == "Meta-text title already exists."
 
-    def test_create_meta_text_creation_error(self, app, client, test_session, override_dependencies):
-        """Test meta-text creation with internal error."""
+    def test_create_metatext_creation_error(self, app, client, test_session, override_dependencies):
+        """Test metatext creation with internal error."""
         # Setup mocks
         mock_service = unittest.mock.Mock()
-        mock_service.create_meta_text_with_chunks.side_effect = MetaTextCreationError("Database error")
+        mock_service.create_metatext_with_chunks.side_effect = MetatextCreationError("Database error")
         
         # Override dependencies
         app.dependency_overrides[get_session] = lambda: test_session
-        app.dependency_overrides[get_meta_text_service] = lambda: mock_service
+        app.dependency_overrides[get_metatext_service] = lambda: mock_service
 
         request_data = {
             "title": "Test Meta Text",
@@ -153,29 +153,29 @@ class TestMetaTextEndpoints:
         }
 
         # Execute
-        response = client.post("/api/meta-text", json=request_data)
+        response = client.post("/api/metatext", json=request_data)
 
         # Assert
         assert response.status_code == 500
         assert "Database error" in response.json()["detail"]
 
-    def test_list_meta_texts_success(self, app, client, test_session, override_dependencies):
-        """Test successful meta-texts listing."""
+    def test_list_metatexts_success(self, app, client, test_session, override_dependencies):
+        """Test successful metatexts listing."""
         # Setup mocks
         mock_service = unittest.mock.Mock()
-        mock_meta_texts = [
+        mock_metatexts = [
             MetaTextSummary(id=1, title="First Meta Text", source_document_id=1),
             MetaTextSummary(id=2, title="Second Meta Text", source_document_id=1),
             MetaTextSummary(id=3, title="Third Meta Text", source_document_id=2)
         ]
-        mock_service.list_all_meta_texts.return_value = mock_meta_texts
+        mock_service.list_all_metatexts.return_value = mock_metatexts
         
         # Override dependencies
         app.dependency_overrides[get_session] = lambda: test_session
-        app.dependency_overrides[get_meta_text_service] = lambda: mock_service
+        app.dependency_overrides[get_metatext_service] = lambda: mock_service
 
         # Execute
-        response = client.get("/api/meta-text")
+        response = client.get("/api/metatext")
 
         # Assert
         assert response.status_code == 200
@@ -184,31 +184,31 @@ class TestMetaTextEndpoints:
         assert result[0]["title"] == "First Meta Text"
         assert result[1]["title"] == "Second Meta Text"
         assert result[2]["title"] == "Third Meta Text"
-        mock_service.list_all_meta_texts.assert_called_once_with(unittest.mock.ANY)
+        mock_service.list_all_metatexts.assert_called_once_with(unittest.mock.ANY)
 
-    def test_list_meta_texts_empty(self, app, client, test_session, override_dependencies):
-        """Test meta-texts listing when no meta-texts exist."""
+    def test_list_metatexts_empty(self, app, client, test_session, override_dependencies):
+        """Test metatexts listing when no metatexts exist."""
         # Setup mocks
         mock_service = unittest.mock.Mock()
-        mock_service.list_all_meta_texts.return_value = []
+        mock_service.list_all_metatexts.return_value = []
         
         # Override dependencies
         app.dependency_overrides[get_session] = lambda: test_session
-        app.dependency_overrides[get_meta_text_service] = lambda: mock_service
+        app.dependency_overrides[get_metatext_service] = lambda: mock_service
 
         # Execute
-        response = client.get("/api/meta-text")
+        response = client.get("/api/metatext")
 
         # Assert
         assert response.status_code == 200
         result = response.json()
         assert len(result) == 0
 
-    def test_get_meta_text_success(self, app, client, test_session, override_dependencies):
-        """Test successful meta-text retrieval."""
+    def test_get_metatext_success(self, app, client, test_session, override_dependencies):
+        """Test successful metatext retrieval."""
         # Setup mocks
         mock_service = unittest.mock.Mock()
-        mock_meta_text = MetaTextDetail(
+        mock_metatext = MetaTextDetail(
             id=1,
             title="Test Meta Text",
             source_document_id=1,
@@ -218,113 +218,113 @@ class TestMetaTextEndpoints:
                 ChunkRead(id=2, text="Chunk 2 text", meta_text_id=1)
             ]
         )
-        mock_service.get_meta_text_by_id.return_value = mock_meta_text
+        mock_service.get_metatext_by_id.return_value = mock_metatext
         
         # Override dependencies
         app.dependency_overrides[get_session] = lambda: test_session
-        app.dependency_overrides[get_meta_text_service] = lambda: mock_service
+        app.dependency_overrides[get_metatext_service] = lambda: mock_service
 
         # Execute
-        response = client.get("/api/meta-text/1")
+        response = client.get("/api/metatext/1")
 
         # Assert
         assert response.status_code == 200
         result = response.json()
         assert result["id"] == 1
         assert result["title"] == "Test Meta Text"
-        mock_service.get_meta_text_by_id.assert_called_once_with(1, unittest.mock.ANY)
+        mock_service.get_metatext_by_id.assert_called_once_with(1, unittest.mock.ANY)
 
-    def test_get_meta_text_not_found(self, app, client, test_session, override_dependencies):
-        """Test meta-text retrieval when not found."""
+    def test_get_metatext_not_found(self, app, client, test_session, override_dependencies):
+        """Test metatext retrieval when not found."""
         # Setup mocks
         mock_service = unittest.mock.Mock()
-        mock_service.get_meta_text_by_id.side_effect = MetaTextNotFoundError(999)
+        mock_service.get_metatext_by_id.side_effect = MetatextNotFoundError(999)
         
         # Override dependencies
         app.dependency_overrides[get_session] = lambda: test_session
-        app.dependency_overrides[get_meta_text_service] = lambda: mock_service
+        app.dependency_overrides[get_metatext_service] = lambda: mock_service
 
         # Execute
-        response = client.get("/api/meta-text/999")
+        response = client.get("/api/metatext/999")
 
         # Assert
         assert response.status_code == 404
         assert response.json()["detail"] == "Meta-text not found."
 
-    def test_delete_meta_text_success(self, app, client, test_session, override_dependencies):
-        """Test successful meta-text deletion."""
+    def test_delete_metatext_success(self, app, client, test_session, override_dependencies):
+        """Test successful metatext deletion."""
         # Setup mocks
         mock_service = unittest.mock.Mock()
-        mock_service.delete_meta_text.return_value = {"message": "Meta-text deleted successfully"}
+        mock_service.delete_metatext.return_value = {"message": "Meta-text deleted successfully"}
         
         # Override dependencies
         app.dependency_overrides[get_session] = lambda: test_session
-        app.dependency_overrides[get_meta_text_service] = lambda: mock_service
+        app.dependency_overrides[get_metatext_service] = lambda: mock_service
 
         # Execute
-        response = client.delete("/api/meta-text/1")
+        response = client.delete("/api/metatext/1")
 
         # Assert
         assert response.status_code == 200
         result = response.json()
         assert "message" in result
-        mock_service.delete_meta_text.assert_called_once_with(1, unittest.mock.ANY)
+        mock_service.delete_metatext.assert_called_once_with(1, unittest.mock.ANY)
 
-    def test_delete_meta_text_not_found(self, app, client, test_session, override_dependencies):
-        """Test meta-text deletion when not found."""
+    def test_delete_metatext_not_found(self, app, client, test_session, override_dependencies):
+        """Test metatext deletion when not found."""
         # Setup mocks
         mock_service = unittest.mock.Mock()
-        mock_service.delete_meta_text.side_effect = MetaTextNotFoundError(999)
+        mock_service.delete_metatext.side_effect = MetatextNotFoundError(999)
         
         # Override dependencies
         app.dependency_overrides[get_session] = lambda: test_session
-        app.dependency_overrides[get_meta_text_service] = lambda: mock_service
+        app.dependency_overrides[get_metatext_service] = lambda: mock_service
 
         # Execute
-        response = client.delete("/api/meta-text/999")
+        response = client.delete("/api/metatext/999")
 
         # Assert
         assert response.status_code == 404
         assert response.json()["detail"] == "Meta-text not found."
 
-    def test_create_meta_text_validation_missing_title(self, client):
-        """Test meta-text creation with missing title."""
+    def test_create_metatext_validation_missing_title(self, client):
+        """Test metatext creation with missing title."""
         request_data = {
             "sourceDocId": 1
         }
 
         # Execute
-        response = client.post("/api/meta-text", json=request_data)
+        response = client.post("/api/metatext", json=request_data)
 
         # Assert
         assert response.status_code == 422  # Validation error
 
-    def test_create_meta_text_validation_missing_source_doc_id(self, client):
-        """Test meta-text creation with missing source document ID."""
+    def test_create_metatext_validation_missing_source_doc_id(self, client):
+        """Test metatext creation with missing source document ID."""
         request_data = {
             "title": "Test Meta Text"
         }
 
         # Execute
-        response = client.post("/api/meta-text", json=request_data)
+        response = client.post("/api/metatext", json=request_data)
 
         # Assert
         assert response.status_code == 422  # Validation error
 
-    def test_create_meta_text_validation_empty_title(self, app, client, test_session, override_dependencies):
-        """Test meta-text creation with empty title."""
+    def test_create_metatext_validation_empty_title(self, app, client, test_session, override_dependencies):
+        """Test metatext creation with empty title."""
         # Setup mocks
         mock_service = unittest.mock.Mock()
-        mock_meta_text = MetaTextSummary(
+        mock_metatext = MetaTextSummary(
             id=1,
             title="",
             source_document_id=1
         )
-        mock_service.create_meta_text_with_chunks.return_value = mock_meta_text
+        mock_service.create_metatext_with_chunks.return_value = mock_metatext
         
         # Override dependencies
         app.dependency_overrides[get_session] = lambda: test_session
-        app.dependency_overrides[get_meta_text_service] = lambda: mock_service
+        app.dependency_overrides[get_metatext_service] = lambda: mock_service
 
         request_data = {
             "title": "",
@@ -332,36 +332,36 @@ class TestMetaTextEndpoints:
         }
 
         # Execute
-        response = client.post("/api/meta-text", json=request_data)
+        response = client.post("/api/metatext", json=request_data)
 
         # Assert
         assert response.status_code == 200  # Should be allowed - empty string validation handled by service
 
-    def test_create_meta_text_validation_invalid_source_doc_id(self, client):
-        """Test meta-text creation with invalid source document ID."""
+    def test_create_metatext_validation_invalid_source_doc_id(self, client):
+        """Test metatext creation with invalid source document ID."""
         request_data = {
             "title": "Test Meta Text",
             "sourceDocId": "invalid"
         }
 
         # Execute
-        response = client.post("/api/meta-text", json=request_data)
+        response = client.post("/api/metatext", json=request_data)
 
         # Assert
         assert response.status_code == 422  # Validation error
 
-    def test_get_meta_text_invalid_id(self, client):
-        """Test meta-text retrieval with invalid ID."""
+    def test_get_metatext_invalid_id(self, client):
+        """Test metatext retrieval with invalid ID."""
         # Execute
-        response = client.get("/api/meta-text/invalid")
+        response = client.get("/api/metatext/invalid")
 
         # Assert
         assert response.status_code == 422  # Validation error
 
-    def test_delete_meta_text_invalid_id(self, client):
-        """Test meta-text deletion with invalid ID."""
+    def test_delete_metatext_invalid_id(self, client):
+        """Test metatext deletion with invalid ID."""
         # Execute
-        response = client.delete("/api/meta-text/invalid")
+        response = client.delete("/api/metatext/invalid")
 
         # Assert
         assert response.status_code == 422  # Validation error

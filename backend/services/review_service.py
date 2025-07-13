@@ -14,17 +14,17 @@ class ReviewService:
     
     def get_wordlist_for_meta_text(self, meta_text_id: int, session: Session) -> list[WordDefinition]:
         """
-        Retrieve the wordlist for a specific meta-text, ordered by most recent first.
+        Retrieve the wordlist for a specific metatext, ordered by most recent first.
         
         Args:
-            meta_text_id: The ID of the meta-text
+            meta_text_id: The ID of the metatext
             session: Database session
             
         Returns:
             List of WordDefinition objects
             
         Raises:
-            WordlistNotFoundError: If no words are found for the meta-text
+            WordlistNotFoundError: If no words are found for the metatext
         """
         logger.info(f"Retrieving wordlist for meta_text_id={meta_text_id}")
         
@@ -43,17 +43,17 @@ class ReviewService:
     
     def get_chunk_summaries_and_notes(self, meta_text_id: int, session: Session) -> list[Chunk]:
         """
-        Retrieve chunks with summaries and notes for a specific meta-text, ordered by position.
+        Retrieve chunks with summaries and notes for a specific metatext, ordered by position.
         
         Args:
-            meta_text_id: The ID of the meta-text
+            meta_text_id: The ID of the metatext
             session: Database session
             
         Returns:
             List of Chunk objects with summaries and notes
             
         Raises:
-            ChunksNotFoundError: If no chunks are found for the meta-text
+            ChunksNotFoundError: If no chunks are found for the metatext
         """
         logger.info(f"Retrieving chunk summaries and notes for meta_text_id={meta_text_id}")
         
@@ -72,10 +72,10 @@ class ReviewService:
     
     def get_wordlist_summary(self, meta_text_id: int, session: Session) -> dict:
         """
-        Get a summary of the wordlist for a meta-text.
+        Get a summary of the wordlist for a metatext.
         
         Args:
-            meta_text_id: The ID of the meta-text
+            meta_text_id: The ID of the metatext
             session: Database session
             
         Returns:
@@ -108,10 +108,10 @@ class ReviewService:
     
     def get_chunks_summary(self, meta_text_id: int, session: Session) -> dict:
         """
-        Get a summary of chunks for a meta-text.
+        Get a summary of chunks for a metatext.
         
         Args:
-            meta_text_id: The ID of the meta-text
+            meta_text_id: The ID of the metatext
             session: Database session
             
         Returns:
@@ -159,10 +159,10 @@ class ReviewService:
     
     def get_phrase_explanations(self, meta_text_id: int, session: Session) -> list[PhraseExplanation]:
         """
-        Retrieve all phrase explanations for a specific meta-text.
+        Retrieve all phrase explanations for a specific metatext.
         
         Args:
-            meta_text_id: The ID of the meta-text
+            meta_text_id: The ID of the metatext
             session: Database session
             
         Returns:

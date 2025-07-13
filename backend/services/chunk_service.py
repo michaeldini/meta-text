@@ -177,12 +177,12 @@ class ChunkService:
         if not second:
             raise ChunkNotFoundError(second_chunk_id)
         
-        # Validate chunks are from same meta-text
+        # Validate chunks are from same metatext
         if first.meta_text_id != second.meta_text_id:
             raise ChunkCombineError(
                 first_chunk_id, 
                 second_chunk_id, 
-                "chunks belong to different meta-texts"
+                "chunks belong to different metatexts"
             )
         
         # Ensure correct order (first should have lower position)

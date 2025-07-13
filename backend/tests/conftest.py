@@ -61,7 +61,7 @@ def sample_source_document_data():
 
 @pytest.fixture
 def sample_meta_text_data():
-    """Sample meta-text data for testing."""
+    """Sample metatext data for testing."""
     return {
         "id": 1,
         "title": "Test Meta Text",

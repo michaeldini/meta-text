@@ -113,7 +113,7 @@ class TestReviewEndpoints:
 
         # Assert
         assert response.status_code == 404
-        assert response.json()["detail"] == "Wordlist not found for the specified meta-text."
+        assert response.json()["detail"] == "Wordlist not found for the specified metatext."
 
     def test_get_chunk_summaries_notes_success(self, app, client, test_session, override_dependencies):
         """Test successful chunk summaries and notes retrieval."""
@@ -171,7 +171,7 @@ class TestReviewEndpoints:
 
         # Assert
         assert response.status_code == 404
-        assert response.json()["detail"] == "Chunks not found for the specified meta-text."
+        assert response.json()["detail"] == "Chunks not found for the specified metatext."
 
     def test_get_wordlist_summary_success(self, app, client, test_session, override_dependencies):
         """Test successful wordlist summary retrieval."""
@@ -381,7 +381,7 @@ class TestReviewEndpoints:
         assert len(result) == 100
 
     def test_endpoints_with_zero_metatext_id(self, app, client, test_session, override_dependencies):
-        """Test endpoints with zero meta-text ID."""
+        """Test endpoints with zero metatext ID."""
         # Setup mocks
         mock_service = unittest.mock.Mock()
         mock_service.get_wordlist_for_meta_text.side_effect = WordlistNotFoundError(0)
@@ -400,7 +400,7 @@ class TestReviewEndpoints:
         assert chunks_response.status_code == 404
 
     def test_endpoints_with_negative_metatext_id(self, app, client, test_session, override_dependencies):
-        """Test endpoints with negative meta-text ID."""
+        """Test endpoints with negative metatext ID."""
         # Setup mocks
         mock_service = unittest.mock.Mock()
         mock_service.get_wordlist_for_meta_text.side_effect = WordlistNotFoundError(-1)
@@ -416,7 +416,7 @@ class TestReviewEndpoints:
         assert response.status_code == 404
 
     def test_endpoints_with_invalid_metatext_id(self, client):
-        """Test endpoints with invalid meta-text ID."""
+        """Test endpoints with invalid metatext ID."""
         # Execute - Test with non-numeric ID
         response = client.get("/api/metatext/invalid/wordlist")
 
@@ -493,7 +493,7 @@ class TestReviewEndpoints:
         assert "😀" in result[0]["notes"]
 
     def test_concurrent_requests_same_metatext(self, app, client, test_session, override_dependencies):
-        """Test multiple concurrent requests for same meta-text."""
+        """Test multiple concurrent requests for same metatext."""
         # Setup mocks
         mock_service = unittest.mock.Mock()
         mock_wordlist = [WordDefinition(id=1, word="test", context="context", definition="def", definition_with_context="ctx", created_at=datetime.now(), meta_text_id=1)]

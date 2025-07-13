@@ -3,18 +3,18 @@ from sqlmodel import select, Session
 from loguru import logger
 
 from backend.models import MetaText, SourceDocument
-from backend.exceptions.meta_text_exceptions import (
+from backend.exceptions.metatext_exceptions import (
     SourceDocumentNotFoundError,
-    MetaTextNotFoundError,
-    MetaTextTitleExistsError,
-    MetaTextCreationError
+    MetatextNotFoundError,
+    MetatextTitleExistsError,
+    MetatextCreationError
 )
 from backend.services.text_chunking_service import TextChunkingService
 from backend.config import BackendConfig as CONFIG
 
 
-class MetaTextService:
-    """Service for meta-text business logic operations."""
+class MetatextService:
+    """Service for metatext business logic operations."""
     
     def __init__(self, chunking_service: TextChunkingService | None = None):
         self.chunking_service = chunking_service or TextChunkingService()
@@ -27,27 +27,27 @@ class MetaTextService:
             raise SourceDocumentNotFoundError(source_doc_id)
         return doc
     
-    def create_meta_text_with_chunks(
+    def create_metatext_with_chunks(
         self, 
         title: str, 
         source_doc_id: int, 
         session: Session,   
         chunk_size: int = CONFIG.DEFAULT_CHUNK_SIZE
     ) -> MetaText:
-        """Create a new meta-text with associated chunks from a source document."""
-        logger.info(f"Creating meta-text with title: '{title}' from source_doc_id: {source_doc_id}")
+        """Create a new metatext with associated chunks from a source document."""
+        logger.info(f"Creating metatext with title: '{title}' from source_doc_id: {source_doc_id}")
         
         # Validate source document exists
         doc = self.validate_source_document_exists(source_doc_id, session)
         
         try:
-            # Create the meta-text
+            # Create the metatext
             meta_text = MetaText(title=title, source_document_id=doc.id, text=doc.text)
             session.add(meta_text)
             session.flush()  # Assigns meta_text.id without committing
             
             # Create chunks
-            self.chunking_service.create_chunks_for_meta_text(
+            self.chunking_service.create_chunks_for_metatext(
                 doc.text, meta_text.id, session, chunk_size
             )
             
@@ -60,17 +60,17 @@ class MetaTextService:
             
         except Exception as e:
             session.rollback()
-            logger.error(f"Error creating meta-text: {e}")
+            logger.error(f"Error creating metatext: {e}")
             
             # Handle specific database constraint errors
             if 'UNIQUE constraint failed' in str(e):
-                raise MetaTextTitleExistsError(title)
+                raise MetatextTitleExistsError(title)
             
-            raise MetaTextCreationError(f"Failed to create meta-text: {str(e)}")
+            raise MetatextCreationError(f"Failed to create metatext: {str(e)}")
     
-    def get_meta_text_by_id(self, meta_text_id: int, session: Session) -> MetaText:
-        """Retrieve a meta-text by ID."""
-        logger.info(f"Retrieving meta-text with id: {meta_text_id}")
+    def get_metatext_by_id(self, meta_text_id: int, session: Session) -> MetaText:
+        """Retrieve a metatext by ID."""
+        logger.info(f"Retrieving metatext with id: {meta_text_id}")
         meta_text = session.exec(
             select(MetaText)
             .where(MetaText.id == meta_text_id)
@@ -79,26 +79,26 @@ class MetaTextService:
         
         if not meta_text:
             logger.warning(f"Meta-text not found: id={meta_text_id}")
-            raise MetaTextNotFoundError(meta_text_id)
+            raise MetatextNotFoundError(meta_text_id)
         
         logger.info(f"Meta-text found: id={meta_text.id}, title='{meta_text.title}'")
         return meta_text
     
-    def list_all_meta_texts(self, session: Session) -> list[MetaText]:
-        """List all meta-texts."""
-        logger.info("Listing all meta-texts")
+    def list_all_metatexts(self, session: Session) -> list[MetaText]:
+        """List all metatexts."""
+        logger.info("Listing all metatexts")
         meta_texts = list(session.exec(select(MetaText)).all())
-        logger.info(f"Found {len(meta_texts)} meta-texts")
+        logger.info(f"Found {len(meta_texts)} metatexts")
         return meta_texts
     
-    def delete_meta_text(self, meta_text_id: int, session: Session) -> dict:
-        """Delete a meta-text by ID."""
-        logger.info(f"Attempting to delete meta-text with id: {meta_text_id}")
+    def delete_metatext(self, meta_text_id: int, session: Session) -> dict:
+        """Delete a metatext by ID."""
+        logger.info(f"Attempting to delete metatext with id: {meta_text_id}")
         meta_text = session.get(MetaText, meta_text_id)
         
         if not meta_text:
             logger.warning(f"Meta-text not found for deletion: id={meta_text_id}")
-            raise MetaTextNotFoundError(meta_text_id)
+            raise MetatextNotFoundError(meta_text_id)
         
         title = meta_text.title  # Store title for response
         session.delete(meta_text)

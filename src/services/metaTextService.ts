@@ -18,10 +18,10 @@
  * - Cache is automatically invalidated when creating or deleting meta texts
  * 
  * API Operations:
- * - GET /api/meta-text - Fetch all meta texts (returns MetatextSummary[])
- * - GET /api/meta-text/:id - Fetch specific meta text (returns MetatextDetail)
- * - POST /api/meta-text - Create new meta text (requires sourceDocId and title)
- * - DELETE /api/meta-text/:id - Delete meta text (returns success status)
+ * - GET /api/metatext - Fetch all meta texts (returns MetatextSummary[])
+ * - GET /api/metatext/:id - Fetch specific meta text (returns MetatextDetail)
+ * - POST /api/metatext - Create new meta text (requires sourceDocId and title)
+ * - DELETE /api/metatext/:id - Delete meta text (returns success status)
  */
 
 import { apiGet, apiPost, apiPut, apiDelete } from '../utils/api';
@@ -31,14 +31,14 @@ import log from '../utils/logger';
 
 // Base functions without caching
 async function _fetchMetatexts(): Promise<MetatextSummary[]> {
-    const data = await apiGet<MetatextSummary[]>('/api/meta-text');
+    const data = await apiGet<MetatextSummary[]>('/api/metatext');
     log.info('Fetched meta texts:', data?.length || 0);
     return Array.isArray(data) ? data : [];
 }
 
 async function _fetchMetatext(id: number): Promise<MetatextDetail> {
     log.info('Fetching meta text with id:', id);
-    return await apiGet<MetatextDetail>(`/api/meta-text/${id}`);
+    return await apiGet<MetatextDetail>(`/api/metatext/${id}`);
 }
 
 // Cached versions (10 minutes for lists, 15 minutes for individual documents)
@@ -55,7 +55,7 @@ export const fetchMetatext = withCache(
 );
 
 export async function createMetatext(sourceDocId: number, title: string): Promise<MetatextCreate> {
-    const data = await apiPost<MetatextCreate>('/api/meta-text', { sourceDocId, title });
+    const data = await apiPost<MetatextCreate>('/api/metatext', { sourceDocId, title });
 
     // Invalidate meta texts list cache since we added a new meta text
     apiCache.invalidate('fetchMetatexts');
@@ -64,7 +64,7 @@ export async function createMetatext(sourceDocId: number, title: string): Promis
 }
 
 export async function deleteMetatext(id: number): Promise<{ success: boolean }> {
-    const data = await apiDelete<{ success: boolean }>(`/api/meta-text/${id}`);
+    const data = await apiDelete<{ success: boolean }>(`/api/metatext/${id}`);
 
     // Invalidate both list and specific meta text caches
     apiCache.invalidate('fetchMetatexts');

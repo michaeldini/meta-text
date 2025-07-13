@@ -1,14 +1,14 @@
-"""Test the refactored meta-text service."""
+"""Test the refactored metatext service."""
 import pytest
 from unittest.mock import Mock
 from sqlmodel import Session
 
-from backend.services.meta_text_service import MetaTextService
+from backend.services.metatext_service import MetatextService
 from backend.services.text_chunking_service import TextChunkingService
 from backend.models import SourceDocument
-from backend.exceptions.meta_text_exceptions import (
+from backend.exceptions.metatext_exceptions import (
     SourceDocumentNotFoundError,
-    MetaTextNotFoundError
+    MetatextNotFoundError
 )
 
 
@@ -19,7 +19,7 @@ class TestMetaTextService:
         """Set up test dependencies."""
         self.mock_session = Mock(spec=Session)
         self.mock_chunking_service = Mock(spec=TextChunkingService)
-        self.service = MetaTextService(self.mock_chunking_service)
+        self.service = MetatextService(self.mock_chunking_service)
     
     def test_validate_source_document_exists_success(self):
         """Test successful source document validation."""
@@ -46,13 +46,13 @@ class TestMetaTextService:
         assert exc_info.value.source_doc_id == 999
     
     def test_get_meta_text_by_id_not_found(self):
-        """Test get meta-text when it doesn't exist."""
+        """Test get metatext when it doesn't exist."""
         # Arrange
         self.mock_session.exec.return_value.first.return_value = None
         
         # Act & Assert
-        with pytest.raises(MetaTextNotFoundError) as exc_info:
-            self.service.get_meta_text_by_id(999, self.mock_session)
+        with pytest.raises(MetatextNotFoundError) as exc_info:
+            self.service.get_metatext_by_id(999, self.mock_session)
         
         assert exc_info.value.meta_text_id == 999
 
