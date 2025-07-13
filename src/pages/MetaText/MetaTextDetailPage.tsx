@@ -1,5 +1,5 @@
-// Details for a given MetaText document.
-// This page displays the details of a specific MetaText, including a header with style controls and document meta-data, the paginated chunks of the MetaText, and additional tools for chunk management.
+// Details for a given Metatext document.
+// This page displays the details of a specific Metatext, including a header with style controls and document meta-data, the paginated chunks of the Metatext, and additional tools for chunk management.
 
 import React from 'react';
 import { useParams } from 'react-router-dom';
@@ -15,8 +15,8 @@ import { useSourceDocumentDetailStore } from 'store';
 import { FADE_IN_DURATION } from 'constants';
 import { useValidatedIdParam } from 'utils/urlValidation';
 
-import { useMetaTextDetailData } from './hooks/useMetaTextDetailData';
-import { getMetaTextDetailStyles } from './MetaText.styles';
+import { useMetatextDetailData } from './hooks/useMetatextDetailData';
+import { getMetatextDetailStyles } from './Metatext.styles';
 import {
     GenerateSourceDocInfoButton,
     StyleControls,
@@ -24,19 +24,19 @@ import {
 } from 'components';
 
 
-function MetaTextDetailPage(): ReactElement | null {
+function MetatextDetailPage(): ReactElement | null {
     // Extract the metatextId from the URL parameters
     const { metatextId } = useParams<{ metatextId: string }>();
 
     // Validate the metatextId parameter using robust validation utility
-    const { id: validatedMetaTextId, isValid } = useValidatedIdParam(metatextId);
+    const { id: validatedMetatextId, isValid } = useValidatedIdParam(metatextId);
 
     if (!isValid) {
         return null; // Could render a proper error component instead
     }
 
     // Fetch the metatext details using the custom hook
-    const { metatext, loading } = useMetaTextDetailData(validatedMetaTextId ? String(validatedMetaTextId) : ""); // Todo handle errors
+    const { metatext, loading } = useMetatextDetailData(validatedMetatextId ? String(validatedMetatextId) : ""); // Todo handle errors
 
     // Fetch the source document details using the custom hook unconditionally
     const { doc: sourceDoc } = useSourceDocDetailData(
@@ -47,7 +47,7 @@ function MetaTextDetailPage(): ReactElement | null {
     const { updateDoc } = useSourceDocumentDetailStore();
 
     const theme: Theme = useTheme();
-    const styles = getMetaTextDetailStyles(theme);
+    const styles = getMetatextDetailStyles(theme);
 
     return (
         <PageContainer loading={loading} data-testid="metatext-detail-page">
@@ -80,5 +80,5 @@ function MetaTextDetailPage(): ReactElement | null {
     );
 }
 
-export { MetaTextDetailPage };
-export default MetaTextDetailPage;
+export { MetatextDetailPage };
+export default MetatextDetailPage;

@@ -27,7 +27,7 @@ export const getNavigationConfig = (logout: () => void): NavBarProps => ({
             },
             {
                 id: 'metatext',
-                label: 'MetaTexts',
+                label: 'Metatexts',
                 path: '/metatext',
                 showWhen: 'authenticated' as const,
                 icon: DocumentUploadIcon,

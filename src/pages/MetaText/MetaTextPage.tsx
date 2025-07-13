@@ -1,6 +1,6 @@
-// Landing page for managing MetaText documents, allowing users to create and browse existing MetaTexts.
+// Landing page for managing Metatext documents, allowing users to create and browse existing Metatexts.
 // Uses DocumentManagementLayout for consistent layout with other document management pages.
-// Provides a searchable list of MetaTexts and a form to create new MetaTexts from source documents.
+// Provides a searchable list of Metatexts and a form to create new Metatexts from source documents.
 
 import React, { ReactElement, useEffect } from 'react';
 import { Slide } from '@mui/material';
@@ -13,15 +13,15 @@ import {
 } from 'components';
 import { FADE_IN_DURATION } from 'constants';
 
-import MetaTextCreateForm from './components/MetaTextCreateForm';
+import MetatextCreateForm from './components/MetatextCreateForm';
 
-function MetaTextPage(): ReactElement {
+function MetatextPage(): ReactElement {
 
     const {
         metatexts,
         metatextsLoading,
         metatextsError, // TODO
-        fetchMetaTexts,
+        fetchMetatexts,
         sourceDocs,
         sourceDocsLoading,
         sourceDocsError,
@@ -33,16 +33,16 @@ function MetaTextPage(): ReactElement {
     // Fetch documents when component mounts, but only if not already loaded or loading
     useEffect(() => {
         if (!metatexts.length && !metatextsLoading) {
-            fetchMetaTexts();
+            fetchMetatexts();
         }
         if (!sourceDocs.length && !sourceDocsLoading) {
             fetchSourceDocs(); // Needed for the create form
         }
-    }, [fetchMetaTexts, fetchSourceDocs, metatexts.length, metatextsLoading, sourceDocs.length, sourceDocsLoading]);
+    }, [fetchMetatexts, fetchSourceDocs, metatexts.length, metatextsLoading, sourceDocs.length, sourceDocsLoading]);
 
     // Refresh data after successful creation
     const handleCreateSuccess = () => {
-        fetchMetaTexts();
+        fetchMetatexts();
     };
     return (
         <PageContainer
@@ -52,10 +52,10 @@ function MetaTextPage(): ReactElement {
             {/* Smooth slide-up animation for the page content */}
             <Slide in={true} direction="up" timeout={FADE_IN_DURATION}>
                 <DocumentManagementLayout
-                    title="MetaText Documents"
-                    subtitle="Create new MetaText from a source document or browse existing ones."
+                    title="Metatext Documents"
+                    subtitle="Create new Metatext from a source document or browse existing ones."
                     formComponent={
-                        <MetaTextCreateForm
+                        <MetatextCreateForm
                             sourceDocs={sourceDocs}
                             sourceDocsLoading={sourceDocsLoading}
                             sourceDocsError={sourceDocsError}
@@ -66,11 +66,11 @@ function MetaTextPage(): ReactElement {
                         <SearchableList
                             items={metatexts}
                             filterKey="title"
-                            title="MetaText"
+                            title="Metatext"
                             loading={metatextsLoading}
-                            searchPlaceholder="Search MetaText documents..."
-                            emptyMessage="No MetaText documents found. Create some MetaTexts from your source documents to get started."
-                            ariaLabel="List of MetaText documents"
+                            searchPlaceholder="Search Metatext documents..."
+                            emptyMessage="No Metatext documents found. Create some Metatexts from your source documents to get started."
+                            ariaLabel="List of Metatext documents"
                         />
                     }
                 />
@@ -80,7 +80,7 @@ function MetaTextPage(): ReactElement {
 }
 
 // Export with a more descriptive name for TypeDoc
-export { MetaTextPage };
+export { MetatextPage };
 
 // Default export for React component usage
-export default MetaTextPage;
+export default MetatextPage;

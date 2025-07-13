@@ -76,7 +76,7 @@ export const getAppStyles = (theme: Theme) => ({
         },
     },
 
-    // Shared styles among the SourceDocs and MetaText landing pages. They exist in the DocumentManagementLayout component.
+    // Shared styles among the SourceDocs and Metatext landing pages. They exist in the DocumentManagementLayout component.
     // The styles are shared to avoid duplication and ensure consistency
     sharedStyles: {
 

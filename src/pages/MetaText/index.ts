@@ -1,5 +1,5 @@
-// Aggregating all exports for MetaText pages
+// Aggregating all exports for Metatext pages
 
-export { default as MetaTextPage } from './MetaTextPage';
-export { default as MetaTextDetailPage } from './MetaTextDetailPage';
-export { default as MetaTextReviewPage } from './MetaTextReviewPage';
+export { default as MetatextPage } from './MetatextPage';
+export { default as MetatextDetailPage } from './MetatextDetailPage';
+export { default as MetatextReviewPage } from './MetatextReviewPage';

@@ -1,4 +1,4 @@
-// Document types for the MetaText application
+// Document types for the Metatext application
 
 // Source Document types
 // Types for listing, detailing, and creating source documents
@@ -36,18 +36,18 @@ export type SourceDocumentUpdate = {
 
 // Meta Text types
 // Types for listing, detailing, and creating meta texts
-export type MetaTextSummary = {
+export type MetatextSummary = {
     id: number;
     title: string;
     source_document_id: number;
 };
 
-export type MetaTextDetail = MetaTextSummary & {
+export type MetatextDetail = MetatextSummary & {
     text: string;
     chunks: ChunkType[];
 };
 
-export type MetaTextCreate = {
+export type MetatextCreate = {
     sourceDocId: number;
     title: string;
 };

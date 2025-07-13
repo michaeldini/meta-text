@@ -1,24 +1,24 @@
 // TODO I don't know how this file works. 
-// Custom hook for managing MetaText creation form state and operations
+// Custom hook for managing Metatext creation form state and operations
 import { useState, useCallback } from 'react';
-import { createMetaText } from 'services';
+import { createMetatext } from 'services';
 import { useNotifications } from 'store';
 import { log } from 'utils';
 
 // i don't know why this is needed.
-export interface UseMetaTextCreateOptions {
+export interface UseMetatextCreateOptions {
     onSuccess?: () => void;
 }
 
 
-// Form data structure for MetaText creation
-export interface MetaTextCreateData {
+// Form data structure for Metatext creation
+export interface MetatextCreateData {
     title: string;
     sourceDocId: number | null;
 }
 
-// Return type for the useMetaTextCreate hook
-export interface UseMetaTextCreateResult {
+// Return type for the useMetatextCreate hook
+export interface UseMetatextCreateResult {
     // Form data
     title: string;
     sourceDocId: number | null;
@@ -36,10 +36,10 @@ export interface UseMetaTextCreateResult {
     clearMessages: () => void;
 }
 
-export function useMetaTextCreate({ onSuccess }: UseMetaTextCreateOptions = {}): UseMetaTextCreateResult {
+export function useMetatextCreate({ onSuccess }: UseMetatextCreateOptions = {}): UseMetatextCreateResult {
 
     // Initial form data state
-    const [data, setData] = useState<MetaTextCreateData>({
+    const [data, setData] = useState<MetatextCreateData>({
         title: '',
         sourceDocId: null
     });
@@ -79,7 +79,7 @@ export function useMetaTextCreate({ onSuccess }: UseMetaTextCreateOptions = {}):
     // Validate form data
     const validateForm = useCallback((): string | null => {
         if (!data.title.trim()) {
-            return 'Please enter a title for your MetaText';
+            return 'Please enter a title for your Metatext';
         }
 
         if (!data.sourceDocId) {
@@ -111,16 +111,16 @@ export function useMetaTextCreate({ onSuccess }: UseMetaTextCreateOptions = {}):
 
         try {
             setLoading(true);
-            log.info('Starting MetaText creation', {
+            log.info('Starting Metatext creation', {
                 title: data.title,
                 sourceDocId: data.sourceDocId
             });
 
             // Submit the creation request
-            await createMetaText(data.sourceDocId, data.title.trim());
+            await createMetatext(data.sourceDocId, data.title.trim());
 
             // Show success message
-            const successMessage = `Successfully created MetaText "${data.title}"`;
+            const successMessage = `Successfully created Metatext "${data.title}"`;
             setSuccess(successMessage);
             showSuccess(successMessage);
 
@@ -132,17 +132,17 @@ export function useMetaTextCreate({ onSuccess }: UseMetaTextCreateOptions = {}):
                 onSuccess();
             }
 
-            log.info('MetaText creation completed successfully');
+            log.info('Metatext creation completed successfully');
 
         } catch (createError: unknown) {
             const errorMessage = createError instanceof Error
                 ? createError.message
-                : 'Failed to create MetaText. Please try again.';
+                : 'Failed to create Metatext. Please try again.';
 
             setError(errorMessage);
             showError(errorMessage);
 
-            log.error('MetaText creation failed', {
+            log.error('Metatext creation failed', {
                 error: createError,
                 title: data.title,
                 sourceDocId: data.sourceDocId

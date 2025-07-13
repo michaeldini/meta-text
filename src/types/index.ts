@@ -1,5 +1,5 @@
 export * from './documents';
-export * from './MetaTextReview.types';
+export * from './MetatextReview.types';
 export * from './error';
-export * from './MetaTextReview.types';
+export * from './MetatextReview.types';
 export { getErrorMessage } from './error';

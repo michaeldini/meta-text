@@ -12,12 +12,12 @@ import { useDocumentsStore, useNotifications } from 'store';
 
 import { useFilteredList } from 'hooks';
 import { getAppStyles } from 'styles';
-import type { MetaTextSummary, SourceDocumentSummary } from 'types';
+import type { MetatextSummary, SourceDocumentSummary } from 'types';
 
 export interface SearchableListProps {
     title: string;
-    filterKey: keyof (SourceDocumentSummary | MetaTextSummary);
-    items: Array<SourceDocumentSummary | MetaTextSummary>;
+    filterKey: keyof (SourceDocumentSummary | MetatextSummary);
+    items: Array<SourceDocumentSummary | MetatextSummary>;
     deleteLoading?: Record<number, boolean>;
     searchPlaceholder?: string;
     emptyMessage?: string;
@@ -33,7 +33,7 @@ function SearchableList({
 }: SearchableListProps) {
     const [search, setSearch] = useState('');
     const navigate = useNavigate();
-    const { deleteSourceDoc, deleteMetaText } = useDocumentsStore();
+    const { deleteSourceDoc, deleteMetatext } = useDocumentsStore();
     const { showSuccess, showError } = useNotifications();
 
     // Determine document type based on title or item properties
@@ -63,7 +63,7 @@ function SearchableList({
             if (docType === 'sourceDoc') {
                 await deleteSourceDoc(id);
             } else {
-                await deleteMetaText(id);
+                await deleteMetatext(id);
             }
             showSuccess('Deleted successfully');
         } catch {

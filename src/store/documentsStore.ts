@@ -5,7 +5,7 @@
  */
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { MetaTextSummary, SourceDocumentSummary, } from 'types'
+import type { MetatextSummary, SourceDocumentSummary, } from 'types'
 import { getErrorMessage } from '../types/error';
 import * as sourceDocService from 'services';
 import * as metatextService from 'services';
@@ -16,17 +16,17 @@ interface DocumentsState {
     sourceDocsError: string | null;
 
     // Meta Texts
-    metatexts: MetaTextSummary[];
+    metatexts: MetatextSummary[];
     metatextsLoading: boolean;
     metatextsError: string | null;
 
     // Actions
     fetchSourceDocs: () => Promise<void>;
-    fetchMetaTexts: () => Promise<void>;
+    fetchMetatexts: () => Promise<void>;
     deleteSourceDoc: (id: number) => Promise<void>;
-    deleteMetaText: (id: number) => Promise<void>;
+    deleteMetatext: (id: number) => Promise<void>;
     addSourceDoc: (doc: SourceDocumentSummary) => void;
-    addMetaText: (metatext: MetaTextSummary) => void;
+    addMetatext: (metatext: MetatextSummary) => void;
     clearErrors: () => void;
 }
 
@@ -58,10 +58,10 @@ export const useDocumentsStore = create<DocumentsState>()(
                 }
             },
 
-            fetchMetaTexts: async () => {
+            fetchMetatexts: async () => {
                 set({ metatextsLoading: true, metatextsError: null });
                 try {
-                    const texts = await metatextService.fetchMetaTexts();
+                    const texts = await metatextService.fetchMetatexts();
                     set({
                         metatexts: texts,
                         metatextsLoading: false,
@@ -86,9 +86,9 @@ export const useDocumentsStore = create<DocumentsState>()(
                 }
             },
 
-            deleteMetaText: async (id: number) => {
+            deleteMetatext: async (id: number) => {
                 try {
-                    await metatextService.deleteMetaText(id);
+                    await metatextService.deleteMetatext(id);
                     set(state => ({
                         metatexts: state.metatexts.filter(text => text.id !== id)
                     }));
@@ -103,7 +103,7 @@ export const useDocumentsStore = create<DocumentsState>()(
                 }));
             },
 
-            addMetaText: (metatext: MetaTextSummary) => {
+            addMetatext: (metatext: MetatextSummary) => {
                 set(state => ({
                     metatexts: [...state.metatexts, metatext]
                 }));

@@ -1,5 +1,5 @@
 // Main way for users to navigate to the main functionalities of the application.
-// Two buttons to direct users to the SourceDocs and MetaText pages.
+// Two buttons to direct users to the SourceDocs and Metatext pages.
 
 import React from 'react';
 import { Box, Button } from '@mui/material';
@@ -25,7 +25,7 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({ styles }) => {
         navigate('/sourcedoc');
     };
 
-    const handleNavigateToMetaTexts = () => {
+    const handleNavigateToMetatexts = () => {
         navigate('/metatext');
     };
 
@@ -40,10 +40,10 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({ styles }) => {
             </Button>
             <Button
                 {...buttonProps}
-                onClick={handleNavigateToMetaTexts}
+                onClick={handleNavigateToMetatexts}
                 data-testid="navigate-to-metatexts"
             >
-                Browse MetaTexts
+                Browse Metatexts
             </Button>
         </Box>
     );

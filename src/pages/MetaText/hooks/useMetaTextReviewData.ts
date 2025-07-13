@@ -1,26 +1,26 @@
 /**
- * @fileoverview Custom hook for MetaText Review data fetching
+ * @fileoverview Custom hook for Metatext Review data fetching
  * 
- * This hook encapsulates the data fetching logic for the MetaText Review page,
+ * This hook encapsulates the data fetching logic for the Metatext Review page,
  * including loading states, error handling, and efficient data access.
- * Uses the MetaText detail data hook to avoid redundant chunk fetching.
+ * Uses the Metatext detail data hook to avoid redundant chunk fetching.
  * 
- * @author MetaText Development Team
+ * @author Metatext Development Team
  * @version 2.0.0
  * @since 2025-07-09
- * @updated 2025-07-13 - Refactored to use MetaText detail data for chunks
+ * @updated 2025-07-13 - Refactored to use Metatext detail data for chunks
  */
 
 import { useEffect, useState } from 'react';
 import { fetchWordlist, fetchPhraseExplanations, PhraseExplanation } from 'services';
 import { ChunkType, FlashcardItem } from 'types';
 import { log } from 'utils';
-import { useMetaTextDetailData } from './useMetaTextDetailData';
+import { useMetatextDetailData } from './useMetatextDetailData';
 
 /**
  * Hook return type interface
  */
-interface UseMetaTextReviewDataReturn {
+interface UseMetatextReviewDataReturn {
     /** Array of words for flashcard generation */
     wordlist: FlashcardItem[];
     /** Array of chunk summaries and notes */
@@ -34,20 +34,20 @@ interface UseMetaTextReviewDataReturn {
 }
 
 /**
- * Custom hook for fetching MetaText Review data
+ * Custom hook for fetching Metatext Review data
  * 
  * Handles concurrent data fetching for wordlist, chunks, and phrase explanations
- * with proper loading states and error handling. Uses the MetaText detail data
+ * with proper loading states and error handling. Uses the Metatext detail data
  * to avoid redundant chunk fetching.
  * 
- * @param metatextId - The MetaText ID to fetch data for
+ * @param metatextId - The Metatext ID to fetch data for
  * @returns Object containing data, loading state, and error state
  * 
  * @example
  * ```tsx
  * function MyComponent() {
  *   const { wordlist, chunks, phraseExplanations, loading, error } = 
- *     useMetaTextReviewData(123);
+ *     useMetatextReviewData(123);
  *   
  *   if (loading) return <div>Loading...</div>;
  *   if (error) return <div>Error: {error}</div>;
@@ -56,7 +56,7 @@ interface UseMetaTextReviewDataReturn {
  * }
  * ```
  */
-export function useMetaTextReviewData(metatextId?: number): UseMetaTextReviewDataReturn {
+export function useMetatextReviewData(metatextId?: number): UseMetatextReviewDataReturn {
     /**
      * State management for wordlist data
      * Contains vocabulary words with definitions for flashcard generation
@@ -79,8 +79,8 @@ export function useMetaTextReviewData(metatextId?: number): UseMetaTextReviewDat
      */
     const [error, setError] = useState<string | null>(null);
 
-    // Use the MetaText detail data hook to get metatext and chunks
-    const { metatext, loading: detailLoading, errors: detailErrors } = useMetaTextDetailData(metatextId);
+    // Use the Metatext detail data hook to get metatext and chunks
+    const { metatext, loading: detailLoading, errors: detailErrors } = useMetatextDetailData(metatextId);
 
     // Extract chunks from metatext
     const chunks: ChunkType[] = metatext?.chunks || [];
@@ -92,14 +92,14 @@ export function useMetaTextReviewData(metatextId?: number): UseMetaTextReviewDat
      * Data loading effect for wordlist and phrase explanations
      * 
      * Fetches wordlist and phrase explanations concurrently while chunks
-     * are obtained from the MetaText detail data.
+     * are obtained from the Metatext detail data.
      */
     useEffect(() => {
         /**
          * Async function to load wordlist and phrase explanations
          * 
          * Fetches wordlist and phrase explanations in parallel for optimal performance.
-         * Chunks are now obtained from the MetaText detail data to avoid redundancy.
+         * Chunks are now obtained from the Metatext detail data to avoid redundancy.
          */
         async function loadAdditionalData() {
             try {
@@ -107,9 +107,9 @@ export function useMetaTextReviewData(metatextId?: number): UseMetaTextReviewDat
                 setError(null);
                 log.info('Starting to load wordlist and phrase explanations', { metatextId });
 
-                // Validate MetaText ID
+                // Validate Metatext ID
                 if (!metatextId || isNaN(metatextId)) {
-                    setError('Invalid MetaText ID.');
+                    setError('Invalid Metatext ID.');
                     setAdditionalLoading(false);
                     return;
                 }

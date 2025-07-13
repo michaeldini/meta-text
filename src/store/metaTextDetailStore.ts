@@ -1,48 +1,48 @@
 import { create } from 'zustand';
-import { fetchMetaText } from 'services';
+import { fetchMetatext } from 'services';
 import { getErrorMessage } from 'types';
-import type { MetaTextDetail } from 'types';
+import type { MetatextDetail } from 'types';
 // import { useChunkStore } from './chunkStore';
 
-interface MetaTextDetailErrors {
+interface MetatextDetailErrors {
     metatext: string;
 }
 
-interface MetaTextDetailState {
-    // Current MetaText being viewed
-    currentMetaTextId: string | null;
-    metatext: MetaTextDetail | null;
+interface MetatextDetailState {
+    // Current Metatext being viewed
+    currentMetatextId: string | null;
+    metatext: MetatextDetail | null;
 
     // Loading states
     loading: boolean;
 
     // Error states
-    errors: MetaTextDetailErrors;
+    errors: MetatextDetailErrors;
 
     // Actions
-    fetchMetaTextDetail: (metatextId: string) => Promise<void>;
+    fetchMetatextDetail: (metatextId: string) => Promise<void>;
     clearState: () => void;
     clearErrors: () => void;
 }
 
-export const useMetaTextDetailStore = create<MetaTextDetailState>((set, get) => {
+export const useMetatextDetailStore = create<MetatextDetailState>((set, get) => {
     // const setChunks = useChunkStore.getState().setChunks;
     return {
         // Initial state
-        currentMetaTextId: null,
+        currentMetatextId: null,
         metatext: null,
         loading: false,
         errors: { metatext: '' },
 
-        fetchMetaTextDetail: async (metatextId: string) => {
-            // Don't refetch if we're already viewing this MetaText
-            const { currentMetaTextId } = get();
-            if (currentMetaTextId === metatextId) return;
+        fetchMetatextDetail: async (metatextId: string) => {
+            // Don't refetch if we're already viewing this Metatext
+            const { currentMetatextId } = get();
+            if (currentMetatextId === metatextId) return;
 
             set({
                 loading: true,
                 errors: { metatext: '' },
-                currentMetaTextId: metatextId,
+                currentMetatextId: metatextId,
                 metatext: null
             });
 
@@ -51,9 +51,9 @@ export const useMetaTextDetailStore = create<MetaTextDetailState>((set, get) => 
                     throw new Error('No metatextId provided');
                 }
 
-                const metatext = await fetchMetaText(Number(metatextId));
+                const metatext = await fetchMetatext(Number(metatextId));
                 if (!metatext) {
-                    throw new Error(`MetaText with ID ${metatextId} not found`);
+                    throw new Error(`Metatext with ID ${metatextId} not found`);
                 }
 
                 set({ metatext, loading: false });
@@ -69,7 +69,7 @@ export const useMetaTextDetailStore = create<MetaTextDetailState>((set, get) => 
         },
         clearState: () => {
             set({
-                currentMetaTextId: null,
+                currentMetatextId: null,
                 metatext: null,
                 loading: false,
                 errors: { metatext: '' }

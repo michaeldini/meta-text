@@ -1,4 +1,4 @@
-// Provides a form for creating MetaText documents from source documents.
+// Provides a form for creating Metatext documents from source documents.
 // The user selects a source document, enters a title, and submits the form.
 
 import React from 'react';
@@ -18,14 +18,14 @@ import {
 } from '@mui/material';
 import { StarsIcon } from 'icons';
 
-import { useMetaTextCreate } from '../hooks/useMetaTextCreate';
+import { useMetatextCreate } from '../hooks/useMetatextCreate';
 import { SourceDocumentSummary } from 'types';
 import { AppAlert } from 'components';
 
 /**
- * Props for the MetaTextCreateForm component
+ * Props for the MetatextCreateForm component
  */
-export interface MetaTextCreateFormProps {
+export interface MetatextCreateFormProps {
     /** List of available source documents */
     sourceDocs: SourceDocumentSummary[];
     /** Loading state for source documents */
@@ -39,11 +39,11 @@ export interface MetaTextCreateFormProps {
 }
 
 /**
- * MetaTextCreateForm Component
+ * MetatextCreateForm Component
  * 
- * A streamlined form component for creating MetaText documents from existing
+ * A streamlined form component for creating Metatext documents from existing
  * source documents. This component provides a clean, focused interface for
- * MetaText creation without the complexity of mode switching.
+ * Metatext creation without the complexity of mode switching.
  * 
  * Features:
  * - Source document selection dropdown
@@ -59,27 +59,27 @@ export interface MetaTextCreateFormProps {
  * @component
  * @example
  * ```tsx
- * <MetaTextCreateForm 
+ * <MetatextCreateForm 
  *   sourceDocs={sourceDocs}
  *   sourceDocsLoading={false}
  *   sourceDocsError={null}
  *   onSuccess={() => {
- *     console.log('MetaText created!');
- *     refetchMetaTexts();
+ *     console.log('Metatext created!');
+ *     refetchMetatexts();
  *   }}
  * />
  * ```
  * 
  * @param props - Component props
- * @returns {ReactElement} The rendered MetaTextCreateForm component
+ * @returns {ReactElement} The rendered MetatextCreateForm component
  */
-function MetaTextCreateForm({
+function MetatextCreateForm({
     sourceDocs,
     sourceDocsLoading,
     sourceDocsError,
     onSuccess,
     sx = {}
-}: MetaTextCreateFormProps): React.ReactElement {
+}: MetatextCreateFormProps): React.ReactElement {
     const theme = useTheme();
 
     /**
@@ -96,7 +96,7 @@ function MetaTextCreateForm({
         handleSourceDocChange,
         handleSubmit,
         clearMessages
-    } = useMetaTextCreate({ onSuccess });
+    } = useMetatextCreate({ onSuccess });
 
     /**
      * Component styles
@@ -133,10 +133,10 @@ function MetaTextCreateForm({
             {/* Form Header */}
             <Box sx={{ mb: 3 }}>
                 <Typography variant="h5" component="h2" gutterBottom fontWeight="bold">
-                    Create MetaText
+                    Create Metatext
                 </Typography>
                 <Typography variant="subtitle1" color="text.secondary">
-                    Select a source document and create a new MetaText.
+                    Select a source document and create a new Metatext.
                 </Typography>
             </Box>
 
@@ -145,7 +145,7 @@ function MetaTextCreateForm({
                 <Box sx={styles.progressContainer}>
                     <LinearProgress />
                     <Typography variant="body2" color="text.secondary" sx={{ mt: 1, textAlign: 'center' }}>
-                        Creating MetaText...
+                        Creating Metatext...
                     </Typography>
                 </Box>
             )}
@@ -203,22 +203,22 @@ function MetaTextCreateForm({
                     <FormHelperText>
                         {sourceDocsLoading
                             ? 'Loading source documents...'
-                            : 'Choose the source document to create MetaText from'
+                            : 'Choose the source document to create Metatext from'
                         }
                     </FormHelperText>
                 </FormControl>
 
                 {/* Title Input */}
                 <TextField
-                    label="MetaText Title"
+                    label="Metatext Title"
                     value={title}
                     onChange={handleTitleChange}
                     fullWidth
                     required
                     disabled={loading}
-                    placeholder="Enter a descriptive title for your MetaText"
+                    placeholder="Enter a descriptive title for your Metatext"
                     data-testid="title-input"
-                    helperText="Choose a clear, descriptive title that will help you identify this MetaText later"
+                    helperText="Choose a clear, descriptive title that will help you identify this Metatext later"
                 />
 
                 {/* Submit Button */}
@@ -231,11 +231,11 @@ function MetaTextCreateForm({
                     startIcon={!loading ? <StarsIcon /> : undefined}
                     data-testid="submit-button"
                 >
-                    {loading ? 'Creating...' : 'Create MetaText'}
+                    {loading ? 'Creating...' : 'Create Metatext'}
                 </Button>
             </Box>
         </Paper>
     );
 }
 
-export default MetaTextCreateForm;
+export default MetatextCreateForm;

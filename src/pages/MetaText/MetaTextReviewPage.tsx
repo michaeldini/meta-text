@@ -1,4 +1,4 @@
-// Review page for a MetaText document, providing a comprehensive review interface with flashcards, phrase explanations, and chunk data table.
+// Review page for a Metatext document, providing a comprehensive review interface with flashcards, phrase explanations, and chunk data table.
 
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box } from '@mui/material';
@@ -9,14 +9,14 @@ import { useMemo } from 'react';
 
 import { AppAlert } from 'components';
 import { LoadingIndicator, Header, ReviewContent } from './components';
-import { useMetaTextReviewData } from './hooks/useMetaTextReviewData';
+import { useMetatextReviewData } from './hooks/useMetatextReviewData';
 import { useValidatedIdParam } from 'utils';
 
-import { getMetaTextReviewStyles } from './MetaText.styles';
+import { getMetatextReviewStyles } from './Metatext.styles';
 
-function MetaTextReviewPage(): ReactElement {
+function MetatextReviewPage(): ReactElement {
 
-    // Extract MetaText ID from URL parameters and validate it
+    // Extract Metatext ID from URL parameters and validate it
     const { metatextId: metatextIdParam } = useParams<{ metatextId?: string }>();
 
     // Validate and parse the ID parameter using utility hook
@@ -27,17 +27,17 @@ function MetaTextReviewPage(): ReactElement {
 
     // Custom hook for fetching all review data
     const { wordlist, chunks, phraseExplanations, loading, error } =
-        useMetaTextReviewData(metatextId);
+        useMetatextReviewData(metatextId);
 
     const theme: Theme = useTheme();
-    const styles = getMetaTextReviewStyles(theme);
+    const styles = getMetatextReviewStyles(theme);
 
     // Handle invalid ID parameter
     if (metatextIdParam && !isValidId) {
         return (
             <Box sx={styles.root} data-testid="metatext-review-invalid-id">
                 <AppAlert severity="error">
-                    Invalid MetaText ID "{originalValue}". Please provide a valid positive number.
+                    Invalid Metatext ID "{originalValue}". Please provide a valid positive number.
                 </AppAlert>
             </Box>
         );
@@ -74,4 +74,4 @@ function MetaTextReviewPage(): ReactElement {
 }
 
 // Default export for React component usage
-export default MetaTextReviewPage;
+export default MetatextReviewPage;

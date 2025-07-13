@@ -4,7 +4,7 @@
  * This module provides utility functions for validating and parsing URL parameters,
  * particularly for handling ID parameters in React Router applications.
  * 
- * @author MetaText Development Team
+ * @author Metatext Development Team
  * @version 1.0.0
  * @since 2025-07-13
  */

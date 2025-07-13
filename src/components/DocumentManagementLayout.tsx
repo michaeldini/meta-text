@@ -1,5 +1,5 @@
 // Main component for managing documents, including a form and a list of documents.
-// Reused across both SourceDocs and MetaText landing pages.
+// Reused across both SourceDocs and Metatext landing pages.
 // This component is designed to be flexible and reusable, allowing for different forms and lists to be
 // passed in as props, making it suitable for various document management scenarios.
 
@@ -23,7 +23,7 @@ const DocumentManagementLayout = forwardRef<HTMLDivElement, DocumentManagementLa
     ({ title, subtitle, formComponent, listComponent }, ref): ReactElement => {
 
         // Use the theme to get styles from the top-level style function 
-        // This allows for consistent styling across the SourceDocs and MetaText landing pages
+        // This allows for consistent styling across the SourceDocs and Metatext landing pages
         const theme = useTheme();
         const styles = getAppStyles(theme);
 

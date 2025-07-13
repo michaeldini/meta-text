@@ -1,6 +1,6 @@
 // This page serves as the entry point for users, guiding them to the main functionalities of the application.
-// It includes a welcome message and navigation buttons to direct users to the SourceDocs and MetaText pages.
-// Data prefetching: This page proactively loads data for both SourceDoc and MetaText pages in the background,
+// It includes a welcome message and navigation buttons to direct users to the SourceDocs and Metatext pages.
+// Data prefetching: This page proactively loads data for both SourceDoc and Metatext pages in the background,
 // improving perceived performance when users navigate to those pages.
 
 
@@ -19,9 +19,9 @@ import { FADE_IN_DURATION } from 'constants';
 
 function HomePage(): ReactElement {
 
-    // Prefetch data for both SourceDoc and MetaText pages in the background
+    // Prefetch data for both SourceDoc and Metatext pages in the background
     // This improves perceived performance when users navigate to those pages
-    const { fetchSourceDocs, fetchMetaTexts } = useDocumentsStore();
+    const { fetchSourceDocs, fetchMetatexts } = useDocumentsStore();
 
     useEffect(() => {
         // Prefetch data without blocking the UI or showing loading states
@@ -32,9 +32,9 @@ function HomePage(): ReactElement {
             fetchSourceDocs();
         }
         if (!metatextsLoading) {
-            fetchMetaTexts();
+            fetchMetatexts();
         }
-    }, [fetchSourceDocs, fetchMetaTexts]);
+    }, [fetchSourceDocs, fetchMetatexts]);
 
     // Set up the theme and styles for the HomePage component
     const theme: Theme = useTheme();

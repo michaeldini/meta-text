@@ -1,10 +1,10 @@
-// Contains styles for MetaText details and review pages.
-//  (NOT for the MetaText landing page, which uses DocumentManagementLayout)
+// Contains styles for Metatext details and review pages.
+//  (NOT for the Metatext landing page, which uses DocumentManagementLayout)
 
 import { Theme } from '@mui/material/styles';
 
 
-export const getMetaTextDetailStyles = (theme: Theme) => ({
+export const getMetatextDetailStyles = (theme: Theme) => ({
     container: {
         display: 'flex',
         height: '100%',
@@ -50,7 +50,7 @@ export const getMetaTextDetailStyles = (theme: Theme) => ({
 });
 
 
-export const getMetaTextReviewStyles = (theme: Theme) => ({
+export const getMetatextReviewStyles = (theme: Theme) => ({
     root: {
         padding: theme.spacing(3),
     },

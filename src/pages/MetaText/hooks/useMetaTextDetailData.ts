@@ -1,19 +1,19 @@
-// Custom hook for fetching MetaText details
+// Custom hook for fetching Metatext details
 
 import { useEffect } from 'react';
-import { useMetaTextDetailStore } from '../../../store';
+import { useMetatextDetailStore } from 'store';
 
-export const useMetaTextDetailData = (metatextId: number | string | undefined) => {
+export const useMetatextDetailData = (metatextId: number | string | undefined) => {
     // UI message constants
     const MESSAGES = {
-        NO_ID_ERROR: 'No MetaText ID provided in URL',
-        META_TEXT_TITLE: 'Meta Text Title:',
+        NO_ID_ERROR: 'No Metatext ID provided in URL',
+        METATEXT_TITLE: 'Metatext Title:',
         REVIEW_BUTTON: 'Review',
-        NOT_FOUND_TITLE: 'MetaText not found',
-        NOT_FOUND_MESSAGE: 'The MetaText with ID "{id}" could not be found.',
+        NOT_FOUND_TITLE: 'Metatext not found',
+        NOT_FOUND_MESSAGE: 'The Metatext with ID "{id}" could not be found.',
     } as const;
 
-    const store = useMetaTextDetailStore();
+    const store = useMetatextDetailStore();
 
     // Validate metatextId
     if (!metatextId) {
@@ -25,13 +25,13 @@ export const useMetaTextDetailData = (metatextId: number | string | undefined) =
 
     useEffect(() => {
         if (metatextIdStr) {
-            store.fetchMetaTextDetail(metatextIdStr);
+            store.fetchMetatextDetail(metatextIdStr);
         } else {
             store.clearState();
         }
-    }, [metatextIdStr, store.fetchMetaTextDetail]);
+    }, [metatextIdStr, store.fetchMetatextDetail]);
 
-    // Handle critical MetaText errors
+    // Handle critical Metatext errors
     if (!store.loading && store.errors.metatext) {
         throw new Error(store.errors.metatext);
     }

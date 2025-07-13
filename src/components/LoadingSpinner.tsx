@@ -5,7 +5,7 @@
  * This component includes its own styling and can be used throughout the application
  * whenever a loading state needs to be displayed.
  * 
- * @author MetaText Development Team
+ * @author Metatext Development Team
  * @version 1.0.0
  * @since 2025-07-09
  */

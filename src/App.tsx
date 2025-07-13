@@ -14,9 +14,9 @@ import { useThemeContext } from './contexts/ThemeContext';
 const HomePage = lazy(() => import('pages').then(module => ({ default: module.HomePage })));
 const SourceDocPage = lazy(() => import('pages').then(module => ({ default: module.SourceDocPage })));
 const SourceDocDetailPage = lazy(() => import('pages').then(module => ({ default: module.SourceDocDetailPage })));
-const MetaTextPage = lazy(() => import('pages').then(module => ({ default: module.MetaTextPage })));
-const MetaTextDetailPage = lazy(() => import('pages').then(module => ({ default: module.MetaTextDetailPage })));
-const MetaTextReviewPage = lazy(() => import('pages').then(module => ({ default: module.MetaTextReviewPage })));
+const MetatextPage = lazy(() => import('pages').then(module => ({ default: module.MetatextPage })));
+const MetatextDetailPage = lazy(() => import('pages').then(module => ({ default: module.MetatextDetailPage })));
+const MetatextReviewPage = lazy(() => import('pages').then(module => ({ default: module.MetatextReviewPage })));
 const LoginPage = lazy(() => import('pages').then(module => ({ default: module.LoginPage })));
 const RegisterPage = lazy(() => import('pages').then(module => ({ default: module.RegisterPage })));
 const ExperimentsPage = lazy(() => import('pages').then(module => ({ default: module.ExperimentsPage })));
@@ -34,9 +34,9 @@ const routes: RouteConfig[] = [
     { path: '/register', element: RegisterPage, protected: false },
     { path: '/sourcedoc', element: SourceDocPage, protected: true },
     { path: '/sourcedoc/:sourceDocId', element: SourceDocDetailPage, protected: true },
-    { path: '/metatext', element: MetaTextPage, protected: true },
-    { path: '/metatext/:metatextId', element: MetaTextDetailPage, protected: true },
-    { path: '/metatext/:metatextId/review', element: MetaTextReviewPage, protected: true },
+    { path: '/metatext', element: MetatextPage, protected: true },
+    { path: '/metatext/:metatextId', element: MetatextDetailPage, protected: true },
+    { path: '/metatext/:metatextId/review', element: MetatextReviewPage, protected: true },
     { path: '/experiments', element: ExperimentsPage, protected: false },
     { path: '/about', element: AboutPage, protected: false },
 ];
