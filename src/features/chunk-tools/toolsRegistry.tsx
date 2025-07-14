@@ -1,4 +1,4 @@
-// Central registry for chunk tools
+// Central registry for chunk tools (that appear in the ChunkToolsPanel)
 // Defines available tools with their metadata and components
 // This centralizes tool management and makes it easy to add/remove tools
 

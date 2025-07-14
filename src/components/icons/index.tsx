@@ -29,9 +29,14 @@ import {
     DocumentArrowDownIcon as DocumentArrowDownSvg,
     PencilIcon as PencilSvg,
     CheckIcon as CheckSvg,
+    BookmarkIcon as BookmarkSvg
 } from '@heroicons/react/24/solid';
-import { SVGProps } from 'react';
 
+import {
+    BookmarkIcon as BookmarkOutlineSvg
+} from '@heroicons/react/24/outline';
+
+import { SVGProps } from 'react';
 
 // All icons are typed to accept all ThemedIconProps except 'as'
 export type IconProps = Omit<ThemedIconProps, 'as'>;
@@ -65,3 +70,5 @@ export const DocumentUploadIcon: React.FC<IconProps> = (props) => <ThemedIcon as
 export const DocumentDownloadIcon: React.FC<IconProps> = (props) => <ThemedIcon as={DocumentArrowDownSvg} {...props} />;
 export const PencilIcon: React.FC<IconProps> = (props) => <ThemedIcon as={PencilSvg} {...props} />;
 export const CheckIcon: React.FC<IconProps> = (props) => <ThemedIcon as={CheckSvg} {...props} />;
+export const BookmarkIcon: React.FC<IconProps> = (props) => <ThemedIcon as={BookmarkSvg} {...props} />;
+export const BookmarkOutlineIcon: React.FC<IconProps> = (props) => <ThemedIcon as={BookmarkOutlineSvg} {...props} />;

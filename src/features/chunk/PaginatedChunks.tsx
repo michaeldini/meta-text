@@ -4,6 +4,7 @@
 
 import React, { ReactNode, useState, useRef } from 'react';
 import { Box, Pagination } from '@mui/material';
+import useChunkBookmarkNavigation from '../chunk-bookmark/useChunkBookmarkNavigation';
 import { useTheme } from '@mui/material/styles';
 
 import { LoadingBoundary, ErrorBoundary, AppAlert } from 'components';
@@ -72,6 +73,8 @@ const PaginatedChunks = ({ metatextId }: PaginationProps) => {
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
     };
+    // Handle navigation to bookmarked chunk using custom hook
+    useChunkBookmarkNavigation(chunks, chunksPerPage, setPage);
 
     // I dont know why this is needed, but it preserves the previous chunks
     // when the chunks are updated

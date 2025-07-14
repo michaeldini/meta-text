@@ -22,6 +22,8 @@ import {
     StyleControls,
     DocumentHeader,
 } from 'components';
+import { useUIPreferencesStore } from 'store';
+import BookmarkNavigateButton from '../../features/chunk-bookmark/BookmarkNavigateButton';
 
 
 function MetatextDetailPage(): ReactElement | null {
@@ -48,6 +50,8 @@ function MetatextDetailPage(): ReactElement | null {
 
     const theme: Theme = useTheme();
     const styles = getMetatextDetailStyles(theme);
+    // Call bookmark store hook to preserve hook order
+    useUIPreferencesStore();
 
     return (
         <PageContainer loading={loading} data-testid="metatext-detail-page">
@@ -61,7 +65,8 @@ function MetatextDetailPage(): ReactElement | null {
                                     sourceDocumentId={metatext.source_document_id}
                                 />
                                 <StyleControls />
-
+                                {/* Button to navigate to bookmarked chunk */}
+                                <BookmarkNavigateButton />
                                 {sourceDoc && (
                                     <SourceDocInfo doc={sourceDoc} onDocumentUpdate={updateDoc} />
                                 )}

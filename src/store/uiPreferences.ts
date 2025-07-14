@@ -21,6 +21,15 @@ interface UIPreferencesState {
     setLineHeight: (lh: number) => void;
     paddingX: number;
     setPaddingX: (px: number) => void;
+    // ID of currently bookmarked chunk, or null
+    bookmarkedChunkId: number | null;
+    // set or clear the bookmarked chunk
+    setBookmarkedChunkId: (id: number) => void;
+    clearBookmark: () => void;
+    // flag to trigger navigation to bookmark in UI
+    navigateToBookmark: boolean;
+    setNavigateToBookmark: () => void;
+    clearNavigateToBookmark: () => void;
 }
 
 export const useUIPreferencesStore = create<UIPreferencesState>((set) => ({
@@ -32,6 +41,13 @@ export const useUIPreferencesStore = create<UIPreferencesState>((set) => ({
     setLineHeight: (lh) => set({ lineHeight: lh }),
     paddingX: 0.3, // default horizontal padding in rem units
     setPaddingX: (px) => set({ paddingX: px }),
+    // bookmark initial state
+    bookmarkedChunkId: null,
+    setBookmarkedChunkId: (id) => set({ bookmarkedChunkId: id }),
+    clearBookmark: () => set({ bookmarkedChunkId: null }),
+    navigateToBookmark: false,
+    setNavigateToBookmark: () => set({ navigateToBookmark: true }),
+    clearNavigateToBookmark: () => set({ navigateToBookmark: false }),
 }));
 
 

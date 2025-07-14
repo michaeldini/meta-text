@@ -5,6 +5,7 @@ import React, { Suspense } from 'react';
 import { Box, useTheme } from '@mui/material';
 import { ErrorBoundary, LoadingBoundary } from 'components';
 import { CopyTool } from 'features/chunk-copy';
+import ChunkBookmarkToggle from '../chunk-bookmark/ChunkBookmarkToggle';
 import { getChunkComponentsStyles } from '../chunk/Chunk.styles';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 import type { ChunkToolId } from './toolsRegistry';
@@ -32,11 +33,13 @@ const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = ({
 
     return (
         <Box sx={styles.chunkTabsContainer}>
-            {/* Copy Tool - Always visible at the top */}
-            <CopyTool
-                chunkText={chunk.text}
-                sx={styles.copyToolContainer}
-            />
+            {/*  Tools Always visible at the top */}
+            <Box sx={styles.alwaysVisibleToolContainer}>
+
+                <CopyTool chunkText={chunk.text} />
+                {/* Bookmark toggle button */}
+                <ChunkBookmarkToggle chunkId={chunk.id} />
+            </Box>
 
             <ErrorBoundary>
                 <Suspense fallback={<LoadingBoundary loading={true}><div /></LoadingBoundary>}>
