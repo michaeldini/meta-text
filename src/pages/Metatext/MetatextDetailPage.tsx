@@ -7,25 +7,21 @@ import { Box, useTheme, Slide } from '@mui/material';
 import type { Theme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
 
-import { PageContainer, ReviewButton, SourceDocInfo } from 'components';
-import { ChunkToolsPanel } from 'features';
-import { PaginatedChunks } from 'features';
-import { SearchContainer } from '../../features/chunk-search';
-import { useSourceDocDetailData } from 'hooks';
-import { useSourceDocumentDetailStore } from 'store';
-import { FADE_IN_DURATION } from 'constants';
-import { useValidatedIdParam } from 'utils/urlValidation';
-import { useSearchKeyboard } from '../../features/chunk-search/hooks/useSearchKeyboard';
-
-import { useMetatextDetailData } from './hooks/useMetatextDetailData';
-import { getMetatextDetailStyles } from './Metatext.styles';
 import {
-    GenerateSourceDocInfoButton,
+    PageContainer, ReviewButton, SourceDocInfo, GenerateSourceDocInfoButton,
     StyleControls,
     DocumentHeader,
 } from 'components';
-import { useUIPreferencesStore } from 'store';
-import BookmarkNavigateButton from '../../features/chunk-bookmark/BookmarkNavigateButton';
+import { ChunkToolsPanel, PaginatedChunks, SearchContainer, BookmarkNavigateButton } from 'features';
+import { useSourceDocDetailData } from 'hooks';
+import { useSourceDocumentDetailStore, useUIPreferencesStore } from 'store';
+import { FADE_IN_DURATION } from 'constants';
+import { useValidatedIdParam } from 'utils/urlValidation';
+
+
+import { useSearchKeyboard } from '../../features/chunk-search/hooks/useSearchKeyboard';
+import { useMetatextDetailData } from './hooks/useMetatextDetailData';
+import { getMetatextDetailStyles } from './Metatext.styles';
 
 
 function MetatextDetailPage(): ReactElement | null {
