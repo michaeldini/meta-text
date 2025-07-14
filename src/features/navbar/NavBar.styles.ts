@@ -4,7 +4,7 @@ import { alpha } from '@mui/material/styles';
 export const createNavbarStyles = (theme: Theme) => ({
 
     appBar: {
-        marginBottom: theme.spacing(4), // Space below for content
+        marginBottom: theme.spacing(1), // Space below for content
     },
 
     // Brand button styling

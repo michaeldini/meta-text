@@ -1,0 +1,6 @@
+/* Search feature styles */
+
+/* Smooth scrolling for search navigation */
+html {
+    scroll-behavior: smooth;
+}

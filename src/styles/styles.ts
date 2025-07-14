@@ -15,6 +15,7 @@ export const getAppStyles = (theme: Theme) => ({
 
     // Page layout styles
     pageLayout: {
+        padding: theme.spacing(0),
         display: 'flex',
         flexDirection: 'row' as const,
         justifyContent: 'center',
@@ -24,13 +25,13 @@ export const getAppStyles = (theme: Theme) => ({
         minHeight: 0, // Allow children to shrink if needed
         minWidth: 0, // Allow children to shrink if needed
         maxWidth: 1400,
-        marginLeft: 'auto',
-        marginRight: 'auto',
+        // marginLeft: 'auto',
+        // marginRight: 'auto',
         backgroundColor: theme.palette.background.default,
         [theme.breakpoints.down('sm')]: {
             maxWidth: '100%',
-            paddingLeft: theme.spacing(1),
-            paddingRight: theme.spacing(1),
+            // paddingLeft: theme.spacing(1),
+            // paddingRight: theme.spacing(1),
         },
     },
 

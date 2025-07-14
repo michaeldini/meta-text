@@ -10,10 +10,12 @@ import type { ReactElement } from 'react';
 import { PageContainer, ReviewButton, SourceDocInfo } from 'components';
 import { ChunkToolsPanel } from 'features';
 import { PaginatedChunks } from 'features';
+import { SearchContainer } from '../../features/chunk-search';
 import { useSourceDocDetailData } from 'hooks';
 import { useSourceDocumentDetailStore } from 'store';
 import { FADE_IN_DURATION } from 'constants';
 import { useValidatedIdParam } from 'utils/urlValidation';
+import { useSearchKeyboard } from '../../features/chunk-search/hooks/useSearchKeyboard';
 
 import { useMetatextDetailData } from './hooks/useMetatextDetailData';
 import { getMetatextDetailStyles } from './Metatext.styles';
@@ -53,13 +55,21 @@ function MetatextDetailPage(): ReactElement | null {
     // Call bookmark store hook to preserve hook order
     useUIPreferencesStore();
 
+    // Initialize keyboard shortcuts for search
+    useSearchKeyboard({ enabled: true });
+
     return (
         <PageContainer loading={loading} data-testid="metatext-detail-page">
             <Slide in={!!metatext} direction="up" timeout={FADE_IN_DURATION}>
                 <Box sx={styles.container} data-testid="metatext-detail-content">
                     {metatext ? (
                         <>
-                            <DocumentHeader title={metatext.title}>
+                            <DocumentHeader
+                                title={metatext.title}
+                            >
+                                {sourceDoc && (
+                                    <SourceDocInfo doc={sourceDoc} onDocumentUpdate={updateDoc} />
+                                )}
                                 <ReviewButton metatextId={metatext.id} />
                                 <GenerateSourceDocInfoButton
                                     sourceDocumentId={metatext.source_document_id}
@@ -67,9 +77,10 @@ function MetatextDetailPage(): ReactElement | null {
                                 <StyleControls />
                                 {/* Button to navigate to bookmarked chunk */}
                                 <BookmarkNavigateButton />
-                                {sourceDoc && (
-                                    <SourceDocInfo doc={sourceDoc} onDocumentUpdate={updateDoc} />
-                                )}
+
+                                <SearchContainer
+                                    showTagFilters={true}
+                                />
                             </DocumentHeader>
 
                             <PaginatedChunks metatextId={metatext.id} />

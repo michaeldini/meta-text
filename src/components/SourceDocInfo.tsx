@@ -40,6 +40,7 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onDocumentUpdate }) 
         container: {
             width: '100%',
             paddingX: theme.spacing(2),
+            textAlign: 'center',
         },
         fieldHeader: {
             display: 'flex',

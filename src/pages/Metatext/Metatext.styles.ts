@@ -52,7 +52,7 @@ export const getMetatextDetailStyles = (theme: Theme) => ({
 
 export const getMetatextReviewStyles = (theme: Theme) => ({
     root: {
-        padding: theme.spacing(3),
+        padding: theme.spacing(0),
     },
     header: {
         display: 'flex',

@@ -18,3 +18,4 @@ export * from './chunk-image';
 
 // Shared utilities
 export * from './chunk-shared';
+// Full-text search feature

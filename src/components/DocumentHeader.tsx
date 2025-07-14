@@ -11,10 +11,14 @@ interface DocumentHeaderProps {
 }
 
 
-const DocumentHeader: React.FC<DocumentHeaderProps> = ({ title, children, sx = {}, elevation = 10 }) => {
+const DocumentHeader: React.FC<DocumentHeaderProps> = ({
+    title,
+    children,
+    sx = {},
+    elevation = 10
+}) => {
     const theme = useTheme();
     const styles = {
-        padding: theme.spacing(2),
         gap: theme.spacing(2),
         marginBottom: theme.spacing(10),
         display: 'flex',
@@ -22,7 +26,7 @@ const DocumentHeader: React.FC<DocumentHeaderProps> = ({ title, children, sx = {
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'center',
-        // width: '100%',
+        width: '100%',
         boxSizing: 'border-box',
         flex: 1,
 
@@ -32,6 +36,7 @@ const DocumentHeader: React.FC<DocumentHeaderProps> = ({ title, children, sx = {
             <Typography variant="h3" color={theme.palette.text.secondary}>
                 {title}
             </Typography>
+
             {children}
         </Box>
     );

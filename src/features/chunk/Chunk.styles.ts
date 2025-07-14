@@ -96,7 +96,7 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
         // '&:hover': {
         //     transform: 'translateY(-2px)',
         // },
-        padding: theme.spacing(4),
+        padding: theme.spacing(3),
         paddingRight: 0,
     },
     // wraps each word in a chunk

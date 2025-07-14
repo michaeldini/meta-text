@@ -1,7 +1,6 @@
 // A component to display paginated chunks of a meta text
 // It handles loading states, errors, and pagination of chunks
 
-
 import React, { ReactNode, useState, useRef } from 'react';
 import { Box, Pagination } from '@mui/material';
 import useChunkBookmarkNavigation from '../chunk-bookmark/useChunkBookmarkNavigation';
@@ -11,6 +10,8 @@ import { LoadingBoundary, ErrorBoundary, AppAlert } from 'components';
 import { log } from 'utils';
 import { useChunkStore } from 'store';
 import { Chunk } from 'features';
+import { usePaginationStore } from '../chunk-search/store/usePaginationStore';
+import { useSearchStore } from '../chunk-search/store/useSearchStore';
 
 import { getChunkComponentsStyles } from './Chunk.styles';
 
@@ -50,8 +51,13 @@ const PaginatedChunks = ({ metatextId }: PaginationProps) => {
     const styles = getChunkComponentsStyles(theme);
 
     const { chunks, loadingChunks, chunksError, fetchChunks, resetChunkState } = useChunkStore();
+    const { filteredChunks, isInSearchMode } = useSearchStore();
 
-    const [page, setPage] = useState(1);
+    // Use filtered chunks when in search mode, otherwise use original chunks
+    const displayChunks = isInSearchMode ? filteredChunks : chunks;
+
+    // Use pagination store for shared state
+    const { currentPage, setCurrentPage, setChunksPerPage } = usePaginationStore();
 
     // Fetch chunks when metatextId changes
     React.useEffect(() => {
@@ -66,23 +72,40 @@ const PaginatedChunks = ({ metatextId }: PaginationProps) => {
 
     // Pagination logic
     const chunksPerPage = 5;
-    const pageCount = Math.ceil(chunks.length / chunksPerPage);
-    const startIdx = (page - 1) * chunksPerPage;
+
+    // Update store when chunks per page changes
+    React.useEffect(() => {
+        setChunksPerPage(chunksPerPage);
+    }, [setChunksPerPage]);
+
+    const pageCount = Math.ceil(displayChunks.length / chunksPerPage);
+    const startIdx = (currentPage - 1) * chunksPerPage;
     const endIdx = startIdx + chunksPerPage;
-    const paginatedChunks = chunks.slice(startIdx, endIdx);
+    const paginatedChunks = displayChunks.slice(startIdx, endIdx);
+
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        setPage(value);
+        setCurrentPage(value);
     };
+
+    // Wrapper for bookmark navigation to handle the setCurrentPage signature
+    const handlePageChange = React.useCallback((page: React.SetStateAction<number>) => {
+        if (typeof page === 'function') {
+            setCurrentPage(page(currentPage));
+        } else {
+            setCurrentPage(page);
+        }
+    }, [currentPage, setCurrentPage]);
+
     // Handle navigation to bookmarked chunk using custom hook
-    useChunkBookmarkNavigation(chunks, chunksPerPage, setPage);
+    useChunkBookmarkNavigation(displayChunks, chunksPerPage, handlePageChange);
 
     // I dont know why this is needed, but it preserves the previous chunks
     // when the chunks are updated
     const prevChunksRef = useRef<any[]>([]);
     // Preserve scroll position on chunk updates
     React.useEffect(() => {
-        prevChunksRef.current = chunks;
-    }, [chunks]);
+        prevChunksRef.current = displayChunks;
+    }, [displayChunks]);
 
     return (
         <ErrorBoundary>
@@ -97,7 +120,7 @@ const PaginatedChunks = ({ metatextId }: PaginationProps) => {
                         data-testid="chunks-container"
                         tabIndex={0}
                     >
-                        <ChunksPagination pageCount={pageCount} page={page} handleChange={handleChange}>
+                        <ChunksPagination pageCount={pageCount} page={currentPage} handleChange={handleChange}>
                             {paginatedChunks.map((chunk, chunkIdx) => (
                                 <Chunk
                                     key={chunk.id}
