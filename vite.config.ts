@@ -22,10 +22,14 @@ export default defineConfig({
                     'react-vendor': ['react', 'react-dom', 'react-router-dom'],
                     'utils': ['zustand', 'loglevel'],
                     // Separate your chunks feature since it's large
-                    'chunks-tools': [
-                        // './src/features/chunks/tools',
-                        // './src/features/chunks/layouts'
-                    ]
+                    'chunks-features': [
+                        './src/features/chunk-compression',
+                        './src/features/chunk-image',
+                        './src/features/chunk-search',
+                    ],
+                    'review-features': [
+                        './src/features/review',
+                    ],
                 }
             },
             // Better tree shaking - especially important for icons
