@@ -1,12 +1,13 @@
 import React from 'react';
 import { Box, Paper } from '@mui/material';
-import { TextSizeInput, LineHeightInput, FontFamilySelect } from 'components';
+import { TextSizeInput, LineHeightInput, PaddingXInput, FontFamilySelect } from 'components';
 
 const StyleControls: React.FC = () => {
     return (
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
             <TextSizeInput />
             <LineHeightInput />
+            <PaddingXInput />
             <FontFamilySelect />
         </Box>
     );

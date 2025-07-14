@@ -106,7 +106,7 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
         position: 'relative' as const,
         cursor: 'pointer',
         transition: 'background 0.2s',
-        paddingX: theme.spacing(1),
+        paddingX: theme.spacing(0.3),
         '&:hover': {
             backgroundColor: theme.palette.secondary.main,
             color: theme.palette.background.paper,

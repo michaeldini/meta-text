@@ -24,6 +24,7 @@ const ChunkWords = memo(function ChunkWords({
     const textSizePx = useUIPreferencesStore(state => state.textSizePx);
     const fontFamily = useUIPreferencesStore(state => state.fontFamily);
     const lineHeight = useUIPreferencesStore(state => state.lineHeight);
+    const paddingX = useUIPreferencesStore(state => state.paddingX);
     const theme = useTheme();
     const styles = getChunkComponentsStyles(theme);
 
@@ -52,7 +53,13 @@ const ChunkWords = memo(function ChunkWords({
                         backgroundColor: theme.palette.secondary.main,
                         color: theme.palette.primary.contrastText,
                     },
-                    { fontSize: `${textSizePx}px`, fontFamily, lineHeight }
+                    {
+                        fontSize: `${textSizePx}px`,
+                        fontFamily,
+                        lineHeight,
+                        paddingLeft: `${paddingX}rem`,
+                        paddingRight: `${paddingX}rem`,
+                    }
                 ]}
                 onMouseDown={e => handleWordDown(wordIdx, e)}
                 onMouseEnter={e => handleWordEnter(wordIdx, e)}

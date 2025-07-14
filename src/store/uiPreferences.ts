@@ -19,6 +19,8 @@ interface UIPreferencesState {
     setFontFamily: (font: string) => void;
     lineHeight: number;
     setLineHeight: (lh: number) => void;
+    paddingX: number;
+    setPaddingX: (px: number) => void;
 }
 
 export const useUIPreferencesStore = create<UIPreferencesState>((set) => ({
@@ -28,6 +30,8 @@ export const useUIPreferencesStore = create<UIPreferencesState>((set) => ({
     setFontFamily: (font) => set({ fontFamily: font }),
     lineHeight: 1.5, // default line height
     setLineHeight: (lh) => set({ lineHeight: lh }),
+    paddingX: 0.3, // default horizontal padding in rem units
+    setPaddingX: (px) => set({ paddingX: px }),
 }));
 
 
