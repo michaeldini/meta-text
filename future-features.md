@@ -1,6 +1,6 @@
 Features in order of interest:
 
-• Bookmarking
+• ~~Bookmarking~~
 
 • Full-text search & filtering  
   Instantly locate words, phrases, or tags across chunks or documents.
