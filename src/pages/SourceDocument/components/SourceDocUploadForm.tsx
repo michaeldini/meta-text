@@ -41,9 +41,6 @@ export interface SourceDocUploadFormProps {
  * - Success callbacks for integration
  * - Responsive design
  * 
- * @category Components
- * @subcategory Forms
- * @component
  * @example
  * ```tsx
  * <SourceDocUploadForm 

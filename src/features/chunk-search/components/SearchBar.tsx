@@ -21,7 +21,7 @@ interface SearchBarProps {
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({
-    placeholder = 'Search...',
+    placeholder = 'Search...(CMD+K)',
     variant = 'outlined',
     size = 'small',
     fullWidth = false
