@@ -33,14 +33,12 @@ const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = ({
 
     return (
         <Box sx={styles.chunkTabsContainer}>
-            {/*  Tools Always visible at the top */}
+            {/* Tools Always visible at the top */}
             <Box sx={styles.alwaysVisibleToolContainer}>
-
                 <CopyTool chunkText={chunk.text} />
                 {/* Bookmark toggle button */}
                 <ChunkBookmarkToggle chunkId={chunk.id} />
             </Box>
-
             <ErrorBoundary>
                 <Suspense fallback={<LoadingBoundary loading={true}><div /></LoadingBoundary>}>
                     {/* Notes Tool */}

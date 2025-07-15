@@ -20,6 +20,7 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
         },
         flex: 1,
         minHeight: 0,
+        overflow: 'visible',  // allow sticky children to escape
     },
 
     // container for each chunk (ChunkWords and ChunkTabs)
@@ -30,9 +31,8 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
         border: `1px solid ${theme.palette.secondary.light}`,
         borderRadius: theme.shape.borderRadius,
         minHeight: 0,
-        height: '100%',
         padding: 0,
-        overflow: 'hidden', // Prevent children from overflowing
+        overflow: 'visible',  // changed to visible to allow sticky positioning
         boxSizing: 'border-box',
     },
 
@@ -45,6 +45,7 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
         padding: isActiveTabs ? theme.spacing(2) : 0,
         marginLeft: isActiveTabs ? theme.spacing(2) : 0,
         position: 'sticky' as const,
+        top: 0,  // added top offset to enable sticky positioning
         alignSelf: 'flex-start',
         width: '100%',
         maxWidth: '100%',
