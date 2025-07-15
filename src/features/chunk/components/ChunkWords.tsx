@@ -25,6 +25,7 @@ const ChunkWords = memo(function ChunkWords({
     const fontFamily = useUIPreferencesStore(state => state.fontFamily);
     const lineHeight = useUIPreferencesStore(state => state.lineHeight);
     const paddingX = useUIPreferencesStore(state => state.paddingX);
+    const showChunkPositions = useUIPreferencesStore(state => state.showChunkPositions);
     const theme = useTheme();
     const styles = getChunkComponentsStyles(theme);
 
@@ -78,6 +79,25 @@ const ChunkWords = memo(function ChunkWords({
         <Box ref={containerRef} sx={styles.wordsContainer}
             onMouseLeave={() => handleWordUp()}
         >
+            {/* Chunk position display in top right corner */}
+            {showChunkPositions && (
+                <Box sx={{
+                    position: 'absolute',
+                    top: 8,
+                    right: 8,
+                    backgroundColor: theme.palette.background.paper,
+                    border: `1px solid ${theme.palette.divider}`,
+                    borderRadius: 1,
+                    padding: '2px 6px',
+                    fontSize: '12px',
+                    fontWeight: 'bold',
+                    color: theme.palette.text.secondary,
+                    zIndex: 1
+                }}>
+                    {chunk.position}
+                </Box>
+            )}
+
             {wordsElements}
 
             <Box component="span" sx={styles.chunkUndoIconButton}>

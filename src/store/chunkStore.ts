@@ -32,9 +32,11 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
     activeTabs: [],
     setActiveTabs: (tabs) => set({ activeTabs: tabs }),
     setChunks: async (chunks) => {
+        // Ensure chunks are sorted by position ascending
+        const sortedChunks = [...chunks].sort((a, b) => a.position - b.position);
         set((state) => ({
             ...state,
-            chunks,
+            chunks: sortedChunks,
             loadingChunks: false,
         }));
     },
@@ -42,9 +44,10 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
         set({ loadingChunks: true, chunksError: '' });
         try {
             const chunks = await apiFetchChunks(metatextId);
+            const sortedChunks = [...chunks].sort((a, b) => a.position - b.position);
             set((state) => ({
                 ...state,
-                chunks,
+                chunks: sortedChunks,
                 loadingChunks: false,
             }));
         } catch (e: unknown) {
@@ -115,9 +118,10 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
         set({ loadingChunks: true, chunksError: '' });
         try {
             const chunks = await apiFetchChunks(metatextId);
+            const sortedChunks = [...chunks].sort((a, b) => a.position - b.position);
             set((state) => ({
                 ...state,
-                chunks,
+                chunks: sortedChunks,
                 loadingChunks: false,
             }));
         } catch (e: unknown) {

@@ -88,6 +88,7 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
     wordsContainer: {
         display: 'flex',
         flexWrap: 'wrap' as const,
+        position: 'relative' as const,
         // gap: theme.spacing(.75),
         transition: 'all 0.3s ease',
         userSelect: 'none',

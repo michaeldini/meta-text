@@ -30,6 +30,9 @@ interface UIPreferencesState {
     navigateToBookmark: boolean;
     setNavigateToBookmark: () => void;
     clearNavigateToBookmark: () => void;
+    // flag to show/hide chunk positions
+    showChunkPositions: boolean;
+    setShowChunkPositions: (show: boolean) => void;
 }
 
 export const useUIPreferencesStore = create<UIPreferencesState>((set) => ({
@@ -48,6 +51,9 @@ export const useUIPreferencesStore = create<UIPreferencesState>((set) => ({
     navigateToBookmark: false,
     setNavigateToBookmark: () => set({ navigateToBookmark: true }),
     clearNavigateToBookmark: () => set({ navigateToBookmark: false }),
+    // chunk positions initial state
+    showChunkPositions: false,
+    setShowChunkPositions: (show) => set({ showChunkPositions: show }),
 }));
 
 
