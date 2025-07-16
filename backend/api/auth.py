@@ -1,7 +1,12 @@
 
+
+# This file handles authentication endpoints and logic for the FastAPI backend.
+# Sensitive and configurable values are loaded from environment variables (.env).
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
 
+
+import os
 import jwt
 from fastapi import APIRouter, Depends, HTTPException, status, Response, Request, Cookie
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -17,11 +22,19 @@ from backend.exceptions.auth_exceptions import (
     UserRegistrationError
 )
 
-SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
+# Load environment variables
+from dotenv import load_dotenv
+load_dotenv()
 
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
-REFRESH_TOKEN_EXPIRE_DAYS = 7
+_secret = os.environ.get("SECRET_KEY")
+if not _secret:
+    raise RuntimeError("SECRET_KEY environment variable is not set. Please set it in your .env file.")
+SECRET_KEY: str = _secret
+ALGORITHM = os.environ.get("ALGORITHM", "HS256")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.environ.get("ACCESS_TOKEN_EXPIRE_MINUTES", 30))
+REFRESH_TOKEN_EXPIRE_DAYS = int(os.environ.get("REFRESH_TOKEN_EXPIRE_DAYS", 7))
+
+
 class RefreshToken(BaseModel):
     refresh_token: str
 
