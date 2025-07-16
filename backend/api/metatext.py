@@ -26,11 +26,17 @@ def create_metatext(
     session: Session = Depends(get_session),
     service: MetatextService = Depends(get_metatext_service)
 ):
-    """Create a new metatext from a source document."""
+    """Create a new metatext from a source document. Requires user_id."""
     try:
+        if not hasattr(req, 'user_id') or req.user_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="user_id is required to create a MetaText."
+            )
         metatext = service.create_metatext_with_chunks(
             title=req.title,
             source_doc_id=req.sourceDocId,
+            user_id=req.user_id,
             session=session
         )
         return metatext
@@ -53,25 +59,27 @@ def create_metatext(
 
 @router.get("/metatext", response_model=list[MetaTextSummary], name="list_metatexts")
 def list_metatexts(
+    user_id: int,
     session: Session = Depends(get_session),
     service: MetatextService = Depends(get_metatext_service)
 ):
-    """List all metatexts."""
-    return service.list_all_metatexts(session)
+    """List all metatexts for a user."""
+    return service.list_user_metatexts(user_id=user_id, session=session)
 
 
 @router.get("/metatext/{metatext_id}", response_model=MetaTextDetail, name="get_metatext")
 def get_metatext(
-    metatext_id: int, 
+    metatext_id: int,
+    user_id: int,
     session: Session = Depends(get_session),
     service: MetatextService = Depends(get_metatext_service)
 ):
-    """Get a specific metatext by ID."""
+    """Get a specific metatext by ID for a user."""
     try:
-        return service.get_metatext_by_id(metatext_id, session)
+        return service.get_metatext_by_id_and_user(metatext_id, user_id, session)
     except MetatextNotFoundError:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, 
+            status_code=status.HTTP_404_NOT_FOUND,
             detail="Meta-text not found."
         )
 

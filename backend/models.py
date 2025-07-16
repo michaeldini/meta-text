@@ -17,7 +17,7 @@ class User(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     username: str = Field(index=True, unique=True)
     hashed_password: str
- 
+    meta_texts: List["MetaText"] = Relationship(back_populates="user")
 
 # --- SourceDocument Schemas ---
 class SourceDocumentBase(SQLModel):
@@ -58,12 +58,13 @@ class SourceDocumentUpdate(SQLModel):
 class MetaTextBase(SQLModel):
     title: str
     source_document_id: int = Field(foreign_key="sourcedocument.id")
-
+    user_id: int = Field(foreign_key="user.id") 
 class MetaText(MetaTextBase, table=True):
     id: int = Field(default=None, primary_key=True)
     text: str
     chunks: List["Chunk"] = Relationship(back_populates="meta_text", cascade_delete=True)
     source_document: Optional[SourceDocument] = Relationship(back_populates="meta_texts")
+    user: Optional["User"] = Relationship(back_populates="meta_texts")
 
 class MetaTextSummary(MetaTextBase):
     id: int
@@ -75,6 +76,7 @@ class MetaTextDetail(MetaTextSummary):
 class CreateMetaTextRequest(BaseModel):
     sourceDocId: int
     title: str
+    user_id: int
     
 # --- Chunk Compression Schemas ---
 class ChunkCompressionBase(SQLModel):
@@ -208,3 +210,9 @@ class ExplainRequest(BaseModel):
 class DeleteResponse(BaseModel):
     message: str
     deleted_id: int
+    
+    
+class Bookmark(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    user_id: int = Field(foreign_key="user.id")
+    chunk_id: int = Field(foreign_key="chunk.id")

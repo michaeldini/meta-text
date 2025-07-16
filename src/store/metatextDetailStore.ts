@@ -20,7 +20,7 @@ interface MetatextDetailState {
     errors: MetatextDetailErrors;
 
     // Actions
-    fetchMetatextDetail: (metatextId: string) => Promise<void>;
+    fetchMetatextDetail: (metatextId: string, userId: number) => Promise<void>;
     clearState: () => void;
     clearErrors: () => void;
 }
@@ -34,7 +34,7 @@ export const useMetatextDetailStore = create<MetatextDetailState>((set, get) => 
         loading: false,
         errors: { metatext: '' },
 
-        fetchMetatextDetail: async (metatextId: string) => {
+        fetchMetatextDetail: async (metatextId: string, userId: number) => {
             // Don't refetch if we're already viewing this Metatext
             const { currentMetatextId } = get();
             if (currentMetatextId === metatextId) return;
@@ -50,8 +50,11 @@ export const useMetatextDetailStore = create<MetatextDetailState>((set, get) => 
                 if (!metatextId) {
                     throw new Error('No metatextId provided');
                 }
+                if (!userId) {
+                    throw new Error('No userId provided');
+                }
 
-                const metatext = await fetchMetatext(Number(metatextId));
+                const metatext = await fetchMetatext(Number(metatextId), userId);
                 if (!metatext) {
                     throw new Error(`Metatext with ID ${metatextId} not found`);
                 }

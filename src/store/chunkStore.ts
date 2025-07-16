@@ -1,11 +1,12 @@
 import { create } from 'zustand';
 
 import { fetchChunks as apiFetchChunks, fetchChunk, updateChunk, splitChunk, combineChunks } from 'services';
+import { useAuthStore } from './authStore';
 
 import { getErrorMessage } from 'types';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 import { log } from 'utils';
-import { useAuthStore } from 'store';
+
 
 import type { ChunkToolId } from '../features/chunk-tools/toolsRegistry';
 
@@ -43,7 +44,9 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
     fetchChunks: async (metatextId) => {
         set({ loadingChunks: true, chunksError: '' });
         try {
-            const chunks = await apiFetchChunks(metatextId);
+            const { user } = useAuthStore.getState();
+            if (!user?.id) throw new Error('User not authenticated');
+            const chunks = await apiFetchChunks(metatextId, user.id);
             const sortedChunks = [...chunks].sort((a, b) => a.position - b.position);
             set((state) => ({
                 ...state,
@@ -117,7 +120,9 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
     refetchChunks: async (metatextId) => {
         set({ loadingChunks: true, chunksError: '' });
         try {
-            const chunks = await apiFetchChunks(metatextId);
+            const { user } = useAuthStore.getState();
+            if (!user?.id) throw new Error('User not authenticated');
+            const chunks = await apiFetchChunks(metatextId, user.id);
             const sortedChunks = [...chunks].sort((a, b) => a.position - b.position);
             set((state) => ({
                 ...state,

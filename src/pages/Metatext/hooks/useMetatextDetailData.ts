@@ -1,7 +1,7 @@
 // Custom hook for fetching Metatext details
 
 import { useEffect } from 'react';
-import { useMetatextDetailStore } from 'store';
+import { useMetatextDetailStore, useAuthStore } from 'store';
 
 export const useMetatextDetailData = (metatextId: number | string | undefined) => {
     // UI message constants
@@ -14,10 +14,13 @@ export const useMetatextDetailData = (metatextId: number | string | undefined) =
     } as const;
 
     const store = useMetatextDetailStore();
-
+    const { user } = useAuthStore();
     // Validate metatextId
     if (!metatextId) {
         throw new Error(MESSAGES.NO_ID_ERROR);
+    }
+    if (!user || !user.id) {
+        throw new Error('User is not authenticated or user ID is missing');
     }
 
     // Always use string for store
@@ -25,11 +28,11 @@ export const useMetatextDetailData = (metatextId: number | string | undefined) =
 
     useEffect(() => {
         if (metatextIdStr) {
-            store.fetchMetatextDetail(metatextIdStr);
+            store.fetchMetatextDetail(metatextIdStr, user.id);
         } else {
             store.clearState();
         }
-    }, [metatextIdStr, store.fetchMetatextDetail]);
+    }, [metatextIdStr, store.fetchMetatextDetail,]);
 
     // Handle critical Metatext errors
     if (!store.loading && store.errors.metatext) {
