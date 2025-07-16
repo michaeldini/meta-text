@@ -89,18 +89,17 @@ class MetatextService:
         logger.info(f"Found {len(meta_texts)} metatexts for user_id={user_id}")
         return meta_texts
     
-    def delete_metatext(self, meta_text_id: int, session: Session) -> dict:
-        """Delete a metatext by ID."""
-        logger.info(f"Attempting to delete metatext with id: {meta_text_id}")
-        meta_text = session.get(MetaText, meta_text_id)
-        
+    def delete_metatext(self, meta_text_id: int, user_id: int, session: Session) -> dict:
+        """Delete a metatext by ID for a specific user. Only allows deletion if owned by user."""
+        logger.info(f"Attempting to delete metatext with id: {meta_text_id} for user_id: {user_id}")
+        meta_text = session.exec(
+            select(MetaText).where(MetaText.id == meta_text_id, MetaText.user_id == user_id)
+        ).first()
         if not meta_text:
-            logger.warning(f"Meta-text not found for deletion: id={meta_text_id}")
+            logger.warning(f"Meta-text not found for deletion or not owned by user: id={meta_text_id}, user_id={user_id}")
             raise MetatextNotFoundError(meta_text_id)
-        
         title = meta_text.title  # Store title for response
         session.delete(meta_text)
         session.commit()
-        
-        logger.info(f"Meta-text deleted successfully: id={meta_text_id}, title='{title}'")
+        logger.info(f"Meta-text deleted successfully: id={meta_text_id}, title='{title}', user_id={user_id}")
         return {"success": True, "id": meta_text_id, "title": title}

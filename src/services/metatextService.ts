@@ -36,9 +36,9 @@ async function _fetchMetatexts(): Promise<MetatextSummary[]> {
     return Array.isArray(data) ? data : [];
 }
 
-async function _fetchMetatext(id: number, userId: number): Promise<MetatextDetail> {
-    log.info('Fetching meta text with id:', id, 'for user:', userId);
-    return await apiGet<MetatextDetail>(`/api/metatext/${id}?user_id=${userId}`);
+async function _fetchMetatext(id: number): Promise<MetatextDetail> {
+    log.info('Fetching meta text with id:', id);
+    return await apiGet<MetatextDetail>(`/api/metatext/${id}`);
 }
 
 // Cached versions (10 minutes for lists, 15 minutes for individual documents)
@@ -56,19 +56,15 @@ export const fetchMetatext = withCache(
 
 export async function createMetatext(sourceDocId: number, title: string): Promise<MetatextCreate> {
     const data = await apiPost<MetatextCreate>('/api/metatext', { sourceDocId, title });
-
     // Invalidate meta texts list cache since we added a new meta text
     apiCache.invalidate('fetchMetatexts');
-
     return data;
 }
 
 export async function deleteMetatext(id: number): Promise<{ success: boolean }> {
     const data = await apiDelete<{ success: boolean }>(`/api/metatext/${id}`);
-
     // Invalidate both list and specific meta text caches
     apiCache.invalidate('fetchMetatexts');
     apiCache.invalidate(`fetchMetatext:${id}`);
-
     return data;
 }

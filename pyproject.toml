@@ -9,7 +9,6 @@ dependencies = [
     "sqlmodel",
     "fastapi-cors",
     "openai>=1.82.0",
-    "python-freedictionaryapi[async-client]>=0.9.10",
     "pytest>=8.4.0",
     "python-dotenv>=1.1.0",
     "passlib[bcrypt]>=1.7.4",
@@ -19,6 +18,8 @@ dependencies = [
     "eralchemy[graphviz]>=1.5.0",
     "alembic>=1.16.1",
     "pytest-asyncio>=1.0.0",
+    "python-multipart>=0.0.20",
+    "pyjwt>=2.10.1",
 ]
 [tool.alembic]
 

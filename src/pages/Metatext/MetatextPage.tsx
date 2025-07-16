@@ -30,15 +30,10 @@ function MetatextPage(): ReactElement {
 
 
 
-    // Fetch documents when component mounts, but only if not already loaded or loading
     useEffect(() => {
-        if (!metatexts.length && !metatextsLoading) {
-            fetchMetatexts();
-        }
-        if (!sourceDocs.length && !sourceDocsLoading) {
-            fetchSourceDocs(); // Needed for the create form
-        }
-    }, [fetchMetatexts, fetchSourceDocs, metatexts.length, metatextsLoading, sourceDocs.length, sourceDocsLoading]);
+        fetchMetatexts();
+        fetchSourceDocs();
+    }, [fetchMetatexts, fetchSourceDocs]);
 
     // Refresh data after successful creation
     const handleCreateSuccess = () => {
