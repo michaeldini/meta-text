@@ -2,7 +2,7 @@
 // Extracts the logic from PaginatedChunks to keep the component clean
 
 import React from 'react';
-import { useUIPreferencesStore } from 'store/uiPreferences';
+import { useUIPreferencesStore } from 'store';
 import type { ChunkType } from 'types';
 
 /**

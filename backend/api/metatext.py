@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from typing import Annotated
 from sqlmodel import Session
 
 from backend.db import get_session
@@ -27,16 +26,20 @@ def get_metatext_service() -> MetatextService:
 @router.post("/metatext", response_model=MetaTextSummary, name="create_metatext")
 def create_metatext(
     req: CreateMetaTextRequest,
-    current_user: Annotated[UserRead, Depends(get_current_active_user)],
     session: Session = Depends(get_session),
-    service: MetatextService = Depends(get_metatext_service)
+    service: MetatextService = Depends(get_metatext_service),
+    user: UserRead = Depends(get_current_active_user)
 ):
-    """Create a new metatext from a source document. Requires authentication."""
+    """
+    Create a new metatext from a source document. Requires authentication.
+    Refactored to use new auth pattern: user context is injected as 'user'.
+    """
     try:
+        # Pass user context explicitly to the service
         metatext = service.create_metatext_with_chunks(
             title=req.title,
             source_doc_id=req.sourceDocId,
-            user_id=current_user.id,
+            user_id=user.id,
             session=session
         )
         return metatext
@@ -59,24 +62,24 @@ def create_metatext(
 
 @router.get("/metatext", response_model=list[MetaTextSummary], name="list_metatexts")
 def list_metatexts(
-    current_user: Annotated[UserRead, Depends(get_current_active_user)],
     session: Session = Depends(get_session),
-    service: MetatextService = Depends(get_metatext_service)
+    service: MetatextService = Depends(get_metatext_service),
+    user: UserRead = Depends(get_current_active_user)
 ):
-    """List all metatexts for the authenticated user."""
-    return service.list_user_metatexts(user_id=current_user.id, session=session)
+    """List all metatexts for the authenticated user. Refactored to use 'user' variable."""
+    return service.list_user_metatexts(user_id=user.id, session=session)
 
 
 @router.get("/metatext/{metatext_id}", response_model=MetaTextDetail, name="get_metatext")
 def get_metatext(
     metatext_id: int,
-    current_user: Annotated[UserRead, Depends(get_current_active_user)],
     session: Session = Depends(get_session),
-    service: MetatextService = Depends(get_metatext_service)
+    service: MetatextService = Depends(get_metatext_service),
+    user: UserRead = Depends(get_current_active_user)
 ):
-    """Get a specific metatext by ID for the authenticated user."""
+    """Get a specific metatext by ID for the authenticated user. Refactored to use 'user' variable."""
     try:
-        return service.get_metatext_by_id_and_user(metatext_id, current_user.id, session)
+        return service.get_metatext_by_id_and_user(metatext_id, user.id, session)
     except MetatextNotFoundError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -87,14 +90,14 @@ def get_metatext(
 @router.delete("/metatext/{metatext_id}", name="delete_metatext")
 def delete_metatext(
     metatext_id: int,
-    current_user: Annotated[UserRead, Depends(get_current_active_user)],
     session: Session = Depends(get_session),
-    service: MetatextService = Depends(get_metatext_service)
+    service: MetatextService = Depends(get_metatext_service),
+    user: UserRead = Depends(get_current_active_user)
 ) -> dict:
-    """Delete a metatext by ID for the authenticated user."""
+    """Delete a metatext by ID for the authenticated user. Refactored to use 'user' variable."""
     try:
         # Only allow deletion if the metatext belongs to the current user
-        return service.delete_metatext(metatext_id, current_user.id, session)
+        return service.delete_metatext(metatext_id, user.id, session)
     except TypeError:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

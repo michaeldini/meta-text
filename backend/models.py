@@ -76,7 +76,7 @@ class MetaTextDetail(MetaTextSummary):
 class CreateMetaTextRequest(BaseModel):
     sourceDocId: int
     title: str
-    user_id: int
+    # user_id: Optional[int] = None  # Optional for backward compatibility; set in backend
     
 # --- Chunk Compression Schemas ---
 class ChunkCompressionBase(SQLModel):
@@ -216,3 +216,9 @@ class Bookmark(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key="user.id")
     chunk_id: int = Field(foreign_key="chunk.id")
+
+
+# Pydantic model for setting a bookmark
+class SetBookmarkRequest(BaseModel):
+    meta_text_id: int
+    chunk_id: int

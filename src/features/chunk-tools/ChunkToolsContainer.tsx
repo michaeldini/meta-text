@@ -37,7 +37,7 @@ const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = ({
             <Box sx={styles.alwaysVisibleToolContainer}>
                 <CopyTool chunkText={chunk.text} />
                 {/* Bookmark toggle button */}
-                <ChunkBookmarkToggle chunkId={chunk.id} />
+                <ChunkBookmarkToggle chunk={chunk} />
             </Box>
             <ErrorBoundary>
                 <Suspense fallback={<LoadingBoundary loading={true}><div /></LoadingBoundary>}>
