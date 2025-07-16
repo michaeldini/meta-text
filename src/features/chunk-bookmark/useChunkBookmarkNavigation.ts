@@ -2,7 +2,7 @@
 // Extracts the logic from PaginatedChunks to keep the component clean
 
 import React from 'react';
-import { useUIPreferencesStore } from 'store';
+import { useBookmarkStore } from 'store/bookmarkStore';
 import type { ChunkType } from 'types';
 
 /**
@@ -16,7 +16,7 @@ const useChunkBookmarkNavigation = (
     chunksPerPage: number,
     setPage: React.Dispatch<React.SetStateAction<number>>
 ) => {
-    const { bookmarkedChunkId, navigateToBookmark, clearNavigateToBookmark } = useUIPreferencesStore();
+    const { bookmarkedChunkId, navigateToBookmark, clearNavigateToBookmark } = useBookmarkStore();
 
     React.useEffect(() => {
         if (navigateToBookmark && bookmarkedChunkId != null) {

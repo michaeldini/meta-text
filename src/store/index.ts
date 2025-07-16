@@ -1,3 +1,4 @@
+export { useBookmarkStore } from './bookmarkStore';
 // Zustand stores for managing application state
 //
 // Important Stores:

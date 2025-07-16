@@ -17,6 +17,7 @@ import { ChunkToolsPanel, PaginatedChunks, SearchContainer, BookmarkNavigateButt
 
 import { useSourceDocDetailData } from 'hooks';
 import { useSourceDocumentDetailStore, useUIPreferencesStore } from 'store';
+import { useBookmarkStore } from 'store';
 import { FADE_IN_DURATION } from 'constants';
 import { useValidatedIdParam } from 'utils/urlValidation';
 
@@ -52,6 +53,12 @@ function MetatextDetailPage(): ReactElement | null {
     const styles = getMetatextDetailStyles(theme);
     // Call bookmark store hook to preserve hook order
     useUIPreferencesStore();
+    // Hydrate bookmark state on mount (after refresh)
+    React.useEffect(() => {
+        if (metatext?.id) {
+            useBookmarkStore.getState().loadBookmark(metatext.id);
+        }
+    }, [metatext?.id]);
 
     // Initialize keyboard shortcuts for search
     useSearchKeyboard({ enabled: true });

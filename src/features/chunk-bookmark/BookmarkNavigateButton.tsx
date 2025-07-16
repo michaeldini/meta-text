@@ -3,11 +3,11 @@
 
 import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
-import { useUIPreferencesStore } from 'store';
+import { useBookmarkStore } from 'store';
 import { BookmarkIcon } from 'icons';
 
 const BookmarkNavigateButton: React.FC = () => {
-    const { bookmarkedChunkId, setNavigateToBookmark } = useUIPreferencesStore();
+    const { bookmarkedChunkId, setNavigateToBookmark } = useBookmarkStore();
     return (
         <Tooltip title="Go to bookmarked chunk" arrow>
             <span style={{ display: 'inline-flex' }}>

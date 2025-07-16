@@ -24,18 +24,18 @@ export async function setBookmark(metaTextId: number, chunkId: number): Promise<
 /**
  * Clear the bookmark for a metatext for the current user.
  * Returns true if bookmark was cleared, false if it didn't exist.
- */
-export async function clearBookmark(metaTextId: number): Promise<boolean> {
-    try {
-        // Backend expects { meta_text_id } in POST body to clear bookmark
-        await apiPost(`/api/bookmarks/clear`, { meta_text_id: metaTextId });
-        return true;
-    } catch (err) {
-        // If bookmark didn't exist, backend might throw an error
-        if (err instanceof Error && err.message.includes('404')) {
-            return false; // Bookmark didn't exist
-        } else {
-            throw err; // Re-throw unexpected errors
-        }
-    }
-}
+//  */
+// export async function clearBookmark(metaTextId: number): Promise<boolean> {
+//     try {
+//         // Backend expects { meta_text_id } in POST body to clear bookmark
+//         await apiPost(`/api/bookmarks/clear`, { meta_text_id: metaTextId });
+//         return true;
+//     } catch (err) {
+//         // If bookmark didn't exist, backend might throw an error
+//         if (err instanceof Error && err.message.includes('404')) {
+//             return false; // Bookmark didn't exist
+//         } else {
+//             throw err; // Re-throw unexpected errors
+//         }
+//     }
+// }
