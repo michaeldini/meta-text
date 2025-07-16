@@ -2,6 +2,7 @@
 // Zustand store for UI preferences and persistent chunk bookmarks
 import { create } from 'zustand';
 import { fetchBookmark, setBookmark, clearBookmark } from '../api/bookmarks';
+import { setUserConfig } from '../services/userConfigService';
 
 export const FONT_FAMILIES = [
     'Inter, sans-serif',
@@ -16,60 +17,58 @@ export const FONT_FAMILIES = [
 ];
 
 interface UIPreferencesState {
+
+    // Preferences
     textSizePx: number;
-    setTextSizePx: (size: number) => void;
     fontFamily: string;
-    setFontFamily: (font: string) => void;
     lineHeight: number;
-    setLineHeight: (lh: number) => void;
     paddingX: number;
-    setPaddingX: (px: number) => void;
-    // ID of currently bookmarked chunk, or null
-    bookmarkedChunkId: number | null;
-    // Async: load bookmark for a metatext from backend
-    loadBookmark: (metaTextId: number) => Promise<void>;
-    // Async: set bookmark for a metatext/chunk in backend
-    setBookmarkedChunkId: (metaTextId: number, chunkId: number) => Promise<void>;
-    // Async: clear bookmark for a metatext in backend
-    clearBookmark: (metaTextId: number) => Promise<void>;
-    // flag to trigger navigation to bookmark in UI
-    navigateToBookmark: boolean;
-    setNavigateToBookmark: () => void;
-    clearNavigateToBookmark: () => void;
-    // flag to show/hide chunk positions
     showChunkPositions: boolean;
+
+
+    // Actions
+    setTextSizePx: (size: number) => void;
+    setFontFamily: (font: string) => void;
+    setLineHeight: (lh: number) => void;
+    setPaddingX: (px: number) => void;
     setShowChunkPositions: (show: boolean) => void;
+
+    // Hydrate from config
+    hydrateUIPreferences: (prefs: Partial<Pick<UIPreferencesState, 'textSizePx' | 'fontFamily' | 'lineHeight' | 'paddingX' | 'showChunkPositions'>>) => void;
 }
 
 export const useUIPreferencesStore = create<UIPreferencesState>((set) => ({
-    textSizePx: 24,
-    setTextSizePx: (size) => set({ textSizePx: size }),
+
+    // Default values
+    // These can be overridden by user config on first load
+    textSizePx: 28,
     fontFamily: FONT_FAMILIES[0],
-    setFontFamily: (font) => set({ fontFamily: font }),
     lineHeight: 1.5,
-    setLineHeight: (lh) => set({ lineHeight: lh }),
     paddingX: 0.3,
-    setPaddingX: (px) => set({ paddingX: px }),
-    bookmarkedChunkId: null,
-    loadBookmark: async (metaTextId) => {
-        const chunkId = await fetchBookmark(metaTextId);
-        set({ bookmarkedChunkId: chunkId });
-    },
-    setBookmarkedChunkId: async (metaTextId, chunkId) => {
-        await setBookmark(metaTextId, chunkId);
-        set({ bookmarkedChunkId: chunkId });
-    },
-    clearBookmark: async (metaTextId) => {
-        const success = await clearBookmark(metaTextId);
-        if (success) {
-            set({ bookmarkedChunkId: null });
-        }
-    },
-    navigateToBookmark: false,
-    setNavigateToBookmark: () => set({ navigateToBookmark: true }),
-    clearNavigateToBookmark: () => set({ navigateToBookmark: false }),
     showChunkPositions: false,
-    setShowChunkPositions: (show) => set({ showChunkPositions: show }),
+
+    // Actions
+    setTextSizePx: (size) => {
+        set({ textSizePx: size });
+        setUserConfig({ textSizePx: size });
+    },
+    setFontFamily: (font) => {
+        set({ fontFamily: font });
+        setUserConfig({ fontFamily: font });
+    },
+    setLineHeight: (lh) => {
+        set({ lineHeight: lh });
+        setUserConfig({ lineHeight: lh });
+    },
+    setPaddingX: (px) => {
+        set({ paddingX: px });
+        setUserConfig({ paddingX: px });
+    },
+    setShowChunkPositions: (show) => {
+        set({ showChunkPositions: show });
+        setUserConfig({ showChunkPositions: show });
+    },
+    hydrateUIPreferences: (prefs) => set((state) => ({ ...state, ...prefs })),
 }));
 
 

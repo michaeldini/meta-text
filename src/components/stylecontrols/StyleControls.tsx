@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Paper } from '@mui/material';
 import { TextSizeInput, LineHeightInput, PaddingXInput, FontFamilySelect } from 'components';
+import ChunkPositionToggleButton from '../../features/chunk-position/ChunkPositionToggleButton';
 
 const StyleControls: React.FC = () => {
     return (
@@ -9,6 +10,7 @@ const StyleControls: React.FC = () => {
             <LineHeightInput />
             <PaddingXInput />
             <FontFamilySelect />
+            <ChunkPositionToggleButton />
         </Box>
     );
 };

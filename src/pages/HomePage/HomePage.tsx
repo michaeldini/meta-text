@@ -8,6 +8,7 @@ import { Box, Slide, useTheme } from '@mui/material';
 import type { Theme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
 import { useEffect } from 'react';
+import { useHydrateUserConfig } from 'hooks';
 
 import { PageContainer } from 'components';
 import { getAppStyles } from 'styles';
@@ -17,7 +18,10 @@ import WelcomeText from './components/WelcomeText';
 import NavigationButtons from './components/NavigationButtons';
 import { FADE_IN_DURATION } from 'constants';
 
+
 function HomePage(): ReactElement {
+    // Hydrate user config on page load
+    useHydrateUserConfig();
 
     // Prefetch data for both SourceDoc and Metatext pages in the background
     // This improves perceived performance when users navigate to those pages

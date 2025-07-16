@@ -12,12 +12,25 @@ def hash_password(password: str) -> str:
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
+
+# --- User UI Preferences Model ---
+class UserUIPreferences(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    user_id: int = Field(foreign_key="user.id", unique=True)
+    text_size_px: int = 24
+    font_family: str = "Inter, sans-serif"
+    line_height: float = 1.5
+    padding_x: float = 0.3
+    show_chunk_positions: bool = False
+    user: Optional["User"] = Relationship(back_populates="ui_preferences")
+
 # --- User Schemas ---
 class User(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     username: str = Field(index=True, unique=True)
     hashed_password: str
     meta_texts: List["MetaText"] = Relationship(back_populates="user")
+    ui_preferences: Optional[UserUIPreferences] = Relationship(back_populates="user", sa_relationship_kwargs={"uselist": False})
 
 # --- SourceDocument Schemas ---
 class SourceDocumentBase(SQLModel):

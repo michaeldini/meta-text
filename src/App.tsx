@@ -88,9 +88,31 @@ function App() {
 }
 
 // Separate component that uses the theme after it's provided
+import React, { useEffect } from 'react';
+import { useUIPreferencesStore } from 'store/uiPreferences';
+import { fetchUserConfig } from 'services/userConfigService';
+
 const AppContent = () => {
     const theme = useTheme();
     const styles = getAppStyles(theme);
+    const hydrateUIPreferences = useUIPreferencesStore(state => state.hydrateUIPreferences);
+
+    useEffect(() => {
+        // Fetch user config from backend and hydrate Zustand store
+        async function fetchAndHydrate() {
+            try {
+                console.log('Fetching user config...');
+                const config = await fetchUserConfig();
+                if (config.uiPreferences) {
+                    hydrateUIPreferences(config.uiPreferences);
+                }
+            } catch (err) {
+                // Optionally log error
+                console.error('Failed to hydrate UI preferences', err);
+            }
+        }
+        fetchAndHydrate();
+    }, [hydrateUIPreferences]);
 
     const renderRoute = (route: RouteConfig) => {
         const Component = route.element;

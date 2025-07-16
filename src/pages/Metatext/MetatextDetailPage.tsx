@@ -14,7 +14,7 @@ import {
 } from 'components';
 
 import { ChunkToolsPanel, PaginatedChunks, SearchContainer, BookmarkNavigateButton } from 'features';
-import ChunkPositionToggleButton from '../../features/chunk-position/ChunkPositionToggleButton';
+
 import { useSourceDocDetailData } from 'hooks';
 import { useSourceDocumentDetailStore, useUIPreferencesStore } from 'store';
 import { FADE_IN_DURATION } from 'constants';
@@ -77,7 +77,7 @@ function MetatextDetailPage(): ReactElement | null {
                                 {/* Button to navigate to bookmarked chunk and toggle chunk position */}
                                 <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
                                     <BookmarkNavigateButton />
-                                    <ChunkPositionToggleButton />
+
                                 </Box>
 
                                 <SearchContainer

@@ -2,7 +2,7 @@ import backend.env_setup  # noqa: F401
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.db import init_db
-from backend.api import ai, metatext, review, source_documents, chunks, auth, logs, chunk_compressions, bookmark
+from backend.api import ai, metatext, review, source_documents, chunks, auth, logs, chunk_compressions, bookmark, user_config
 from fastapi.staticfiles import StaticFiles
 import os
 from loguru import logger
@@ -38,6 +38,7 @@ app.include_router(review.router, prefix="/api", tags=["review"])
 app.include_router(logs.router, prefix="/api", tags=["logs"])
 app.include_router(chunk_compressions.router, prefix="/api", tags=["chunk_compressions"])
 app.include_router(bookmark.router, prefix="/api", tags=["bookmarks"])
+app.include_router(user_config.router, prefix="/api", tags=["user_config"])
 # app.include_router(explain.router, prefix="/api", tags=["explain"])
 
 # Mount static files for generated images
