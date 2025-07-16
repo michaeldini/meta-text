@@ -1,3 +1,8 @@
+// Calls the backend to refresh the access token using the httpOnly refresh token cookie
+export async function refreshToken(): Promise<AuthResponse> {
+    // No need to send Authorization header; cookie is sent automatically
+    return await apiPost(`${API_BASE}/refresh`);
+}
 // Ai generated code 
 
 import { apiPost, apiGet } from '../utils/api';

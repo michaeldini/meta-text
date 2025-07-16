@@ -8,6 +8,7 @@ import { AppSuspenseFallback, ErrorBoundary, GlobalNotifications } from 'compone
 
 import { getAppStyles, lightTheme, darkTheme } from './styles';
 import { useAuthStore } from 'store';
+// ...existing code...
 import { useThemeContext } from './contexts/ThemeContext';
 
 // Dynamically import pages for code splitting using barrel exports
@@ -88,16 +89,23 @@ function App() {
 }
 
 // Separate component that uses the theme after it's provided
+
 import React, { useEffect } from 'react';
+import { useAuthRefresh } from './hooks/useAuthRefresh';
 import { useUIPreferencesStore } from 'store/uiPreferences';
 import { fetchUserConfig } from 'services/userConfigService';
+// ...existing code...
+
 
 const AppContent = () => {
+    useAuthRefresh();
     const theme = useTheme();
     const styles = getAppStyles(theme);
     const hydrateUIPreferences = useUIPreferencesStore(state => state.hydrateUIPreferences);
+    const { user } = useAuthStore();
 
     useEffect(() => {
+        if (!user) return;
         // Fetch user config from backend and hydrate Zustand store
         async function fetchAndHydrate() {
             try {
@@ -112,7 +120,7 @@ const AppContent = () => {
             }
         }
         fetchAndHydrate();
-    }, [hydrateUIPreferences]);
+    }, [user, hydrateUIPreferences]);
 
     const renderRoute = (route: RouteConfig) => {
         const Component = route.element;
