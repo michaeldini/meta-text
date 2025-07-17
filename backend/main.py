@@ -1,11 +1,17 @@
+import os
+
+from loguru import logger
 import backend.env_setup  # noqa: F401
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, status
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+
 from backend.db import init_db
 from backend.api import ai, metatext, review, source_documents, chunks, auth, logs, chunk_compressions, bookmark, user_config
-from fastapi.staticfiles import StaticFiles
-import os
-from loguru import logger
+from backend.exceptions.auth_exceptions import UserRegistrationError, UsernameAlreadyExistsError
+
+
 
 # Initialize logger
 logger.add("backend/logs/app.log", rotation="1 MB", level="INFO", backtrace=True, diagnose=True)
@@ -18,6 +24,23 @@ if not os.path.exists("public/generated_images"):
 
 # FastAPI application setup
 app = FastAPI()
+
+
+# Global exception handlers
+# FastAPI's captures exceptions raised in the application
+@app.exception_handler(UsernameAlreadyExistsError)
+async def username_already_exists_handler(request: Request, exc: UsernameAlreadyExistsError):
+    return JSONResponse(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        content={"detail": str(exc)},
+    )
+    
+@app.exception_handler(UserRegistrationError)
+async def user_registration_error_handler(request: Request, exc: UserRegistrationError):
+    return JSONResponse(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        content={"detail": str(exc)},
+    )
 
 app.add_middleware(
     CORSMiddleware,

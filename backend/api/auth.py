@@ -1,11 +1,11 @@
+# --- Expiry helpers ---
+
 
 
 # This file handles authentication endpoints and logic for the FastAPI backend.
 # Sensitive and configurable values are loaded from environment variables (.env).
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
-
-
 import os
 import jwt
 from fastapi import APIRouter, Depends, HTTPException, status, Response, Request, Cookie
@@ -14,17 +14,44 @@ from jwt.exceptions import InvalidTokenError
 from passlib.context import CryptContext
 from pydantic import BaseModel
 from sqlmodel import Session
-
 from backend.db import get_session
 from backend.services.auth_service import AuthService
 from backend.exceptions.auth_exceptions import (
-    UsernameAlreadyExistsError,
+    # UsernameAlreadyExistsError,
     UserRegistrationError
 )
-
-# Load environment variables
 from dotenv import load_dotenv
 load_dotenv()
+
+# --- Expiry helpers ---
+def get_access_token_expires() -> timedelta:
+    return timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+
+def get_refresh_token_expires() -> timedelta:
+    return timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+
+# --- Helper functions ---
+def set_refresh_token_cookie(response: Response, refresh_token: str, refresh_token_expires: timedelta):
+    """Set the refresh token as an httpOnly cookie on the response."""
+    response.set_cookie(
+        key="refresh_token",
+        value=refresh_token,
+        httponly=True,
+        max_age=int(refresh_token_expires.total_seconds()),
+        expires=int(refresh_token_expires.total_seconds()),
+        samesite="lax",
+        secure=False  # Set to True in production with HTTPS
+    )
+
+def generate_tokens(user, access_token_expires: timedelta, refresh_token_expires: timedelta):
+    """Generate access and refresh tokens for a user."""
+    access_token = create_access_token(
+        data={"sub": user.username}, expires_delta=access_token_expires
+    )
+    refresh_token = create_refresh_token(
+        data={"sub": user.username}, expires_delta=refresh_token_expires
+    )
+    return access_token, refresh_token
 
 _secret = os.environ.get("SECRET_KEY")
 if not _secret:
@@ -130,19 +157,18 @@ async def get_current_active_user(
 @router.post("/auth/register", response_model=UserRead)
 def register(user: UserCreate, session: Session = Depends(get_session)):
     """Register a new user."""
-    try:
-        new_user = auth_service.register_user(user.username, user.password, session)
-        return UserRead.model_validate(new_user.model_dump())
-    except UsernameAlreadyExistsError:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, 
-            detail="Username already registered"
-        )
-    except UserRegistrationError as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
-            detail=f"Registration failed: {e.reason}"
-        )
+    # try:
+    new_user = auth_service.register_user(user.username, user.password, session)
+    return UserRead.model_validate(new_user.model_dump())
+
+    # except UsernameAlreadyExistsError:
+        # Let the exception propagate to be handled by FastAPI's exception handler
+        # raise
+    # except UserRegistrationError as e:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+    #         detail=f"Registration failed: {e.reason}"
+    #     )
 
 
 @router.post("/auth/token", response_model=Token)
@@ -155,25 +181,12 @@ def login(response: Response, form_data: OAuth2PasswordRequestForm = Depends(), 
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    refresh_token_expires = timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
-    access_token = create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires
-    )
-    refresh_token = create_refresh_token(
-        data={"sub": user.username}, expires_delta=refresh_token_expires
-    )
-    # Set refresh token as httpOnly cookie
-    response.set_cookie(
-        key="refresh_token",
-        value=refresh_token,
-        httponly=True,
-        max_age=int(refresh_token_expires.total_seconds()),
-        expires=int(refresh_token_expires.total_seconds()),
-        samesite="lax",
-        secure=False  # Set to True in production with HTTPS
-    )
+    access_token_expires = get_access_token_expires()
+    refresh_token_expires = get_refresh_token_expires()
+    access_token, refresh_token = generate_tokens(user, access_token_expires, refresh_token_expires)
+    set_refresh_token_cookie(response, refresh_token, refresh_token_expires)
     return Token(access_token=access_token, token_type="bearer")
+
 @router.post("/auth/refresh", response_model=Token)
 def refresh_token(request: Request, response: Response, refresh_token: str = Cookie(None), session: Session = Depends(get_session)):
     """Refresh access token using refresh token from httpOnly cookie."""
@@ -191,11 +204,10 @@ def refresh_token(request: Request, response: Response, refresh_token: str = Coo
     user = get_user_by_username(session, username)
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires
-    )
-    # Optionally, rotate refresh token here for extra security
+    access_token_expires = get_access_token_expires()
+    refresh_token_expires = get_refresh_token_expires()
+    access_token, new_refresh_token = generate_tokens(user, access_token_expires, refresh_token_expires)
+    set_refresh_token_cookie(response, new_refresh_token, refresh_token_expires)
     return Token(access_token=access_token, token_type="bearer")
 
 @router.get("/auth/me", response_model=UserRead)
