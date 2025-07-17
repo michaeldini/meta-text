@@ -1,5 +1,5 @@
 # This file handles authentication endpoints and logic for the FastAPI backend.
-# Sensitive and configurable values are loaded from environment variables (.env).
+# raised errors should be caught by FastAPI's global exception handlers defined in main.py
 from typing import Annotated
 from fastapi import APIRouter, Depends, Response, Request, Cookie
 from fastapi.security import OAuth2PasswordRequestForm
@@ -7,8 +7,9 @@ from sqlmodel import Session
 from backend.db import get_session
 
 
-from backend.services.auth_service import Token, UserCreate, UserRead, AuthService, get_current_active_user
-
+from backend.services.auth_service import AuthService 
+from backend.services.schemas import Token, UserCreate, UserRead
+from backend.services.auth_dependencies import get_current_active_user
 
 router = APIRouter()
 
@@ -35,14 +36,9 @@ def login(
     auth_service: AuthService = Depends(get_auth_service)
 ):
     """Login and get access and refresh tokens."""
-    # try:
+
     tokens = auth_service.login_user(form_data.username, form_data.password, session)
-    # except Exception:
-        # raise HTTPException(
-        #     status_code=status.HTTP_401_UNAUTHORIZED,
-        #     detail="Incorrect username or password",
-        #     headers={"WWW-Authenticate": "Bearer"},
-        # )
+    
     # Generate refresh token and set cookie
     user = auth_service.get_user_by_username(form_data.username, session)
     access_token_expires = auth_service.get_access_token_expires()
