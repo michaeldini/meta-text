@@ -98,7 +98,7 @@ function SearchableList({
     return (
         <ErrorBoundary>
             <LoadingBoundary loading={loading}>
-                <Paper sx={{ p: 3, maxWidth: 600, margin: '0 auto' }}>
+                <Paper sx={{ p: 3, maxWidth: 600, maxHeight: 600, overflow: 'auto', margin: '0 auto' }}>
                     <Box sx={{ mb: 3 }}>
                         {/* Display title if provided */}
                         {title && (

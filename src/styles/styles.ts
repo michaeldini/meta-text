@@ -123,7 +123,6 @@ export const getAppStyles = (theme: Theme) => ({
             color: theme.palette.text.secondary,
         },
         listItem: {
-            padding: theme.spacing(2),
             '&:hover': {
                 backgroundColor: alpha(theme.palette.primary.main, 0.1),
             },
