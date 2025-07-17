@@ -1,86 +1,77 @@
-"""JWT token service for authentication operations."""
-from jose import jwt, JWTError
-from datetime import datetime, timedelta
-from loguru import logger
-import os
+# """Token service for JWT creation, decoding, and related helpers."""
+# from datetime import datetime, timedelta, timezone
+# from fastapi import Response
+# import jwt
+# from loguru import logger
 
-from backend.exceptions.auth_exceptions import InvalidTokenError, TokenMissingUserIdError
+# class TokenService:
+#     def __init__(self, secret_key: str, algorithm: str, access_token_expiry: int, refresh_token_expiry: int):
+#         self.secret_key = secret_key
+#         self.algorithm = algorithm
+#         self.access_token_expiry = access_token_expiry
+#         self.refresh_token_expiry = refresh_token_expiry
 
+#     def create_access_token(self, data: dict, expires_delta: timedelta | None = None):
+#         to_encode = data.copy()
+#         if expires_delta:
+#             expire = datetime.now(timezone.utc) + expires_delta
+#         else:
+#             expire = datetime.now(timezone.utc) + timedelta(minutes=15)
+#         to_encode.update({"exp": expire})
+#         encoded_jwt = jwt.encode(to_encode, self.secret_key, algorithm=self.algorithm)
+#         return encoded_jwt
 
-class TokenService:
-    """Service for JWT token operations."""
-    
-    def __init__(self):
-        self.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key")
-        self.algorithm = "HS256"
-        self.access_token_expire_minutes = 60
-    
-    def create_access_token(self, data: dict, expires_delta: timedelta | None = None) -> str:
-        """
-        Create a JWT access token.
-        
-        Args:
-            data: Dictionary of data to encode in the token
-            expires_delta: Optional custom expiration time
-            
-        Returns:
-            Encoded JWT token string
-        """
-        logger.debug(f"Creating access token for data: {list(data.keys())}")
-        
-        to_encode = data.copy()
-        expire = datetime.utcnow() + (expires_delta or timedelta(minutes=self.access_token_expire_minutes))
-        to_encode.update({"exp": expire})
-        
-        token = jwt.encode(to_encode, self.secret_key, algorithm=self.algorithm)
-        logger.debug("Access token created successfully")
-        return token
-    
-    def decode_access_token(self, token: str) -> dict:
-        """
-        Decode and validate a JWT access token.
-        
-        Args:
-            token: JWT token string to decode
-            
-        Returns:
-            Decoded token payload
-            
-        Raises:
-            InvalidTokenError: If token is invalid or expired
-            TokenMissingUserIdError: If token doesn't contain user ID
-        """
-        logger.debug("Decoding access token")
-        
-        try:
-            payload = jwt.decode(token, self.secret_key, algorithms=[self.algorithm])
-            logger.debug("Token decoded successfully")
-            
-            # Validate required fields
-            user_id = payload.get("sub")
-            if user_id is None:
-                logger.warning("Token missing user_id (sub)")
-                raise TokenMissingUserIdError()
-            
-            return payload
-            
-        except JWTError as e:
-            logger.warning(f"JWTError during token validation: {e}")
-            raise InvalidTokenError(str(e))
-    
-    def get_user_id_from_token(self, token: str) -> str:
-        """
-        Extract user ID from a JWT token.
-        
-        Args:
-            token: JWT token string
-            
-        Returns:
-            User ID from token
-            
-        Raises:
-            InvalidTokenError: If token is invalid
-            TokenMissingUserIdError: If token doesn't contain user ID
-        """
-        payload = self.decode_access_token(token)
-        return payload["sub"]
+#     def create_refresh_token(self, data: dict, expires_delta: timedelta | None = None):
+#         to_encode = data.copy()
+#         if expires_delta:
+#             expire = datetime.now(timezone.utc) + expires_delta
+#         else:
+#             expire = datetime.now(timezone.utc) + timedelta(days=self.refresh_token_expiry)
+#         to_encode.update({"exp": expire, "type": "refresh"})
+#         encoded_jwt = jwt.encode(to_encode, self.secret_key, algorithm=self.algorithm)
+#         return encoded_jwt
+
+#     def decode_jwt_and_get_user_id(self, token: str) -> str:
+#         """
+#         Decode a JWT token and extract the user_id (sub).
+#         Raises InvalidTokenError if invalid or missing sub.
+#         """
+#         from backend.exceptions.auth_exceptions import InvalidTokenError
+#         try:
+#             payload = jwt.decode(token, self.secret_key, algorithms=[self.algorithm])
+#             user_id = payload.get("sub")
+#             if user_id is None:
+#                 logger.warning("Token missing user_id (sub)")
+#                 raise InvalidTokenError("Token missing user_id (sub)")
+#             return user_id
+#         except Exception as e:
+#             logger.warning(f"JWTError during token validation: {e}")
+#             raise InvalidTokenError(str(e))
+
+#     def get_access_token_expires(self) -> timedelta:
+#         return timedelta(minutes=self.access_token_expiry)
+
+#     def get_refresh_token_expires(self) -> timedelta:
+#         return timedelta(days=self.refresh_token_expiry)
+
+#     def set_refresh_token_cookie(self, response: Response, refresh_token: str, refresh_token_expires: timedelta):
+#         """Set the refresh token as an httpOnly cookie on the response."""
+#         response.set_cookie(
+#             key="refresh_token",
+#             value=refresh_token,
+#             httponly=True,
+#             max_age=int(refresh_token_expires.total_seconds()),
+#             expires=int(refresh_token_expires.total_seconds()),
+#             samesite="lax",
+#             secure=False  # Set to True in production with HTTPS
+#         )
+
+#     def generate_tokens(self, user, access_token_expires: timedelta, refresh_token_expires: timedelta):
+#         """Generate access and refresh tokens for a user."""
+#         access_token = self.create_access_token(
+#             data={"sub": str(user.id)}, expires_delta=access_token_expires
+#         )
+#         refresh_token = self.create_refresh_token(
+#             data={"sub": str(user.id)}, expires_delta=refresh_token_expires
+#         )
+#         return access_token, refresh_token

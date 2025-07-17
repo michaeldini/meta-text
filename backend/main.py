@@ -9,7 +9,13 @@ from fastapi.staticfiles import StaticFiles
 
 from backend.db import init_db
 from backend.api import ai, metatext, review, source_documents, chunks, auth, logs, chunk_compressions, bookmark, user_config
-from backend.exceptions.auth_exceptions import UserRegistrationError, UsernameAlreadyExistsError
+from backend.exceptions.auth_exceptions import (
+    UserRegistrationError,
+    UsernameAlreadyExistsError,
+    InvalidTokenError,
+    TokenMissingUserIdError,
+    UserNotFoundError,
+)
 
 
 
@@ -26,21 +32,43 @@ if not os.path.exists("public/generated_images"):
 app = FastAPI()
 
 
+
 # Global exception handlers
-# FastAPI's captures exceptions raised in the application
 @app.exception_handler(UsernameAlreadyExistsError)
 async def username_already_exists_handler(request: Request, exc: UsernameAlreadyExistsError):
     return JSONResponse(
         status_code=status.HTTP_400_BAD_REQUEST,
         content={"detail": str(exc)},
     )
-    
+
 @app.exception_handler(UserRegistrationError)
 async def user_registration_error_handler(request: Request, exc: UserRegistrationError):
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         content={"detail": str(exc)},
     )
+
+@app.exception_handler(InvalidTokenError)
+async def invalid_token_error_handler(request: Request, exc: InvalidTokenError):
+    return JSONResponse(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        content={"detail": str(exc)},
+    )
+
+@app.exception_handler(TokenMissingUserIdError)
+async def token_missing_user_id_error_handler(request: Request, exc: TokenMissingUserIdError):
+    return JSONResponse(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        content={"detail": str(exc)},
+    )
+
+@app.exception_handler(UserNotFoundError)
+async def user_not_found_error_handler(request: Request, exc: UserNotFoundError):
+    return JSONResponse(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        content={"detail": str(exc)},
+    )
+
 
 app.add_middleware(
     CORSMiddleware,
