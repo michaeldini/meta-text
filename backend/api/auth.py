@@ -1,38 +1,48 @@
-# --- Expiry helpers ---
-
-
-
 # This file handles authentication endpoints and logic for the FastAPI backend.
 # Sensitive and configurable values are loaded from environment variables (.env).
 from typing import Annotated
-from fastapi import APIRouter, Depends, HTTPException, status, Response, Request, Cookie
+from fastapi import APIRouter, Depends, Response, Request, Cookie
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlmodel import Session
 from backend.db import get_session
 
-from backend.services.auth_service import Token, UserCreate, UserRead, auth_service, get_current_active_user
+
+from backend.services.auth_service import Token, UserCreate, UserRead, AuthService, get_current_active_user
+
 
 router = APIRouter()
 
+# Dependency injection function for AuthService
+def get_auth_service() -> AuthService:
+    """Dependency injection function for AuthService."""
+    return AuthService()
 
 @router.post("/auth/register", response_model=UserRead)
-def register(user: UserCreate, session: Session = Depends(get_session)):
+def register(
+    user: UserCreate,
+    session: Session = Depends(get_session),
+    auth_service: AuthService = Depends(get_auth_service)
+):
     """Register a new user."""
-    # try:
     new_user = auth_service.register_user(user.username, user.password, session)
     return UserRead.model_validate(new_user.model_dump())
 
 @router.post("/auth/token", response_model=Token)
-def login(response: Response, form_data: OAuth2PasswordRequestForm = Depends(), session: Session = Depends(get_session)):
+def login(
+    response: Response,
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    session: Session = Depends(get_session),
+    auth_service: AuthService = Depends(get_auth_service)
+):
     """Login and get access and refresh tokens."""
-    try:
-        tokens = auth_service.login_user(form_data.username, form_data.password, session)
-    except Exception:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+    # try:
+    tokens = auth_service.login_user(form_data.username, form_data.password, session)
+    # except Exception:
+        # raise HTTPException(
+        #     status_code=status.HTTP_401_UNAUTHORIZED,
+        #     detail="Incorrect username or password",
+        #     headers={"WWW-Authenticate": "Bearer"},
+        # )
     # Generate refresh token and set cookie
     user = auth_service.get_user_by_username(form_data.username, session)
     access_token_expires = auth_service.get_access_token_expires()
@@ -42,7 +52,13 @@ def login(response: Response, form_data: OAuth2PasswordRequestForm = Depends(), 
     return Token(access_token=tokens["access_token"], token_type=tokens["token_type"])
 
 @router.post("/auth/refresh", response_model=Token)
-def refresh_token(request: Request, response: Response, refresh_token: str = Cookie(None), session: Session = Depends(get_session)):
+def refresh_token(
+    request: Request,
+    response: Response,
+    refresh_token: str = Cookie(None),
+    session: Session = Depends(get_session),
+    auth_service: AuthService = Depends(get_auth_service)
+):
     """Refresh access token using refresh token from httpOnly cookie."""
     user, access_token, new_refresh_token, refresh_token_expires = auth_service.refresh_access_token(refresh_token, session)
     auth_service.set_refresh_token_cookie(response, new_refresh_token, refresh_token_expires)

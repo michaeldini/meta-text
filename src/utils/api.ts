@@ -16,21 +16,24 @@ interface ApiErrorResponse {
 
 /**
  * Handles a fetch Response, parsing JSON and surfacing errors in a consistent way.
- * Throws a special error for 401 Unauthorized (invalid/missing JWT),
  * otherwise throws a regular Error with the backend's message.
  * Returns parsed data for successful responses.
  */
 export async function handleApiResponse<T>(res: Response, defaultErrorMsg = 'Request failed'): Promise<T> {
-    // 401: Not authenticated (invalid/missing JWT)
-    if (res.status === 401) {
-        const err: any = new Error('Not authenticated');
-        err.isAuthError = true;
-        throw err;
-    }
+
 
     // 204 No Content or empty response
     if (res.status === 204 || res.headers.get('content-length') === '0') {
         return {} as T;
+    }
+    if (res.status === 401) {
+        localStorage.removeItem('access_token');
+        // Optionally clear Zustand auth state here too
+        if (window.location.pathname !== '/login') {
+            window.location.href = '/login';
+        }
+        // Prevent further code execution
+        throw new Error('Unauthorized - redirecting to login');
     }
 
     // Try to parse JSON

@@ -10,6 +10,7 @@ from fastapi.staticfiles import StaticFiles
 from backend.db import init_db
 from backend.api import ai, metatext, review, source_documents, chunks, auth, logs, chunk_compressions, bookmark, user_config
 from backend.exceptions.auth_exceptions import (
+    InvalidCredentialsError,
     UserRegistrationError,
     UsernameAlreadyExistsError,
     InvalidTokenError,
@@ -67,6 +68,14 @@ async def user_not_found_error_handler(request: Request, exc: UserNotFoundError)
     return JSONResponse(
         status_code=status.HTTP_401_UNAUTHORIZED,
         content={"detail": str(exc)},
+    )
+    
+@app.exception_handler(InvalidCredentialsError)
+async def invalid_credentials_error_handler(request: Request, exc: InvalidCredentialsError):
+    return JSONResponse(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        content={"detail": "Invalid username or password"},
+        headers={"WWW-Authenticate": "Bearer"},
     )
 
 

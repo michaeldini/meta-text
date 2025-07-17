@@ -4,6 +4,7 @@ import os
 from typing import Annotated
 from fastapi.security import OAuth2PasswordBearer
 import jwt
+from jwt.exceptions import ExpiredSignatureError
 from pydantic import BaseModel
 from sqlmodel import select, Session
 from loguru import logger
@@ -51,6 +52,7 @@ class AuthService:
         """
         Decode a JWT token and extract the user_id (sub).
         Raises InvalidTokenError if invalid or missing sub.
+        Handles expired tokens gracefully.
         """
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
@@ -59,6 +61,9 @@ class AuthService:
                 logger.warning("Token missing user_id (sub)")
                 raise InvalidTokenError("Token missing user_id (sub)")
             return user_id
+        except ExpiredSignatureError:
+            logger.warning("JWT token has expired")
+            raise InvalidTokenError("Token has expired. Please log in again.")
         except Exception as e:
             logger.warning(f"JWTError during token validation: {e}")
             raise InvalidTokenError(str(e))
@@ -217,9 +222,6 @@ class AuthService:
         return user, access_token, new_refresh_token, refresh_token_expires
 
 
-auth_service = AuthService()
-
-
 class RefreshToken(BaseModel):
     refresh_token: str
 
@@ -245,6 +247,7 @@ def decode_jwt_and_get_user_id(token: str) -> str:
     """
     Decode a JWT token and extract the user_id (sub).
     Raises InvalidTokenError if invalid or missing sub.
+    Handles expired tokens gracefully.
     """
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
@@ -253,6 +256,9 @@ def decode_jwt_and_get_user_id(token: str) -> str:
             logger.warning("Token missing user_id (sub)")
             raise InvalidTokenError("Token missing user_id (sub)")
         return user_id
+    except ExpiredSignatureError:
+        logger.warning("JWT token has expired")
+        raise InvalidTokenError("Token has expired. Please log in again.")
     except Exception as e:
         logger.warning(f"JWTError during token validation: {e}")
         raise InvalidTokenError(str(e))
@@ -269,11 +275,14 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], sessio
         if username is None:
             raise credentials_exception
         token_data = TokenData(username=username)
+    except ExpiredSignatureError:
+        logger.warning("JWT token has expired")
+        raise InvalidTokenError("Token has expired. Please log in again.")
     except InvalidTokenError:
         raise credentials_exception
     if token_data.username is None:
         raise credentials_exception
-    user = auth_service.get_user_by_username(token_data.username, session)
+    user = AuthService().get_user_by_username(token_data.username, session)
     if user is None:
         raise credentials_exception
     return user
