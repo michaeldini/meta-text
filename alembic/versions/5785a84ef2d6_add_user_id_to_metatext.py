@@ -19,7 +19,7 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade():
-    op.add_column('metatext', sa.Column('user_id', sa.Integer(), nullable=True))
+    # op.add_column('metatext', sa.Column('user_id', sa.Integer(), nullable=True))
     op.create_foreign_key(
         'fk_metatext_user_id_user',
         'metatext', 'user',
