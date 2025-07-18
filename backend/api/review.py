@@ -5,6 +5,7 @@ from typing import List
 
 from backend.db import get_session
 from backend.models import WordDefinition, PhraseExplanation
+from backend.services.auth_dependencies import get_current_user
 from backend.services.review_service import ReviewService
 from backend.exceptions.review_exceptions import (
     WordlistNotFoundError
@@ -23,11 +24,12 @@ def get_review_service() -> ReviewService:
 def get_wordlist(
     metatext_id: int, 
     session: Session = Depends(get_session),
-    service: ReviewService = Depends(get_review_service)
+    service: ReviewService = Depends(get_review_service),
+    user = Depends(get_current_user)
 ):
-    """Get the wordlist for a specific metatext."""
+    """Get the wordlist for a specific metatext and user."""
     try:
-        return service.get_wordlist_for_meta_text(metatext_id, session)
+        return service.get_wordlist_for_meta_text(metatext_id, user.id, session)
     except WordlistNotFoundError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -41,43 +43,9 @@ def get_wordlist(
 def get_explanations(
     metatext_id: int, 
     session: Session = Depends(get_session),
-    service: ReviewService = Depends(get_review_service)
+    service: ReviewService = Depends(get_review_service),
+    user = Depends(get_current_user)
 ):
-    """Get all phrase explanations for a specific metatext."""
-    return service.get_phrase_explanations(metatext_id, session)
+    """Get all phrase explanations for a specific metatext and user."""
+    return service.get_phrase_explanations(metatext_id, user.id, session)
 
-
-# @router.get("/metatext/{metatext_id}/chunk-summaries-notes", response_model=List[ChunkRead], name="get_chunk_summaries_notes")
-# def get_chunk_summaries_notes(
-#     metatext_id: int, 
-#     session: Session = Depends(get_session),
-#     service: ReviewService = Depends(get_review_service)
-# ):
-#     """Get chunk summaries and notes for a specific metatext."""
-#     try:
-#         return service.get_chunk_summaries_and_notes(metatext_id, session)
-#     except ChunksNotFoundError:
-#         raise HTTPException(
-#             status_code=status.HTTP_404_NOT_FOUND,
-#             detail="Chunks not found for the specified metatext."
-#         )
-
-
-# @router.get("/metatext/{metatext_id}/wordlist-summary", name="get_wordlist_summary")
-# def get_wordlist_summary(
-#     metatext_id: int, 
-#     session: Session = Depends(get_session),
-#     service: ReviewService = Depends(get_review_service)
-# ):
-#     """Get a summary of the wordlist for a specific metatext."""
-#     return service.get_wordlist_summary(metatext_id, session)
-
-
-# @router.get("/metatext/{metatext_id}/chunks-summary", name="get_chunks_summary")
-# def get_chunks_summary(
-#     metatext_id: int, 
-#     session: Session = Depends(get_session),
-#     service: ReviewService = Depends(get_review_service)
-# ):
-#     """Get a summary of chunks and their completion status for a specific metatext."""
-#     return service.get_chunks_summary(metatext_id, session)
