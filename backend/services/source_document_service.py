@@ -25,38 +25,44 @@ class SourceDocumentService:
         self.text_processing_service = text_processing_service or TextProcessingService()
     
     async def create_source_document_from_upload(
-        self, 
-        title: str, 
-        file, 
+        self,
+        title: str,
+        file,
         session: Session
     ) -> SourceDocument:
-        """Create a new source document from an uploaded file."""
+        """Create a new source document from an uploaded file. Tries to extract and set author if present."""
         logger.info(f"Creating source document with title: '{title}'")
-        
+
         try:
             # Validate the uploaded file
             self._validate_upload_file(file)
-            
-            # Process the uploaded file
-            processed_text = await self.text_processing_service.process_uploaded_file(file)
-            
-            # Create the source document
-            doc = SourceDocument(title=title, text=processed_text)
+
+            # Process the uploaded file and extract text and author
+            processed = await self.text_processing_service.process_uploaded_file(file)
+            processed_text = processed["text"]
+            author = processed["author"]
+
+            # Create the source document, including author if found
+            doc_kwargs = dict(title=title, text=processed_text)
+            if author:
+                doc_kwargs['author'] = author
+                logger.info(f"Extracted author: '{author}'")
+            doc = SourceDocument(**doc_kwargs) # type: ignore
             session.add(doc)
             session.commit()
             session.refresh(doc)
-            
+
             logger.info(f"Source document created successfully: id={doc.id}, title='{doc.title}'")
             return doc
-            
+
         except Exception as e:
             session.rollback()
             logger.error(f"Error creating source document: {e}")
-            
+
             # Handle specific database constraint errors
             if 'UNIQUE constraint failed' in str(e):
                 raise SourceDocumentTitleExistsError(title)
-            
+
             raise SourceDocumentCreationError(f"Failed to create source document: {str(e)}")
     
     def get_source_document_by_id(self, doc_id: int, session: Session) -> SourceDocument:

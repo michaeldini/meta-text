@@ -158,7 +158,7 @@ class TestTextProcessingService:
         text = "Header\n***\nContent line 1\nContent line 2\n***\nFooter"
         
         # Act
-        result = TextProcessingService.extract_between_stars(text)
+        result = TextProcessingService.extract_between_project_gutenberg_stars(text)
         
         # Assert
         assert result == "Content line 1\nContent line 2"
@@ -169,7 +169,7 @@ class TestTextProcessingService:
         text = "Just some regular text without markers"
         
         # Act
-        result = TextProcessingService.extract_between_stars(text)
+        result = TextProcessingService.extract_between_project_gutenberg_stars(text)
         
         # Assert
         assert result == text
@@ -180,7 +180,7 @@ class TestTextProcessingService:
         text = "Header\n***\nContent\nMore content"
         
         # Act
-        result = TextProcessingService.extract_between_stars(text)
+        result = TextProcessingService.extract_between_project_gutenberg_stars(text)
         
         # Assert
         assert result == text
