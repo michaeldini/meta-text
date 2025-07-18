@@ -1,40 +1,24 @@
-"""Shared pytest configuration for API tests."""
+"""Shared pytest configuration for API tests using a persistent SQLite test database."""
+import os
 import pytest
 from sqlmodel import Session, SQLModel, create_engine
-from fastapi import FastAPI
-from fastapi.testclient import TestClient
+import backend.db
+from backend.main import app
+from backend.models import SourceDocument
 
+TEST_DB_PATH = "test_database.sqlite"
+TEST_DB_URL = f"sqlite:///{TEST_DB_PATH}"
 
 @pytest.fixture(scope="session")
 def test_engine():
-    """Create an in-memory SQLite engine for testing."""
-    engine = create_engine("sqlite:///:memory:", echo=False)
+    """Create a persistent SQLite engine for all tests."""
+    # Remove any existing test DB file before starting
+    if os.path.exists(TEST_DB_PATH):
+        os.remove(TEST_DB_PATH)
+    engine = create_engine(TEST_DB_URL, connect_args={"check_same_thread": False})
     SQLModel.metadata.create_all(engine)
     return engine
 
-
-@pytest.fixture
-def test_session(test_engine):
-    """Create a test database session."""
-    with Session(test_engine) as session:
-        yield session
-
-
-@pytest.fixture
-def test_app():
-    """Create a test FastAPI application."""
-    app = FastAPI(title="Test API")
-    return app
-
-
-@pytest.fixture
-def test_client(test_app):
-    """Create a test client for the FastAPI application."""
-    return TestClient(test_app)
-
-
-# Common test data
-@pytest.fixture
 def sample_user_data():
     """Sample user data for testing."""
     return {
@@ -105,3 +89,38 @@ def sample_word_definition_data():
         "definition_with_context": "In this context, test means verification",
         "meta_text_id": 1
     }
+
+
+
+
+@pytest.fixture(autouse=True)
+def override_get_session(test_engine):
+    """Override the get_session dependency to use the persistent test engine for all tests."""
+    def get_test_session():
+        with Session(test_engine) as session:
+            yield session
+    app.dependency_overrides[backend.db.get_session] = get_test_session
+    yield
+    app.dependency_overrides[backend.db.get_session] = backend.db.get_session
+
+
+@pytest.fixture(autouse=True)
+def reset_test_db(test_engine):
+    """Reset the test DB before each test for isolation and re-insert SourceDocument."""
+    SQLModel.metadata.drop_all(test_engine)
+    SQLModel.metadata.create_all(test_engine)
+    # Insert SourceDocument with id=1 after tables are created
+    with Session(test_engine) as session:
+        doc = SourceDocument(id=1, title="Test Document", author="Test Author", summary="Test Summary", characters="", locations="", themes="", symbols="", text="Test text")
+        session.add(doc)
+        session.commit()
+    yield
+
+
+@pytest.fixture(scope="session", autouse=True)
+def cleanup_test_db(request):
+    """Remove the test database file after all tests complete."""
+    def remove_db():
+        if os.path.exists(TEST_DB_PATH):
+            os.remove(TEST_DB_PATH)
+    request.addfinalizer(remove_db)

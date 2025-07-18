@@ -8,9 +8,15 @@ from backend.db import get_session
 
 from sqlmodel import Session
 
+
+# Dependency to allow injection/mocking of AuthService for testing
+def get_auth_service():
+    return AuthService()
+
 def get_current_user(
     authorization: str = Header(None),
-    session: Session = Depends(get_session)
+    session: Session = Depends(get_session),
+    auth_service: AuthService = Depends(get_auth_service)
 ):
     """
     Dependency to extract and validate the current user from the Authorization header JWT.
@@ -23,5 +29,5 @@ def get_current_user(
             headers={"WWW-Authenticate": "Bearer"},
         )
     token = authorization.split(" ", 1)[1]
-    user = AuthService().get_user_from_access_token(token, session)
+    user = auth_service.get_user_from_access_token(token, session)
     return user
