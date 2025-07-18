@@ -151,7 +151,7 @@ function SearchableList({
                                         secondaryAction={
                                             <DeleteButton
                                                 onClick={(e: React.MouseEvent) => handleDeleteClick(item.id)}
-                                                disabled={false}
+                                                disabled={true} // Disable delete button for now
                                                 label={`Delete ${displayText}`}
                                             />
                                         }
