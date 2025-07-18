@@ -11,8 +11,9 @@ from backend.exceptions.metatext_exceptions import (
     MetatextCreationError
 )
 
-# Import user dependency from auth
-from backend.api.auth import get_current_active_user, UserRead
+
+# Import new user dependency from services.auth_dependencies
+from backend.services.auth_dependencies import get_current_user
 
 
 router = APIRouter()
@@ -28,7 +29,7 @@ def create_metatext(
     req: CreateMetaTextRequest,
     session: Session = Depends(get_session),
     service: MetatextService = Depends(get_metatext_service),
-    user: UserRead = Depends(get_current_active_user)
+    user = Depends(get_current_user)
 ):
     """
     Create a new metatext from a source document. Requires authentication.
@@ -64,7 +65,7 @@ def create_metatext(
 def list_metatexts(
     session: Session = Depends(get_session),
     service: MetatextService = Depends(get_metatext_service),
-    user: UserRead = Depends(get_current_active_user)
+    user = Depends(get_current_user)
 ):
     """List all metatexts for the authenticated user. Refactored to use 'user' variable."""
     return service.list_user_metatexts(user_id=user.id, session=session)
@@ -75,7 +76,7 @@ def get_metatext(
     metatext_id: int,
     session: Session = Depends(get_session),
     service: MetatextService = Depends(get_metatext_service),
-    user: UserRead = Depends(get_current_active_user)
+    user = Depends(get_current_user)
 ):
     """Get a specific metatext by ID for the authenticated user. Refactored to use 'user' variable."""
     try:
@@ -92,7 +93,7 @@ def delete_metatext(
     metatext_id: int,
     session: Session = Depends(get_session),
     service: MetatextService = Depends(get_metatext_service),
-    user: UserRead = Depends(get_current_active_user)
+    user = Depends(get_current_user)
 ) -> dict:
     """Delete a metatext by ID for the authenticated user. Refactored to use 'user' variable."""
     try:

@@ -1,7 +1,9 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { login as apiLogin, register as apiRegister, getMe } from '../services/authService';
+
+import { login as apiLogin, register as apiRegister, getMe, refreshToken } from '../services/authService';
 import { getErrorMessage } from '../types/error';
+
 
 interface User {
     id: number;
@@ -16,6 +18,7 @@ interface AuthState {
     error: string | null;
     login: (username: string, password: string) => Promise<boolean>;
     register: (username: string, password: string) => Promise<boolean>;
+    refreshToken: () => Promise<void>;
     logout: () => void;
     clearError: () => void;
     setLoading: (loading: boolean) => void;
@@ -63,6 +66,26 @@ export const useAuthStore = create<AuthState>()(
                 } catch (e: unknown) {
                     set({ error: getErrorMessage(e, 'Registration failed'), loading: false });
                     return false;
+                }
+            },
+            refreshToken: async () => {
+                set({ loading: true, error: null });
+                try {
+                    const { access_token } = await refreshToken();
+                    const userData = await getMe(access_token);
+                    set({
+                        user: userData,
+                        token: access_token,
+                        loading: false,
+                        error: null
+                    });
+                } catch (e: unknown) {
+                    set({
+                        error: getErrorMessage(e, 'Failed to refresh token'),
+                        loading: false,
+                        user: null,
+                        token: null
+                    });
                 }
             },
 

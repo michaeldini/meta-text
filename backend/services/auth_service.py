@@ -1,6 +1,5 @@
 """Authentication service for user management operations."""
 from datetime import timedelta
-from fastapi.security import OAuth2PasswordBearer
 from sqlmodel import select, Session
 from loguru import logger
 from fastapi import Response
@@ -14,28 +13,75 @@ from backend.exceptions.auth_exceptions import (
     InvalidTokenError,
     TokenMissingUserIdError
 )
+from backend.services.schemas import LoginTokens
 # from passlib.context import CryptContext
+
 from backend.services.password_utils import hash_password, verify_password
-from backend.services.jwt_utils import create_access_token, create_refresh_token, decode_jwt_and_get_user_id, SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, REFRESH_TOKEN_EXPIRE_DAYS
+from backend.services.jwt_utils import create_access_token, create_refresh_token, SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, REFRESH_TOKEN_EXPIRE_DAYS
 import jwt
 
-## Password hashing and verification now handled by password_utils
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/token")
+
 
 
 class AuthService:
+
+    def get_user_from_access_token(self, token: str, session: Session):
+        """
+        Validate the JWT access token and return the user instance.
+        Raises HTTPException for any auth error.
+        """
+        from fastapi import HTTPException, status
+        import jwt
+        from backend.services.jwt_utils import SECRET_KEY, ALGORITHM
+        try:
+            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+            username = payload.get("sub")
+            if not username:
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Invalid token payload",
+                    headers={"WWW-Authenticate": "Bearer"},
+                )
+        except jwt.ExpiredSignatureError:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Token has expired. Please log in again.",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        except Exception:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Could not validate credentials",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        user = self.get_user_by_username(username, session)
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="User not found",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        return user
+    """
+    Service for user authentication and account management.
+    Handles registration, login, password hashing, and JWT token generation/refresh.
+    """
 
     def __init__(self):
         pass
 
     def get_access_token_expires(self) -> timedelta:
+        """Return timedelta for access token expiration."""
         return timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
 
     def get_refresh_token_expires(self) -> timedelta:
+        """Return timedelta for refresh token expiration."""
         return timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
 
     def set_refresh_token_cookie(self, response: Response, refresh_token: str, refresh_token_expires: timedelta):
-        """Set the refresh token as an httpOnly cookie on the response."""
+        """
+        Set the refresh token as an httpOnly cookie on the response.
+        """
         response.set_cookie(
             key="refresh_token",
             value=refresh_token,
@@ -47,7 +93,10 @@ class AuthService:
         )
 
     def generate_tokens(self, user, access_token_expires: timedelta, refresh_token_expires: timedelta):
-        """Generate access and refresh tokens for a user."""
+        """
+        Generate access and refresh tokens for a user.
+        Uses username as the JWT 'sub' claim for consistency.
+        """
         access_token = create_access_token(
             data={"sub": user.username}, expires_delta=access_token_expires
         )
@@ -56,8 +105,11 @@ class AuthService:
         )
         return access_token, refresh_token
 
-
     def get_user_by_id(self, user_id: int, session: Session) -> User:
+        """
+        Retrieve a user by their database ID.
+        Raises UserNotFoundError if not found.
+        """
         logger.debug(f"Getting user by id: {user_id}")
         user = session.get(User, user_id)
         if not user:
@@ -67,6 +119,10 @@ class AuthService:
         return user
 
     def get_user_by_username(self, username: str, session: Session) -> User:
+        """
+        Retrieve a user by their username.
+        Raises UserNotFoundError if not found.
+        """
         logger.debug(f"Getting user by username: {username}")
         user = session.exec(select(User).where(User.username == username)).first()
         if not user:
@@ -76,6 +132,10 @@ class AuthService:
         return user
 
     def register_user(self, username: str, password: str, session: Session) -> User:
+        """
+        Register a new user with a hashed password.
+        Raises UsernameAlreadyExistsError if username is taken.
+        """
         logger.info(f"Registering new user: {username}")
         existing_user = session.exec(select(User).where(User.username == username)).first()
         if existing_user:
@@ -95,6 +155,10 @@ class AuthService:
             raise UserRegistrationError(username, str(e))
 
     def authenticate_user(self, username: str, password: str, session: Session) -> User:
+        """
+        Authenticate a user by username and password.
+        Raises InvalidCredentialsError if authentication fails.
+        """
         logger.info(f"Authenticating user: {username}")
         try:
             user = self.get_user_by_username(username, session)
@@ -108,26 +172,34 @@ class AuthService:
             raise InvalidCredentialsError(username)
 
     def create_login_token(self, user: User) -> str:
+        """
+        Create a JWT access token for the user.
+        Uses username as the 'sub' claim.
+        """
         logger.debug(f"Creating login token for user: {user.username} (id={user.id})")
-        # Always use username in 'sub' claim for consistency
         return create_access_token(data={"sub": user.username})
 
-    def get_user_from_token(self, token: str, session: Session) -> User:
-        logger.debug("Getting user from token")
-        user_id = decode_jwt_and_get_user_id(token)
-        user = self.get_user_by_id(int(user_id), session)
-        logger.debug(f"User from token: id={user.id}, username={user.username}")
-        return user
-
-    def login_user(self, username: str, password: str, session: Session) -> dict:
+    def login_user(self, username: str, password: str, session: Session) -> LoginTokens:
+        """
+        Authenticate user and return access and refresh token dict.
+        """
         user = self.authenticate_user(username, password, session)
-        access_token = self.create_login_token(user)
-        return {
-            "access_token": access_token,
-            "token_type": "bearer"
-        }
+        access_token_expires = self.get_access_token_expires()
+        refresh_token_expires = self.get_refresh_token_expires()
+        access_token, refresh_token = self.generate_tokens(user, access_token_expires, refresh_token_expires)
+        return LoginTokens(
+            access_token=access_token,
+            refresh_token=refresh_token,
+            refresh_token_expires=refresh_token_expires,
+            token_type="bearer"
+        )
 
     def refresh_access_token(self, refresh_token: str, session: Session) -> tuple:
+        """
+        Refresh access token using a valid refresh token.
+        Returns (user, new_access_token, new_refresh_token, refresh_token_expires).
+        Raises InvalidTokenError if token is invalid or expired.
+        """
         if not refresh_token:
             raise InvalidTokenError("Missing refresh token")
         try:
@@ -146,9 +218,3 @@ class AuthService:
         refresh_token_expires = self.get_refresh_token_expires()
         access_token, new_refresh_token = self.generate_tokens(user, access_token_expires, refresh_token_expires)
         return user, access_token, new_refresh_token, refresh_token_expires
-
-
-
-
-
-# FastAPI auth dependencies are now in backend.services.auth_dependencies

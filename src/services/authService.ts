@@ -1,9 +1,5 @@
-// Calls the backend to refresh the access token using the httpOnly refresh token cookie
-export async function refreshToken(): Promise<AuthResponse> {
-    // No need to send Authorization header; cookie is sent automatically
-    return await apiPost(`${API_BASE}/refresh`);
-}
-// Ai generated code 
+
+// Ai generated code    
 
 import { apiPost, apiGet } from '../utils/api';
 
@@ -20,12 +16,16 @@ export async function register({ username, password }: AuthPayload): Promise<Use
 }
 
 export async function login({ username, password }: AuthPayload): Promise<AuthResponse> {
-    const params = new URLSearchParams();
-    params.append('username', username);
-    params.append('password', password);
-    return await apiPost(`${API_BASE}/token`, params, {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    });
+    // POST to /auth/login with JSON body
+    return await apiPost(`${API_BASE}/login`, { username, password });
+}
+
+export async function refreshToken(): Promise<AuthResponse> {
+    return await apiPost(`${API_BASE}/refresh`);
+}
+
+export async function logout(): Promise<void> {
+    await apiPost(`${API_BASE}/logout`);
 }
 
 export async function getMe(token: string): Promise<User> {

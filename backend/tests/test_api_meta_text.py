@@ -65,7 +65,8 @@ class TestMetatextEndpoints:
         mock_metatext = MetaTextSummary(
             id=1,
             title="Test Meta Text",
-            source_document_id=1
+            source_document_id=1,
+            user_id=1
         )
         mock_service.create_metatext_with_chunks.return_value = mock_metatext
         
@@ -164,9 +165,9 @@ class TestMetatextEndpoints:
         # Setup mocks
         mock_service = unittest.mock.Mock()
         mock_metatexts = [
-            MetaTextSummary(id=1, title="First Meta Text", source_document_id=1),
-            MetaTextSummary(id=2, title="Second Meta Text", source_document_id=1),
-            MetaTextSummary(id=3, title="Third Meta Text", source_document_id=2)
+            MetaTextSummary(id=1, title="First Meta Text", source_document_id=1, user_id=1),
+            MetaTextSummary(id=2, title="Second Meta Text", source_document_id=1, user_id=1),
+            MetaTextSummary(id=3, title="Third Meta Text", source_document_id=2, user_id=2)
         ]
         mock_service.list_all_metatexts.return_value = mock_metatexts
         
@@ -212,6 +213,7 @@ class TestMetatextEndpoints:
             id=1,
             title="Test Meta Text",
             source_document_id=1,
+            user_id=1,
             text="Full meta text content",
             chunks=[
                 ChunkRead(id=1, text="Chunk 1 text", meta_text_id=1),
@@ -318,7 +320,8 @@ class TestMetatextEndpoints:
         mock_metatext = MetaTextSummary(
             id=1,
             title="",
-            source_document_id=1
+            source_document_id=1,
+            user_id=1
         )
         mock_service.create_metatext_with_chunks.return_value = mock_metatext
         

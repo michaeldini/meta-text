@@ -4,9 +4,11 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session
 
 from backend.db import get_session
-from backend.api.auth import get_current_active_user, UserRead
+from backend.api.auth import UserRead
 from backend.services.bookmark_service import BookmarkService
 from backend.models import SetBookmarkRequest
+from backend.services.auth_dependencies import get_current_user
+
 
 router = APIRouter()
 
@@ -19,7 +21,7 @@ def get_bookmark(
     meta_text_id: int,
     session: Session = Depends(get_session),
     service: BookmarkService = Depends(get_bookmark_service),
-    user: UserRead = Depends(get_current_active_user)
+    user: UserRead = Depends(get_current_user)
 ):
     """Get the user's bookmark for a given metatext."""
     try:
@@ -33,7 +35,7 @@ def set_bookmark(
     req: SetBookmarkRequest,
     session: Session = Depends(get_session),
     service: BookmarkService = Depends(get_bookmark_service),
-    user: UserRead = Depends(get_current_active_user)
+    user: UserRead = Depends(get_current_user)
 ):
     """Set the user's bookmark for a given metatext and chunk."""
     try:
@@ -47,7 +49,7 @@ def clear_bookmark(
     meta_text_id: int,
     session: Session = Depends(get_session),
     service: BookmarkService = Depends(get_bookmark_service),
-    user: UserRead = Depends(get_current_active_user)
+    user: UserRead = Depends(get_current_user)
 ):
     """Delete the user's bookmark for a given metatext."""
     try:
