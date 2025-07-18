@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Response
 from sqlmodel import Session
 
 from backend.db import get_session
@@ -81,6 +81,35 @@ def get_metatext(
     """Get a specific metatext by ID for the authenticated user. Refactored to use 'user' variable."""
     try:
         return service.get_metatext_by_id_and_user(metatext_id, user.id, session)
+    except MetatextNotFoundError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Meta-text not found."
+        )
+
+
+# --- Download MetaText as JSON ---
+@router.get("/metatext/{metatext_id}/download", name="download_metatext")
+def download_metatext(
+    metatext_id: int,
+    session: Session = Depends(get_session),
+    service: MetatextService = Depends(get_metatext_service),
+    user = Depends(get_current_user)
+):
+    """
+    Download a MetaText (and all related data) as a JSON file for backup or transfer.
+    """
+    try:
+        metatext = service.get_metatext_by_id_and_user(metatext_id, user.id, session)
+        # Use MetaTextDetail for serialization (includes chunks)
+        detail = MetaTextDetail.model_validate(metatext)
+        import json
+        json_data = json.dumps(detail.model_dump(), ensure_ascii=False, indent=2)
+        filename = f"metatext_{metatext_id}.json"
+        headers = {
+            "Content-Disposition": f"attachment; filename={filename}"
+        }
+        return Response(content=json_data, media_type="application/json", headers=headers)
     except MetatextNotFoundError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

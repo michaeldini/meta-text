@@ -29,7 +29,8 @@ import {
     DocumentArrowDownIcon as DocumentArrowDownSvg,
     PencilIcon as PencilSvg,
     CheckIcon as CheckSvg,
-    BookmarkIcon as BookmarkSvg
+    BookmarkIcon as BookmarkSvg,
+    ArrowDownTrayIcon as ArrowDownTraySvg,
 } from '@heroicons/react/24/solid';
 
 import {
@@ -72,3 +73,4 @@ export const PencilIcon: React.FC<IconProps> = (props) => <ThemedIcon as={Pencil
 export const CheckIcon: React.FC<IconProps> = (props) => <ThemedIcon as={CheckSvg} {...props} />;
 export const BookmarkIcon: React.FC<IconProps> = (props) => <ThemedIcon as={BookmarkSvg} {...props} />;
 export const BookmarkOutlineIcon: React.FC<IconProps> = (props) => <ThemedIcon as={BookmarkOutlineSvg} {...props} />;
+export const DownloadIcon: React.FC<IconProps> = (props) => <ThemedIcon as={ArrowDownTraySvg} {...props} />;

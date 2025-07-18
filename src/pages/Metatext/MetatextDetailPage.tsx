@@ -22,9 +22,11 @@ import { FADE_IN_DURATION } from 'constants';
 import { useValidatedIdParam } from 'utils/urlValidation';
 
 
+
 import { useSearchKeyboard } from '../../features/chunk-search/hooks/useSearchKeyboard';
 import { useMetatextDetailData } from './hooks/useMetatextDetailData';
 import { getMetatextDetailStyles } from './Metatext.styles';
+import DownloadMetatextButton from './DownloadMetatextButton';
 
 
 function MetatextDetailPage(): ReactElement | null {
@@ -84,6 +86,7 @@ function MetatextDetailPage(): ReactElement | null {
                                 {/* Button to navigate to bookmarked chunk and toggle chunk position */}
                                 <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
                                     <BookmarkNavigateButton />
+                                    <DownloadMetatextButton metatextId={metatext.id} />
 
                                 </Box>
 

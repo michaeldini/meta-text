@@ -93,11 +93,11 @@ Update the `DeleteButton` to be disabled for non-admins:
 **Tip:**  
 Always enforce permissions on the backend as well, not just in the UI.
 
-### You can implement **MetaText download and upload** using FastAPI endpoints and your React frontend. Here’s a high-level approach
+## You can implement **MetaText download and upload** using FastAPI endpoints and your React frontend. Here’s a high-level approach
 
 1. **Backend: FastAPI Endpoints**
 
-#### **a. Download MetaText as JSON**
+### **a. Download MetaText as JSON**
 
 Create an endpoint that returns a MetaText (and its related data, e.g., chunks) as a JSON file:
 
