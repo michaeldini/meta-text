@@ -92,7 +92,7 @@ class TestChunkService:
         # Mock get_chunk_by_id to raise ChunkNotFoundError
         with patch.object(self.chunk_service, 'get_chunk_by_id', side_effect=ChunkNotFoundError(999)):
             with pytest.raises(ChunkNotFoundError):
-                self.chunk_service.get_chunk_with_images(999, mock_session)
+                self.chunk_service.get_chunk(999, mock_session)
 
     def test_get_chunk_with_images_success(self, mock_session, monkeypatch):
         # Mock get_chunk_by_id
@@ -104,7 +104,7 @@ class TestChunkService:
             monkeypatch.setattr(ChunkRead, "model_validate", mock_model_validate)
             
             # Call the method
-            result = self.chunk_service.get_chunk_with_images(1, mock_session)
+            result = self.chunk_service.get_chunk(1, mock_session)
             
             # Assertions
             assert result == expected_result

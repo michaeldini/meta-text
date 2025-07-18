@@ -1,8 +1,9 @@
 """Chunk service for business logic operations."""
 from sqlmodel import select, Session
+from fastapi import HTTPException
 from loguru import logger
 
-from backend.models import Chunk, ChunkRead
+from backend.models import Chunk, ChunkRead, MetaText
 from backend.exceptions.chunk_exceptions import (
     ChunkNotFoundError,
     InvalidSplitIndexError,
@@ -13,6 +14,39 @@ from backend.services.ai_image_service import AiImageService
 
 
 class ChunkService:
+    def create_chunk(self, chunk_data: dict, user_id: int, session: Session) -> Chunk:
+        """
+        Create a new chunk. metaTextId must belong to the current user.
+        Args:
+            chunk_data: Dictionary containing chunk fields (must include text, position, metaTextId)
+            user_id: The ID of the user creating the chunk
+            session: Database session
+        Returns:
+            The created Chunk object
+        Raises:
+            HTTPException: If required fields are missing or user is not authorized
+        """
+        required_fields = ["text", "position", "metaTextId"]
+        for field in required_fields:
+            if field not in chunk_data:
+                raise HTTPException(status_code=400, detail=f"Missing required field: {field}")
+        meta_text_id = chunk_data["metaTextId"]
+        meta_text = session.exec(select(MetaText).where(MetaText.id == meta_text_id)).first()
+        if not meta_text or meta_text.user_id != user_id:
+            raise HTTPException(status_code=403, detail="Not authorized to add chunk to this MetaText.")
+        chunk = Chunk(
+            text=chunk_data["text"],
+            position=chunk_data["position"],
+            notes=chunk_data.get("notes", ""),
+            summary=chunk_data.get("summary", ""),
+            comparison=chunk_data.get("comparison", ""),
+            explanation=chunk_data.get("explanation", ""),
+            meta_text_id=meta_text_id
+        )
+        session.add(chunk)
+        session.commit()
+        session.refresh(chunk)
+        return chunk
     """Service for chunk business logic operations."""
     
     def __init__(self, ai_image_service: AiImageService | None = None):
@@ -49,35 +83,30 @@ class ChunkService:
             if field in data:
                 setattr(chunk, field, data[field])
     
-    def get_chunk_by_id(self, chunk_id: int, session: Session) -> Chunk:
+    def get_chunk_by_id(self, chunk_id: int, user_id: int, session: Session) -> Chunk:
         """
-        Get a chunk by ID.
-        
-        Args:
-            chunk_id: The ID of the chunk
-            session: Database session
-            
-        Returns:
-            The chunk object
-            
-        Raises:
-            ChunkNotFoundError: If chunk is not found
+        Get a chunk by ID, ensuring it belongs to the given user.
         """
-        logger.info(f"Retrieving chunk with id: {chunk_id}")
+        logger.info(f"Retrieving chunk with id: {chunk_id} for user_id: {user_id}")
         chunk = session.get(Chunk, chunk_id)
         if not chunk:
             logger.warning(f"Chunk not found: id={chunk_id}")
             raise ChunkNotFoundError(chunk_id)
-        
+        # Enforce per-user access: chunk must belong to a MetaText owned by user_id
+        meta_text = session.get(MetaText, chunk.meta_text_id)
+        if not meta_text or meta_text.user_id != user_id:
+            logger.warning(f"User {user_id} unauthorized for chunk {chunk_id}")
+            raise ChunkNotFoundError(chunk_id)
         logger.debug(f"Chunk found: id={chunk.id}, meta_text_id={chunk.meta_text_id}")
         return chunk
     
-    def get_chunk_with_images(self, chunk_id: int, session: Session) -> ChunkRead:
+    def get_chunk(self, chunk_id: int, user_id: int, session: Session) -> ChunkRead:
         """
-        Get a chunk with its AI images.
+        Get a chunk.
         
         Args:
             chunk_id: The ID of the chunk
+            user_id: The ID of the user requesting the chunk
             session: Database session
             
         Returns:
@@ -86,18 +115,17 @@ class ChunkService:
         Raises:
             ChunkNotFoundError: If chunk is not found
         """
-        chunk = self.get_chunk_by_id(chunk_id, session)
-        # The relationship should load the images automatically if configured with lazy='selectin' or similar
-        # or we can manually validate it.
+        chunk = self.get_chunk_by_id(chunk_id, user_id, session)
         return ChunkRead.model_validate(chunk, from_attributes=True)
 
-    def split_chunk(self, chunk_id: int, word_index: int, session: Session) -> list[Chunk]:
+    def split_chunk(self, chunk_id: int, word_index: int, user_id: int, session: Session) -> list[Chunk]:
         """
         Split a chunk at the specified word index.
         
         Args:
             chunk_id: The ID of the chunk to split
             word_index: The word index where to split (1-based)
+            user_id: The ID of the user requesting the split
             session: Database session
             
         Returns:
@@ -107,9 +135,8 @@ class ChunkService:
             ChunkNotFoundError: If chunk is not found
             InvalidSplitIndexError: If word index is invalid
         """
-        logger.info(f"Splitting chunk id={chunk_id} at word_index={word_index}")
-        
-        chunk = self.get_chunk_by_id(chunk_id, session)
+        logger.info(f"Splitting chunk id={chunk_id} at word_index={word_index} for user_id={user_id}")
+        chunk = self.get_chunk_by_id(chunk_id, user_id, session)
         
         # Validate split index
         words = chunk.text.split()
@@ -151,13 +178,14 @@ class ChunkService:
         logger.info(f"Chunk split successful: old_chunk_id={chunk.id}, new_chunk_id={new_chunk.id}")
         return [chunk, new_chunk]
     
-    def combine_chunks(self, first_chunk_id: int, second_chunk_id: int, session: Session) -> Chunk:
+    def combine_chunks(self, first_chunk_id: int, second_chunk_id: int, user_id: int, session: Session) -> Chunk:
         """
         Combine two chunks into one.
         
         Args:
             first_chunk_id: ID of the first chunk
             second_chunk_id: ID of the second chunk
+            user_id: The ID of the user requesting the combine
             session: Database session
             
         Returns:
@@ -167,16 +195,9 @@ class ChunkService:
             ChunkNotFoundError: If either chunk is not found
             ChunkCombineError: If chunks cannot be combined
         """
-        logger.info(f"Combining chunks: first_chunk_id={first_chunk_id}, second_chunk_id={second_chunk_id}")
-        
-        first = session.get(Chunk, first_chunk_id)
-        second = session.get(Chunk, second_chunk_id)
-        
-        if not first:
-            raise ChunkNotFoundError(first_chunk_id)
-        if not second:
-            raise ChunkNotFoundError(second_chunk_id)
-        
+        logger.info(f"Combining chunks: first_chunk_id={first_chunk_id}, second_chunk_id={second_chunk_id} for user_id={user_id}")
+        first = self.get_chunk_by_id(first_chunk_id, user_id, session)
+        second = self.get_chunk_by_id(second_chunk_id, user_id, session)
         # Validate chunks are from same metatext
         if first.meta_text_id != second.meta_text_id:
             raise ChunkCombineError(
@@ -184,30 +205,27 @@ class ChunkService:
                 second_chunk_id, 
                 "chunks belong to different metatexts"
             )
-        
         # Ensure correct order (first should have lower position)
         if first.position > second.position:
             first, second = second, first
             first_chunk_id, second_chunk_id = second_chunk_id, first_chunk_id
-        
         # Combine text
         first.text = f"{first.text} {second.text}"
-        
         # Delete second chunk
         session.delete(second)
         session.commit()
         session.refresh(first)
-        
         logger.info(f"Chunks combined successfully: kept_chunk_id={first.id}, deleted_chunk_id={second.id}")
         return first
     
-    def update_chunk(self, chunk_id: int, chunk_data: dict, session: Session) -> Chunk:
+    def update_chunk(self, chunk_id: int, chunk_data: dict, user_id: int, session: Session) -> Chunk:
         """
         Update a chunk with new data.
         
         Args:
             chunk_id: The ID of the chunk to update
             chunk_data: Dictionary of fields to update
+            user_id: The ID of the user requesting the update
             session: Database session
             
         Returns:
@@ -217,19 +235,15 @@ class ChunkService:
             ChunkNotFoundError: If chunk is not found
             ChunkUpdateError: If update fails
         """
-        logger.info(f"Updating chunk with id: {chunk_id}")
-        
-        chunk = self.get_chunk_by_id(chunk_id, session)
-        
+        logger.info(f"Updating chunk with id: {chunk_id} for user_id: {user_id}")
+        chunk = self.get_chunk_by_id(chunk_id, user_id, session)
         try:
             self.update_chunk_fields(chunk, chunk_data)
             session.add(chunk)
             session.commit()
             session.refresh(chunk)
-            
             logger.info(f"Chunk updated successfully: id={chunk.id}")
             return chunk
-            
         except Exception as e:
             session.rollback()
             logger.error(f"Error updating chunk {chunk_id}: {e}")
