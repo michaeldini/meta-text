@@ -59,6 +59,8 @@ const PaginatedChunks = ({ metatextId }: PaginationProps) => {
     // Use pagination store for shared state
     const { currentPage, setCurrentPage, setChunksPerPage } = usePaginationStore();
 
+
+
     // Fetch chunks when metatextId changes
     React.useEffect(() => {
         if (metatextId) {
@@ -118,7 +120,6 @@ const PaginatedChunks = ({ metatextId }: PaginationProps) => {
                     <Box
                         sx={styles.chunksContainer}
                         data-testid="chunks-container"
-                        tabIndex={0}
                     >
                         <ChunksPagination pageCount={pageCount} page={currentPage} handleChange={handleChange}>
                             {paginatedChunks.map((chunk, chunkIdx) => (

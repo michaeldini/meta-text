@@ -71,6 +71,8 @@ class MetaText(MetaTextBase, table=True):
     chunks: List["Chunk"] = Relationship(back_populates="meta_text", cascade_delete=True)
     source_document: Optional[SourceDocument] = Relationship(back_populates="meta_texts")
     user: Optional["User"] = Relationship(back_populates="meta_texts")
+    phrase_explanations: List["PhraseExplanation"] = Relationship(back_populates="meta_text", cascade_delete=True)
+    word_definitions: List["WordDefinition"] = Relationship(back_populates="meta_text", cascade_delete=True)
 
 class MetaTextSummary(MetaTextBase):
     id: int
@@ -162,6 +164,7 @@ class WordDefinition(SQLModel, table=True):
     definition_with_context: str
     created_at: datetime = Field(default_factory=datetime.now, nullable=False)
     meta_text_id: int = Field(foreign_key="metatext.id")
+    meta_text: Optional[MetaText] = Relationship(back_populates="word_definitions")
     
 # --- AI Image Schemas ---
 class AiImage(SQLModel, table=True):
@@ -198,7 +201,8 @@ class PhraseExplanation(SQLModel, table=True):
     context: str
     explanation: str
     explanation_with_context: str
-    meta_text_id: int | None = None
+    meta_text_id: int = Field(foreign_key="metatext.id")
+    meta_text: Optional["MetaText"] = Relationship(back_populates="phrase_explanations")
 
 # New consolidated response model for explanations
 class ExplanationResponse(BaseModel):

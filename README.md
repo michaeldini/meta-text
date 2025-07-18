@@ -45,7 +45,11 @@ If multiple words are selected:
 
 ## Definitions and Explanations
 
-When user uses either the "Define word" or "Explain selected words" options the app will query the OpenAI API to get a definition or explanation of the word(s). The response will include the definition or explanation, an explanation of the word(s) in context, and the text used to generate the definition or explanation (Because chunks may change their text after the definition, it is included in the response to preserve the chunk text).
+When a user uses either the "Define word" or "Explain selected words" or "Explain a chunk", the /explain endpoint will be called. Depending on the request params, the appropriate response will be generated. The endpoint will query the OpenAI API to get a definition or explanation of the word(s). The response will include the definition or explanation, an explanation of the word(s) in context, and the text used to generate the definition or explanation (Because chunks may change their text after the definition, it is included in the response to preserve the chunk text).
+
+A chunk explanation is saved in the Chunk table.
+
+Words Explanations are saved in
 
 Definitions and Explanations are stored in the database and can be viewed later. They are associated with metatexts and not chunks because chunks can change over time.
 
