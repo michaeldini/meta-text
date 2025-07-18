@@ -10,6 +10,9 @@ from sqlmodel import Session
 from backend.models import SourceDocumentSummary, SourceDocumentDetail, SourceDocumentUpdate, DeleteResponse
 from backend.db import get_session
 from backend.services.source_document_service import SourceDocumentService
+
+# Import user dependency
+from backend.services.auth_dependencies import get_current_user
 from backend.exceptions.source_document_exceptions import (
     SourceDocumentNotFoundError,
     SourceDocumentTitleExistsError,
@@ -30,6 +33,7 @@ def get_source_document_service() -> SourceDocumentService:
     return SourceDocumentService()
 
 
+
 @router.post(
     "/source-documents",
     response_model=SourceDocumentDetail,
@@ -39,14 +43,16 @@ async def create_source_document(
     title: Annotated[str, Form()],
     file: Annotated[UploadFile, File()],
     session: Session = Depends(get_session),
-    service: SourceDocumentService = Depends(get_source_document_service)
+    service: SourceDocumentService = Depends(get_source_document_service),
+    user = Depends(get_current_user)
 ):
-    """Create a new source document from an uploaded file."""
+    """Create a new source document from an uploaded file. Requires authentication."""
     try:
         return await service.create_source_document_from_upload(
             title=title,
             file=file,
-            session=session
+            session=session,
+            user=user
         )
     except SourceDocumentTitleExistsError:
         raise HTTPException(
@@ -65,17 +71,28 @@ async def create_source_document(
         )
 
 
+
 @router.get("/source-documents", response_model=list[SourceDocumentSummary], name="list_source_documents")
-async def list_source_documents(session: Session = Depends(get_session), service: SourceDocumentService = Depends(get_source_document_service)):
-    """List all source documents with all fields."""
-    return service.list_all_source_documents(session)
+async def list_source_documents(
+    session: Session = Depends(get_session),
+    service: SourceDocumentService = Depends(get_source_document_service),
+    user = Depends(get_current_user)
+):
+    """List all source documents for the authenticated user."""
+    return service.list_all_source_documents(session=session, user=user)
+
 
 
 @router.get("/source-documents/{doc_id}", response_model=SourceDocumentDetail, name="get_source_document")
-async def get_source_document(doc_id: int, session: Session = Depends(get_session), service: SourceDocumentService = Depends(get_source_document_service)):
-    """Retrieve a source document by ID."""
+async def get_source_document(
+    doc_id: int,
+    session: Session = Depends(get_session),
+    service: SourceDocumentService = Depends(get_source_document_service),
+    user = Depends(get_current_user)
+):
+    """Retrieve a source document by ID for the authenticated user."""
     try:
-        return service.get_source_document_by_id(doc_id, session)
+        return service.get_source_document_by_id(doc_id, session, user=user)
     except SourceDocumentNotFoundError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 
@@ -83,11 +100,17 @@ async def get_source_document(doc_id: int, session: Session = Depends(get_sessio
         )
 
 
+
 @router.delete("/source-documents/{doc_id}", name="delete_source_document", response_model=DeleteResponse)
-async def delete_source_document(doc_id: int, session: Session = Depends(get_session), service: SourceDocumentService = Depends(get_source_document_service)) -> DeleteResponse:
-    """Delete a source document if no related MetaText records exist."""
+async def delete_source_document(
+    doc_id: int,
+    session: Session = Depends(get_session),
+    service: SourceDocumentService = Depends(get_source_document_service),
+    user = Depends(get_current_user)
+) -> DeleteResponse:
+    """Delete a source document if no related MetaText records exist. Only for authenticated user."""
     try:
-        return service.delete_source_document(doc_id, session)
+        return service.delete_source_document(doc_id, session, user=user)
     except SourceDocumentNotFoundError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 
@@ -100,22 +123,24 @@ async def delete_source_document(doc_id: int, session: Session = Depends(get_ses
         )
 
 
+
 @router.put("/source-documents/{doc_id}", response_model=SourceDocumentDetail, name="update_source_document")
 async def update_source_document(
-    doc_id: int, 
+    doc_id: int,
     update_data: SourceDocumentUpdate,
     session: Session = Depends(get_session),
-    service: SourceDocumentService = Depends(get_source_document_service)
+    service: SourceDocumentService = Depends(get_source_document_service),
+    user = Depends(get_current_user)
 ):
-    """Update a source document with provided fields."""
+    """Update a source document with provided fields. Only for authenticated user."""
     try:
         # Convert to dict and exclude None values for partial updates
         update_dict = update_data.model_dump(exclude_unset=True, exclude_none=True)
-        
         return service.update_source_document(
             doc_id=doc_id,
             update_data=update_dict,
-            session=session
+            session=session,
+            user=user
         )
     except SourceDocumentNotFoundError:
         raise HTTPException(

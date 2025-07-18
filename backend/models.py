@@ -20,6 +20,7 @@ class User(SQLModel, table=True):
     username: str = Field(index=True, unique=True)
     hashed_password: str
     meta_texts: List["MetaText"] = Relationship(back_populates="user")
+    source_documents: List["SourceDocument"] = Relationship(back_populates="user")
     ui_preferences: Optional[UserUIPreferences] = Relationship(back_populates="user", sa_relationship_kwargs={"uselist": False})
 
 # --- SourceDocument Schemas ---
@@ -32,10 +33,12 @@ class SourceDocumentBase(SQLModel):
     locations: str | None = None
     themes: str | None = None
     symbols: str | None = None
+    user_id: int = Field(foreign_key="user.id")
 
 class SourceDocument(SourceDocumentBase, table=True):
     text: str
     meta_texts: List["MetaText"] = Relationship(back_populates="source_document")
+    user: Optional["User"] = Relationship(back_populates="source_documents")
 
 
 class SourceDocumentDetail(SourceDocumentBase):

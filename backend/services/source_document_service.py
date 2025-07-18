@@ -28,10 +28,11 @@ class SourceDocumentService:
         self,
         title: str,
         file,
-        session: Session
+        session: Session,
+        user
     ) -> SourceDocument:
-        """Create a new source document from an uploaded file. Tries to extract and set author if present."""
-        logger.info(f"Creating source document with title: '{title}'")
+        """Create a new source document from an uploaded file. Tries to extract and set author if present. Associates document with user."""
+        logger.info(f"Creating source document with title: '{title}' for user_id={user.id}")
 
         try:
             # Validate the uploaded file
@@ -43,7 +44,7 @@ class SourceDocumentService:
             author = processed["author"]
 
             # Create the source document, including author if found
-            doc_kwargs = dict(title=title, text=processed_text)
+            doc_kwargs = dict(title=title, text=processed_text, user_id=user.id)
             if author:
                 doc_kwargs['author'] = author
                 logger.info(f"Extracted author: '{author}'")
@@ -52,7 +53,7 @@ class SourceDocumentService:
             session.commit()
             session.refresh(doc)
 
-            logger.info(f"Source document created successfully: id={doc.id}, title='{doc.title}'")
+            logger.info(f"Source document created successfully: id={doc.id}, title='{doc.title}', user_id={user.id}")
             return doc
 
         except Exception as e:
@@ -65,97 +66,92 @@ class SourceDocumentService:
 
             raise SourceDocumentCreationError(f"Failed to create source document: {str(e)}")
     
-    def get_source_document_by_id(self, doc_id: int, session: Session) -> SourceDocument:
-        """Retrieve a source document by ID."""
-        logger.info(f"Retrieving source document with id: {doc_id}")
-        doc = session.get(SourceDocument, doc_id)
-        
+    def get_source_document_by_id(self, doc_id: int, session: Session, user) -> SourceDocument:
+        """Retrieve a source document by ID for the given user."""
+        logger.info(f"Retrieving source document with id: {doc_id} for user_id={user.id}")
+        doc = session.exec(
+            select(SourceDocument).where(SourceDocument.id == doc_id, SourceDocument.user_id == user.id)
+        ).first()
         if not doc:
-            logger.warning(f"Source document not found: id={doc_id}")
+            logger.warning(f"Source document not found or not owned by user: id={doc_id}, user_id={user.id}")
             raise SourceDocumentNotFoundError(doc_id)
-        
-        logger.info(f"Source document found: id={doc.id}, title='{doc.title}'")
+        logger.info(f"Source document found: id={doc.id}, title='{doc.title}', user_id={user.id}")
         return doc
     
-    def list_all_source_documents(self, session: Session) -> list[SourceDocument]:
-        """List all source documents."""
-        logger.info("Listing all source documents")
-        docs = list(session.exec(select(SourceDocument)).all())
-        logger.info(f"Found {len(docs)} source documents")
+    def list_all_source_documents(self, session: Session, user) -> list[SourceDocument]:
+        """List all source documents for the given user."""
+        logger.info(f"Listing all source documents for user_id={user.id}")
+        docs = list(session.exec(select(SourceDocument).where(SourceDocument.user_id == user.id)).all())
+        logger.info(f"Found {len(docs)} source documents for user_id={user.id}")
         return docs
 
-    def delete_source_document(self, doc_id: int, session: Session) -> DeleteResponse:
-        """Delete a source document if no related MetaText records exist."""
-        logger.info(f"Attempting to delete source document with id: {doc_id}")
-        
-        # Check if document exists
-        doc = session.get(SourceDocument, doc_id)
+    def delete_source_document(self, doc_id: int, session: Session, user) -> DeleteResponse:
+        """Delete a source document if no related MetaText records exist. Only if owned by user."""
+        logger.info(f"Attempting to delete source document with id: {doc_id} for user_id={user.id}")
+        # Check if document exists and is owned by user
+        doc = session.exec(
+            select(SourceDocument).where(SourceDocument.id == doc_id, SourceDocument.user_id == user.id)
+        ).first()
         if not doc:
-            logger.warning(f"Source document not found for deletion: id={doc_id}")
+            logger.warning(f"Source document not found for deletion or not owned by user: id={doc_id}, user_id={user.id}")
             raise SourceDocumentNotFoundError(doc_id)
-        
         # Check for dependencies
         meta_texts = list(session.exec(select(MetaText).where(MetaText.source_document_id == doc_id)).all())
         if meta_texts:
             logger.warning(f"Cannot delete source document id={doc_id}: {len(meta_texts)} MetaText records exist")
             raise SourceDocumentHasDependenciesError(doc_id, len(meta_texts))
-        
         # Perform deletion
         title = doc.title  # Store for response
         session.delete(doc)
         session.commit()
-        
-        logger.info(f"Source document deleted successfully: id={doc_id}, title='{title}'")
+        logger.info(f"Source document deleted successfully: id={doc_id}, title='{title}', user_id={user.id}")
         return DeleteResponse(
             message="Source document deleted successfully.",
             deleted_id=doc_id
         )
 
     def update_source_document(
-        self, 
-        doc_id: int, 
-        update_data: dict, 
-        session: Session
+        self,
+        doc_id: int,
+        update_data: dict,
+        session: Session,
+        user
     ) -> SourceDocument:
-        """Update a source document with provided fields."""
-        logger.info(f"Updating source document with id: {doc_id}")
-        
+        """Update a source document with provided fields. Only if owned by user."""
+        logger.info(f"Updating source document with id: {doc_id} for user_id={user.id}")
         try:
-            # Check if document exists
-            doc = session.get(SourceDocument, doc_id)
+            # Check if document exists and is owned by user
+            doc = session.exec(
+                select(SourceDocument).where(SourceDocument.id == doc_id, SourceDocument.user_id == user.id)
+            ).first()
             if not doc:
-                logger.warning(f"Source document not found for update: id={doc_id}")
+                logger.warning(f"Source document not found for update or not owned by user: id={doc_id}, user_id={user.id}")
                 raise SourceDocumentNotFoundError(doc_id)
-            
             # Update only provided fields
             updated_fields = []
             for field, value in update_data.items():
                 if value is not None and hasattr(doc, field):
                     setattr(doc, field, value)
                     updated_fields.append(field)
-            
             if not updated_fields:
                 logger.info(f"No fields to update for source document id={doc_id}")
                 return doc
-            
             # Handle title uniqueness check if title is being updated
             if 'title' in updated_fields:
                 existing_doc = session.exec(
                     select(SourceDocument).where(
                         SourceDocument.title == update_data['title'],
-                        SourceDocument.id != doc_id
+                        SourceDocument.id != doc_id,
+                        SourceDocument.user_id == user.id
                     )
                 ).first()
                 if existing_doc:
-                    logger.warning(f"Title already exists: {update_data['title']}")
+                    logger.warning(f"Title already exists for user: {update_data['title']}")
                     raise SourceDocumentTitleExistsError(update_data['title'])
-            
             session.commit()
             session.refresh(doc)
-            
-            logger.info(f"Source document updated successfully: id={doc.id}, updated_fields={updated_fields}")
+            logger.info(f"Source document updated successfully: id={doc.id}, updated_fields={updated_fields}, user_id={user.id}")
             return doc
-            
         except (SourceDocumentNotFoundError, SourceDocumentTitleExistsError):
             session.rollback()
             raise

@@ -26,12 +26,9 @@ function SourceDocPage(): ReactElement {
         fetchSourceDocs
     } = useDocumentsStore();
 
-    // Fetch source documents when the component mounts, but only if not already loaded or loading
     useEffect(() => {
-        if (!sourceDocs.length && !sourceDocsLoading) {
-            fetchSourceDocs();
-        }
-    }, [fetchSourceDocs, sourceDocs.length, sourceDocsLoading]);
+        fetchSourceDocs();
+    }, [fetchSourceDocs]);
 
     return (
         <PageContainer
