@@ -2,7 +2,7 @@
 from sqlmodel import select, Session
 from loguru import logger
 
-from backend.models import MetaText, SourceDocument
+from backend.models import Metatext, SourceDocument
 from backend.exceptions.metatext_exceptions import (
     SourceDocumentNotFoundError,
     MetatextNotFoundError,
@@ -34,7 +34,7 @@ class MetatextService:
         user_id: int,
         session: Session,   
         chunk_size: int = CONFIG.DEFAULT_CHUNK_SIZE
-    ) -> MetaText:
+    ) -> Metatext:
         """Create a new metatext with associated chunks from a source document and user."""
         logger.info(f"Creating metatext with title: '{title}' from source_doc_id: {source_doc_id} for user_id: {user_id}")
         
@@ -43,22 +43,22 @@ class MetatextService:
         
         try:
             # Create the metatext
-            meta_text = MetaText(title=title, source_document_id=doc.id, user_id=user_id, text=doc.text)
-            session.add(meta_text)
-            session.flush()  # Assigns meta_text.id without committing
-            
+            metatext = Metatext(title=title, source_document_id=doc.id, user_id=user_id, text=doc.text)
+            session.add(metatext)
+            session.flush()  # Assigns metatext.id without committing
+
             # Create chunks
             self.chunking_service.create_chunks_for_metatext(
-                doc.text, meta_text.id, session, chunk_size
+                doc.text, metatext.id, session, chunk_size
             )
             
             # Commit the transaction
             session.commit()
-            session.refresh(meta_text)
-            
-            logger.info(f"Meta-text created successfully: id={meta_text.id}, title='{title}'")
-            return meta_text
-            
+            session.refresh(metatext)
+
+            logger.info(f"Meta-text created successfully: id={metatext.id}, title='{title}'")
+            return metatext
+
         except Exception as e:
             session.rollback()
             logger.error(f"Error creating metatext: {e}")
@@ -68,38 +68,38 @@ class MetatextService:
                 raise MetatextTitleExistsError(title)
             
             raise MetatextCreationError(f"Failed to create metatext: {str(e)}")
-    
-    def get_metatext_by_id_and_user(self, meta_text_id: int, user_id: int, session: Session) -> MetaText:
+
+    def get_metatext_by_id_and_user(self, metatext_id: int, user_id: int, session: Session) -> Metatext:
         """Retrieve a metatext by ID for a specific user."""
-        logger.info(f"Retrieving metatext with id: {meta_text_id} for user_id: {user_id}")
-        meta_text = session.exec(
-            select(MetaText)
-            .where(MetaText.id == meta_text_id, MetaText.user_id == user_id)
+        logger.info(f"Retrieving metatext with id: {metatext_id} for user_id: {user_id}")
+        metatext = session.exec(
+            select(Metatext)
+            .where(Metatext.id == metatext_id, Metatext.user_id == user_id)
         ).first()
-        if not meta_text:
-            logger.warning(f"Meta-text not found or not owned by user: id={meta_text_id}, user_id={user_id}")
-            raise MetatextNotFoundError(meta_text_id)
-        logger.info(f"Meta-text found: id={meta_text.id}, title='{meta_text.title}', user_id={user_id}")
-        return meta_text
-    
-    def list_user_metatexts(self, user_id: int, session: Session) -> list[MetaText]:
+        if not metatext:
+            logger.warning(f"Meta-text not found or not owned by user: id={metatext_id}, user_id={user_id}")
+            raise MetatextNotFoundError(metatext_id)
+        logger.info(f"Meta-text found: id={metatext.id}, title='{metatext.title}', user_id={user_id}")
+        return metatext
+
+    def list_user_metatexts(self, user_id: int, session: Session) -> list[Metatext]:
         """List all metatexts for a specific user."""
         logger.info(f"Listing metatexts for user_id={user_id}")
-        meta_texts = list(session.exec(select(MetaText).where(MetaText.user_id == user_id)).all())
-        logger.info(f"Found {len(meta_texts)} metatexts for user_id={user_id}")
-        return meta_texts
-    
-    def delete_metatext(self, meta_text_id: int, user_id: int, session: Session) -> dict:
+        metatexts = list(session.exec(select(Metatext).where(Metatext.user_id == user_id)).all())
+        logger.info(f"Found {len(metatexts)} metatexts for user_id={user_id}")
+        return metatexts
+
+    def delete_metatext(self, metatext_id: int, user_id: int, session: Session) -> dict:
         """Delete a metatext by ID for a specific user. Only allows deletion if owned by user."""
-        logger.info(f"Attempting to delete metatext with id: {meta_text_id} for user_id: {user_id}")
-        meta_text = session.exec(
-            select(MetaText).where(MetaText.id == meta_text_id, MetaText.user_id == user_id)
+        logger.info(f"Attempting to delete metatext with id: {metatext_id} for user_id: {user_id}")
+        metatext = session.exec(
+            select(Metatext).where(Metatext.id == metatext_id, Metatext.user_id == user_id)
         ).first()
-        if not meta_text:
-            logger.warning(f"Meta-text not found for deletion or not owned by user: id={meta_text_id}, user_id={user_id}")
-            raise MetatextNotFoundError(meta_text_id)
-        title = meta_text.title  # Store title for response
-        session.delete(meta_text)
+        if not metatext:
+            logger.warning(f"Meta-text not found for deletion or not owned by user: id={metatext_id}, user_id={user_id}")
+            raise MetatextNotFoundError(metatext_id)
+        title = metatext.title  # Store title for response
+        session.delete(metatext)
         session.commit()
-        logger.info(f"Meta-text deleted successfully: id={meta_text_id}, title='{title}', user_id={user_id}")
-        return {"success": True, "id": meta_text_id, "title": title}
+        logger.info(f"Meta-text deleted successfully: id={metatext_id}, title='{title}', user_id={user_id}")
+        return {"success": True, "id": metatext_id, "title": title}

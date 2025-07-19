@@ -4,7 +4,7 @@ from sqlmodel import Session
 from typing import List
 
 from backend.db import get_session
-from backend.models import WordDefinition, PhraseExplanation
+from backend.models import Explanation
 from backend.services.auth_dependencies import get_current_user
 from backend.services.review_service import ReviewService
 from backend.exceptions.review_exceptions import (
@@ -20,7 +20,7 @@ def get_review_service() -> ReviewService:
     return ReviewService()
 
 
-@router.get("/metatext/{metatext_id}/wordlist", response_model=List[WordDefinition], name="get_wordlist")
+@router.get("/metatext/{metatext_id}/wordlist", response_model=List[Explanation], name="get_wordlist")
 def get_wordlist(
     metatext_id: int, 
     session: Session = Depends(get_session),
@@ -39,7 +39,7 @@ def get_wordlist(
 
 
 
-@router.get("/metatext/{metatext_id}/explanations", response_model=List[PhraseExplanation], name="get_phrase_explanations")
+@router.get("/metatext/{metatext_id}/explanations", response_model=List[Explanation], name="get_phrase_explanations")
 def get_explanations(
     metatext_id: int, 
     session: Session = Depends(get_session),

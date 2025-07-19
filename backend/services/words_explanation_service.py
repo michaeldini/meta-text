@@ -8,9 +8,8 @@ Returns a consistent `ExplanationResponse` regardless of input type.
 """
 
 from sqlmodel import Session
-from backend.models import ExplanationResponse
+from backend.models import ExplanationResponse, User, Explanation
 from backend.services.openai_service import OpenAIService
-from backend.models import PhraseExplanation, WordDefinition
 from backend.exceptions.ai_exceptions import WordDefinitionValidationError
 from loguru import logger
 
@@ -24,11 +23,11 @@ class WordsExplanationService:
         self.openai_service = openai_service or OpenAIService()
         self.instruction_file = "instructions/explain_words_with_context.txt"
 
-    def explain(self, words: str, context: str, meta_text_id: int, session: Session) -> ExplanationResponse:
+    def explain(self, user: User, words: str, context: str, metatext_id: int, session: Session) -> ExplanationResponse:
         if not words:
             raise WordDefinitionValidationError("words", "Missing words")
-        if meta_text_id is None:
-            raise WordDefinitionValidationError("meta_text_id", "Missing meta_text_id")
+        if metatext_id is None:
+            raise WordDefinitionValidationError("metatext_id", "Missing metatext_id")
 
         is_single_word = len(words.split()) == 1
         prompt = f"words='{words}' context='{context}'"
@@ -40,23 +39,25 @@ class WordsExplanationService:
         )
 
         if is_single_word:
-            log_entry = WordDefinition(
-                word=words,
+            log_entry = Explanation(
+                user_id=user.id,
+                words=words,
                 context=context,
-                definition=ai_data.explanation,
-                definition_with_context=ai_data.explanationWithContext,
-                meta_text_id=meta_text_id
+                explanation=ai_data.explanation,
+                explanation_in_context=ai_data.explanation_in_context,
+                metatext_id=metatext_id
             )
             session.add(log_entry)
             session.commit()
             logger.info(f"Word definition generated and saved for word: '{words}'")
         else:
-            log_entry = PhraseExplanation(
-                phrase=words,
+            log_entry = Explanation(
+                user_id=user.id,
+                words=words,
                 context=context,
                 explanation=ai_data.explanation,
-                explanation_with_context=ai_data.explanationWithContext,
-                meta_text_id=meta_text_id
+                explanation_in_context=ai_data.explanation_in_context,
+                metatext_id=metatext_id
             )
             session.add(log_entry)
             session.commit()
@@ -64,5 +65,5 @@ class WordsExplanationService:
         
         return ExplanationResponse(
             explanation=ai_data.explanation,
-            explanationWithContext=ai_data.explanationWithContext
+            explanation_in_context=ai_data.explanation_in_context
         )

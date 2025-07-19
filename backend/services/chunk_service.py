@@ -3,7 +3,7 @@ from sqlmodel import select, Session
 from fastapi import HTTPException
 from loguru import logger
 
-from backend.models import Chunk, ChunkRead, MetaText
+from backend.models import Chunk, ChunkRead, Metatext
 from backend.exceptions.chunk_exceptions import (
     ChunkNotFoundError,
     InvalidSplitIndexError,
@@ -30,18 +30,18 @@ class ChunkService:
         for field in required_fields:
             if field not in chunk_data:
                 raise HTTPException(status_code=400, detail=f"Missing required field: {field}")
-        meta_text_id = chunk_data["metaTextId"]
-        meta_text = session.exec(select(MetaText).where(MetaText.id == meta_text_id)).first()
-        if not meta_text or meta_text.user_id != user_id:
-            raise HTTPException(status_code=403, detail="Not authorized to add chunk to this MetaText.")
+        metatext_id = chunk_data["metatextId"]
+        metatext = session.exec(select(Metatext).where(Metatext.id == metatext_id)).first()
+        if not metatext or metatext.user_id != user_id:
+            raise HTTPException(status_code=403, detail="Not authorized to add chunk to this Metatext.")
         chunk = Chunk(
             text=chunk_data["text"],
             position=chunk_data["position"],
-            notes=chunk_data.get("notes", ""),
+            note=chunk_data.get("notes", ""),
             summary=chunk_data.get("summary", ""),
-            comparison=chunk_data.get("comparison", ""),
+            evaluation=chunk_data.get("evaluation", ""),
             explanation=chunk_data.get("explanation", ""),
-            meta_text_id=meta_text_id
+            metatext_id=metatext_id
         )
         session.add(chunk)
         session.commit()
@@ -92,12 +92,12 @@ class ChunkService:
         if not chunk:
             logger.warning(f"Chunk not found: id={chunk_id}")
             raise ChunkNotFoundError(chunk_id)
-        # Enforce per-user access: chunk must belong to a MetaText owned by user_id
-        meta_text = session.get(MetaText, chunk.meta_text_id)
-        if not meta_text or meta_text.user_id != user_id:
+        # Enforce per-user access: chunk must belong to a Metatext owned by user_id
+        metatext = session.get(Metatext, chunk.metatext_id)
+        if not metatext or metatext.user_id != user_id:
             logger.warning(f"User {user_id} unauthorized for chunk {chunk_id}")
             raise ChunkNotFoundError(chunk_id)
-        logger.debug(f"Chunk found: id={chunk.id}, meta_text_id={chunk.meta_text_id}")
+        logger.debug(f"Chunk found: id={chunk.id}, metatext_id={chunk.metatext_id}")
         return chunk
     
     def get_chunk(self, chunk_id: int, user_id: int, session: Session) -> ChunkRead:
@@ -152,7 +152,7 @@ class ChunkService:
         next_chunk = session.exec(
             select(Chunk)
             .where(
-                (Chunk.meta_text_id == chunk.meta_text_id) &
+                (Chunk.metatext_id == chunk.metatext_id) &
                 (Chunk.position > chunk.position)
             )
             .order_by(Chunk.position)  # type: ignore
@@ -167,7 +167,7 @@ class ChunkService:
         new_chunk = Chunk(
             text=after,
             position=new_position,
-            meta_text_id=chunk.meta_text_id
+            metatext_id=chunk.metatext_id
         )
         
         session.add(new_chunk)
@@ -199,7 +199,7 @@ class ChunkService:
         first = self.get_chunk_by_id(first_chunk_id, user_id, session)
         second = self.get_chunk_by_id(second_chunk_id, user_id, session)
         # Validate chunks are from same metatext
-        if first.meta_text_id != second.meta_text_id:
+        if first.metatext_id != second.metatext_id:
             raise ChunkCombineError(
                 first_chunk_id, 
                 second_chunk_id, 

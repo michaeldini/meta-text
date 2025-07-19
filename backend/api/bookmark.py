@@ -39,7 +39,7 @@ def set_bookmark(
 ):
     """Set the user's bookmark for a given metatext and chunk."""
     try:
-        return service.set_user_bookmark_for_metatext(session, user.id, req.meta_text_id, req.chunk_id)
+        return service.set_user_bookmark_for_metatext(session, user.id, req.metatext_id, req.chunk_id)
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
     

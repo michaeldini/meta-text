@@ -4,7 +4,7 @@ from sqlmodel import select, Session
 from loguru import logger
 
 from backend.config import BackendConfig as CONFIG
-from backend.models import SourceDocument, MetaText, DeleteResponse
+from backend.models import SourceDocument, Metatext, DeleteResponse
 from backend.exceptions.source_document_exceptions import (
     SourceDocumentNotFoundError,
     SourceDocumentTitleExistsError,
@@ -96,9 +96,9 @@ class SourceDocumentService:
             logger.warning(f"Source document not found for deletion or not owned by user: id={doc_id}, user_id={user.id}")
             raise SourceDocumentNotFoundError(doc_id)
         # Check for dependencies
-        meta_texts = list(session.exec(select(MetaText).where(MetaText.source_document_id == doc_id)).all())
+        meta_texts = list(session.exec(select(Metatext).where(Metatext.source_document_id == doc_id)).all())
         if meta_texts:
-            logger.warning(f"Cannot delete source document id={doc_id}: {len(meta_texts)} MetaText records exist")
+            logger.warning(f"Cannot delete source document id={doc_id}: {len(meta_texts)} Metatext records exist")
             raise SourceDocumentHasDependenciesError(doc_id, len(meta_texts))
         # Perform deletion
         title = doc.title  # Store for response

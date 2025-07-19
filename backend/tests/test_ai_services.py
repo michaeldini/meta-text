@@ -227,7 +227,7 @@ class TestAIService:
         self.mock_session.get.return_value = chunk
         self.mock_openai_service.generate_text_response.return_value = "AI comparison result"
         
-        result = self.service.generate_chunk_comparison(1, self.mock_session)
+        result = self.service.generate_evaluation(1, self.mock_session)
         
         assert result == {"result": "AI comparison result"}
         assert chunk.comparison == "AI comparison result"
@@ -239,7 +239,7 @@ class TestAIService:
         self.mock_session.get.return_value = None
         
         with pytest.raises(ChunkNotFoundError) as exc_info:
-            self.service.generate_chunk_comparison(999, self.mock_session)
+            self.service.generate_evaluation(999, self.mock_session)
         
         assert exc_info.value.chunk_id == 999
     

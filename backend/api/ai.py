@@ -1,12 +1,13 @@
-from fastapi import APIRouter, HTTPException, Depends, Form, status
+from fastapi import APIRouter, HTTPException, Depends, Form, status, Query
 from sqlmodel import Session
 
 from backend.models import (
-     ChunkCompression, SourceDocInfoResponse, AiImageRead,
-    ExplainRequest
+     Rewrite, SourceDocInfoResponse, ImageRead,
+    ExplanationRequest
 )
 from backend.db import get_session
 from backend.services.ai_service import AIService
+from backend.services.auth_dependencies import get_current_user
 from backend.services.words_explanation_service import WordsExplanationService
 from backend.exceptions.ai_exceptions import (
     ChunkNotFoundError,
@@ -38,11 +39,16 @@ def get_ai_service() -> AIService:
             _ai_service = Mock(spec=AIService)
     return _ai_service
 
+
 @router.get("/generate-chunk-note-summary-text-comparison/{chunk_id}")
-async def generate_chunk_note_summary_text_comparison(chunk_id: int, session: Session = Depends(get_session)) -> dict:
-    """Generate AI comparison for chunk notes, summary, and text."""
+async def generate_chunk_note_summary_text_comparison(
+    chunk_id: int,
+    session: Session = Depends(get_session),
+    user = Depends(get_current_user)
+) -> dict:
+    """Generate AI comparison for chunk notes, summary, and text. Requires authentication."""
     try:
-        return get_ai_service().generate_chunk_comparison(chunk_id, session)
+        return get_ai_service().generate_evaluation(chunk_id, session)
     except ChunkNotFoundError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 
@@ -55,9 +61,14 @@ async def generate_chunk_note_summary_text_comparison(chunk_id: int, session: Se
         )
 
 
+
 @router.post("/source-doc-info/{doc_id}")
-async def source_doc_info(doc_id: int, session: Session = Depends(get_session)) -> SourceDocInfoResponse:
-    """Generate source document information using AI."""
+async def source_doc_info(
+    doc_id: int,
+    session: Session = Depends(get_session),
+    user = Depends(get_current_user)
+) -> SourceDocInfoResponse:
+    """Generate source document information using AI. Requires authentication."""
     try:
         return get_ai_service().generate_source_document_info(doc_id, session)
     except PromptValidationError as e:
@@ -77,9 +88,15 @@ async def source_doc_info(doc_id: int, session: Session = Depends(get_session)) 
         )
 
 
-@router.post("/generate-image", response_model=AiImageRead)
-async def generate_image(prompt: str = Form(...), chunk_id: int = Form(None), session: Session = Depends(get_session)):
-    """Generate AI image using DALL-E."""
+
+@router.post("/generate-image", response_model=ImageRead)
+async def generate_image(
+    prompt: str = Form(...),
+    chunk_id: int = Form(None),
+    session: Session = Depends(get_session),
+    user = Depends(get_current_user)
+):
+    """Generate AI image using DALL-E. Requires authentication."""
     try:
         return get_ai_service().generate_image(prompt, chunk_id, session)
     except PromptValidationError as e:
@@ -99,11 +116,17 @@ async def generate_image(prompt: str = Form(...), chunk_id: int = Form(None), se
         )
 
 
+
 @router.get("/generate-chunk-compression/{chunk_id}")
-async def generate_chunk_compression(chunk_id: int, style_title: str, session: Session = Depends(get_session)) -> ChunkCompression:
-    """Generate a compressed version of a chunk's text in a given style using AI (does not save)."""
+async def generate_chunk_compression(
+    chunk_id: int,
+    style_title: str,
+    session: Session = Depends(get_session),
+    user = Depends(get_current_user)
+) -> Rewrite:
+    """Generate a compressed version of a chunk's text in a given style using AI (does not save). Requires authentication."""
     try:
-        return get_ai_service().generate_chunk_compression(chunk_id, style_title, session)
+        return get_ai_service().generate_rewrite(chunk_id, style_title, session)
     except ChunkNotFoundError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -115,27 +138,31 @@ async def generate_chunk_compression(chunk_id: int, style_title: str, session: S
             detail=f"AI service error: {str(e)}"
         )
 
+
 @router.post("/explain")
 def explain(
-    request: ExplainRequest,
-    session: Session = Depends(get_session)
+    request: ExplanationRequest,
+    metatext_id: int = Query(None, description="Metatext ID for words explanation (required if not chunk explanation)"),
+    session: Session = Depends(get_session),
+    user = Depends(get_current_user)
 ):
     """
-    Consolidated endpoint for explaining words or a chunk.
+    Consolidated endpoint for explaining words or a chunk. Requires authentication.
     Determines the operation based on which fields are provided.
     """
     words_explanation_service = WordsExplanationService()
     
-    if request.chunkId is not None:
+    if request.chunk_id is not None:
         # Chunk explanation
-        return get_ai_service().generate_chunk_explanation(request.chunkId, session)
-    elif request.metaTextId is not None:
+        return get_ai_service().generate_chunk_explanation(user, request.chunk_id, session)
+    elif metatext_id is not None:
         # Words explanation (words and context are required fields, so they'll always be present)
         return words_explanation_service.explain(
+            user=user,
             words=request.words,
             context=request.context,
-            meta_text_id=request.metaTextId,
+            metatext_id=metatext_id,
             session=session
         )
     else:
-        raise HTTPException(status_code=400, detail="Either chunkId or metaTextId must be provided.")
+        raise HTTPException(status_code=400, detail="meta_text_id is required for words explanation.")

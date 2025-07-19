@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Response
 from sqlmodel import Session
 
 from backend.db import get_session
-from backend.models import CreateMetaTextRequest, MetaTextDetail, MetaTextSummary
+from backend.models import CreateMetatextRequest, MetatextDetail, MetatextSummary
 from backend.services.metatext_service import MetatextService
 from backend.exceptions.metatext_exceptions import (
     SourceDocumentNotFoundError,
@@ -20,13 +20,13 @@ router = APIRouter()
 
 # Dependency injection function
 def get_metatext_service() -> MetatextService:
-    """Dependency injection function for MetaTextService."""
+    """Dependency injection function for MetatextService."""
     return MetatextService()
 
 
-@router.post("/metatext", response_model=MetaTextSummary, name="create_metatext")
+@router.post("/metatext", response_model=MetatextSummary, name="create_metatext")
 def create_metatext(
-    req: CreateMetaTextRequest,
+    req: CreateMetatextRequest,
     session: Session = Depends(get_session),
     service: MetatextService = Depends(get_metatext_service),
     user = Depends(get_current_user)
@@ -61,7 +61,7 @@ def create_metatext(
         )
 
 
-@router.get("/metatext", response_model=list[MetaTextSummary], name="list_metatexts")
+@router.get("/metatext", response_model=list[MetatextSummary], name="list_metatexts")
 def list_metatexts(
     session: Session = Depends(get_session),
     service: MetatextService = Depends(get_metatext_service),
@@ -71,7 +71,7 @@ def list_metatexts(
     return service.list_user_metatexts(user_id=user.id, session=session)
 
 
-@router.get("/metatext/{metatext_id}", response_model=MetaTextDetail, name="get_metatext")
+@router.get("/metatext/{metatext_id}", response_model=MetatextDetail, name="get_metatext")
 def get_metatext(
     metatext_id: int,
     session: Session = Depends(get_session),
@@ -88,7 +88,7 @@ def get_metatext(
         )
 
 
-# --- Download MetaText as JSON ---
+# --- Download Metatext as JSON ---
 @router.get("/metatext/{metatext_id}/download", name="download_metatext")
 def download_metatext(
     metatext_id: int,
@@ -97,12 +97,12 @@ def download_metatext(
     user = Depends(get_current_user)
 ):
     """
-    Download a MetaText (and all related data) as a JSON file for backup or transfer.
+    Download a Metatext (and all related data) as a JSON file for backup or transfer.
     """
     try:
         metatext = service.get_metatext_by_id_and_user(metatext_id, user.id, session)
-        # Use MetaTextDetail for serialization (includes chunks)
-        detail = MetaTextDetail.model_validate(metatext)
+        # Use MetatextDetail for serialization (includes chunks)
+        detail = MetatextDetail.model_validate(metatext)
         import json
         json_data = json.dumps(detail.model_dump(), ensure_ascii=False, indent=2)
         filename = f"metatext_{metatext_id}.json"

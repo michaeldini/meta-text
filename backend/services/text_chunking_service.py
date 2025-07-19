@@ -20,20 +20,20 @@ class TextChunkingService:
     @staticmethod
     def create_chunks_for_metatext(
         text: str, 
-        meta_text_id: int, 
+        metatext_id: int, 
         session: Session, 
         chunk_size: int = CONFIG.DEFAULT_CHUNK_SIZE
     ) -> list[Chunk]:
         """Create and persist chunks for a metatext."""
         chunk_texts = TextChunkingService.split_text_into_chunks(text, chunk_size)
-        logger.info(f"Creating {len(chunk_texts)} chunks of size {chunk_size} for meta_text_id={meta_text_id}")
+        logger.info(f"Creating {len(chunk_texts)} chunks of size {chunk_size} for meta_text_id={metatext_id}")
         
         chunks = []
         for i, chunk_text in enumerate(chunk_texts):
             chunk = Chunk(
                 text=chunk_text,
                 position=float(i),
-                meta_text_id=meta_text_id
+                metatext_id=metatext_id
             )
             session.add(chunk)
             chunks.append(chunk)

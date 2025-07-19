@@ -2,7 +2,7 @@
 from sqlmodel import select, Session, desc
 from loguru import logger
 
-from backend.models import WordDefinition, Chunk, PhraseExplanation
+from backend.models import Explanation, Chunk, Metatext
 from backend.exceptions.review_exceptions import (
     WordlistNotFoundError,
     ChunksNotFoundError
@@ -12,7 +12,7 @@ from backend.exceptions.review_exceptions import (
 class ReviewService:
     """Service for review-related operations like wordlists and chunk summaries."""
     
-    def get_wordlist_for_meta_text(self, meta_text_id: int, user_id: int, session: Session) -> list[WordDefinition]:
+    def get_wordlist_for_meta_text(self, meta_text_id: int, user_id: int, session: Session) -> list[Explanation]:
         """
         Retrieve the wordlist for a specific metatext, ordered by most recent first.
         
@@ -28,12 +28,12 @@ class ReviewService:
             WordlistNotFoundError: If no words are found for the metatext
         """
         logger.info(f"Retrieving wordlist for meta_text_id={meta_text_id}, user_id={user_id}")
-        from backend.models import MetaText
+        from backend.models import Metatext
         wordlist = list(session.exec(
-            select(WordDefinition)
-            .join(MetaText)
-            .where((WordDefinition.meta_text_id == meta_text_id) & (MetaText.user_id == user_id))
-            .order_by(desc(WordDefinition.id))
+            select(Explanation)
+            .join(Metatext)
+            .where((Explanation.metatext_id == meta_text_id) & (Metatext.user_id == user_id))
+            .order_by(desc(Explanation.id))
         ).all())
         if not wordlist:
             logger.warning(f"No words found in wordlist for meta_text_id={meta_text_id}, user_id={user_id}")
@@ -57,11 +57,11 @@ class ReviewService:
             ChunksNotFoundError: If no chunks are found for the metatext
         """
         logger.info(f"Retrieving chunk summaries and notes for meta_text_id={meta_text_id}, user_id={user_id}")
-        from backend.models import MetaText
+        from backend.models import Metatext
         chunks = list(session.exec(
             select(Chunk)
-            .join(MetaText)
-            .where((Chunk.meta_text_id == meta_text_id) & (MetaText.user_id == user_id))
+            .join(Metatext)
+            .where((Chunk.metatext_id == meta_text_id) & (Metatext.user_id == user_id))
             .order_by(Chunk.position)  # type: ignore
         ).all())
         if not chunks:
@@ -86,14 +86,14 @@ class ReviewService:
         try:
             wordlist = self.get_wordlist_for_meta_text(meta_text_id, user_id, session)
             total_words = len(wordlist)
-            unique_words = len(set(word.word.lower() for word in wordlist))
+            unique_words = len(set(word.words.lower() for word in wordlist))
             logger.info(f"Wordlist summary for meta_text_id={meta_text_id}, user_id={user_id}: {total_words} total, {unique_words} unique")
             return {
                 "meta_text_id": meta_text_id,
                 "user_id": user_id,
                 "total_words": total_words,
                 "unique_words": unique_words,
-                "most_recent_word": wordlist[0].word if wordlist else None
+                "most_recent_word": wordlist[0].words if wordlist else None
             }
         except WordlistNotFoundError:
             return {
@@ -121,8 +121,8 @@ class ReviewService:
             chunks = self.get_chunk_summaries_and_notes(meta_text_id, user_id, session)
             total_chunks = len(chunks)
             chunks_with_summaries = sum(1 for chunk in chunks if chunk.summary)
-            chunks_with_notes = sum(1 for chunk in chunks if chunk.notes)
-            chunks_with_comparison = sum(1 for chunk in chunks if chunk.comparison)
+            chunks_with_notes = sum(1 for chunk in chunks if chunk.note)
+            chunks_with_comparison = sum(1 for chunk in chunks if chunk.evaluation)
             logger.info(f"Chunks summary for meta_text_id={meta_text_id}, user_id={user_id}: {total_chunks} total, "
                        f"{chunks_with_summaries} with summaries, {chunks_with_notes} with notes")
             return {
@@ -153,7 +153,7 @@ class ReviewService:
                 }
             }
     
-    def get_phrase_explanations(self, meta_text_id: int, user_id: int, session: Session) -> list[PhraseExplanation]:
+    def get_phrase_explanations(self, meta_text_id: int, user_id: int, session: Session) -> list[Explanation]:
         """
         Retrieve all phrase explanations for a specific metatext.
         
@@ -166,11 +166,11 @@ class ReviewService:
             List of PhraseExplanation objects
         """
         logger.info(f"Retrieving phrase explanations for meta_text_id={meta_text_id}, user_id={user_id}")
-        from backend.models import MetaText
+        # from backend.models import Metatext
         phrase_explanations = list(session.exec(
-            select(PhraseExplanation)
-            .join(MetaText)
-            .where((PhraseExplanation.meta_text_id == meta_text_id) & (MetaText.user_id == user_id))
+            select(Explanation)
+            .join(Metatext)
+            .where((Explanation.metatext_id == meta_text_id) & (Metatext.user_id == user_id))
         ).all())
         logger.info(f"Found {len(phrase_explanations)} phrase explanations for meta_text_id={meta_text_id}, user_id={user_id}")
         return phrase_explanations

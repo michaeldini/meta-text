@@ -3,10 +3,8 @@ from sqlmodel import Session
 from loguru import logger
 
 from backend.models import (
-    Chunk, ChunkCompression, WordDefinition, SourceDocument, AiImage,
-    WordDefinitionResponse, WordDefinitionWithContextRequest,
-    SourceDocInfoResponse, SourceDocInfoAiResponse,
-    ExplainPhraseWithContextRequest, ExplainPhraseResponse, PhraseExplanation
+    Chunk, Rewrite, SourceDocument, Image,
+    SourceDocInfoResponse, SourceDocInfoAiResponse, Explanation, ExplanationResponse, ExplanationRequest, User
 )
 from backend.services.openai_service import OpenAIService
 from backend.services.file_service import FileService
@@ -32,9 +30,9 @@ class AIService:
         self.openai_service = openai_service or OpenAIService()
         self.file_service = file_service or FileService()
     
-    def generate_chunk_comparison(self, chunk_id: int, session: Session) -> dict:
+    def generate_evaluation(self, chunk_id: int, session: Session) -> dict:
         """
-        Generate AI comparison for a chunk's notes, summary, and text.
+        Generate AI evaluation for a chunk's notes, summary, and text.
         
         Args:
             chunk_id: ID of the chunk to analyze
@@ -58,7 +56,7 @@ class AIService:
         prompt = (
             f"CHUNK TEXT:\n{chunk.text}\n\n"
             f"SUMMARY FIELD:\n{chunk.summary}\n\n"
-            f"NOTES FIELD:\n{chunk.notes}\n\n"
+            f"NOTES FIELD:\n{chunk.note}\n\n"
         )
         
         # Generate AI response
@@ -74,8 +72,8 @@ class AIService:
         
         logger.info(f"AI comparison generated and saved for chunk_id: {chunk_id}")
         return {"result": ai_text}
-    
-    def generate_word_definition(self, request: WordDefinitionWithContextRequest, session: Session) -> WordDefinitionResponse:
+
+    def generate_word_definition(self, user: User, request: ExplanationRequest, session: Session) -> ExplanationResponse:
         """
         Generate word definition with context using AI.
         
@@ -89,39 +87,40 @@ class AIService:
         Raises:
             WordDefinitionValidationError: If request validation fails
         """
-        logger.info(f"Generating definition for word: '{request.word}'")
+        logger.info(f"Generating definition for word: '{request.words}'")
         
         # Validate request
-        if not request.word:
-            raise WordDefinitionValidationError("word", "Missing word")
-        if request.meta_text_id is None:
-            raise WordDefinitionValidationError("meta_text_id", "Missing meta_text_id")
+        if not request.words:
+            raise WordDefinitionValidationError("words", "Missing words")
+        if request.metatext_id is None:
+            raise WordDefinitionValidationError("metatext_id", "Missing metatext_id")
         
         # Prepare prompt
-        prompt = f"word='{request.word}' context='{request.context}'"
+        prompt = f"word='{request.words}' context='{request.context}'"
         
         # Generate AI response
         ai_data = self.openai_service.generate_parsed_response(
             "instructions/definition_with_context_instructions.txt",
             prompt,
-            WordDefinitionResponse
+            ExplanationResponse
         )
         
         # Save to database
-        log_entry = WordDefinition(
-            word=request.word,
+        log_entry = Explanation(
+            user_id=user.id,
+            words=request.words,
             context=request.context,
-            definition=ai_data.definition,
-            definition_with_context=ai_data.definitionWithContext,
-            meta_text_id=request.meta_text_id
+            explanation=ai_data.explanation,
+            explanation_in_context=ai_data.explanationInContext,
+            metatext_id=request.metatext_id
         )
         session.add(log_entry)
         session.commit()
         
-        logger.info(f"Definition generated and saved for word: '{request.word}'")
-        return WordDefinitionResponse(
-            definition=ai_data.definition, 
-            definitionWithContext=ai_data.definitionWithContext
+        logger.info(f"Definition generated and saved for word: '{request.words}'")
+        return ExplanationResponse(
+            explanation=ai_data.explanation,
+            explanation_in_context=ai_data.explanationInContext
         )
     
     def generate_source_document_info(self, doc_id: int, session: Session) -> SourceDocInfoResponse:
@@ -165,7 +164,7 @@ class AIService:
         logger.info(f"Source doc info updated in DB for doc_id: {doc_id}")
         return SourceDocInfoResponse(result=ai_data)
     
-    def generate_image(self, prompt: str, chunk_id: int | None, session: Session) -> AiImage:
+    def generate_image(self, prompt: str, chunk_id: int | None, session: Session) -> Image:
         """
         Generate AI image using DALL-E.
         
@@ -193,14 +192,14 @@ class AIService:
         rel_path = self.file_service.save_base64_image(b64_image_data)
         
         # Save record to database
-        ai_image = AiImage(prompt=prompt, path=rel_path, chunk_id=chunk_id)
+        ai_image = Image(prompt=prompt, path=rel_path, chunk_id=chunk_id)
         session.add(ai_image)
         session.commit()
         
         logger.info(f"AI image generated and saved: {rel_path} (chunk_id={chunk_id})")
         return ai_image
     
-    def generate_chunk_compression(self, chunk_id: int, style_title: str, session: Session) -> ChunkCompression:
+    def generate_rewrite(self, chunk_id: int, style_title: str, session: Session) -> Rewrite:
         """
         Generate a compressed version of a chunk's text in a given style using AI, and save it to the database.
         """
@@ -219,9 +218,9 @@ class AIService:
         compressed_text = self.openai_service.generate_text_response(
             "instructions/chunk_compression_instructions.txt", prompt
         )
-        
-        obj = ChunkCompression(chunk_id=chunk_id, title=style_title, compressed_text=compressed_text)
-        
+
+        obj = Rewrite(chunk_id=chunk_id, title=style_title, rewrite_text=compressed_text)
+
         session.add(obj)
         session.commit()
         session.refresh(obj)
@@ -229,8 +228,8 @@ class AIService:
         logger.info(f"AI chunk compression generated for chunk_id: {chunk_id} style: {style_title}")
         
         return obj
-    
-    def generate_chunk_explanation(self, chunk_id: int, session: Session) -> dict:
+
+    def generate_chunk_explanation(self, user: User, chunk_id: int, session: Session) -> dict:
         """
         Generate a detailed, in-depth AI explanation for a chunk's text.
         
@@ -268,51 +267,52 @@ class AIService:
         
         logger.info(f"AI explanation generated and saved for chunk_id: {chunk_id}")
         return {"explanation": ai_text}
-    
-    def generate_phrase_explanation(self, request: ExplainPhraseWithContextRequest, session: Session) -> ExplainPhraseResponse:
-        """
-        Generate phrase explanation with context using AI.
+
+    # def generate_phrase_explanation(self, user: User, request: ExplanationRequest, session: Session) -> ExplanationResponse:
+    #     """
+    #     Generate phrase explanation with context using AI.
         
-        Args:
-            request: Phrase explanation request data
-            session: Database session
+    #     Args:
+    #         request: Phrase explanation request data
+    #         session: Database session
             
-        Returns:
-            Phrase explanation response
+    #     Returns:
+    #         Phrase explanation response
             
-        Raises:
-            WordDefinitionValidationError: If request validation fails
-        """
-        logger.info(f"Generating explanation for phrase: '{request.phrase}'")
+    #     Raises:
+    #         WordDefinitionValidationError: If request validation fails
+    #     """
+    #     logger.info(f"Generating explanation for phrase: '{request.words}'")
         
-        # Validate request
-        if not request.phrase:
-            raise WordDefinitionValidationError("phrase", "Missing phrase")
-        if request.meta_text_id is None:
-            raise WordDefinitionValidationError("meta_text_id", "Missing meta_text_id")
+    #     # Validate request
+    #     if not request.words:
+    #         raise WordDefinitionValidationError("phrase", "Missing phrase")
+    #     if request.metatext_id is None:
+    #         raise WordDefinitionValidationError("meta_text_id", "Missing meta_text_id")
         
-        # Prepare prompt
-        prompt = f"phrase='{request.phrase}' context='{request.context}'"
+    #     # Prepare prompt
+    #     prompt = f"phrase='{request.words}' context='{request.context}'"
         
-        # Generate AI response
-        ai_data = self.openai_service.generate_parsed_response(
-            "instructions/explain_phrase_with_context_instructions.txt",
-            prompt,
-            ExplainPhraseResponse
-        )
+    #     # Generate AI response
+    #     ai_data = self.openai_service.generate_parsed_response(
+    #         "instructions/explain_phrase_with_context_instructions.txt",
+    #         prompt,
+    #         ExplanationResponse
+    #     )
         
-        # Save to database
-        log_entry = PhraseExplanation(
-            phrase=request.phrase,
-            context=request.context,
-            explanation=ai_data.explanation,
-            explanation_with_context=ai_data.explanationWithContext,
-            meta_text_id=request.meta_text_id
-        )
-        session.add(log_entry)
-        session.commit()
-        logger.info(f"Explanation generated and saved for phrase: '{request.phrase}'")
-        return ExplainPhraseResponse(
-            explanation=ai_data.explanation,
-            explanationWithContext=ai_data.explanationWithContext
-        )
+    #     # Save to database
+    #     log_entry = Explanation(
+    #         user_id=user.id,
+    #         words=request.words,
+    #         context=request.context,
+    #         explanation=ai_data.explanation,
+    #         explanation_in_context=ai_data.explanationInContext,
+    #         metatext_id=request.metatext_id
+    #     )
+    #     session.add(log_entry)
+    #     session.commit()
+    #     logger.info(f"Explanation generated and saved for phrase: '{request.phrase}'")
+    #     return ExplainPhraseResponse(
+    #         explanation=ai_data.explanation,
+    #         explanationWithContext=ai_data.explanationWithContext
+    #     )
