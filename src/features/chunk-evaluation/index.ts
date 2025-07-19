@@ -3,5 +3,5 @@
  * Provides comparison functionality for chunks
  */
 
-export { default as ComparisonTool } from './ComparisonTool';
+export { default as EvaluationTool } from './EvaluationTool';
 export * from './hooks';

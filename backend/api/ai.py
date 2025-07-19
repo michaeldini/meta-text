@@ -40,13 +40,13 @@ def get_ai_service() -> AIService:
     return _ai_service
 
 
-@router.get("/generate-chunk-note-summary-text-comparison/{chunk_id}")
-async def generate_chunk_note_summary_text_comparison(
+@router.get("/evaluation/{chunk_id}")
+async def generate_evaluation(
     chunk_id: int,
     session: Session = Depends(get_session),
     user = Depends(get_current_user)
 ) -> dict:
-    """Generate AI comparison for chunk notes, summary, and text. Requires authentication."""
+    """Generate AI evaluation for chunk note, summary, and text. Requires authentication."""
     try:
         return get_ai_service().generate_evaluation(chunk_id, session)
     except ChunkNotFoundError:

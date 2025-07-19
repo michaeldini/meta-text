@@ -26,7 +26,7 @@ export interface ChunkTool {
 // Tool registry - direct imports, we'll handle the component updates separately
 export const createChunkToolsRegistry = (): Omit<ChunkTool, 'component'>[] => [
     {
-        id: 'notes-summary',
+        id: 'note-summary',
         name: 'Notes & Summary',
         icon: <NotesIcon />,
         tooltip: 'Show or hide the Notes/Summary editor for all chunks',
@@ -67,7 +67,7 @@ export const chunkToolsRegistry = createChunkToolsRegistry();
 
 // Export just the tool IDs as a const array for type safety
 export const CHUNK_TOOL_IDS = [
-    'notes-summary',
+    'note-summary',
     'comparison',
     'ai-image',
     'compression',

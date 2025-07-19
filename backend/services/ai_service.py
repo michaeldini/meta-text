@@ -32,7 +32,7 @@ class AIService:
     
     def generate_evaluation(self, chunk_id: int, session: Session) -> dict:
         """
-        Generate AI evaluation for a chunk's notes, summary, and text.
+        Generate AI evaluation for a chunk's note, summary, and text.
         
         Args:
             chunk_id: ID of the chunk to analyze

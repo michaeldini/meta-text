@@ -6,7 +6,7 @@ const CompressionDisplay: React.FC<CompressionDisplayProps> = ({ selected, style
     if (!selected) return null;
     return (
         <Box sx={styles.compressionDisplayWordsContainer}>
-            <Typography variant="body1">{selected.compressed_text}</Typography>
+            <Typography variant="body1">{selected.rewrite_text}</Typography>
         </Box>
     );
 };

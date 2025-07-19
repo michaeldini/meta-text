@@ -28,7 +28,7 @@
 
 import { apiGet, apiPost, apiPut } from '../utils/api';
 import { withCache, apiCache } from '../utils/cache';
-import type { ChunkCompression, ChunkCompressionCreate, ChunkType } from 'types';
+import type { Rewrite, RewriteCreate, ChunkType } from 'types';
 
 // Base functions without caching
 async function _fetchChunks(metatextId: number, userId: number): Promise<ChunkType[]> {
@@ -94,8 +94,8 @@ export const fetchChunk = withCache(
 
 // --- Chunk Compression API ---
 
-export async function fetchChunkCompressions(chunkId: number): Promise<ChunkCompression[]> {
-    return apiGet<ChunkCompression[]>(`/api/chunk/${chunkId}/compressions`);
+export async function fetchChunkCompressions(chunkId: number): Promise<Rewrite[]> {
+    return apiGet<Rewrite[]>(`/api/chunk/${chunkId}/compressions`);
 }
 
 
@@ -105,8 +105,8 @@ export async function fetchChunkCompressions(chunkId: number): Promise<ChunkComp
  * Generate and save a chunk compression in one step (no preview).
  * Calls the backend endpoint that generates and saves the compression.
  */
-export async function generateAndSaveChunkCompression(chunkId: number, styleTitle: string): Promise<ChunkCompression> {
-    const result = await apiGet<ChunkCompression>(`/api/generate-chunk-compression/${chunkId}?style_title=${encodeURIComponent(styleTitle)}`);
+export async function generateAndSaveChunkCompression(chunkId: number, styleTitle: string): Promise<Rewrite> {
+    const result = await apiGet<Rewrite>(`/api/generate-chunk-compression/${chunkId}?style_title=${encodeURIComponent(styleTitle)}`);
     apiCache.invalidate(`fetchChunk:${chunkId}`);
     return result;
 }

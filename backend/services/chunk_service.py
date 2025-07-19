@@ -37,7 +37,7 @@ class ChunkService:
         chunk = Chunk(
             text=chunk_data["text"],
             position=chunk_data["position"],
-            note=chunk_data.get("notes", ""),
+            note=chunk_data.get("note", ""),
             summary=chunk_data.get("summary", ""),
             evaluation=chunk_data.get("evaluation", ""),
             explanation=chunk_data.get("explanation", ""),
@@ -78,7 +78,7 @@ class ChunkService:
             chunk: The chunk to update
             data: Dictionary of field updates
         """
-        allowed_fields = ['text', 'summary', 'notes', 'comparison']
+        allowed_fields = ['text', 'summary', 'note', 'comparison']
         for field in allowed_fields:
             if field in data:
                 setattr(chunk, field, data[field])

@@ -11,8 +11,8 @@ import type { ChunkType, UpdateChunkFieldFn } from 'types';
 import type { ChunkToolId } from './toolsRegistry';
 
 // Import all tool components directly to avoid lazy loading complexity
-import NotesTool from '../chunk-notes/NotesTool';
-import ComparisonTool from '../chunk-comparison/ComparisonTool';
+import NotesTool from '../chunk-note/NotesTool';
+import EvaluationTool from '../chunk-evaluation/EvaluationTool';
 import ImageTool from '../chunk-image/ImageTool';
 import CompressionDisplayTool from '../chunk-compression/CompressionDisplayTool';
 import ExplanationTool from '../chunk-explanation/ExplanationTool';
@@ -42,7 +42,7 @@ const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = ({
             <ErrorBoundary>
                 <Suspense fallback={<LoadingBoundary loading={true}><div /></LoadingBoundary>}>
                     {/* Notes Tool */}
-                    {activeTools.includes('notes-summary') && (
+                    {activeTools.includes('note-summary') && (
                         <NotesTool
                             chunk={chunk}
                             updateChunkField={updateChunkField}
@@ -52,7 +52,7 @@ const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = ({
 
                     {/* Comparison Tool */}
                     {activeTools.includes('comparison') && (
-                        <ComparisonTool
+                        <EvaluationTool
                             chunk={chunk}
                             updateChunkField={updateChunkField}
                             isVisible={true}

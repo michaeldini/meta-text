@@ -58,13 +58,13 @@ export type ChunkType = {
     id: number;
     text: string;
     position: number;
-    notes: string;
+    note: string;
     summary: string;
-    comparison: string;
+    evaluation: string;
     explanation: string;
-    meta_text_id: number;
-    ai_images: AiImage[];
-    compressions: ChunkCompression[];
+    metatext_id: number;
+    images: AiImage[];
+    rewrites: Rewrite[];
 };
 
 export type AiImage = {
@@ -74,16 +74,16 @@ export type AiImage = {
     chunk_id: number;
 };
 
-export interface ChunkCompression {
+export interface Rewrite {
     id: number;
     title: string;
-    compressed_text: string;
+    rewrite_text: string;
     chunk_id: number;
 }
 
-export interface ChunkCompressionCreate {
+export interface RewriteCreate {
     title: string;
-    compressed_text: string;
+    rewrite_text: string;
     chunk_id?: number;
 }
 

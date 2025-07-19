@@ -8,12 +8,12 @@ export * from './navbar';
 
 // Chunk tools
 export * from './chunk-explanation';
-export * from './chunk-comparison';
+export * from './chunk-evaluation';
 export * from './chunk-compression';
 export * from './chunk-merge';
 export * from './chunk-split';
 export * from './chunk-copy';
-export * from './chunk-notes';
+export * from './chunk-note';
 export * from './chunk-image';
 
 // Shared utilities

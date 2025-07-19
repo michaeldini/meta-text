@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import type { ChunkCompression, ChunkType } from 'types';
+import type { Rewrite, ChunkType } from 'types';
 import type { UseCompressionReturn } from 'features/chunk-shared/types';
 
 export const useCompression = (chunk: ChunkType | null): UseCompressionReturn => {
     const [selectedId, setSelectedId] = useState<number | ''>('');
 
     // Get compressions directly from chunk data
-    const compressions = chunk?.compressions || [];
+    const compressions = chunk?.rewrites || [];
 
     // Reset selectedId when chunk changes and set to first compression if available
     useEffect(() => {

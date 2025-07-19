@@ -36,14 +36,14 @@ export default function ReviewTable({ chunks }: ReviewTableProps) {
                     <TableBody>
                         {chunks.map(chunk => {
                             // Get the latest AI image from the chunk
-                            const latestImage = chunk.ai_images && chunk.ai_images.length > 0
-                                ? chunk.ai_images[chunk.ai_images.length - 1]
+                            const latestImage = chunk.images && chunk.images.length > 0
+                                ? chunk.images[chunk.images.length - 1]
                                 : null;
 
                             return (
                                 <TableRow key={chunk.id}>
                                     <TableCell sx={tableCellStyles}>{chunk.summary}</TableCell>
-                                    <TableCell sx={tableCellStyles}>{chunk.notes}</TableCell>
+                                    <TableCell sx={tableCellStyles}>{chunk.note}</TableCell>
                                     <TableCell>
                                         {latestImage && (
                                             <ImageDisplay

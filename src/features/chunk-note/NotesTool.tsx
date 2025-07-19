@@ -1,6 +1,6 @@
 /**
- * NotesTool component for managing summary and notes fields
- * Provides input fields for chunk summary and notes with local state management
+ * NotesTool component for managing summary and note fields
+ * Provides input fields for chunk summary and note with local state management
  * and blur-based persistence
  */
 import React, { useState, useEffect, useCallback } from 'react';
@@ -14,7 +14,7 @@ interface NotesToolProps {
     updateChunkField: UpdateChunkFieldFn;
     isVisible: boolean;
     summaryFieldSx?: object;
-    notesFieldSx?: object;
+    noteFieldSx?: object;
 }
 
 const NotesTool: React.FC<NotesToolProps> = React.memo(({
@@ -22,7 +22,7 @@ const NotesTool: React.FC<NotesToolProps> = React.memo(({
     updateChunkField,
     isVisible,
     summaryFieldSx,
-    notesFieldSx
+    noteFieldSx
 }) => {
     if (!isVisible) return null;
 
@@ -31,10 +31,10 @@ const NotesTool: React.FC<NotesToolProps> = React.memo(({
 
     // Handle null/undefined values by converting to empty string
     const sanitizedSummary = chunk.summary ?? '';
-    const sanitizedNotes = chunk.notes ?? '';
+    const sanitizedNote = chunk.note ?? '';
 
     const [localSummary, setLocalSummary] = useState(sanitizedSummary);
-    const [localNotes, setLocalNotes] = useState(sanitizedNotes);
+    const [localNote, setLocalNote] = useState(sanitizedNote);
 
     // Update local state when props change
     useEffect(() => {
@@ -42,8 +42,8 @@ const NotesTool: React.FC<NotesToolProps> = React.memo(({
     }, [sanitizedSummary]);
 
     useEffect(() => {
-        setLocalNotes(sanitizedNotes);
-    }, [sanitizedNotes]);
+        setLocalNote(sanitizedNote);
+    }, [sanitizedNote]);
 
     // Memoized handlers to prevent unnecessary re-renders
     const handleSummaryChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +51,7 @@ const NotesTool: React.FC<NotesToolProps> = React.memo(({
     }, []);
 
     const handleNotesChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setLocalNotes(e.target.value);
+        setLocalNote(e.target.value);
     }, []);
 
     const handleSummaryBlur = useCallback(() => {
@@ -59,8 +59,8 @@ const NotesTool: React.FC<NotesToolProps> = React.memo(({
     }, [chunk.id, updateChunkField, localSummary]);
 
     const handleNotesBlur = useCallback(() => {
-        updateChunkField(chunk.id, 'notes', localNotes);
-    }, [chunk.id, updateChunkField, localNotes]);
+        updateChunkField(chunk.id, 'note', localNote);
+    }, [chunk.id, updateChunkField, localNote]);
 
     // Handle keyboard shortcuts for better UX
     const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
@@ -89,13 +89,13 @@ const NotesTool: React.FC<NotesToolProps> = React.memo(({
             />
             <ChunkTextField
                 label="Notes"
-                value={localNotes}
+                value={localNote}
                 onChange={handleNotesChange}
                 onBlur={handleNotesBlur}
                 onKeyDown={handleKeyDown}
-                sx={notesFieldSx}
+                sx={noteFieldSx}
                 minRows={3}
-                placeholder="Add your notes and observations..."
+                placeholder="Add your note and observations..."
                 aria-label="Notes input field"
             />
         </Box>

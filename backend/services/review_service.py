@@ -43,7 +43,7 @@ class ReviewService:
     
     def get_chunk_summaries_and_notes(self, meta_text_id: int, user_id: int, session: Session) -> list[Chunk]:
         """
-        Retrieve chunks with summaries and notes for a specific metatext, ordered by position.
+        Retrieve chunks with summaries and note for a specific metatext, ordered by position.
         
         Args:
             meta_text_id: The ID of the metatext
@@ -51,7 +51,7 @@ class ReviewService:
             session: Database session
             
         Returns:
-            List of Chunk objects with summaries and notes
+            List of Chunk objects with summaries and note
             
         Raises:
             ChunksNotFoundError: If no chunks are found for the metatext
@@ -134,7 +134,7 @@ class ReviewService:
                 "chunks_with_comparison": chunks_with_comparison,
                 "completion_percentage": {
                     "summaries": (chunks_with_summaries / total_chunks * 100) if total_chunks > 0 else 0,
-                    "notes": (chunks_with_notes / total_chunks * 100) if total_chunks > 0 else 0,
+                    "note": (chunks_with_notes / total_chunks * 100) if total_chunks > 0 else 0,
                     "comparison": (chunks_with_comparison / total_chunks * 100) if total_chunks > 0 else 0
                 }
             }
@@ -148,7 +148,7 @@ class ReviewService:
                 "chunks_with_comparison": 0,
                 "completion_percentage": {
                     "summaries": 0,
-                    "notes": 0,
+                    "note": 0,
                     "comparison": 0
                 }
             }

@@ -99,7 +99,7 @@ export const useImageTool = (chunk?: ChunkType): UseImageToolReturn => {
     useEffect(() => {
         if (!chunk) return;
 
-        const aiImage = getLatestAiImage(chunk.ai_images);
+        const aiImage = getLatestAiImage(chunk.images);
         if (aiImage && typeof aiImage.path === 'string') {
             // Update state with latest image data and prompt
             setState(s => ({
@@ -111,7 +111,7 @@ export const useImageTool = (chunk?: ChunkType): UseImageToolReturn => {
             // Clear state if no valid image exists
             setState(s => ({ ...s, data: null, prompt: '' }));
         }
-    }, [chunk?.ai_images]);
+    }, [chunk?.images]);
 
     /**
      * Generates an AI image based on the provided prompt and chunk data

@@ -20,7 +20,7 @@ const ChunkBookmarkToggle: React.FC<ChunkBookmarkToggleProps> = ({ chunk }) => {
             // Optionally, you may want to clear it on the backend as well if API supports
         } else {
             console.log('Bookmarking chunk:', chunk);
-            await setBookmarkedChunkId(chunk.meta_text_id, chunk.id);
+            await setBookmarkedChunkId(chunk.metatext_id, chunk.id);
         }
     };
 

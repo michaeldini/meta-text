@@ -66,3 +66,7 @@ The chunk tools act on chunks and are as follows:
 The user can summarize or take a note on a chunk.
 
 Chunk Store: updateChunkField -> Chunk service: updateChunk -> Api: update_chunk -> Chunk Service -> update_chunk
+
+### Evaluation
+
+Evaluation Store:

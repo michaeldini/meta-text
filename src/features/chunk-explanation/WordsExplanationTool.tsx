@@ -45,13 +45,13 @@ const WordsExplanationTool: React.FC<ExplanationToolProps> = React.memo(({
         const result = await explain({
             words: cleanedWord,
             context: chunk.text,
-            metaTextId: chunk.meta_text_id,
+            metaTextId: chunk.metatext_id,
             chunkId: null
         });
         if (result) {
             setShowDefinition(true);
         }
-    }, [cleanedWord, chunk.text, chunk.meta_text_id, explain]);
+    }, [cleanedWord, chunk.text, chunk.metatext_id, explain]);
 
     const handleCloseDefinition = useCallback(() => {
         setShowDefinition(false);

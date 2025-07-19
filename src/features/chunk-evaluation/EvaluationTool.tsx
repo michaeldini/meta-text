@@ -5,51 +5,51 @@ import ReactMarkdown from 'react-markdown';
 
 import { AiGenerationButton } from 'components';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
-import { useComparison } from './hooks/useComparison';
+import { useEvaluation } from './hooks/useEvaluation';
 import { getSharedToolStyles } from 'features/chunk-shared/styles';
 
-interface ComparisonToolProps {
+interface EvaluationToolProps {
     chunk: ChunkType;
     updateChunkField: UpdateChunkFieldFn;
     isVisible: boolean;
 }
 
-const ComparisonTool: React.FC<ComparisonToolProps> = ({
+const EvaluationTool: React.FC<EvaluationToolProps> = ({
     chunk,
     updateChunkField,
     isVisible,
 }) => {
     if (!isVisible) return null;
 
-    const { generateComparison, loading, error } = useComparison();
+    const { fetchEvaluationResults, loading, error } = useEvaluation();
     const theme = useTheme();
     const styles = getSharedToolStyles(theme);
 
     const handleGenerate = useCallback(async () => {
-        const result = await generateComparison({
+        const result = await fetchEvaluationResults({
             chunk
         });
 
         if (result.success && result.data) {
-            updateChunkField(chunk.id, 'comparison', result.data.comparisonText);
+            updateChunkField(chunk.id, 'evaluation', result.data.evaluationText);
         }
-    }, [chunk, generateComparison, updateChunkField]);
+    }, [chunk, fetchEvaluationResults, updateChunkField]);
 
     return (
         <Box sx={styles.toolTabContainer}>
             <AiGenerationButton
-                label="What Did I Miss?"
-                toolTip="Generate a summary of what you might have missed based on your notes and summary."
+                label="Evaluate"
+                toolTip="Produce an evaluation of your summary and note."
                 loading={loading}
                 onClick={handleGenerate}
                 sx={{ ml: 1 }}
                 disabled={loading || !chunk?.id}
             />
             <Box sx={styles.scrollableContentContainerWide}>
-                {chunk.comparison ? (
-                    <ReactMarkdown>{chunk.comparison}</ReactMarkdown>
+                {chunk.evaluation ? (
+                    <ReactMarkdown>{chunk.evaluation}</ReactMarkdown>
                 ) : (
-                    <span>No comparison yet.</span>
+                    <span>No evaluation yet.</span>
                 )}
             </Box>
             {error && <Box sx={{ color: 'error.main', fontSize: 12 }}>{error}</Box>}
@@ -57,4 +57,4 @@ const ComparisonTool: React.FC<ComparisonToolProps> = ({
     );
 };
 
-export default ComparisonTool;
+export default EvaluationTool;

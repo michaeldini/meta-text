@@ -52,8 +52,8 @@ export interface SourceDocInfoResponse {
     result: SourceDocInfoAIResult;
 }
 
-export async function generateChunkNoteSummaryTextComparison(chunkId: number): Promise<{ result: string }> {
-    return await apiGet<{ result: string }>(`/api/generate-chunk-note-summary-text-comparison/${chunkId}`);
+export async function generateEvaluation(chunkId: number): Promise<{ result: string }> {
+    return await apiGet<{ result: string }>(`/api/evaluation/${chunkId}`);
 }
 
 export async function generateSourceDocInfo(sourceDocumentId: number): Promise<SourceDocInfoResponse> {

@@ -1,14 +1,14 @@
 import { useCallback, useState } from 'react';
-import { generateChunkNoteSummaryTextComparison } from 'services';
-import { ToolResult, ComparisonResult, ComparisonToolProps } from 'features/chunk-shared/types';
+import { generateEvaluation } from 'services';
+import { ToolResult, EvaluationResult, EvaluationToolProps } from 'features/chunk-shared/types';
 /**
  * Hook for comparison tool functionality
  */
-export const useComparison = () => {
+export const useEvaluation = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const generateComparison = useCallback(async (props: ComparisonToolProps): Promise<ToolResult<ComparisonResult>> => {
+    const fetchEvaluationResults = useCallback(async (props: EvaluationToolProps): Promise<ToolResult<EvaluationResult>> => {
         setLoading(true);
         setError(null);
 
@@ -19,15 +19,15 @@ export const useComparison = () => {
                 throw new Error('Invalid chunk ID');
             }
 
-            const data = await generateChunkNoteSummaryTextComparison(chunk.id);
-            const comparisonText = data.result || '';
+            const data = await generateEvaluation(chunk.id);
+            const evaluationText = data.result || '';
 
             return {
                 success: true,
-                data: { comparisonText }
+                data: { evaluationText: evaluationText }
             };
         } catch (err) {
-            const errorMessage = err instanceof Error ? err.message : 'Error generating comparison';
+            const errorMessage = err instanceof Error ? err.message : 'Error generating evaluation';
             setError(errorMessage);
 
             return {
@@ -40,7 +40,7 @@ export const useComparison = () => {
     }, []);
 
     return {
-        generateComparison,
+        fetchEvaluationResults,
         loading,
         error
     };

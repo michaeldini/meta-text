@@ -1,4 +1,4 @@
-import { ChunkType, UpdateChunkFieldFn, ChunkCompression } from 'types';
+import { ChunkType, UpdateChunkFieldFn, Rewrite } from 'types';
 
 // =============================================================================
 // CORE TOOL TYPES
@@ -74,7 +74,7 @@ export interface CompressionToolProps extends BaseChunkProps {
 /**
  * Props for comparison tool components
  */
-export interface ComparisonToolProps extends BaseChunkProps {
+export interface EvaluationToolProps extends BaseChunkProps {
     onComparisonUpdate?: (text: string) => void;
 }
 
@@ -97,11 +97,11 @@ export interface ExplanationToolProps {
  */
 export interface NotesToolProps {
     summary?: string;
-    notes?: string;
+    note?: string;
     onSummaryBlur?: (val: string) => void;
-    onNotesBlur?: (val: string) => void;
+    onNoteBlur?: (val: string) => void;
     summaryFieldSx?: object;
-    notesFieldSx?: object;
+    noteFieldSx?: object;
 }
 
 /**
@@ -175,7 +175,7 @@ export interface ImageToolState {
  * State interface for compression hook
  */
 export interface UseCompressionState {
-    compressions: ChunkCompression[];
+    compressions: Rewrite[];
     selectedId: number | '';
     loading: boolean;
     error: string | null;
@@ -193,7 +193,7 @@ export interface UseCompressionActions {
  * Return type for compression hook
  */
 export interface UseCompressionReturn extends UseCompressionState, UseCompressionActions {
-    selected: ChunkCompression | undefined;
+    selected: Rewrite | undefined;
 }
 
 // =============================================================================
@@ -213,8 +213,8 @@ export interface ImageResult {
 /**
  * Result of comparison operation
  */
-export interface ComparisonResult {
-    comparisonText: string;
+export interface EvaluationResult {
+    evaluationText: string;
 }
 
 // =============================================================================
@@ -233,7 +233,7 @@ export interface CompressionToolButtonProps {
  * Props for compression display component
  */
 export interface CompressionDisplayProps {
-    selected: ChunkCompression | undefined;
+    selected: Rewrite | undefined;
     styles: any;
 }
 
@@ -283,7 +283,7 @@ export interface CompressionPreviewProps {
  * Props for compression select component
  */
 export interface CompressionSelectProps {
-    compressions: ChunkCompression[];
+    compressions: Rewrite[];
     selectedId: number | '';
     setSelectedId: (id: number) => void;
     styles: any;
