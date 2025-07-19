@@ -6,8 +6,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Box, useTheme } from '@mui/material';
 
-import { ChunkTextField } from 'features/chunk/components';
-import { getSharedToolStyles } from 'features/chunk-shared/styles';
+import { ChunkTextField, getSharedToolStyles } from 'features';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 
 interface NotesToolProps {

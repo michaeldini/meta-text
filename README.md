@@ -54,3 +54,15 @@ Words Explanations are saved in
 Definitions and Explanations are stored in the database and can be viewed later. They are associated with metatexts and not chunks because chunks can change over time.
 
 The user can also use the chunk toolbar to have the entire chunk explained. The chunk explanation is associated with the chunk and can go stale (fix?).
+
+## Chunk Toolbar & Chunk Tools
+
+The chunk toolbar is a floating toolbar that appears whenever a chunk is displayed. It shows/hides chunk tools.
+
+The chunk tools act on chunks and are as follows:
+
+### Summary & Note
+
+The user can summarize or take a note on a chunk.
+
+Chunk Store: updateChunkField -> Chunk service: updateChunk -> Api: update_chunk -> Chunk Service -> update_chunk
