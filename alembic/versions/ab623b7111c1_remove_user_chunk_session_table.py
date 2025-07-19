@@ -33,11 +33,11 @@ def downgrade() -> None:
     op.create_table('userchunksession',
     sa.Column('id', sa.INTEGER(), nullable=False),
     sa.Column('user_id', sa.INTEGER(), nullable=False),
-    sa.Column('meta_text_id', sa.INTEGER(), nullable=False),
+    sa.Column('metatext_id', sa.INTEGER(), nullable=False),
     sa.Column('last_active_chunk_id', sa.INTEGER(), nullable=False),
     sa.Column('updated_at', sa.DATETIME(), nullable=False),
     sa.ForeignKeyConstraint(['last_active_chunk_id'], ['chunk.id'], ),
-    sa.ForeignKeyConstraint(['meta_text_id'], ['metatext.id'], ),
+    sa.ForeignKeyConstraint(['metatext_id'], ['metatext.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

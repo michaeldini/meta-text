@@ -16,8 +16,8 @@ export async function fetchBookmark(metaTextId: number): Promise<number | null> 
  * Returns the chunkId that was set.
  */
 export async function setBookmark(metaTextId: number, chunkId: number): Promise<number> {
-    // Backend expects { meta_text_id, chunk_id } in POST body
-    const res = await apiPost<number>(`/api/bookmarks/`, { meta_text_id: metaTextId, chunk_id: chunkId });
+    // Backend expects { metatext_id, chunk_id } in POST body
+    const res = await apiPost<number>(`/api/bookmarks/`, { metatext_id: metaTextId, chunk_id: chunkId });
     return res;
 }
 
@@ -27,8 +27,8 @@ export async function setBookmark(metaTextId: number, chunkId: number): Promise<
 //  */
 // export async function clearBookmark(metaTextId: number): Promise<boolean> {
 //     try {
-//         // Backend expects { meta_text_id } in POST body to clear bookmark
-//         await apiPost(`/api/bookmarks/clear`, { meta_text_id: metaTextId });
+//         // Backend expects { metatext_id } in POST body to clear bookmark
+//         await apiPost(`/api/bookmarks/clear`, { metatext_id: metaTextId });
 //         return true;
 //     } catch (err) {
 //         // If bookmark didn't exist, backend might throw an error

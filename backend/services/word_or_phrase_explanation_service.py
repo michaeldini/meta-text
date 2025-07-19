@@ -14,11 +14,11 @@
 #         self.openai_service = openai_service or OpenAIService()
 #         self.instruction_file = "instructions/explain_word_or_phrase_with_context.txt"
 
-#     def explain(self, words: str, context: str, meta_text_id: int, session: Session):
+#     def explain(self, words: str, context: str, metatext_id: int, session: Session):
 #         if not words:
 #             raise WordDefinitionValidationError("words", "Missing words")
-#         if meta_text_id is None:
-#             raise WordDefinitionValidationError("meta_text_id", "Missing meta_text_id")
+#         if metatext_id is None:
+#             raise WordDefinitionValidationError("metatext_id", "Missing metatext_id")
 
 #         is_single_word = len(words.split()) == 1
 #         prompt = f"words='{words}' context='{context}'"
@@ -35,7 +35,7 @@
 #                 context=context,
 #                 definition=ai_data.definition,
 #                 definition_with_context=ai_data.definitionWithContext,
-#                 meta_text_id=meta_text_id
+#                 metatext_id=metatext_id
 #             )
 #             session.add(log_entry)
 #             session.commit()
@@ -50,7 +50,7 @@
 #                 context=context,
 #                 explanation=ai_data.explanation,
 #                 explanation_with_context=ai_data.explanationWithContext,
-#                 meta_text_id=meta_text_id
+#                 metatext_id=metatext_id
 #             )
 #             session.add(log_entry)
 #             session.commit()

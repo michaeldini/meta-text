@@ -288,7 +288,7 @@ class AIService:
     #     if not request.words:
     #         raise WordDefinitionValidationError("phrase", "Missing phrase")
     #     if request.metatext_id is None:
-    #         raise WordDefinitionValidationError("meta_text_id", "Missing meta_text_id")
+    #         raise WordDefinitionValidationError("metatext_id", "Missing metatext_id")
         
     #     # Prepare prompt
     #     prompt = f"phrase='{request.words}' context='{request.context}'"

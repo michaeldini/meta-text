@@ -117,8 +117,8 @@ async def generate_image(
 
 
 
-@router.get("/generate-evaluation/{chunk_id}")
-async def generate_chunk_evaluation(
+@router.get("/generate-rewrite/{chunk_id}")
+async def generate_rewrite(
     chunk_id: int,
     style_title: str,
     session: Session = Depends(get_session),
@@ -165,4 +165,4 @@ def explain(
             session=session
         )
     else:
-        raise HTTPException(status_code=400, detail="meta_text_id is required for words explanation.")
+        raise HTTPException(status_code=400, detail="metatext_id is required for words explanation.")

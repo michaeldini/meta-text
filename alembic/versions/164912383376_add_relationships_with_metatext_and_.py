@@ -25,8 +25,8 @@ def upgrade() -> None:
     # Instead, we need to use batch_alter_table for compatibility.
     constraint_name = "fk_phraseexplanation_meta_text_id_metatext"
     with op.batch_alter_table('phraseexplanation', schema=None) as batch_op:
-        batch_op.alter_column('meta_text_id', existing_type=sa.INTEGER(), nullable=False)
-        batch_op.create_foreign_key(constraint_name, 'metatext', ['meta_text_id'], ['id'])
+        batch_op.alter_column('metatext_id', existing_type=sa.INTEGER(), nullable=False)
+        batch_op.create_foreign_key(constraint_name, 'metatext', ['metatext_id'], ['id'])
     # ### end Alembic commands ###
 
 
@@ -36,5 +36,5 @@ def downgrade() -> None:
     constraint_name = "fk_phraseexplanation_meta_text_id_metatext"
     with op.batch_alter_table('phraseexplanation', schema=None) as batch_op:
         batch_op.drop_constraint(constraint_name, type_='foreignkey')
-        batch_op.alter_column('meta_text_id', existing_type=sa.INTEGER(), nullable=True)
+        batch_op.alter_column('metatext_id', existing_type=sa.INTEGER(), nullable=True)
     # ### end Alembic commands ###

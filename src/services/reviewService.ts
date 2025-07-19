@@ -8,7 +8,7 @@ interface WordlistResponse {
     context: string;
     definition: string;
     definition_with_context: string;
-    meta_text_id: number;
+    metatext_id: number;
     created_at: string;
 }
 
@@ -35,7 +35,7 @@ export interface PhraseExplanation {
     context: string;
     explanation: string;
     explanation_with_context: string;
-    meta_text_id: number | null;
+    metatext_id: number | null;
 }
 
 

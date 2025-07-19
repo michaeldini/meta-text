@@ -26,7 +26,7 @@ class TextChunkingService:
     ) -> list[Chunk]:
         """Create and persist chunks for a metatext."""
         chunk_texts = TextChunkingService.split_text_into_chunks(text, chunk_size)
-        logger.info(f"Creating {len(chunk_texts)} chunks of size {chunk_size} for meta_text_id={metatext_id}")
+        logger.info(f"Creating {len(chunk_texts)} chunks of size {chunk_size} for metatext_id={metatext_id}")
         
         chunks = []
         for i, chunk_text in enumerate(chunk_texts):

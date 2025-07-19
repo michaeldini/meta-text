@@ -16,16 +16,16 @@ router = APIRouter()
 def get_bookmark_service() -> BookmarkService:
     return BookmarkService()
 
-@router.get("/bookmarks/{meta_text_id}")
+@router.get("/bookmarks/{metatext_id}")
 def get_bookmark(
-    meta_text_id: int,
+    metatext_id: int,
     session: Session = Depends(get_session),
     service: BookmarkService = Depends(get_bookmark_service),
     user: UserRead = Depends(get_current_user)
 ):
     """Get the user's bookmark for a given metatext."""
     try:
-        return service.get_user_bookmark_for_metatext(session, user.id, meta_text_id)
+        return service.get_user_bookmark_for_metatext(session, user.id, metatext_id)
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
@@ -42,18 +42,18 @@ def set_bookmark(
         return service.set_user_bookmark_for_metatext(session, user.id, req.metatext_id, req.chunk_id)
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
-    
-    
-@router.delete("/bookmarks/{meta_text_id}", status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.delete("/bookmarks/{metatext_id}", status_code=status.HTTP_204_NO_CONTENT)
 def clear_bookmark(
-    meta_text_id: int,
+    metatext_id: int,
     session: Session = Depends(get_session),
     service: BookmarkService = Depends(get_bookmark_service),
     user: UserRead = Depends(get_current_user)
 ):
     """Delete the user's bookmark for a given metatext."""
     try:
-        service.clear_user_bookmark_for_metatext(session, user.id, meta_text_id)
+        service.clear_user_bookmark_for_metatext(session, user.id, metatext_id)
         return None
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))

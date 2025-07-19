@@ -13,7 +13,7 @@ export interface Explanation {
     context: string;
     explanation: string;
     explanation_with_context: string;
-    meta_text_id: number | null;
+    metatext_id: number | null;
 }
 
 interface ExplanationReviewProps {

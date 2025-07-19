@@ -106,7 +106,7 @@ export async function fetchChunkCompressions(chunkId: number): Promise<Rewrite[]
  * Calls the backend endpoint that generates and saves the compression.
  */
 export async function generateAndSaveChunkCompression(chunkId: number, styleTitle: string): Promise<Rewrite> {
-    const result = await apiGet<Rewrite>(`/api/generate-chunk-compression/${chunkId}?style_title=${encodeURIComponent(styleTitle)}`);
+    const result = await apiGet<Rewrite>(`/api/generate-rewrite/${chunkId}?style_title=${encodeURIComponent(styleTitle)}`);
     apiCache.invalidate(`fetchChunk:${chunkId}`);
     return result;
 }

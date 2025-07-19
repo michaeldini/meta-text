@@ -17,9 +17,9 @@ class SourceDocumentNotFoundError(MetatextServiceError):
 class MetatextNotFoundError(MetatextServiceError):
     """Raised when a metatext is not found."""
     
-    def __init__(self, meta_text_id: int):
-        self.meta_text_id = meta_text_id
-        super().__init__(f"Meta-text not found: id={meta_text_id}")
+    def __init__(self, metatext_id: int):
+        self.metatext_id = metatext_id
+        super().__init__(f"Meta-text not found: id={metatext_id}")
 
 
 class MetatextTitleExistsError(MetatextServiceError):
