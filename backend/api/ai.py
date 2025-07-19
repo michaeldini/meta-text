@@ -117,8 +117,8 @@ async def generate_image(
 
 
 
-@router.get("/generate-chunk-compression/{chunk_id}")
-async def generate_chunk_compression(
+@router.get("/generate-evaluation/{chunk_id}")
+async def generate_chunk_evaluation(
     chunk_id: int,
     style_title: str,
     session: Session = Depends(get_session),

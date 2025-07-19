@@ -39,12 +39,12 @@ class AIService:
             session: Database session
             
         Returns:
-            Dictionary with the generated comparison result
+            Dictionary with the generated evaluation result
             
         Raises:
             ChunkNotFoundError: If chunk is not found
         """
-        logger.info(f"Generating chunk comparison for chunk_id: {chunk_id}")
+        logger.info(f"Generating chunk evaluation for chunk_id: {chunk_id}")
         
         # Get chunk from database
         chunk = session.get(Chunk, chunk_id)
@@ -66,11 +66,11 @@ class AIService:
         )
         
         # Save result to database
-        chunk.comparison = ai_text
+        chunk.evaluation = ai_text
         session.add(chunk)
         session.commit()
-        
-        logger.info(f"AI comparison generated and saved for chunk_id: {chunk_id}")
+
+        logger.info(f"AI evaluation generated and saved for chunk_id: {chunk_id}")
         return {"result": ai_text}
 
     def generate_word_definition(self, user: User, request: ExplanationRequest, session: Session) -> ExplanationResponse:

@@ -1,6 +1,6 @@
 /**
  * Chunk Comparison Tool
- * Provides comparison functionality for chunks
+ * Provides evaluation functionality for chunks
  */
 
 export { default as EvaluationTool } from './EvaluationTool';

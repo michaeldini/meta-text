@@ -78,7 +78,7 @@ class ChunkService:
             chunk: The chunk to update
             data: Dictionary of field updates
         """
-        allowed_fields = ['text', 'summary', 'note', 'comparison']
+        allowed_fields = ['text', 'summary', 'note', 'evaluation']
         for field in allowed_fields:
             if field in data:
                 setattr(chunk, field, data[field])

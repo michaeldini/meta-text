@@ -72,7 +72,7 @@ export interface CompressionToolProps extends BaseChunkProps {
 }
 
 /**
- * Props for comparison tool components
+ * Props for evaluation tool components
  */
 export interface EvaluationToolProps extends BaseChunkProps {
     onComparisonUpdate?: (text: string) => void;
@@ -211,7 +211,7 @@ export interface ImageResult {
 }
 
 /**
- * Result of comparison operation
+ * Result of evaluation operation
  */
 export interface EvaluationResult {
     evaluationText: string;

@@ -135,7 +135,7 @@ class ReviewService:
                 "completion_percentage": {
                     "summaries": (chunks_with_summaries / total_chunks * 100) if total_chunks > 0 else 0,
                     "note": (chunks_with_notes / total_chunks * 100) if total_chunks > 0 else 0,
-                    "comparison": (chunks_with_comparison / total_chunks * 100) if total_chunks > 0 else 0
+                    "evaluation": (chunks_with_comparison / total_chunks * 100) if total_chunks > 0 else 0
                 }
             }
         except ChunksNotFoundError:
@@ -149,7 +149,7 @@ class ReviewService:
                 "completion_percentage": {
                     "summaries": 0,
                     "note": 0,
-                    "comparison": 0
+                    "evaluation": 0
                 }
             }
     

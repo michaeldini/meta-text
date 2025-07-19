@@ -5,7 +5,7 @@
  * - Text explanation and analysis (words, chunks, context)
  * - Source document analysis (summaries, characters, themes, etc.)
  * - AI image generation from prompts
- * - Chunk comparison and note summary generation
+ * - Chunk evaluation and note summary generation
  * 
  * All functions return properly typed responses and handle API communication
  * through the centralized API utilities.
@@ -71,8 +71,8 @@ export async function generateAiImage(prompt: string, chunkId: number): Promise<
     return await apiPost('/api/generate-image', formData);
 }
 
-export async function generateChunkComparison(chunkId: number): Promise<{ result: string }> {
-    return await apiGet(`/api/generate-chunk-comparison/${chunkId}`);
+export async function generateChunkEvaluation(chunkId: number): Promise<{ result: string }> {
+    return await apiGet(`/api/generate-evaluation/${chunkId}`);
 }
 
 

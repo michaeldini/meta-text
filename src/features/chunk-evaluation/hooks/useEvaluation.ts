@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { generateEvaluation } from 'services';
 import { ToolResult, EvaluationResult, EvaluationToolProps } from 'features/chunk-shared/types';
 /**
- * Hook for comparison tool functionality
+ * Hook for evaluation tool functionality
  */
 export const useEvaluation = () => {
     const [loading, setLoading] = useState(false);

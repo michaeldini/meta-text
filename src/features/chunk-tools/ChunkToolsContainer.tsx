@@ -50,8 +50,8 @@ const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = ({
                         />
                     )}
 
-                    {/* Comparison Tool */}
-                    {activeTools.includes('comparison') && (
+                    {/* Evaluation Tool */}
+                    {activeTools.includes('evaluation') && (
                         <EvaluationTool
                             chunk={chunk}
                             updateChunkField={updateChunkField}
@@ -60,7 +60,7 @@ const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = ({
                     )}
 
                     {/* Image Tool */}
-                    {activeTools.includes('ai-image') && (
+                    {activeTools.includes('image') && (
                         <ImageTool
                             chunk={chunk}
                             updateChunkField={updateChunkField}
@@ -68,8 +68,8 @@ const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = ({
                         />
                     )}
 
-                    {/* Compression Tool */}
-                    {activeTools.includes('compression') && (
+                    {/* Rewrite Tool */}
+                    {activeTools.includes('rewrite') && (
                         <CompressionDisplayTool
                             chunk={chunk}
                             updateChunkField={updateChunkField}

@@ -33,24 +33,24 @@ export const createChunkToolsRegistry = (): Omit<ChunkTool, 'component'>[] => [
         category: 'utility'
     },
     {
-        id: 'comparison',
-        name: 'AI Comparison',
+        id: 'evaluation',
+        name: 'Evaluation',
         icon: <CompareArrowsIcon />,
-        tooltip: 'Show or hide the AI-generated comparison panel for all chunks',
+        tooltip: 'Show or hide the AI-generated evaluation panel for all chunks',
         category: 'ai'
     },
     {
-        id: 'ai-image',
-        name: 'AI Image',
+        id: 'image',
+        name: 'Image',
         icon: <PhotoIcon />,
         tooltip: 'Show or hide the AI image panel for all chunks',
         category: 'ai'
     },
     {
-        id: 'compression',
-        name: 'Compression',
+        id: 'rewrite',
+        name: 'Rewrite',
         icon: <CompressionIcon />,
-        tooltip: 'Show or hide the compressions for all chunks',
+        tooltip: 'Show or hide the rewrites for all chunks',
         category: 'analysis'
     },
     {
@@ -68,9 +68,9 @@ export const chunkToolsRegistry = createChunkToolsRegistry();
 // Export just the tool IDs as a const array for type safety
 export const CHUNK_TOOL_IDS = [
     'note-summary',
-    'comparison',
-    'ai-image',
-    'compression',
+    'evaluation',
+    'image',
+    'rewrite',
     'explanation'
 ] as const;
 

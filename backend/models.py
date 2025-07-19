@@ -100,7 +100,7 @@ class ChunkBase(SQLModel):
     note: str = ""
     summary: str = ""
     # evaluate the note and summary
-    evaluation: str = ""  # was "comparison"
+    evaluation: str = ""
     # explanation of the chunk
     explanation: str = ""
 
