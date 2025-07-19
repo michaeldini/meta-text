@@ -98,24 +98,28 @@ export async function fetchChunkCompressions(chunkId: number): Promise<ChunkComp
     return apiGet<ChunkCompression[]>(`/api/chunk/${chunkId}/compressions`);
 }
 
-export async function createChunkCompression(chunkId: number, data: ChunkCompressionCreate): Promise<ChunkCompression> {
-    const result = await apiPost<ChunkCompression>(`/api/chunk/${chunkId}/compressions`, data);
 
-    // Invalidate the specific chunk cache since it now has new compression data
+// Deprecated: createChunkCompression is no longer used
+
+/**
+ * Generate and save a chunk compression in one step (no preview).
+ * Calls the backend endpoint that generates and saves the compression.
+ */
+export async function generateAndSaveChunkCompression(chunkId: number, styleTitle: string): Promise<ChunkCompression> {
+    const result = await apiGet<ChunkCompression>(`/api/generate-chunk-compression/${chunkId}?style_title=${encodeURIComponent(styleTitle)}`);
     apiCache.invalidate(`fetchChunk:${chunkId}`);
-
     return result;
 }
 
-export async function updateChunkCompression(compressionId: number, data: ChunkCompressionCreate): Promise<ChunkCompression> {
-    const result = await apiPut<ChunkCompression>(`/api/chunk-compression/${compressionId}`, data);
+// export async function updateChunkCompression(compressionId: number, data: ChunkCompressionCreate): Promise<ChunkCompression> {
+//     const result = await apiPut<ChunkCompression>(`/api/chunk-compression/${compressionId}`, data);
 
-    // Since we don't have the chunkId directly, we'll invalidate all fetchChunk caches
-    // Alternatively, the API could return the chunk_id in the response
-    apiCache.invalidate(/fetchChunk:/);
+//     // Since we don't have the chunkId directly, we'll invalidate all fetchChunk caches
+//     // Alternatively, the API could return the chunk_id in the response
+//     apiCache.invalidate(/fetchChunk:/);
 
-    return result;
-}
+//     return result;
+// }
 
 export async function deleteChunkCompression(compressionId: number): Promise<void> {
     await apiPost<void>(`/api/chunk-compression/${compressionId}`, null, { method: 'DELETE' });
@@ -124,6 +128,4 @@ export async function deleteChunkCompression(compressionId: number): Promise<voi
     apiCache.invalidate(/fetchChunk:/);
 }
 
-export async function previewChunkCompression(chunkId: number, styleTitle: string): Promise<{ title: string; compressed_text: string }> {
-    return apiGet<{ title: string; compressed_text: string }>(`/api/generate-chunk-compression/${chunkId}?style_title=${encodeURIComponent(styleTitle)}`);
-}
+// Deprecated: previewChunkCompression is no longer used

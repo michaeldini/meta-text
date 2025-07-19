@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends, Form, status
 from sqlmodel import Session
 
 from backend.models import (
-     SourceDocInfoResponse, AiImageRead,
+     ChunkCompression, SourceDocInfoResponse, AiImageRead,
     ExplainRequest
 )
 from backend.db import get_session
@@ -100,7 +100,7 @@ async def generate_image(prompt: str = Form(...), chunk_id: int = Form(None), se
 
 
 @router.get("/generate-chunk-compression/{chunk_id}")
-async def generate_chunk_compression(chunk_id: int, style_title: str, session: Session = Depends(get_session)) -> dict:
+async def generate_chunk_compression(chunk_id: int, style_title: str, session: Session = Depends(get_session)) -> ChunkCompression:
     """Generate a compressed version of a chunk's text in a given style using AI (does not save)."""
     try:
         return get_ai_service().generate_chunk_compression(chunk_id, style_title, session)

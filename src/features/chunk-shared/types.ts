@@ -251,20 +251,14 @@ export interface CompressionDialogProps {
     onStyleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     /** Array of available compression style options */
     options: StyleOption[];
-    /** Callback function to trigger compression preview generation */
-    onPreview: () => void;
-    /** Loading state for preview generation */
+    /** Loading state for save operation */
     loading: boolean;
-    /** The generated preview text (null if no preview available) */
-    preview: string | null;
     /** Error message (null if no error) */
     error: string | null;
     /** Callback function to save the compression */
     onSave: () => void;
-    /** Loading state for save operation */
+    /** Loading state for save operation (alias for loading) */
     saving: boolean;
-    /** Whether the preview button should be enabled */
-    canPreview: boolean;
     /** Whether the save button should be enabled */
     canSave: boolean;
 }

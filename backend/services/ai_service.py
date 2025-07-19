@@ -3,7 +3,7 @@ from sqlmodel import Session
 from loguru import logger
 
 from backend.models import (
-    Chunk, WordDefinition, SourceDocument, AiImage,
+    Chunk, ChunkCompression, WordDefinition, SourceDocument, AiImage,
     WordDefinitionResponse, WordDefinitionWithContextRequest,
     SourceDocInfoResponse, SourceDocInfoAiResponse,
     ExplainPhraseWithContextRequest, ExplainPhraseResponse, PhraseExplanation
@@ -200,20 +200,9 @@ class AIService:
         logger.info(f"AI image generated and saved: {rel_path} (chunk_id={chunk_id})")
         return ai_image
     
-    def generate_chunk_compression(self, chunk_id: int, style_title: str, session: Session) -> dict:
+    def generate_chunk_compression(self, chunk_id: int, style_title: str, session: Session) -> ChunkCompression:
         """
-        Generate a compressed version of a chunk's text in a given style using AI, but do not save it.
-        
-        Args:
-            chunk_id: ID of the chunk
-            style_title: The style for compression (e.g., "like im 5")
-            session: Database session
-            
-        Returns:
-            dict with the generated compressed text and style title
-            
-        Raises:
-            ChunkNotFoundError: If chunk is not found
+        Generate a compressed version of a chunk's text in a given style using AI, and save it to the database.
         """
         logger.info(f"Generating chunk compression for chunk_id: {chunk_id} with style: {style_title}")
         
@@ -231,8 +220,15 @@ class AIService:
             "instructions/chunk_compression_instructions.txt", prompt
         )
         
+        obj = ChunkCompression(chunk_id=chunk_id, title=style_title, compressed_text=compressed_text)
+        
+        session.add(obj)
+        session.commit()
+        session.refresh(obj)
+        
         logger.info(f"AI chunk compression generated for chunk_id: {chunk_id} style: {style_title}")
-        return {"title": style_title, "compressed_text": compressed_text}
+        
+        return obj
     
     def generate_chunk_explanation(self, chunk_id: int, session: Session) -> dict:
         """
