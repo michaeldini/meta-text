@@ -49,7 +49,6 @@ class ApiCache {
         for (const [key, entry] of this.cache.entries()) {
             if (!this.isValid(entry)) {
                 this.cache.delete(key);
-                log.info(`Cache: Removed expired entry for ${key}`);
             }
         }
 
@@ -61,7 +60,6 @@ class ApiCache {
 
             for (const [key] of toRemove) {
                 this.cache.delete(key);
-                log.info(`Cache: Removed old entry for ${key} (max size reached)`);
             }
         }
     }
@@ -79,11 +77,9 @@ class ApiCache {
 
         if (!this.isValid(entry)) {
             this.cache.delete(key);
-            log.info(`Cache: Removed expired entry for ${key}`);
             return null;
         }
 
-        log.info(`Cache: Hit for ${key}`);
         return entry.data;
     }
 
@@ -99,7 +95,6 @@ class ApiCache {
         };
 
         this.cache.set(key, entry);
-        log.info(`Cache: Stored entry for ${key} (TTL: ${entry.ttl}ms)`);
 
         // Cleanup periodically
         if (this.cache.size % 10 === 0) {
@@ -125,11 +120,9 @@ class ApiCache {
 
         for (const key of keysToDelete) {
             this.cache.delete(key);
-            log.info(`Cache: Invalidated ${key}`);
         }
 
         if (keysToDelete.length > 0) {
-            log.info(`Cache: Invalidated ${keysToDelete.length} entries matching pattern: ${pattern}`);
         }
     }
 
@@ -139,7 +132,6 @@ class ApiCache {
     clear(): void {
         const count = this.cache.size;
         this.cache.clear();
-        log.info(`Cache: Cleared all ${count} entries`);
     }
 
     /**

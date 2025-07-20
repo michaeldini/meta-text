@@ -1,14 +1,13 @@
-from fastapi import APIRouter, HTTPException, Depends, Form, status, Query
+from fastapi import APIRouter, HTTPException, Depends, Form, status
 from sqlmodel import Session
 
 from backend.models import (
-     Rewrite, SourceDocInfoResponse, ImageRead,
-    ExplanationRequest
+     Rewrite, SourceDocInfoResponse, ImageRead
 )
 from backend.db import get_session
-from backend.services.ai_service import AIService
+
+from backend.dependencies import get_ai_service
 from backend.services.auth_dependencies import get_current_user
-from backend.services.words_explanation_service import WordsExplanationService
 from backend.exceptions.ai_exceptions import (
     ChunkNotFoundError,
     SourceDocumentNotFoundError,
@@ -20,25 +19,7 @@ from backend.exceptions.ai_exceptions import (
     FileOperationError
 )
 
-
 router = APIRouter()
-
-# Lazy initialization of service to avoid requiring API key at import time
-_ai_service = None
-
-def get_ai_service() -> AIService:
-    """Get AI service instance with lazy initialization."""
-    global _ai_service
-    if _ai_service is None:
-        try:
-            _ai_service = AIService()
-        except Exception:
-            # For testing environments where OpenAI API key might not be available
-            # Return a mock service or handle gracefully
-            from unittest.mock import Mock
-            _ai_service = Mock(spec=AIService)
-    return _ai_service
-
 
 @router.get("/evaluation/{chunk_id}")
 async def generate_evaluation(
@@ -138,31 +119,3 @@ async def generate_rewrite(
             detail=f"AI service error: {str(e)}"
         )
 
-
-@router.post("/explain")
-def explain(
-    request: ExplanationRequest,
-    # metatext_id: int = Query(None, description="Metatext ID for words explanation (required if not chunk explanation)"),
-    session: Session = Depends(get_session),
-    user = Depends(get_current_user)
-):
-    """
-    Consolidated endpoint for explaining words or a chunk. Requires authentication.
-    Determines the operation based on which fields are provided.
-    """
-    words_explanation_service = WordsExplanationService()
-    print(f"Request: {request}")
-    if request.chunk_id is not None:
-        # Chunk explanation
-        return get_ai_service().generate_chunk_explanation(user, request.chunk_id, session)
-    elif request.metatext_id is not None:
-        # Words explanation (words and context are required fields, so they'll always be present)
-        return words_explanation_service.explain(
-            user=user,
-            words=request.words,
-            context=request.context,
-            metatext_id=request.metatext_id,
-            session=session
-        )
-    else:
-        raise HTTPException(status_code=400, detail="metatext_id is required for words explanation.")

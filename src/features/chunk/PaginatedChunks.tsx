@@ -59,16 +59,11 @@ const PaginatedChunks = ({ metatextId }: PaginationProps) => {
     // Use pagination store for shared state
     const { currentPage, setCurrentPage, setChunksPerPage } = usePaginationStore();
 
-
-
     // Fetch chunks when metatextId changes
     React.useEffect(() => {
         if (metatextId) {
             fetchChunks(Number(metatextId));
         }
-        return () => {
-            resetChunkState();
-        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [metatextId]);
 

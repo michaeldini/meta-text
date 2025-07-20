@@ -16,8 +16,7 @@ import {
 import { ChunkToolsPanel, PaginatedChunks, SearchContainer, BookmarkNavigateButton } from 'features';
 
 import { useSourceDocDetailData } from 'hooks';
-import { useSourceDocumentDetailStore, useUIPreferencesStore } from 'store';
-import { useBookmarkStore } from 'store';
+import { useSourceDocumentDetailStore, useUIPreferencesStore, useBookmarkStore } from 'store';
 import { FADE_IN_DURATION } from 'constants';
 import { useValidatedIdParam } from 'utils/urlValidation';
 

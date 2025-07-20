@@ -34,6 +34,7 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
     setActiveTabs: (tabs) => set({ activeTabs: tabs }),
     setChunks: async (chunks) => {
         // Ensure chunks are sorted by position ascending
+        console.log('Setting chunks:', chunks);
         const sortedChunks = [...chunks].sort((a, b) => a.position - b.position);
         set((state) => ({
             ...state,
@@ -137,6 +138,7 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
         }
     },
     resetChunkState: () => {
+        console.log('Resetting chunk state');
         set({
             chunks: [],
             loadingChunks: false,

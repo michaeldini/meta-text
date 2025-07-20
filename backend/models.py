@@ -182,12 +182,19 @@ class Explanation(SQLModel, table=True):
         words = kwargs.get("words", "")
         kwargs["type"] = ExplanationType.word if len(words.split()) == 1 else ExplanationType.phrase
         return cls(**kwargs)
-    
+
+
+class ExplanationsResponse(BaseModel):
+    """
+    Response model for review endpoints.
+    Contains wordlist and phrase explanations.
+    """
+    word_list: List[Explanation]
+    phrase_list: List[Explanation]
+
 class ExplanationResponse(BaseModel):
     explanation: str
     explanation_in_context: str
-    # user_id: int = Field(foreign_key="user.id")
-    # user: Optional["User"] = Relationship(back_populates="explanations")
 
 class ExplanationRequest(BaseModel):
     words: str = Field(..., description="Word(s) to explain")
@@ -235,11 +242,3 @@ class DeleteResponse(BaseModel):
     message: str
     deleted_id: int
 
-
-class ReviewResponse(BaseModel):
-    """
-    Response model for review endpoints.
-    Contains wordlist and phrase explanations.
-    """
-    word_list: List[Explanation]
-    phrase_list: List[Explanation]

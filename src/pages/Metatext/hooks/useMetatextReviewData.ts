@@ -17,9 +17,6 @@ import { ChunkType, Explanation } from 'types';
 import { log } from 'utils';
 import { useChunkStore } from 'store/chunkStore';
 
-/**
- * Hook return type interface
- */
 interface UseMetatextReviewDataReturn {
     wordList: Explanation[];
     phraseList: Explanation[];
@@ -28,25 +25,18 @@ interface UseMetatextReviewDataReturn {
     error: string | null;
 }
 
-
 export function useMetatextReviewData(metatextId?: number): UseMetatextReviewDataReturn {
     const [wordList, setWordList] = useState<Explanation[]>([]);
     const [phraseList, setPhraseList] = useState<Explanation[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-
-    // Get chunks from the global chunk store
     const chunks = useChunkStore((state) => state.chunks);
-
-
-
+    console.log('useMetatextReviewData chunks:', chunks);
     useEffect(() => {
         setLoading(true);
         async function loadReviewData() {
             try {
                 setError(null);
-                log.info('Starting to load review data', { metatextId });
-
                 if (!metatextId) {
                     setError('Metatext ID is required to load review data.');
                     return;
@@ -56,7 +46,9 @@ export function useMetatextReviewData(metatextId?: number): UseMetatextReviewDat
 
                 setWordList(Array.isArray(reviewData.word_list) ? reviewData.word_list : []);
                 setPhraseList(Array.isArray(reviewData.phrase_list) ? reviewData.phrase_list : []);
-
+                console.log('Fetched review data:', {
+                    chunks,
+                });
             } catch (err) {
                 setError('Failed to load review data.');
                 log.error('Failed to load review data', err);

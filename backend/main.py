@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from backend.db import init_db
-from backend.api import ai, chunk, metatext, review, rewrite, source_documents, auth, logs, bookmark, user_config
+from backend.api import ai, chunk, explanation, metatext, rewrite, source_documents, auth, logs, bookmark, user_config
 from backend.exceptions.auth_exceptions import (
     InvalidCredentialsError,
     UserRegistrationError,
@@ -94,7 +94,7 @@ app.include_router(metatext.router, prefix="/api", tags=["meta_text"])
 app.include_router(chunk.router, prefix="/api", tags=["chunks"])
 app.include_router(ai.router, prefix="/api", tags=["ai"])
 app.include_router(auth.router, prefix="/api", tags=["auth"])
-app.include_router(review.router, prefix="/api", tags=["review"])
+app.include_router(explanation.router, prefix="/api", tags=["review"])
 app.include_router(logs.router, prefix="/api", tags=["logs"])
 app.include_router(rewrite.router, prefix="/api", tags=["chunk_compressions"])
 app.include_router(bookmark.router, prefix="/api", tags=["bookmarks"])

@@ -28,7 +28,6 @@ export async function fetchUserConfig(): Promise<UserConfig> {
 // Set or update user config in backend
 export async function setUserConfig(config: Partial<UserConfig["uiPreferences"]>): Promise<UserConfig> {
     // POST only the fields that are present in config
-    console.log('Setting user config:', config);
     const payload = { ...config };
     return apiPost('/api/user/config', payload);
 }

@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { fetchMetatext } from 'services';
 import { getErrorMessage } from 'types';
 import type { MetatextDetail } from 'types';
-// import { useChunkStore } from './chunkStore';
+import { useChunkStore } from './chunkStore';
 
 interface MetatextDetailErrors {
     metatext: string;
@@ -26,7 +26,6 @@ interface MetatextDetailState {
 }
 
 export const useMetatextDetailStore = create<MetatextDetailState>((set, get) => {
-    // const setChunks = useChunkStore.getState().setChunks;
     return {
         // Initial state
         currentMetatextId: null,
@@ -54,11 +53,15 @@ export const useMetatextDetailStore = create<MetatextDetailState>((set, get) => 
                     throw new Error('No userId provided');
                 }
 
-                const metatext = await fetchMetatext(Number(metatextId), userId);
+                const metatext = await fetchMetatext(Number(metatextId));
                 if (!metatext) {
                     throw new Error(`Metatext with ID ${metatextId} not found`);
                 }
 
+                // Set chunks in the global chunk store if available
+                if (metatext && Array.isArray(metatext.chunks)) {
+                    useChunkStore.getState().setChunks(metatext.chunks);
+                }
                 set({ metatext, loading: false });
 
             } catch (error: unknown) {

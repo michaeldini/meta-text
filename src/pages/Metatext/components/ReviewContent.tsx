@@ -18,6 +18,11 @@ export function ReviewContent({
     phrases,
     chunkReviewTable
 }: ReviewContentProps): ReactElement {
+    console.log('ReviewContent data:', {
+        flashcards,
+        phrases,
+        chunkReviewTable
+    });
     return (
         <>
             <ReviewSection

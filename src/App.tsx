@@ -109,7 +109,6 @@ const AppContent = () => {
         // Fetch user config from backend and hydrate Zustand store
         async function fetchAndHydrate() {
             try {
-                console.log('Fetching user config...');
                 const config = await fetchUserConfig();
                 if (config.uiPreferences) {
                     hydrateUIPreferences(config.uiPreferences);

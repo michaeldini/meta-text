@@ -7,13 +7,13 @@ Multiple word inputs will be saved as `PhraseExplanation`.
 Returns a consistent `ExplanationResponse` regardless of input type.
 """
 
-from sqlmodel import Session
-from backend.models import ExplanationResponse, User, Explanation
+from sqlmodel import Session, select
+from backend.models import ExplanationResponse, ExplanationsResponse, User, Explanation, ExplanationType
 from backend.services.openai_service import OpenAIService
 from backend.exceptions.ai_exceptions import WordDefinitionValidationError
 from loguru import logger
 
-class WordsExplanationService:
+class ExplanationService:
     """
     Service to handle explanations for one or more words using a single instruction file.
     Decides internally whether to treat input as a single word or multiple words.
@@ -66,4 +66,22 @@ class WordsExplanationService:
         return ExplanationResponse(
             explanation=ai_data.explanation,
             explanation_in_context=ai_data.explanation_in_context
+        )
+
+    def get_review_data(self, metatext_id: int, user_id: int, session: Session) -> ExplanationsResponse:
+        """
+        Get all review data (word_list, explanations) for a specific metatext and user.
+        Returns a ExplanationsResponse: with word_list (type==word) and phrase_list (type==phrase).
+        """
+        
+        # Fetch all Explanation records for this metatext and user
+        explanations = list(session.exec(
+            select(Explanation)
+            .where((Explanation.metatext_id == metatext_id) & (Explanation.user_id == user_id))
+        ).all())
+        
+        # Filter by type and return
+        return ExplanationsResponse(
+            word_list=[e for e in explanations if e.type == ExplanationType.word],
+            phrase_list=[e for e in explanations if e.type == ExplanationType.phrase]
         )
