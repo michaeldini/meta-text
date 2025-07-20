@@ -5,7 +5,7 @@ Covers extraction and validation of the current user from JWT tokens.
 import pytest
 from fastapi import FastAPI, Depends, status, HTTPException
 from fastapi.testclient import TestClient
-from backend.services.auth_dependencies import get_current_user
+from backend.dependencies import get_current_user
 from backend.services.auth_service import AuthService
 from sqlmodel import Session
 

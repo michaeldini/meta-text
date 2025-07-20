@@ -76,6 +76,7 @@ class TestSourceDocumentsEndpoints:
         mock_service = AsyncMock()
         mock_source_doc = SourceDocumentDetail(
             id=1,
+            user_id=1,
             title="Test Document",
             author="Test Author",
             summary="Test Summary",

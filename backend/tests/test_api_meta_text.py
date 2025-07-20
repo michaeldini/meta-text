@@ -5,7 +5,7 @@ Utilizes dependency override for authentication to enable isolated testing.
 import pytest # noqa: F401
 from fastapi.testclient import TestClient
 from backend.main import app
-from backend.services.auth_dependencies import get_current_user
+from backend.dependencies import get_current_user
 
 
 # Mock user object for dependency override

@@ -26,7 +26,7 @@ class ChunkService:
         Raises:
             HTTPException: If required fields are missing or user is not authorized
         """
-        required_fields = ["text", "position", "metaTextId"]
+        required_fields = ["text", "position", "metatextId"]
         for field in required_fields:
             if field not in chunk_data:
                 raise HTTPException(status_code=400, detail=f"Missing required field: {field}")

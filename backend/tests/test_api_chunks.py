@@ -5,7 +5,7 @@ Utilizes dependency override for authentication to enable isolated testing.
 import pytest # noqa: F401
 from fastapi.testclient import TestClient
 from backend.main import app
-from backend.services.auth_dependencies import get_current_user
+from backend.dependencies import get_current_user
 
 # Mock user object for dependency override
 def override_get_current_user():
@@ -29,7 +29,7 @@ def create_metatext_and_chunk():
     metatext_resp = client.post("/api/metatext", json=metatext_payload)
     assert metatext_resp.status_code in (200, 201), f"MetaText creation failed: {metatext_resp.status_code} {metatext_resp.text}"
     metatext_id = metatext_resp.json()["id"]
-    chunk_payload = {"text": "one two three four five", "position": 1, "metaTextId": metatext_id}
+    chunk_payload = {"text": "one two three four five", "position": 1, "metatextId": metatext_id}
     chunk_resp = client.post("/api/chunk", json=chunk_payload)
     if chunk_resp.status_code not in (200, 201):
         print(f"Chunk creation failed: {chunk_resp.status_code} {chunk_resp.text}")
@@ -41,7 +41,7 @@ def create_metatext_and_chunk():
 
 def test_create_chunk_success():
     metatext_id, _ = create_metatext_and_chunk()
-    payload = {"text": "alpha beta gamma", "position": 2, "metaTextId": metatext_id}
+    payload = {"text": "alpha beta gamma", "position": 2, "metatextId": metatext_id}
     response = client.post("/api/chunk", json=payload)
     assert response.status_code in (200, 201)
     data = response.json()
@@ -81,7 +81,7 @@ def test_split_chunk_invalid_index():
 def test_combine_chunks_success():
     metatext_id, chunk_id1 = create_metatext_and_chunk()
     # Create a second chunk in the same MetaText
-    payload = {"text": "second chunk", "position": 2, "metaTextId": metatext_id}
+    payload = {"text": "second chunk", "position": 2, "metatextId": metatext_id}
     resp2 = client.post("/api/chunk", json=payload)
     chunk_id2 = resp2.json()["id"]
     response = client.post(f"/api/chunk/combine?first_chunk_id={chunk_id1}&second_chunk_id={chunk_id2}")

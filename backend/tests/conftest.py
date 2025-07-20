@@ -32,6 +32,7 @@ def sample_source_document_data():
     """Sample source document data for testing."""
     return {
         "id": 1,
+        "user_id": 1,
         "title": "Test Document",
         "author": "Test Author",
         "summary": "Test Summary",
@@ -111,7 +112,7 @@ def reset_test_db(test_engine):
     SQLModel.metadata.create_all(test_engine)
     # Insert SourceDocument with id=1 after tables are created
     with Session(test_engine) as session:
-        doc = SourceDocument(id=1, title="Test Document", author="Test Author", summary="Test Summary", characters="", locations="", themes="", symbols="", text="Test text")
+        doc = SourceDocument(user_id=1,id=1, title="Test Document", author="Test Author", summary="Test Summary", characters="", locations="", themes="", symbols="", text="Test text")
         session.add(doc)
         session.commit()
     yield
