@@ -1,56 +1,28 @@
 import { apiGet } from '../utils/api';
 import { withCache } from '../utils/cache';
 import { log } from 'utils';
+import type { Explanation } from 'types';
 
-interface WordlistResponse {
-    id: number;
-    word: string[];
-    context: string;
-    definition: string;
-    definition_with_context: string;
-    metatext_id: number;
-    created_at: string;
+
+export interface ReviewResponse {
+    word_list: Explanation[];
+    phrase_list: Explanation[];
 }
 
-// Base function without caching
-async function _fetchWordlist(metatextId: number): Promise<WordlistResponse> {
+// Base function for fetching all review data (wordlist + phrase explanations)
+async function _fetchReviewData(metatextId: number): Promise<ReviewResponse> {
     try {
-        return await apiGet<WordlistResponse>(`/api/metatext/${metatextId}/wordlist`);
+        return await apiGet<ReviewResponse>(`/api/metatext/${metatextId}/review`);
     } catch (error) {
-        log.error('Failed to fetch wordlist', error);
+        log.error('Failed to fetch review data', error);
         throw error;
     }
 }
 
-// Cached version (5 minutes for wordlists)
-export const fetchWordlist = withCache(
-    'fetchWordlist',
-    _fetchWordlist,
+// Cached version (5 minutes for review data)
+export const fetchReviewData = withCache(
+    'fetchReviewData',
+    _fetchReviewData,
     5 * 60 * 1000 // 5 minutes
 );
 
-export interface PhraseExplanation {
-    id: number;
-    phrase: string;
-    context: string;
-    explanation: string;
-    explanation_in_context: string;
-    metatext_id: number | null;
-}
-
-
-async function _fetchPhraseExplanations(metatextId: number): Promise<PhraseExplanation[]> {
-    try {
-        const data = await apiGet<PhraseExplanation[]>(`/api/metatext/${metatextId}/explanations`);
-        return data;
-    } catch (error) {
-        log.error('Failed to fetch phrase explanations', error);
-        throw error;
-    }
-}
-
-export const fetchPhraseExplanations = withCache(
-    'fetchPhraseExplanations',
-    _fetchPhraseExplanations,
-    5 * 60 * 1000 // 5 minutes
-);

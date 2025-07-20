@@ -3,22 +3,19 @@
 
 import type { ReactElement } from 'react';
 import { FlashCards, ReviewTable, ExplanationReview } from 'features';
-import { PhraseExplanation } from 'services';
-import { ChunkType, FlashcardItem } from 'types';
+// import { PhraseExplanation } from 'services';
+import { ChunkType, Explanation } from 'types';
 import { ReviewSection } from './ReviewSection';
 
 interface ReviewContentProps {
-    // Array of phrase explanations to display
-    phraseExplanations: PhraseExplanation[];
-    // Array of words for flashcard generation
-    flashcards: FlashcardItem[];
-    // Array of chunk data for the review table
+    wordList: Explanation[];
+    phraseList: Explanation[];
     chunkReviewTable: ChunkType[];
 }
 
 export function ReviewContent({
-    phraseExplanations,
-    flashcards,
+    wordList,
+    phraseList,
     chunkReviewTable
 }: ReviewContentProps): ReactElement {
     return (
@@ -27,14 +24,14 @@ export function ReviewContent({
                 title="Explanations"
                 testId="explanations-accordion"
             >
-                <ExplanationReview data={phraseExplanations} />
+                <ExplanationReview data={phraseList} />
             </ReviewSection>
 
             <ReviewSection
                 title="Flashcards"
                 testId="flashcards-accordion"
             >
-                <FlashCards flashcardItems={flashcards} />
+                <FlashCards flashcardItems={wordList} />
             </ReviewSection>
 
             <ReviewSection

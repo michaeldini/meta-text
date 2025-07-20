@@ -26,9 +26,13 @@ function MetatextReviewPage(): ReactElement {
     const navigate = useNavigate();
 
     // Custom hook for fetching all review data
-    const { wordlist, chunks, phraseExplanations, loading, error } =
+    const { wordList, chunks, phraseList, loading, error } =
         useMetatextReviewData(metatextId);
-
+    console.log('MetatextReviewPage data:', {
+        wordList,
+        phraseList,
+        chunks
+    });
     const theme: Theme = useTheme();
     const styles = getMetatextReviewStyles(theme);
 
@@ -65,8 +69,8 @@ function MetatextReviewPage(): ReactElement {
 
             {/* Review content sections */}
             <ReviewContent
-                phraseExplanations={phraseExplanations}
-                flashcards={wordlist}
+                wordList={wordList}
+                phraseList={phraseList}
                 chunkReviewTable={chunks}
             />
         </Box>

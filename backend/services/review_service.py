@@ -2,7 +2,7 @@
 from sqlmodel import select, Session, desc
 from loguru import logger
 
-from backend.models import Explanation, Chunk, Metatext
+from backend.models import Explanation, Chunk, Metatext, ReviewResponse, ExplanationType
 from backend.exceptions.review_exceptions import (
     WordlistNotFoundError,
     ChunksNotFoundError
@@ -10,7 +10,23 @@ from backend.exceptions.review_exceptions import (
 
 
 class ReviewService:
-    """Service for review-related operations like wordlists and chunk summaries."""
+    """Service for review-related operations like word_lists and chunk summaries."""
+    
+    def get_review_data(self, metatext_id: int, user_id: int, session: Session) -> ReviewResponse:
+        """
+        Get all review data (word_list, explanations) for a specific metatext and user.
+        Returns a ReviewResponse with word_list (type==word) and phrase_list (type==phrase).
+        """
+        # Fetch all Explanation records for this metatext and user
+        explanations = list(session.exec(
+            select(Explanation)
+            .where((Explanation.metatext_id == metatext_id) & (Explanation.user_id == user_id))
+        ).all())
+        # Filter by type
+        word_list = [e for e in explanations if e.type == ExplanationType.word]
+        phrase_list = [e for e in explanations if e.type == ExplanationType.phrase]
+        return ReviewResponse(word_list=word_list, phrase_list=phrase_list)
+        
     
     def get_wordlist_for_meta_text(self, metatext_id: int, user_id: int, session: Session) -> list[Explanation]:
         """

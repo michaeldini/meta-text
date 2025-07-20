@@ -5,17 +5,19 @@
 import React from 'react';
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Box, Paper } from '@mui/material';
 import { ExpandMoreIcon } from 'icons';
+import { Explanation } from 'types';
+
 import styles from './styles';
 
-export interface Explanation {
-    id: number;
-    words: string;
-    context: string;
-    explanation: string;
-    explanation_in_context: string;
-    metatext_id: number | null;
-    type: 'word' | 'phrase';
-}
+// export interface Explanation {
+//     id: number;
+//     words: string;
+//     context: string;
+//     explanation: string;
+//     explanation_in_context: string;
+//     metatext_id: number | null;
+//     type: 'word' | 'phrase';
+// }
 
 interface ExplanationReviewProps {
     data: Explanation[];
@@ -61,12 +63,11 @@ const ExplanationItem: React.FC<ExplanationItemProps> = ({ explanation }) => (
 );
 
 const ExplanationReview: React.FC<ExplanationReviewProps> = ({ data }) => {
-    const phraseData = data.filter(item => item.type === 'phrase');
-    if (!phraseData.length) return null;
+    if (!data.length) return null;
 
     return (
         <Box sx={{ mt: 4 }}>
-            {phraseData.map((explanation) => (
+            {data.map((explanation) => (
                 <ExplanationItem
                     key={explanation.id}
                     explanation={explanation}

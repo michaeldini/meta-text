@@ -234,3 +234,12 @@ class SetBookmarkRequest(BaseModel):
 class DeleteResponse(BaseModel):
     message: str
     deleted_id: int
+
+
+class ReviewResponse(BaseModel):
+    """
+    Response model for review endpoints.
+    Contains wordlist and phrase explanations.
+    """
+    word_list: List[Explanation]
+    phrase_list: List[Explanation]
