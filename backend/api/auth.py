@@ -5,7 +5,7 @@
 from fastapi import APIRouter, Depends, Response, Cookie, Header, HTTPException, status, Request
 from sqlmodel import Session
 from backend.db import get_session
-from backend.services.auth_service import AuthService 
+from backend.dependencies import AuthService 
 from backend.services.schemas import Token, UserCreate, UserRead, LoginRequest
 
 

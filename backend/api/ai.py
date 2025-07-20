@@ -6,8 +6,7 @@ from backend.models import (
 )
 from backend.db import get_session
 
-from backend.dependencies import get_ai_service
-from backend.services.auth_dependencies import get_current_user
+from backend.dependencies import get_ai_service, get_current_user
 from backend.exceptions.ai_exceptions import (
     ChunkNotFoundError,
     SourceDocumentNotFoundError,
@@ -25,11 +24,12 @@ router = APIRouter()
 async def generate_evaluation(
     chunk_id: int,
     session: Session = Depends(get_session),
-    user = Depends(get_current_user)
+    user = Depends(get_current_user),
+    ai_service = Depends(get_ai_service)
 ) -> dict:
     """Generate AI evaluation for chunk note, summary, and text. Requires authentication."""
     try:
-        return get_ai_service().generate_evaluation(chunk_id, session)
+        return ai_service.generate_evaluation(chunk_id, session)
     except ChunkNotFoundError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 
@@ -47,11 +47,12 @@ async def generate_evaluation(
 async def source_doc_info(
     doc_id: int,
     session: Session = Depends(get_session),
-    user = Depends(get_current_user)
+    user = Depends(get_current_user),
+    ai_service = Depends(get_ai_service)
 ) -> SourceDocInfoResponse:
     """Generate source document information using AI. Requires authentication."""
     try:
-        return get_ai_service().generate_source_document_info(doc_id, session)
+        return ai_service.generate_source_document_info(doc_id, session)
     except PromptValidationError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, 
@@ -75,11 +76,12 @@ async def generate_image(
     prompt: str = Form(...),
     chunk_id: int = Form(None),
     session: Session = Depends(get_session),
-    user = Depends(get_current_user)
+    user = Depends(get_current_user),
+    ai_service = Depends(get_ai_service)
 ):
     """Generate AI image using DALL-E. Requires authentication."""
     try:
-        return get_ai_service().generate_image(prompt, chunk_id, session)
+        return ai_service.generate_image(prompt, chunk_id, session)
     except PromptValidationError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, 
@@ -103,11 +105,12 @@ async def generate_rewrite(
     chunk_id: int,
     style_title: str,
     session: Session = Depends(get_session),
-    user = Depends(get_current_user)
+    user = Depends(get_current_user),
+    ai_service = Depends(get_ai_service)
 ) -> Rewrite:
     """Generate a compressed version of a chunk's text in a given style using AI (does not save). Requires authentication."""
     try:
-        return get_ai_service().generate_rewrite(chunk_id, style_title, session)
+        return ai_service.generate_rewrite(chunk_id, style_title, session)
     except ChunkNotFoundError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

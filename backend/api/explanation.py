@@ -11,8 +11,7 @@ from backend.db import get_session
 from backend.models import  ExplanationsResponse, ExplanationRequest
 from backend.services.ai_service import AIService
 from backend.services.explanation_service import ExplanationService 
-from backend.dependencies import get_ai_service, get_explanation_service
-from backend.services.auth_dependencies import get_current_user
+from backend.dependencies import get_ai_service, get_explanation_service, get_current_user
 
 
 router = APIRouter()

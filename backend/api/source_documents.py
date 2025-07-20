@@ -12,7 +12,7 @@ from backend.db import get_session
 from backend.services.source_document_service import SourceDocumentService
 
 # Import user dependency
-from backend.services.auth_dependencies import get_current_user
+from backend.dependencies import get_current_user, get_source_document_service
 from backend.exceptions.source_document_exceptions import (
     SourceDocumentNotFoundError,
     SourceDocumentTitleExistsError,
@@ -24,15 +24,7 @@ from backend.exceptions.source_document_exceptions import (
     FileSizeExceededError
 )
 
-
 router = APIRouter()
-
-# Dependency injection function
-def get_source_document_service() -> SourceDocumentService:
-    """Dependency injection function for SourceDocumentService."""
-    return SourceDocumentService()
-
-
 
 @router.post(
     "/source-documents",

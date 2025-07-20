@@ -10,18 +10,10 @@ from backend.exceptions.metatext_exceptions import (
     MetatextTitleExistsError,
     MetatextCreationError
 )
-
-
-# Import new user dependency from services.auth_dependencies
-from backend.services.auth_dependencies import get_current_user
+from backend.dependencies import get_current_user, get_metatext_service
 
 
 router = APIRouter()
-
-# Dependency injection function
-def get_metatext_service() -> MetatextService:
-    """Dependency injection function for MetatextService."""
-    return MetatextService()
 
 
 @router.post("/metatext", response_model=MetatextSummary, name="create_metatext")

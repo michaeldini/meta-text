@@ -11,7 +11,7 @@ from typing import List
 from backend.db import get_session
 from backend.models import ChunkRead, ChunkUpdate
 from backend.services.chunk_service import ChunkService
-from backend.services.auth_dependencies import get_current_user
+from backend.dependencies import get_current_user,  get_chunk_service
 from backend.exceptions.chunk_exceptions import (
     ChunkNotFoundError,
     InvalidSplitIndexError,
@@ -21,11 +21,6 @@ from backend.exceptions.chunk_exceptions import (
 
 
 router = APIRouter()
-
-# Dependency injection function
-def get_chunk_service() -> ChunkService:
-    """Dependency injection function for ChunkService."""
-    return ChunkService()
 
 
 @router.post("/chunk", response_model=ChunkRead, name="create_chunk")

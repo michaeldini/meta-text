@@ -7,14 +7,10 @@ from backend.db import get_session
 from backend.api.auth import UserRead
 from backend.services.bookmark_service import BookmarkService
 from backend.models import SetBookmarkRequest
-from backend.services.auth_dependencies import get_current_user
-
+from backend.dependencies import get_current_user, get_bookmark_service
 
 router = APIRouter()
 
-# Dependency injection function for BookmarkService
-def get_bookmark_service() -> BookmarkService:
-    return BookmarkService()
 
 @router.get("/bookmarks/{metatext_id}")
 def get_bookmark(

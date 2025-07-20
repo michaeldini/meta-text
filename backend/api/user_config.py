@@ -8,7 +8,7 @@ from typing import Optional
 from sqlmodel import Session, select
 from ..models import User, UserUIPreferences
 from ..db import get_session
-from backend.services.auth_dependencies import get_current_user
+from backend.dependencies import get_current_user
 
 router = APIRouter()
 
