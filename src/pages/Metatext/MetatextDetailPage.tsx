@@ -26,12 +26,14 @@ import { useSearchKeyboard } from '../../features/chunk-search/hooks/useSearchKe
 import { useMetatextDetailData } from './hooks/useMetatextDetailData';
 import { getMetatextDetailStyles } from './Metatext.styles';
 import DownloadMetatextButton from './DownloadMetatextButton';
+import { ChunkFavoriteFilterToggle } from 'features';
 
 
 function MetatextDetailPage(): ReactElement | null {
     // Extract the metatextId from the URL parameters
     const { metatextId } = useParams<{ metatextId: string }>();
 
+    const [showOnlyFavorites, setShowOnlyFavorites] = React.useState(false);
     // Validate the metatextId parameter using robust validation utility
     const { id: validatedMetatextId, isValid } = useValidatedIdParam(metatextId);
 
@@ -86,7 +88,10 @@ function MetatextDetailPage(): ReactElement | null {
                                 <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
                                     <BookmarkNavigateButton />
                                     <DownloadMetatextButton metatextId={metatext.id} />
-
+                                    <ChunkFavoriteFilterToggle
+                                        showOnlyFavorites={showOnlyFavorites}
+                                        onToggle={setShowOnlyFavorites}
+                                    />
                                 </Box>
 
                                 <SearchContainer
@@ -94,7 +99,7 @@ function MetatextDetailPage(): ReactElement | null {
                                 />
                             </DocumentHeader>
 
-                            <PaginatedChunks metatextId={metatext.id} />
+                            <PaginatedChunks metatextId={metatext.id} showOnlyFavorites={showOnlyFavorites} />
 
                             <ChunkToolsPanel />
                         </>

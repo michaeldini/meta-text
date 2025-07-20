@@ -6,6 +6,7 @@ import { Box, useTheme } from '@mui/material';
 import { ErrorBoundary, LoadingBoundary } from 'components';
 import { CopyTool } from 'features/chunk-copy';
 import ChunkBookmarkToggle from '../chunk-bookmark/ChunkBookmarkToggle';
+import ChunkFavoriteToggle from '../chunk-favorite/ChunkFavoriteToggle';
 import { getChunkComponentsStyles } from '../chunk/Chunk.styles';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 import type { ChunkToolId } from './toolsRegistry';
@@ -38,6 +39,7 @@ const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = ({
                 <CopyTool chunkText={chunk.text} />
                 {/* Bookmark toggle button */}
                 <ChunkBookmarkToggle chunk={chunk} />
+                <ChunkFavoriteToggle chunk={chunk} />
             </Box>
             <ErrorBoundary>
                 <Suspense fallback={<LoadingBoundary loading={true}><div /></LoadingBoundary>}>

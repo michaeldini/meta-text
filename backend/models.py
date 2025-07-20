@@ -118,6 +118,7 @@ class ChunkRead(ChunkBase):
     id: int
     images: list["ImageRead"] = []
     rewrites: list["RewriteRead"] = []
+    favorited_by_user_id: Optional[int] = None
     
 
 class ChunkUpdate(SQLModel):

@@ -31,10 +31,12 @@ import {
     CheckIcon as CheckSvg,
     BookmarkIcon as BookmarkSvg,
     ArrowDownTrayIcon as ArrowDownTraySvg,
+    StarIcon as StarSvg
 } from '@heroicons/react/24/solid';
 
 import {
-    BookmarkIcon as BookmarkOutlineSvg
+    BookmarkIcon as BookmarkOutlineSvg,
+    StarIcon as StarOutlineSvg
 } from '@heroicons/react/24/outline';
 
 import { SVGProps } from 'react';
@@ -74,3 +76,5 @@ export const CheckIcon: React.FC<IconProps> = (props) => <ThemedIcon as={CheckSv
 export const BookmarkIcon: React.FC<IconProps> = (props) => <ThemedIcon as={BookmarkSvg} {...props} />;
 export const BookmarkOutlineIcon: React.FC<IconProps> = (props) => <ThemedIcon as={BookmarkOutlineSvg} {...props} />;
 export const DownloadIcon: React.FC<IconProps> = (props) => <ThemedIcon as={ArrowDownTraySvg} {...props} />;
+export const StarIcon: React.FC<IconProps> = (props) => <ThemedIcon as={StarSvg} {...props} />;
+export const StarOutlineIcon: React.FC<IconProps> = (props) => <ThemedIcon as={StarOutlineSvg} {...props} />;

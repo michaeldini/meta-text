@@ -29,6 +29,7 @@ interface ChunksPaginationProps {
 
 interface PaginationProps {
     metatextId: number;
+    showOnlyFavorites?: boolean;
 }
 
 
@@ -46,15 +47,19 @@ function ChunksPagination({ pageCount, page, handleChange, children }: ChunksPag
 
 
 // Main component to display paginated chunks
-const PaginatedChunks = ({ metatextId }: PaginationProps) => {
+
+const PaginatedChunks = ({ metatextId, showOnlyFavorites }: PaginationProps) => {
     const theme = useTheme();
     const styles = getChunkComponentsStyles(theme);
 
     const { chunks, loadingChunks, chunksError, fetchChunks, resetChunkState } = useChunkStore();
     const { filteredChunks, isInSearchMode } = useSearchStore();
 
-    // Use filtered chunks when in search mode, otherwise use original chunks
-    const displayChunks = isInSearchMode ? filteredChunks : chunks;
+    // Combine search and favorite filters
+    let displayChunks = isInSearchMode ? filteredChunks : chunks;
+    if (showOnlyFavorites) {
+        displayChunks = displayChunks.filter(chunk => !!chunk.favorited_by_user_id);
+    }
 
     // Use pagination store for shared state
     const { currentPage, setCurrentPage, setChunksPerPage } = usePaginationStore();
@@ -79,6 +84,13 @@ const PaginatedChunks = ({ metatextId }: PaginationProps) => {
     const startIdx = (currentPage - 1) * chunksPerPage;
     const endIdx = startIdx + chunksPerPage;
     const paginatedChunks = displayChunks.slice(startIdx, endIdx);
+
+    // Reset currentPage to 1 if the current page is out of bounds after filtering (e.g., toggling favorites/search)
+    React.useEffect(() => {
+        if (currentPage > pageCount && pageCount > 0) {
+            setCurrentPage(1);
+        }
+    }, [displayChunks, pageCount, currentPage, setCurrentPage]);
 
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setCurrentPage(value);

@@ -65,6 +65,7 @@ export type ChunkType = {
     metatext_id: number;
     images: AiImage[];
     rewrites: Rewrite[];
+    favorited_by_user_id?: number | null;
 };
 
 export type AiImage = {
