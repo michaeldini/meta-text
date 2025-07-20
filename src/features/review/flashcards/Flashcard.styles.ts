@@ -1,7 +1,7 @@
 import { Theme } from '@mui/material/styles';
 
 // Theme-aware styles for WordFlashcard
-export const createWordFlashcardStyles = (theme: Theme) => ({
+export const createFlashcardStyles = (theme: Theme) => ({
     flashcardContainer: {
         perspective: 1000,
         width: 'fit-content',

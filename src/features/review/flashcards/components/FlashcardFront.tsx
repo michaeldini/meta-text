@@ -3,13 +3,13 @@
 import React from 'react';
 import { Box, CardActionArea, CardContent, Typography } from '@mui/material';
 
-interface WordFlashcardFrontProps {
+interface FlashcardFrontProps {
     word: string;
     styles: any;
     setFlipped: any;
 }
 
-const WordFlashcardFront: React.FC<WordFlashcardFrontProps> = ({ word, styles, setFlipped }) => (
+const FlashcardFront: React.FC<FlashcardFrontProps> = ({ word, styles, setFlipped }) => (
     <Box sx={styles.front}>
         <CardActionArea
             sx={styles.flashcard}
@@ -22,4 +22,4 @@ const WordFlashcardFront: React.FC<WordFlashcardFrontProps> = ({ word, styles, s
     </Box>
 );
 
-export default WordFlashcardFront;
+export default FlashcardFront;

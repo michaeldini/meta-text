@@ -2,12 +2,14 @@
 
 import React from 'react';
 import { Box, CardActionArea, CardContent, Typography, useTheme } from '@mui/material';
-import { MenuIcon, QuestionMarkIcon } from 'icons';
-import { createWordFlashcardStyles } from './WordFlashcard.styles';
-import InfoButton from './InfoPopoverButton';
 import parse from 'html-react-parser';
 
-interface WordFlashcardBackProps {
+import { MenuIcon, QuestionMarkIcon } from 'icons';
+
+import { createFlashcardStyles } from '../Flashcard.styles';
+import InfoButton from './InfoPopoverButton';
+
+interface FlashcardBackProps {
     word: string;
     definition: string;
     definition_in_context: string;
@@ -15,7 +17,7 @@ interface WordFlashcardBackProps {
     setFlipped: any;
 }
 
-const WordFlashcardBack: React.FC<WordFlashcardBackProps> = ({
+const FlashcardBack: React.FC<FlashcardBackProps> = ({
     word,
     definition,
     definition_in_context,
@@ -23,7 +25,7 @@ const WordFlashcardBack: React.FC<WordFlashcardBackProps> = ({
     setFlipped
 }) => {
     const theme = useTheme();
-    const styles = createWordFlashcardStyles(theme);
+    const styles = createFlashcardStyles(theme);
     const highlightedText: string = context.replace(new RegExp(`(${word})`, 'gi'), '<mark>$1</mark>');
 
     return (
@@ -57,4 +59,4 @@ const WordFlashcardBack: React.FC<WordFlashcardBackProps> = ({
     );
 };
 
-export default WordFlashcardBack;
+export default FlashcardBack;

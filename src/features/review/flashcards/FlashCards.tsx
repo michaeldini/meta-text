@@ -4,8 +4,8 @@
 
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import WordFlashcard from './WordFlashcard';
-import { createWordFlashcardStyles } from './WordFlashcard.styles';
+import Flashcard from './components/Flashcard';
+import { createFlashcardStyles } from './Flashcard.styles';
 import { useTheme } from '@mui/material/styles';
 import { Explanation } from 'types';
 import { AppAlert } from 'components';
@@ -16,7 +16,7 @@ interface FlashCardsProps {
 
 const FlashCards: React.FC<FlashCardsProps> = ({ flashcardItems }) => {
     const theme = useTheme();
-    const styles = createWordFlashcardStyles(theme);
+    const styles = createFlashcardStyles(theme);
 
     if (flashcardItems.length === 0) {
         return <AppAlert severity="info">No words yet. Define some words in the metatext editor to see them appear here.</AppAlert>;
@@ -26,7 +26,7 @@ const FlashCards: React.FC<FlashCardsProps> = ({ flashcardItems }) => {
         <>
             <Box sx={styles.wordlistWrap}>
                 {flashcardItems.map(item => (
-                    <WordFlashcard
+                    <Flashcard
                         key={item.id}
                         word={item.words}
                         definition={item.explanation}

@@ -1,20 +1,20 @@
 import React, { useState, useMemo } from 'react';
 import { Card, Box, useTheme } from '@mui/material';
-import { createWordFlashcardStyles } from './WordFlashcard.styles';
-import WordFlashcardFront from './WordFlashcardFront';
-import WordFlashcardBack from './WordFlashcardBack';
+import { createFlashcardStyles } from '../Flashcard.styles';
+import FlashcardFront from './FlashcardFront';
+import FlashcardBack from './FlashcardBack';
 
-interface WordFlashcardProps {
+interface FlashcardProps {
     word: string;
     definition: string;
     definition_in_context: string;
     context: string;
 }
 
-const WordFlashcard: React.FC<WordFlashcardProps> = ({ word, definition, definition_in_context, context }) => {
+const Flashcard: React.FC<FlashcardProps> = ({ word, definition, definition_in_context, context }) => {
     const [flipped, setFlipped] = useState(false);
     const theme = useTheme();
-    const styles = createWordFlashcardStyles(theme);
+    const styles = createFlashcardStyles(theme);
 
     return (
         <Card sx={styles.flashcardContainer}>
@@ -24,8 +24,8 @@ const WordFlashcard: React.FC<WordFlashcardProps> = ({ word, definition, definit
                     ...(flipped ? styles.flipped : {}),
                 }}
             >
-                <WordFlashcardFront word={word} styles={styles} setFlipped={setFlipped} />
-                <WordFlashcardBack
+                <FlashcardFront word={word} styles={styles} setFlipped={setFlipped} />
+                <FlashcardBack
                     word={word}
                     definition={definition}
                     definition_in_context={definition_in_context}
@@ -37,4 +37,4 @@ const WordFlashcard: React.FC<WordFlashcardProps> = ({ word, definition, definit
     );
 };
 
-export default WordFlashcard;
+export default Flashcard;
