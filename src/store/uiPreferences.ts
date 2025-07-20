@@ -1,7 +1,7 @@
 
 // Zustand store for UI preferences and persistent chunk bookmarks
 import { create } from 'zustand';
-import { fetchBookmark, setBookmark, clearBookmark } from '../services/bookmarksService';
+import { fetchBookmark, setBookmark } from '../services/bookmarksService';
 import { setUserConfig } from '../services/userConfigService';
 
 export const FONT_FAMILIES = [

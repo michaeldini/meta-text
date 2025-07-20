@@ -27,7 +27,7 @@ const ExplanationTool: React.FC<ExplanationToolProps> = ({
 
     const handleGenerate = useCallback(async () => {
         if (!chunk?.id) return;
-        const result = await explain({ chunkId: chunk.id, context: chunk.text, words: "" });
+        const result = await explain({ chunk_id: chunk.id, context: chunk.text, words: "" });
         if (result) {
             updateChunkField(chunk.id, 'explanation', result.explanation);
         }
