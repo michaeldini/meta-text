@@ -4,7 +4,7 @@ import pytest
 from sqlmodel import Session, SQLModel, create_engine
 import backend.db
 from backend.main import app
-from backend.models import SourceDocument
+from backend.models import SourceDocument, Metatext, User
 
 TEST_DB_PATH = "test_database.sqlite"
 TEST_DB_URL = f"sqlite:///{TEST_DB_PATH}"
@@ -42,6 +42,22 @@ def sample_source_document_data():
         "symbols": "Test Symbols",
         "text": "This is test document content."
     }
+
+
+# Fixture to create a MetaText for chunk tests
+@pytest.fixture(autouse=True)
+def metatext(test_engine):
+    """Create a MetaText with id=1 and source_document_id=1 for chunk tests."""
+    with Session(test_engine) as session:
+        # Check if already exists
+        metatext = session.get(Metatext, 1)
+        if not metatext:
+            metatext = Metatext(id=1, title="Test MetaText", source_document_id=1,
+                                user_id=1,
+                                text="This is a test metatext.")
+            session.add(metatext)
+            session.commit()
+    yield
 
 
 @pytest.fixture
@@ -110,9 +126,12 @@ def reset_test_db(test_engine):
     """Reset the test DB before each test for isolation and re-insert SourceDocument."""
     SQLModel.metadata.drop_all(test_engine)
     SQLModel.metadata.create_all(test_engine)
-    # Insert SourceDocument with id=1 after tables are created
+    # Insert User with id=1, then SourceDocument with id=1 after tables are created
     with Session(test_engine) as session:
-        doc = SourceDocument(user_id=1,id=1, title="Test Document", author="Test Author", summary="Test Summary", characters="", locations="", themes="", symbols="", text="Test text")
+        user = User(id=1, username="testuser", hashed_password="fakehash")
+        session.add(user)
+        session.commit()
+        doc = SourceDocument(user_id=1, id=1, title="Test Document", author="Test Author", summary="Test Summary", characters="", locations="", themes="", symbols="", text="Test text")
         session.add(doc)
         session.commit()
     yield

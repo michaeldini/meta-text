@@ -9,7 +9,7 @@ from sqlmodel import Session
 from typing import List
 
 from backend.db import get_session
-from backend.models import ChunkRead, ChunkUpdate
+from backend.models import ChunkRead, ChunkUpdate, CreateChunk, User
 from backend.services.chunk_service import ChunkService
 from backend.dependencies import get_current_user,  get_chunk_service
 from backend.exceptions.chunk_exceptions import (
@@ -25,12 +25,12 @@ router = APIRouter()
 
 @router.post("/chunk", response_model=ChunkRead, name="create_chunk")
 async def create_chunk(
-    chunk_data: dict = Body(...),
+    chunk_data: CreateChunk = Body(...),
     session: Session = Depends(get_session),
     service: ChunkService = Depends(get_chunk_service),
-    user = Depends(get_current_user)
+    user: User = Depends(get_current_user)
 ):
-    """Create a new chunk. Requires authentication. metaTextId must belong to the current user."""
+    """Create a new chunk. Requires authentication. metatextId must belong to the current user."""
     chunk = service.create_chunk(chunk_data, user.id, session)
     return ChunkRead.model_validate(chunk, from_attributes=True)
 

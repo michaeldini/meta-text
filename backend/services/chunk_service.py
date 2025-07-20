@@ -3,7 +3,7 @@ from sqlmodel import select, Session
 from fastapi import HTTPException
 from loguru import logger
 
-from backend.models import Chunk, ChunkRead, Metatext
+from backend.models import Chunk, ChunkRead, Metatext, CreateChunk
 from backend.exceptions.chunk_exceptions import (
     ChunkNotFoundError,
     InvalidSplitIndexError,
@@ -14,11 +14,11 @@ from backend.services.ai_image_service import AiImageService
 
 
 class ChunkService:
-    def create_chunk(self, chunk_data: dict, user_id: int, session: Session) -> Chunk:
+    def create_chunk(self, chunk_data: CreateChunk, user_id: int, session: Session) -> Chunk:
         """
-        Create a new chunk. metaTextId must belong to the current user.
+        Create a new chunk. metatextId must belong to the current user.
         Args:
-            chunk_data: Dictionary containing chunk fields (must include text, position, metaTextId)
+            chunk_data: Dictionary containing chunk fields (must include text, position, metatextId)
             user_id: The ID of the user creating the chunk
             session: Database session
         Returns:
@@ -26,21 +26,21 @@ class ChunkService:
         Raises:
             HTTPException: If required fields are missing or user is not authorized
         """
-        required_fields = ["text", "position", "metatextId"]
-        for field in required_fields:
-            if field not in chunk_data:
-                raise HTTPException(status_code=400, detail=f"Missing required field: {field}")
-        metatext_id = chunk_data["metatextId"]
+        # required_fields = ["text", "position", "metatextId"]
+        # for field in required_fields:
+        #     if field not in chunk_data:
+        #         raise HTTPException(status_code=400, detail=f"Missing required field: {field}")
+        metatext_id = chunk_data.metatextId
         metatext = session.exec(select(Metatext).where(Metatext.id == metatext_id)).first()
         if not metatext or metatext.user_id != user_id:
             raise HTTPException(status_code=403, detail="Not authorized to add chunk to this Metatext.")
         chunk = Chunk(
-            text=chunk_data["text"],
-            position=chunk_data["position"],
-            note=chunk_data.get("note", ""),
-            summary=chunk_data.get("summary", ""),
-            evaluation=chunk_data.get("evaluation", ""),
-            explanation=chunk_data.get("explanation", ""),
+            text=chunk_data.text,
+            position=chunk_data.position,
+            # note=chunk_data.note,
+            # summary=chunk_data.summary,
+            # evaluation=chunk_data.evaluation,
+            # explanation=chunk_data.explanation,
             metatext_id=metatext_id
         )
         session.add(chunk)

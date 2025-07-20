@@ -243,3 +243,9 @@ class DeleteResponse(BaseModel):
     message: str
     deleted_id: int
 
+
+
+class CreateChunk(BaseModel):
+    text: str
+    position: float
+    metatextId: int
