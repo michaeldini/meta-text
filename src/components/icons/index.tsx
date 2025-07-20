@@ -7,7 +7,6 @@ import {
     TrashIcon as TrashSvg,
     ArrowUpTrayIcon as ArrowUpTraySvg,
     ArrowUturnLeftIcon as ArrowUturnLeftSvg,
-    ArrowsRightLeftIcon as ArrowsRightLeftSvg,
     AdjustmentsHorizontalIcon as AdjustmentsHorizontalSvg,
     DocumentTextIcon as DocumentTextSvg,
     ScissorsIcon as ScissorsSvg,
@@ -18,7 +17,6 @@ import {
     SparklesIcon as StarsSvg,
     AcademicCapIcon as AcademicCapSvg,
     PhotoIcon as PhotoSvg,
-    BeakerIcon as CompressionSvg,
     HomeIcon as HomeSvg,
     ArrowLeftEndOnRectangleIcon as LoginSvg,
     ArrowLeftStartOnRectangleIcon as LogoutSvg,
@@ -31,7 +29,9 @@ import {
     CheckIcon as CheckSvg,
     BookmarkIcon as BookmarkSvg,
     ArrowDownTrayIcon as ArrowDownTraySvg,
-    StarIcon as StarSvg
+    StarIcon as StarSvg,
+    DocumentCheckIcon as DocumentCheckSvg,
+    PencilSquareIcon as PencilSquareSvg,
 } from '@heroicons/react/24/solid';
 
 import {
@@ -51,7 +51,7 @@ export const ClearIcon: React.FC<IconProps> = (props) => <ThemedIcon as={XMarkSv
 export const DeleteIcon: React.FC<IconProps> = (props) => <ThemedIcon as={TrashSvg} {...props} />;
 export const FileUploadIcon: React.FC<IconProps> = (props) => <ThemedIcon as={ArrowUpTraySvg} {...props} />;
 export const UndoArrowIcon: React.FC<IconProps> = (props) => <ThemedIcon as={ArrowUturnLeftSvg} {...props} />;
-export const CompareArrowsIcon: React.FC<IconProps> = (props) => <ThemedIcon as={ArrowsRightLeftSvg} {...props} />;
+
 export const NotesIcon: React.FC<IconProps> = (props) => <ThemedIcon as={DocumentTextSvg} {...props} />;
 export const ContentCutIcon: React.FC<IconProps> = (props) => <ThemedIcon as={ScissorsSvg} {...props} />;
 export const QuestionMarkIcon: React.FC<IconProps> = (props) => <ThemedIcon as={QuestionMarkCircleSvg} {...props} />;
@@ -61,7 +61,6 @@ export const ExpandLessIcon: React.FC<IconProps> = (props) => <ThemedIcon as={Ch
 export const StarsIcon: React.FC<IconProps> = (props) => <ThemedIcon as={StarsSvg} {...props} />;
 export const AcademicCapIcon: React.FC<IconProps> = (props) => <ThemedIcon as={AcademicCapSvg} {...props} />;
 export const PhotoIcon: React.FC<IconProps> = (props) => <ThemedIcon as={PhotoSvg} {...props} />;
-export const CompressionIcon: React.FC<IconProps> = (props) => <ThemedIcon as={CompressionSvg} {...props} />;
 export const HomeIcon: React.FC<IconProps> = (props) => <ThemedIcon as={HomeSvg} {...props} />;
 export const LoginIcon: React.FC<IconProps> = (props) => <ThemedIcon as={LoginSvg} {...props} />;
 export const LogoutIcon: React.FC<IconProps> = (props) => <ThemedIcon as={LogoutSvg} {...props} />;
@@ -78,3 +77,5 @@ export const BookmarkOutlineIcon: React.FC<IconProps> = (props) => <ThemedIcon a
 export const DownloadIcon: React.FC<IconProps> = (props) => <ThemedIcon as={ArrowDownTraySvg} {...props} />;
 export const StarIcon: React.FC<IconProps> = (props) => <ThemedIcon as={StarSvg} {...props} />;
 export const StarOutlineIcon: React.FC<IconProps> = (props) => <ThemedIcon as={StarOutlineSvg} {...props} />;
+export const DocumentCheckIcon: React.FC<IconProps> = (props) => <ThemedIcon as={DocumentCheckSvg} {...props} />;
+export const PencilSquareIcon: React.FC<IconProps> = (props) => <ThemedIcon as={PencilSquareSvg} {...props} />;

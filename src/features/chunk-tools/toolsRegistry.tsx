@@ -3,7 +3,7 @@
 // This centralizes tool management and makes it easy to add/remove tools
 
 import React from 'react';
-import { CompareArrowsIcon, PhotoIcon, NotesIcon, CompressionIcon, QuestionMarkIcon } from 'icons';
+import { PhotoIcon, NotesIcon, QuestionMarkIcon, DocumentCheckIcon, PencilSquareIcon } from 'icons';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 
 // Tool component interface - all tools must implement this
@@ -35,7 +35,7 @@ export const createChunkToolsRegistry = (): Omit<ChunkTool, 'component'>[] => [
     {
         id: 'evaluation',
         name: 'Evaluation',
-        icon: <CompareArrowsIcon />,
+        icon: <DocumentCheckIcon />,
         tooltip: 'Show or hide the AI-generated evaluation panel for all chunks',
         category: 'ai'
     },
@@ -49,7 +49,7 @@ export const createChunkToolsRegistry = (): Omit<ChunkTool, 'component'>[] => [
     {
         id: 'rewrite',
         name: 'Rewrite',
-        icon: <CompressionIcon />,
+        icon: <PencilSquareIcon />,
         tooltip: 'Show or hide the rewrites for all chunks',
         category: 'analysis'
     },
