@@ -17,6 +17,7 @@ from backend.exceptions.ai_exceptions import (
     InstructionsFileNotFoundError,
     FileOperationError
 )
+from backend.services import AIService
 
 router = APIRouter()
 
@@ -106,7 +107,7 @@ async def generate_rewrite(
     style_title: str,
     session: Session = Depends(get_session),
     user = Depends(get_current_user),
-    ai_service = Depends(get_ai_service)
+    ai_service: AIService = Depends(get_ai_service)
 ) -> Rewrite:
     """Generate a compressed version of a chunk's text in a given style using AI (does not save). Requires authentication."""
     try:

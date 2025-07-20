@@ -23,7 +23,7 @@ export default defineConfig({
                     'utils': ['zustand', 'loglevel'],
                     // Separate your chunks feature since it's large
                     'chunks-features': [
-                        './src/features/chunk-compression',
+                        './src/features/chunk-rewrite',
                         './src/features/chunk-image',
                         './src/features/chunk-search',
                     ],

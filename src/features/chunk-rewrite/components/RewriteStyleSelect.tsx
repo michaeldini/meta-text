@@ -1,8 +1,8 @@
 import React from 'react';
 import { TextField, MenuItem } from '@mui/material';
-import type { CompressionStyleSelectProps } from 'features/chunk-shared/types';
+import type { RewriteStyleSelectProps } from 'features/chunk-shared/types';
 
-const CompressionStyleSelect: React.FC<CompressionStyleSelectProps> = ({ style, onChange, options }) => (
+const RewriteStyleSelect: React.FC<RewriteStyleSelectProps> = ({ style, onChange, options }) => (
     <TextField
         select
         label="Compression Style"
@@ -17,4 +17,4 @@ const CompressionStyleSelect: React.FC<CompressionStyleSelectProps> = ({ style, 
     </TextField>
 );
 
-export default CompressionStyleSelect;
+export default RewriteStyleSelect;

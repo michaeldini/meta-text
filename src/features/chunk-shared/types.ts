@@ -21,7 +21,7 @@ export interface BaseChunkProps {
 }
 
 /**
- * Configuration object for style options (used across compression components)
+ * Configuration object for style options (used across rewrite components)
  */
 export interface StyleOption {
     /** The internal value used for the style */
@@ -65,10 +65,10 @@ export interface ImageToolProps extends BaseChunkProps {
 }
 
 /**
- * Props for compression tool components
+ * Props for rewrite tool components
  */
-export interface CompressionToolProps extends BaseChunkProps {
-    onCompressionCreated?: () => void;
+export interface RewriteToolProps extends BaseChunkProps {
+    onRewriteCreated?: () => void;
 }
 
 /**
@@ -172,27 +172,27 @@ export interface ImageToolState {
 }
 
 /**
- * State interface for compression hook
+ * State interface for rewrite hook
  */
-export interface UseCompressionState {
-    compressions: Rewrite[];
+export interface UseRewriteState {
+    rewrites: Rewrite[];
     selectedId: number | '';
     loading: boolean;
     error: string | null;
 }
 
 /**
- * Actions interface for compression hook
+ * Actions interface for rewrite hook
  */
-export interface UseCompressionActions {
+export interface UseRewriteActions {
     setSelectedId: (id: number | '') => void;
-    onCompressionCreated: () => void;
+    onRewriteCreated: () => void;
 }
 
 /**
- * Return type for compression hook
+ * Return type for rewrite hook
  */
-export interface UseCompressionReturn extends UseCompressionState, UseCompressionActions {
+export interface UseRewriteReturn extends UseRewriteState, UseRewriteActions {
     selected: Rewrite | undefined;
 }
 
@@ -222,40 +222,40 @@ export interface EvaluationResult {
 // =============================================================================
 
 /**
- * Props for compression tool button component
+ * Props for rewrite tool button component
  */
-export interface CompressionToolButtonProps {
+export interface RewriteToolButtonProps {
     onClick: () => void;
     disabled: boolean;
 }
 
 /**
- * Props for compression display component
+ * Props for rewrite display component
  */
-export interface CompressionDisplayProps {
+export interface RewriteDisplayProps {
     selected: Rewrite | undefined;
     styles: any;
 }
 
 /**
- * Props for compression dialog component
+ * Props for rewrite dialog component
  */
-export interface CompressionDialogProps {
+export interface RewriteDialogProps {
     /** Controls whether the dialog is open or closed */
     open: boolean;
     /** Callback function to close the dialog */
     onClose: () => void;
-    /** The currently selected compression style */
+    /** The currently selected rewrite style */
     style: string;
     /** Callback function to handle style selection changes */
     onStyleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    /** Array of available compression style options */
+    /** Array of available rewrite style options */
     options: StyleOption[];
     /** Loading state for save operation */
     loading: boolean;
     /** Error message (null if no error) */
     error: string | null;
-    /** Callback function to save the compression */
+    /** Callback function to save the rewrite */
     onSave: () => void;
     /** Loading state for save operation (alias for loading) */
     saving: boolean;
@@ -264,43 +264,43 @@ export interface CompressionDialogProps {
 }
 
 /**
- * Props for compression style select component
+ * Props for rewrite style select component
  */
-export interface CompressionStyleSelectProps {
+export interface RewriteStyleSelectProps {
     style: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     options: StyleOption[];
 }
 
 /**
- * Props for compression preview component
+ * Props for rewrite preview component
  */
-export interface CompressionPreviewProps {
+export interface RewritePreviewProps {
     preview: string | null;
 }
 
 /**
- * Props for compression select component
+ * Props for rewrite select component
  */
-export interface CompressionSelectProps {
-    compressions: Rewrite[];
+export interface RewriteSelectProps {
+    rewrites: Rewrite[];
     selectedId: number | '';
     setSelectedId: (id: number) => void;
     styles: any;
 }
 
 /**
- * Props for compression display tool extending base chunk props
+ * Props for rewrite display tool extending base chunk props
  */
-export interface CompressionDisplayToolProps extends BaseChunkProps {
-    onCompressionCreated?: () => void;
+export interface RewriteDisplayToolProps extends BaseChunkProps {
+    onRewriteCreated?: () => void;
 }
 
 /**
- * Props for compression empty state component
+ * Props for rewrite empty state component
  */
-export interface CompressionEmptyStateProps extends BaseChunkProps {
-    onCompressionCreated: () => void;
+export interface RewriteEmptyStateProps extends BaseChunkProps {
+    onRewriteCreated: () => void;
 }
 
 /**

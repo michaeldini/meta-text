@@ -1,8 +1,8 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import type { CompressionPreviewProps } from 'features/chunk-shared/types';
+import type { RewritePreviewProps } from 'features/chunk-shared/types';
 
-const CompressionPreview: React.FC<CompressionPreviewProps> = ({ preview }) => {
+const RewritePreview: React.FC<RewritePreviewProps> = ({ preview }) => {
     if (!preview) return null;
     return (
         <Box mt={3}>
@@ -14,4 +14,4 @@ const CompressionPreview: React.FC<CompressionPreviewProps> = ({ preview }) => {
     );
 };
 
-export default CompressionPreview;
+export default RewritePreview;

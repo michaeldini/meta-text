@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { generateAndSaveChunkCompression } from 'services';
-import type { CompressionToolProps } from 'features/chunk-shared/types';
-import CompressionToolButton from './components/CompressionToolButton';
-import CompressionDialog from './components/CompressionDialog';
+import { generateRewrite } from 'services';
+import type { RewriteToolProps } from 'features/chunk-shared/types';
+import RewriteToolButton from './components/RewriteToolButton';
+import RewriteDialog from './components/RewriteDialog';
 
 const STYLE_OPTIONS = [
     { value: 'like im 5', label: 'Explain like I’m 5' },
@@ -10,7 +10,7 @@ const STYLE_OPTIONS = [
     { value: 'academic', label: 'Academic' },
 ];
 
-const CompressionTool: React.FC<CompressionToolProps> = ({ chunk, onCompressionCreated }) => {
+const RewriteTool: React.FC<RewriteToolProps> = ({ chunk, onRewriteCreated }) => {
     const [open, setOpen] = useState(false);
     const [style, setStyle] = useState(STYLE_OPTIONS[0].value);
     const [loading, setLoading] = useState(false);
@@ -33,11 +33,11 @@ const CompressionTool: React.FC<CompressionToolProps> = ({ chunk, onCompressionC
         setLoading(true);
         setError(null);
         try {
-            await generateAndSaveChunkCompression(chunk.id, style);
+            await generateRewrite(chunk.id, style);
             handleClose();
-            if (onCompressionCreated) onCompressionCreated();
+            if (onRewriteCreated) onRewriteCreated();
         } catch (err: any) {
-            setError('Failed to generate compression.');
+            setError('Failed to generate rewrite.');
         } finally {
             setLoading(false);
         }
@@ -45,11 +45,11 @@ const CompressionTool: React.FC<CompressionToolProps> = ({ chunk, onCompressionC
 
     return (
         <>
-            {/* the user clicks this button to create a new compression (open dialog) */}
-            <CompressionToolButton onClick={handleOpen} disabled={!chunk} />
+            {/* the user clicks this button to create a new rewrite (open dialog) */}
+            <RewriteToolButton onClick={handleOpen} disabled={!chunk} />
 
-            {/* Compression dialog for generating and saving compressions */}
-            <CompressionDialog
+            {/* Rewrite dialog for generating and saving rewrites */}
+            <RewriteDialog
                 open={open}
                 onClose={handleClose}
                 style={style}
@@ -65,4 +65,4 @@ const CompressionTool: React.FC<CompressionToolProps> = ({ chunk, onCompressionC
     );
 };
 
-export default CompressionTool;
+export default RewriteTool;

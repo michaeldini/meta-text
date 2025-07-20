@@ -66,7 +66,7 @@ export const getSharedToolStyles = (theme: Theme) => ({
     },
 
     // wraps compressed words in a flex container
-    compressionDisplayWordsContainer: {
+    rewriteDisplayWordsContainer: {
         flexWrap: 'wrap' as const,
         display: 'flex',
         p: theme.spacing(2),

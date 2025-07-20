@@ -4,20 +4,20 @@ import { Box, Typography, useTheme } from '@mui/material';
 import { getSharedToolStyles } from 'features/chunk-shared/styles';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 import { useChunkStore } from 'store';
-import CompressionTool from './CompressionTool';
-import CompressionSelect from './components/CompressionSelect';
-import CompressionDisplay from './components/CompressionDisplay';
-import CompressionEmptyState from './components/CompressionEmptyState';
-import { useCompression } from './hooks/useCompression';
+import RewriteTool from './RewriteTool';
+import RewriteSelect from './components/RewriteSelect';
+import RewriteDisplay from './components/RewriteDisplay';
+import RewriteEmptyState from './components/RewriteEmptyState';
+import { useRewrite } from './hooks/useRewrite';
 import { LoadingSpinner } from 'components';
 
-interface CompressionDisplayToolProps {
+interface RewriteDisplayToolProps {
     chunk: ChunkType;
     updateChunkField: UpdateChunkFieldFn;
     isVisible: boolean;
 }
 
-const CompressionDisplayTool: React.FC<CompressionDisplayToolProps> = ({
+const RewriteDisplayTool: React.FC<RewriteDisplayToolProps> = ({
     chunk,
     updateChunkField,
     isVisible
@@ -27,42 +27,42 @@ const CompressionDisplayTool: React.FC<CompressionDisplayToolProps> = ({
     const styles = getSharedToolStyles(theme);
     const { refetchChunk } = useChunkStore();
     const {
-        compressions,
+        rewrites,
         selectedId,
         selected,
         setSelectedId,
-        onCompressionCreated
-    } = useCompression(chunk);
+        onRewriteCreated: onRewriteCreated
+    } = useRewrite(chunk);
 
-    // Handle compression creation by refetching only the specific chunk
-    const handleCompressionCreated = async () => {
+    // Handle rewrite creation by refetching only the specific chunk
+    const handleRewriteCreated = async () => {
         try {
             await refetchChunk(chunk.id);
         } catch (error) {
-            console.error('Failed to refetch chunk after compression creation:', error);
+            console.error('Failed to refetch chunk after rewrite creation:', error);
         }
     };
 
     return (
         <Box sx={styles.toolTabContainer}>
-            {compressions.length === 0 ? (
-                <CompressionEmptyState chunk={chunk} onCompressionCreated={handleCompressionCreated} />
+            {rewrites.length === 0 ? (
+                <RewriteEmptyState chunk={chunk} onRewriteCreated={handleRewriteCreated} />
             ) : (
                 <>
                     <Box flexDirection="row" display="flex" alignItems="center">
-                        <CompressionTool chunk={chunk} onCompressionCreated={handleCompressionCreated} />
-                        <CompressionSelect
-                            compressions={compressions}
+                        <RewriteTool chunk={chunk} onRewriteCreated={handleRewriteCreated} />
+                        <RewriteSelect
+                            rewrites={rewrites}
                             selectedId={selectedId}
                             setSelectedId={setSelectedId}
                             styles={styles}
                         />
                     </Box>
-                    <CompressionDisplay selected={selected} styles={styles} />
+                    <RewriteDisplay selected={selected} styles={styles} />
                 </>
             )}
         </Box>
     );
 };
 
-export default CompressionDisplayTool;
+export default RewriteDisplayTool;

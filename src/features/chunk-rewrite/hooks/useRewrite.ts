@@ -1,37 +1,37 @@
 import { useEffect, useState } from 'react';
 import type { Rewrite, ChunkType } from 'types';
-import type { UseCompressionReturn } from 'features/chunk-shared/types';
+import type { UseRewriteReturn } from 'features/chunk-shared/types';
 
-export const useCompression = (chunk: ChunkType | null): UseCompressionReturn => {
+export const useRewrite = (chunk: ChunkType | null): UseRewriteReturn => {
     const [selectedId, setSelectedId] = useState<number | ''>('');
 
-    // Get compressions directly from chunk data
-    const compressions = chunk?.rewrites || [];
+    // Get rewrites directly from chunk data
+    const rewrites = chunk?.rewrites || [];
 
-    // Reset selectedId when chunk changes and set to first compression if available
+    // Reset selectedId when chunk changes and set to first rewrite if available
     useEffect(() => {
-        if (!chunk || compressions.length === 0) {
+        if (!chunk || rewrites.length === 0) {
             setSelectedId('');
         } else {
-            setSelectedId(compressions[0].id);
+            setSelectedId(rewrites[0].id);
         }
-    }, [chunk, compressions]);
+    }, [chunk, rewrites]);
 
     // Placeholder function for compatibility - actual refetching is handled by the parent component
-    const onCompressionCreated = () => {
+    const onRewriteCreated = () => {
         // The parent component (CompressionDisplayTool) handles the actual refetch
         // This function is kept for interface compatibility
     };
 
-    const selected = compressions.find(c => c.id === selectedId);
+    const selected = rewrites.find(c => c.id === selectedId);
 
     return {
-        compressions,
+        rewrites: rewrites,
         selectedId,
         loading: false, // No loading needed since data comes from chunk
         error: null, // No error handling needed since data comes from chunk
         selected,
         setSelectedId,
-        onCompressionCreated
+        onRewriteCreated
     };
 };

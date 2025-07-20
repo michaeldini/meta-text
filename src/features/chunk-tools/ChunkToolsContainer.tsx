@@ -14,7 +14,7 @@ import type { ChunkToolId } from './toolsRegistry';
 import NotesTool from '../chunk-note/NotesTool';
 import EvaluationTool from '../chunk-evaluation/EvaluationTool';
 import ImageTool from '../chunk-image/ImageTool';
-import CompressionDisplayTool from '../chunk-compression/CompressionDisplayTool';
+import RewriteDisplayTool from '../chunk-rewrite/RewriteDisplayTool';
 import ExplanationTool from '../chunk-explanation/ExplanationTool';
 
 interface ChunkToolsContainerProps {
@@ -70,7 +70,7 @@ const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = ({
 
                     {/* Rewrite Tool */}
                     {activeTools.includes('rewrite') && (
-                        <CompressionDisplayTool
+                        <RewriteDisplayTool
                             chunk={chunk}
                             updateChunkField={updateChunkField}
                             isVisible={true}

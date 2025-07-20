@@ -9,7 +9,7 @@ export * from './navbar';
 // Chunk tools
 export * from './chunk-explanation';
 export * from './chunk-evaluation';
-export * from './chunk-compression';
+export * from './chunk-rewrite';
 export * from './chunk-merge';
 export * from './chunk-split';
 export * from './chunk-copy';

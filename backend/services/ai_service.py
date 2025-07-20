@@ -203,7 +203,7 @@ class AIService:
         """
         Generate a compressed version of a chunk's text in a given style using AI, and save it to the database.
         """
-        logger.info(f"Generating chunk compression for chunk_id: {chunk_id} with style: {style_title}")
+        logger.info(f"Generating chunk rewrite for chunk_id: {chunk_id} with style: {style_title}")
         
         # Get chunk from database
         chunk = session.get(Chunk, chunk_id)
@@ -216,7 +216,7 @@ class AIService:
         
         # Generate AI response
         compressed_text = self.openai_service.generate_text_response(
-            "instructions/chunk_compression_instructions.txt", prompt
+            "instructions/chunk_rewrite_instructions.txt", prompt
         )
 
         obj = Rewrite(chunk_id=chunk_id, title=style_title, rewrite_text=compressed_text)
@@ -225,7 +225,7 @@ class AIService:
         session.commit()
         session.refresh(obj)
         
-        logger.info(f"AI chunk compression generated for chunk_id: {chunk_id} style: {style_title}")
+        logger.info(f"AI chunk rewrite generated for chunk_id: {chunk_id} style: {style_title}")
         
         return obj
 

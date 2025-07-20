@@ -1,7 +1,7 @@
 /**
  * Chunk Service - Manages document chunk operations with intelligent caching
  * 
- * This service provides a comprehensive API for managing document chunks and their compressions.
+ * This service provides a comprehensive API for managing document chunks and their rewrites.
  * It implements a two-tier caching strategy to optimize performance:
  * 
  * CACHING STRATEGY:
@@ -17,9 +17,9 @@
  * - Update chunks: Modifies chunk properties with cache invalidation
  * 
  * COMPRESSION FEATURES:
- * - Create/read/update/delete chunk compressions
- * - Preview compression styles before saving
- * - Multiple compression styles per chunk support
+ * - Create/read/update/delete chunk rewrites
+ * - Preview rewrite styles before saving
+ * - Multiple rewrite styles per chunk support
  * 
  * The service uses a base function + cached wrapper pattern where base functions
  * (prefixed with _) perform the actual API calls, and exported functions add caching.
@@ -94,25 +94,25 @@ export const fetchChunk = withCache(
 
 // --- Chunk Compression API ---
 
-export async function fetchChunkCompressions(chunkId: number): Promise<Rewrite[]> {
-    return apiGet<Rewrite[]>(`/api/chunk/${chunkId}/compressions`);
-}
+// export async function fetchChunkCompressions(chunkId: number): Promise<Rewrite[]> {
+//     return apiGet<Rewrite[]>(`/api/chunk/${chunkId}/rewrites`);
+// }
 
 
 // Deprecated: createChunkCompression is no longer used
 
 /**
- * Generate and save a chunk compression in one step (no preview).
- * Calls the backend endpoint that generates and saves the compression.
+ * Generate and save a chunk rewrite in one step (no preview).
+ * Calls the backend endpoint that generates and saves the rewrite.
  */
-export async function generateAndSaveChunkCompression(chunkId: number, styleTitle: string): Promise<Rewrite> {
+export async function generateRewrite(chunkId: number, styleTitle: string): Promise<Rewrite> {
     const result = await apiGet<Rewrite>(`/api/generate-rewrite/${chunkId}?style_title=${encodeURIComponent(styleTitle)}`);
     apiCache.invalidate(`fetchChunk:${chunkId}`);
     return result;
 }
 
-// export async function updateChunkCompression(compressionId: number, data: ChunkCompressionCreate): Promise<ChunkCompression> {
-//     const result = await apiPut<ChunkCompression>(`/api/chunk-compression/${compressionId}`, data);
+// export async function updateChunkCompression(rewriteId: number, data: ChunkCompressionCreate): Promise<ChunkCompression> {
+//     const result = await apiPut<ChunkCompression>(`/api/chunk-rewrite/${rewriteId}`, data);
 
 //     // Since we don't have the chunkId directly, we'll invalidate all fetchChunk caches
 //     // Alternatively, the API could return the chunk_id in the response
@@ -121,11 +121,12 @@ export async function generateAndSaveChunkCompression(chunkId: number, styleTitl
 //     return result;
 // }
 
-export async function deleteChunkCompression(compressionId: number): Promise<void> {
-    await apiPost<void>(`/api/chunk-compression/${compressionId}`, null, { method: 'DELETE' });
+// // not implemented
+// export async function deleteChunkCompression(rewriteId: number): Promise<void> {
+//     await apiPost<void>(`/api/chunk-rewrite/${rewriteId}`, null, { method: 'DELETE' });
 
-    // Since we don't have the chunkId directly, we'll invalidate all fetchChunk caches
-    apiCache.invalidate(/fetchChunk:/);
-}
+//     // Since we don't have the chunkId directly, we'll invalidate all fetchChunk caches
+//     apiCache.invalidate(/fetchChunk:/);
+// }
 
-// Deprecated: previewChunkCompression is no longer used
+// // Deprecated: previewChunkCompression is no longer used
