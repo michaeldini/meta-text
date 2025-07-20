@@ -1,7 +1,7 @@
 // Zustand store for persistent chunk bookmarks
 // Handles loading, setting, and clearing bookmarks for metatext chunks
 import { create } from 'zustand';
-import { fetchBookmark, setBookmark } from '../api/bookmarks';
+import { fetchBookmark, setBookmark } from '../services/bookmarksService';
 
 interface BookmarkState {
     bookmarkedChunkId: number | null;
