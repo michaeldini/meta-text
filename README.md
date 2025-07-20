@@ -49,13 +49,6 @@ If multiple words are selected:
 2. Explain a phrase
 3. Explain a chunk
 
-    F
-    ExplanationTool ->
-    useExplanation.explain ->
-    AiService.explainWordsOrChunk ->
-    B
-    Ai.explain ->
-
 ## Definitions and Explanations
 
 When a user uses either the "Define word" or "Explain selected words" or "Explain a chunk", the /explain endpoint will be called. Depending on the request params, the appropriate response will be generated. The endpoint will query the OpenAI API to get a definition or explanation of the word(s). The response will include the definition or explanation, an explanation of the word(s) in context, and the text used to generate the definition or explanation (Because chunks may change their text after the definition, it is included in the response to preserve the chunk text).
