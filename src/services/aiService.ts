@@ -1,22 +1,6 @@
-/**
- * AI Service Module
- * 
- * This module provides functions for interacting with AI-powered endpoints including:
- * - Text explanation and analysis (words, chunks, context)
- * - Source document analysis (summaries, characters, themes, etc.)
- * - AI image generation from prompts
- * - Chunk evaluation and note summary generation
- * 
- * All functions return properly typed responses and handle API communication
- * through the centralized API utilities.
- */
 
 import { apiPost, apiGet } from '../utils/api';
 
-
-// ExplanationRequest defines the parameters for requesting an explanation.
-// the fields are optional because the request can be made with multiple combinations
-// of parameters, e.g. just words, or words with context, or chunkId, etc.
 export interface ExplanationRequest {
     words?: string;
     context?: string;
@@ -47,7 +31,6 @@ export interface SourceDocInfoAIResult {
     symbols: string[];
 }
 
-// TODO - consider removing endpoint and use sourceDoc endpoint instead
 export interface SourceDocInfoResponse {
     result: SourceDocInfoAIResult;
 }

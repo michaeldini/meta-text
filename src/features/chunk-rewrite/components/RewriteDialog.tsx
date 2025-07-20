@@ -4,20 +4,6 @@ import RewriteStyleSelect from './RewriteStyleSelect';
 import { LoadingSpinner } from 'components';
 import type { RewriteDialogProps } from 'features/chunk-shared/types';
 
-/**
- * CompressionDialog - A modal dialog for compressing text chunks
- * 
- * This component provides a user interface for:
- * - Selecting rewrite styles from available options
- * - Generating and saving the rewrite in one step
- * - Saving the final rewrite
- *
- * Features:
- * - Style selection dropdown
- * - Error handling and display
- * - Save functionality with loading states
- * - Proper button state management (enable/disable based on conditions)
- */
 const RewriteDialog: React.FC<Pick<RewriteDialogProps, 'open' | 'onClose' | 'style' | 'onStyleChange' | 'options' | 'loading' | 'error' | 'onSave' | 'saving' | 'canSave'>> = ({
     open, onClose, style, onStyleChange, options, loading, error, onSave, saving, canSave
 }) => (

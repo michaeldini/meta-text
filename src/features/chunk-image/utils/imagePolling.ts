@@ -1,12 +1,4 @@
-/**
- * Utility function to poll for image availability with cancellation support
- * Attempts to load an image URL until it's available or timeout is reached
- * 
- * @param url - The image URL to check
- * @param timeout - Maximum time to wait in milliseconds (default: 10000)
- * @param interval - Time between checks in milliseconds (default: 300)
- * @returns Promise that resolves when image loads or rejects on timeout/error
- */
+
 export const pollImageAvailability = (
     url: string,
     timeout = 10000,

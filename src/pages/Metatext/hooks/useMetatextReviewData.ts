@@ -1,16 +1,3 @@
-/**
- * @fileoverview Custom hook for Metatext Review data fetching
- * 
- * This hook encapsulates the data fetching logic for the Metatext Review page,
- * including loading states, error handling, and efficient data access.
- * Uses the Metatext detail data hook to avoid redundant chunk fetching.
- * 
- * @author Metatext Development Team
- * @version 2.0.0
- * @since 2025-07-09
- * @updated 2025-07-13 - Refactored to use Metatext detail data for chunks
- */
-
 import { useEffect, useState } from 'react';
 import { fetchReviewData } from 'services';
 import { ChunkType, Explanation } from 'types';

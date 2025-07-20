@@ -1,25 +1,3 @@
-/**
- * ImageTool Component
- * 
- * A React component that provides AI-powered image generation functionality for text chunks.
- * This tool allows users to generate contextual images based on chunk content and custom prompts.
- * 
- * Key Features:
- * - AI image generation with custom prompts
- * - Image display with lightbox modal functionality
- * - Loading states and error handling
- * - Responsive design for tablet and mobile
- * 
- * Architecture:
- * - Uses custom hook (useImageTool) for state management and API calls
- * - Composed of reusable sub-components (ImageDisplay, ImageGenerationDialog)
- * - Follows Material-UI design patterns and theming
- * 
- * @example
- * ```tsx
- * <ImageTool chunk={chunkData} />
- * ```
- */
 import React from 'react';
 import { Box, useTheme, IconButton, Tooltip } from '@mui/material';
 import { TrashIcon } from '@heroicons/react/24/outline';
@@ -38,37 +16,6 @@ interface ImageToolProps {
     isVisible: boolean;
 }
 
-/**
- * ImageTool Component
- * 
- * Provides AI-powered image generation functionality for text chunks with an intuitive user interface.
- * 
- * @param props - Component props
- * @param props.chunk - The text chunk for which to generate images. Must contain valid chunk data with ID.
- * 
- * @returns JSX element containing the image generation interface
- * 
- * Component Structure:
- * 1. Generate Button - Triggers the image generation dialog
- * 2. Image Display - Shows generated image (if exists) with lightbox functionality
- * 3. Generation Dialog - Modal for entering custom prompts and generating images
- * 
- * State Management:
- * - Uses useImageTool hook for centralized state management
- * - Handles loading states, errors, and image data synchronization
- * - Manages dialog open/close states and prompt input
- * 
- * User Interactions:
- * - Click "Generate Image" to open prompt dialog
- * - Enter custom prompt and submit to generate image
- * - Click generated image to view in fullscreen lightbox
- * - Dialog handles validation (requires non-empty prompt)
- * 
- * Error Handling:
- * - Displays user-friendly error messages in dialog
- * - Handles API failures gracefully
- * - Provides loading indicators during generation
- */
 const ImageTool: React.FC<ImageToolProps> = ({
     chunk,
     updateChunkField,
@@ -93,12 +40,6 @@ const ImageTool: React.FC<ImageToolProps> = ({
     const theme = useTheme();
     const styles = getSharedToolStyles(theme);
 
-    /**
-     * Handles form submission from the image generation dialog
-     * Prevents default form behavior and triggers image generation with current prompt
-     * 
-     * @param e - Form submission event
-     */
     const handleDialogSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -183,25 +124,4 @@ const ImageTool: React.FC<ImageToolProps> = ({
     );
 };
 
-/**
- * Export ImageTool as default
- * 
- * Dependencies:
- * - useImageTool: Custom hook for state management and API calls
- * - ImageDisplay: Reusable component for image display with lightbox
- * - ImageGenerationDialog: Modal dialog for prompt input and generation
- * - AiGenerationButton: Shared component for AI-powered actions
- * - getSharedToolStyles: Consistent styling across chunk tools
- * 
- * Performance Considerations:
- * - Component re-renders are optimized through hook memoization
- * - Image loading is handled asynchronously with polling mechanism
- * - Error states are properly managed to prevent UI blocking
- * 
- * Accessibility:
- * - Uses semantic HTML elements and ARIA labels
- * - Provides meaningful alt text for generated images
- * - Keyboard navigation support through Material-UI components
- * - Loading states are announced to screen readers
- */
 export default ImageTool;

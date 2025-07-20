@@ -10,8 +10,6 @@ import {
 } from '@mui/material';
 import { QuestionMarkIcon } from 'icons';
 import { useExplanation } from './hooks/useExplanation';
-// import { ChunkType } from 'types';
-// import { ExplanationResponse } from 'services';
 import { LoadingSpinner, AppAlert } from 'components';
 import type { ExplanationToolProps } from 'features/chunk-shared/types';
 
@@ -65,16 +63,7 @@ const WordsExplanationTool: React.FC<ExplanationToolProps> = React.memo(({
 
     return (
         <>
-            {/* 
-                Question Mark Icon Button
-                
-                The primary interaction element that users click to request explanations.
-                Features:
-                - Tooltip showing the word to be explained
-                - Loading state with spinner during AI processing
-                - Disabled state during loading to prevent multiple requests
-                - Accessibility support with aria-label
-            */}
+            {/* Question Mark Icon Button*/}
             <Tooltip title={`Define "${cleanedWord}"`}>
                 <IconButton
                     onClick={handleDefine}
@@ -90,17 +79,7 @@ const WordsExplanationTool: React.FC<ExplanationToolProps> = React.memo(({
                 </IconButton>
             </Tooltip>
 
-            {/* 
-                Explanation Drawer
-                
-                A responsive side panel that displays the AI-generated explanations.
-                
-                Features:
-                - Responsive width (full width on mobile, fixed width on desktop)
-                - Proper ARIA attributes for accessibility
-                - High z-index to appear above other content
-                - Smooth open/close animations via Material-UI
-            */}
+            {/* Explanation Drawer*/}
             <Drawer
                 anchor="right"
                 open={showDefinition}
@@ -117,12 +96,7 @@ const WordsExplanationTool: React.FC<ExplanationToolProps> = React.memo(({
                 }}
             >
                 <Box sx={{ p: 3 }}>
-                    {/* 
-                        Drawer Header
-                        
-                        Shows the word being explained with proper semantic markup.
-                        The ID is referenced by aria-labelledby for accessibility.
-                    */}
+                    {/* Drawer Header */}
                     <Typography
                         id="explanation-title"
                         variant="h6"
@@ -132,28 +106,14 @@ const WordsExplanationTool: React.FC<ExplanationToolProps> = React.memo(({
                     </Typography>
                     <Divider sx={{ mb: 2 }} />
 
-                    {/* 
-                        Error State Display
-                        
-                        Shows user-friendly error messages when explanation fails.
-                        Uses Material-UI Alert component for consistent styling.
-                    */}
+                    {/*  Error State Display  */}
                     {error && (
                         <AppAlert severity="error">
                             {error}
                         </AppAlert>
                     )}
 
-                    {/* 
-                        Explanation Content Area
-                        
-                        Displays the AI-generated explanations with semantic structure.
-                        The ID is referenced by aria-describedby for screen readers.
-                        
-                        Two types of explanations may be shown:
-                        1. General explanation - Basic definition/meaning
-                        2. Contextual explanation - Meaning within the specific document context
-                    */}
+                    {/* Explanation Content Area */}
                     <Box id="explanation-content">
                         {explanation?.explanation && (
                             <Box sx={{ mb: 3 }}>
@@ -183,68 +143,6 @@ const WordsExplanationTool: React.FC<ExplanationToolProps> = React.memo(({
     );
 });
 
-/**
- * Component Display Name
- * 
- * Set for better debugging experience in React DevTools.
- * Helps identify the component in stack traces and profiling.
- */
 WordsExplanationTool.displayName = 'WordsExplanationTool';
 
 export default WordsExplanationTool;
-
-/**
- * ## Technical Implementation Notes
- * 
- * ### Performance Optimizations
- * 
- * 1. **React.memo**: Prevents re-renders when props haven't changed
- * 2. **useCallback**: Memoizes event handlers to maintain referential equality
- * 3. **useMemo**: Caches expensive word cleaning operations
- * 4. **External utility functions**: Prevents function recreation on each render
- * 
- * ### Accessibility Features
- * 
- * - **ARIA Labels**: Proper labeling for screen readers
- * - **Semantic HTML**: Uses appropriate HTML elements and roles
- * - **Keyboard Navigation**: Full keyboard accessibility via Material-UI
- * - **Focus Management**: Proper focus handling in modal context
- * 
- * ### Error Handling Strategy
- * 
- * - **Input Validation**: Graceful handling of invalid props
- * - **API Error Display**: User-friendly error messages
- * - **Fallback States**: Appropriate fallbacks for missing data
- * - **Loading States**: Clear visual feedback during async operations
- * 
- * ### Mobile Responsiveness
- * 
- * - **Adaptive Width**: Full width on mobile, fixed width on desktop
- * - **Touch-Friendly**: Appropriate touch targets and spacing
- * - **Viewport Constraints**: Prevents overflow on small screens
- * 
- * ### Dependencies
- * 
- * - **@mui/material**: UI components and theming
- * - **icons**: Custom icon components
- * - **services**: AI explanation API integration
- * - **types**: TypeScript type definitions
- * - **./useExplanation**: Custom hook for explanation logic
- * 
- * ### Browser Support
- * 
- * This component supports all modern browsers that support:
- * - ES6+ features (arrow functions, destructuring, etc.)
- * - CSS Grid and Flexbox
- * - Modern React features (hooks, memo, etc.)
- * 
- * ### Future Enhancements
- * 
- * Potential improvements that could be added:
- * - Keyboard shortcuts for quick explanations
- * - Explanation history/caching
- * - Multiple language support
- * - Custom explanation templates
- * - Integration with pronunciation APIs
- * - Bookmarking favorite explanations
- */
