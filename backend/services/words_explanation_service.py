@@ -39,7 +39,7 @@ class WordsExplanationService:
         )
 
         if is_single_word:
-            log_entry = Explanation(
+            log_entry = Explanation.create_with_type(
                 user_id=user.id,
                 words=words,
                 context=context,
@@ -51,7 +51,7 @@ class WordsExplanationService:
             session.commit()
             logger.info(f"Word definition generated and saved for word: '{words}'")
         else:
-            log_entry = Explanation(
+            log_entry = Explanation.create_with_type(
                 user_id=user.id,
                 words=words,
                 context=context,

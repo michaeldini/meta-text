@@ -9,11 +9,12 @@ import styles from './styles';
 
 export interface Explanation {
     id: number;
-    phrase: string;
+    words: string;
     context: string;
     explanation: string;
     explanation_in_context: string;
     metatext_id: number | null;
+    type: 'word' | 'phrase';
 }
 
 interface ExplanationReviewProps {
@@ -42,7 +43,7 @@ const ExplanationCard: React.FC<ExplanationCardProps> = ({ title, content, eleva
 const ExplanationItem: React.FC<ExplanationItemProps> = ({ explanation }) => (
     <Accordion sx={styles.accordion}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="subtitle1">{explanation.phrase}</Typography>
+            <Typography variant="subtitle1">{explanation.words}</Typography>
         </AccordionSummary>
         <AccordionDetails sx={styles.accordionDetails}>
             <ExplanationCard
@@ -60,11 +61,12 @@ const ExplanationItem: React.FC<ExplanationItemProps> = ({ explanation }) => (
 );
 
 const ExplanationReview: React.FC<ExplanationReviewProps> = ({ data }) => {
-    if (!data.length) return null;
+    const phraseData = data.filter(item => item.type === 'phrase');
+    if (!phraseData.length) return null;
 
     return (
         <Box sx={{ mt: 4 }}>
-            {data.map((explanation) => (
+            {phraseData.map((explanation) => (
                 <ExplanationItem
                     key={explanation.id}
                     explanation={explanation}

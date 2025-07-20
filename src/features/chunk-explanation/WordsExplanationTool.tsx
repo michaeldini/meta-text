@@ -19,8 +19,8 @@ const DRAWER_WIDTH = 500; // Width of the explanation drawer on desktop (px)
 const DRAWER_Z_INDEX = 1300; // Z-index to ensure drawer appears above other content
 
 
-const stripPunctuation = (text: string): string => {
-    return text.replace(/[^\u0000-\u007F\w\s]/g, '').trim();
+const removeTrailingPunctuation = (text: string): string => {
+    return text.replace(/[\p{P}\p{S}]+$/gu, '').trim();
 };
 
 const WordsExplanationTool: React.FC<ExplanationToolProps> = React.memo(({
@@ -38,7 +38,7 @@ const WordsExplanationTool: React.FC<ExplanationToolProps> = React.memo(({
 
 
     const [showDefinition, setShowDefinition] = useState(false);
-    const cleanedWord = useMemo(() => stripPunctuation(word), [word]);
+    const cleanedWord = useMemo(() => removeTrailingPunctuation(word), [word]);
 
     const handleDefine = useCallback(async () => {
         console.log(`Requesting explanation for meta text ID: ${chunk}, word: ${cleanedWord}`);

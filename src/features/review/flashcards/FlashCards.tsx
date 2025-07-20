@@ -18,14 +18,15 @@ const FlashCards: React.FC<FlashCardsProps> = ({ flashcardItems }) => {
     const theme = useTheme();
     const styles = createWordFlashcardStyles(theme);
 
-    if (flashcardItems.length === 0) {
+    const flashcardWords = flashcardItems.filter(item => item.type === 'word');
+    if (flashcardWords.length === 0) {
         return <AppAlert severity="info">No words yet. Define some words in the metatext editor to see them appear here.</AppAlert>;
     }
 
     return (
         <>
             <Box sx={styles.wordlistWrap}>
-                {flashcardItems.map(item => (
+                {flashcardWords.map(item => (
                     <WordFlashcard
                         key={item.id}
                         word={item.words}
