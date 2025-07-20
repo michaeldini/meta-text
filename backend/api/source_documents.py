@@ -7,11 +7,9 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Form, File, UploadFile, status
 from sqlmodel import Session
 
-from backend.models import SourceDocumentSummary, SourceDocumentDetail, SourceDocumentUpdate, DeleteResponse
+from backend.models import SourceDocumentSummary, SourceDocumentDetail, SourceDocumentUpdate, DeleteResponse, User
 from backend.db import get_session
 from backend.services.source_document_service import SourceDocumentService
-
-# Import user dependency
 from backend.dependencies import get_current_user, get_source_document_service
 from backend.exceptions.source_document_exceptions import (
     SourceDocumentNotFoundError,
@@ -24,10 +22,10 @@ from backend.exceptions.source_document_exceptions import (
     FileSizeExceededError
 )
 
-router = APIRouter()
+router = APIRouter(prefix="/source-documents")
 
 @router.post(
-    "/source-documents",
+    "",
     response_model=SourceDocumentDetail,
     name="create_source_document"
 )
@@ -36,7 +34,7 @@ async def create_source_document(
     file: Annotated[UploadFile, File()],
     session: Session = Depends(get_session),
     service: SourceDocumentService = Depends(get_source_document_service),
-    user = Depends(get_current_user)
+    user: User = Depends(get_current_user)
 ):
     """Create a new source document from an uploaded file. Requires authentication."""
     try:
@@ -64,18 +62,18 @@ async def create_source_document(
 
 
 
-@router.get("/source-documents", response_model=list[SourceDocumentSummary], name="list_source_documents")
+@router.get("", response_model=list[SourceDocumentSummary], name="list_source_documents")
 async def list_source_documents(
     session: Session = Depends(get_session),
     service: SourceDocumentService = Depends(get_source_document_service),
-    user = Depends(get_current_user)
+    user: User = Depends(get_current_user)
 ):
     """List all source documents for the authenticated user."""
     return service.list_all_source_documents(session=session, user=user)
 
 
 
-@router.get("/source-documents/{doc_id}", response_model=SourceDocumentDetail, name="get_source_document")
+@router.get("/{doc_id}", response_model=SourceDocumentDetail, name="get_source_document")
 async def get_source_document(
     doc_id: int,
     session: Session = Depends(get_session),
@@ -93,12 +91,12 @@ async def get_source_document(
 
 
 
-@router.delete("/source-documents/{doc_id}", name="delete_source_document", response_model=DeleteResponse)
+@router.delete("/{doc_id}", name="delete_source_document", response_model=DeleteResponse)
 async def delete_source_document(
     doc_id: int,
     session: Session = Depends(get_session),
     service: SourceDocumentService = Depends(get_source_document_service),
-    user = Depends(get_current_user)
+    user: User = Depends(get_current_user)
 ) -> DeleteResponse:
     """Delete a source document if no related MetaText records exist. Only for authenticated user."""
     try:
@@ -116,13 +114,13 @@ async def delete_source_document(
 
 
 
-@router.put("/source-documents/{doc_id}", response_model=SourceDocumentDetail, name="update_source_document")
+@router.put("/{doc_id}", response_model=SourceDocumentDetail, name="update_source_document")
 async def update_source_document(
     doc_id: int,
     update_data: SourceDocumentUpdate,
     session: Session = Depends(get_session),
     service: SourceDocumentService = Depends(get_source_document_service),
-    user = Depends(get_current_user)
+    user: User = Depends(get_current_user)
 ):
     """Update a source document with provided fields. Only for authenticated user."""
     try:
