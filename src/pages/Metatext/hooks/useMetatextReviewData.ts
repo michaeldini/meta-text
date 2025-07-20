@@ -32,7 +32,7 @@ interface UseMetatextReviewDataReturn {
 export function useMetatextReviewData(metatextId?: number): UseMetatextReviewDataReturn {
     const [wordList, setWordList] = useState<Explanation[]>([]);
     const [phraseList, setPhraseList] = useState<Explanation[]>([]);
-    const [isLoadingReviewData, setIsLoadingReviewData] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
     // Get chunks from the global chunk store
@@ -41,36 +41,34 @@ export function useMetatextReviewData(metatextId?: number): UseMetatextReviewDat
 
 
     useEffect(() => {
+        setLoading(true);
         async function loadReviewData() {
             try {
-                setIsLoadingReviewData(true);
                 setError(null);
                 log.info('Starting to load review data', { metatextId });
 
-                // Validate Metatext ID
-                if (!metatextId || isNaN(metatextId)) {
-                    setError('Invalid Metatext ID.');
-                    setIsLoadingReviewData(false);
+                if (!metatextId) {
+                    setError('Metatext ID is required to load review data.');
                     return;
                 }
-
                 // Fetch review data (wordList and phraseList)
                 const reviewData = await fetchReviewData(metatextId);
-                console.log('Fetched review data:', reviewData);
+
                 setWordList(Array.isArray(reviewData.word_list) ? reviewData.word_list : []);
                 setPhraseList(Array.isArray(reviewData.phrase_list) ? reviewData.phrase_list : []);
+
             } catch (err) {
                 setError('Failed to load review data.');
                 log.error('Failed to load review data', err);
             } finally {
-                setIsLoadingReviewData(false);
+                setLoading(false);
             }
         }
 
         if (metatextId) {
             loadReviewData();
         } else {
-            setIsLoadingReviewData(false);
+            setLoading(false);
         }
     }, [metatextId]);
 
@@ -80,7 +78,7 @@ export function useMetatextReviewData(metatextId?: number): UseMetatextReviewDat
         wordList,
         chunks,
         phraseList,
-        loading: isLoadingReviewData,
+        loading,
         error
     };
 }

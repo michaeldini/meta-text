@@ -2,20 +2,20 @@
 // Composed of multiple accordion sections for better organization and user experience
 
 import type { ReactElement } from 'react';
-import { FlashCards, ReviewTable, ExplanationReview } from 'features';
+import { FlashCards, ReviewTable, Phrases } from 'features';
 // import { PhraseExplanation } from 'services';
 import { ChunkType, Explanation } from 'types';
 import { ReviewSection } from './ReviewSection';
 
 interface ReviewContentProps {
-    wordList: Explanation[];
-    phraseList: Explanation[];
+    flashcards: Explanation[];
+    phrases: Explanation[];
     chunkReviewTable: ChunkType[];
 }
 
 export function ReviewContent({
-    wordList,
-    phraseList,
+    flashcards,
+    phrases,
     chunkReviewTable
 }: ReviewContentProps): ReactElement {
     return (
@@ -24,14 +24,14 @@ export function ReviewContent({
                 title="Explanations"
                 testId="explanations-accordion"
             >
-                <ExplanationReview data={phraseList} />
+                <Phrases phrases={phrases} />
             </ReviewSection>
 
             <ReviewSection
                 title="Flashcards"
                 testId="flashcards-accordion"
             >
-                <FlashCards flashcardItems={wordList} />
+                <FlashCards flashcardItems={flashcards} />
             </ReviewSection>
 
             <ReviewSection

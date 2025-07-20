@@ -1,11 +1,10 @@
-// Review page for a Metatext document, providing a comprehensive review interface with flashcards, phrase explanations, and chunk data table.
+// Review page for a Metatext document, providing a comprehensive review interface with flashcards, phrases, and chunk data table.
 
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import type { Theme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
-import { useMemo } from 'react';
 
 import { AppAlert } from 'components';
 import { LoadingIndicator, Header, ReviewContent } from './components';
@@ -16,28 +15,24 @@ import { getMetatextReviewStyles } from './Metatext.styles';
 
 function MetatextReviewPage(): ReactElement {
 
-    // Extract Metatext ID from URL parameters and validate it
-    const { metatextId: metatextIdParam } = useParams<{ metatextId?: string }>();
+    // Get the raw Metatext ID string from the URL parameters (may be undefined or invalid)
+    const { metatextId: rawMetatextId } = useParams<{ metatextId?: string }>();
 
-    // Validate and parse the ID parameter using utility hook
-    const { id: metatextId, isValid: isValidId, originalValue } = useValidatedIdParam(metatextIdParam);
+    // Validate and parse the raw ID using a utility hook (returns { id, isValid, originalValue })
+    const { id: metatextId, isValid: isValidId, originalValue } = useValidatedIdParam(rawMetatextId);
 
     // React Router navigation function for programmatic navigation
     const navigate = useNavigate();
 
     // Custom hook for fetching all review data
-    const { wordList, chunks, phraseList, loading, error } =
+    const { wordList, phraseList, chunks, loading, error } =
         useMetatextReviewData(metatextId);
-    console.log('MetatextReviewPage data:', {
-        wordList,
-        phraseList,
-        chunks
-    });
+
     const theme: Theme = useTheme();
     const styles = getMetatextReviewStyles(theme);
 
     // Handle invalid ID parameter
-    if (metatextIdParam && !isValidId) {
+    if (metatextId && !isValidId) {
         return (
             <Box sx={styles.root} data-testid="metatext-review-invalid-id">
                 <AppAlert severity="error">
@@ -69,8 +64,8 @@ function MetatextReviewPage(): ReactElement {
 
             {/* Review content sections */}
             <ReviewContent
-                wordList={wordList}
-                phraseList={phraseList}
+                flashcards={wordList}
+                phrases={phraseList}
                 chunkReviewTable={chunks}
             />
         </Box>

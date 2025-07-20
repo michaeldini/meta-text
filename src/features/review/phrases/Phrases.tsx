@@ -9,31 +9,22 @@ import { Explanation } from 'types';
 
 import styles from './styles';
 
-// export interface Explanation {
-//     id: number;
-//     words: string;
-//     context: string;
-//     explanation: string;
-//     explanation_in_context: string;
-//     metatext_id: number | null;
-//     type: 'word' | 'phrase';
-// }
 
-interface ExplanationReviewProps {
-    data: Explanation[];
+interface PhrasesProps {
+    phrases: Explanation[];
 }
 
-interface ExplanationItemProps {
-    explanation: Explanation;
+interface PhraseItemProps {
+    phrase: Explanation;
 }
 
-interface ExplanationCardProps {
+interface PhraseCardProps {
     title: string;
     content: string;
     elevation?: number;
 }
 
-const ExplanationCard: React.FC<ExplanationCardProps> = ({ title, content, elevation = 5 }) => (
+const PhraseCard: React.FC<PhraseCardProps> = ({ title, content, elevation = 5 }) => (
     <Paper elevation={elevation} sx={styles.paper}>
         <Typography variant="subtitle2" color="text.secondary">
             {title}
@@ -42,39 +33,39 @@ const ExplanationCard: React.FC<ExplanationCardProps> = ({ title, content, eleva
     </Paper>
 );
 
-const ExplanationItem: React.FC<ExplanationItemProps> = ({ explanation }) => (
+const PhraseItem: React.FC<PhraseItemProps> = ({ phrase }) => (
     <Accordion sx={styles.accordion}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="subtitle1">{explanation.words}</Typography>
+            <Typography variant="subtitle1">{phrase.words}</Typography>
         </AccordionSummary>
         <AccordionDetails sx={styles.accordionDetails}>
-            <ExplanationCard
+            <PhraseCard
                 title="Explanation"
-                content={explanation.explanation}
+                content={phrase.explanation}
                 elevation={5}
             />
-            <ExplanationCard
+            <PhraseCard
                 title="Explanation in Context"
-                content={explanation.explanation_in_context}
+                content={phrase.explanation_in_context}
                 elevation={20}
             />
         </AccordionDetails>
     </Accordion>
 );
 
-const ExplanationReview: React.FC<ExplanationReviewProps> = ({ data }) => {
-    if (!data.length) return null;
+const Phrases: React.FC<PhrasesProps> = ({ phrases }) => {
+    if (!phrases.length) return null;
 
     return (
         <Box sx={{ mt: 4 }}>
-            {data.map((explanation) => (
-                <ExplanationItem
-                    key={explanation.id}
-                    explanation={explanation}
+            {phrases.map((phrase) => (
+                <PhraseItem
+                    key={phrase.id}
+                    phrase={phrase}
                 />
             ))}
         </Box>
     );
 };
 
-export default ExplanationReview;
+export default Phrases;
