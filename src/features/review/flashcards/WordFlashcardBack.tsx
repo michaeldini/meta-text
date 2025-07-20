@@ -10,7 +10,7 @@ import parse from 'html-react-parser';
 interface WordFlashcardBackProps {
     word: string;
     definition: string;
-    definitionWithContext: string;
+    definition_in_context: string;
     context: string;
     setFlipped: any;
 }
@@ -18,7 +18,7 @@ interface WordFlashcardBackProps {
 const WordFlashcardBack: React.FC<WordFlashcardBackProps> = ({
     word,
     definition,
-    definitionWithContext,
+    definition_in_context,
     context,
     setFlipped
 }) => {
@@ -41,7 +41,7 @@ const WordFlashcardBack: React.FC<WordFlashcardBackProps> = ({
                     dialogId="info-dialog"
                     title="Definition In Context"
                     word={word}
-                    content={definitionWithContext}
+                    content={definition_in_context}
                     typographyVariant="body2"
                 />
                 <InfoButton

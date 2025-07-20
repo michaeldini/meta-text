@@ -142,7 +142,7 @@ async def generate_rewrite(
 @router.post("/explain")
 def explain(
     request: ExplanationRequest,
-    metatext_id: int = Query(None, description="Metatext ID for words explanation (required if not chunk explanation)"),
+    # metatext_id: int = Query(None, description="Metatext ID for words explanation (required if not chunk explanation)"),
     session: Session = Depends(get_session),
     user = Depends(get_current_user)
 ):
@@ -151,17 +151,17 @@ def explain(
     Determines the operation based on which fields are provided.
     """
     words_explanation_service = WordsExplanationService()
-    
+    print(f"Request: {request}")
     if request.chunk_id is not None:
         # Chunk explanation
         return get_ai_service().generate_chunk_explanation(user, request.chunk_id, session)
-    elif metatext_id is not None:
+    elif request.metatext_id is not None:
         # Words explanation (words and context are required fields, so they'll always be present)
         return words_explanation_service.explain(
             user=user,
             words=request.words,
             context=request.context,
-            metatext_id=metatext_id,
+            metatext_id=request.metatext_id,
             session=session
         )
     else:

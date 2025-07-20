@@ -12,7 +12,7 @@ export interface Explanation {
     phrase: string;
     context: string;
     explanation: string;
-    explanation_with_context: string;
+    explanation_in_context: string;
     metatext_id: number | null;
 }
 
@@ -52,7 +52,7 @@ const ExplanationItem: React.FC<ExplanationItemProps> = ({ explanation }) => (
             />
             <ExplanationCard
                 title="Explanation in Context"
-                content={explanation.explanation_with_context}
+                content={explanation.explanation_in_context}
                 elevation={20}
             />
         </AccordionDetails>

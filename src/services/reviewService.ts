@@ -34,7 +34,7 @@ export interface PhraseExplanation {
     phrase: string;
     context: string;
     explanation: string;
-    explanation_with_context: string;
+    explanation_in_context: string;
     metatext_id: number | null;
 }
 

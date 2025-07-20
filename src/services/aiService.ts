@@ -20,15 +20,15 @@ import { apiPost, apiGet } from '../utils/api';
 export interface ExplanationRequest {
     words?: string;
     context?: string;
-    chunkId?: number | null;
-    metaTextId?: number | null;
+    chunk_id?: number | null;
+    metatext_id?: number | null;
 
 }
 
 // ExplanationResponse defines the structure of the response from the explanation endpoint.
 export interface ExplanationResponse {
     explanation: string;
-    explanationWithContext: string;
+    explanation_in_context: string;
 }
 
 // SourceDocInfoRequest defines the request parameters for generating source document info.

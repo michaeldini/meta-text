@@ -186,8 +186,8 @@ class Explanation(SQLModel, table=True):
 class ExplanationResponse(BaseModel):
     explanation: str
     explanation_in_context: str
-    user_id: int = Field(foreign_key="user.id")
-    user: Optional["User"] = Relationship(back_populates="explanations")
+    # user_id: int = Field(foreign_key="user.id")
+    # user: Optional["User"] = Relationship(back_populates="explanations")
 
 class ExplanationRequest(BaseModel):
     words: str = Field(..., description="Word(s) to explain")

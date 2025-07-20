@@ -4,7 +4,7 @@
 # Given one or more words and a context, provide a clear, concise, and context-aware explanation.
 # Always return:
 #   - explanation: <general explanation of the word(s)>
-#   - explanationWithContext: <explanation tailored to the provided context>
+#   - explanation_in_context: <explanation tailored to the provided context>
 
 # Example input:
 # words='serendipity' context='in the context of scientific discovery'
@@ -12,14 +12,14 @@
 
 # Example output:
 # explanation: "Serendipity is the occurrence of events by chance in a happy or beneficial way."
-# explanationWithContext: "In scientific discovery, serendipity refers to making unexpected but valuable findings by chance."
+# explanation_in_context: "In scientific discovery, serendipity refers to making unexpected but valuable findings by chance."
 #
 # explanation: "'Break the ice' means to initiate conversation in a social setting, making people feel more comfortable."
-# explanationWithContext: "At a business networking event, 'break the ice' refers to starting a conversation to ease initial awkwardness and encourage networking."
+# explanation_in_context: "At a business networking event, 'break the ice' refers to starting a conversation to ease initial awkwardness and encourage networking."
 
 # Instructions:
 - Analyze the 'words' and 'context' provided.
 - Provide a general explanation of the word(s) in 'explanation'.
-- Provide a context-specific explanation in 'explanationWithContext'.
+- Provide a context-specific explanation in 'explanation_in_context'.
 - Be concise, clear, and use language appropriate for the context.
 - Do not include the input words in the output unless necessary for clarity.

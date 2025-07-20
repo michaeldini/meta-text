@@ -28,9 +28,9 @@ const FlashCards: React.FC<FlashCardsProps> = ({ flashcardItems }) => {
                 {flashcardItems.map(item => (
                     <WordFlashcard
                         key={item.id}
-                        word={item.word}
-                        definition={item.definition}
-                        definitionWithContext={item.definition_with_context}
+                        word={item.words}
+                        definition={item.explanation}
+                        definition_in_context={item.definition_in_context}
                         context={item.context}
                     />
                 ))}

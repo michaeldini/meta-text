@@ -45,8 +45,8 @@ const WordsExplanationTool: React.FC<ExplanationToolProps> = React.memo(({
         const result = await explain({
             words: cleanedWord,
             context: chunk.text,
-            metaTextId: chunk.metatext_id,
-            chunkId: null
+            metatext_id: chunk.metatext_id,
+            chunk_id: null
         });
         if (result) {
             setShowDefinition(true);
@@ -166,13 +166,13 @@ const WordsExplanationTool: React.FC<ExplanationToolProps> = React.memo(({
                             </Box>
                         )}
 
-                        {explanation?.explanationWithContext && (
+                        {explanation?.explanation_in_context && (
                             <Box>
                                 <Typography variant="subtitle2" gutterBottom>
                                     Explanation in Context:
                                 </Typography>
                                 <Typography variant="body2">
-                                    {explanation.explanationWithContext}
+                                    {explanation.explanation_in_context}
                                 </Typography>
                             </Box>
                         )}

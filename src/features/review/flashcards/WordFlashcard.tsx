@@ -7,11 +7,11 @@ import WordFlashcardBack from './WordFlashcardBack';
 interface WordFlashcardProps {
     word: string;
     definition: string;
-    definitionWithContext: string;
+    definition_in_context: string;
     context: string;
 }
 
-const WordFlashcard: React.FC<WordFlashcardProps> = ({ word, definition, definitionWithContext, context }) => {
+const WordFlashcard: React.FC<WordFlashcardProps> = ({ word, definition, definition_in_context, context }) => {
     const [flipped, setFlipped] = useState(false);
     const theme = useTheme();
     const styles = createWordFlashcardStyles(theme);
@@ -28,7 +28,7 @@ const WordFlashcard: React.FC<WordFlashcardProps> = ({ word, definition, definit
                 <WordFlashcardBack
                     word={word}
                     definition={definition}
-                    definitionWithContext={definitionWithContext}
+                    definition_in_context={definition_in_context}
                     context={context}
                     setFlipped={setFlipped}
                 />
