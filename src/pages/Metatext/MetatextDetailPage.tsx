@@ -16,7 +16,8 @@ import {
 import { ChunkToolsPanel, PaginatedChunks, SearchContainer, BookmarkNavigateButton } from 'features';
 
 import { useSourceDocDetailData } from 'hooks';
-import { useSourceDocumentDetailStore, useUIPreferencesStore, useBookmarkStore } from 'store';
+import { useSourceDocumentDetailStore, useBookmarkStore } from 'store';
+import { useUIPreferences } from 'store/uiPreferences';
 import { FADE_IN_DURATION } from 'constants';
 import { useValidatedIdParam } from 'utils/urlValidation';
 
@@ -54,8 +55,8 @@ function MetatextDetailPage(): ReactElement | null {
 
     const theme: Theme = useTheme();
     const styles = getMetatextDetailStyles(theme);
-    // Call bookmark store hook to preserve hook order
-    useUIPreferencesStore();
+    // Call UI preferences hook to preserve hook order
+    useUIPreferences();
     // Hydrate bookmark state on mount (after refresh)
     React.useEffect(() => {
         if (metatext?.id) {

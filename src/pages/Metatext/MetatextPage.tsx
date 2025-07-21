@@ -5,7 +5,8 @@
 import React, { ReactElement, useEffect } from 'react';
 import { Slide } from '@mui/material';
 
-import { useDocumentsStore } from 'store';
+import { useSourceDocuments } from 'features/documents/useSourceDocuments';
+import { useMetatexts } from 'features/documents/useMetatexts';
 import {
     PageContainer,
     DocumentManagementLayout,
@@ -16,29 +17,15 @@ import { FADE_IN_DURATION } from 'constants';
 import MetatextCreateForm from './components/MetatextCreateForm';
 
 function MetatextPage(): ReactElement {
-
-    const {
-        metatexts,
-        metatextsLoading,
-        metatextsError, // TODO
-        fetchMetatexts,
-        sourceDocs,
-        sourceDocsLoading,
-        sourceDocsError,
-        fetchSourceDocs,
-    } = useDocumentsStore();
-
-
-
-    useEffect(() => {
-        fetchMetatexts();
-        fetchSourceDocs();
-    }, [fetchMetatexts, fetchSourceDocs]);
+    // Fetch metatexts and source documents using TanStack Query hooks
+    const { data: metatexts = [], isLoading: metatextsLoading, error: metatextsError, refetch: refetchMetatexts } = useMetatexts();
+    const { data: sourceDocs = [], isLoading: sourceDocsLoading, error: sourceDocsError, refetch: refetchSourceDocs } = useSourceDocuments();
 
     // Refresh data after successful creation
     const handleCreateSuccess = () => {
-        fetchMetatexts();
+        refetchMetatexts();
     };
+
     return (
         <PageContainer
             loading={metatextsLoading}
@@ -75,7 +62,7 @@ function MetatextPage(): ReactElement {
 }
 
 // Export with a more descriptive name for TypeDoc
-export { MetatextPage };
+// export { MetatextPage };
 
 // Default export for React component usage
 export default MetatextPage;

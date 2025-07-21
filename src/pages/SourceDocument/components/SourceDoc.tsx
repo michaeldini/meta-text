@@ -7,7 +7,7 @@ import { Box, Typography, useTheme, IconButton, Tooltip, Alert, Snackbar } from 
 import { PencilIcon, CheckIcon, ClearIcon } from 'icons';
 
 import type { SourceDocumentDetail } from 'types';
-import { useUIPreferencesStore } from 'store';
+import { useUIPreferences } from 'store/uiPreferences';
 import { updateSourceDocument } from 'services/sourceDocumentService';
 import { log } from 'utils';
 
@@ -31,9 +31,8 @@ export default function SourceDoc({ doc, onDocumentUpdate }: SourceDocProps) {
     const [error, setError] = useState<string | null>(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-    const textSizePx = useUIPreferencesStore(state => state.textSizePx);
-    const fontFamily = useUIPreferencesStore(state => state.fontFamily);
-    const lineHeight = useUIPreferencesStore(state => state.lineHeight);
+    // Use UI preferences from server or defaults
+    const { textSizePx, fontFamily, lineHeight } = useUIPreferences();
 
     // Memoized styles to prevent recreation on each render
     const styles = React.useMemo(() => ({

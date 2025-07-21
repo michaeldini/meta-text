@@ -1,13 +1,12 @@
 
 import { useEffect } from 'react';
-import { hydrateUserConfig, fetchUserConfig } from '../services/userConfigService';
+import { useUserConfig } from '../services/userConfigService';
 
 
+// This hook is now a no-op, as hydration is handled by TanStack Query's cache and useUserConfig
 export function useHydrateUserConfig(onLoaded?: () => void) {
+    const { isSuccess } = useUserConfig();
     useEffect(() => {
-        fetchUserConfig().then((config) => {
-            hydrateUserConfig(config);
-            if (onLoaded) onLoaded();
-        });
-    }, []);
+        if (isSuccess && onLoaded) onLoaded();
+    }, [isSuccess, onLoaded]);
 }

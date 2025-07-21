@@ -3,10 +3,10 @@
 // Provides a searchable list of source documents and an upload form for new documents.
 
 
-import React, { ReactElement, useEffect } from 'react';
-import { Slide } from '@mui/material';
 
-import { useDocumentsStore } from 'store';
+import React, { ReactElement } from 'react';
+import { Slide } from '@mui/material';
+import { useSourceDocuments } from 'features';
 
 import {
     DocumentManagementLayout,
@@ -17,18 +17,10 @@ import {
 } from 'components';
 import { FADE_IN_DURATION } from 'constants';
 
+
 function SourceDocPage(): ReactElement {
-
-    const {
-        sourceDocs,
-        sourceDocsLoading,
-        sourceDocsError,
-        fetchSourceDocs
-    } = useDocumentsStore();
-
-    useEffect(() => {
-        fetchSourceDocs();
-    }, [fetchSourceDocs]);
+    // Fetch source documents using the new hook
+    const { data: sourceDocs, isLoading: sourceDocsLoading, error: sourceDocsError, refetch } = useSourceDocuments();
 
     return (
         <PageContainer
@@ -37,7 +29,7 @@ function SourceDocPage(): ReactElement {
         >
             {sourceDocsError && (
                 <AppAlert severity="error">
-                    {sourceDocsError}
+                    {sourceDocsError instanceof Error ? sourceDocsError.message : String(sourceDocsError)}
                 </AppAlert>
             )}
             {/* Smooth slide-up animation for the page content */}
@@ -48,12 +40,12 @@ function SourceDocPage(): ReactElement {
                         subtitle="Upload a new source document or browse existing ones."
                         formComponent={
                             <SourceDocUploadForm
-                                onSuccess={fetchSourceDocs}
+                                onSuccess={refetch}
                             />
                         }
                         listComponent={
                             <SearchableList
-                                items={sourceDocs}
+                                items={sourceDocs ?? []}
                                 filterKey="title"
                                 title="Source Documents"
                                 loading={sourceDocsLoading}

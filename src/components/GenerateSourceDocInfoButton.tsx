@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Typography } from '@mui/material';
 import { AiGenerationButton } from 'components';
 import { generateSourceDocInfo } from 'services';
-import { useDocumentsStore } from 'store/documentsStore';
+import { useSourceDocuments } from 'features/documents/useDocumentsData';
 
 interface GenerateSourceDocInfoButtonProps {
     sourceDocumentId: number;
@@ -19,14 +19,14 @@ const GenerateSourceDocInfoButton: React.FC<GenerateSourceDocInfoButtonProps> = 
 }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const fetchSourceDocs = useDocumentsStore(s => s.fetchSourceDocs);
+    const { refetch: refetchSourceDocs } = useSourceDocuments();
 
     const handleClick = async () => {
         setLoading(true);
         setError(null);
         try {
             await generateSourceDocInfo(sourceDocumentId);
-            await fetchSourceDocs(); // Refresh after update
+            await refetchSourceDocs(); // Refresh after update
             if (onSuccess) onSuccess();
         } catch (err: any) {
             setError(err.message || 'Failed to generate info');

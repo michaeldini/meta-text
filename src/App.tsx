@@ -8,9 +8,9 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, CssBaseline, useTheme, Box, Typography } from '@mui/material';
 
 import { NavBar } from 'features';
-import { AppSuspenseFallback, ErrorBoundary, GlobalNotifications } from 'components';
-import { useAuthStore, useUIPreferencesStore } from 'store';
-import { fetchUserConfig } from 'services';
+import { LoadingFallback, ErrorBoundary, GlobalNotifications } from 'components';
+import { useAuthStore } from 'store';
+import { useUIPreferences } from 'store/uiPreferences';
 import { useAuthRefresh } from 'hooks';
 import { getAppStyles, lightTheme, darkTheme } from 'styles';
 
@@ -62,7 +62,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps): JSX.Element => {
 
     // Show loading state while checking authentication
     if (loading) {
-        return <AppSuspenseFallback />;
+        return <LoadingFallback />;
     }
 
     if (!user) {
@@ -114,30 +114,13 @@ export const AppContent = () => {
     useAuthRefresh();
     const theme = useTheme();
     const styles = getAppStyles(theme);
-    const hydrateUIPreferences = useUIPreferencesStore(state => state.hydrateUIPreferences);
-    const { user } = useAuthStore();
-
-    useEffect(() => {
-        if (!user) return;
-        // Fetch user config from backend and hydrate Zustand store
-        async function fetchAndHydrate() {
-            try {
-                const config = await fetchUserConfig();
-                if (config.uiPreferences) {
-                    hydrateUIPreferences(config.uiPreferences);
-                }
-            } catch (err) {
-                // Optionally log error
-                console.error('Failed to hydrate UI preferences', err);
-            }
-        }
-        fetchAndHydrate();
-    }, [user, hydrateUIPreferences]);
+    // Hydrate UI preferences from TanStack Query (no-op, just triggers query)
+    useUIPreferences();
 
     const renderRoute = (route: RouteConfig) => {
         const Component = route.element;
         const element = (
-            <Suspense fallback={<AppSuspenseFallback />}>
+            <Suspense fallback={<LoadingFallback />}>
                 <Component />
             </Suspense>
         );

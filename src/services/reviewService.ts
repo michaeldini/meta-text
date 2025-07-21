@@ -1,5 +1,4 @@
-import { apiGet } from '../utils/api';
-import { withCache } from '../utils/cache';
+import { api } from '../utils/ky';
 import { log } from 'utils';
 import type { Explanation } from 'types';
 
@@ -9,20 +8,13 @@ export interface ReviewResponse {
     phrase_list: Explanation[];
 }
 
-// Base function for fetching all review data (wordlist + phrase explanations)
-async function _fetchReviewData(metatextId: number): Promise<ReviewResponse> {
+// Fetch all review data (wordlist + phrase explanations)
+export async function fetchReviewData(metatextId: number): Promise<ReviewResponse> {
     try {
-        return await apiGet<ReviewResponse>(`/api/metatext/${metatextId}/review`);
+        return await api.get(`metatext/${metatextId}/review`).json<ReviewResponse>();
     } catch (error) {
         log.error('Failed to fetch review data', error);
         throw error;
     }
 }
-
-// Cached version (5 minutes for review data)
-export const fetchReviewData = withCache(
-    'fetchReviewData',
-    _fetchReviewData,
-    5 * 60 * 1000 // 5 minutes
-);
 

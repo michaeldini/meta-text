@@ -1,14 +1,19 @@
 import React from 'react';
 import { Slider, Box, Typography } from '@mui/material';
-import { useUIPreferencesStore } from 'store/uiPreferences';
+import { useUIPreferences, useUpdateUIPreferences } from 'store/uiPreferences';
 
 const MIN_PADDING_X = 0.1;
 const MAX_PADDING_X = 0.8;
 const STEP = 0.1;
 
 const PaddingXInput: React.FC = () => {
-    const paddingX = useUIPreferencesStore(state => state.paddingX);
-    const setPaddingX = useUIPreferencesStore(state => state.setPaddingX);
+
+    const { paddingX } = useUIPreferences();
+    const updateUIPreferences = useUpdateUIPreferences();
+
+    const handleChange = (_: Event, value: number | number[]) => {
+        updateUIPreferences.mutate({ paddingX: Number(value) });
+    };
 
     return (
         <Box>
@@ -20,9 +25,10 @@ const PaddingXInput: React.FC = () => {
                 min={MIN_PADDING_X}
                 max={MAX_PADDING_X}
                 step={STEP}
-                onChange={(_, value) => setPaddingX(Number(value))}
+                onChange={handleChange}
                 valueLabelDisplay="auto"
                 aria-label="Padding X"
+                disabled={updateUIPreferences.status === 'pending'}
             />
         </Box>
     );

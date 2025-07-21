@@ -12,13 +12,13 @@ export { useBookmarkStore } from './bookmarkStore';
 // - authStore: Manages authentication state and user information.
 // - notificationStore: Handles notifications and alerts within the application.
 
-export { useDocumentsStore } from './documentsStore';
+
 export { useSourceDocumentDetailStore } from './sourceDocumentDetailStore';
 export { useMetatextDetailStore } from './metatextDetailStore';
 export { useChunkStore } from './chunkStore';
 
 export { FONT_FAMILIES } from './uiPreferences';
-export { useUIPreferencesStore } from './uiPreferences';
+export { useUIPreferences, useUpdateUIPreferences } from './uiPreferences';
 export { useNotificationStore } from './notificationStore';
 
 export { useNotifications } from './notificationStore';

@@ -1,5 +1,5 @@
 import { useMemo, useCallback } from 'react';
-import { resetAppState } from 'utils';
+// import { resetAppState } from 'utils';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { NavigationItem, User, NavBarProps } from '../types';
 import {
@@ -41,7 +41,7 @@ export const useNavigation = ({
 
     // Memoize logout handler: clear app state before running onLogout
     const handleLogout = useCallback(() => {
-        resetAppState();
+        // resetAppState();
         onLogout();
     }, [onLogout]);
 

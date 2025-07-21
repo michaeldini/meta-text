@@ -2,7 +2,8 @@ import React, { ReactNode } from 'react';
 import { Container, useTheme } from '@mui/material';
 import { getAppStyles } from '../styles/styles';
 
-import { ErrorBoundary, LoadingBoundary } from 'components'
+import { ErrorBoundary } from 'components'
+import { LoadingFallback } from 'components';
 
 interface PageContainerProps {
     children: ReactNode;
@@ -20,9 +21,9 @@ const PageContainer: React.FC<PageContainerProps> = ({ children, loading }) => {
     return (
         <ErrorBoundary>
             <Container maxWidth={false} sx={styles.pageLayout}>
-                <LoadingBoundary loading={loading}>
+                <React.Suspense fallback={<LoadingFallback />}>
                     {children}
-                </LoadingBoundary>
+                </React.Suspense>
             </Container>
         </ErrorBoundary>
     );

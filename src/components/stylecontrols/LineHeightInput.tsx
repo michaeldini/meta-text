@@ -1,14 +1,19 @@
 import React from 'react';
 import { Slider, Box, Typography } from '@mui/material';
-import { useUIPreferencesStore } from 'store/uiPreferences';
+import { useUIPreferences, useUpdateUIPreferences } from 'store/uiPreferences';
 
 const MIN_LINE_HEIGHT = 1.0;
 const MAX_LINE_HEIGHT = 2.5;
 const STEP = 0.05;
 
 const LineHeightInput: React.FC = () => {
-    const lineHeight = useUIPreferencesStore(state => state.lineHeight);
-    const setLineHeight = useUIPreferencesStore(state => state.setLineHeight);
+
+    const { lineHeight } = useUIPreferences();
+    const updateUIPreferences = useUpdateUIPreferences();
+
+    const handleChange = (_: Event, value: number | number[]) => {
+        updateUIPreferences.mutate({ lineHeight: Number(value) });
+    };
 
     return (
         <Box>
@@ -20,9 +25,10 @@ const LineHeightInput: React.FC = () => {
                 min={MIN_LINE_HEIGHT}
                 max={MAX_LINE_HEIGHT}
                 step={STEP}
-                onChange={(_, value) => setLineHeight(Number(value))}
+                onChange={handleChange}
                 valueLabelDisplay="auto"
                 aria-label="Line Height"
+                disabled={updateUIPreferences.status === 'pending'}
             />
         </Box>
     );

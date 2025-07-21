@@ -1,13 +1,14 @@
 import React from 'react';
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
-import { useUIPreferencesStore, FONT_FAMILIES } from 'store/uiPreferences';
+import { useUIPreferences, useUpdateUIPreferences, FONT_FAMILIES } from 'store/uiPreferences';
+
 
 const FontFamilySelect: React.FC = () => {
-    const fontFamily = useUIPreferencesStore(state => state.fontFamily);
-    const setFontFamily = useUIPreferencesStore(state => state.setFontFamily);
+    const { fontFamily } = useUIPreferences();
+    const updateUIPreferences = useUpdateUIPreferences();
 
     const handleChange = (event: SelectChangeEvent<string>) => {
-        setFontFamily(event.target.value);
+        updateUIPreferences.mutate({ fontFamily: event.target.value });
     };
 
     return (
@@ -18,6 +19,7 @@ const FontFamilySelect: React.FC = () => {
                 value={fontFamily}
                 label="Font"
                 onChange={handleChange}
+                disabled={updateUIPreferences.status === 'pending'}
             >
                 {FONT_FAMILIES.map((font) => (
                     <MenuItem key={font} value={font} style={{ fontFamily: font }}>

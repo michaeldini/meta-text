@@ -4,7 +4,7 @@ export * from './chunkService';
 export * from './metatextService';
 export * from './reviewService';
 export * from './sourceDocumentService';
-export * from './useApi';
+// export * from './useApi';
 export * from './userConfigService';
 
 

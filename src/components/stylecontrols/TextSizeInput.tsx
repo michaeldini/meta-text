@@ -1,14 +1,19 @@
 import React from 'react';
 import { Slider, Box, Typography } from '@mui/material';
-import { useUIPreferencesStore } from 'store/uiPreferences';
+import { useUIPreferences, useUpdateUIPreferences } from 'store/uiPreferences';
 
 const MIN_SIZE = 8;
 const MAX_SIZE = 72;
 const STEP = 1;
 
 const TextSizeInput: React.FC = () => {
-    const textSizePx = useUIPreferencesStore(state => state.textSizePx);
-    const setTextSizePx = useUIPreferencesStore(state => state.setTextSizePx);
+
+    const { textSizePx } = useUIPreferences();
+    const updateUIPreferences = useUpdateUIPreferences();
+
+    const handleChange = (_: Event, value: number | number[]) => {
+        updateUIPreferences.mutate({ textSizePx: Number(value) });
+    };
 
     return (
         <Box>
@@ -20,9 +25,10 @@ const TextSizeInput: React.FC = () => {
                 min={MIN_SIZE}
                 max={MAX_SIZE}
                 step={STEP}
-                onChange={(_, value) => setTextSizePx(Number(value))}
+                onChange={handleChange}
                 valueLabelDisplay="auto"
                 aria-label="Text Size"
+                disabled={updateUIPreferences.status === 'pending'}
             />
         </Box>
     );

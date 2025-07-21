@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import { login as apiLogin, register as apiRegister, getMe, refreshToken } from '../services/authService';
+import log from '../utils/logger';
 import { getErrorMessage } from '../types/error';
 
 
@@ -45,6 +46,8 @@ export const useAuthStore = create<AuthState>()(
                         loading: false,
                         error: null
                     });
+                    localStorage.setItem('access_token', access_token);
+                    log.info('User logged in', { username });
                     return true;
                 } catch (e: unknown) {
                     set({
@@ -53,6 +56,8 @@ export const useAuthStore = create<AuthState>()(
                         user: null,
                         token: null
                     });
+                    localStorage.removeItem('access_token');
+                    log.error('Login failed', e);
                     return false;
                 }
             },
@@ -79,6 +84,8 @@ export const useAuthStore = create<AuthState>()(
                         loading: false,
                         error: null
                     });
+                    localStorage.setItem('access_token', access_token);
+                    log.info('Token refreshed');
                 } catch (e: unknown) {
                     set({
                         error: getErrorMessage(e, 'Failed to refresh token'),
@@ -86,6 +93,8 @@ export const useAuthStore = create<AuthState>()(
                         user: null,
                         token: null
                     });
+                    localStorage.removeItem('access_token');
+                    log.error('Token refresh failed', e);
                 }
             },
 
@@ -96,6 +105,8 @@ export const useAuthStore = create<AuthState>()(
                     error: null,
                     loading: false
                 });
+                localStorage.removeItem('access_token');
+                log.info('User logged out');
             },
 
             clearError: () => {

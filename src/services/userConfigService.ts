@@ -1,6 +1,6 @@
 // Service to hydrate Zustand stores with user config from backend
-import { useUIPreferencesStore } from '../store/uiPreferences';
-import { apiGet, apiPost } from '../utils/api';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { api } from '../utils/ky';
 
 // User config shape returned from backend
 export interface UserConfig {
@@ -13,21 +13,38 @@ export interface UserConfig {
     };
 }
 
-// Hydrate Zustand stores with user config
-export function hydrateUserConfig(config: UserConfig) {
-    if (config.uiPreferences) {
-        useUIPreferencesStore.getState().hydrateUIPreferences(config.uiPreferences);
-    }
+
+// TanStack Query: Fetch user config
+export function useUserConfig() {
+    return useQuery<UserConfig>({
+        queryKey: ['user-config'],
+        queryFn: async () => api.get('user/config').json<UserConfig>(),
+        staleTime: 10 * 60 * 1000,
+    });
+}
+
+// TanStack Query: Update user config
+export function useUpdateUserConfig() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (config: Partial<UserConfig["uiPreferences"]>) => {
+            const payload = { ...config };
+            return api.post('user/config', { json: payload }).json<UserConfig>();
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['user-config'] });
+        },
+    });
 }
 
 // Fetch user config from backend API
 export async function fetchUserConfig(): Promise<UserConfig> {
-    return apiGet('/api/user/config');
+    return api.get('user/config').json<UserConfig>();
 }
 
 // Set or update user config in backend
 export async function setUserConfig(config: Partial<UserConfig["uiPreferences"]>): Promise<UserConfig> {
     // POST only the fields that are present in config
     const payload = { ...config };
-    return apiPost('/api/user/config', payload);
+    return api.post('user/config', { json: payload }).json<UserConfig>();
 }

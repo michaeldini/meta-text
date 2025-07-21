@@ -1,5 +1,5 @@
 
-import { apiPost, apiGet } from '../utils/api';
+import { api } from '../utils/ky';
 
 export interface ExplanationRequest {
     words?: string;
@@ -36,11 +36,11 @@ export interface SourceDocInfoResponse {
 }
 
 export async function generateEvaluation(chunkId: number): Promise<{ result: string }> {
-    return await apiGet<{ result: string }>(`/api/evaluation/${chunkId}`);
+    return api.get(`evaluation/${chunkId}`).json<{ result: string }>();
 }
 
 export async function generateSourceDocInfo(sourceDocumentId: number): Promise<SourceDocInfoResponse> {
-    const data = await apiPost<SourceDocInfoResponse>(`/api/source-doc-info/${sourceDocumentId}`);
+    const data = await api.post(`source-doc-info/${sourceDocumentId}`).json<SourceDocInfoResponse>();
     if (!data || Object.keys(data).length === 0) {
         throw new Error('No data returned from source doc info endpoint');
     }
@@ -51,14 +51,13 @@ export async function generateAiImage(prompt: string, chunkId: number): Promise<
     const formData = new FormData();
     formData.append('prompt', prompt);
     if (chunkId) formData.append('chunk_id', chunkId.toString());
-    return await apiPost('/api/generate-image', formData);
+    return api.post('generate-image', { body: formData }).json<{ id: number, prompt: string, path: string, chunk_id: number }>();
 }
 
 export async function generateChunkEvaluation(chunkId: number): Promise<{ result: string }> {
-    return await apiGet(`/api/generate-evaluation/${chunkId}`);
+    return api.get(`generate-evaluation/${chunkId}`).json<{ result: string }>();
 }
 
-
 export async function explainWordsOrChunk(params: ExplanationRequest): Promise<ExplanationResponse> {
-    return await apiPost('/api/explain', params);
+    return api.post('explain', { json: params }).json<ExplanationResponse>();
 }

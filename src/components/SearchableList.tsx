@@ -8,7 +8,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { ErrorBoundary, LoadingBoundary, DeleteButton } from 'components';
 import { SearchIcon, ClearIcon } from 'icons';
-import { useDocumentsStore, useNotifications } from 'store';
+import { useNotifications } from 'store';
+import { useDeleteSourceDocument, useDeleteMetatext } from 'features/documents/useDocumentsData';
 
 import { useFilteredList } from 'hooks';
 import { getAppStyles } from 'styles';
@@ -33,7 +34,8 @@ function SearchableList({
 }: SearchableListProps) {
     const [search, setSearch] = useState('');
     const navigate = useNavigate();
-    const { deleteSourceDoc, deleteMetatext } = useDocumentsStore();
+    const deleteSourceDocMutation = useDeleteSourceDocument();
+    const deleteMetatextMutation = useDeleteMetatext();
     const { showSuccess, showError } = useNotifications();
 
     // Determine document type based on title or item properties
@@ -61,9 +63,9 @@ function SearchableList({
     const handleDeleteClick = async (id: number) => {
         try {
             if (docType === 'sourceDoc') {
-                await deleteSourceDoc(id);
+                await deleteSourceDocMutation.mutateAsync(id);
             } else {
-                await deleteMetatext(id);
+                await deleteMetatextMutation.mutateAsync(id);
             }
             showSuccess('Deleted successfully');
         } catch {
@@ -151,7 +153,11 @@ function SearchableList({
                                         secondaryAction={
                                             <DeleteButton
                                                 onClick={(e: React.MouseEvent) => handleDeleteClick(item.id)}
-                                                disabled={true} // Disable delete button for now
+                                                disabled={
+                                                    docType === 'sourceDoc'
+                                                        ? deleteSourceDocMutation.status === 'pending'
+                                                        : deleteMetatextMutation.status === 'pending'
+                                                }
                                                 label={`Delete ${displayText}`}
                                             />
                                         }

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
     Paper,
@@ -29,7 +28,7 @@ export interface MetatextCreateFormProps {
     /** Loading state for source documents */
     sourceDocsLoading: boolean;
     /** Error state for source documents */
-    sourceDocsError: string | null;
+    sourceDocsError: Error | null;
     /** Callback function called when creation succeeds */
     onSuccess?: () => void;
     /** Optional styling overrides */
@@ -148,7 +147,7 @@ function MetatextCreateForm(props: MetatextCreateFormProps): React.ReactElement 
             {/* Source Documents Error */}
             {sourceDocsError && (
                 <AppAlert severity="warning">
-                    {sourceDocsError}
+                    {sourceDocsError.message}
                 </AppAlert>
             )}
 

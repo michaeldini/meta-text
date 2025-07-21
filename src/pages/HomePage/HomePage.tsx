@@ -14,7 +14,8 @@ import { useEffect } from 'react';
 import { useHydrateUserConfig } from 'hooks';
 import { PageContainer } from 'components';
 import { getAppStyles } from 'styles';
-import { useDocumentsStore } from 'store';
+// import { useDocumentsStore } from 'store';
+import { useSourceDocuments, useMetatexts } from 'features';
 
 import WelcomeText from './components/WelcomeText';
 import NavigationButtons from './components/NavigationButtons';
@@ -27,25 +28,14 @@ import { FADE_IN_DURATION } from 'constants';
  * - Displays a welcome message and navigation buttons
  */
 function HomePage(): ReactElement {
+
     // Hydrate user config on page load
     useHydrateUserConfig();
 
-    // Prefetch data for both SourceDoc and Metatext pages in the background
-    // This improves perceived performance when users navigate to those pages
-    const { fetchSourceDocs, fetchMetatexts } = useDocumentsStore();
-
-    useEffect(() => {
-        // Prefetch data without blocking the UI or showing loading states
-        // Only fetch if not already loading to avoid duplicate requests
-        const { sourceDocsLoading, metatextsLoading } = useDocumentsStore.getState();
-
-        if (!sourceDocsLoading) {
-            fetchSourceDocs();
-        }
-        if (!metatextsLoading) {
-            fetchMetatexts();
-        }
-    }, [fetchSourceDocs, fetchMetatexts]);
+    // Prefetch source documents & metatexts using TanStack Query
+    // This will automatically fetch and cache the list in the background
+    useSourceDocuments();
+    useMetatexts();
 
     // Set up the theme and styles for the HomePage component
     const theme: Theme = useTheme();
