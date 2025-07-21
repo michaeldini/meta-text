@@ -63,6 +63,10 @@ export async function combineChunks(firstChunkId: number, secondChunkId: number)
     return data || null;
 }
 
+/** * Create a new chunk with the given data.
+ * Automatically invalidates the chunks cache.
+ * @returns The created chunk.
+ */
 export async function updateChunk(chunkId: number, chunkData: Partial<ChunkType>): Promise<ChunkType> {
     const data = await apiPut<ChunkType>(`/api/chunk/${chunkId}`, chunkData);
     if (!data || Object.keys(data).length === 0) {
@@ -76,7 +80,10 @@ export async function updateChunk(chunkId: number, chunkData: Partial<ChunkType>
     return data;
 }
 
-// Base function for individual chunk fetching
+/**
+ * Fetch a single chunk by ID without caching.
+ * This is used internally and should not be called directly.
+ */
 async function _fetchChunk(chunkId: number): Promise<ChunkType> {
     const data = await apiGet<ChunkType>(`/api/chunk/${chunkId}`);
     if (!data || Object.keys(data).length === 0) {
@@ -85,21 +92,16 @@ async function _fetchChunk(chunkId: number): Promise<ChunkType> {
     return data;
 }
 
-// Cached version (10 minutes for individual chunks)
+/**
+ * Fetch a single chunk by ID with caching.
+ * Caches for 10 minutes to optimize performance.
+ */
 export const fetchChunk = withCache(
     'fetchChunk',
     _fetchChunk,
     10 * 60 * 1000 // 10 minutes
 );
 
-// --- Chunk Compression API ---
-
-// export async function fetchChunkCompressions(chunkId: number): Promise<Rewrite[]> {
-//     return apiGet<Rewrite[]>(`/api/chunk/${chunkId}/rewrites`);
-// }
-
-
-// Deprecated: createChunkCompression is no longer used
 
 /**
  * Generate and save a chunk rewrite in one step (no preview).

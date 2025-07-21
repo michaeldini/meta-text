@@ -9,6 +9,12 @@ interface HeaderProps {
     styles: ReturnType<typeof getMetatextReviewStyles>;
 }
 
+/**
+ * Header component for the Metatext Review page.
+ * Displays a back button to navigate to the Metatext Detail page and the title "Review".
+ *
+ * @returns {ReactElement} The rendered Header component.
+ */
 export function Header({ metatextId, navigate, styles }: HeaderProps): ReactElement {
     return (
         <Box sx={styles.header}>

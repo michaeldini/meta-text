@@ -10,8 +10,8 @@ import { Box, Slide, useTheme } from '@mui/material';
 import type { Theme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
 import { useEffect } from 'react';
-import { useHydrateUserConfig } from 'hooks';
 
+import { useHydrateUserConfig } from 'hooks';
 import { PageContainer } from 'components';
 import { getAppStyles } from 'styles';
 import { useDocumentsStore } from 'store';

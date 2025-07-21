@@ -1,5 +1,3 @@
-// Provides a form for creating Metatext documents from source documents.
-// The user selects a source document, enters a title, and submits the form.
 
 import React from 'react';
 import {
@@ -41,45 +39,27 @@ export interface MetatextCreateFormProps {
 /**
  * MetatextCreateForm Component
  * 
- * A streamlined form component for creating Metatext documents from existing
- * source documents. This component provides a clean, focused interface for
- * Metatext creation without the complexity of mode switching.
- * 
- * Features:
- * - Source document selection dropdown
- * - Title input field
- * - Form validation
- * - Loading states with progress indication
- * - Error handling with user feedback
- * - Success callbacks for integration
- * - Responsive design
- * 
- * @category Components
- * @subcategory Forms
- * @component
- * @example
- * ```tsx
- * <MetatextCreateForm 
- *   sourceDocs={sourceDocs}
- *   sourceDocsLoading={false}
- *   sourceDocsError={null}
- *   onSuccess={() => {
- *     console.log('Metatext created!');
- *     refetchMetatexts();
- *   }}
- * />
- * ```
- * 
+ *  Provides a form for creating Metatext documents from source documents.
+ * The user selects a source document, enters a title, and submits the form.
+ *
+ * Behavior:
+ * - Displays a form allowing the user to select a source document and enter a title for the new Metatext.
+ * - Uses the `useMetatextCreate` custom hook to manage form state, handle input changes, submission, and feedback messages.
+ * - Shows loading indicators when creating a Metatext or loading source documents.
+ * - Displays success or error messages using the AppAlert component.
+ * - Disables form controls appropriately during loading states.
+ *
+ * Hooks and Data Handling:
+ * - `useMetatextCreate`: Manages local state for the title and selected source document ID, handles form submission, and provides loading, error, and success states. Accepts an `onSuccess` callback for post-creation actions.
+ * - Receives `sourceDocs`, `sourceDocsLoading`, and `sourceDocsError` as props to populate the source document dropdown and handle loading/error states for fetching source documents.
+ * - On submit, calls the handler from the hook to create a new Metatext document, disables the form, and shows progress until completion or error.
+ *
+ *
  * @param props - Component props
- * @returns {ReactElement} The rendered MetatextCreateForm component
+ * @returns The rendered MetatextCreateForm component
  */
-function MetatextCreateForm({
-    sourceDocs,
-    sourceDocsLoading,
-    sourceDocsError,
-    onSuccess,
-    sx = {}
-}: MetatextCreateFormProps): React.ReactElement {
+function MetatextCreateForm(props: MetatextCreateFormProps): React.ReactElement {
+    const { sourceDocs, sourceDocsLoading, sourceDocsError, onSuccess, sx = {} } = props;
     const theme = useTheme();
 
     /**
@@ -130,6 +110,7 @@ function MetatextCreateForm({
 
     return (
         <Paper elevation={2} sx={styles.container}>
+
             {/* Form Header */}
             <Box sx={{ mb: 3 }}>
                 <Typography variant="h5" component="h2" gutterBottom fontWeight="bold">
@@ -237,5 +218,7 @@ function MetatextCreateForm({
         </Paper>
     );
 }
+
+MetatextCreateForm.displayName = 'MetatextCreateForm';
 
 export default MetatextCreateForm;

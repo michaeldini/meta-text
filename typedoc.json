@@ -2,8 +2,8 @@
     "entryPoints": [
         "src/App.tsx",
         "src/main.tsx",
-        "src/pages/index.ts",
-        // "src/services/index.ts",
+        "src/pages",
+        "src/services",
         // "src/components/index.ts",
         // "src/features",
         // "src/hooks/index.ts",
@@ -12,7 +12,7 @@
         // "src/types/index.ts",
         // "src/utils"
     ],
-    "entryPointStrategy": "resolve",
+    "entryPointStrategy": "expand",
     "out": "docs/api",
     "theme": "default",
     "customCss": "docs/custom-typedoc.css",

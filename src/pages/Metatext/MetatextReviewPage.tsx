@@ -6,8 +6,8 @@ import { useTheme } from '@mui/material/styles';
 import type { Theme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
 
-import { AppAlert } from 'components';
-import { LoadingIndicator, Header, ReviewContent } from './components';
+import { AppAlert, LoadingSpinner } from 'components';
+import { Header, ReviewContent } from './components';
 import { useMetatextReviewData } from './hooks/useMetatextReviewData';
 import { useValidatedIdParam } from 'utils';
 
@@ -45,7 +45,7 @@ function MetatextReviewPage(): ReactElement {
     // Early returns for loading and error states
     if (loading) return (
         <Box sx={styles.root} data-testid="metatext-review-loading">
-            <LoadingIndicator />
+            <LoadingSpinner />
         </Box>
     );
 
