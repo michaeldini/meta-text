@@ -22,6 +22,7 @@ const ChunkTextField: React.FC<ChunkTextFieldProps> = ({ label, value, onChange,
         fullWidth
         sx={sx}
         {...rest}
+        data-testid={`${label} input field`}
     />
 );
 
