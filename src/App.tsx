@@ -1,17 +1,28 @@
-// Main React app component providing routing, theming, and authentication
-import { JSX, Suspense, lazy, ComponentType } from 'react';
+/* 
+*  Main application component for MetaText
+*  - Sets up routing and lazy loading for pages
+*/
+
+import React, { useEffect, JSX, Suspense, lazy, ComponentType } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, CssBaseline, useTheme, Box, Typography } from '@mui/material';
 
 import { NavBar } from 'features';
 import { AppSuspenseFallback, ErrorBoundary, GlobalNotifications } from 'components';
+import { useAuthStore, useUIPreferencesStore } from 'store';
+import { fetchUserConfig } from 'services';
+import { useAuthRefresh } from 'hooks';
+import { getAppStyles, lightTheme, darkTheme } from 'styles';
 
-import { getAppStyles, lightTheme, darkTheme } from './styles';
-import { useAuthStore } from 'store';
-// ...existing code...
 import { useThemeContext } from './contexts/ThemeContext';
 
-// Dynamically import pages for code splitting using barrel exports
+
+/**Dynamically import pages for code splitting using barrel exports
+ * This allows for lazy loading of components
+ * and reduces initial bundle size.
+ * Each page is wrapped in a lazy function to enable code splitting.
+ * The `default` export is used to ensure compatibility with the lazy loading syntax.
+ */
 const HomePage = lazy(() => import('pages').then(module => ({ default: module.HomePage })));
 const SourceDocPage = lazy(() => import('pages').then(module => ({ default: module.SourceDocPage })));
 const SourceDocDetailPage = lazy(() => import('pages').then(module => ({ default: module.SourceDocDetailPage })));
@@ -70,7 +81,12 @@ const NotFoundElement = (
     </Box>
 );
 
-function App() {
+/**
+ * Main application component
+ * - Sets up theming and routing
+ * - Hydrates UI preferences from user config
+ */
+export function App() {
     const { mode } = useThemeContext();
     const currentTheme = mode === 'light' ? lightTheme : darkTheme;
 
@@ -88,16 +104,13 @@ function App() {
     );
 }
 
-// Separate component that uses the theme after it's provided
 
-import React, { useEffect } from 'react';
-import { useAuthRefresh } from './hooks/useAuthRefresh';
-import { useUIPreferencesStore } from 'store/uiPreferences';
-import { fetchUserConfig } from 'services/userConfigService';
-// ...existing code...
-
-
-const AppContent = () => {
+/**
+ * Main application content
+ * - Sets up routing and lazy loading for pages
+ * - Hydrates UI preferences from user config
+ */
+export const AppContent = () => {
     useAuthRefresh();
     const theme = useTheme();
     const styles = getAppStyles(theme);

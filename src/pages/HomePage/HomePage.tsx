@@ -1,8 +1,10 @@
-// This page serves as the entry point for users, guiding them to the main functionalities of the application.
-// It includes a welcome message and navigation buttons to direct users to the SourceDocs and Metatext pages.
-// Data prefetching: This page proactively loads data for both SourceDoc and Metatext pages in the background,
-// improving perceived performance when users navigate to those pages.
-
+/**
+ * @module pages
+ * This page serves as the entry point for users, guiding them to the main functionalities of the application.
+ * It includes a welcome message and navigation buttons to direct users to the SourceDocs and Metatext pages.
+ * Data prefetching: This page proactively loads data for both SourceDoc and Metatext pages in the background,
+ * improving perceived performance when users navigate to those pages.
+ */
 
 import { Box, Slide, useTheme } from '@mui/material';
 import type { Theme } from '@mui/material/styles';
@@ -19,6 +21,11 @@ import NavigationButtons from './components/NavigationButtons';
 import { FADE_IN_DURATION } from 'constants';
 
 
+/* HomePage component
+ * - Hydrates user configuration on page load
+ * - Prefetches data for SourceDoc and Metatext pages
+ * - Displays a welcome message and navigation buttons
+ */
 function HomePage(): ReactElement {
     // Hydrate user config on page load
     useHydrateUserConfig();
@@ -63,4 +70,10 @@ function HomePage(): ReactElement {
     );
 }
 
+
+/* HomePage component
+ * - Hydrates user configuration on page load
+ * - Prefetches data for SourceDoc and Metatext pages
+ * - Displays a welcome message and navigation buttons
+ */
 export default HomePage;

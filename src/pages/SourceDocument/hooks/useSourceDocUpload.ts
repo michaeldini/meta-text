@@ -42,6 +42,11 @@ export interface UseSourceDocUploadResult {
     clearMessages: () => void;
 }
 
+/**
+ * Custom hook for managing source document upload
+ * @param options - Options for the upload hook
+ * @returns 
+ */
 export function useSourceDocUpload(options: UseSourceDocUploadOptions = {}): UseSourceDocUploadResult {
     const { onSuccess } = options;
     const { showSuccess, showError } = useNotifications();

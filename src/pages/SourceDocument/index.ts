@@ -1,9 +1,14 @@
 
-// Export the source document page component
+/**
+ * SourceDocumentPage module
+ * - Displays the content of a specific Source Document
+ */
 export { default as SourceDocPage } from './SourceDocPage';
 
-// Export the source document detail page component  
+/**
+ * SourceDocDetailPage module
+ * - Allows users to edit and annotate the document
+ */
 export { default as SourceDocDetailPage } from './SourceDocDetailPage';
 
-// Export custom hooks
-export { useSourceDocDetailData } from '../../hooks/useSourceDocDetailData';
+// export { useSourceDocDetailData } from '../../hooks/useSourceDocDetailData';

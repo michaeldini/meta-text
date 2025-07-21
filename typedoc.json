@@ -1,13 +1,16 @@
 {
     "entryPoints": [
-        "src/components/index.ts",
+        "src/App.tsx",
+        "src/main.tsx",
         "src/pages/index.ts",
-        "src/features",
-        "src/hooks/index.ts",
-        "src/services",
-        "src/store",
-        "src/types/index.ts",
-        "src/utils"
+        // "src/services/index.ts",
+        // "src/components/index.ts",
+        // "src/features",
+        // "src/hooks/index.ts",
+        // "src/services",
+        // "src/store",
+        // "src/types/index.ts",
+        // "src/utils"
     ],
     "entryPointStrategy": "resolve",
     "out": "docs/api",
@@ -19,7 +22,7 @@
     "excludeExternals": true,
     "excludeInternal": false,
     "readme": "README.md",
-    "name": "Meta-Text Component Documentation",
+    "name": "Meta-TextDocumentation",
     "tsconfig": "tsconfig.json",
     "categorizeByGroup": true,
     "defaultCategory": "Components",
@@ -48,7 +51,7 @@
         "**/dist/**",
         "**/*.stories.tsx"
     ],
-    "excludeNotDocumented": false,
+    "excludeNotDocumented": true,
     "skipErrorChecking": true,
     "validation": {
         "invalidLink": false,
