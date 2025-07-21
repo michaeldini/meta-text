@@ -13,7 +13,12 @@ export interface AppAlertProps {
     onClose?: () => void;
 }
 
-export function AppAlert({ severity, children, title, onClose }: AppAlertProps): ReactElement {
+/**
+ * AppAlert component displays an alert message with a title and optional close button.
+ * It uses MUI's Alert component for consistent styling and behavior.
+ */
+export function AppAlert(props: AppAlertProps): ReactElement {
+    const { severity, children, title, onClose } = props;
     return (
         <Collapse in={!!children}>
             <Alert severity={severity} sx={{ mb: 2 }} onClose={onClose}>

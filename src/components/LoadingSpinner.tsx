@@ -29,7 +29,7 @@ const defaultStyles: SxProps<Theme> = {
 };
 
 export function LoadingSpinner({
-    size = 40,
+    size = 30,
     color = 'primary',
     sx,
     'aria-label': ariaLabel = 'Loading content',
