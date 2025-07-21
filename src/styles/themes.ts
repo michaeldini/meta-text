@@ -21,7 +21,7 @@ const baseTheme: ThemeOptions = {
         default: {
             width: 24,
             height: 24,
-        },
+        }, // TODO: Remove this its not used anymore, styles are applied directly in ThemedIcon
     },
     typography: {
         fontFamily: 'Arial, sans-serif, system-ui',

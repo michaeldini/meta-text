@@ -9,6 +9,9 @@ export interface ThemedIconProps {
 
 export const ThemedIcon: React.FC<ThemedIconProps> = ({ as: Icon, style, ...rest }) => {
     const theme = useTheme();
-    const defaultStyle = theme.icons.default
+    const defaultStyle = {
+        width: 24,
+        height: 24,
+    }
     return <Icon style={{ ...defaultStyle, color: theme.palette.text.secondary, ...style }} {...rest} />;
 };

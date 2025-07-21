@@ -33,7 +33,8 @@ const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = ({
     const styles = getChunkComponentsStyles(theme, activeTools.length > 0);
 
     return (
-        <Box sx={styles.chunkTabsContainer}>
+        <Box sx={styles.chunkTabsContainer}
+            data-chunk-id={`chunk-tools-${chunk.id}`}>
             {/* Tools Always visible at the top */}
             <Box sx={styles.alwaysVisibleToolContainer}>
                 <CopyTool chunkText={chunk.text} />
