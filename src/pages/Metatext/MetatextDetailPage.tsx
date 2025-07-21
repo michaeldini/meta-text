@@ -25,7 +25,7 @@ import { useValidatedIdParam } from 'utils/urlValidation';
 import { useSearchKeyboard } from '../../features/chunk-search/hooks/useSearchKeyboard';
 import { useMetatextDetailData } from './hooks/useMetatextDetailData';
 import { getMetatextDetailStyles } from './Metatext.styles';
-import DownloadMetatextButton from './DownloadMetatextButton';
+import DownloadMetatextButton from './components/DownloadMetatextButton';
 import { ChunkFavoriteFilterToggle } from 'features';
 
 

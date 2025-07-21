@@ -13,6 +13,14 @@ interface ReviewContentProps {
     chunkReviewTable: ChunkType[];
 }
 
+/**
+ * ReviewContent component
+ * - Displays explanations, flashcards, and a review table in separate sections
+ * - Uses ReviewSection for each part to allow expansion/collapse
+ *
+ * @param {ReviewContentProps} props - Contains flashcards, phrases, and chunkReviewTable data
+ * @returns {ReactElement} The rendered ReviewContent component
+ */
 export function ReviewContent({
     flashcards,
     phrases,

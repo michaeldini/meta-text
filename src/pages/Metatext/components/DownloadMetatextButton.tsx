@@ -5,8 +5,8 @@
 import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { DownloadIcon } from 'icons';
-import { apiGet } from '../../utils/api';
-import { downloadJsonAsFile } from '../../utils/downloadJsonAsFile';
+import { apiGet } from '../../../utils/api';
+import { downloadJsonAsFile } from '../../../utils/downloadJsonAsFile';
 
 interface DownloadMetatextButtonProps {
     metatextId: number;
