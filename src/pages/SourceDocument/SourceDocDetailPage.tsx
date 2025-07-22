@@ -9,26 +9,24 @@ import SourceDoc from './components/SourceDoc';
 import { PageContainer, SourceDocInfo, AppAlert } from 'components';
 import { GenerateSourceDocInfoButton, StyleControls, DocumentHeader } from 'components';
 import { FADE_IN_DURATION } from 'constants';
-import { useSourceDocumentDetailStore } from 'store';
+
+import { useSourceDocumentDetail, useUpdateSourceDocument } from 'features/documents/useSourceDocumentDetail';
 import { useValidatedIdParam } from 'utils/urlValidation';
 
-import { useSourceDocDetailData } from '../../hooks/useSourceDocDetailData';
 
 function SourceDocDetailPage(): ReactElement {
 
+    // Extract the sourceDocId from the URL parameters
     const { sourceDocId } = useParams<{ sourceDocId?: string }>();
-    const { updateDoc } = useSourceDocumentDetailStore();
 
     // Validate the sourceDocId parameter using robust validation utility
     const { id: validatedSourceDocId, isValid } = useValidatedIdParam(sourceDocId);
 
-    const {
-        doc,
-        loading,
-        error, // TODO
-        refetch // TODO
-    } = useSourceDocDetailData(validatedSourceDocId);
+    // Fetch the source document details using the custom hook
+    const { data: doc, isLoading: loading, error, refetch } = useSourceDocumentDetail(validatedSourceDocId ?? null);
 
+    // Handle the case where the document is not found or ID is invalid
+    const updateMutation = useUpdateSourceDocument(validatedSourceDocId ?? null);
 
     return (
         <PageContainer
@@ -45,24 +43,18 @@ function SourceDocDetailPage(): ReactElement {
                                     sourceDocumentId={doc.id}
                                 />
                                 <StyleControls />
-
-                                {/* this should prob be passed the source doc instead of fetching it again inside the component. */}
-                                <SourceDocInfo doc={doc} onDocumentUpdate={updateDoc} />
+                                <SourceDocInfo doc={doc} onDocumentUpdate={updateMutation.mutate} />
                             </DocumentHeader>
-                            <SourceDoc doc={doc} onDocumentUpdate={updateDoc} />
+                            <SourceDoc doc={doc} onDocumentUpdate={updateMutation.mutate} />
                         </>
                     ) : !isValid ? (
                         // Error state when sourceDocId is invalid
-                        <AppAlert
-                            severity="error"
-                        >
+                        <AppAlert severity="error">
                             Invalid source document ID provided.
                         </AppAlert>
                     ) : (
                         // Info state when document is not found (but ID is valid)
-                        <AppAlert
-                            severity="info"
-                        >
+                        <AppAlert severity="info">
                             Source document not found.
                         </AppAlert>
                     )}

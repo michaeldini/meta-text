@@ -3,11 +3,17 @@
 
 import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
-import { useBookmarkStore } from 'store';
+import { useBookmarkUIStore } from 'store/bookmarkStore';
+import { useBookmark } from 'features/documents/useBookmark';
 import { BookmarkIcon } from 'icons';
 
-const BookmarkNavigateButton: React.FC = () => {
-    const { bookmarkedChunkId, setNavigateToBookmark } = useBookmarkStore();
+interface BookmarkNavigateButtonProps {
+    metaTextId: number;
+}
+
+const BookmarkNavigateButton: React.FC<BookmarkNavigateButtonProps> = ({ metaTextId }) => {
+    const { setNavigateToBookmark } = useBookmarkUIStore();
+    const { data: bookmarkedChunkId } = useBookmark(metaTextId);
     return (
         <Tooltip title="Go to bookmarked chunk" arrow>
             <span style={{ display: 'inline-flex' }}>

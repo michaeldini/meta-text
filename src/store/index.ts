@@ -1,4 +1,4 @@
-export { useBookmarkStore } from './bookmarkStore';
+export { useBookmarkUIStore } from './bookmarkStore';
 // Zustand stores for managing application state
 //
 // Important Stores:
@@ -13,8 +13,8 @@ export { useBookmarkStore } from './bookmarkStore';
 // - notificationStore: Handles notifications and alerts within the application.
 
 
-export { useSourceDocumentDetailStore } from './sourceDocumentDetailStore';
-export { useMetatextDetailStore } from './metatextDetailStore';
+// export { useSourceDocumentDetailStore } from './sourceDocumentDetailStore';
+// export { useMetatextDetailStore } from './metatextDetailStore';
 export { useChunkStore } from './chunkStore';
 
 // export { FONT_FAMILIES } from './uiPreferences';

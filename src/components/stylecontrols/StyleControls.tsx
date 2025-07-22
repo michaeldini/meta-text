@@ -7,7 +7,7 @@ import ChunkPositionToggleButton from '../../features/chunk-position/ChunkPositi
 
 
 const DEFAULTS = {
-    textSizePx: 28,
+    textSizePx: 20,
     fontFamily: 'Inter, sans-serif',
     lineHeight: 1.5,
     paddingX: 0.3,
@@ -26,27 +26,27 @@ const StyleControls: React.FC = () => {
             <TextSizeInput
                 value={uiPreferences.textSizePx || DEFAULTS.textSizePx}
                 onChange={val => updateUserConfig.mutate({ textSizePx: val })}
-                disabled={isPending}
+            // disabled={isPending}
             />
             <LineHeightInput
                 value={uiPreferences.lineHeight || DEFAULTS.lineHeight}
                 onChange={val => updateUserConfig.mutate({ lineHeight: val })}
-                disabled={isPending}
+            // disabled={isPending}
             />
             <PaddingXInput
                 value={uiPreferences.paddingX || DEFAULTS.paddingX}
                 onChange={val => updateUserConfig.mutate({ paddingX: val })}
-                disabled={isPending}
+            // disabled={isPending}
             />
             <FontFamilySelect
                 value={uiPreferences.fontFamily || DEFAULTS.fontFamily}
                 onChange={val => updateUserConfig.mutate({ fontFamily: val })}
-                disabled={isPending}
+            // disabled={isPending}
             />
             <ChunkPositionToggleButton
                 value={uiPreferences.showChunkPositions || DEFAULTS.showChunkPositions}
                 onChange={val => updateUserConfig.mutate({ showChunkPositions: val })}
-                disabled={isPending}
+            // disabled={isPending}
             />
         </Box>
     );

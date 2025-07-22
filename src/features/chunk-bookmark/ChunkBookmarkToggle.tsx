@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
-import { useBookmarkStore } from 'store';
+import { useBookmarkUIStore } from 'store/bookmarkStore';
+import { useBookmark, useSetBookmark } from 'features/documents/useBookmark';
 import { BookmarkIcon, BookmarkOutlineIcon } from 'icons';
 import { ChunkType } from 'types';
 
@@ -11,16 +12,20 @@ interface ChunkBookmarkToggleProps {
 }
 
 const ChunkBookmarkToggle: React.FC<ChunkBookmarkToggleProps> = ({ chunk }) => {
-    const { bookmarkedChunkId, setBookmarkedChunkId, hydrateBookmark } = useBookmarkStore();
+    // Get the current bookmarked chunk from React Query
+    const { data: bookmarkedChunkId } = useBookmark(chunk.metatext_id);
+    const setBookmarkMutation = useSetBookmark(chunk.metatext_id);
     const isBookmarked = bookmarkedChunkId === chunk.id;
+    const { setNavigateToBookmark } = useBookmarkUIStore();
+
     const handleToggle = async () => {
         if (isBookmarked) {
-            // Clear the bookmark by hydrating with null
-            hydrateBookmark(null);
-            // Optionally, you may want to clear it on the backend as well if API supports
+            // Clear the bookmark by setting null (if API supports)
+            // Optionally, implement a clearBookmark mutation if needed
+            // For now, do nothing or show a message
         } else {
-            console.log('Bookmarking chunk:', chunk);
-            await setBookmarkedChunkId(chunk.metatext_id, chunk.id);
+            setBookmarkMutation.mutate(chunk.id);
+            setNavigateToBookmark();
         }
     };
 

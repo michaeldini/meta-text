@@ -15,8 +15,8 @@ import {
 
 import { ChunkToolsPanel, PaginatedChunks, SearchContainer, BookmarkNavigateButton } from 'features';
 
-import { useSourceDocDetailData } from 'hooks';
-import { useSourceDocumentDetailStore, useBookmarkStore } from 'store';
+// import { useSourceDocDetailData } from 'hooks';
+// import { useSourceDocumentDetailStore, useBookmarkStore } from 'store';
 import { useUserConfig } from 'services/userConfigService';
 import { FADE_IN_DURATION } from 'constants';
 import { useValidatedIdParam } from 'utils/urlValidation';
@@ -24,11 +24,12 @@ import { useValidatedIdParam } from 'utils/urlValidation';
 
 
 import { useSearchKeyboard } from '../../features/chunk-search/hooks/useSearchKeyboard';
-import { useMetatextDetailData } from './hooks/useMetatextDetailData';
+import { useMetatextDetail } from 'features/documents/useMetatextDetail';
 import { getMetatextDetailStyles } from './Metatext.styles';
 import DownloadMetatextButton from './components/DownloadMetatextButton';
 import { ChunkFavoriteFilterToggle } from 'features';
-
+import { useSourceDocumentDetail } from 'features/documents/useSourceDocumentDetail';
+import { useBookmarkUIStore } from 'store/bookmarkStore';
 
 function MetatextDetailPage(): ReactElement | null {
     // Extract the metatextId from the URL parameters
@@ -42,27 +43,19 @@ function MetatextDetailPage(): ReactElement | null {
         return null; // Could render a proper error component instead
     }
 
-    // Fetch the metatext details using the custom hook
-    const { metatext, loading } = useMetatextDetailData(validatedMetatextId ? String(validatedMetatextId) : ""); // Todo handle errors
+    // Fetch the metatext details using the new React Query hook
+    const { data: metatext, isLoading: loading } = useMetatextDetail(validatedMetatextId ?? null);
 
-    // Fetch the source document details using the custom hook unconditionally
-    const { doc: sourceDoc } = useSourceDocDetailData(
-        metatext ? metatext.source_document_id : undefined
+    // Fetch the source document details using the new React Query hook
+    // Only fetch, do not provide update logic
+    const { data: sourceDoc } = useSourceDocumentDetail(
+        metatext ? metatext.source_document_id ?? null : null
     );
-
-    // Get the updateDoc function from the store for updating source document
-    const { updateDoc } = useSourceDocumentDetailStore();
 
     const theme: Theme = useTheme();
     const styles = getMetatextDetailStyles(theme);
     // Hydrate user config (UI preferences) for downstream components
     useUserConfig();
-    // Hydrate bookmark state on mount (after refresh)
-    React.useEffect(() => {
-        if (metatext?.id) {
-            useBookmarkStore.getState().loadBookmark(metatext.id);
-        }
-    }, [metatext?.id]);
 
     // Initialize keyboard shortcuts for search
     useSearchKeyboard({ enabled: true });
@@ -77,7 +70,7 @@ function MetatextDetailPage(): ReactElement | null {
                                 title={metatext.title}
                             >
                                 {sourceDoc && (
-                                    <SourceDocInfo doc={sourceDoc} onDocumentUpdate={updateDoc} />
+                                    <SourceDocInfo doc={sourceDoc} />
                                 )}
                                 <ReviewButton metatextId={metatext.id} />
                                 <GenerateSourceDocInfoButton
@@ -87,7 +80,7 @@ function MetatextDetailPage(): ReactElement | null {
 
                                 {/* Button to navigate to bookmarked chunk and toggle chunk position */}
                                 <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
-                                    <BookmarkNavigateButton />
+                                    <BookmarkNavigateButton metaTextId={metatext.id} />
                                     <DownloadMetatextButton metatextId={metatext.id} />
                                     <ChunkFavoriteFilterToggle
                                         showOnlyFavorites={showOnlyFavorites}

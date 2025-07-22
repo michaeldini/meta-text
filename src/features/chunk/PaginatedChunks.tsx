@@ -4,6 +4,7 @@
 import React, { ReactNode, useState, useRef } from 'react';
 import { Box, Pagination } from '@mui/material';
 import useChunkBookmarkNavigation from '../chunk-bookmark/useChunkBookmarkNavigation';
+import { useBookmark } from 'features/documents/useBookmark';
 import { useTheme } from '@mui/material/styles';
 
 import { LoadingBoundary, ErrorBoundary, AppAlert } from 'components';
@@ -105,8 +106,10 @@ const PaginatedChunks = ({ metatextId, showOnlyFavorites }: PaginationProps) => 
         }
     }, [currentPage, setCurrentPage]);
 
+    // Get the current bookmarked chunk from React Query
+    const { data: bookmarkedChunkId } = useBookmark(metatextId);
     // Handle navigation to bookmarked chunk using custom hook
-    useChunkBookmarkNavigation(displayChunks, chunksPerPage, handlePageChange);
+    useChunkBookmarkNavigation(displayChunks, chunksPerPage, handlePageChange, bookmarkedChunkId ?? null);
 
     // I dont know why this is needed, but it preserves the previous chunks
     // when the chunks are updated

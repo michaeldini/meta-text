@@ -1,8 +1,11 @@
-import { useEffect, useState } from 'react';
+
+// React Query-based hook for fetching Metatext review data
+import { useQuery } from '@tanstack/react-query';
 import { fetchReviewData } from 'services';
 import { ChunkType, Explanation } from 'types';
-import { log } from 'utils';
 import { useChunkStore } from 'store/chunkStore';
+import { log } from 'utils';
+
 
 interface UseMetatextReviewDataReturn {
     wordList: Explanation[];
@@ -13,51 +16,32 @@ interface UseMetatextReviewDataReturn {
 }
 
 export function useMetatextReviewData(metatextId?: number): UseMetatextReviewDataReturn {
-    const [wordList, setWordList] = useState<Explanation[]>([]);
-    const [phraseList, setPhraseList] = useState<Explanation[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
     const chunks = useChunkStore((state) => state.chunks);
-    console.log('useMetatextReviewData chunks:', chunks);
-    useEffect(() => {
-        setLoading(true);
-        async function loadReviewData() {
-            try {
-                setError(null);
-                if (!metatextId) {
-                    setError('Metatext ID is required to load review data.');
-                    return;
-                }
-                // Fetch review data (wordList and phraseList)
-                const reviewData = await fetchReviewData(metatextId);
 
-                setWordList(Array.isArray(reviewData.word_list) ? reviewData.word_list : []);
-                setPhraseList(Array.isArray(reviewData.phrase_list) ? reviewData.phrase_list : []);
-                console.log('Fetched review data:', {
-                    chunks,
-                });
-            } catch (err) {
-                setError('Failed to load review data.');
-                log.error('Failed to load review data', err);
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        if (metatextId) {
-            loadReviewData();
-        } else {
-            setLoading(false);
-        }
-    }, [metatextId]);
-
-
+    const {
+        data,
+        isLoading,
+        error
+    } = useQuery<{ wordList: Explanation[]; phraseList: Explanation[] }, Error>({
+        queryKey: ['metatextReview', metatextId],
+        queryFn: async () => {
+            if (!metatextId) throw new Error('Metatext ID is required to load review data.');
+            const reviewData = await fetchReviewData(metatextId);
+            return {
+                wordList: reviewData.word_list,
+                phraseList: reviewData.phrase_list
+            };
+        },
+        enabled: !!metatextId,
+        retry: 1,
+        staleTime: 1000 * 60 // 1 minute
+    });
 
     return {
-        wordList,
+        wordList: data ? data.wordList : [],
+        phraseList: data ? data.phraseList : [],
         chunks,
-        phraseList,
-        loading,
-        error
+        loading: isLoading,
+        error: error ? error.message : null
     };
 }
