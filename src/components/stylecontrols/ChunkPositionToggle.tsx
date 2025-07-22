@@ -3,20 +3,21 @@
 
 import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
-import { useUIPreferences, useUpdateUIPreferences } from 'store/uiPreferences';
+import { useUserConfig, useUpdateUserConfig } from 'services/userConfigService';
 import { TicketIcon } from 'icons'; // Using TicketIcon as placeholder
 
 const ChunkPositionToggle: React.FC = () => {
-    const { showChunkPositions } = useUIPreferences();
-    const updateUIPreferences = useUpdateUIPreferences();
+    const { data: userConfig } = useUserConfig();
+    const updateUserConfig = useUpdateUserConfig();
+    const showChunkPositions = userConfig?.uiPreferences?.showChunkPositions ?? false;
 
     return (
         <Tooltip title={showChunkPositions ? "Hide chunk positions" : "Show chunk positions"} arrow>
             <IconButton
-                onClick={() => updateUIPreferences.mutate({ showChunkPositions: !showChunkPositions })}
+                onClick={() => updateUserConfig.mutate({ showChunkPositions: !showChunkPositions })}
                 color={showChunkPositions ? "primary" : "default"}
                 data-testid="chunk-position-toggle"
-                disabled={updateUIPreferences.status === 'pending'}
+                disabled={updateUserConfig.status === 'pending'}
             >
                 <TicketIcon />
             </IconButton>

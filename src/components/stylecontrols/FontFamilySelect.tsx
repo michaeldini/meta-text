@@ -1,25 +1,40 @@
 import React from 'react';
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
-import { useUIPreferences, useUpdateUIPreferences, FONT_FAMILIES } from 'store/uiPreferences';
 
 
-const FontFamilySelect: React.FC = () => {
-    const { fontFamily } = useUIPreferences();
-    const updateUIPreferences = useUpdateUIPreferences();
+const FONT_FAMILIES = [
+    'Inter, sans-serif',
+    'Roboto, sans-serif',
+    'Arial, sans-serif',
+    'Georgia, serif',
+    'Times New Roman, Times, serif',
+    'Courier New, Courier, monospace',
+    'monospace',
+    'Funnel Display, sans-serif',
+    'Open Sans, sans-serif',
+];
 
+
+interface FontFamilySelectProps {
+    value: string;
+    onChange: (val: string) => void;
+    disabled?: boolean;
+}
+
+
+const FontFamilySelect: React.FC<FontFamilySelectProps> = ({ value, onChange, disabled }) => {
     const handleChange = (event: SelectChangeEvent<string>) => {
-        updateUIPreferences.mutate({ fontFamily: event.target.value });
+        onChange(event.target.value);
     };
-
     return (
         <FormControl size="small" sx={{ ml: 2 }}>
             <InputLabel id="font-family-label">Font</InputLabel>
             <Select
                 labelId="font-family-label"
-                value={fontFamily}
+                value={value}
                 label="Font"
                 onChange={handleChange}
-                disabled={updateUIPreferences.status === 'pending'}
+                disabled={disabled}
             >
                 {FONT_FAMILIES.map((font) => (
                     <MenuItem key={font} value={font} style={{ fontFamily: font }}>

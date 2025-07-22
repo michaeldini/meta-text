@@ -17,8 +17,8 @@ export { useSourceDocumentDetailStore } from './sourceDocumentDetailStore';
 export { useMetatextDetailStore } from './metatextDetailStore';
 export { useChunkStore } from './chunkStore';
 
-export { FONT_FAMILIES } from './uiPreferences';
-export { useUIPreferences, useUpdateUIPreferences } from './uiPreferences';
+// export { FONT_FAMILIES } from './uiPreferences';
+// export { useUIPreferences, useUpdateUIPreferences } from './uiPreferences';
 export { useNotificationStore } from './notificationStore';
 
 export { useNotifications } from './notificationStore';

@@ -10,11 +10,12 @@ import { ThemeProvider, CssBaseline, useTheme, Box, Typography } from '@mui/mate
 import { NavBar } from 'features';
 import { LoadingFallback, ErrorBoundary, GlobalNotifications } from 'components';
 import { useAuthStore } from 'store';
-import { useUIPreferences } from 'store/uiPreferences';
 import { useAuthRefresh } from 'hooks';
 import { getAppStyles, lightTheme, darkTheme } from 'styles';
 
+
 import { useThemeContext } from './contexts/ThemeContext';
+import { useUserConfig } from 'services/userConfigService';
 
 
 /**Dynamically import pages for code splitting using barrel exports
@@ -110,12 +111,16 @@ export function App() {
  * - Sets up routing and lazy loading for pages
  * - Hydrates UI preferences from user config
  */
+
 export const AppContent = () => {
     useAuthRefresh();
     const theme = useTheme();
     const styles = getAppStyles(theme);
-    // Hydrate UI preferences from TanStack Query (no-op, just triggers query)
-    useUIPreferences();
+
+    // Hydrate UI preferences from backend user config using react-query
+    // TODO: maybe delete this?
+    const { data: userConfig } = useUserConfig();
+
 
     const renderRoute = (route: RouteConfig) => {
         const Component = route.element;
@@ -124,7 +129,6 @@ export const AppContent = () => {
                 <Component />
             </Suspense>
         );
-
         return (
             <Route
                 key={route.path}

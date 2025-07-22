@@ -1,37 +1,41 @@
+
 import React from 'react';
 import { Slider, Box, Typography } from '@mui/material';
-import { useUIPreferences, useUpdateUIPreferences } from 'store/uiPreferences';
 
 const MIN_SIZE = 8;
 const MAX_SIZE = 72;
 const STEP = 1;
 
-const TextSizeInput: React.FC = () => {
 
-    const { textSizePx } = useUIPreferences();
-    const updateUIPreferences = useUpdateUIPreferences();
+interface TextSizeInputProps {
+    value: number;
+    onChange: (val: number) => void;
+    disabled?: boolean;
+}
 
-    const handleChange = (_: Event, value: number | number[]) => {
-        updateUIPreferences.mutate({ textSizePx: Number(value) });
+
+export function TextSizeInput(props: TextSizeInputProps) {
+    const { value, onChange, disabled } = props;
+    const handleChange = (_: Event, newValue: number | number[]) => {
+        onChange(Number(newValue));
     };
-
     return (
         <Box>
             <Typography variant="caption" color="text.secondary" gutterBottom>
-                Text Size ({textSizePx}px)
+                Text Size ({value}px)
             </Typography>
             <Slider
-                value={textSizePx}
+                value={value}
                 min={MIN_SIZE}
                 max={MAX_SIZE}
                 step={STEP}
                 onChange={handleChange}
                 valueLabelDisplay="auto"
                 aria-label="Text Size"
-                disabled={updateUIPreferences.status === 'pending'}
+                disabled={disabled}
             />
         </Box>
     );
-};
+}
 
 export default TextSizeInput;

@@ -40,7 +40,7 @@ export const useSourceDocumentDetailStore = create<SourceDocumentDetailState>((s
         });
 
         try {
-            const doc = await fetchSourceDocument(String(id));
+            const doc = await fetchSourceDocument(id);
             set({
                 doc,
                 loading: false,

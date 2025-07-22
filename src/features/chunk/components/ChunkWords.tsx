@@ -7,7 +7,7 @@ import { Box, useTheme } from '@mui/material';
 import { MergeChunksTool } from 'features/chunk-merge';
 import WordsToolbar from '../components/WordsToolbar';
 import { getChunkComponentsStyles } from '../Chunk.styles';
-import { useUIPreferences } from 'store/uiPreferences';
+import { useUserConfig } from 'services/userConfigService';
 import { useWordSelection } from '../hooks/useWordSelection';
 import type { ChunkType } from 'types';
 export interface ChunkWordsProps {
@@ -21,7 +21,13 @@ const ChunkWords = memo(function ChunkWords({
 }: ChunkWordsProps) {
     const words = chunk.text ? chunk.text.split(/\s+/) : [];
     const containerRef = useRef<HTMLDivElement>(null);
-    const { textSizePx, fontFamily, lineHeight, paddingX, showChunkPositions } = useUIPreferences();
+    const { data: userConfig } = useUserConfig();
+    const uiPrefs = userConfig?.uiPreferences || {};
+    const textSizePx = uiPrefs.textSizePx ?? 28;
+    const fontFamily = uiPrefs.fontFamily ?? 'Inter, sans-serif';
+    const lineHeight = uiPrefs.lineHeight ?? 1.5;
+    const paddingX = uiPrefs.paddingX ?? 0.3;
+    const showChunkPositions = uiPrefs.showChunkPositions ?? false;
     const theme = useTheme();
     const styles = getChunkComponentsStyles(theme);
 

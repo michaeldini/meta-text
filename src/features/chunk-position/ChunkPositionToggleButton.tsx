@@ -1,29 +1,36 @@
+
 // Toggle component for showing/hiding chunk positions
 // Placed next to BookmarkNavigateButton in MetatextDetailPage
 
 import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
-import { useUIPreferences, useUpdateUIPreferences } from 'store/uiPreferences';
+
 import { TicketIcon } from 'icons'; // Using TicketIcon as placeholder
 
-const ChunkPositionToggleButton: React.FC = () => {
-    const { showChunkPositions } = useUIPreferences();
-    const updateUIPreferences = useUpdateUIPreferences();
 
+interface ChunkPositionToggleButtonProps {
+    value: boolean;
+    onChange: (val: boolean) => void;
+    disabled?: boolean;
+}
+
+
+export function ChunkPositionToggleButton(props: ChunkPositionToggleButtonProps) {
+    const { value: checked, onChange, disabled } = props;
     return (
-        <Tooltip title={showChunkPositions ? "Hide chunk positions" : "Show chunk positions"} arrow>
+        <Tooltip title={checked ? "Hide chunk positions" : "Show chunk positions"} arrow>
             <span style={{ display: 'inline-flex' }}>
                 <IconButton
-                    onClick={() => updateUIPreferences.mutate({ showChunkPositions: !showChunkPositions })}
-                    color={showChunkPositions ? "primary" : "default"}
+                    onClick={() => onChange(!checked)}
+                    color={checked ? "primary" : "default"}
                     data-testid="chunk-position-toggle"
-                    disabled={updateUIPreferences.status === 'pending'}
+                    disabled={disabled}
                 >
                     <TicketIcon />
                 </IconButton>
             </span>
         </Tooltip>
     );
-};
+}
 
 export default ChunkPositionToggleButton;
