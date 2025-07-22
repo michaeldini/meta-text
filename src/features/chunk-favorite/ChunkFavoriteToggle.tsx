@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { IconButton, Tooltip, CircularProgress } from '@mui/material';
 import { StarIcon, StarOutlineIcon } from 'icons';
 import { useTheme } from '@mui/material/styles';
-import { apiPost, apiDelete } from 'utils/api';
+import { api } from 'utils';
 import type { ChunkType } from 'types';
 import { useChunkStore } from 'store';
 
@@ -27,10 +27,10 @@ const ChunkFavoriteToggle: React.FC<ChunkFavoriteToggleProps> = ({ chunk }) => {
         try {
             let updatedChunk: ChunkType;
             if (favorited) {
-                await apiDelete(`/api/chunk/${chunk.id}/favorite`);
+                await api.delete(`chunk/${chunk.id}/favorite`);
                 updatedChunk = { ...chunk, favorited_by_user_id: null };
             } else {
-                await apiPost(`/api/chunk/${chunk.id}/favorite`);
+                await api.post(`chunk/${chunk.id}/favorite`);
                 // You may want to use the actual user id here if available
                 updatedChunk = { ...chunk, favorited_by_user_id: 1 };
             }

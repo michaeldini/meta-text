@@ -5,8 +5,8 @@
 import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { DownloadIcon } from 'icons';
-import { apiGet } from '../../../utils/api';
-import { downloadJsonAsFile } from '../../../utils/downloadJsonAsFile';
+import { api, downloadJsonAsFile } from 'utils';
+
 
 interface DownloadMetatextButtonProps {
     metatextId: number;
@@ -21,8 +21,8 @@ const DownloadMetatextButton: React.FC<DownloadMetatextButtonProps> = ({ metatex
         setLoading(true);
         setError(null);
         try {
-            // Use apiGet to fetch the JSON data (handles auth)
-            const data = await apiGet<any>(`/api/metatext/${metatextId}/download`);
+            // Use ky instance to fetch the JSON data (handles auth)
+            const data = await api.get(`metatext/${metatextId}/download`).json<any>();
             // Use utility to trigger download
             downloadJsonAsFile(data, `metatext_${metatextId}.json`);
         } catch (err: any) {

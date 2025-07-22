@@ -8,8 +8,8 @@ import type { Rewrite, ChunkType } from 'types';
 
 
 // Fetch all chunks for a metatext and user
-export async function fetchChunks(metatextId: number, userId: number): Promise<ChunkType[]> {
-    const metatext = await api.get(`metatext/${metatextId}?user_id=${userId}`).json<{ chunks?: ChunkType[] }>();
+export async function fetchChunks(metatextId: number): Promise<ChunkType[]> {
+    const metatext = await api.get(`metatext/${metatextId}`).json<{ chunks?: ChunkType[] }>();
     return Array.isArray(metatext.chunks) ? metatext.chunks : [];
 }
 

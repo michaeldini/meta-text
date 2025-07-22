@@ -1,7 +1,14 @@
+/**
+ * Chunk Store
+ * Manages text chunks and their operations using Zustand
+ * Provides functions to fetch, update, split, combine, and manage chunks
+ * 
+ * Using Zustand for state management, compared to React Query for other parts of the application, because it provides a simpler API for managing local state and interactions with the chunk data.
+ */
+
 import { create } from 'zustand';
 
 import { fetchChunks as apiFetchChunks, fetchChunk, updateChunk, splitChunk, combineChunks } from 'services';
-import { useAuthStore } from './authStore';
 
 import { getErrorMessage } from 'types';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
@@ -45,9 +52,7 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
     fetchChunks: async (metatextId) => {
         set({ loadingChunks: true, chunksError: '' });
         try {
-            const { user } = useAuthStore.getState();
-            if (!user?.id) throw new Error('User not authenticated');
-            const chunks = await apiFetchChunks(metatextId, user.id);
+            const chunks = await apiFetchChunks(metatextId);
             const sortedChunks = [...chunks].sort((a, b) => a.position - b.position);
             set((state) => ({
                 ...state,
@@ -121,9 +126,7 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
     refetchChunks: async (metatextId) => {
         set({ loadingChunks: true, chunksError: '' });
         try {
-            const { user } = useAuthStore.getState();
-            if (!user?.id) throw new Error('User not authenticated');
-            const chunks = await apiFetchChunks(metatextId, user.id);
+            const chunks = await apiFetchChunks(metatextId);
             const sortedChunks = [...chunks].sort((a, b) => a.position - b.position);
             set((state) => ({
                 ...state,
