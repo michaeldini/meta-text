@@ -2,7 +2,6 @@
 *  Main application component for MetaText
 *  - Sets up routing and lazy loading for pages
 */
-
 import React, { useEffect, JSX, Suspense, lazy, ComponentType } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, CssBaseline, useTheme, Box, Typography } from '@mui/material';
@@ -12,28 +11,35 @@ import { LoadingFallback, ErrorBoundary, GlobalNotifications } from 'components'
 import { useAuthStore } from 'store';
 import { useAuthRefresh } from 'hooks';
 import { getAppStyles, lightTheme, darkTheme } from 'styles';
-
+import { useUserConfig } from 'services';
 
 import { useThemeContext } from './contexts/ThemeContext';
-import { useUserConfig } from 'services/userConfigService';
 
-
-/**Dynamically import pages for code splitting using barrel exports
+/** Dynamically import pages for code splitting using barrel exports
  * This allows for lazy loading of components
  * and reduces initial bundle size.
  * Each page is wrapped in a lazy function to enable code splitting.
  * The `default` export is used to ensure compatibility with the lazy loading syntax.
  */
 const HomePage = lazy(() => import('pages').then(module => ({ default: module.HomePage })));
+const LoginPage = lazy(() => import('pages').then(module => ({ default: module.LoginPage })));
+const RegisterPage = lazy(() => import('pages').then(module => ({ default: module.RegisterPage })));
+
 const SourceDocPage = lazy(() => import('pages').then(module => ({ default: module.SourceDocPage })));
 const SourceDocDetailPage = lazy(() => import('pages').then(module => ({ default: module.SourceDocDetailPage })));
+
 const MetatextPage = lazy(() => import('pages').then(module => ({ default: module.MetatextPage })));
 const MetatextDetailPage = lazy(() => import('pages').then(module => ({ default: module.MetatextDetailPage })));
 const MetatextReviewPage = lazy(() => import('pages').then(module => ({ default: module.MetatextReviewPage })));
-const LoginPage = lazy(() => import('pages').then(module => ({ default: module.LoginPage })));
-const RegisterPage = lazy(() => import('pages').then(module => ({ default: module.RegisterPage })));
+
 const ExperimentsPage = lazy(() => import('pages').then(module => ({ default: module.ExperimentsPage })));
 const AboutPage = lazy(() => import('pages').then(module => ({ default: module.AboutPage })));
+
+/**
+ * Route configuration interface and route definitions
+ * - Defines paths and components for each route
+ * - Supports protected routes that require authentication
+ */
 
 interface RouteConfig {
     path: string;
@@ -45,15 +51,24 @@ const routes: RouteConfig[] = [
     { path: '/', element: HomePage, protected: true },
     { path: '/login', element: LoginPage, protected: false },
     { path: '/register', element: RegisterPage, protected: false },
+
     { path: '/sourcedoc', element: SourceDocPage, protected: true },
     { path: '/sourcedoc/:sourceDocId', element: SourceDocDetailPage, protected: true },
+
     { path: '/metatext', element: MetatextPage, protected: true },
     { path: '/metatext/:metatextId', element: MetatextDetailPage, protected: true },
     { path: '/metatext/:metatextId/review', element: MetatextReviewPage, protected: true },
-    { path: '/experiments', element: ExperimentsPage, protected: false },
+
+    { path: '/experiments', element: ExperimentsPage, protected: true },
     { path: '/about', element: AboutPage, protected: false },
 ];
 
+
+/**
+ * Protected route component
+ * - Checks if user is authenticated before rendering children
+ * - Redirects to login if not authenticated
+ */
 interface ProtectedRouteProps {
     children: JSX.Element;
 }
@@ -85,7 +100,6 @@ const NotFoundElement = (
 /**
  * Main application component
  * - Sets up theming and routing
- * - Hydrates UI preferences from user config
  */
 export function App() {
     const { mode } = useThemeContext();
@@ -109,18 +123,13 @@ export function App() {
 /**
  * Main application content
  * - Sets up routing and lazy loading for pages
- * - Hydrates UI preferences from user config
+ * - Wraps routes in a Suspense fallback for loading state
+ * - Protected routes are wrapped in a ProtectedRoute component
  */
-
 export const AppContent = () => {
     useAuthRefresh();
     const theme = useTheme();
     const styles = getAppStyles(theme);
-
-    // Hydrate UI preferences from backend user config using react-query
-    // TODO: maybe delete this?
-    const { data: userConfig } = useUserConfig();
-
 
     const renderRoute = (route: RouteConfig) => {
         const Component = route.element;
@@ -142,14 +151,13 @@ export const AppContent = () => {
 
     return (
         <Box sx={styles.appContainer}>
+            <GlobalNotifications />
             <NavBar />
             <Routes>
                 {routes.map(renderRoute)}
                 {/* 404 Route */}
                 <Route path="*" element={NotFoundElement} />
             </Routes>
-            {/* Global components */}
-            <GlobalNotifications />
         </Box>
     );
 };

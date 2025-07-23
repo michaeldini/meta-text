@@ -1,8 +1,8 @@
-// Centralized navigation configuration for the app.
-// All navigation items, including brand, are defined here.
-// Use this as the single source of truth for navigation structure.
-
-
+/**
+ * Navigation configuration for the navbar menu
+ * - Defines icons, labels, paths, and visibility conditions for each menu item (includes brand item)
+ * - Supports authenticated and unauthenticated states
+ */
 import { NavBarProps } from './types';
 
 import { MenuIcon, LoginIcon, LogoutIcon, HomeIcon, PlusIcon, ChatBubbleLeftIcon, DocumentUploadIcon, DocumentDownloadIcon } from 'icons';

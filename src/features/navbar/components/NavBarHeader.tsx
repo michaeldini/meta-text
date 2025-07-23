@@ -1,6 +1,8 @@
-// Header component for the navigation bar
-// Provides the brand button and navigation menu, integrating with authentication and navigation hooks.
-
+/**
+ * NavBarHeader component
+ * - Displays logo and navigation menu
+ * - Uses Material UI Container and Box for layout
+ */
 import React from 'react';
 import { Box, Container } from '@mui/material';
 import NavMenu from './NavMenu';
@@ -14,17 +16,22 @@ interface NavBarHeaderProps {
 }
 
 const NavBarHeader: React.FC<NavBarHeaderProps> = ({ styles }) => {
-    // Get user and logout from auth context
+
+    /**
+     * Get user authentication and navigation configuration
+     * - Uses custom hook to get user data and logout function
+     * - Retrieves navigation items based on user role and preferences
+     * - Handles navigation item clicks and active state
+     */
     const { user, logout } = useAuth();
-    // Get navigation config
     const navConfig = getNavigationConfig(logout).config;
-    // Use navigation hook
     const { navigationItems, isActive, handleItemClick } = useNavigation({
         user,
         onLogout: logout,
         config: navConfig,
     });
-    // Brand item from config
+
+    // The logo is not in the menu, so we handle it separately
     const brandNavItem = navConfig.brand;
 
     return (

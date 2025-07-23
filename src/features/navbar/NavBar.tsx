@@ -1,4 +1,8 @@
-// Navigation bar that sites at the top of the application, providing navigation links and theme toggle functionality.
+/**
+ * Navigation bar that sits at the top of the application, providing navigation links and theme toggle functionality.
+ * It includes a header component (menu and logo) and a theme toggle button.
+ * Uses Material UI AppBar and Toolbar for layout.
+ */
 
 import React from 'react';
 import {

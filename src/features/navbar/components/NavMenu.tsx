@@ -5,7 +5,7 @@ import React from 'react';
 import { Menu, MenuItem, Box, Typography, ListItemIcon, ListItemText, MenuList } from '@mui/material';
 import { NavigationItem } from '../types';
 import { MenuIcon } from 'icons';
-import { SxProps } from '@mui/system';
+
 
 interface NavMenuProps {
     navigationItems: NavigationItem[];
