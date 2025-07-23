@@ -30,3 +30,6 @@ export * from './chunk-favorite';
 
 // Document management
 export * from './documents';
+
+// Chunk position toggle
+export * from './chunk-position';

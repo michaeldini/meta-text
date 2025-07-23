@@ -3,7 +3,7 @@ import React from 'react';
 import { Box } from '@mui/material';
 import { useUserConfig, useUpdateUserConfig } from 'services/userConfigService';
 import { TextSizeInput, LineHeightInput, PaddingXInput, FontFamilySelect } from 'components';
-import ChunkPositionToggleButton from '../../features/chunk-position/ChunkPositionToggleButton';
+
 
 
 const DEFAULTS = {
@@ -11,7 +11,6 @@ const DEFAULTS = {
     fontFamily: 'Inter, sans-serif',
     lineHeight: 1.5,
     paddingX: 0.3,
-    showChunkPositions: false,
 };
 
 const StyleControls: React.FC = () => {
@@ -19,7 +18,7 @@ const StyleControls: React.FC = () => {
     const updateUserConfig = useUpdateUserConfig();
 
     const uiPreferences = userConfig?.uiPreferences || DEFAULTS;
-    const isPending = isLoading || updateUserConfig.status === 'pending';
+    // const isPending = isLoading || updateUserConfig.status === 'pending';
 
     return (
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
@@ -43,11 +42,7 @@ const StyleControls: React.FC = () => {
                 onChange={val => updateUserConfig.mutate({ fontFamily: val })}
             // disabled={isPending}
             />
-            <ChunkPositionToggleButton
-                value={uiPreferences.showChunkPositions || DEFAULTS.showChunkPositions}
-                onChange={val => updateUserConfig.mutate({ showChunkPositions: val })}
-            // disabled={isPending}
-            />
+
         </Box>
     );
 };

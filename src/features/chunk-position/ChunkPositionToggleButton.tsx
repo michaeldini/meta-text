@@ -5,7 +5,7 @@
 import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 
-import { TicketIcon } from 'icons'; // Using TicketIcon as placeholder
+import { HashtagIcon } from 'icons';
 
 
 interface ChunkPositionToggleButtonProps {
@@ -26,7 +26,7 @@ export function ChunkPositionToggleButton(props: ChunkPositionToggleButtonProps)
                     data-testid="chunk-position-toggle"
                     disabled={disabled}
                 >
-                    <TicketIcon />
+                    <HashtagIcon />
                 </IconButton>
             </span>
         </Tooltip>

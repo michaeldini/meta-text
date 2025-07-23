@@ -11,37 +11,33 @@ import {
     PageContainer, ReviewButton, SourceDocInfo, GenerateSourceDocInfoButton,
     StyleControls,
     DocumentHeader,
+    AppAlert,
 } from 'components';
+import { useUserConfig, useUpdateUserConfig } from 'services/userConfigService';
 
 import { ChunkToolsPanel, PaginatedChunks, SearchContainer, BookmarkNavigateButton } from 'features';
 
 // import { useSourceDocDetailData } from 'hooks';
 // import { useSourceDocumentDetailStore, useBookmarkStore } from 'store';
-import { useUserConfig } from 'services/userConfigService';
 import { FADE_IN_DURATION } from 'constants';
 import { useValidatedIdParam } from 'utils/urlValidation';
 
 
 
-import { useSearchKeyboard } from '../../features/chunk-search/hooks/useSearchKeyboard';
-import { useMetatextDetail } from 'features/documents/useMetatextDetail';
+import { useSearchKeyboard, useMetatextDetail, ChunkFavoriteFilterToggle, useSourceDocumentDetail, ChunkPositionToggleButton } from 'features';
+
 import { getMetatextDetailStyles } from './Metatext.styles';
 import DownloadMetatextButton from './components/DownloadMetatextButton';
-import { ChunkFavoriteFilterToggle } from 'features';
-import { useSourceDocumentDetail } from 'features/documents/useSourceDocumentDetail';
-import { useBookmarkUIStore } from 'store/bookmarkStore';
+
 
 function MetatextDetailPage(): ReactElement | null {
     // Extract the metatextId from the URL parameters
-    const { metatextId } = useParams<{ metatextId: string }>();
-
-    const [showOnlyFavorites, setShowOnlyFavorites] = React.useState(false);
     // Validate the metatextId parameter using robust validation utility
+    const { metatextId } = useParams<{ metatextId: string }>();
     const { id: validatedMetatextId, isValid } = useValidatedIdParam(metatextId);
 
-    if (!isValid) {
-        return null; // Could render a proper error component instead
-    }
+
+    const [showOnlyFavorites, setShowOnlyFavorites] = React.useState(false);
 
     // Fetch the metatext details using the new React Query hook
     const { data: metatext, isLoading: loading } = useMetatextDetail(validatedMetatextId ?? null);
@@ -60,48 +56,63 @@ function MetatextDetailPage(): ReactElement | null {
     // Initialize keyboard shortcuts for search
     useSearchKeyboard({ enabled: true });
 
-    return (
-        <PageContainer loading={loading} data-testid="metatext-detail-page">
-            <Slide in={!!metatext} direction="up" timeout={FADE_IN_DURATION}>
+    const { data: userConfig, isLoading } = useUserConfig();
+    const updateUserConfig = useUpdateUserConfig();
+    const uiPreferences = userConfig?.uiPreferences || {
+        showChunkPositions: false,
+    };
+
+    let content;
+    if (metatext) {
+        content = (
+            <Slide in={true} direction="up" timeout={FADE_IN_DURATION}>
                 <Box sx={styles.container} data-testid="metatext-detail-content">
-                    {metatext ? (
-                        <>
-                            <DocumentHeader
-                                title={metatext.title}
-                            >
-                                {sourceDoc && (
-                                    <SourceDocInfo doc={sourceDoc} />
-                                )}
-                                <ReviewButton metatextId={metatext.id} />
-                                <GenerateSourceDocInfoButton
-                                    sourceDocumentId={metatext.source_document_id}
-                                />
-                                <StyleControls />
-
-                                {/* Button to navigate to bookmarked chunk and toggle chunk position */}
-                                <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
-                                    <BookmarkNavigateButton metaTextId={metatext.id} />
-                                    <DownloadMetatextButton metatextId={metatext.id} />
-                                    <ChunkFavoriteFilterToggle
-                                        showOnlyFavorites={showOnlyFavorites}
-                                        onToggle={setShowOnlyFavorites}
-                                    />
-                                </Box>
-
-                                <SearchContainer
-                                    showTagFilters={true}
-                                />
-                            </DocumentHeader>
-
-                            <PaginatedChunks metatextId={metatext.id} showOnlyFavorites={showOnlyFavorites} />
-
-                            <ChunkToolsPanel />
-                        </>
-                    ) : (
-                        <div />
-                    )}
+                    <DocumentHeader title={metatext.title}>
+                        {sourceDoc && <SourceDocInfo doc={sourceDoc} />}
+                        <ReviewButton metatextId={metatext.id} />
+                        <GenerateSourceDocInfoButton sourceDocumentId={metatext.source_document_id} />
+                        <StyleControls />
+                        {/* Button to navigate to bookmarked chunk and toggle chunk position */}
+                        <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
+                            <ChunkPositionToggleButton
+                                value={uiPreferences.showChunkPositions || false}
+                                onChange={val => updateUserConfig.mutate({ showChunkPositions: val })}
+                            />
+                            <BookmarkNavigateButton metaTextId={metatext.id} />
+                            <DownloadMetatextButton metatextId={metatext.id} />
+                            <ChunkFavoriteFilterToggle
+                                showOnlyFavorites={showOnlyFavorites}
+                                onToggle={setShowOnlyFavorites}
+                            />
+                        </Box>
+                        <SearchContainer showTagFilters={true} />
+                    </DocumentHeader>
+                    <PaginatedChunks metatextId={metatext.id} showOnlyFavorites={showOnlyFavorites} />
+                    <ChunkToolsPanel />
                 </Box>
             </Slide>
+        );
+    } else if (!isValid) {
+        content = (
+            <Box sx={styles.container} data-testid="metatext-detail-error">
+                <AppAlert severity="error">
+                    Invalid metatext ID provided.
+                </AppAlert>
+            </Box>
+        );
+    } else {
+        content = (
+            <Box sx={styles.container} data-testid="metatext-detail-notfound">
+                <AppAlert severity="info">
+                    Metatext not found.
+                </AppAlert>
+            </Box>
+        );
+    }
+
+    return (
+        <PageContainer loading={loading} data-testid="metatext-detail-page">
+            {content}
         </PageContainer>
     );
 }

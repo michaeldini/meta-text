@@ -32,6 +32,7 @@ import {
     StarIcon as StarSvg,
     DocumentCheckIcon as DocumentCheckSvg,
     PencilSquareIcon as PencilSquareSvg,
+    HashtagIcon as HashtagSvg
 } from '@heroicons/react/24/solid';
 
 import {
@@ -79,7 +80,7 @@ export const StarIcon: React.FC<IconProps> = (props) => <ThemedIcon as={StarSvg}
 export const StarOutlineIcon: React.FC<IconProps> = (props) => <ThemedIcon as={StarOutlineSvg} {...props} />;
 export const DocumentCheckIcon: React.FC<IconProps> = (props) => <ThemedIcon as={DocumentCheckSvg} {...props} />;
 export const PencilSquareIcon: React.FC<IconProps> = (props) => <ThemedIcon as={PencilSquareSvg} {...props} />;
-
+export const HashtagIcon: React.FC<IconProps> = (props) => <ThemedIcon as={HashtagSvg} {...props} />;
 // MetaTextLogoIcon.tsx
 import React from 'react';
 
