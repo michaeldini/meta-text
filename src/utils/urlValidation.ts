@@ -1,13 +1,3 @@
-/**
- * @fileoverview URL and parameter validation utilities
- * 
- * This module provides utility functions for validating and parsing URL parameters,
- * particularly for handling ID parameters in React Router applications.
- * 
- * @author Metatext Development Team
- * @version 1.0.0
- * @since 2025-07-13
- */
 
 import { useMemo } from 'react';
 
@@ -78,6 +68,19 @@ export function useValidatedId(idParam?: string): ValidatedIdResult {
 /**
  * Custom hook for validating ID parameters with automatic memoization
  * Provides a cleaner API for React components
+ * It is very important to use `useValidatedIdParam` for validation in your codebase. The `useParams` hook from React Router only extracts parameters from the URL as strings—it does not perform any validation, type checking, or parsing. This means `useParams` will return whatever is present in the URL, including invalid, missing, or malformed values.
+
+The custom hook `useValidatedIdParam` (from your `urlValidation.ts`) adds robust validation logic:
+- It checks if the parameter is a positive integer.
+- It returns a structured result indicating validity, the parsed ID, and the original value.
+- It uses memoization for performance in React components.
+
+Without this validation, your app could receive invalid IDs (e.g., "abc", "0", "-5") and potentially cause errors or unexpected behavior when fetching or updating documents.
+
+In summary:  
+- `useParams` does not validate—only extracts.
+- `useValidatedIdParam` ensures the ID is valid and safe to use.
+- Always use `useValidatedIdParam` (or similar validation) when working with URL parameters that must be numbers or have specific constraints.
  * 
  * @param idParam - The URL parameter string to validate
  * @returns ValidatedIdResult object with automatic memoization
