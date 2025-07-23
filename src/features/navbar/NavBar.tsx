@@ -1,36 +1,69 @@
+
 /**
- * Navigation bar that sits at the top of the application, providing navigation links and theme toggle functionality.
- * It includes a header component (menu and logo) and a theme toggle button.
- * Uses Material UI AppBar and Toolbar for layout.
+ * Navigation bar for the application.
+ * - Renders navigation links and actions from config (with icons and labels)
+ * - Shows/hides items based on authentication
+ * - Uses Material UI AppBar and Toolbar for layout
+ * - Theme toggle button included
  */
 
+
 import React from 'react';
-import {
-    AppBar,
-    Toolbar,
-    useTheme,
-} from '@mui/material';
+import { AppBar, Box, Button, Toolbar, useTheme } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 import { ThemeToggle } from 'components';
 import { useThemeContext } from '../../contexts/ThemeContext';
-
 import { createNavbarStyles } from './NavBar.styles';
-import NavBarHeader from './components/NavBarHeader';
 
+import { getNavigationConfig } from './navigationConfig';
+
+import { useAuth } from 'index';
+
+/**
+ * Main NavBar component
+ * - Maps over navItems config to render navigation links and actions
+ * - Shows/hides items based on authentication
+ * - Handles logout and redirects to login
+ */
 const NavBar: React.FC = () => {
     const theme = useTheme();
     const styles = createNavbarStyles(theme);
     const { toggleMode } = useThemeContext();
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
+
+    // Get navigation config, passing logout and navigate
+    const navConfig = getNavigationConfig(logout, navigate);
+
+    // Filter items based on authentication
+    const isAuthenticated = !!user;
+    const navItems = navConfig.items.filter(item => {
+        if (item.label === 'Login') return !isAuthenticated;
+        if (item.label === 'Logout') return isAuthenticated;
+        if (item.label === 'Register') return !isAuthenticated;
+        return item.protected ? isAuthenticated : true;
+    });
 
     return (
-        <AppBar
-            position="static"
-            sx={styles.appBar}
-            data-testid="navbar"
-        >
-            <Toolbar >
-                <NavBarHeader styles={styles} />
-                <ThemeToggle onToggle={toggleMode} />
+        <AppBar position="static" sx={styles.appBar} data-testid="navbar">
+            <Toolbar>
+                {/* Render each nav item as a Button with its action */}
+                {navItems.map(item => (
+                    <Button
+                        key={item.label}
+                        onClick={item.action}
+                        disabled={item.disabled}
+                        sx={styles.navButton}
+                    >
+                        {item.icon && <item.icon />}
+                        {item.label && <span>{item.label}</span>}
+                    </Button>
+                ))}
+                {/* Theme toggle button */}
+                <Box sx={styles.themeToggleContainer}>
+                    <ThemeToggle onToggle={toggleMode} />
+                </Box>
             </Toolbar>
         </AppBar>
     );

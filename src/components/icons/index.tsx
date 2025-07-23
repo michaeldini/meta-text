@@ -79,3 +79,12 @@ export const StarIcon: React.FC<IconProps> = (props) => <ThemedIcon as={StarSvg}
 export const StarOutlineIcon: React.FC<IconProps> = (props) => <ThemedIcon as={StarOutlineSvg} {...props} />;
 export const DocumentCheckIcon: React.FC<IconProps> = (props) => <ThemedIcon as={DocumentCheckSvg} {...props} />;
 export const PencilSquareIcon: React.FC<IconProps> = (props) => <ThemedIcon as={PencilSquareSvg} {...props} />;
+
+// MetaTextLogoIcon.tsx
+import React from 'react';
+
+export const MetaTextLogoIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg width="24" height="24" viewBox="0 0 64 64" fill="none" {...props}>
+        <path d="M12 52 V 12 H 22 L 32 22 L 42 12 H 52 V 52 H 42 V 26 L 32 36 L 22 26 V 52 Z" fill="#ADD8E6" />
+    </svg>
+);

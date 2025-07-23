@@ -6,8 +6,20 @@ export const createNavbarStyles = (theme: Theme) => ({
     appBar: {
         marginBottom: theme.spacing(1), // Space below for content
     },
+    themeToggleContainer: {
+        flex: 1,
+        display: 'flex',
+        justifyContent: 'flex-end'
+    },
+    navButton: {
+        color: theme.palette.primary.contrastText,
+        textTransform: 'none' as const,
+        fontWeight: 400,
+        fontSize: { xs: '0.875rem', sm: '1rem' },
+        padding: theme.spacing(0, 1),
+        gap: theme.spacing(0.5),
+    },
 
-    // Brand button styling
     brandButton: {
         color: theme.palette.primary.contrastText,
         textTransform: 'none' as const,

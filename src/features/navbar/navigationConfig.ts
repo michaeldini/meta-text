@@ -3,72 +3,61 @@
  * - Defines icons, labels, paths, and visibility conditions for each menu item (includes brand item)
  * - Supports authenticated and unauthenticated states
  */
-import { NavBarProps } from './types';
 
-import { MenuIcon, LoginIcon, LogoutIcon, HomeIcon, PlusIcon, ChatBubbleLeftIcon, DocumentUploadIcon, DocumentDownloadIcon } from 'icons';
+import { MenuIcon, LoginIcon, LogoutIcon, HomeIcon, PlusIcon, ChatBubbleLeftIcon, DocumentUploadIcon, DocumentDownloadIcon, MetaTextLogoIcon } from 'icons';
+import { IconProps } from 'icons';
 
 
-export const getNavigationConfig = (logout: () => void): NavBarProps => ({
-    config: {
-        brand: {
-            id: 'brand',
-            label: 'Meta-Text',
-            path: '/',
-            showWhen: 'always' as const,
+interface NavigationItem {
+    label: string;
+    protected: boolean;
+    icon: React.ComponentType<IconProps>;
+    action: () => void;
+    disabled?: boolean;
+}
+
+interface NavBarProps {
+    items: NavigationItem[];
+}
+
+
+export const getNavigationConfig = (logout: () => void, navigate: (path: string) => void): NavBarProps => ({
+    items: [
+        {
+            label: 'Home',
+            protected: false,
+            icon: MetaTextLogoIcon, // replace with metatext logo icon
+            action: () => navigate('/')
         },
-        items: [
-
-            {
-                id: 'about',
-                label: 'About',
-                path: '/about',
-                showWhen: 'always' as const,
-                icon: ChatBubbleLeftIcon,
-            },
-            {
-                id: 'metatext',
-                label: 'Metatexts',
-                path: '/metatext',
-                showWhen: 'authenticated' as const,
-                icon: DocumentUploadIcon,
-            },
-            {
-                id: 'sourcedoc',
-                label: 'SourceDocs',
-                path: '/sourcedoc',
-                showWhen: 'authenticated' as const,
-                icon: DocumentDownloadIcon,
-            },
-            {
-                id: 'home',
-                label: 'Home',
-                path: '/',
-                showWhen: 'authenticated' as const,
-                icon: HomeIcon,
-
-            },
-            {
-                id: 'login',
-                label: 'Login',
-                path: '/login',
-                showWhen: 'unauthenticated' as const,
-                icon: LoginIcon,
-            },
-            {
-                id: 'register',
-                label: 'Register',
-                path: '/register',
-                showWhen: 'unauthenticated' as const,
-                icon: PlusIcon,
-            },
-            {
-                id: 'logout',
-                label: 'Logout',
-                path: '',
-                icon: LogoutIcon,
-                action: logout,
-                showWhen: 'authenticated' as const,
-            },
-        ]
-    }
-}); 
+        {
+            label: 'Login',
+            protected: false,
+            icon: LoginIcon,
+            action: () => navigate('/login')
+        },
+        {
+            label: 'Logout',
+            protected: true,
+            icon: LogoutIcon,
+            action: () => { logout(); navigate('/login'); }
+        },
+        {
+            label: 'Register',
+            protected: false,
+            icon: PlusIcon,
+            action: () => navigate('/register')
+        },
+        {
+            label: 'Metatexts',
+            protected: true,
+            icon: DocumentUploadIcon,
+            action: () => navigate('/metatext')
+        },
+        {
+            label: 'SourceDocs',
+            protected: true,
+            icon: DocumentDownloadIcon,
+            action: () => navigate('/sourcedoc')
+        },
+    ]
+});
