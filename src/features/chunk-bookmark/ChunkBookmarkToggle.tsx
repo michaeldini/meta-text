@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
-import { useBookmarkUIStore } from 'store/bookmarkStore';
+import { useBookmarkUIStore } from './bookmarkStore';
 import { useBookmark, useSetBookmark, useRemoveBookmark } from 'features/documents/useBookmark';
 import { BookmarkIcon, BookmarkOutlineIcon } from 'icons';
 import { ChunkType } from 'types';

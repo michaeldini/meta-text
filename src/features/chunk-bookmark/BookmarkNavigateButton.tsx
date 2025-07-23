@@ -1,9 +1,8 @@
 // Button to navigate to bookmarked chunk
-// Extracted from MetatextDetailPage for cleaner code
 
 import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
-import { useBookmarkUIStore } from 'store/bookmarkStore';
+import { useBookmarkUIStore } from './bookmarkStore';
 import { useBookmark } from 'features/documents/useBookmark';
 import { BookmarkIcon } from 'icons';
 

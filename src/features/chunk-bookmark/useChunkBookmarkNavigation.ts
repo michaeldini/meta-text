@@ -2,15 +2,9 @@
 // Extracts the logic from PaginatedChunks to keep the component clean
 
 import React from 'react';
-import { useBookmarkUIStore } from 'store/bookmarkStore';
+import { useBookmarkUIStore } from './bookmarkStore';
 import type { ChunkType } from 'types';
 
-/**
- * Navigates and scrolls to a bookmarked chunk when triggered.
- * @param chunks - The array of chunks
- * @param chunksPerPage - Number of chunks per page
- * @param setPage - Setter for current page
- */
 /**
  * Navigates and scrolls to a bookmarked chunk when triggered.
  * @param chunks - The array of chunks

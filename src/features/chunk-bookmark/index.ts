@@ -1,3 +1,6 @@
 export { default as BookmarkNavigateButton } from './BookmarkNavigateButton';
-export { default as ChunkBookmarkToggle } from './ChunkBookmarkToggle';
-export { default as useChunkBookmarkNavigation } from './useChunkBookmarkNavigation';
+export * from './ChunkBookmarkToggle';
+export * from './useChunkBookmarkNavigation';
+export * from './useBookmark';
+export * from './useChunkBookmarkNavigation';
+export * from './bookmarkStore';

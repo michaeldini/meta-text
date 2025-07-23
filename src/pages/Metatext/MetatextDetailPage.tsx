@@ -17,8 +17,6 @@ import { useUserConfig, useUpdateUserConfig } from 'services/userConfigService';
 
 import { ChunkToolsPanel, PaginatedChunks, SearchContainer, BookmarkNavigateButton } from 'features';
 
-// import { useSourceDocDetailData } from 'hooks';
-// import { useSourceDocumentDetailStore, useBookmarkStore } from 'store';
 import { FADE_IN_DURATION } from 'constants';
 import { useValidatedIdParam } from 'utils/urlValidation';
 
