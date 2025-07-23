@@ -12,6 +12,16 @@ export const api = ky.create({
                     request.headers.set('Authorization', `Bearer ${token}`);
                 }
             }
+        ],
+        afterResponse: [
+            (request: Request, options: any, response: Response) => {
+                // Handle expired/invalid tokens
+                if (response.status === 401 || response.status === 403) {
+                    localStorage.removeItem('access_token');
+                    localStorage.removeItem('refresh_token');
+                    window.location.href = '/login';
+                }
+            }
         ]
     }
 });
