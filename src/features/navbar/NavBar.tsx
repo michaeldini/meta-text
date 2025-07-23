@@ -1,12 +1,12 @@
 
 /**
  * Navigation bar for the application.
- * - Renders navigation links and actions from config (with icons and labels)
+ * - Basic navigation structure.
+ * - Renders buttons for navigation links and actions from config (with icons and labels)
  * - Shows/hides items based on authentication
  * - Uses Material UI AppBar and Toolbar for layout
  * - Theme toggle button included
  */
-
 
 import React from 'react';
 import { AppBar, Box, Button, Toolbar, useTheme } from '@mui/material';
@@ -22,26 +22,26 @@ import { useAuth } from 'index';
 
 /**
  * Main NavBar component
- * - Maps over navItems config to render navigation links and actions
- * - Shows/hides items based on authentication
- * - Handles logout and redirects to login
+ * - Gathers navigation configuration, auth state, and theme.
+ * - Maps over navItems config to render navigation buttons.
  */
 const NavBar: React.FC = () => {
+
     const theme = useTheme();
     const styles = createNavbarStyles(theme);
     const { toggleMode } = useThemeContext();
+
+    // Get authentication state and navigation functions
     const { user, logout } = useAuth();
     const navigate = useNavigate();
-
-    // Get navigation config, passing logout and navigate
     const navConfig = getNavigationConfig(logout, navigate);
 
     // Filter items based on authentication
     const isAuthenticated = !!user;
     const navItems = navConfig.items.filter(item => {
         if (item.label === 'Login') return !isAuthenticated;
-        if (item.label === 'Logout') return isAuthenticated;
         if (item.label === 'Register') return !isAuthenticated;
+        if (item.label === 'Logout') return isAuthenticated;
         return item.protected ? isAuthenticated : true;
     });
 

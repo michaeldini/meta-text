@@ -72,3 +72,7 @@ The chunk tools act on chunks and are as follows:
 The user can summarize or take a note on a chunk.
 
 ### Evaluation
+
+    find src -type f \( -name "*.ts" -o -name "*.tsx" \) | xargs wc -l
+4811 backend
+11752 frontend

@@ -20,6 +20,7 @@ import { useSourceDocuments, useMetatexts } from 'features';
 import WelcomeText from './components/WelcomeText';
 import NavigationButtons from './components/NavigationButtons';
 import { FADE_IN_DURATION } from 'constants';
+import HomePageDetails from './components/HomePageDetails';
 
 
 /* HomePage component
@@ -54,6 +55,8 @@ function HomePage(): ReactElement {
                     <WelcomeText welcomeTextStyles={styles.welcomeText} />
 
                     <NavigationButtons styles={styles.homePage.navigationButtons} />
+
+                    <HomePageDetails />
                 </Box>
             </Slide>
         </PageContainer>
