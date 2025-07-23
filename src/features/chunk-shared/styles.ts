@@ -27,17 +27,6 @@ export const getSharedToolStyles = (theme: Theme) => ({
         width: '100%',
     },
 
-    // Extended scrollable container with minimum width
-    scrollableContentContainerWide: {
-        p: 2,
-        boxShadow: theme.shadows[1],
-        minWidth: 400,
-        minHeight: 100,
-        maxHeight: 400,
-        overflowY: 'auto' as const,
-        width: '100%',
-    },
-
     // Form container with horizontal layout
     horizontalForm: {
         display: 'flex',

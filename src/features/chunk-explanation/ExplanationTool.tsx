@@ -43,7 +43,7 @@ const ExplanationTool: React.FC<ExplanationToolProps> = ({
                 sx={{ ml: 1 }}
                 disabled={loading || !chunk?.id}
             />
-            <Box sx={styles.scrollableContentContainerWide}>
+            <Box sx={styles.scrollableContentContainer}>
                 {chunk.explanation ? (
                     <ReactMarkdown>{chunk.explanation}</ReactMarkdown>
                 ) : (

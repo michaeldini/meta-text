@@ -45,7 +45,7 @@ const EvaluationTool: React.FC<EvaluationToolProps> = ({
                 sx={{ ml: 1 }}
                 disabled={loading || !chunk?.id}
             />
-            <Box sx={styles.scrollableContentContainerWide}>
+            <Box sx={styles.scrollableContentContainer}>
                 {chunk.evaluation ? (
                     <ReactMarkdown>{chunk.evaluation}</ReactMarkdown>
                 ) : (
