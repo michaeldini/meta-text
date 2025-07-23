@@ -17,6 +17,7 @@ import EvaluationTool from '../chunk-evaluation/EvaluationTool';
 import ImageTool from '../chunk-image/ImageTool';
 import RewriteDisplayTool from '../chunk-rewrite/RewriteDisplayTool';
 import ExplanationTool from '../chunk-explanation/ExplanationTool';
+import { useUserConfig } from 'services/userConfigService';
 
 interface ChunkToolsContainerProps {
     chunk: ChunkType;
@@ -31,12 +32,23 @@ const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = ({
 }) => {
     const theme = useTheme();
     const styles = getChunkComponentsStyles(theme, activeTools.length > 0);
+    const { data: userConfig } = useUserConfig();
+    const uiPrefs = userConfig?.uiPreferences || {};
+
+    const showChunkPositions = uiPrefs.showChunkPositions ?? false;
+
 
     return (
         <Box sx={styles.chunkTabsContainer}
             data-chunk-id={`chunk-tools-${chunk.id}`}>
             {/* Tools Always visible at the top */}
             <Box sx={styles.alwaysVisibleToolContainer}>
+                {/* Chunk position display in top right corner */}
+                {showChunkPositions && (
+                    <Box >
+                        {chunk.position}
+                    </Box>
+                )}
                 <CopyTool chunkText={chunk.text} />
                 {/* Bookmark toggle button */}
                 <ChunkBookmarkToggle chunk={chunk} />

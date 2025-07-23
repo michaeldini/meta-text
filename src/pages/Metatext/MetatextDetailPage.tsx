@@ -73,7 +73,7 @@ function MetatextDetailPage(): ReactElement | null {
                         <GenerateSourceDocInfoButton sourceDocumentId={metatext.source_document_id} />
                         <StyleControls />
                         {/* Button to navigate to bookmarked chunk and toggle chunk position */}
-                        <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
+                        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
                             <ChunkPositionToggleButton
                                 value={uiPreferences.showChunkPositions || false}
                                 onChange={val => updateUserConfig.mutate({ showChunkPositions: val })}

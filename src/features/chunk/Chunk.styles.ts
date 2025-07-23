@@ -49,7 +49,7 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
         alignSelf: 'flex-start',
         width: '100%',
         maxWidth: '100%',
-        zIndex: theme.zIndex.appBar,
+        zIndex: theme.zIndex.modal + 1, // ensure it stays above other content
         boxShadow: 'none',
         boxSizing: 'border-box',
         transition: theme.transitions.create(['opacity'], {
@@ -132,6 +132,7 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
     // container for copy tool in chunk tabs
     alwaysVisibleToolContainer: {
         display: 'flex',
+        flexDirection: 'column' as const,
         padding: theme.spacing(2, 2, 0, 0),
         alignSelf: 'flex-end',
     },
