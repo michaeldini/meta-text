@@ -2,7 +2,7 @@
 // Handles loading and setting bookmarks for metatext chunks
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchBookmark, setBookmark } from 'services';
+import { fetchBookmark, setBookmark, removeBookmark } from 'services';
 
 // Fetch the bookmarked chunk for a metatext
 export function useBookmark(metaTextId: number | null) {
@@ -29,6 +29,22 @@ export function useSetBookmark(metaTextId: number | null) {
         onSuccess: (chunkId) => {
             if (metaTextId != null) {
                 queryClient.setQueryData(['bookmark', metaTextId], chunkId);
+            }
+        },
+    });
+}
+
+// Remove the bookmark for a metatext
+export function useRemoveBookmark(metaTextId: number | null) {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async () => {
+            if (metaTextId == null) throw new Error('No metatext ID provided');
+            await removeBookmark(metaTextId);
+        },
+        onSuccess: () => {
+            if (metaTextId != null) {
+                queryClient.setQueryData(['bookmark', metaTextId], null);
             }
         },
     });

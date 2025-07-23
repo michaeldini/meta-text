@@ -10,3 +10,6 @@ export async function setBookmark(metaTextId: number, chunkId: number): Promise<
     const res = await api.post('bookmarks/', { json: { metatext_id: metaTextId, chunk_id: chunkId } }).json<number>();
     return res;
 }
+export async function removeBookmark(metaTextId: number): Promise<void> {
+    await api.delete(`bookmarks/${metaTextId}`);
+}
