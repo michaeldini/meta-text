@@ -16,19 +16,19 @@ export const getMetatextDetailStyles = (theme: Theme) => ({
 
     },
 
-    headerContainer: {
-        padding: theme.spacing(2),
-        gap: theme.spacing(6),
-        marginBottom: theme.spacing(20),
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap', // Allow wrapping on small screens
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100%',
-        boxSizing: 'border-box',
-        flex: 1,
-    },
+    // headerContainer: {
+    //     padding: theme.spacing(2),
+    //     gap: theme.spacing(6),
+    //     marginBottom: theme.spacing(20),
+    //     display: 'flex',
+    //     flexDirection: { xs: 'column', sm: 'row' },
+    //     flexWrap: 'wrap', // Allow wrapping on small screens
+    //     alignItems: 'center',
+    //     justifyContent: 'center',
+    //     width: '100%',
+    //     boxSizing: 'border-box',
+    //     flex: 1,
+    // },
 
     headerPaper: {
         padding: theme.spacing(1.5), // Compact padding

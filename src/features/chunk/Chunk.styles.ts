@@ -29,7 +29,7 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
         flexDirection: 'row' as const,
         alignItems: 'start',
         border: `1px solid ${theme.palette.secondary.light}`,
-        borderRadius: theme.shape.borderRadius,
+        borderRadius: theme.shape.borderRadiusSm,
         minHeight: 0,
         padding: 0,
         overflow: 'visible',  // changed to visible to allow sticky positioning
@@ -49,7 +49,7 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
         alignSelf: 'flex-start',
         width: '100%',
         maxWidth: '100%',
-        zIndex: theme.zIndex.modal + 1, // ensure it stays above other content
+        zIndex: theme.zIndex.tooltip + 1,
         boxShadow: 'none',
         boxSizing: 'border-box',
         transition: theme.transitions.create(['opacity'], {

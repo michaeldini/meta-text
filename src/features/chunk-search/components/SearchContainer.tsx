@@ -4,6 +4,7 @@
 import React, { useCallback } from 'react';
 import {
     Box,
+    Stack,
     useTheme
 } from '@mui/material';
 import { SearchBar } from './SearchBar';
@@ -25,17 +26,10 @@ export const SearchContainer: React.FC<SearchContainerProps> = ({
     const theme = useTheme();
 
     return (
-        <Box sx={{
-            display: 'flex',
-            gap: 4,
-            flexDirection: { xs: 'column', sm: 'row' },
-            alignItems: { xs: 'stretch', sm: 'end' },
-            flexWrap: 'wrap'
-        }}>
+        <Stack direction="row" spacing={2} alignItems="center">
             {/* Search Bar */}
             <Box sx={{
                 display: 'flex',
-                // alignItems: 'end',
                 gap: theme.spacing(2),
                 flexWrap: 'wrap',
                 flex: { xs: '1', sm: 'auto' }
@@ -45,14 +39,11 @@ export const SearchContainer: React.FC<SearchContainerProps> = ({
 
             {/* Tag Filters */}
             {showTagFilters && (
-                <Box sx={{
-                    flex: { xs: '1', sm: 'auto' },
-                    mt: { xs: 1, sm: 0 }
-                }}>
+                <Stack direction="row" spacing={2} alignItems="center">
                     <TagFilters availableTags={availableTags} />
-                </Box>
+                </Stack>
             )}
-        </Box>
+        </Stack>
     );
 };
 

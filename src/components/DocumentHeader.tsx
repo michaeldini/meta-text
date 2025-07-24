@@ -22,7 +22,7 @@ const DocumentHeader: React.FC<DocumentHeaderProps> = ({
         gap: theme.spacing(2),
         marginBottom: theme.spacing(10),
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: { xs: 'column', sm: 'row' },
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'center',

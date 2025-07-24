@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, useTheme, Slide } from '@mui/material';
+import { Box, useTheme, Slide, Stack } from '@mui/material';
 import type { Theme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
 
@@ -71,7 +71,7 @@ function MetatextDetailPage(): ReactElement | null {
                         <GenerateSourceDocInfoButton sourceDocumentId={metatext.source_document_id} />
                         <StyleControls />
                         {/* Button to navigate to bookmarked chunk and toggle chunk position */}
-                        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
+                        <Stack spacing={2} alignItems="center" direction="row">
                             <ChunkPositionToggleButton
                                 value={uiPreferences.showChunkPositions || false}
                                 onChange={val => updateUserConfig.mutate({ showChunkPositions: val })}
@@ -82,9 +82,10 @@ function MetatextDetailPage(): ReactElement | null {
                                 showOnlyFavorites={showOnlyFavorites}
                                 onToggle={setShowOnlyFavorites}
                             />
-                        </Box>
+                        </Stack>
                         <SearchContainer showTagFilters={true} />
                     </DocumentHeader>
+
                     <PaginatedChunks metatextId={metatext.id} showOnlyFavorites={showOnlyFavorites} />
                     <ChunkToolsPanel />
                 </Box>

@@ -15,6 +15,7 @@ export const getSharedToolStyles = (theme: Theme) => ({
         minWidth: '30vw',
         borderLeft: `4px solid ${theme.palette.secondary.main}`,
         flex: 1,
+        zIndex: theme.zIndex.appBar
     },
 
     // Common scrollable content container

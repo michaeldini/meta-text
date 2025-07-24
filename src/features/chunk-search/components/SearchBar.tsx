@@ -9,10 +9,12 @@ import {
     Box,
     useTheme
 } from '@mui/material';
-import { SearchIcon, ClearIcon } from '../../../components/icons';
+import { SearchIcon, ClearIcon } from 'icons';
 import { useSearchStore } from '../store/useSearchStore';
 import { useSearch } from '../hooks/useSearch';
 
+
+// Props for the SearchBar component
 interface SearchBarProps {
     placeholder?: string;
     variant?: 'outlined' | 'filled' | 'standard';
@@ -20,12 +22,13 @@ interface SearchBarProps {
     fullWidth?: boolean;
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({
+
+export function SearchBar({
     placeholder = 'Search...(CMD+K)',
     variant = 'outlined',
     size = 'small',
     fullWidth = false
-}) => {
+}: SearchBarProps) {
     const theme = useTheme();
     const { query, setQuery } = useSearchStore();
     const { clearSearch, error } = useSearch();
@@ -57,33 +60,43 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                 fullWidth={fullWidth}
                 error={!!error}
                 helperText={error}
-                InputProps={{
-                    startAdornment: (
-                        <InputAdornment position="start">
-                            <SearchIcon
-                                size={20}
-                                color={theme.palette.text.secondary}
-                            />
-                        </InputAdornment>
-                    ),
-                    endAdornment: query ? (
-                        <InputAdornment position="end">
-                            <IconButton
-                                onClick={handleClear}
-                                size="small"
-                                aria-label="Clear search"
-                                sx={{
-                                    color: theme.palette.text.secondary,
-                                    '&:hover': {
-                                        color: theme.palette.text.primary
-                                    }
-                                }}
-                            >
-                                <ClearIcon size={16} />
-                            </IconButton>
-                        </InputAdornment>
-                    ) : null,
-                    sx: {
+                slotProps={{
+                    input: {
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <SearchIcon
+                                    size={20}
+                                    color={theme.palette.text.secondary}
+                                />
+                            </InputAdornment>
+                        ),
+                        endAdornment: query ? (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    onClick={handleClear}
+                                    size="small"
+                                    aria-label="Clear search"
+                                    sx={{
+                                        color: theme.palette.text.secondary,
+                                        '&:hover': {
+                                            color: theme.palette.text.primary
+                                        }
+                                    }}
+                                >
+                                    <ClearIcon size={16} />
+                                </IconButton>
+                            </InputAdornment>
+                        ) : null,
+                    }
+                }}
+                sx={{
+                    minWidth: 200,
+                    maxWidth: 400,
+                    '& .MuiFormHelperText-root': {
+                        position: 'absolute',
+                        top: '100%',
+                        left: 0,
+                        marginTop: theme.spacing(0.5),
                         backgroundColor: theme.palette.background.paper,
                         '& .MuiOutlinedInput-notchedOutline': {
                             borderColor: theme.palette.divider,
@@ -96,17 +109,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                         }
                     }
                 }}
-                sx={{
-                    minWidth: 200,
-                    maxWidth: 400,
-                    '& .MuiFormHelperText-root': {
-                        position: 'absolute',
-                        top: '100%',
-                        left: 0,
-                        marginTop: theme.spacing(0.5)
-                    }
-                }}
             />
         </Box>
     );
-};
+}

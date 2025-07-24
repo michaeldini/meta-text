@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Box } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { useUserConfig, useUpdateUserConfig } from 'services/userConfigService';
 import { TextSizeInput, LineHeightInput, PaddingXInput, FontFamilySelect } from 'components';
 
@@ -21,7 +21,7 @@ const StyleControls: React.FC = () => {
     // const isPending = isLoading || updateUserConfig.status === 'pending';
 
     return (
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center" useFlexGap >
             <TextSizeInput
                 value={uiPreferences.textSizePx || DEFAULTS.textSizePx}
                 onChange={val => updateUserConfig.mutate({ textSizePx: val })}
@@ -43,7 +43,7 @@ const StyleControls: React.FC = () => {
             // disabled={isPending}
             />
 
-        </Box>
+        </Stack>
     );
 };
 
