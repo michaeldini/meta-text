@@ -117,8 +117,8 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
     // tooltip styles for chunk tool buttons
     chunkToolButtonsToolTip: {
         arrow: true,
-        enterDelay: 200,
-        placement: 'left' as const,
+        enterDelay: 500,
+        placement: 'top' as const,
     },
 
     // styles for the undo icon button in the chunk

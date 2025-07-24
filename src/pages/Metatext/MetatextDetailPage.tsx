@@ -1,9 +1,13 @@
 // Details for a given Metatext document.
 // This page displays the details of a specific Metatext, including a header with style controls and document meta-data, the paginated chunks of the Metatext, and additional tools for chunk management.
 
+
+import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, useTheme, Slide, Stack } from '@mui/material';
+import { Box, useTheme, Slide, Stack, Paper } from '@mui/material';
 import type { Theme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
 
