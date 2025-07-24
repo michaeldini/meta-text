@@ -42,15 +42,20 @@ const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = ({
         <Box sx={styles.chunkTabsContainer}
             data-chunk-id={`chunk-tools-${chunk.id}`}>
             {/* Tools Always visible at the top */}
-            <Box sx={styles.alwaysVisibleToolContainer}>
+            <Box
+                sx={{
+                    ...styles.alwaysVisibleToolContainer,
+                    flexDirection: activeTools.length > 0 ? 'row' : 'column'
+                }}
+            >
                 {/* Chunk position display in top right corner */}
                 {showChunkPositions && (
                     <Box >
                         {chunk.position}
                     </Box>
                 )}
+
                 <CopyTool chunkText={chunk.text} />
-                {/* Bookmark toggle button */}
                 <ChunkBookmarkToggle chunk={chunk} />
                 <ChunkFavoriteToggle chunk={chunk} />
             </Box>
