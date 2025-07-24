@@ -8,7 +8,8 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
         alignItems: 'center',
         gap: theme.spacing(2),
         padding: theme.spacing(0, 0, 7, 0),
-        backgroundColor: theme.palette.background.default,
+        // backgroundColor: theme.palette.background.default,
+        backgroundColor: 'none',
         height: '100%',
         width: '100%',
         borderRadius: theme.shape.borderRadius,
@@ -30,6 +31,7 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
         alignItems: 'start',
         border: `1px solid ${theme.palette.secondary.light}`,
         borderRadius: theme.shape.borderRadiusSm,
+        backgroundColor: 'none',
         minHeight: 0,
         padding: 0,
         overflow: 'visible',  // changed to visible to allow sticky positioning

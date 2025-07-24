@@ -11,6 +11,7 @@ export const getAppStyles = (theme: Theme) => ({
         height: '100%',
         width: '100%',
         padding: theme.spacing(0),
+
     },
 
     // Page layout styles
@@ -27,7 +28,8 @@ export const getAppStyles = (theme: Theme) => ({
         maxWidth: 1400,
         // marginLeft: 'auto',
         // marginRight: 'auto',
-        backgroundColor: theme.palette.background.default,
+
+        // backgroundColor: theme.palette.background.default,
         [theme.breakpoints.down('sm')]: {
             maxWidth: '100%',
             // paddingLeft: theme.spacing(1),

@@ -288,7 +288,7 @@ export const darkTheme = createTheme({
                     borderColor: blue[500],
                     color: blue[100],
                     '&:hover': {
-                        backgroundColor: blue[700],
+                        // backgroundColor: blue[700],
                         transform: 'scale(1.05)',
                     },
                 },

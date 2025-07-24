@@ -45,8 +45,6 @@ export default function SourceDoc({ doc, onDocumentUpdate }: SourceDocProps) {
             width: '100%',
             alignItems: 'center',
             justifyContent: 'center',
-            // paddingX: theme.spacing(2),
-            // position: 'relative' as const
         },
         controlsContainer: {
             display: 'flex',
