@@ -7,7 +7,7 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
         flexDirection: 'column' as const,
         alignItems: 'center',
         gap: theme.spacing(2),
-        padding: 0,
+        padding: theme.spacing(0, 0, 7, 0),
         backgroundColor: theme.palette.background.default,
         height: '100%',
         width: '100%',
@@ -60,21 +60,21 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
         },
     },
     // container for floating visibility buttons
-    chunkToolButtonsContainer: {
-        display: 'flex',
-        alignItems: 'center',
-        flexDirection: 'column',
-        borderRadius: 2,
-        padding: 0,
-        margin: 0
-    },
+    // chunkToolButtonsContainer: {
+    //     display: 'flex',
+    //     alignItems: 'center',
+    //     flexDirection: 'column',
+    //     borderRadius: 2,
+    //     padding: 0,
+    //     margin: 0
+    // },
     // container for floating extra buttons (e.g. copy)
-    chunkToolButtonsContainerExtra: {
-        borderRadius: 2,
-        border: '1px solid',
-        borderColor: 'divider',
-        marginTop: 1,
-    },
+    // chunkToolButtonsContainerExtra: {
+    //     borderRadius: 2,
+    //     border: '1px solid',
+    //     borderColor: 'divider',
+    //     marginTop: 1,
+    // },
     // container for the words toolbar (e.g. split and define tools )
     wordsToolBarContainer: {
         padding: theme.spacing(1),
@@ -131,8 +131,6 @@ export const getChunkComponentsStyles = (theme: Theme, isActiveTabs?: boolean) =
 
     // container for copy tool in chunk tabs
     alwaysVisibleToolContainer: {
-        display: 'flex',
-        flexDirection: 'column' as const,
         padding: theme.spacing(2, 2, 0, 0),
         alignSelf: 'flex-end',
     },

@@ -21,7 +21,7 @@ const StyleControls: React.FC = () => {
     // const isPending = isLoading || updateUserConfig.status === 'pending';
 
     return (
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center" useFlexGap >
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap sx={{ alignItems: 'center' }}>
             <TextSizeInput
                 value={uiPreferences.textSizePx || DEFAULTS.textSizePx}
                 onChange={val => updateUserConfig.mutate({ textSizePx: val })}

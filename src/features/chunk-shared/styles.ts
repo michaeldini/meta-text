@@ -132,7 +132,7 @@ export const getSharedToolStyles = (theme: Theme) => ({
 
     // Copy tool button styling with hover effect
     copyToolButton: {
-        opacity: 0.3,
+        // opacity: 0.3,
         transition: 'opacity 0.2s ease-in-out',
         '&:hover': {
             opacity: 1,

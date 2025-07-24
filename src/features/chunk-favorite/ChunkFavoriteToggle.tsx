@@ -3,7 +3,7 @@
 // Handles API calls to backend and updates UI state optimistically.
 
 import React, { useState } from 'react';
-import { IconButton, Tooltip, CircularProgress } from '@mui/material';
+import { IconButton, Tooltip, CircularProgress, Box } from '@mui/material';
 import { StarIcon, StarOutlineIcon } from 'icons';
 import { useTheme } from '@mui/material/styles';
 import { api } from 'utils';
@@ -55,7 +55,7 @@ const ChunkFavoriteToggle: React.FC<ChunkFavoriteToggleProps> = ({ chunk }) => {
                     aria-label={favorited ? 'Unfavorite chunk' : 'Favorite chunk'}
                 >
                     {loading ? (
-                        <CircularProgress size={20} thickness={5} />
+                        <CircularProgress />
                     ) : favorited ? (
                         <StarIcon />
                     ) : (
@@ -64,7 +64,7 @@ const ChunkFavoriteToggle: React.FC<ChunkFavoriteToggleProps> = ({ chunk }) => {
                 </IconButton>
             </span>
         </Tooltip>
-    );
+    )
 };
 
 export default ChunkFavoriteToggle;

@@ -35,7 +35,7 @@ function SourceDocDetailPage(): ReactElement {
         >
             {/* Smooth slide-up animation for the page content */}
             <Slide in={true} direction="up" timeout={FADE_IN_DURATION}>
-                <Box data-testid="sourcedoc-detail-content">
+                <Box data-testid="sourcedoc-detail-content" sx={{ alignItems: 'center', justifyContent: 'center', width: '100%' }}>
                     {doc ? (
                         <>
                             <DocumentHeader title={doc.title}>

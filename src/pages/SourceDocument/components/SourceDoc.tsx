@@ -43,8 +43,10 @@ export default function SourceDoc({ doc, onDocumentUpdate }: SourceDocProps) {
     const styles = React.useMemo(() => ({
         container: {
             width: '100%',
-            paddingX: theme.spacing(2),
-            position: 'relative' as const
+            alignItems: 'center',
+            justifyContent: 'center',
+            // paddingX: theme.spacing(2),
+            // position: 'relative' as const
         },
         controlsContainer: {
             display: 'flex',
@@ -101,7 +103,8 @@ export default function SourceDoc({ doc, onDocumentUpdate }: SourceDocProps) {
             fontFamily,
             lineHeight,
             whiteSpace: 'pre-wrap' as const,
-            overflowWrap: 'break-word' as const
+            overflowWrap: 'break-word' as const,
+            justifySelf: 'center',
         },
         errorAlert: {
             marginTop: theme.spacing(2)

@@ -2,7 +2,7 @@
 // Replaces the old ChunkTabs component with a simpler, more direct approach
 
 import React, { Suspense } from 'react';
-import { Box, useTheme } from '@mui/material';
+import { Box, Stack, useTheme } from '@mui/material';
 import { ErrorBoundary, LoadingBoundary } from 'components';
 import { CopyTool } from 'features/chunk-copy';
 import ChunkBookmarkToggle from '../chunk-bookmark/ChunkBookmarkToggle';
@@ -10,6 +10,7 @@ import ChunkFavoriteToggle from '../chunk-favorite/ChunkFavoriteToggle';
 import { getChunkComponentsStyles } from '../chunk/Chunk.styles';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 import type { ChunkToolId } from './toolsRegistry';
+import ChunkPosition from './ChunkPosition';
 
 // Import all tool components directly to avoid lazy loading complexity
 import NotesTool from '../chunk-note/NotesTool';
@@ -17,7 +18,6 @@ import EvaluationTool from '../chunk-evaluation/EvaluationTool';
 import ImageTool from '../chunk-image/ImageTool';
 import RewriteDisplayTool from '../chunk-rewrite/RewriteDisplayTool';
 import ExplanationTool from '../chunk-explanation/ExplanationTool';
-import { useUserConfig } from 'services/userConfigService';
 
 interface ChunkToolsContainerProps {
     chunk: ChunkType;
@@ -32,33 +32,24 @@ const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = ({
 }) => {
     const theme = useTheme();
     const styles = getChunkComponentsStyles(theme, activeTools.length > 0);
-    const { data: userConfig } = useUserConfig();
-    const uiPrefs = userConfig?.uiPreferences || {};
 
-    const showChunkPositions = uiPrefs.showChunkPositions ?? false;
 
 
     return (
         <Box sx={styles.chunkTabsContainer}
             data-chunk-id={`chunk-tools-${chunk.id}`}>
             {/* Tools Always visible at the top */}
-            <Box
-                sx={{
-                    ...styles.alwaysVisibleToolContainer,
-                    flexDirection: activeTools.length > 0 ? 'row' : 'column'
-                }}
+            <Stack
+                flexDirection={activeTools.length > 0 ? 'row' : 'column'}
+                sx={styles.alwaysVisibleToolContainer}
+                alignItems="center"
             >
-                {/* Chunk position display in top right corner */}
-                {showChunkPositions && (
-                    <Box >
-                        {chunk.position}
-                    </Box>
-                )}
-
+                {/* Chunk position display (logic encapsulated in component) */}
+                <ChunkPosition chunk={chunk} />
                 <CopyTool chunkText={chunk.text} />
                 <ChunkBookmarkToggle chunk={chunk} />
                 <ChunkFavoriteToggle chunk={chunk} />
-            </Box>
+            </Stack>
             <ErrorBoundary>
                 <Suspense fallback={<LoadingBoundary loading={true}><div /></LoadingBoundary>}>
                     {/* Notes Tool */}

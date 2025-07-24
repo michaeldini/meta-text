@@ -35,34 +35,12 @@ export const getAppStyles = (theme: Theme) => ({
         },
     },
 
-    // Home page specific styles
-    homePage: {
-        container: {
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: theme.spacing(5),
-        },
-        navigationButtons: {
-            display: 'flex',
-            justifyContent: 'center',
-            my: 3,
-            gap: 2,
-            flexWrap: 'wrap',
-        },
-    },
 
     // Welcome text styles for the home page
     welcomeText: {
         container: {
-            minWidth: '25%',
-            display: 'flex',
-            flexDirection: 'column' as const,
-            alignItems: 'center',
-            justifyContent: 'center',
             maxWidth: 800,
             textAlign: 'center' as const,
-            margin: theme.spacing(2, 0),
         },
         title: {
             fontSize: 32,
@@ -95,18 +73,19 @@ export const getAppStyles = (theme: Theme) => ({
             flexDirection: { xs: 'column', md: 'row' },
             gap: 10,
         },
-
-        // Typography styles for titles and subtitles
-        title: {
-            fontWeight: 'bold',
-            mb: 1,
-            color: 'text.primary',
-        },
-        subtitle: {
-            mb: 2,
-            color: 'text.secondary',
-        },
     },
+
+    // Typography styles for titles and subtitles
+    //     title: {
+    //         fontWeight: 'bold',
+    //         mb: 1,
+    //         color: 'text.primary',
+    //     },
+    //     subtitle: {
+    //         mb: 2,
+    //         color: 'text.secondary',
+    //     },
+    // },
 
     // styles for SearchableList component
     searchableList: {

@@ -8,10 +8,10 @@
  * Intended for placement at the end of the HomePage.
  */
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 
 const AboutSection: React.FC = () => (
-    <Box sx={{ pt: 20 }} data-testid="about-section">
+    <Stack sx={{ pt: 30, alignItems: 'center' }} data-testid="about-section">
         <Typography variant="h4" gutterBottom>
             Instructions
         </Typography>
@@ -27,7 +27,7 @@ const AboutSection: React.FC = () => (
             <br />
             Use tools that act on the chunk to add metadata to the chunk: Generate a summary, Generate an image from a prompt that represents the chunk, write notes, write a summary, ask a literature agent to comment on the chunk and your notes.
         </Typography>
-    </Box>
+    </Stack>
 );
 
 export default AboutSection;

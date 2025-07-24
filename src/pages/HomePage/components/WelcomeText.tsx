@@ -3,7 +3,7 @@
 
 
 import React from 'react';
-import { Box, Typography, SxProps, Theme } from '@mui/material';
+import { Box, Typography, SxProps, Theme, Stack } from '@mui/material';
 
 interface WelcomeTextProps {
     welcomeTextStyles: {
@@ -16,7 +16,7 @@ interface WelcomeTextProps {
 
 const WelcomeText: React.FC<WelcomeTextProps> = ({ welcomeTextStyles }) => {
     return (
-        <Box sx={welcomeTextStyles.container}>
+        <Stack sx={welcomeTextStyles.container}>
             <Typography variant="h4" sx={welcomeTextStyles.title} gutterBottom>
                 Welcome!
             </Typography>
@@ -25,7 +25,7 @@ const WelcomeText: React.FC<WelcomeTextProps> = ({ welcomeTextStyles }) => {
                 <b>How does it work?</b> Upload a document that sparks your curiosity. Break it into sections that matter to you. Annotate each part with your thoughts, questions, and insights. <br /><br />
                 <i>Transform passive reading into an active, personal journey of discovery. Your ideas belong here.</i>
             </Typography>
-        </Box>
+        </Stack>
     );
 };
 

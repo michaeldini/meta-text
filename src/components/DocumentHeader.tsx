@@ -1,7 +1,8 @@
 // Component used to display a document header with a title and children components for consistent styling across pages.
 
 import React from 'react';
-import { Box, Paper, Typography, useTheme } from '@mui/material';
+import { Accordion, AccordionSummary, AccordionDetails, Stack, Typography, useTheme } from '@mui/material';
+import { ExpandMoreIcon } from 'icons';
 
 interface DocumentHeaderProps {
     title?: string;
@@ -18,27 +19,32 @@ const DocumentHeader: React.FC<DocumentHeaderProps> = ({
     elevation = 10
 }) => {
     const theme = useTheme();
-    const styles = {
-        gap: theme.spacing(2),
-        marginBottom: theme.spacing(10),
-        display: 'flex',
-        flexDirection: { xs: 'column', sm: 'row' },
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100%',
-        boxSizing: 'border-box',
-        flex: 1,
-
-    };
     return (
-        <Box sx={styles}>
-            <Typography variant="h3" color={theme.palette.text.secondary}>
-                {title}
-            </Typography>
+        <Accordion sx={{ width: '100%', mb: theme.spacing(4), ...sx }} elevation={elevation}>
+            <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="document-header-content"
+                id="document-header-toggle"
+                sx={{
+                    background: theme.palette.background.paper,
+                    borderRadius: theme.shape.borderRadius,
 
-            {children}
-        </Box>
+                }}
+            >
+                <Typography variant="h3" color={theme.palette.text.secondary}>
+                    {title}
+                </Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={{ p: theme.spacing(2), border: `1px solid ${theme.palette.divider}` }}>
+                <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
+                    spacing={2}
+                    sx={{ flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}
+                >
+                    {children}
+                </Stack>
+            </AccordionDetails>
+        </Accordion>
     );
 };
 

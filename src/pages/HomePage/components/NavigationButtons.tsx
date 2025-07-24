@@ -2,13 +2,11 @@
 // Two buttons to direct users to the SourceDocs and Metatext pages.
 
 import React from 'react';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Stack } from '@mui/material';
 import type { SxProps, Theme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 
-interface NavigationButtonsProps {
-    styles: SxProps<Theme>;
-}
+
 
 // Define button properties for consistent styling across buttons
 const buttonProps = {
@@ -17,8 +15,7 @@ const buttonProps = {
     size: 'large' as const,
 };
 
-const NavigationButtons: React.FC<NavigationButtonsProps> = ({ styles }) => {
-
+export function NavigationButtons() {
     const navigate = useNavigate();
 
     const handleNavigateToSourceDocs = () => {
@@ -30,7 +27,7 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({ styles }) => {
     };
 
     return (
-        <Box sx={styles}>
+        <Stack direction="row" spacing={2}>
             <Button
                 {...buttonProps}
                 onClick={handleNavigateToSourceDocs}
@@ -45,7 +42,7 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({ styles }) => {
             >
                 Browse Metatexts
             </Button>
-        </Box>
+        </Stack>
     );
 };
 

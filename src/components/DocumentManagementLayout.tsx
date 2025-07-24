@@ -3,11 +3,33 @@
 // This component is designed to be flexible and reusable, allowing for different forms and lists to be
 // passed in as props, making it suitable for various document management scenarios.
 
-import React, { ReactElement, ReactNode, forwardRef } from 'react';
-import { Box, Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { ReactElement, ReactNode, forwardRef } from 'react';
 
-import { getAppStyles } from 'styles';
+import { Stack, Typography } from '@mui/material';
+
+// Styling constants for DocumentManagementLayout
+const styles = {
+    container: {
+        alignItems: 'center',
+        padding: 2,
+    },
+    headerStack: {
+        alignItems: 'center',
+    },
+    title: {
+        fontWeight: 'bold',
+        mb: 1,
+        color: 'text.primary',
+    },
+    subtitle: {
+        mb: 2,
+        color: 'text.secondary',
+    },
+    contentStack: {
+        // Responsive direction handled in prop, not style
+    },
+};
+
 
 interface DocumentManagementLayoutProps {
     title: string;
@@ -22,39 +44,39 @@ interface DocumentManagementLayoutProps {
 const DocumentManagementLayout = forwardRef<HTMLDivElement, DocumentManagementLayoutProps>(
     ({ title, subtitle, formComponent, listComponent }, ref): ReactElement => {
 
-        // Use the theme to get styles from the top-level style function 
-        // This allows for consistent styling across the SourceDocs and Metatext landing pages
-        const theme = useTheme();
-        const styles = getAppStyles(theme);
-
         return (
-            <Box
+            <Stack
+                spacing={4}
+                sx={styles.container}
                 ref={ref}
                 data-testid={`${title
                     .toLowerCase()
                     .replace(/ /g, '-')}-list-content`}
-                sx={styles.sharedStyles.container}
             >
-                <Box sx={styles.sharedStyles.container}>
+                <Stack sx={styles.headerStack}>
                     <Typography
                         variant="h4"
                         component="h1"
-                        sx={styles.sharedStyles.title}
+                        sx={styles.title}
                     >
                         {title}
                     </Typography>
                     <Typography
                         variant="subtitle1"
-                        sx={styles.sharedStyles.subtitle}
+                        sx={styles.subtitle}
                     >
                         {subtitle}
                     </Typography>
-                </Box>
-                <Box sx={styles.sharedStyles.containerBreakpoint}>
+                </Stack>
+                <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
+                    spacing={4}
+                    sx={styles.contentStack}
+                >
                     {formComponent}
                     {listComponent}
-                </Box>
-            </Box>
+                </Stack>
+            </Stack>
         );
     }
 );

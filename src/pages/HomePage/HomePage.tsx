@@ -6,7 +6,7 @@
  * improving perceived performance when users navigate to those pages.
  */
 
-import { Box, Slide, useTheme } from '@mui/material';
+import { Box, Slide, Stack, useTheme } from '@mui/material';
 import type { Theme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
 import { useEffect } from 'react';
@@ -48,16 +48,20 @@ function HomePage(): ReactElement {
             data-testid="homepage-container"
         >
             <Slide in={true} direction="up" timeout={FADE_IN_DURATION}>
-                <Box
-                    sx={styles.homePage.container}
+                <Stack
+                    spacing={4}
+                    sx={{
+                        alignItems: 'center',
+                        padding: theme.spacing(2),
+                    }}
                     data-testid="homepage-content"
                 >
                     <WelcomeText welcomeTextStyles={styles.welcomeText} />
 
-                    <NavigationButtons styles={styles.homePage.navigationButtons} />
+                    <NavigationButtons />
 
                     <HomePageDetails />
-                </Box>
+                </Stack>
             </Slide>
         </PageContainer>
     );
