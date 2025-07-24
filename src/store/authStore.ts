@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { login as apiLogin, register as apiRegister, getMe, refreshToken } from '../services/authService';
-import log from '../utils/logger';
-import { getErrorMessage } from '../types/error';
+import { login as apiLogin, register as apiRegister, getMe, refreshToken } from 'services';
+import { log } from 'utils';
+import { getErrorMessage } from 'types';
 
 
 interface User {
@@ -50,8 +50,11 @@ export const useAuthStore = create<AuthState>()(
                     log.info('User logged in', { username });
                     return true;
                 } catch (e: unknown) {
+                    // Show a friendly message for login failures
+                    let message = 'Login failed. Try again.';
+                    // Optionally, you can check for specific error types here
                     set({
-                        error: getErrorMessage(e, 'Login failed'),
+                        error: message,
                         loading: false,
                         user: null,
                         token: null
@@ -128,9 +131,3 @@ export const useAuthStore = create<AuthState>()(
         }
     )
 );
-
-// Convenience hook that maintains the same interface as the old useAuth
-export const useAuth = () => {
-    const { user, token, loading, error, login, register, logout, clearError } = useAuthStore();
-    return { user, token, loading, error, login, register, logout, clearError };
-};

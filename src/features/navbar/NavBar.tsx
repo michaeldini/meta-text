@@ -13,12 +13,13 @@ import { AppBar, Box, Button, Toolbar, useTheme } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 import { ThemeToggle } from 'components';
+import { useAuthStore } from 'store';
+
 import { useThemeContext } from '../../contexts/ThemeContext';
 import { createNavbarStyles } from './NavBar.styles';
 
 import { getNavigationConfig } from './navigationConfig';
 
-import { useAuth } from 'index';
 
 /**
  * Main NavBar component
@@ -32,7 +33,8 @@ const NavBar: React.FC = () => {
     const { toggleMode } = useThemeContext();
 
     // Get authentication state and navigation functions
-    const { user, logout } = useAuth();
+    const user = useAuthStore(state => state.user);
+    const logout = useAuthStore(state => state.logout);
     const navigate = useNavigate();
     const navConfig = getNavigationConfig(logout, navigate);
 

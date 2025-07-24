@@ -2,7 +2,7 @@
 // Triggers before token expiry, updates Zustand store, and logs out on failure
 import { useEffect, useRef } from 'react';
 import { useAuthStore } from '../store/authStore';
-import { refreshToken as apiRefreshToken, getMe } from '../services/authService';
+import { refreshToken, getMe } from '../services/authService';
 
 // Helper to decode JWT and get exp (expiration) in seconds
 function getTokenExpiration(token: string): number | null {
@@ -35,7 +35,7 @@ export function useAuthRefresh() {
         if (timerRef.current) clearTimeout(timerRef.current);
         timerRef.current = setTimeout(async () => {
             try {
-                const { access_token } = await apiRefreshToken();
+                const { access_token } = await refreshToken();
                 setToken(access_token);
                 const userData = await getMe(access_token);
                 setUser(userData);

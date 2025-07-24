@@ -1,5 +1,6 @@
 """Authentication service for user management operations."""
 from datetime import timedelta
+import loguru
 from sqlmodel import select, Session
 from loguru import logger
 from fastapi import Response
@@ -187,6 +188,7 @@ class AuthService:
         access_token_expires = self.get_access_token_expires()
         refresh_token_expires = self.get_refresh_token_expires()
         access_token, refresh_token = self.generate_tokens(user, access_token_expires, refresh_token_expires)
+        logger.info(f"User {username} logged in successfully, tokens generated.")
         return LoginTokens(
             access_token=access_token,
             refresh_token=refresh_token,
@@ -217,4 +219,7 @@ class AuthService:
         access_token_expires = self.get_access_token_expires()
         refresh_token_expires = self.get_refresh_token_expires()
         access_token, new_refresh_token = self.generate_tokens(user, access_token_expires, refresh_token_expires)
+        logger.info(f"Access token refreshed for user: {username} (id={user.id})")
+        if not new_refresh_token:
+            raise InvalidTokenError("Failed to generate new refresh token")
         return user, access_token, new_refresh_token, refresh_token_expires

@@ -68,26 +68,21 @@ class SourceDocumentService:
     
     def get_source_document_by_id(self, doc_id: int, session: Session, user) -> SourceDocument:
         """Retrieve a source document by ID for the given user."""
-        logger.info(f"Retrieving source document with id: {doc_id} for user_id={user.id}")
         doc = session.exec(
             select(SourceDocument).where(SourceDocument.id == doc_id, SourceDocument.user_id == user.id)
         ).first()
         if not doc:
             logger.warning(f"Source document not found or not owned by user: id={doc_id}, user_id={user.id}")
             raise SourceDocumentNotFoundError(doc_id)
-        logger.info(f"Source document found: id={doc.id}, title='{doc.title}', user_id={user.id}")
         return doc
     
     def list_all_source_documents(self, session: Session, user) -> list[SourceDocument]:
         """List all source documents for the given user."""
-        logger.info(f"Listing all source documents for user_id={user.id}")
         docs = list(session.exec(select(SourceDocument).where(SourceDocument.user_id == user.id)).all())
-        logger.info(f"Found {len(docs)} source documents for user_id={user.id}")
         return docs
 
     def delete_source_document(self, doc_id: int, session: Session, user) -> DeleteResponse:
         """Delete a source document if no related MetaText records exist. Only if owned by user."""
-        logger.info(f"Attempting to delete source document with id: {doc_id} for user_id={user.id}")
         # Check if document exists and is owned by user
         doc = session.exec(
             select(SourceDocument).where(SourceDocument.id == doc_id, SourceDocument.user_id == user.id)
@@ -104,9 +99,8 @@ class SourceDocumentService:
         title = doc.title  # Store for response
         session.delete(doc)
         session.commit()
-        logger.info(f"Source document deleted successfully: id={doc_id}, title='{title}', user_id={user.id}")
         return DeleteResponse(
-            message="Source document deleted successfully.",
+            message=f"Source document deleted successfully: title='{title}'",
             deleted_id=doc_id
         )
 
@@ -118,7 +112,6 @@ class SourceDocumentService:
         user
     ) -> SourceDocument:
         """Update a source document with provided fields. Only if owned by user."""
-        logger.info(f"Updating source document with id: {doc_id} for user_id={user.id}")
         try:
             # Check if document exists and is owned by user
             doc = session.exec(
@@ -150,7 +143,6 @@ class SourceDocumentService:
                     raise SourceDocumentTitleExistsError(update_data['title'])
             session.commit()
             session.refresh(doc)
-            logger.info(f"Source document updated successfully: id={doc.id}, updated_fields={updated_fields}, user_id={user.id}")
             return doc
         except (SourceDocumentNotFoundError, SourceDocumentTitleExistsError):
             session.rollback()

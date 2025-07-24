@@ -1,8 +1,9 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-import { useAuth } from '../../store/authStore';
 import { Button, TextField, Box, Typography, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import log from '../../utils/logger';
+
+import { useAuthStore } from 'store';
+import { log } from 'utils';
 import { AppAlert } from 'components';
 
 interface RegisterPageProps {
@@ -10,7 +11,9 @@ interface RegisterPageProps {
 }
 
 const RegisterPage: React.FC<RegisterPageProps> = ({ onRegisterSuccess }) => {
-    const { register, loading, error } = useAuth();
+    const register = useAuthStore(state => state.register);
+    const loading = useAuthStore(state => state.loading);
+    const error = useAuthStore(state => state.error);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();

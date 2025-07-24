@@ -15,12 +15,14 @@ export const api = ky.create({
         ],
         afterResponse: [
             (request: Request, options: any, response: Response) => {
-                // Handle expired/invalid tokens
-                if (response.status === 401 || response.status === 403) {
+                // Only redirect to login if user was previously authenticated
+                const token = localStorage.getItem('access_token');
+                if ((response.status === 401 || response.status === 403) && token) {
                     localStorage.removeItem('access_token');
                     localStorage.removeItem('refresh_token');
                     window.location.href = '/login';
                 }
+                // If no token, let the frontend handle the error (e.g., failed login)
             }
         ]
     }
