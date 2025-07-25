@@ -6,7 +6,7 @@
 import { ReactElement, ReactNode, forwardRef } from 'react';
 
 
-import { Heading, Stack } from '@chakra-ui/react'
+import { Heading, Stack, StackSeparator } from '@chakra-ui/react'
 
 interface DocumentManagementLayoutProps {
     title: string;
@@ -38,6 +38,11 @@ const DocumentManagementLayout = forwardRef<HTMLDivElement, DocumentManagementLa
                 </Stack>
                 <Stack
                     direction={{ base: 'column', md: 'row' }}
+                    separator={<StackSeparator />}
+                    gap={12}
+                    p={12}
+
+                    bg="secondary"
                 >
                     {formComponent}
                     {listComponent}

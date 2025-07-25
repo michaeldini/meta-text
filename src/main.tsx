@@ -6,6 +6,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import { ThemeContextProvider } from './contexts/ThemeContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Provider as ChakraProvider } from "./components/ui/provider"
+
 import {
     // ChakraProvider,
     createSystem,
@@ -13,7 +14,6 @@ import {
 } from "@chakra-ui/react"
 import config from "./styles/themes.chakra";
 
-const system = createSystem(defaultConfig, config)
 
 const queryClient = new QueryClient();
 

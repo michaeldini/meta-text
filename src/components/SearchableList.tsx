@@ -2,11 +2,9 @@
 // This component supports filtering, navigation, and deletion of items.
 
 import React, { useState } from 'react';
-import { useTheme } from '@mui/material/styles';
-import { List, ListItem, ListItemButton, ListItemText, Paper, TextField, InputAdornment, Typography, Box, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-
-import { ErrorBoundary, LoadingBoundary, DeleteButton } from 'components';
+import { Box, Button, CloseButton, Heading, Input, InputGroup, List } from '@chakra-ui/react'
+import { ErrorBoundary, LoadingBoundary, DeleteButton, Field } from 'components';
 import { SearchIcon, ClearIcon } from 'icons';
 import { useNotifications } from 'store';
 import { useDeleteSourceDocument, useDeleteMetatext } from 'features/documents/useDocumentsData';
@@ -70,84 +68,75 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
         }
     };
 
-    const theme = useTheme();
-    const styles = getAppStyles(theme);
 
-    // Input adornments for search field
-    const startAdornment = (
-        <InputAdornment position="start">
-            <SearchIcon />
-        </InputAdornment>
-    );
-
-    const endAdornment = search && (
-        <InputAdornment position="end">
-            <IconButton
-                data-testid="clear-search"
-                onClick={handleClearSearch}
-                edge="end"
-                size="small"
-                aria-label="Clear search"
-            >
-                <ClearIcon />
-            </IconButton>
-        </InputAdornment>
-    );
+    const inputRef = React.useRef<HTMLInputElement>(null);
+    const endElement = search ? (
+        <CloseButton
+            size="xs"
+            onClick={() => {
+                setSearch("");
+                inputRef.current?.focus();
+            }}
+            me="-2"
+        />
+    ) : undefined
 
     return (
         <ErrorBoundary>
             <LoadingBoundary loading={loading}>
-                <Paper sx={{ p: 3, maxWidth: 600, maxHeight: 600, overflow: 'auto', margin: '0 auto' }}>
-                    <Box sx={{ mb: 3 }}>
+                <Box>
+                    <Box >
                         {/* Display title if provided */}
                         {title && (
-                            <Typography variant="h5" component="h2" gutterBottom fontWeight="bold">
+                            <Heading>
                                 Browse {title}
-                            </Typography>
+                            </Heading>
                         )}
                     </Box>
 
                     {/* Search Input */}
-                    <TextField
+                    <Field
                         data-testid="search-input"
-                        label="Search"
-                        placeholder="Search items..."
-                        variant="outlined"
-                        size="small"
-                        fullWidth
-                        margin="normal"
-                        value={search}
-                        onChange={handleSearchChange}
+                        helperText="Search..."
                         aria-label="Search items"
-                        sx={styles.searchableList.searchInput}
-                        slotProps={{
-                            input: {
-                                startAdornment,
-                                endAdornment,
-                            },
-                        }}
                     />
+                    <InputGroup startElement={<SearchIcon />} endElement={endElement}>
+                        <Input placeholder="Title" value={search} onChange={handleSearchChange} />
+                    </InputGroup>
 
                     {/* Search Results */}
-                    <List
+                    <List.Root
                         data-testid="searchable-list"
                         role="list"
                         aria-label={`${filteredItems.length} ${filteredItems.length === 1 ? 'item' : 'items'} found`}
                     >
                         {/* No Results */}
                         {filteredItems.length === 0 ? (
-                            <ListItem role="listitem" sx={styles.searchableList.noResults}>
-                                <ListItemText primary="No items found." />
-                            </ListItem>
+                            <List.Item role="listitem" >
+                                "No items found."
+                            </List.Item>
                         ) : (
                             // Render Results
                             filteredItems.map((item) => {
                                 const displayText = String(item[filterKey] || '');
                                 return (
-                                    <ListItem
+                                    <List.Item
                                         key={item.id}
                                         role="listitem"
-                                        secondaryAction={
+                                    >
+                                        <List.Indicator>
+                                            <Button
+                                                data-testid={`item-${item.id}`}
+                                                variant="ghost"
+                                                onClick={() => handleItemClick(item.id)}
+                                                onKeyDown={(e) => handleItemKeyDown(e, item.id)}
+                                                aria-label={`Select ${displayText}`}
+                                                role="button"
+                                                tabIndex={0}
+                                            >
+                                                {displayText}
+                                            </Button>
+
                                             <DeleteButton
                                                 onClick={(e: React.MouseEvent) => handleDeleteClick(item.id)}
                                                 disabled={
@@ -157,33 +146,13 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
                                                 }
                                                 label={`Delete ${displayText}`}
                                             />
-                                        }
-                                        disablePadding
-                                        sx={styles.searchableList.listItem}
-                                    >
-                                        <ListItemButton
-                                            onClick={() => handleItemClick(item.id)}
-                                            onKeyDown={(e) => handleItemKeyDown(e, item.id)}
-                                            aria-label={`Select ${displayText}`}
-                                            role="button"
-                                            tabIndex={0}
-                                        >
-                                            <ListItemText
-                                                primary={displayText}
-                                                slotProps={{
-                                                    primary: {
-                                                        typography: 'h6',
-                                                        sx: { fontWeight: 'medium' },
-                                                    },
-                                                }}
-                                            />
-                                        </ListItemButton>
-                                    </ListItem>
+                                        </List.Indicator>
+                                    </List.Item>
                                 );
                             })
                         )}
-                    </List>
-                </Paper>
+                    </List.Root>
+                </Box>
             </LoadingBoundary>
         </ErrorBoundary>
     );

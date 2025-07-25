@@ -9,14 +9,12 @@
  */
 
 import React from 'react';
-import { AppBar, Box, Button, Toolbar, useTheme } from '@mui/material';
+import { Flex, Box, Button, IconButton, Spacer } from '@chakra-ui/react';
+import { ColorModeButton } from 'components';
 import { useNavigate } from 'react-router-dom';
 
-import { ThemeToggle } from 'components';
 import { useAuthStore } from 'store';
 
-import { useThemeContext } from '../../contexts/ThemeContext';
-import { createNavbarStyles } from './NavBar.styles';
 
 import { getNavigationConfig } from './navigationConfig';
 
@@ -27,9 +25,6 @@ import { getNavigationConfig } from './navigationConfig';
  * - Maps over navItems config to render navigation buttons.
  */
 export function NavBar() {
-    const theme = useTheme();
-    const styles = createNavbarStyles(theme);
-    const { toggleMode } = useThemeContext();
 
     // Get authentication state and navigation functions
     const user = useAuthStore(state => state.user);
@@ -47,27 +42,31 @@ export function NavBar() {
     });
 
     return (
-        <AppBar position="static" sx={styles.appBar} data-testid="navbar">
-            <Toolbar>
-                {/* Render each nav item as a Button with its action */}
+        <Flex
+            as="nav"
+            data-testid="navbar"
+        >
+            <Flex align="center" gap={2}>
                 {navItems.map(item => (
                     <Button
                         key={item.label}
                         onClick={item.action}
-                        disabled={item.disabled}
-                        sx={styles.navButton}
+                        variant="ghost"
+                        color="primary"
+                        size="lg"
+                        fontWeight="medium"
                     >
-                        {item.icon && <item.icon />}
-                        {item.label && <span>{item.label}</span>}
+                        {item.icon ? <item.icon /> : undefined}
+                        {item.label}
                     </Button>
                 ))}
-                {/* Theme toggle button */}
-                <Box sx={styles.themeToggleContainer}>
-                    <ThemeToggle onToggle={toggleMode} />
-                </Box>
-            </Toolbar>
-        </AppBar>
+            </Flex>
+            <Spacer />
+            <Box>
+                <ColorModeButton />
+            </Box>
+        </Flex>
     );
-};
+}
 
 export default NavBar;

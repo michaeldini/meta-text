@@ -49,7 +49,7 @@ function SourceDocUploadForm({ onSuccess, sx = {} }: SourceDocUploadFormProps): 
 
 
     return (
-        <Stack bg="secondary" p={4} borderRadius="md" gap={4} >
+        <Stack borderRadius="md" gap={4} >
             <Heading size="xl" >
                 Upload Source Document
             </Heading>

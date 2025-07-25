@@ -5,8 +5,8 @@ The codebase uses modern best practices, but prioritizes readability, maintainab
 ## Frontend Stack
 - Build System: Vite
 - Framework: React with TypeScript
-- State Management: Zustand
-- UI Library: Material UI (use separate files for styling to keep components clean, leverage MUI's theming)
+- State Management: Zustand and React Query
+- UI Library: Chakra UI v3
 - Icons: Heroicons
 - Design for tablet and mobile.
 - Testing: Vitest (tests colocated with components)
@@ -27,7 +27,7 @@ The codebase uses modern best practices, but prioritizes readability, maintainab
 - Logging: loguru
 
 ## Development Guidelines
-- Focus on clean, modern UI and efficient state management in the frontend
+- Focus on clean, maintainable UI and efficient state management in the frontend
 - Follow FastAPI + SQLModel best practices for robust and maintainable backend
 - App purpose: User-friendly interface for managing and interacting with documents
 

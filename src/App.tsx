@@ -4,7 +4,7 @@
 */
 import React, { useEffect, JSX, Suspense, lazy, ComponentType } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider, CssBaseline, useTheme, Typography } from '@mui/material';
+// import { ThemeProvider, CssBaseline, useTheme, Typography } from '@mui/material';
 import { Box, Stack, Text } from '@chakra-ui/react';
 import { NavBar } from 'features';
 import { LoadingFallback, ErrorBoundary, GlobalNotifications } from 'components';
@@ -89,9 +89,9 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps): JSX.Element => {
 // Static 404 component to prevent recreation on each render
 const NotFoundElement = (
     <Box>
-        <Typography variant="h4" color="text.secondary">
+        <Text>
             Page not found
-        </Typography>
+        </Text>
     </Box>
 );
 
@@ -105,14 +105,9 @@ export function App() {
 
     return (
         <>
-            {/* <LandscapeRequiredOverlay /> */}
-            <ThemeProvider theme={currentTheme}>
-                {/* CssBaseline provides consistent CSS reset and applies theme background */}
-                <CssBaseline />
-                <ErrorBoundary>
-                    <AppContent />
-                </ErrorBoundary>
-            </ThemeProvider>
+            <ErrorBoundary>
+                <AppContent />
+            </ErrorBoundary>
         </>
     );
 }
@@ -126,8 +121,6 @@ export function App() {
  */
 export const AppContent = () => {
     useAuthRefresh();
-    const theme = useTheme();
-    const styles = getAppStyles(theme);
 
     const renderRoute = (route: RouteConfig) => {
         const Component = route.element;
