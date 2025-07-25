@@ -12,7 +12,8 @@ export interface ReviewButtonProps {
     sx?: SxProps<Theme>;
 }
 
-const ReviewButton: React.FC<ReviewButtonProps> = ({ metatextId, label = "Review", toolTip = "Review this metatext", disabled = false, sx }) => {
+export function ReviewButton(props: ReviewButtonProps): React.ReactElement {
+    const { metatextId, label = "Review", toolTip = "Review this metatext", disabled = false, sx } = props;
     const navigate = useNavigate();
     const handleClick = () => {
         navigate(`/metatext/${metatextId}/review`);
@@ -31,6 +32,6 @@ const ReviewButton: React.FC<ReviewButtonProps> = ({ metatextId, label = "Review
             </Button>
         </Tooltip>
     );
-};
+}
 
 export default ReviewButton;

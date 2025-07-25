@@ -21,8 +21,9 @@ interface FontFamilySelectProps {
     disabled?: boolean;
 }
 
+export function FontFamilySelect(props: FontFamilySelectProps): React.ReactElement {
 
-const FontFamilySelect: React.FC<FontFamilySelectProps> = ({ value, onChange, disabled }) => {
+    const { value, onChange, disabled = false } = props;
     const handleChange = (event: SelectChangeEvent<string>) => {
         onChange(event.target.value);
     };
@@ -44,6 +45,6 @@ const FontFamilySelect: React.FC<FontFamilySelectProps> = ({ value, onChange, di
             </Select>
         </FormControl>
     );
-};
+}
 
 export default FontFamilySelect;

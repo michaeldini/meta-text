@@ -12,12 +12,8 @@ interface DocumentHeaderProps {
 }
 
 
-const DocumentHeader: React.FC<DocumentHeaderProps> = ({
-    title,
-    children,
-    sx = {},
-    elevation = 10
-}) => {
+export function DocumentHeader(props: DocumentHeaderProps): React.ReactElement {
+    const { title, children, sx = {}, elevation = 10 } = props;
     const theme = useTheme();
     return (
         <Accordion sx={{ width: '100%', mb: theme.spacing(4), ...sx }} elevation={elevation}>
@@ -28,7 +24,6 @@ const DocumentHeader: React.FC<DocumentHeaderProps> = ({
                 sx={{
                     background: theme.palette.background.paper,
                     borderRadius: theme.shape.borderRadius,
-
                 }}
             >
                 <Typography variant="h3" color={theme.palette.text.secondary}>
@@ -46,6 +41,6 @@ const DocumentHeader: React.FC<DocumentHeaderProps> = ({
             </AccordionDetails>
         </Accordion>
     );
-};
+}
 
 export default DocumentHeader;

@@ -27,7 +27,12 @@ const FIELD_CONFIG: FieldConfig[] = [
     { key: 'symbols', label: 'Symbols', isListField: true },
 ];
 
-const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onDocumentUpdate }) => {
+/**
+ * Displays and allows editing of source document metadata fields.
+ * Uses Material UI Accordions for each field, with inline editing and save/cancel actions.
+ */
+export function SourceDocInfo(props: SourceDocInfoProps) {
+    const { doc, onDocumentUpdate } = props;
     const theme = useTheme();
     const [editingField, setEditingField] = useState<string | null>(null);
     const [editValues, setEditValues] = useState<Record<string, string>>({});
@@ -365,6 +370,6 @@ const SourceDocInfo: React.FC<SourceDocInfoProps> = ({ doc, onDocumentUpdate }) 
             </Snackbar>
         </Box>
     );
-};
+}
 
 export default SourceDocInfo;

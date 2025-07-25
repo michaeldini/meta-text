@@ -11,7 +11,8 @@ export interface DeleteButtonProps {
     icon?: React.ReactNode;
 }
 
-const DeleteButton: React.FC<DeleteButtonProps> = ({ onClick, disabled, label = "Delete", icon }) => {
+export function DeleteButton(props: DeleteButtonProps): React.ReactElement {
+    const { onClick, disabled, label = "Delete", icon } = props;
     const theme = useTheme();
     return (
         <Tooltip title={label} placement="top">
@@ -29,6 +30,6 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ onClick, disabled, label = 
             </span>
         </Tooltip>
     );
-};
+}
 
 export default DeleteButton;

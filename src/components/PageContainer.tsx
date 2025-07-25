@@ -14,7 +14,8 @@ interface PageContainerProps {
  * Generic page container for consistent layout.
  * Wraps children in a Container with error boundary and theme-based styles.
  */
-const PageContainer: React.FC<PageContainerProps> = ({ children, loading }) => {
+export function PageContainer(props: PageContainerProps): React.ReactElement {
+    const { children, loading } = props;
     const theme = useTheme();
     const styles = getAppStyles(theme);
 
@@ -27,6 +28,6 @@ const PageContainer: React.FC<PageContainerProps> = ({ children, loading }) => {
             </Container>
         </ErrorBoundary>
     );
-};
+}
 
 export default PageContainer;

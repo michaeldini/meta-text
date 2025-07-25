@@ -26,12 +26,9 @@ export interface SearchableListProps {
     loading?: boolean;
 }
 
-function SearchableList({
-    title,
-    filterKey,
-    items = [],
-    loading = false,
-}: SearchableListProps) {
+export function SearchableList(props: SearchableListProps): React.ReactElement {
+
+    const { title, filterKey, items = [], loading = false } = props;
     const [search, setSearch] = useState('');
     const navigate = useNavigate();
     const deleteSourceDocMutation = useDeleteSourceDocument();

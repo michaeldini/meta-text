@@ -8,7 +8,7 @@ import { Snackbar, Alert } from '@mui/material';
 import { useNotificationStore } from 'store';
 import { NOTIFICATION_CONSTANTS } from 'constants';
 
-const GlobalNotifications: React.FC = () => {
+export function GlobalNotifications(props: Record<string, unknown>): React.ReactElement {
     const { notifications, hideNotification } = useNotificationStore();
 
     return (
@@ -39,6 +39,6 @@ const GlobalNotifications: React.FC = () => {
             ))}
         </>
     );
-};
+}
 
 export default GlobalNotifications;

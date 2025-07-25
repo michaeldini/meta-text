@@ -11,12 +11,8 @@ interface GenerateSourceDocInfoButtonProps {
     onSuccess?: () => void;
 }
 
-const GenerateSourceDocInfoButton: React.FC<GenerateSourceDocInfoButtonProps> = ({
-    sourceDocumentId,
-    label = 'Generate Info',
-    toolTip = 'Generate or update document info using AI',
-    onSuccess,
-}) => {
+export function GenerateSourceDocInfoButton(props: GenerateSourceDocInfoButtonProps): React.ReactElement {
+    const { sourceDocumentId, label = 'Generate Info', toolTip = 'Generate or update document info using AI', onSuccess } = props;
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const { refetch: refetchSourceDocs } = useSourceDocuments();
@@ -48,6 +44,6 @@ const GenerateSourceDocInfoButton: React.FC<GenerateSourceDocInfoButtonProps> = 
             )}
         </>
     );
-};
+}
 
 export default GenerateSourceDocInfoButton;

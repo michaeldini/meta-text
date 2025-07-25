@@ -28,12 +28,14 @@ const defaultStyles: SxProps<Theme> = {
     padding: 2,
 };
 
-export function LoadingSpinner({
-    size = 30,
-    color = 'primary',
-    sx,
-    'aria-label': ariaLabel = 'Loading content',
-}: LoadingSpinnerProps): ReactElement {
+export function LoadingSpinner(props: LoadingSpinnerProps): ReactElement {
+    const {
+        size = 30,
+        color = 'primary',
+        sx,
+        'aria-label': ariaLabel = 'Loading content'
+    } = props;
+
     const combinedStyles: SxProps<Theme> = [
         defaultStyles,
         { minHeight: '40px' },
