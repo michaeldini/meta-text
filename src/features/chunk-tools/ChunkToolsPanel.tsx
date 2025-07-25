@@ -11,7 +11,7 @@ import { FADE_IN_DURATION } from 'constants';
 import { getChunkComponentsStyles } from '../chunk/Chunk.styles';
 import { createChunkToolsRegistry, type ChunkToolId } from './toolsRegistry';
 
-const ChunkToolsPanel: React.FC = () => {
+export function ChunkToolsPanel() {
     // This component renders a fixed bottom navigation bar with toggle buttons for chunk tools
     const theme = useTheme();
     const styles = getChunkComponentsStyles(theme);

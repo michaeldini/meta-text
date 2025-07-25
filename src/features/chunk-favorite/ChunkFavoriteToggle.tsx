@@ -14,7 +14,8 @@ interface ChunkFavoriteToggleProps {
     chunk: ChunkType;
 }
 
-const ChunkFavoriteToggle: React.FC<ChunkFavoriteToggleProps> = ({ chunk }) => {
+
+export function ChunkFavoriteToggle({ chunk }: ChunkFavoriteToggleProps) {
     const theme = useTheme();
     const [loading, setLoading] = useState(false);
 
@@ -65,6 +66,6 @@ const ChunkFavoriteToggle: React.FC<ChunkFavoriteToggleProps> = ({ chunk }) => {
             </span>
         </Tooltip>
     )
-};
+}
 
 export default ChunkFavoriteToggle;

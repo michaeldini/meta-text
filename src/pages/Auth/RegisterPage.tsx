@@ -10,7 +10,7 @@ interface RegisterPageProps {
     onRegisterSuccess?: () => void;
 }
 
-const RegisterPage: React.FC<RegisterPageProps> = ({ onRegisterSuccess }) => {
+export function RegisterPage({ onRegisterSuccess }: RegisterPageProps) {
     const register = useAuthStore(state => state.register);
     const loading = useAuthStore(state => state.loading);
     const error = useAuthStore(state => state.error);

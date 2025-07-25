@@ -17,13 +17,14 @@ interface FlashcardBackProps {
     setFlipped: any;
 }
 
-const FlashcardBack: React.FC<FlashcardBackProps> = ({
-    word,
-    definition,
-    definition_in_context,
-    context,
-    setFlipped
-}) => {
+export function FlashcardBack(props: FlashcardBackProps) {
+    const {
+        word,
+        definition,
+        definition_in_context,
+        context,
+        setFlipped
+    } = props;
     const theme = useTheme();
     const styles = createFlashcardStyles(theme);
     const highlightedText: string = context.replace(new RegExp(`(${word})`, 'gi'), '<mark>$1</mark>');

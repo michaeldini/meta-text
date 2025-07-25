@@ -17,13 +17,8 @@ interface NotesToolProps {
     noteFieldSx?: object;
 }
 
-const NotesTool: React.FC<NotesToolProps> = React.memo(({
-    chunk,
-    updateChunkField,
-    isVisible,
-    summaryFieldSx,
-    noteFieldSx
-}) => {
+export const NotesTool = React.memo((props: NotesToolProps) => {
+    const { chunk, updateChunkField, isVisible, summaryFieldSx, noteFieldSx } = props;
     if (!isVisible) return null;
 
     const theme = useTheme();

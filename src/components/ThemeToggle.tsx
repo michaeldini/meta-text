@@ -24,12 +24,13 @@ interface ThemeToggleProps {
     'data-testid'?: string;
 }
 
-export const ThemeToggle: React.FC<ThemeToggleProps> = ({
-    onToggle,
-    size = 'medium',
-    className,
-    'data-testid': dataTestId = 'theme-toggle'
-}) => {
+export function ThemeToggle(props: ThemeToggleProps) {
+    const {
+        onToggle,
+        size = 'medium',
+        className,
+        ['data-testid']: dataTestId = 'theme-toggle'
+    } = props;
     const theme = useTheme();
     const isDark = theme.palette.mode === 'dark';
 

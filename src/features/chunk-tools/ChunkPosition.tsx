@@ -9,8 +9,7 @@ import type { ChunkType } from 'types';
 interface ChunkPositionProps {
     chunk: ChunkType;
 }
-
-const ChunkPosition: React.FC<ChunkPositionProps> = ({ chunk }) => {
+export function ChunkPosition({ chunk }: ChunkPositionProps) {
     const { data: userConfig } = useUserConfig();
     const showChunkPositions = userConfig?.uiPreferences?.showChunkPositions ?? false;
 

@@ -10,20 +10,23 @@ export interface ChunkTextFieldProps extends Omit<TextFieldProps, 'onChange'> {
     minRows?: number;
 }
 
-const ChunkTextField: React.FC<ChunkTextFieldProps> = ({ label, value, onChange, onBlur, sx, minRows = 2, ...rest }) => (
-    <TextField
-        label={label}
-        value={value}
-        onChange={onChange}
-        onBlur={onBlur}
-        multiline
-        minRows={minRows}
-        variant="outlined"
-        fullWidth
-        sx={sx}
-        {...rest}
-        data-testid={`${label} input field`}
-    />
-);
+
+export function ChunkTextField({ label, value, onChange, onBlur, sx, minRows = 2, ...rest }: ChunkTextFieldProps) {
+    return (
+        <TextField
+            label={label}
+            value={value}
+            onChange={onChange}
+            onBlur={onBlur}
+            multiline
+            minRows={minRows}
+            variant="outlined"
+            fullWidth
+            sx={sx}
+            {...rest}
+            data-testid={`${label} input field`}
+        />
+    );
+}
 
 export default ChunkTextField;

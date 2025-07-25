@@ -16,11 +16,8 @@ interface ImageToolProps {
     isVisible: boolean;
 }
 
-const ImageTool: React.FC<ImageToolProps> = ({
-    chunk,
-    updateChunkField,
-    isVisible,
-}) => {
+export function ImageTool(props: ImageToolProps) {
+    const { chunk, updateChunkField, isVisible } = props;
     if (!isVisible) return null;
     // Initialize hook with chunk data - provides state management and API integration
     const {

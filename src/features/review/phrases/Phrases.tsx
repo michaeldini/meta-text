@@ -24,36 +24,40 @@ interface PhraseCardProps {
     elevation?: number;
 }
 
-const PhraseCard: React.FC<PhraseCardProps> = ({ title, content, elevation = 5 }) => (
-    <Paper elevation={elevation} sx={styles.paper}>
-        <Typography variant="subtitle2" color="text.secondary">
-            {title}
-        </Typography>
-        <Typography>{content}</Typography>
-    </Paper>
-);
+export function PhraseCard({ title, content, elevation = 5 }: PhraseCardProps) {
+    return (
+        <Paper elevation={elevation} sx={styles.paper}>
+            <Typography variant="subtitle2" color="text.secondary">
+                {title}
+            </Typography>
+            <Typography>{content}</Typography>
+        </Paper>
+    );
+}
 
-const PhraseItem: React.FC<PhraseItemProps> = ({ phrase }) => (
-    <Accordion sx={styles.accordion}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="subtitle1">{phrase.words}</Typography>
-        </AccordionSummary>
-        <AccordionDetails sx={styles.accordionDetails}>
-            <PhraseCard
-                title="Explanation"
-                content={phrase.explanation}
-                elevation={5}
-            />
-            <PhraseCard
-                title="Explanation in Context"
-                content={phrase.explanation_in_context}
-                elevation={20}
-            />
-        </AccordionDetails>
-    </Accordion>
-);
+export function PhraseItem({ phrase }: PhraseItemProps) {
+    return (
+        <Accordion sx={styles.accordion}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography variant="subtitle1">{phrase.words}</Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={styles.accordionDetails}>
+                <PhraseCard
+                    title="Explanation"
+                    content={phrase.explanation}
+                    elevation={5}
+                />
+                <PhraseCard
+                    title="Explanation in Context"
+                    content={phrase.explanation_in_context}
+                    elevation={20}
+                />
+            </AccordionDetails>
+        </Accordion>
+    );
+}
 
-const Phrases: React.FC<PhrasesProps> = ({ phrases }) => {
+export function Phrases({ phrases }: PhrasesProps) {
     if (!phrases.length) return null;
 
     return (
@@ -66,6 +70,6 @@ const Phrases: React.FC<PhrasesProps> = ({ phrases }) => {
             ))}
         </Box>
     );
-};
+}
 
 export default Phrases;

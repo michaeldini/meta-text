@@ -6,11 +6,8 @@ import { CopyIcon } from 'icons';
 import { getSharedToolStyles } from 'features/chunk-shared/styles';
 import type { CopyToolProps } from 'features/chunk-shared/types';
 
-const CopyTool: React.FC<CopyToolProps> = ({
-    chunkText,
-    'data-testid': dataTestId = 'copy-tool',
-    sx = {}
-}) => {
+
+export function CopyTool({ chunkText, 'data-testid': dataTestId = 'copy-tool', sx = {} }: CopyToolProps) {
     const { showSuccess, showError } = useNotifications();
     const theme = useTheme();
     const styles = getSharedToolStyles(theme);
@@ -47,6 +44,6 @@ const CopyTool: React.FC<CopyToolProps> = ({
             </Tooltip>
         </Box>
     );
-};
+}
 
 export default CopyTool;

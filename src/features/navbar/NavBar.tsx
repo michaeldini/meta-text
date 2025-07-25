@@ -26,8 +26,7 @@ import { getNavigationConfig } from './navigationConfig';
  * - Gathers navigation configuration, auth state, and theme.
  * - Maps over navItems config to render navigation buttons.
  */
-const NavBar: React.FC = () => {
-
+export function NavBar() {
     const theme = useTheme();
     const styles = createNavbarStyles(theme);
     const { toggleMode } = useThemeContext();

@@ -31,15 +31,8 @@ const SUGGESTED_PROMPTS = [
     'Watercolor painting style'
 ];
 
-const ImageGenerationDialog: React.FC<ImageGenerationDialogProps> = ({
-    open,
-    prompt,
-    loading,
-    error,
-    onClose,
-    onPromptChange,
-    onSubmit
-}) => {
+export function ImageGenerationDialog(props: ImageGenerationDialogProps) {
+    const { open, prompt, loading, error, onClose, onPromptChange, onSubmit } = props;
     const promptLength = prompt.length;
     const isPromptValid = promptLength >= MIN_PROMPT_LENGTH && promptLength <= MAX_PROMPT_LENGTH;
     const isPromptTooLong = promptLength > MAX_PROMPT_LENGTH;

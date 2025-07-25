@@ -12,10 +12,8 @@ import { MergeChunksToolProps } from 'features/chunk-shared/types';
  * Merge Chunks Tool Component
  * Allows merging two consecutive chunks
  */
-const MergeChunksTool: React.FC<MergeChunksToolProps> = ({
-    chunkIndices,
-    onComplete
-}) => {
+
+export function MergeChunksTool({ chunkIndices, onComplete }: MergeChunksToolProps) {
     const { mergeChunks } = useMergeChunks();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -45,7 +43,6 @@ const MergeChunksTool: React.FC<MergeChunksToolProps> = ({
     }
 
     return (
-
         <Tooltip title="Undo split (merge with next chunk)">
             <IconButton
                 size="small"
@@ -57,6 +54,6 @@ const MergeChunksTool: React.FC<MergeChunksToolProps> = ({
             </IconButton>
         </Tooltip>
     );
-};
+}
 
 export default MergeChunksTool;

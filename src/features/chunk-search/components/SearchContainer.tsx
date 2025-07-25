@@ -19,10 +19,7 @@ interface SearchContainerProps {
     availableTags?: string[];
 }
 
-export const SearchContainer: React.FC<SearchContainerProps> = ({
-    showTagFilters = true,
-    availableTags
-}) => {
+export function SearchContainer({ showTagFilters = true, availableTags }: SearchContainerProps) {
     const theme = useTheme();
 
     return (

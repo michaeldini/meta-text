@@ -14,11 +14,8 @@ interface ExplanationToolProps {
     isVisible: boolean;
 }
 
-const ExplanationTool: React.FC<ExplanationToolProps> = ({
-    chunk,
-    updateChunkField,
-    isVisible
-}) => {
+export function ExplanationTool(props: ExplanationToolProps) {
+    const { chunk, updateChunkField, isVisible } = props;
     if (!isVisible) return null;
 
     const { explain, loading, error } = useExplanation();

@@ -10,8 +10,9 @@ interface FlashcardProps {
     definition_in_context: string;
     context: string;
 }
+export function Flashcard(props: FlashcardProps) {
 
-const Flashcard: React.FC<FlashcardProps> = ({ word, definition, definition_in_context, context }) => {
+    const { word, definition, definition_in_context, context } = props;
     const [flipped, setFlipped] = useState(false);
     const theme = useTheme();
     const styles = createFlashcardStyles(theme);

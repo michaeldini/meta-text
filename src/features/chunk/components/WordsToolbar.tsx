@@ -20,14 +20,8 @@ export interface WordsToolbarProps {
  * WordsToolbar - Layout component that presents word-level tools
  * This is a layout component that uses the split and define tools
  */
-const WordsToolbar: React.FC<WordsToolbarProps> = memo(({
-    anchorEl,
-    onClose,
-    word,
-    wordIdx,
-    chunkIdx,
-    chunk,
-}) => {
+
+export function WordsToolbar({ anchorEl, onClose, word, wordIdx, chunkIdx, chunk }: WordsToolbarProps) {
     const theme = useTheme();
     const styles = getChunkComponentsStyles(theme);
     const open = Boolean(anchorEl);
@@ -67,8 +61,6 @@ const WordsToolbar: React.FC<WordsToolbarProps> = memo(({
             </Box>
         </Popover >
     );
-});
+}
 
-WordsToolbar.displayName = 'WordsToolbar';
-
-export default WordsToolbar;
+export default memo(WordsToolbar);

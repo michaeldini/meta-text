@@ -12,14 +12,15 @@ interface InfoButtonProps {
     typographyVariant?: 'body1' | 'body2';
 }
 
-const InfoButton: React.FC<InfoButtonProps> = ({
-    icon,
-    dialogId,
-    word,
-    title,
-    content,
-    typographyVariant = 'body2',
-}) => {
+export function InfoButton(props: InfoButtonProps) {
+    const {
+        icon,
+        dialogId,
+        word,
+        title,
+        content,
+        typographyVariant = 'body2',
+    } = props;
     const [open, setOpen] = useState(false);
     const handleDialogOpen = () => setOpen(true);
     const handleDialogClose = () => setOpen(false);

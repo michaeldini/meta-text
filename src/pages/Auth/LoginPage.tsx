@@ -11,7 +11,7 @@ interface LoginPageProps {
     onLoginSuccess?: () => void;
 }
 
-const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
+export function LoginPage({ onLoginSuccess }: LoginPageProps) {
     const login = useAuthStore(state => state.login);
     const loading = useAuthStore(state => state.loading);
     const error = useAuthStore(state => state.error);

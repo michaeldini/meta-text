@@ -13,45 +13,47 @@ const fadeIn = keyframes`
   to { opacity: 1; transform: translateY(0);}
 `;
 
-const AnimatedShape: React.FC<{ isCircle: boolean }> = ({ isCircle }) => (
-    <Box
-        sx={{
-            position: 'relative',
-            height: 80,
-            mb: 3,
-            cursor: 'pointer',
-            userSelect: 'none',
-        }}
-    >
-
+export function AnimatedShape({ isCircle }: { isCircle: boolean }) {
+    return (
         <Box
             sx={{
-                position: 'absolute',
-                left: isCircle ? 'calc(100% - 64px)' : 0,
-                transition: 'left 0.6s cubic-bezier(0.4,0,0.2,1)',
-                width: 64,
-                height: 64,
-                background: isCircle ? '#43a047' : '#1976d2',
-                borderRadius: isCircle ? '50%' : '16px',
-                boxShadow: 3,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#fff',
-                fontWeight: 700,
-                fontSize: 24,
+                position: 'relative',
+                height: 80,
+                mb: 3,
                 cursor: 'pointer',
-                transitionProperty: 'left, background, border-radius',
-                transitionDuration: '0.6s',
-                transitionTimingFunction: 'cubic-bezier(0.4,0,0.2,1)',
+                userSelect: 'none',
             }}
         >
-            {isCircle ? '●' : '■'}
-        </Box>
-    </Box>
-);
 
-const LayoutFrames: React.FC = () => {
+            <Box
+                sx={{
+                    position: 'absolute',
+                    left: isCircle ? 'calc(100% - 64px)' : 0,
+                    transition: 'left 0.6s cubic-bezier(0.4,0,0.2,1)',
+                    width: 64,
+                    height: 64,
+                    background: isCircle ? '#43a047' : '#1976d2',
+                    borderRadius: isCircle ? '50%' : '16px',
+                    boxShadow: 3,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#fff',
+                    fontWeight: 700,
+                    fontSize: 24,
+                    cursor: 'pointer',
+                    transitionProperty: 'left, background, border-radius',
+                    transitionDuration: '0.6s',
+                    transitionTimingFunction: 'cubic-bezier(0.4,0,0.2,1)',
+                }}
+            >
+                {isCircle ? '●' : '■'}
+            </Box>
+        </Box>
+    );
+}
+
+export function LayoutFrames() {
     const [frame, setFrame] = useState(0);
     const [isCircle, setIsCircle] = useState(false);
 
@@ -85,6 +87,8 @@ const LayoutFrames: React.FC = () => {
     );
 };
 
-const ExperimentsPage: React.FC = () => <LayoutFrames />;
+export function ExperimentsPage() {
+    return <LayoutFrames />;
+}
 
 export default ExperimentsPage;

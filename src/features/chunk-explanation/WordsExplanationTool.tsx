@@ -21,11 +21,8 @@ const removeTrailingPunctuation = (text: string): string => {
     return text.replace(/[\p{P}\p{S}]+$/gu, '').trim();
 };
 
-const WordsExplanationTool: React.FC<ExplanationToolProps> = React.memo(({
-    word,
-    chunk,
-    onComplete
-}) => {
+export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => {
+    const { word, chunk, onComplete } = props;
 
     // Trim away whitespace and ensure word is not empty
     if (!word?.trim() || !chunk?.text) {

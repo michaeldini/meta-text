@@ -5,14 +5,8 @@ import { useSplitChunk } from './hooks/useSplitChunk';
 import { log } from 'utils';
 import { SplitChunkToolProps } from 'features/chunk-shared/types';
 
-const SplitChunkTool: React.FC<SplitChunkToolProps> = ({
-    chunkId,
-    chunkIdx,
-    wordIdx,
-    word,
-    chunk,
-    onComplete // closes the popover after split
-}) => {
+export function SplitChunkTool(props: SplitChunkToolProps) {
+    const { chunkId, chunkIdx, wordIdx, word, chunk, onComplete } = props;
 
     const { splitChunk } = useSplitChunk();
 

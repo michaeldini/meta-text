@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { generateRewrite } from 'services';
 import type { RewriteToolProps } from 'features/chunk-shared/types';
 import RewriteToolButton from './components/RewriteToolButton';
-import RewriteDialog from './components/RewriteDialog';
+import { RewriteDialog } from './components/RewriteDialog';
 
 const STYLE_OPTIONS = [
     { value: 'like im 5', label: 'Explain like I’m 5' },
@@ -10,7 +10,8 @@ const STYLE_OPTIONS = [
     { value: 'academic', label: 'Academic' },
 ];
 
-const RewriteTool: React.FC<RewriteToolProps> = ({ chunk, onRewriteCreated }) => {
+
+export function RewriteTool({ chunk, onRewriteCreated }: RewriteToolProps) {
     const [open, setOpen] = useState(false);
     const [style, setStyle] = useState(STYLE_OPTIONS[0].value);
     const [loading, setLoading] = useState(false);
@@ -63,6 +64,6 @@ const RewriteTool: React.FC<RewriteToolProps> = ({ chunk, onRewriteCreated }) =>
             />
         </>
     );
-};
+}
 
 export default RewriteTool;

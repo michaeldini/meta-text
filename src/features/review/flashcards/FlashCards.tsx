@@ -13,8 +13,7 @@ import { AppAlert } from 'components';
 interface FlashCardsProps {
     flashcardItems: Explanation[];
 }
-
-const FlashCards: React.FC<FlashCardsProps> = ({ flashcardItems }) => {
+export function FlashCards({ flashcardItems }: FlashCardsProps) {
     const theme = useTheme();
     const styles = createFlashcardStyles(theme);
 

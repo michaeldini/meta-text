@@ -13,7 +13,7 @@ interface DownloadMetatextButtonProps {
     disabled?: boolean;
 }
 
-const DownloadMetatextButton: React.FC<DownloadMetatextButtonProps> = ({ metatextId, disabled }) => {
+export function DownloadMetatextButton({ metatextId, disabled }: DownloadMetatextButtonProps) {
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState<string | null>(null);
 
@@ -47,6 +47,6 @@ const DownloadMetatextButton: React.FC<DownloadMetatextButtonProps> = ({ metatex
             </span>
         </Tooltip>
     );
-};
+}
 
 export default DownloadMetatextButton;

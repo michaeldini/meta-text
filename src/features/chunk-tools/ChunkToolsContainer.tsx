@@ -24,12 +24,9 @@ interface ChunkToolsContainerProps {
     activeTools: ChunkToolId[];
     updateChunkField: UpdateChunkFieldFn;
 }
+export function ChunkToolsContainer(props: ChunkToolsContainerProps) {
+    const { chunk, activeTools, updateChunkField } = props;
 
-const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = ({
-    chunk,
-    activeTools,
-    updateChunkField
-}) => {
     const theme = useTheme();
     const styles = getChunkComponentsStyles(theme, activeTools.length > 0);
 

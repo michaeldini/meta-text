@@ -17,11 +17,8 @@ interface RewriteDisplayToolProps {
     isVisible: boolean;
 }
 
-const RewriteDisplayTool: React.FC<RewriteDisplayToolProps> = ({
-    chunk,
-    updateChunkField,
-    isVisible
-}) => {
+export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
+    const { chunk, updateChunkField, isVisible } = props;
     if (!isVisible) return null;
     const theme = useTheme();
     const styles = getSharedToolStyles(theme);

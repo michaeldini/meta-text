@@ -11,7 +11,8 @@ interface ChunkBookmarkToggleProps {
     chunk: ChunkType;
 }
 
-const ChunkBookmarkToggle: React.FC<ChunkBookmarkToggleProps> = ({ chunk }) => {
+
+export function ChunkBookmarkToggle({ chunk }: ChunkBookmarkToggleProps) {
     // Get the current bookmarked chunk from React Query
     const { data: bookmarkedChunkId } = useBookmark(chunk.metatext_id);
     const setBookmarkMutation = useSetBookmark(chunk.metatext_id);
@@ -39,6 +40,6 @@ const ChunkBookmarkToggle: React.FC<ChunkBookmarkToggleProps> = ({ chunk }) => {
             </span>
         </Tooltip>
     );
-};
+}
 
 export default ChunkBookmarkToggle;

@@ -14,11 +14,8 @@ interface EvaluationToolProps {
     isVisible: boolean;
 }
 
-const EvaluationTool: React.FC<EvaluationToolProps> = ({
-    chunk,
-    updateChunkField,
-    isVisible,
-}) => {
+export function EvaluationTool(props: EvaluationToolProps) {
+    const { chunk, updateChunkField, isVisible } = props;
     if (!isVisible) return null;
 
     const { fetchEvaluationResults, loading, error } = useEvaluation();

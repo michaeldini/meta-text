@@ -18,12 +18,8 @@ import { getSharedToolStyles } from 'features/chunk-shared/styles';
 import { LoadingSpinner } from 'components';
 import type { ImageDisplayProps } from 'features/chunk-shared/types';
 
-const ImageDisplay: React.FC<ImageDisplayProps> = ({
-    src,
-    alt = '',
-    height = '300px',
-    showModal = true,
-}) => {
+export function ImageDisplay(props: ImageDisplayProps) {
+    const { src, alt = '', height = '300px', showModal = true } = props;
     const [loaded, setLoaded] = useState(false);
     const [hasError, setHasError] = useState(false);
     const [lightboxOpen, setLightboxOpen] = useState(false);

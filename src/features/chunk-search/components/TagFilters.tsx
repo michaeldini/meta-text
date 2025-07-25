@@ -18,9 +18,8 @@ interface TagFiltersProps {
 // Common tags that users might want to filter by
 const DEFAULT_TAGS = ['#chapter', '#comment', '#todo', '#note', '#quote', '#important'];
 
-export const TagFilters: React.FC<TagFiltersProps> = ({
-    availableTags = DEFAULT_TAGS
-}) => {
+export function TagFilters(props: TagFiltersProps) {
+    const { availableTags = DEFAULT_TAGS } = props;
     const theme = useTheme();
     const { activeTags, toggleTag } = useSearchStore();
 

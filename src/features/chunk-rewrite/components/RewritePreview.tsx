@@ -2,7 +2,8 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 import type { RewritePreviewProps } from 'features/chunk-shared/types';
 
-const RewritePreview: React.FC<RewritePreviewProps> = ({ preview }) => {
+
+export function RewritePreview({ preview }: RewritePreviewProps) {
     if (!preview) return null;
     return (
         <Box mt={3}>
@@ -12,6 +13,6 @@ const RewritePreview: React.FC<RewritePreviewProps> = ({ preview }) => {
             </Box>
         </Box>
     );
-};
+}
 
 export default RewritePreview;

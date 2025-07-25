@@ -13,7 +13,8 @@ interface ChunkFavoriteFilterToggleProps {
     onToggle: (showOnlyFavorites: boolean) => void;
 }
 
-const ChunkFavoriteFilterToggle: React.FC<ChunkFavoriteFilterToggleProps> = ({ showOnlyFavorites, onToggle }) => {
+
+export function ChunkFavoriteFilterToggle({ showOnlyFavorites, onToggle }: ChunkFavoriteFilterToggleProps) {
     const theme = useTheme();
     return (
         <Tooltip title={showOnlyFavorites ? 'Show all chunks' : 'Show only favorites'}>
@@ -33,6 +34,6 @@ const ChunkFavoriteFilterToggle: React.FC<ChunkFavoriteFilterToggleProps> = ({ s
             </span>
         </Tooltip>
     );
-};
+}
 
 export default ChunkFavoriteFilterToggle;

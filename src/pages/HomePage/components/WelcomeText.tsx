@@ -14,7 +14,7 @@ interface WelcomeTextProps {
 }
 
 
-const WelcomeText: React.FC<WelcomeTextProps> = ({ welcomeTextStyles }) => {
+export function WelcomeText({ welcomeTextStyles }: WelcomeTextProps) {
     return (
         <Stack sx={welcomeTextStyles.container}>
             <Typography variant="h4" sx={welcomeTextStyles.title} gutterBottom>

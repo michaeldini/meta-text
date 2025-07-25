@@ -10,7 +10,8 @@ interface BookmarkNavigateButtonProps {
     metaTextId: number;
 }
 
-const BookmarkNavigateButton: React.FC<BookmarkNavigateButtonProps> = ({ metaTextId }) => {
+
+export function BookmarkNavigateButton({ metaTextId }: BookmarkNavigateButtonProps) {
     const { setNavigateToBookmark } = useBookmarkUIStore();
     const { data: bookmarkedChunkId } = useBookmark(metaTextId);
     return (
@@ -26,6 +27,6 @@ const BookmarkNavigateButton: React.FC<BookmarkNavigateButtonProps> = ({ metaTex
             </span>
         </Tooltip>
     );
-};
+}
 
 export default BookmarkNavigateButton;
