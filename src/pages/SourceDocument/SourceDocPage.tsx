@@ -14,23 +14,26 @@ import {
     SearchableList,
     AppAlert
 } from 'components';
-import { FADE_IN_DURATION } from 'constants';
+// import { FADE_IN_DURATION } from 'constants';
+
+import { useNotifications } from 'store';
 
 
 function SourceDocPage(): ReactElement {
     // Fetch source documents using the new hook
     const { data: sourceDocs, isLoading: sourceDocsLoading, error: sourceDocsError, refetch } = useSourceDocuments();
+    const { showSuccess, showError, showWarning, showInfo } = useNotifications();
+
+    // Show error notification if there's an error fetching source documents
+    if (sourceDocsError) {
+        showError(`Failed to load source documents: ${sourceDocsError.message}`);
+    }
 
     return (
         <PageContainer
             loading={sourceDocsLoading}
             data-testid="sourcedoc-list-page"
         >
-            {sourceDocsError && (
-                <AppAlert severity="error">
-                    {sourceDocsError instanceof Error ? sourceDocsError.message : String(sourceDocsError)}
-                </AppAlert>
-            )}
             <DocumentManagementLayout
                 title="Source Documents"
                 subtitle="Upload a new source document or browse existing ones."

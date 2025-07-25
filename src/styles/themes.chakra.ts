@@ -10,9 +10,14 @@ const config = defineConfig({
             fonts: {
                 body: { value: "system-ui, sans-serif" },
             },
+            fontSizes: {
+                sm: { value: "0.875rem" },
+                md: { value: "1rem" },
+                lg: { value: "1.125rem" },
+                xl: { value: "1.25rem" },
+            },
 
-        },
-
+        }
     },
 })
 

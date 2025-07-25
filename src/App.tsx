@@ -4,8 +4,8 @@
 */
 import React, { useEffect, JSX, Suspense, lazy, ComponentType } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider, CssBaseline, useTheme, Box, Typography } from '@mui/material';
-
+import { ThemeProvider, CssBaseline, useTheme, Typography } from '@mui/material';
+import { Box, Stack, Text } from '@chakra-ui/react';
 import { NavBar } from 'features';
 import { LoadingFallback, ErrorBoundary, GlobalNotifications } from 'components';
 import { useAuthStore } from 'store';
@@ -148,7 +148,7 @@ export const AppContent = () => {
     };
 
     return (
-        <Box sx={styles.appContainer}>
+        <Box bg="simple">
             <GlobalNotifications />
             <NavBar />
             <Routes>

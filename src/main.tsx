@@ -5,9 +5,9 @@ import App from './App';
 import ErrorBoundary from './components/ErrorBoundary';
 import { ThemeContextProvider } from './contexts/ThemeContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Provider } from "./components/ui/provider"
+import { Provider as ChakraProvider } from "./components/ui/provider"
 import {
-    ChakraProvider,
+    // ChakraProvider,
     createSystem,
     defaultConfig
 } from "@chakra-ui/react"
@@ -26,7 +26,7 @@ export function AppRoot() {
     return (
         <StrictMode>
             <ErrorBoundary>
-                <ChakraProvider value={system}>
+                <ChakraProvider>
                     <ThemeContextProvider>
                         <BrowserRouter>
                             <QueryClientProvider client={queryClient}>
