@@ -347,3 +347,4 @@ export const getTheme = (mode: 'light' | 'dark') => {
 
 // Export your current theme as default (dark theme)
 export default darkTheme;
+

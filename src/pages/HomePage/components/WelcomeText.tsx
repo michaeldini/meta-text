@@ -3,7 +3,8 @@
 
 
 import React from 'react';
-import { Box, Typography, SxProps, Theme, Stack } from '@mui/material';
+import { Box, Typography, SxProps, Theme } from '@mui/material';
+import { Heading, Text, Stack, Center } from "@chakra-ui/react"
 
 interface WelcomeTextProps {
     welcomeTextStyles: {
@@ -16,15 +17,15 @@ interface WelcomeTextProps {
 
 export function WelcomeText({ welcomeTextStyles }: WelcomeTextProps) {
     return (
-        <Stack sx={welcomeTextStyles.container}>
-            <Typography variant="h4" sx={welcomeTextStyles.title} gutterBottom>
+        <Stack>
+            <Heading size="5xl" color="primary">
                 Welcome!
-            </Typography>
-            <Typography variant="body1" sx={welcomeTextStyles.text} >
+            </Heading>
+            <Text>
                 Imagine unlocking the true depth of every document you read. <b>Meta-Text</b> empowers you to upload, dissect, and truly engage with your texts—one meaningful section at a time. <br /><br />
                 <b>How does it work?</b> Upload a document that sparks your curiosity. Break it into sections that matter to you. Annotate each part with your thoughts, questions, and insights. <br /><br />
                 <i>Transform passive reading into an active, personal journey of discovery. Your ideas belong here.</i>
-            </Typography>
+            </Text>
         </Stack>
     );
 };

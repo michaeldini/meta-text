@@ -5,33 +5,8 @@
 
 import { ReactElement, ReactNode, forwardRef } from 'react';
 
-import { Stack, Typography } from '@mui/material';
 
-// Styling constants for DocumentManagementLayout
-const styles = {
-    container: {
-        alignItems: 'center',
-        padding: 2,
-        width: '100%',
-        height: '100%',
-    },
-    headerStack: {
-        alignItems: 'center',
-    },
-    title: {
-        fontWeight: 'bold',
-        mb: 1,
-        color: 'text.primary',
-    },
-    subtitle: {
-        mb: 2,
-        color: 'text.secondary',
-    },
-    contentStack: {
-        // Responsive direction handled in prop, not style
-    },
-};
-
+import { Heading, Stack } from '@chakra-ui/react'
 
 interface DocumentManagementLayoutProps {
     title: string;
@@ -48,32 +23,21 @@ const DocumentManagementLayout = forwardRef<HTMLDivElement, DocumentManagementLa
 
         return (
             <Stack
-                spacing={4}
-                sx={styles.container}
                 ref={ref}
                 data-testid={`${title
                     .toLowerCase()
                     .replace(/ /g, '-')}-list-content`}
             >
-                <Stack sx={styles.headerStack}>
-                    <Typography
-                        variant="h4"
-                        component="h1"
-                        sx={styles.title}
-                    >
+                <Stack>
+                    <Heading size="6xl">
                         {title}
-                    </Typography>
-                    <Typography
-                        variant="subtitle1"
-                        sx={styles.subtitle}
-                    >
+                    </Heading>
+                    <Heading size="md">
                         {subtitle}
-                    </Typography>
+                    </Heading>
                 </Stack>
                 <Stack
-                    direction={{ xs: 'column', sm: 'row' }}
-                    spacing={4}
-                    sx={styles.contentStack}
+                    direction={{ base: 'column', md: 'row' }}
                 >
                     {formComponent}
                     {listComponent}

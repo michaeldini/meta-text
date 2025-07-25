@@ -1,15 +1,18 @@
 // Custom React component for uploading source documents
 
 import React from 'react';
+
 import {
-    Paper,
-    Typography,
+    Heading,
+    Stack,
+    Text,
+    Spinner,
     Box,
-    TextField,
     Button,
-    useTheme,
-    LinearProgress,
-} from '@mui/material';
+    Input,
+
+} from '@chakra-ui/react'
+import { Field } from 'components';
 import { FileUploadIcon } from 'icons';
 
 import { useSourceDocUpload } from '../hooks/useSourceDocUpload';
@@ -25,37 +28,7 @@ export interface SourceDocUploadFormProps {
     sx?: object;
 }
 
-/**
- * SourceDocUploadForm Component
- * 
- * A streamlined form component for uploading source documents. This component
- * provides a clean, focused interface for file uploads without the complexity
- * of mode switching or multiple form types.
- * 
- * Features:
- * - File selection with drag & drop support
- * - Title input field
- * - Form validation
- * - Loading states with progress indication
- * - Error handling with user feedback
- * - Success callbacks for integration
- * - Responsive design
- * 
- * @example
- * ```tsx
- * <SourceDocUploadForm 
- *   onSuccess={() => {
- *     console.log('Upload successful!');
- *     refetchDocuments();
- *   }}
- * />
- * ```
- * 
- * @param props - Component props
- * @returns {ReactElement} The rendered SourceDocUploadForm component
- */
 function SourceDocUploadForm({ onSuccess, sx = {} }: SourceDocUploadFormProps): React.ReactElement {
-    const theme = useTheme();
 
     /**
      * Upload form state and handlers from custom hook
@@ -73,104 +46,42 @@ function SourceDocUploadForm({ onSuccess, sx = {} }: SourceDocUploadFormProps): 
         clearMessages
     } = useSourceDocUpload({ onSuccess });
 
-    /**
-     * Component styles
-     */
-    const styles = {
-        container: {
-            p: 3,
-            maxWidth: 600,
-            margin: '0 auto',
-            ...sx
-        },
-        form: {
-            display: 'flex',
-            flexDirection: 'column' as const,
-            gap: 2,
-        },
-        fileInputContainer: {
-            border: `2px dashed ${theme.palette.divider}`,
-            borderRadius: 2,
-            p: 3,
-            textAlign: 'center',
-            backgroundColor: theme.palette.background.default,
-            cursor: 'pointer',
-            transition: 'all 0.2s ease-in-out',
-            '&:hover': {
-                borderColor: theme.palette.primary.main,
-                backgroundColor: theme.palette.action.hover,
-            },
-            '&:focus-within': {
-                borderColor: theme.palette.primary.main,
-                outline: `2px solid ${theme.palette.primary.main}`,
-                outlineOffset: 2,
-            }
-        },
-        fileInput: {
-            display: 'none',
-        },
-        uploadIcon: {
-            fontSize: 48,
-            color: theme.palette.text.secondary,
-            mb: 1,
-        },
-        submitButton: {
-            mt: 2,
-            py: 1.5,
-            fontWeight: 'bold',
-            position: 'relative',
-        },
-        progressContainer: {
-            mt: 1,
-            mb: 2,
-        }
-    };
+
 
     return (
-        <Paper elevation={2} sx={styles.container}>
-            {/* Form Header */}
-            <Box sx={{ mb: 3 }}>
-                <Typography variant="h5" component="h2" gutterBottom fontWeight="bold">
-                    Upload Source Document
-                </Typography>
-                <Typography variant="subtitle1" color="text.secondary">
-                    Upload a text file to create a new source document.
-                </Typography>
-            </Box>
+        <Stack bg="secondary" p={4} borderRadius="md" gap={4} >
+            <Heading size="xl" >
+                Upload Source Document
+            </Heading>
+            <Heading size="md">
+                Upload a text file to create a new source document.
+            </Heading>
 
             {/* Loading Progress */}
-            {loading && (
-                <Box sx={styles.progressContainer}>
-                    <LinearProgress />
-                    <Typography variant="body2" color="text.secondary" sx={{ mt: 1, textAlign: 'center' }}>
-                        Uploading document...
-                    </Typography>
-                </Box>
-            )}
+            {loading && <Spinner />}
 
             {/* Success Message */}
             {success && (
-                <AppAlert severity="success" onClose={clearMessages}>
+                <AppAlert severity="success">
                     {success}
                 </AppAlert>
             )}
 
             {/* Error Message */}
             {error && (
-                <AppAlert severity="error" onClose={clearMessages}>
+                <AppAlert severity="error">
                     {error}
                 </AppAlert>
             )}
 
             {/* Upload Form */}
-            <form onSubmit={handleSubmit} style={styles.form}>
+            <form onSubmit={handleSubmit} >
                 {/* File Upload Section */}
-                <Box>
-                    <Typography variant="subtitle1" component="label" htmlFor="file-input" gutterBottom>
+                <Stack>
+                    <Heading>
                         Select File *
-                    </Typography>
+                    </Heading>
                     <Box
-                        sx={styles.fileInputContainer}
                         onClick={() => document.getElementById('file-input')?.click()}
                         role="button"
                         tabIndex={0}
@@ -187,53 +98,49 @@ function SourceDocUploadForm({ onSuccess, sx = {} }: SourceDocUploadFormProps): 
                             type="file"
                             accept=".txt,.doc,.docx,.pdf"
                             onChange={handleFileChange}
-                            style={styles.fileInput}
+                            style={{ display: 'none' }}
                             disabled={loading}
                             data-testid="file-input"
                         />
-                        <FileUploadIcon sx={styles.uploadIcon} />
-                        <Typography variant="h6" gutterBottom>
+                        <FileUploadIcon />
+                        <Text >
                             {file ? file.name : 'Choose a file'}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
+                        </Text>
+                        <Text>
                             {file
                                 ? `Selected: ${(file.size / 1024).toFixed(1)} KB`
                                 : 'Drag & drop or click to select a text file'
                             }
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+                        </Text>
+                        <Text>
                             Supported formats: .txt
-                        </Typography>
+                        </Text>
                     </Box>
-                </Box>
+                </Stack>
 
                 {/* Title Input */}
-                <TextField
-                    label="Document Title"
-                    value={title}
-                    onChange={handleTitleChange}
-                    fullWidth
+                <Field
+                    label="Title"
                     required
-                    disabled={loading}
-                    placeholder="Enter a descriptive title for your document"
-                    data-testid="title-input"
-                    helperText="Choose a clear, descriptive title that will help you identify this document later"
-                />
+                    errorText='Title is required.'
+                >
+                    <Input onChange={handleTitleChange}
+                        required />
+                </Field>
 
                 {/* Submit Button */}
                 <Button
-                    type="submit"
-                    variant="contained"
-                    size="large"
+                    color="primary"
+                    variant="ghost"
+                    size="xl"
                     disabled={isSubmitDisabled}
-                    sx={styles.submitButton}
-                    startIcon={!loading ? <FileUploadIcon /> : undefined}
                     data-testid="submit-button"
                 >
+                    {!loading ? <FileUploadIcon /> : undefined}
                     {loading ? 'Uploading...' : 'Upload Document'}
                 </Button>
             </form>
-        </Paper>
+        </Stack >
     );
 }
 

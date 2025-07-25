@@ -5,7 +5,6 @@
 
 
 import React, { ReactElement } from 'react';
-import { Slide } from '@mui/material';
 import { useSourceDocuments } from 'features';
 
 import {
@@ -32,31 +31,26 @@ function SourceDocPage(): ReactElement {
                     {sourceDocsError instanceof Error ? sourceDocsError.message : String(sourceDocsError)}
                 </AppAlert>
             )}
-            {/* Smooth slide-up animation for the page content */}
-            <Slide in={true} direction="up" timeout={FADE_IN_DURATION}>
-                <div>
-                    <DocumentManagementLayout
-                        title="Source Documents"
-                        subtitle="Upload a new source document or browse existing ones."
-                        formComponent={
-                            <SourceDocUploadForm
-                                onSuccess={refetch}
-                            />
-                        }
-                        listComponent={
-                            <SearchableList
-                                items={sourceDocs ?? []}
-                                filterKey="title"
-                                title="Source Documents"
-                                loading={sourceDocsLoading}
-                                searchPlaceholder="Search source documents..."
-                                emptyMessage="No source documents found. Upload some documents to get started."
-                                ariaLabel="List of source documents"
-                            />
-                        }
+            <DocumentManagementLayout
+                title="Source Documents"
+                subtitle="Upload a new source document or browse existing ones."
+                formComponent={
+                    <SourceDocUploadForm
+                        onSuccess={refetch}
                     />
-                </div>
-            </Slide>
+                }
+                listComponent={
+                    <SearchableList
+                        items={sourceDocs ?? []}
+                        filterKey="title"
+                        title="Source Documents"
+                        loading={sourceDocsLoading}
+                        searchPlaceholder="Search source documents..."
+                        emptyMessage="No source documents found. Upload some documents to get started."
+                        ariaLabel="List of source documents"
+                    />
+                }
+            />
         </PageContainer>
     );
 }

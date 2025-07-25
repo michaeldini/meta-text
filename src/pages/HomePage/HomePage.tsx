@@ -6,7 +6,7 @@
  * improving perceived performance when users navigate to those pages.
  */
 
-import { Box, Slide, Stack, useTheme } from '@mui/material';
+import { Box, Slide, useTheme } from '@mui/material';
 import type { Theme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
 import { useEffect } from 'react';
@@ -21,6 +21,7 @@ import WelcomeText from './components/WelcomeText';
 import NavigationButtons from './components/NavigationButtons';
 import { FADE_IN_DURATION } from 'constants';
 import HomePageDetails from './components/HomePageDetails';
+import { Center, Stack } from "@chakra-ui/react"
 
 
 /* HomePage component
@@ -47,22 +48,14 @@ function HomePage(): ReactElement {
             loading={false}
             data-testid="homepage-container"
         >
-            <Slide in={true} direction="up" timeout={FADE_IN_DURATION}>
-                <Stack
-                    spacing={4}
-                    sx={{
-                        alignItems: 'center',
-                        padding: theme.spacing(2),
-                    }}
-                    data-testid="homepage-content"
-                >
-                    <WelcomeText welcomeTextStyles={styles.welcomeText} />
+            <Stack data-testid="homepage-content" maxWidth="2xl">
+                <WelcomeText welcomeTextStyles={styles.welcomeText} />
 
-                    <NavigationButtons />
+                <NavigationButtons />
 
-                    <HomePageDetails />
-                </Stack>
-            </Slide>
+                <HomePageDetails />
+            </Stack>
+
         </PageContainer>
     );
 }

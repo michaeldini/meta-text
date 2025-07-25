@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
-import { Container, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 import { getAppStyles } from '../styles/styles';
-
+import { Flex } from '@chakra-ui/react';
 import { ErrorBoundary } from 'components'
 import { LoadingFallback } from 'components';
 
@@ -16,16 +16,14 @@ interface PageContainerProps {
  */
 export function PageContainer(props: PageContainerProps): React.ReactElement {
     const { children, loading } = props;
-    const theme = useTheme();
-    const styles = getAppStyles(theme);
 
     return (
         <ErrorBoundary>
-            <Container maxWidth={false} sx={styles.pageLayout}>
-                <React.Suspense fallback={<LoadingFallback />}>
+            <React.Suspense fallback={<LoadingFallback />}>
+                <Flex justify="center"  >
                     {children}
-                </React.Suspense>
-            </Container>
+                </Flex>
+            </React.Suspense>
         </ErrorBoundary>
     );
 }
