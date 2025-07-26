@@ -1,5 +1,6 @@
 import React from 'react';
-import { IconButton, Tooltip } from '@mui/material';
+import { IconButton } from '@chakra-ui/react';
+import { Tooltip } from 'components';
 import { ContentCutIcon } from 'icons';
 import { useSplitChunk } from './hooks/useSplitChunk';
 import { log } from 'utils';
@@ -24,10 +25,9 @@ export function SplitChunkTool(props: SplitChunkToolProps) {
     };
 
     return (
-        <Tooltip title={`Split chunk at "${word}"`}>
+        <Tooltip content={`Split chunk at "${word}"`}>
             <IconButton
                 onClick={handleSplit}
-                size="small"
                 aria-label={`Split chunk at word "${word}"`}
             >
                 <ContentCutIcon />

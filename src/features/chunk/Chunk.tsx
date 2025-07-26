@@ -1,5 +1,5 @@
 import React, { memo, useMemo } from 'react';
-import { Box, Paper, Slide, useTheme } from '@mui/material';
+import { Box } from '@chakra-ui/react';
 
 import { useChunkStore } from 'store';
 
@@ -18,13 +18,11 @@ const Chunk = memo(function Chunk({
     chunkIdx,
 }: ChunkProps) {
     const { activeTabs, updateChunkField } = useChunkStore();
-    const theme = useTheme();
-    const styles = getChunkComponentsStyles(theme);
+
 
     return (
         <Box
             data-chunk-id={chunk.id}
-            sx={styles.chunkContainer}
         >
             <ChunkWords
                 chunk={chunk}

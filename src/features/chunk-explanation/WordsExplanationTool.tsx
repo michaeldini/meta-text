@@ -1,13 +1,13 @@
 
 import React, { useState, useCallback, useMemo } from 'react';
 import {
-    IconButton,
-    Tooltip,
     Drawer,
     Box,
-    Typography,
-    Divider,
-} from '@mui/material';
+    Text,
+    Divide,
+} from '@chakra-ui/react';
+import { IconButton } from '@chakra-ui/react';
+import { Tooltip } from 'components';
 import { QuestionMarkIcon } from 'icons';
 import { useExplanation } from './hooks/useExplanation';
 import { LoadingSpinner, AppAlert } from 'components';
@@ -61,10 +61,9 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
     return (
         <>
             {/* Question Mark Icon Button*/}
-            <Tooltip title={`Define "${cleanedWord}"`}>
+            <Tooltip content={`Define "${cleanedWord}"`}>
                 <IconButton
                     onClick={handleDefine}
-                    size="small"
                     disabled={loading}
                     aria-label={`Define ${cleanedWord}`}
                 >

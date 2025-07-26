@@ -2,7 +2,7 @@
 // This component provides a popover with tools for splitting and defining words in a chunk
 
 import React, { memo } from 'react';
-import { Popover, Box, useTheme } from '@mui/material';
+import { Popover, Box } from '@chakra-ui/react';
 import { SplitChunkTool } from 'features/chunk-split';
 import { WordsExplanationTool } from 'features/chunk-explanation';
 import { getChunkComponentsStyles } from '../Chunk.styles';
@@ -22,44 +22,43 @@ export interface WordsToolbarProps {
  */
 
 export function WordsToolbar({ anchorEl, onClose, word, wordIdx, chunkIdx, chunk }: WordsToolbarProps) {
-    const theme = useTheme();
-    const styles = getChunkComponentsStyles(theme);
-    const open = Boolean(anchorEl);
+    // Chakra UI v3 Popover refactor
+    const [open, setOpen] = React.useState(Boolean(anchorEl));
+
+    React.useEffect(() => {
+        setOpen(Boolean(anchorEl));
+    }, [anchorEl]);
 
     const handleToolComplete = (success: boolean, result?: any) => {
+        setOpen(false);
         onClose();
     };
 
     return (
-        <Popover
-            open={open}
-            anchorEl={anchorEl}
-            onClose={onClose}
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-            }}
-            transformOrigin={{
-                vertical: 'top',
-                horizontal: 'center',
-            }}
-        >
-            <Box sx={styles.wordsToolBarContainer}>
-                <SplitChunkTool
-                    chunkId={chunk.id}
-                    chunkIdx={chunkIdx}
-                    wordIdx={wordIdx}
-                    word={word}
-                    chunk={chunk}
-                    onComplete={handleToolComplete}
-                />
-                <WordsExplanationTool
-                    word={word}
-                    chunk={chunk}
-                    onComplete={handleToolComplete}
-                />
-            </Box>
-        </Popover >
+        <Popover.Root open={open} onOpenChange={e => { setOpen(e.open); if (!e.open) onClose(); }}>
+            <Popover.Positioner>
+                <Popover.Content>
+                    <Popover.Arrow />
+                    <Popover.Body>
+                        <Box>
+                            <SplitChunkTool
+                                chunkId={chunk.id}
+                                chunkIdx={chunkIdx}
+                                wordIdx={wordIdx}
+                                word={word}
+                                chunk={chunk}
+                                onComplete={handleToolComplete}
+                            />
+                            <WordsExplanationTool
+                                word={word}
+                                chunk={chunk}
+                                onComplete={handleToolComplete}
+                            />
+                        </Box>
+                    </Popover.Body>
+                </Popover.Content>
+            </Popover.Positioner>
+        </Popover.Root>
     );
 }
 

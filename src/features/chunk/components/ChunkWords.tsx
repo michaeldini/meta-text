@@ -3,7 +3,7 @@
 // At the end of the chunk, there is a button to merge the current chunk with the next one
 
 import React, { memo, useRef } from 'react';
-import { Box, useTheme } from '@mui/material';
+import { Box, Wrap } from '@chakra-ui/react';
 import { MergeChunksTool } from 'features/chunk-merge';
 import WordsToolbar from '../components/WordsToolbar';
 import { getChunkComponentsStyles } from '../Chunk.styles';
@@ -27,8 +27,7 @@ const ChunkWords = memo(function ChunkWords({
     const fontFamily = uiPrefs.fontFamily ?? 'Inter, sans-serif';
     const lineHeight = uiPrefs.lineHeight ?? 1.5;
     const paddingX = uiPrefs.paddingX ?? 0.3;
-    const theme = useTheme();
-    const styles = getChunkComponentsStyles(theme);
+
 
     // Use custom hook for word selection logic
     const {
@@ -48,21 +47,22 @@ const ChunkWords = memo(function ChunkWords({
         return (
             <Box
                 key={wordIdx}
-                component="span"
-                sx={[
-                    styles.chunkWord,
-                    isHighlighted && {
-                        backgroundColor: theme.palette.secondary.main,
-                        color: theme.palette.primary.contrastText,
-                    },
-                    {
-                        fontSize: `${textSizePx}px`,
-                        fontFamily,
-                        lineHeight,
-                        paddingLeft: `${paddingX}rem`,
-                        paddingRight: `${paddingX}rem`,
-                    }
-                ]}
+                paddingX={`${paddingX}rem`}
+                // color={isHighlighted ? 'white' : 'black'}
+                // sx={[
+                //     styles.chunkWord,
+                //     isHighlighted && {
+                //         backgroundColor: theme.palette.secondary.main,
+                //         color: theme.palette.primary.contrastText,
+                //     },
+                //     {
+                //         fontSize: `${textSizePx}px`,
+                //         fontFamily,
+                //         lineHeight,
+                //         paddingLeft: `${paddingX}rem`,
+                //         paddingRight: `${paddingX}rem`,
+                //     }
+                // ]}
                 onMouseDown={e => handleWordDown(wordIdx, e)}
                 onMouseEnter={e => handleWordEnter(wordIdx, e)}
                 onMouseUp={handleWordUp}
@@ -77,19 +77,12 @@ const ChunkWords = memo(function ChunkWords({
     });
 
     return (
-        <Box ref={containerRef} sx={styles.wordsContainer}
-            onMouseLeave={() => handleWordUp()}
-        >
-
-
-            {wordsElements}
-
-            <Box component="span" sx={styles.chunkUndoIconButton}>
-                <MergeChunksTool
-                    chunkIndices={[chunkIdx, chunkIdx + 1]}
-                />
-
-            </Box>
+        <Box ref={containerRef} onMouseLeave={() => handleWordUp()}>
+            <Wrap>
+                {wordsElements}
+            </Wrap>
+            <MergeChunksTool
+                chunkIndices={[chunkIdx, chunkIdx + 1]} />
 
             {/* Displays on word click or select */}
             <WordsToolbar

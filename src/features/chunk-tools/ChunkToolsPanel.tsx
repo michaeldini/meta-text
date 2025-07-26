@@ -4,10 +4,10 @@
 
 import React from 'react';
 import { useTheme } from '@mui/material/styles';
-import { Box, ToggleButtonGroup, ToggleButton, Tooltip, Typography, BottomNavigation, Paper } from '@mui/material';
+import { Box, Text, ButtonGroup, IconButton } from '@chakra-ui/react';
+import { Tooltip } from 'components';
 
 import { useChunkStore } from 'store';
-import { FADE_IN_DURATION } from 'constants';
 import { getChunkComponentsStyles } from '../chunk/Chunk.styles';
 import { createChunkToolsRegistry, type ChunkToolId } from './toolsRegistry';
 
@@ -21,42 +21,39 @@ export function ChunkToolsPanel() {
     // Get tool definitions
     const toolsRegistry = createChunkToolsRegistry();
 
-    // Allow multiple selection
-    const handleTabsChange = (_: any, tabs: ChunkToolId[]) => {
-        setActiveTabs(tabs);
+    // Toggle tool selection
+    const handleToolClick = (toolId: ChunkToolId) => {
+        if (activeTabs.includes(toolId)) {
+            setActiveTabs(activeTabs.filter(id => id !== toolId));
+        } else {
+            setActiveTabs([...activeTabs, toolId]);
+        }
     };
 
     return (
-        <Paper sx={{ position: 'fixed', left: 0, right: 0, bottom: 0, zIndex: theme.zIndex.speedDial, borderRadius: 0 }} elevation={3}>
-            <Box sx={{ justifyContent: 'center', py: 1, background: 'inherit', display: 'flex' }}>
-                <ToggleButtonGroup
-                    value={activeTabs}
-                    onChange={handleTabsChange}
-                    size="small"
-                    exclusive={false}
-                    sx={{ width: '100%', gap: 0, display: 'flex' }}
+        <Box position='fixed' left={0} right={0} bottom={0} zIndex={1000} >
+            <Box>
+                <ButtonGroup
+                    size="lg"
                 >
                     {toolsRegistry.map((tool) => (
                         <Tooltip
                             key={tool.id}
-                            title={<Typography variant="caption">{tool.tooltip}</Typography>}
+                            content={<Text fontSize="sm">{tool.tooltip}</Text>}
                             {...styles.chunkToolButtonsToolTip}
                         >
-                            <span style={{ width: `100%`, display: 'flex', flex: 1 }}>
-                                <ToggleButton
-                                    value={tool.id}
-                                    aria-label={tool.name}
-                                    color="secondary"
-                                    sx={{ flex: 1, width: '100%', borderRadius: 0, border: 'none', boxShadow: 'none' }}
-                                >
-                                    {tool.icon}
-                                </ToggleButton>
-                            </span>
+                            <IconButton
+                                aria-label={tool.name}
+                                color={activeTabs.includes(tool.id) ? "primary" : "secondary"}
+                                onClick={() => handleToolClick(tool.id)}
+                            >
+                                {tool.icon}
+                            </IconButton>
                         </Tooltip>
                     ))}
-                </ToggleButtonGroup>
+                </ButtonGroup>
             </Box>
-        </Paper>
+        </Box>
     );
 };
 

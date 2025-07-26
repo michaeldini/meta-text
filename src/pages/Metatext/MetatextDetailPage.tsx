@@ -56,7 +56,7 @@ function MetatextDetailPage(): ReactElement | null {
     let content;
     if (metatext) {
         content = (
-            <Box data-testid="metatext-detail-content">
+            <Stack data-testid="metatext-detail-content">
                 <DocumentHeader title={metatext.title}>
                     {sourceDoc && <SourceDocInfo doc={sourceDoc} />}
                     <ReviewButton metatextId={metatext.id} />
@@ -74,9 +74,9 @@ function MetatextDetailPage(): ReactElement | null {
                     />
                     <SearchContainer showTagFilters={true} />
                 </DocumentHeader>
-                <PaginatedChunks metatextId={metatext.id} showOnlyFavorites={showOnlyFavorites} />
                 <ChunkToolsPanel />
-            </Box>
+                <PaginatedChunks metatextId={metatext.id} showOnlyFavorites={showOnlyFavorites} />
+            </Stack>
         );
     }
 
