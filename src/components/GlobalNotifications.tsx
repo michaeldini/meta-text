@@ -9,14 +9,17 @@ export function GlobalNotifications(): React.ReactElement | null {
     const { notifications } = useNotificationStore();
 
     useEffect(() => {
+        console.info(`Notifications: ${notifications.map(n => n.id).join(', ')}`);
         notifications.forEach((notification) => {
-            toaster.create({
-                id: notification.id,
-                title: notification.message || undefined,
-                description: notification.message,
-                type: notification.type,
-                duration: notification.duration,
-                closable: true,
+            Promise.resolve().then(() => {
+                toaster.create({
+                    id: notification.id,
+                    title: notification.message || undefined,
+                    description: notification.message,
+                    type: notification.type,
+                    duration: notification.duration,
+                    closable: true,
+                });
             });
         });
     }, [notifications]);

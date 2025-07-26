@@ -1,11 +1,6 @@
-// Custom hook for fetching the list of source documents using TanStack Query
-// This replaces manual loading/error state and store logic for document lists
-
-
-// Custom hooks for fetching and mutating source documents and metatexts using TanStack Query
-// Handles all server data logic for documents/metatexts (fetch, add, delete)
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNotifications } from 'store';
 import {
     fetchSourceDocuments,
     fetchMetatexts,
@@ -39,10 +34,15 @@ export function useMetatexts() {
 // Mutation hook for deleting a source document
 export function useDeleteSourceDocument() {
     const queryClient = useQueryClient();
+    const { showSuccess, showError } = useNotifications();
     return useMutation({
         mutationFn: deleteSourceDocument,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['source-documents'] });
+            showSuccess('Deleted successfully');
+        },
+        onError: () => {
+            showError('Delete failed');
         },
     });
 }
@@ -50,10 +50,15 @@ export function useDeleteSourceDocument() {
 // Mutation hook for deleting a metatext
 export function useDeleteMetatext() {
     const queryClient = useQueryClient();
+    const { showSuccess, showError } = useNotifications();
     return useMutation({
         mutationFn: deleteMetatext,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['metatexts'] });
+            showSuccess('Deleted successfully');
+        },
+        onError: () => {
+            showError('Delete failed');
         },
     });
 }
@@ -62,12 +67,17 @@ export function useDeleteMetatext() {
 // Accepts: { title: string, file: File }
 export function useAddSourceDocument() {
     const queryClient = useQueryClient();
+    const { showSuccess, showError } = useNotifications();
     return useMutation({
         mutationFn: async ({ title, file }: { title: string; file: File }) => {
             return createSourceDocument(title, file);
         },
-        onSuccess: () => {
+        onSuccess: (_data, variables) => {
             queryClient.invalidateQueries({ queryKey: ['source-documents'] });
+            showSuccess(`Successfully uploaded "${variables.title}"`);
+        },
+        onError: () => {
+            showError('Failed to upload document');
         },
     });
 }
@@ -76,12 +86,17 @@ export function useAddSourceDocument() {
 // Accepts: { sourceDocId: number, title: string }
 export function useAddMetatext() {
     const queryClient = useQueryClient();
+    const { showSuccess, showError } = useNotifications();
     return useMutation({
         mutationFn: async ({ sourceDocId, title }: { sourceDocId: number; title: string }) => {
             return createMetatext(sourceDocId, title);
         },
-        onSuccess: () => {
+        onSuccess: (_data, variables) => {
             queryClient.invalidateQueries({ queryKey: ['metatexts'] });
+            showSuccess(`Successfully created metatext "${variables.title}"`);
+        },
+        onError: () => {
+            showError('Failed to create metatext');
         },
     });
 }

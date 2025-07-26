@@ -7,7 +7,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 // import { ThemeProvider, CssBaseline, useTheme, Typography } from '@mui/material';
 import { Box, Stack, Text } from '@chakra-ui/react';
 import { NavBar } from 'features';
-import { LoadingFallback, ErrorBoundary, GlobalNotifications } from 'components';
+import { LoadingFallback, ErrorBoundary, GlobalNotifications, Toaster } from 'components';
 import { useAuthStore } from 'store';
 import { useAuthRefresh } from 'hooks';
 import { getAppStyles, lightTheme, darkTheme } from 'styles';
@@ -143,6 +143,7 @@ export const AppContent = () => {
     return (
         <Box bg="simple">
             <GlobalNotifications />
+            <Toaster />
             <NavBar />
             <Routes>
                 {routes.map(renderRoute)}

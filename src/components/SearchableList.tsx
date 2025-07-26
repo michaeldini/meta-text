@@ -4,13 +4,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, CloseButton, Heading, Input, InputGroup, List } from '@chakra-ui/react'
+
 import { ErrorBoundary, LoadingBoundary, DeleteButton, Field } from 'components';
-import { SearchIcon, ClearIcon } from 'icons';
-import { useNotifications } from 'store';
+import { SearchIcon } from 'icons';
 import { useDeleteSourceDocument, useDeleteMetatext } from 'features/documents/useDocumentsData';
 
 import { useFilteredList } from 'hooks';
-import { getAppStyles } from 'styles';
 import type { MetatextSummary, SourceDocumentSummary } from 'types';
 
 export interface SearchableListProps {
@@ -31,7 +30,6 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
     const navigate = useNavigate();
     const deleteSourceDocMutation = useDeleteSourceDocument();
     const deleteMetatextMutation = useDeleteMetatext();
-    const { showSuccess, showError } = useNotifications();
 
     // Determine document type based on title or item properties
     const docType = title === 'Source Documents' ? 'sourceDoc' : 'metatext';
@@ -56,15 +54,10 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
     };
 
     const handleDeleteClick = async (id: number) => {
-        try {
-            if (docType === 'sourceDoc') {
-                await deleteSourceDocMutation.mutateAsync(id);
-            } else {
-                await deleteMetatextMutation.mutateAsync(id);
-            }
-            showSuccess('Deleted successfully');
-        } catch {
-            showError('Delete failed');
+        if (docType === 'sourceDoc') {
+            await deleteSourceDocMutation.mutateAsync(id);
+        } else {
+            await deleteMetatextMutation.mutateAsync(id);
         }
     };
 

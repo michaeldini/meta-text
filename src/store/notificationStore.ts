@@ -26,7 +26,7 @@ export const useNotificationStore = create<NotificationState>((set) => ({
         set((state) => ({
             notifications: [...state.notifications, notification]
         }));
-
+        console.info(`Notifications: ${notification.id} - ${notification.message} (${notification.type})`);
         // Auto-hide after duration
         if (duration > 0) {
             setTimeout(() => {
