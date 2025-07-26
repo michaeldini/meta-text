@@ -10,7 +10,7 @@ import {
     Box,
     Button,
     Input,
-
+    FileUpload,
 } from '@chakra-ui/react'
 import { Field } from 'components';
 import { FileUploadIcon } from 'icons';
@@ -76,56 +76,9 @@ function SourceDocUploadForm({ onSuccess, sx = {} }: SourceDocUploadFormProps): 
 
             {/* Upload Form */}
             <form onSubmit={handleSubmit} >
-                {/* File Upload Section */}
-                <Stack bg="secondary" p={4} borderRadius="md" gap={4} >
-                    <Box
-                        p={4}
-                        onClick={() => document.getElementById('file-input')?.click()}
-                        role="button"
-                        tabIndex={0}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                                e.preventDefault();
-                                document.getElementById('file-input')?.click();
-                            }
-                        }}
-                        aria-label="Click to select file for upload"
-                    >
-                        <input
-                            id="file-input"
-                            type="file"
-                            accept=".txt,.doc,.docx,.pdf"
-                            onChange={handleFileChange}
-                            style={{ display: 'none' }}
-                            disabled={loading}
-                            data-testid="file-input"
-                        />
-                        <FileUploadIcon />
-                        <Text >
-                            {file ? file.name : 'Choose a file'}
-                        </Text>
-                        <Text>
-                            {file
-                                ? `Selected: ${(file.size / 1024).toFixed(1)} KB`
-                                : 'Drag & drop or click to select a text file'
-                            }
-                        </Text>
-                    </Box>
-                </Stack>
-
-                {/* Title Input */}
-                <Field
-                    p={4}
-                    label="Title"
-                    required
-                    errorText='Title is required.'
-                >
-                    <Input onChange={handleTitleChange}
-                        required />
-                </Field>
-
                 {/* Submit Button */}
                 <Button
+                    type="submit"
                     color="primary"
                     variant="ghost"
                     size="xl"
@@ -135,6 +88,46 @@ function SourceDocUploadForm({ onSuccess, sx = {} }: SourceDocUploadFormProps): 
                     {!loading ? <FileUploadIcon /> : undefined}
                     {loading ? 'Uploading...' : 'Upload Document'}
                 </Button>
+                {/* File Upload Section */}
+                <Stack p={4}>
+                    {/* Title Input */}
+                    <Field
+                        label="Title"
+                        required
+                        errorText='Title is required.'
+                    >
+                        <Input onChange={handleTitleChange}
+                            required />
+                    </Field>
+                    <FileUpload.Root
+                        accept={[".txt"]}
+                        maxFiles={1}
+                        maxFileSize={10 * 1024 * 1024} // 10 MB
+                        onFileChange={({ acceptedFiles }) => handleFileChange(acceptedFiles[0])}
+                        disabled={loading}
+                        required
+                    >
+                        <FileUpload.HiddenInput data-testid="file-input" />
+                        <FileUpload.Label>
+                            <Text>Choose a file</Text>
+                        </FileUpload.Label>
+                        <FileUpload.Dropzone>
+                            <FileUpload.DropzoneContent>
+                                <FileUploadIcon />
+                                <Text>
+                                    {file ? file.name : 'Drag & drop or click to select a text file'}
+                                </Text>
+                                <Text fontSize="sm" color="fg.muted">
+                                    {file ? `Selected: ${(file.size / 1024).toFixed(1)} KB` : 'Only .txt files are allowed'}
+                                </Text>
+                            </FileUpload.DropzoneContent>
+                        </FileUpload.Dropzone>
+                    </FileUpload.Root>
+                </Stack>
+
+
+
+
             </form >
         </Stack >
     );

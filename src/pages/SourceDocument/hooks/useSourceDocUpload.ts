@@ -37,7 +37,7 @@ export interface UseSourceDocUploadResult {
 
     // Form handlers
     handleTitleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    handleFileChange: (file: File | null) => void;
     handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
     clearMessages: () => void;
 }
@@ -77,16 +77,14 @@ export function useSourceDocUpload(options: UseSourceDocUploadOptions = {}): Use
     /**
      * Handle file selection
      */
-    const handleFileChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0] || null;
-
+    const handleFileChange = useCallback((file: File | null) => {
         // Basic file validation
         if (file) {
             const allowedTypes = ['.txt', '.doc', '.docx', '.pdf'];
             const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase();
 
             if (!allowedTypes.includes(fileExtension)) {
-                setError('Please select a valid file type (.txt)');
+                setError('Please select a valid file type (.txt, .doc, .docx, .pdf)');
                 return;
             }
 
