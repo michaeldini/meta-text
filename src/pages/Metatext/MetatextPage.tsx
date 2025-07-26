@@ -12,41 +12,32 @@ import {
     DocumentManagementLayout,
     SearchableList
 } from 'components';
-// import { FADE_IN_DURATION } from 'constants';
 
 import MetatextCreateForm from './components/MetatextCreateForm';
 
 function MetatextPage(): ReactElement {
     // Fetch metatexts and source documents using TanStack Query hooks
-    const { data: metatexts = [], isLoading: metatextsLoading, error: metatextsError, refetch: refetchMetatexts } = useMetatexts();
-    const { data: sourceDocs = [], isLoading: sourceDocsLoading, error: sourceDocsError, refetch: refetchSourceDocs } = useSourceDocuments();
-
-    // Refresh data after successful creation
-    const handleCreateSuccess = () => {
-        refetchMetatexts();
-    };
+    const { data: metatexts, isLoading: metatextsLoading, refetch: refetchMetatexts } = useMetatexts();
+    const { data: sourceDocs, isLoading: sourceDocsLoading } = useSourceDocuments();
 
     return (
         <PageContainer
             loading={metatextsLoading}
             data-testid="metatext-list-page"
         >
-            {/* Smooth slide-up animation for the page content */}
-
             <DocumentManagementLayout
                 title="Metatext Documents"
                 subtitle="Create new Metatext from a source document or browse existing ones."
                 formComponent={
                     <MetatextCreateForm
-                        sourceDocs={sourceDocs}
+                        sourceDocs={sourceDocs || []}
                         sourceDocsLoading={sourceDocsLoading}
-                        sourceDocsError={sourceDocsError}
-                        onSuccess={handleCreateSuccess}
+                        onSuccess={refetchMetatexts}
                     />
                 }
                 listComponent={
                     <SearchableList
-                        items={metatexts}
+                        items={metatexts || []}
                         filterKey="title"
                         title="Metatext"
                         loading={metatextsLoading}

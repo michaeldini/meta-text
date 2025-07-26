@@ -1,37 +1,188 @@
 
+// React Query hooks for all CRUD operations for source documents and metatexts
+// This file centralizes all hooks for fetching, creating, updating, and deleting documents and metatexts
+// For maintainability, hooks are grouped by entity type and operation
+
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNotifications } from 'store';
 import {
     fetchSourceDocuments,
+    fetchSourceDocument,
+    updateSourceDocument,
     fetchMetatexts,
+    fetchMetatext,
     deleteSourceDocument,
     deleteMetatext,
     createSourceDocument,
     createMetatext
 } from 'services';
-import type { SourceDocumentSummary, MetatextSummary } from 'types';
+import type {
+    SourceDocumentSummary,
+    SourceDocumentDetail,
+    SourceDocumentUpdate,
+    MetatextSummary,
+    MetatextDetail
+} from 'types';
+import { getErrorMessage } from 'types/error';
+import { HTTPError } from 'ky';
 
 
 
+
+// Source Document Queries & Mutations
+
+// Fetch all source documents (summary)
 export function useSourceDocuments() {
+    const { showError } = useNotifications();
     return useQuery<SourceDocumentSummary[]>({
         queryKey: ['source-documents'],
-        queryFn: fetchSourceDocuments,
-        staleTime: 10 * 60 * 1000, // 10 minutes, matches your cache
+        queryFn: async () => {
+            try {
+                return await fetchSourceDocuments();
+            } catch (err) {
+                if (err instanceof HTTPError) {
+                    const status = err.response.status;
+                    if (status === 404) {
+                        showError('No source documents found.');
+                    } else if (status === 400) {
+                        showError('Invalid request.');
+                    } else if (status === 422) {
+                        showError('Invalid query parameters.');
+                    } else {
+                        showError('Failed to load source documents.');
+                    }
+                    throw err;
+                }
+                const msg = getErrorMessage(err, 'Failed to load source documents.');
+                showError(msg);
+                throw new Error(msg);
+            }
+        },
+        staleTime: 10 * 60 * 1000, // 10 minutes
     });
 }
 
+// Fetch a single source document (detail)
+export function useSourceDocumentDetail(id: number | null) {
+    const { showError } = useNotifications();
+    return useQuery<SourceDocumentDetail>({
+        queryKey: ['sourceDocumentDetail', id],
+        queryFn: async () => {
+            if (id == null) throw new Error('No document ID provided');
+            try {
+                return await fetchSourceDocument(id);
+            } catch (err) {
+                if (err instanceof HTTPError) {
+                    const status = err.response.status;
+                    if (status === 404) {
+                        showError('Document not found.');
+                    } else if (status === 400) {
+                        showError('Invalid request.');
+                    } else if (status === 422) {
+                        showError('Invalid document id.');
+                    } else {
+                        // Handle unexpected HTTP errors
+                        showError('Failed to load document.');
+                    }
+                    throw err;
+                }
+                // Handle unexpected errors
+                const msg = getErrorMessage(err, 'Failed to load document.');
+                showError(msg);
+                throw new Error(msg);
+            }
+        },
+        enabled: id != null,
+        retry: 1,
+        staleTime: 1000 * 60, // 1 minute
+    });
+}
 
+// Update a source document
+export function useUpdateSourceDocument(docId: number | null) {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (updateData: SourceDocumentUpdate) => {
+            if (docId == null) throw new Error('No document ID provided');
+            return updateSourceDocument(docId, updateData);
+        },
+        onSuccess: (data) => {
+            if (docId != null) {
+                queryClient.setQueryData(['sourceDocumentDetail', docId], data);
+            }
+        },
+    });
+}
 
+// Metatext Queries & Mutations
+
+// Fetch all metatexts (summary)
 export function useMetatexts() {
+    const { showError } = useNotifications();
     return useQuery<MetatextSummary[]>({
         queryKey: ['metatexts'],
-        queryFn: fetchMetatexts,
-        staleTime: 10 * 60 * 1000, // 10 minutes, matches your cache
+        queryFn: async () => {
+            try {
+                return await fetchMetatexts();
+            } catch (err) {
+                if (err instanceof HTTPError) {
+                    const status = err.response.status;
+                    if (status === 404) {
+                        showError('No metatexts found.');
+                    } else if (status === 400) {
+                        showError('Invalid request.');
+                    } else if (status === 422) {
+                        showError('Invalid query parameters.');
+                    } else {
+                        showError('Failed to load metatexts.');
+                    }
+                    throw err;
+                }
+                const msg = getErrorMessage(err, 'Failed to load metatexts.');
+                showError(msg);
+                throw new Error(msg);
+            }
+        },
+        staleTime: 10 * 60 * 1000, // 10 minutes
     });
 }
 
-// Mutation hook for deleting a source document
+// Fetch a single metatext (detail)
+export function useMetatextDetail(id: number | null) {
+    const { showError } = useNotifications();
+    return useQuery<MetatextDetail>({
+        queryKey: ['metatextDetail', id],
+        queryFn: async () => {
+            if (id == null) throw new Error('No metatext ID provided');
+            try {
+                return await fetchMetatext(id);
+            } catch (err) {
+                if (err instanceof HTTPError) {
+                    const status = err.response.status;
+                    if (status === 404) {
+                        showError('Metatext not found.');
+                    } else if (status === 400) {
+                        showError('Invalid request.');
+                    } else if (status === 422) {
+                        showError('Invalid metatext id.');
+                    } else {
+                        showError('Failed to load metatext.');
+                    }
+                    throw err;
+                }
+                const msg = getErrorMessage(err, 'Failed to load metatext.');
+                showError(msg);
+                throw new Error(msg);
+            }
+        },
+        enabled: id != null,
+        retry: 1,
+        staleTime: 1000 * 60, // 1 minute
+    });
+}
+
+
+// Delete a source document
 export function useDeleteSourceDocument() {
     const queryClient = useQueryClient();
     const { showSuccess, showError } = useNotifications();
@@ -47,7 +198,8 @@ export function useDeleteSourceDocument() {
     });
 }
 
-// Mutation hook for deleting a metatext
+
+// Delete a metatext
 export function useDeleteMetatext() {
     const queryClient = useQueryClient();
     const { showSuccess, showError } = useNotifications();
@@ -63,7 +215,8 @@ export function useDeleteMetatext() {
     });
 }
 
-// Mutation hook for adding a source document
+
+// Add a source document
 // Accepts: { title: string, file: File }
 export function useAddSourceDocument() {
     const queryClient = useQueryClient();
@@ -82,7 +235,8 @@ export function useAddSourceDocument() {
     });
 }
 
-// Mutation hook for adding a metatext
+
+// Add a metatext
 // Accepts: { sourceDocId: number, title: string }
 export function useAddMetatext() {
     const queryClient = useQueryClient();

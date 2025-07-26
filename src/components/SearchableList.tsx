@@ -126,6 +126,8 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
                                                 aria-label={`Select ${displayText}`}
                                                 role="button"
                                                 tabIndex={0}
+                                                me={10}
+                                                size="lg"
                                             >
                                                 {displayText}
                                             </Button>

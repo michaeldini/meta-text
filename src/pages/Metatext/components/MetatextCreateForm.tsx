@@ -15,7 +15,7 @@ export interface MetatextCreateFormProps {
     /** Loading state for source documents */
     sourceDocsLoading: boolean;
     /** Error state for source documents */
-    sourceDocsError: Error | null;
+    sourceDocsError?: Error | null;
     /** Callback function called when creation succeeds */
     onSuccess?: () => void;
     /** Optional styling overrides */

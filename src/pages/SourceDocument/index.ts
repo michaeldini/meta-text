@@ -10,5 +10,3 @@ export { default as SourceDocPage } from './SourceDocPage';
  * - Allows users to edit and annotate the document
  */
 export { default as SourceDocDetailPage } from './SourceDocDetailPage';
-
-// export { useSourceDocDetailData } from '../../hooks/useSourceDocDetailData';
