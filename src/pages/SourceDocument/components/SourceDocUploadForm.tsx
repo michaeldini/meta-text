@@ -12,12 +12,12 @@ import {
     Input,
     FileUpload,
 } from '@chakra-ui/react'
+
 import { Field } from 'components';
 import { FileUploadIcon } from 'icons';
 
 import { useState, useCallback } from 'react';
-import { useAddSourceDocument } from 'features/documents/useDocumentsData';
-import { AppAlert } from 'components';
+import { useAddSourceDocument } from 'features';
 
 /**
  * Props for the SourceDocUploadForm component

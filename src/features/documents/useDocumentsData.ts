@@ -101,6 +101,7 @@ export function useSourceDocumentDetail(id: number | null) {
 // Update a source document
 export function useUpdateSourceDocument(docId: number | null) {
     const queryClient = useQueryClient();
+    const { showSuccess, showError } = useNotifications();
     return useMutation({
         mutationFn: async (updateData: SourceDocumentUpdate) => {
             if (docId == null) throw new Error('No document ID provided');
@@ -109,7 +110,12 @@ export function useUpdateSourceDocument(docId: number | null) {
         onSuccess: (data) => {
             if (docId != null) {
                 queryClient.setQueryData(['sourceDocumentDetail', docId], data);
+                showSuccess('Document updated successfully');
             }
+        },
+        onError: (error) => {
+            const msg = getErrorMessage(error, 'Failed to update document.');
+            showError(msg);
         },
     });
 }

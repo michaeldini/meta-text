@@ -25,7 +25,7 @@ export interface SearchableListProps {
 
 export function SearchableList(props: SearchableListProps): React.ReactElement {
 
-    const { title, filterKey, items = [], loading = false } = props;
+    const { title, filterKey, items = [], loading = false, emptyMessage, searchPlaceholder } = props;
     const [search, setSearch] = useState('');
     const navigate = useNavigate();
     const deleteSourceDocMutation = useDeleteSourceDocument();
@@ -94,7 +94,7 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
                         aria-label="Search items"
                     />
                     <InputGroup startElement={<SearchIcon />} endElement={endElement}>
-                        <Input placeholder="Title" value={search} onChange={handleSearchChange} />
+                        <Input placeholder={searchPlaceholder} value={search} onChange={handleSearchChange} />
                     </InputGroup>
 
                     {/* Search Results */}
@@ -105,9 +105,9 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
                     >
                         {/* No Results */}
                         {filteredItems.length === 0 ? (
-                            <List.Item role="listitem" >
-                                "No items found."
-                            </List.Item>
+                            <Box >
+                                {emptyMessage || `No ${title} found.`}
+                            </Box>
                         ) : (
                             // Render Results
                             filteredItems.map((item) => {

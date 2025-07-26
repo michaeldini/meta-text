@@ -1,9 +1,9 @@
 // Details for a given source document. 
 // This includes a header section, meta-data about the document, and the full document content.
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
-import { Box, Slide } from '@mui/material';
+import { useNavigate, useParams } from 'react-router-dom';
+
+import { Box } from '@chakra-ui/react';
 import type { ReactElement } from 'react';
 
 import { PageContainer, SourceDocInfo, GenerateSourceDocInfoButton, StyleControls, DocumentHeader } from 'components';
@@ -38,7 +38,7 @@ function SourceDocDetailPage(): ReactElement {
             loading={isLoading}
             data-testid="sourcedoc-detail-page"
         >
-            <Box data-testid="sourcedoc-detail-content" sx={{ alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+            <Box data-testid="sourcedoc-detail-content">
                 {doc && (
                     <>
                         <DocumentHeader title={doc.title}>

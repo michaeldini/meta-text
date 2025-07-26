@@ -3,12 +3,15 @@
 // with appropriate styles and preferences set by the user. It supports both view and edit modes
 // for potentially very long documents (book-length content).
 import React, { useState, useCallback, useRef } from 'react';
-import { Box, Typography, useTheme, IconButton, Tooltip, Alert, Snackbar } from '@mui/material';
+
+import { Box, Heading, Text, IconButton, Stack, Textarea, Alert } from '@chakra-ui/react';
+import { Prose, Tooltip } from 'components';
 import { PencilIcon, CheckIcon, ClearIcon } from 'icons';
 
 import type { SourceDocumentDetail } from 'types';
 import { useUserConfig } from 'services/userConfigService';
 import { updateSourceDocument } from 'services/sourceDocumentService';
+import { useUpdateSourceDocument } from 'features';
 import { log } from 'utils';
 
 
@@ -23,7 +26,6 @@ interface SourceDocProps {
  * Supports both view and edit modes for potentially very long documents
  */
 export default function SourceDoc({ doc, onDocumentUpdate }: SourceDocProps) {
-    const theme = useTheme();
     const [isEditing, setIsEditing] = useState(false);
     const [editedText, setEditedText] = useState(doc.text || '');
     const [isSaving, setIsSaving] = useState(false);
@@ -39,79 +41,6 @@ export default function SourceDoc({ doc, onDocumentUpdate }: SourceDocProps) {
     const fontFamily = uiPrefs.fontFamily ?? 'Inter, sans-serif';
     const lineHeight = uiPrefs.lineHeight ?? 1.5;
 
-    // Memoized styles to prevent recreation on each render
-    const styles = React.useMemo(() => ({
-        container: {
-            width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-        controlsContainer: {
-            display: 'flex',
-            justifyContent: 'flex-end',
-            marginBottom: theme.spacing(1),
-            gap: theme.spacing(1)
-        },
-        editButton: {
-            color: theme.palette.secondary.main
-        },
-        saveButton: {
-            color: theme.palette.success.main
-        },
-        cancelButton: {
-            color: theme.palette.error.main
-        },
-        textareaContainer: {
-            width: '100%',
-            position: 'relative' as const
-        },
-        textarea: {
-            width: '100%',
-            minHeight: '60vh',
-            padding: theme.spacing(2),
-            fontSize: textSizePx,
-            fontFamily: fontFamily,
-            lineHeight: lineHeight,
-            border: `2px solid ${theme.palette.primary.main}`,
-            borderRadius: theme.shape.borderRadius,
-            outline: 'none',
-            resize: 'vertical' as const,
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-            whiteSpace: 'pre-wrap' as const,
-            wordWrap: 'break-word' as const
-        },
-        loadingOverlay: {
-            position: 'absolute' as const,
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.1)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: theme.shape.borderRadius
-        },
-        loadingText: {
-            color: theme.palette.primary.main
-        },
-        documentText: {
-            fontSize: textSizePx,
-            fontFamily,
-            lineHeight,
-            whiteSpace: 'pre-wrap' as const,
-            overflowWrap: 'break-word' as const,
-            justifySelf: 'center',
-        },
-        errorAlert: {
-            marginTop: theme.spacing(2)
-        },
-        snackbarAnchor: {
-            vertical: 'bottom' as const,
-            horizontal: 'center' as const
-        }
-    }), [theme, textSizePx, fontFamily, lineHeight]);
 
     const handleEdit = useCallback(() => {
         setIsEditing(true);
@@ -129,6 +58,7 @@ export default function SourceDoc({ doc, onDocumentUpdate }: SourceDocProps) {
         setError(null);
     }, [doc.text]);
 
+    const updateSourceDocument = useUpdateSourceDocument(doc.id);
     const handleSave = useCallback(async () => {
         if (isSaving) return;
 
@@ -136,14 +66,10 @@ export default function SourceDoc({ doc, onDocumentUpdate }: SourceDocProps) {
         setError(null);
 
         try {
-            log.info('Saving source document text update', { docId: doc.id, textLength: editedText.length });
-
-            const updatedDoc = await updateSourceDocument(doc.id, { text: editedText });
+            // use the react-query mutation to update the document
+            updateSourceDocument.mutate({ text: editedText });
 
             log.info('Source document text updated successfully', { docId: doc.id });
-
-            // Call the callback to update parent component
-            onDocumentUpdate?.(updatedDoc);
 
             setIsEditing(false);
             setShowSuccess(true);
@@ -163,95 +89,89 @@ export default function SourceDoc({ doc, onDocumentUpdate }: SourceDocProps) {
     console.log('Rendering SourceDoc with styles:', lineHeight, textSizePx, fontFamily);
 
     return (
-        <Box sx={styles.container} data-testid="source-doc-container">
+        <Stack direction="row-reverse" data-testid="source-doc-container">
             {/* Edit Controls */}
-            <Box sx={styles.controlsContainer}>
+            <Stack direction="row" >
                 {!isEditing ? (
-                    <Tooltip title="Edit document text">
+                    <Tooltip content="Edit document text">
                         <IconButton
                             onClick={handleEdit}
-                            size="small"
-                            sx={styles.editButton}
                         >
                             <PencilIcon />
                         </IconButton>
                     </Tooltip>
                 ) : (
                     <>
-                        <Tooltip title="Save changes">
+                        <Tooltip content="Save changes">
                             <IconButton
                                 onClick={handleSave}
                                 disabled={isSaving}
-                                size="small"
-                                sx={styles.saveButton}
                             >
                                 <CheckIcon />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip title="Cancel editing">
+                        <Tooltip content="Cancel editing">
                             <IconButton
                                 onClick={handleCancel}
                                 disabled={isSaving}
-                                size="small"
-                                sx={styles.cancelButton}
                             >
                                 <ClearIcon />
                             </IconButton>
                         </Tooltip>
                     </>
                 )}
-            </Box>
+            </Stack>
 
             {/* Content Display/Editor */}
             {isEditing ? (
-                <Box sx={styles.textareaContainer}>
-                    <textarea
+                <Box >
+                    <Textarea
+                        size="xl"
                         ref={textareaRef}
                         value={editedText}
                         onChange={handleTextChange}
                         disabled={isSaving}
-                        style={styles.textarea}
                         placeholder="Enter document text..."
+                        resize="vertical"
+                        style={{ minHeight: '80vh', minWidth: '50vw' }}
                     />
                     {isSaving && (
-                        <Box sx={styles.loadingOverlay}>
-                            <Typography variant="body2" sx={styles.loadingText}>
-                                Saving...
-                            </Typography>
+                        <Box>
+                            <Text>Saving...</Text>
                         </Box>
                     )}
                 </Box>
             ) : (
-                <Typography
+                <Prose size="lg"
                     aria-label="Document Text"
-                    sx={styles.documentText}
+                    style={{ whiteSpace: 'pre-line', fontSize: `${textSizePx}px`, lineHeight: lineHeight.toString() + 'em', fontFamily: fontFamily }}
                 >
                     {doc.text || 'No content available'}
-                </Typography>
+                </Prose>
             )}
 
             {/* Error Display */}
-            {error && (
+            {/* {error && (
                 <Alert
                     severity="error"
-                    sx={styles.errorAlert}
                     onClose={() => setError(null)}
                 >
                     {error}
                 </Alert>
-            )}
+            )} */}
 
             {/* Success Notification */}
-            <Snackbar
+            {/* <Snackbar
                 open={showSuccess}
                 autoHideDuration={3000}
                 onClose={() => setShowSuccess(false)}
-                anchorOrigin={styles.snackbarAnchor}
+
             >
                 <Alert severity="success" onClose={() => setShowSuccess(false)}>
                     Document text updated successfully!
-                </Alert>
-            </Snackbar>
-        </Box>
+                </Alert> */}
+            {/* </Snackbar> */}
+
+        </Stack>
     );
 }
