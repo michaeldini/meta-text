@@ -19,7 +19,7 @@ import { useSourceDocuments, useMetatexts } from 'features';
 
 import WelcomeText from './components/WelcomeText';
 import NavigationButtons from './components/NavigationButtons';
-import { FADE_IN_DURATION } from 'constants';
+// import { FADE_IN_DURATION } from 'constants';
 import HomePageDetails from './components/HomePageDetails';
 import { Center, Stack } from "@chakra-ui/react"
 

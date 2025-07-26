@@ -17,6 +17,7 @@ const config = defineConfig({
                 xl: { value: "1.25rem" },
             },
 
+
         }
     },
 })

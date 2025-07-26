@@ -42,7 +42,7 @@ const DocumentManagementLayout = forwardRef<HTMLDivElement, DocumentManagementLa
                     gap={12}
                     p={12}
 
-                    bg="secondary"
+                // bg="secondary"
                 >
                     {formComponent}
                     {listComponent}

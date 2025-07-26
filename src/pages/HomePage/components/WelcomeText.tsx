@@ -21,11 +21,11 @@ export function WelcomeText({ welcomeTextStyles }: WelcomeTextProps) {
             <Heading size="5xl" color="primary">
                 Welcome!
             </Heading>
-            <Text>
+            <Heading size="2xl">
                 Imagine unlocking the true depth of every document you read. <b>Meta-Text</b> empowers you to upload, dissect, and truly engage with your texts—one meaningful section at a time. <br /><br />
                 <b>How does it work?</b> Upload a document that sparks your curiosity. Break it into sections that matter to you. Annotate each part with your thoughts, questions, and insights. <br /><br />
                 <i>Transform passive reading into an active, personal journey of discovery. Your ideas belong here.</i>
-            </Text>
+            </Heading>
         </Stack>
     );
 };

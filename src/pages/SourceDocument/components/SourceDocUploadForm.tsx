@@ -49,11 +49,11 @@ function SourceDocUploadForm({ onSuccess, sx = {} }: SourceDocUploadFormProps): 
 
 
     return (
-        <Stack borderRadius="md" gap={4} >
-            <Heading size="xl" >
-                Upload Source Document
+        <Stack borderRadius="md" >
+            <Heading size="4xl" >
+                Upload
             </Heading>
-            <Heading size="md">
+            <Heading size="sm">
                 Upload a text file to create a new source document.
             </Heading>
 
@@ -77,11 +77,9 @@ function SourceDocUploadForm({ onSuccess, sx = {} }: SourceDocUploadFormProps): 
             {/* Upload Form */}
             <form onSubmit={handleSubmit} >
                 {/* File Upload Section */}
-                <Stack>
-                    <Heading>
-                        Select File *
-                    </Heading>
+                <Stack bg="secondary" p={4} borderRadius="md" gap={4} >
                     <Box
+                        p={4}
                         onClick={() => document.getElementById('file-input')?.click()}
                         role="button"
                         tabIndex={0}
@@ -112,14 +110,12 @@ function SourceDocUploadForm({ onSuccess, sx = {} }: SourceDocUploadFormProps): 
                                 : 'Drag & drop or click to select a text file'
                             }
                         </Text>
-                        <Text>
-                            Supported formats: .txt
-                        </Text>
                     </Box>
                 </Stack>
 
                 {/* Title Input */}
                 <Field
+                    p={4}
                     label="Title"
                     required
                     errorText='Title is required.'
@@ -139,7 +135,7 @@ function SourceDocUploadForm({ onSuccess, sx = {} }: SourceDocUploadFormProps): 
                     {!loading ? <FileUploadIcon /> : undefined}
                     {loading ? 'Uploading...' : 'Upload Document'}
                 </Button>
-            </form>
+            </form >
         </Stack >
     );
 }

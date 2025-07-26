@@ -3,7 +3,7 @@
 // Provides a searchable list of Metatexts and a form to create new Metatexts from source documents.
 
 import React, { ReactElement, useEffect } from 'react';
-import { Slide } from '@mui/material';
+
 
 import { useSourceDocuments } from 'features/documents/useSourceDocuments';
 import { useMetatexts } from 'features/documents/useMetatexts';
@@ -12,7 +12,7 @@ import {
     DocumentManagementLayout,
     SearchableList
 } from 'components';
-import { FADE_IN_DURATION } from 'constants';
+// import { FADE_IN_DURATION } from 'constants';
 
 import MetatextCreateForm from './components/MetatextCreateForm';
 
@@ -32,31 +32,30 @@ function MetatextPage(): ReactElement {
             data-testid="metatext-list-page"
         >
             {/* Smooth slide-up animation for the page content */}
-            <Slide in={true} direction="up" timeout={FADE_IN_DURATION}>
-                <DocumentManagementLayout
-                    title="Metatext Documents"
-                    subtitle="Create new Metatext from a source document or browse existing ones."
-                    formComponent={
-                        <MetatextCreateForm
-                            sourceDocs={sourceDocs}
-                            sourceDocsLoading={sourceDocsLoading}
-                            sourceDocsError={sourceDocsError}
-                            onSuccess={handleCreateSuccess}
-                        />
-                    }
-                    listComponent={
-                        <SearchableList
-                            items={metatexts}
-                            filterKey="title"
-                            title="Metatext"
-                            loading={metatextsLoading}
-                            searchPlaceholder="Search Metatext documents..."
-                            emptyMessage="No Metatext documents found. Create some Metatexts from your source documents to get started."
-                            ariaLabel="List of Metatext documents"
-                        />
-                    }
-                />
-            </Slide>
+
+            <DocumentManagementLayout
+                title="Metatext Documents"
+                subtitle="Create new Metatext from a source document or browse existing ones."
+                formComponent={
+                    <MetatextCreateForm
+                        sourceDocs={sourceDocs}
+                        sourceDocsLoading={sourceDocsLoading}
+                        sourceDocsError={sourceDocsError}
+                        onSuccess={handleCreateSuccess}
+                    />
+                }
+                listComponent={
+                    <SearchableList
+                        items={metatexts}
+                        filterKey="title"
+                        title="Metatext"
+                        loading={metatextsLoading}
+                        searchPlaceholder="Search Metatext documents..."
+                        emptyMessage="No Metatext documents found. Create some Metatexts from your source documents to get started."
+                        ariaLabel="List of Metatext documents"
+                    />
+                }
+            />
         </PageContainer>
     );
 }
