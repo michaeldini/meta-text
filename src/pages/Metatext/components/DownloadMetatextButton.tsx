@@ -3,7 +3,9 @@
 // Handles fetch, error, and triggers browser download.
 
 import React from 'react';
-import { IconButton, Tooltip } from '@mui/material';
+
+import { IconButton } from '@chakra-ui/react';
+import { Tooltip } from 'components';
 import { DownloadIcon } from 'icons';
 import { api, downloadJsonAsFile } from 'utils';
 
@@ -33,18 +35,15 @@ export function DownloadMetatextButton({ metatextId, disabled }: DownloadMetatex
     };
 
     return (
-        <Tooltip title={error ? error : 'Download MetaText as JSON'}>
-            <span>
-                <IconButton
-                    onClick={handleDownload}
-                    disabled={loading || disabled}
-                    color={error ? 'error' : 'primary'}
-                    size="small"
-                    aria-label="Download MetaText"
-                >
-                    <DownloadIcon />
-                </IconButton>
-            </span>
+        <Tooltip content={error ? error : 'Download MetaText as JSON'}>
+            <IconButton
+                onClick={handleDownload}
+                disabled={loading || disabled}
+                color={error ? 'error' : 'primary'}
+                aria-label="Download MetaText"
+            >
+                <DownloadIcon />
+            </IconButton>
         </Tooltip>
     );
 }

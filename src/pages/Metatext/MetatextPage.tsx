@@ -4,9 +4,7 @@
 
 import React, { ReactElement, useEffect } from 'react';
 
-
-import { useSourceDocuments } from 'features/documents/useSourceDocuments';
-import { useMetatexts } from 'features/documents/useMetatexts';
+import { useSourceDocuments, useMetatexts } from 'features';
 import {
     PageContainer,
     DocumentManagementLayout,
@@ -51,8 +49,4 @@ function MetatextPage(): ReactElement {
     );
 }
 
-// Export with a more descriptive name for TypeDoc
-// export { MetatextPage };
-
-// Default export for React component usage
 export default MetatextPage;

@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { Slider, Box, Typography } from '@mui/material';
-
+import { Box, Text } from '@chakra-ui/react';
+import { Slider } from 'components';
 const MIN_SIZE = 8;
 const MAX_SIZE = 72;
 const STEP = 1;
@@ -16,23 +16,21 @@ interface TextSizeInputProps {
 
 export function TextSizeInput(props: TextSizeInputProps) {
     const { value, onChange, disabled } = props;
-    const handleChange = (_: Event, newValue: number | number[]) => {
-        onChange(Number(newValue));
-    };
+
     return (
         <Box>
-            <Typography variant="caption" color="text.secondary" gutterBottom>
+            <Text fontSize="sm" color="primary" mb={2}>
                 Text Size ({value}px)
-            </Typography>
+            </Text>
             <Slider
-                value={value}
+                defaultValue={[value]}
                 min={MIN_SIZE}
                 max={MAX_SIZE}
                 step={STEP}
-                onChange={handleChange}
-                valueLabelDisplay="auto"
-                aria-label="Text Size"
+                onValueChange={val => onChange(Array.isArray(val) ? val[0] : val)}
+                aria-label={["Text Size"]}
                 disabled={disabled}
+                colorPalette={"blue"}
             />
         </Box>
     );

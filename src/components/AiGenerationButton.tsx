@@ -1,9 +1,8 @@
 import React from 'react';
-import { Button, Tooltip } from '@mui/material';
-import type { SxProps, Theme } from '@mui/material/styles';
 import { StarsIcon } from 'icons';
 import { LoadingSpinner } from 'components';
-
+import { Button, Text } from '@chakra-ui/react';
+import { Tooltip } from 'components';
 /**
  * Props for the AiGenerationButton component.
  * Defines the configuration and behavior for the AI generation action button.
@@ -19,8 +18,7 @@ export interface AiGenerationButtonProps {
     loading?: boolean;
     /** If true, disables the button. */
     disabled?: boolean;
-    /** Optional custom styles for the button. */
-    sx?: SxProps<Theme>;
+
 }
 
 /**
@@ -34,15 +32,13 @@ export function AiGenerationButton(props: AiGenerationButtonProps): React.ReactE
         toolTip,
         onClick,
         loading = false,
-        disabled = false,
-        sx
+        disabled = false
     } = props;
     return (
-        <Tooltip title={toolTip || ''} arrow disableHoverListener={!toolTip}>
+        <Tooltip content={toolTip || ''}>
             <Button
-                variant="outlined"
-                color="secondary"
-                sx={{ ...sx }}
+                variant="ghost"
+                color="primary"
                 onClick={onClick}
                 disabled={disabled || loading}
                 aria-label={toolTip || 'AI Generation Button'}

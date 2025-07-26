@@ -123,6 +123,7 @@ export const AppContent = () => {
     useAuthRefresh();
 
     const renderRoute = (route: RouteConfig) => {
+        useUserConfig();
         const Component = route.element;
         const element = (
             <Suspense fallback={<LoadingFallback />}>

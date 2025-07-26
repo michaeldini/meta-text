@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Box, Stack } from '@mui/material';
+import { Box, Stack } from '@chakra-ui/react';
 import { useUserConfig, useUpdateUserConfig } from 'services/userConfigService';
 import { TextSizeInput, LineHeightInput, PaddingXInput, FontFamilySelect } from 'components';
 
@@ -21,8 +21,8 @@ export function StyleControls(): React.ReactElement {
     const uiPreferences = userConfig?.uiPreferences || DEFAULTS;
 
     return (
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap sx={{ alignItems: 'center' }}>
-
+        // <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap sx={{ alignItems: 'center' }}>
+        <>
             <TextSizeInput
                 value={uiPreferences.textSizePx || DEFAULTS.textSizePx}
                 onChange={val => updateUserConfig.mutate({ textSizePx: val })}
@@ -41,8 +41,8 @@ export function StyleControls(): React.ReactElement {
                 value={uiPreferences.fontFamily || DEFAULTS.fontFamily}
                 onChange={val => updateUserConfig.mutate({ fontFamily: val })}
             />
-
-        </Stack>
+        </>
+        // </Stack>
     );
 }
 

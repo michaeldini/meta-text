@@ -1,5 +1,7 @@
+// LineHeightInput: Slider input for line height, using Chakra UI. See TextSizeInput for style reference.
 import React from 'react';
-import { Slider, Box, Typography } from '@mui/material';
+import { Box, Text } from '@chakra-ui/react';
+import { Slider } from 'components';
 
 const MIN_LINE_HEIGHT = 1.0;
 const MAX_LINE_HEIGHT = 2.5;
@@ -14,23 +16,21 @@ interface LineHeightInputProps {
 
 export function LineHeightInput(props: LineHeightInputProps) {
     const { value, onChange, disabled } = props;
-    const handleChange = (_: Event, newValue: number | number[]) => {
-        onChange(Number(newValue));
-    };
+    // Chakra UI style, see TextSizeInput for reference
     return (
         <Box>
-            <Typography variant="caption" color="text.secondary" gutterBottom>
+            <Text fontSize="sm" color="primary" mb={2}>
                 Line Height ({value})
-            </Typography>
+            </Text>
             <Slider
-                value={value}
+                defaultValue={[value]}
                 min={MIN_LINE_HEIGHT}
                 max={MAX_LINE_HEIGHT}
                 step={STEP}
-                onChange={handleChange}
-                valueLabelDisplay="auto"
-                aria-label="Line Height"
+                onChange={val => onChange(Array.isArray(val) ? val[0] : val)}
+                aria-label={["Line Height"]}
                 disabled={disabled}
+                colorPalette={"blue"}
             />
         </Box>
     );

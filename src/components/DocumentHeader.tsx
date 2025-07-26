@@ -1,7 +1,7 @@
 // Component used to display a document header with a title and children components for consistent styling across pages.
 
 import React from 'react';
-import { Box, Collapsible, Stack } from "@chakra-ui/react"
+import { Collapsible, Stack, Wrap } from "@chakra-ui/react"
 
 interface DocumentHeaderProps {
     title?: string;
@@ -12,17 +12,16 @@ interface DocumentHeaderProps {
 export function DocumentHeader(props: DocumentHeaderProps): React.ReactElement {
     const { title, children } = props;
     return (
-        <Collapsible.Root unmountOnExit>
+        <Collapsible.Root unmountOnExit open={true} >
             <Collapsible.Trigger padding={4} minWidth={200} borderWidth="1px" borderRadius="md" >
                 Show Header for: {title}
             </Collapsible.Trigger>
             <Collapsible.Content>
-                <Stack
-                    direction={["row", "column"]}
-                    gap={4}
+                <Wrap
+                    rowGap={["0px", "24px"]} columnGap={["4px", "12px"]}
                 >
                     {children}
-                </Stack>
+                </Wrap>
             </Collapsible.Content>
         </Collapsible.Root>
     );

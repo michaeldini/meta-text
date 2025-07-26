@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, Tooltip } from '@mui/material';
-import type { SxProps, Theme } from '@mui/material/styles';
-import { AcademicCapIcon } from './icons'; // Use a random icon for now
+import { Button } from '@chakra-ui/react';
+import { Tooltip } from 'components';
+import { AcademicCapIcon } from './icons';
 import { useNavigate } from 'react-router-dom';
 
 export interface ReviewButtonProps {
@@ -9,20 +9,19 @@ export interface ReviewButtonProps {
     label?: string;
     toolTip?: string;
     disabled?: boolean;
-    sx?: SxProps<Theme>;
 }
 
 export function ReviewButton(props: ReviewButtonProps): React.ReactElement {
-    const { metatextId, label = "Review", toolTip = "Review this metatext", disabled = false, sx } = props;
+    const { metatextId, label = "Review", toolTip = "Review this metatext", disabled = false } = props;
     const navigate = useNavigate();
     const handleClick = () => {
         navigate(`/metatext/${metatextId}/review`);
     };
     return (
-        <Tooltip title={toolTip || ''} arrow disableHoverListener={!toolTip}>
+        <Tooltip content={toolTip || ''}>
             <Button
-                variant="outlined"
-                sx={{ ...sx }}
+                variant="ghost"
+                color="primary"
                 onClick={handleClick}
                 disabled={disabled}
                 aria-label={toolTip || 'Review Button'}

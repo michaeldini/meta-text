@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Typography } from '@mui/material';
+
 import { AiGenerationButton } from 'components';
 import { generateSourceDocInfo } from 'services';
 import { useSourceDocuments } from 'features/documents/useDocumentsData';
+import { Button, Text } from '@chakra-ui/react';
 
 interface GenerateSourceDocInfoButtonProps {
     sourceDocumentId: number;
@@ -40,7 +41,7 @@ export function GenerateSourceDocInfoButton(props: GenerateSourceDocInfoButtonPr
                 loading={loading}
             />
             {error && (
-                <Typography color="error" sx={{ mt: 1 }}>{error}</Typography>
+                <Text color="red.500" mt={1}>{error}</Text>
             )}
         </>
     );

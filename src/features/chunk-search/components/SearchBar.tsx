@@ -2,13 +2,15 @@
 // Provides the main search interface as described in the feature guide
 
 import React, { useCallback } from 'react';
-import {
-    TextField,
-    InputAdornment,
-    IconButton,
-    Box,
-    useTheme
-} from '@mui/material';
+// import {
+//     TextField,
+//     InputAdornment,
+//     IconButton,
+//     Box,
+//     useTheme
+// } from '@mui/material';
+
+import { Text, Box, IconButton, Textarea, CloseButton, InputGroup, Input } from '@chakra-ui/react';
 import { SearchIcon, ClearIcon } from 'icons';
 import { useSearchStore } from '../store/useSearchStore';
 import { useSearch } from '../hooks/useSearch';
@@ -29,7 +31,6 @@ export function SearchBar({
     size = 'small',
     fullWidth = false
 }: SearchBarProps) {
-    const theme = useTheme();
     const { query, setQuery } = useSearchStore();
     const { clearSearch, error } = useSearch();
 
@@ -47,10 +48,23 @@ export function SearchBar({
             clearSearch();
         }
     }, [clearSearch]);
-
+    const inputRef = React.useRef<HTMLInputElement>(null);
+    const endElement = query ? (
+        <CloseButton
+            size="xs"
+            onClick={() => {
+                setQuery("");
+                inputRef.current?.focus();
+            }}
+            me="-2"
+        />
+    ) : undefined
     return (
-        <Box sx={{ position: 'relative' }}>
-            <TextField
+        <Box >
+            <InputGroup startElement={<SearchIcon />} endElement={endElement}>
+                <Input placeholder={placeholder} value={query} onChange={handleQueryChange} />
+            </InputGroup>
+            {/* <Textarea
                 value={query}
                 onChange={handleQueryChange}
                 onKeyDown={handleKeyDown}
@@ -109,7 +123,7 @@ export function SearchBar({
                         }
                     }
                 }}
-            />
+            /> */}
         </Box>
     );
 }

@@ -8,12 +8,11 @@
  * Intended for placement at the end of the HomePage.
  */
 import React from 'react';
-import { Box, Typography } from '@mui/material';
 import { Heading, Stack, List } from "@chakra-ui/react"
 export function AboutSection() {
     return (
-        <Stack data-testid="about-section">
-            <Heading py="4">Instructions</Heading>
+        <Stack data-testid="about-section" >
+            <Heading py="4" >Instructions</Heading>
             <List.Root >
                 <List.Item>
                     Use the create form to upload a text file you want to read. Use the create form again to create a meta-Text from the text file you uploaded (source document).

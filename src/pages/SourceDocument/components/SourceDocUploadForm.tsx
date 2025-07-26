@@ -32,7 +32,6 @@ export interface SourceDocUploadFormProps {
  * - Displays form with title and file input
  * - Handles file selection and submission
  */
-
 function SourceDocUploadForm({ onSuccess }: SourceDocUploadFormProps): React.ReactElement {
     // Local state for form fields
     const [title, setTitle] = useState('');
@@ -43,12 +42,13 @@ function SourceDocUploadForm({ onSuccess }: SourceDocUploadFormProps): React.Rea
     const addSourceDocument = useAddSourceDocument();
 
     // Handlers
-    const handleTitleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(event.target.value);
         if (error) setError(null);
-    }, [error]);
+    };
 
-    const handleFileChange = useCallback((file: File | null) => {
+    // Inline handler for file change
+    const handleFileChange = (file: File | null) => {
         if (file) {
             const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase();
             if (fileExtension !== '.txt') {
@@ -62,7 +62,7 @@ function SourceDocUploadForm({ onSuccess }: SourceDocUploadFormProps): React.Rea
         }
         setFile(file);
         if (error) setError(null);
-    }, [error]);
+    };
 
     const handleSubmit = useCallback((event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();

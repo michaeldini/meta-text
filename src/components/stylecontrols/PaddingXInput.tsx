@@ -1,5 +1,7 @@
+// PaddingXInput: Slider input for horizontal padding, using Chakra UI. See TextSizeInput for style reference.
 import React from 'react';
-import { Slider, Box, Typography } from '@mui/material';
+import { Box, Text } from '@chakra-ui/react';
+import { Slider } from 'components';
 
 
 const MIN_PADDING_X = 0.1;
@@ -15,23 +17,21 @@ interface PaddingXInputProps {
 
 export function PaddingXInput(props: PaddingXInputProps) {
     const { value, onChange, disabled } = props;
-    const handleChange = (_: Event, newValue: number | number[]) => {
-        onChange(Number(newValue));
-    };
+    // Chakra UI style, see TextSizeInput for reference
     return (
         <Box>
-            <Typography variant="caption" color="text.secondary" gutterBottom>
+            <Text fontSize="sm" color="primary" mb={2}>
                 Padding X ({value}rem)
-            </Typography>
+            </Text>
             <Slider
-                value={value}
+                defaultValue={[value]}
                 min={MIN_PADDING_X}
                 max={MAX_PADDING_X}
                 step={STEP}
-                onChange={handleChange}
-                valueLabelDisplay="auto"
-                aria-label="Padding X"
+                onChange={val => onChange(Array.isArray(val) ? val[0] : val)}
+                aria-label={["Padding X"]}
                 disabled={disabled}
+                colorPalette={"blue"}
             />
         </Box>
     );

@@ -1,6 +1,6 @@
 import React from 'react';
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 
+import { createListCollection, Select, Portal, } from '@chakra-ui/react';
 
 const FONT_FAMILIES = [
     'Inter, sans-serif',
@@ -24,26 +24,44 @@ interface FontFamilySelectProps {
 export function FontFamilySelect(props: FontFamilySelectProps): React.ReactElement {
 
     const { value, onChange, disabled = false } = props;
-    const handleChange = (event: SelectChangeEvent<string>) => {
+
+    const handleChange = (event: any) => {
         onChange(event.target.value);
     };
+    const fontFamilyOptions = createListCollection({
+        items: FONT_FAMILIES.map(font => ({
+            value: font,
+            label: font.split(',')[0],
+            style: { fontFamily: font }
+        }))
+    });
     return (
-        <FormControl size="small" sx={{ ml: 2 }}>
-            <InputLabel id="font-family-label">Font</InputLabel>
-            <Select
-                labelId="font-family-label"
-                value={value}
-                label="Font"
-                onChange={handleChange}
-                disabled={disabled}
-            >
-                {FONT_FAMILIES.map((font) => (
-                    <MenuItem key={font} value={font} style={{ fontFamily: font }}>
-                        {font.split(',')[0]}
-                    </MenuItem>
-                ))}
-            </Select>
-        </FormControl>
+        <form>
+            <Select.Root width="200px" collection={fontFamilyOptions} onChange={handleChange} >
+                <Select.HiddenSelect />
+                <Select.Label color="primary">Font</Select.Label>
+                <Select.Control>
+                    <Select.Trigger>
+                        <Select.ValueText placeholder="Font" />
+                    </Select.Trigger>
+                    <Select.IndicatorGroup>
+                        <Select.Indicator />
+                    </Select.IndicatorGroup>
+                </Select.Control>
+                <Portal >
+                    <Select.Positioner>
+                        <Select.Content>
+                            {fontFamilyOptions.items.map((framework) => (
+                                <Select.Item item={framework} key={framework.value}>
+                                    {framework.label}
+                                    <Select.ItemIndicator />
+                                </Select.Item>
+                            ))}
+                        </Select.Content>
+                    </Select.Positioner>
+                </Portal>
+            </Select.Root>
+        </form>
     );
 }
 

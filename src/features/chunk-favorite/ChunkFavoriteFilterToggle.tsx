@@ -3,7 +3,8 @@
 // Uses Material UI IconButton and Heroicons for a modern, accessible UI.
 
 import React from 'react';
-import { IconButton, Tooltip } from '@mui/material';
+import { IconButton } from '@chakra-ui/react';
+import { Tooltip } from 'components';
 import { StarIcon as StarFilled } from '@heroicons/react/24/solid';
 import { StarIcon as StarOutline } from '@heroicons/react/24/outline';
 import { useTheme } from '@mui/material/styles';
@@ -15,20 +16,18 @@ interface ChunkFavoriteFilterToggleProps {
 
 
 export function ChunkFavoriteFilterToggle({ showOnlyFavorites, onToggle }: ChunkFavoriteFilterToggleProps) {
-    const theme = useTheme();
     return (
-        <Tooltip title={showOnlyFavorites ? 'Show all chunks' : 'Show only favorites'}>
+        <Tooltip content={showOnlyFavorites ? 'Show all chunks' : 'Show only favorites'}>
             <span>
                 <IconButton
                     onClick={() => onToggle(!showOnlyFavorites)}
                     color={showOnlyFavorites ? 'warning' : 'default'}
-                    size="small"
                     aria-label={showOnlyFavorites ? 'Show all chunks' : 'Show only favorite chunks'}
                 >
                     {showOnlyFavorites ? (
-                        <StarFilled style={{ color: theme.palette.warning.main, width: 22, height: 22 }} />
+                        <StarFilled />
                     ) : (
-                        <StarOutline style={{ color: theme.palette.action.disabled, width: 22, height: 22 }} />
+                        <StarOutline />
                     )}
                 </IconButton>
             </span>

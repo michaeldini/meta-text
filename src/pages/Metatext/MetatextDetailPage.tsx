@@ -2,26 +2,21 @@
 // This page displays the details of a specific Metatext, including a header with style controls and document meta-data, the paginated chunks of the Metatext, and additional tools for chunk management.
 
 
-import BottomNavigation from '@mui/material/BottomNavigation';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Box, useTheme, Slide, Stack, Paper } from '@mui/material';
 import type { Theme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
-
+import { Box, Stack, Heading, Button, Spinner } from '@chakra-ui/react';
 import {
     PageContainer, ReviewButton, SourceDocInfo, GenerateSourceDocInfoButton,
     StyleControls,
     DocumentHeader,
-    AppAlert,
 } from 'components';
-import { useUserConfig, useUpdateUserConfig } from 'services/userConfigService';
+
+import { useUserConfig, useUpdateUserConfig } from 'services';
 
 import { ChunkToolsPanel, PaginatedChunks, SearchContainer, BookmarkNavigateButton } from 'features';
 
-import { useValidatedIdParam } from 'utils/urlValidation';
 
 
 
@@ -53,9 +48,6 @@ function MetatextDetailPage(): ReactElement | null {
         }
     }, [error, isLoading, navigate]);
 
-    const theme: Theme = useTheme();
-    const styles = getMetatextDetailStyles(theme);
-    useUserConfig();
     useSearchKeyboard({ enabled: true });
     const { data: userConfig } = useUserConfig();
     const updateUserConfig = useUpdateUserConfig();
@@ -64,24 +56,22 @@ function MetatextDetailPage(): ReactElement | null {
     let content;
     if (metatext) {
         content = (
-            <Box sx={styles.container} data-testid="metatext-detail-content">
+            <Box data-testid="metatext-detail-content">
                 <DocumentHeader title={metatext.title}>
                     {sourceDoc && <SourceDocInfo doc={sourceDoc} />}
                     <ReviewButton metatextId={metatext.id} />
                     <GenerateSourceDocInfoButton sourceDocumentId={metatext.source_document_id} />
                     <StyleControls />
-                    <Stack spacing={2} alignItems="center" direction="row">
-                        <ChunkPositionToggleButton
-                            value={uiPreferences.showChunkPositions || false}
-                            onChange={val => updateUserConfig.mutate({ showChunkPositions: val })}
-                        />
-                        <BookmarkNavigateButton metaTextId={metatext.id} />
-                        <DownloadMetatextButton metatextId={metatext.id} />
-                        <ChunkFavoriteFilterToggle
-                            showOnlyFavorites={showOnlyFavorites}
-                            onToggle={setShowOnlyFavorites}
-                        />
-                    </Stack>
+                    <ChunkPositionToggleButton
+                        value={uiPreferences.showChunkPositions || false}
+                        onChange={val => updateUserConfig.mutate({ showChunkPositions: val })}
+                    />
+                    <BookmarkNavigateButton metaTextId={metatext.id} />
+                    <DownloadMetatextButton metatextId={metatext.id} />
+                    <ChunkFavoriteFilterToggle
+                        showOnlyFavorites={showOnlyFavorites}
+                        onToggle={setShowOnlyFavorites}
+                    />
                     <SearchContainer showTagFilters={true} />
                 </DocumentHeader>
                 <PaginatedChunks metatextId={metatext.id} showOnlyFavorites={showOnlyFavorites} />

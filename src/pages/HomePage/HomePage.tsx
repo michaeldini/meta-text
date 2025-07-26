@@ -50,9 +50,9 @@ function HomePage(): ReactElement {
         >
             <Stack data-testid="homepage-content" maxWidth="2xl">
                 <WelcomeText welcomeTextStyles={styles.welcomeText} />
-
-                <NavigationButtons />
-
+                <Center>
+                    <NavigationButtons />
+                </Center>
                 <HomePageDetails />
             </Stack>
 
