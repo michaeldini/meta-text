@@ -57,7 +57,6 @@ function MetatextDetailPage(): ReactElement | null {
         content = (
             <Stack data-testid="metatext-detail-content">
                 <DocumentHeader title={metatext.title}>
-                    {sourceDoc && <SourceDocInfo doc={sourceDoc} />}
                     <ReviewButton metatextId={metatext.id} />
                     <GenerateSourceDocInfoButton sourceDocumentId={metatext.source_document_id} />
                     <StyleControls />
@@ -72,6 +71,7 @@ function MetatextDetailPage(): ReactElement | null {
                         onToggle={setShowOnlyFavorites}
                     />
                     <SearchContainer showTagFilters={true} />
+                    {sourceDoc && <SourceDocInfo doc={sourceDoc} />}
                 </DocumentHeader>
                 <ChunkToolsPanel />
                 <PaginatedChunks metatextId={metatext.id} showOnlyFavorites={showOnlyFavorites} />

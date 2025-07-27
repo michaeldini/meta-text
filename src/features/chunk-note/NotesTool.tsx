@@ -4,7 +4,7 @@
  * and blur-based persistence
  */
 import React, { useState, useEffect, useCallback } from 'react';
-import { Box, useTheme } from '@mui/material';
+import { Box, } from '@chakra-ui/react';
 
 import { ChunkTextField, getSharedToolStyles } from 'features';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
@@ -21,8 +21,6 @@ export const NotesTool = React.memo((props: NotesToolProps) => {
     const { chunk, updateChunkField, isVisible, summaryFieldSx, noteFieldSx } = props;
     if (!isVisible) return null;
 
-    const theme = useTheme();
-    const styles = getSharedToolStyles(theme);
 
     // Handle null/undefined values by converting to empty string
     const sanitizedSummary = chunk.summary ?? '';
@@ -41,11 +39,11 @@ export const NotesTool = React.memo((props: NotesToolProps) => {
     }, [sanitizedNote]);
 
     // Memoized handlers to prevent unnecessary re-renders
-    const handleSummaryChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSummaryChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setLocalSummary(e.target.value);
     }, []);
 
-    const handleNotesChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleNotesChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setLocalNote(e.target.value);
     }, []);
 
@@ -57,28 +55,15 @@ export const NotesTool = React.memo((props: NotesToolProps) => {
         updateChunkField(chunk.id, 'note', localNote);
     }, [chunk.id, updateChunkField, localNote]);
 
-    // Handle keyboard shortcuts for better UX
-    const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-        // Ctrl/Cmd + S to save (trigger blur)
-        if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-            e.preventDefault();
-            if (e.currentTarget.getAttribute('aria-label')?.includes('Summary')) {
-                handleSummaryBlur();
-            } else {
-                handleNotesBlur();
-            }
-        }
-    }, [handleSummaryBlur, handleNotesBlur]);
+
 
     return (
-        <Box sx={styles.toolTabContainer}>
+        <Box>
             <ChunkTextField
                 label="Summary"
                 value={localSummary}
                 onChange={handleSummaryChange}
                 onBlur={handleSummaryBlur}
-                onKeyDown={handleKeyDown}
-                sx={summaryFieldSx}
                 placeholder="Enter a brief summary of this chunk..."
                 aria-label="Summary input field"
             />
@@ -87,9 +72,6 @@ export const NotesTool = React.memo((props: NotesToolProps) => {
                 value={localNote}
                 onChange={handleNotesChange}
                 onBlur={handleNotesBlur}
-                onKeyDown={handleKeyDown}
-                sx={noteFieldSx}
-                minRows={3}
                 placeholder="Add your note and observations..."
                 aria-label="Notes input field"
             />

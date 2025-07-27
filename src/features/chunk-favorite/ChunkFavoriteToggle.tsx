@@ -3,7 +3,8 @@
 // Handles API calls to backend and updates UI state optimistically.
 
 import React, { useState } from 'react';
-import { IconButton, Tooltip, CircularProgress, Box } from '@mui/material';
+import { IconButton, Spinner, Box } from '@chakra-ui/react';
+import { Tooltip } from 'components'
 import { HiStar, HiOutlineStar } from 'react-icons/hi2';
 import { useTheme } from '@mui/material/styles';
 import { api } from 'utils';
@@ -46,17 +47,16 @@ export function ChunkFavoriteToggle({ chunk }: ChunkFavoriteToggleProps) {
     };
 
     return (
-        <Tooltip title={favorited ? 'Unfavorite' : 'Favorite'}>
+        <Tooltip content={favorited ? 'Unfavorite' : 'Favorite'}>
             <span>
                 <IconButton
                     onClick={handleToggle}
                     color={favorited ? 'warning' : 'default'}
                     disabled={loading}
-                    size="small"
                     aria-label={favorited ? 'Unfavorite chunk' : 'Favorite chunk'}
                 >
                     {loading ? (
-                        <CircularProgress />
+                        <Spinner />
                     ) : favorited ? (
                         <HiStar />
                     ) : (

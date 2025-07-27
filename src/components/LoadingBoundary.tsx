@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { LOADING_CONSTANTS } from 'constants';
+
 import { LoadingSpinner } from 'components';
 
 /**
@@ -15,7 +15,6 @@ export default function LoadingBoundary(props: LoadingBoundaryProps): React.Reac
     if (loading) {
         return (
             <LoadingSpinner
-                minHeight={LOADING_CONSTANTS.MIN_HEIGHT_BOUNDARY}
                 aria-label="Loading content"
             />
         );

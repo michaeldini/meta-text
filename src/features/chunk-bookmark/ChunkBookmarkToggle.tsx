@@ -1,7 +1,8 @@
 // Toggle bookmark state for a chunk
 
 import React from 'react';
-import { IconButton, Tooltip } from '@mui/material';
+import { IconButton } from '@chakra-ui/react';
+import { Tooltip } from 'components'
 import { useBookmarkUIStore } from './bookmarkStore';
 import { useBookmark, useSetBookmark, useRemoveBookmark } from 'features/documents/useBookmark';
 import { HiBookmark, HiOutlineBookmark } from 'react-icons/hi2';
@@ -32,7 +33,7 @@ export function ChunkBookmarkToggle({ chunk }: ChunkBookmarkToggleProps) {
     };
 
     return (
-        <Tooltip title="Toggle bookmark" arrow>
+        <Tooltip content="Toggle bookmark">
             <span style={{ display: 'inline-flex' }}>
                 <IconButton onClick={handleToggle} data-testid={`bookmark-toggle-${chunk.id}`}>
                     {isBookmarked ? <HiBookmark /> : <HiOutlineBookmark />}

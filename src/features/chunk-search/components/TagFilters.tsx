@@ -46,7 +46,7 @@ export function TagFilters(props: TagFiltersProps) {
                     const isActive = activeTags.includes(tag);
 
                     return (
-                        <Tag.Root>
+                        <Tag.Root key={tag} >
                             <button onClick={() => handleTagToggle(tag)} key={tag}>
                                 <Tag.Label>{tag}</Tag.Label>
                             </button>

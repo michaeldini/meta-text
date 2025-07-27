@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, useTheme, IconButton, Tooltip } from '@mui/material';
+import { IconButton, Box } from '@chakra-ui/react';
+import { Tooltip } from 'components'
 import { HiOutlineTrash } from "react-icons/hi2";
 
 import { AiGenerationButton } from 'components';
@@ -33,9 +34,6 @@ export function ImageTool(props: ImageToolProps) {
         hasImage         // Boolean indicating if image exists
     } = useImageTool(chunk);
 
-    // Apply consistent theming across the component
-    const theme = useTheme();
-    const styles = getSharedToolStyles(theme);
 
     const handleDialogSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -60,14 +58,9 @@ export function ImageTool(props: ImageToolProps) {
     return (
         <>
             {/* Main tool container with consistent styling */}
-            <Box sx={styles.toolTabContainer}>
+            <Box >
                 {/* Action buttons container */}
-                <Box sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 1,
-                    mb: hasImage ? 2 : 0
-                }}>
+                <Box>
                     {/* Primary action button for image generation */}
                     <AiGenerationButton
                         label={hasImage ? "Generate New Image" : "Generate Image"}
@@ -79,16 +72,12 @@ export function ImageTool(props: ImageToolProps) {
 
                     {/* Delete button - only show when image exists */}
                     {hasImage && (
-                        <Tooltip title="Delete current image">
+                        <Tooltip content="Delete current image">
                             <IconButton
                                 onClick={handleDeleteImage}
                                 disabled={loading}
-                                size="small"
                                 color="error"
-                                sx={{
-                                    opacity: 0.7,
-                                    '&:hover': { opacity: 1 }
-                                }}
+
                             >
                                 <HiOutlineTrash />
                             </IconButton>

@@ -3,7 +3,8 @@
 // Strictly removes meta-data from the other chunk when merging.
 
 import React, { useState } from 'react';
-import { IconButton, Tooltip } from '@mui/material';
+import { IconButton } from '@chakra-ui/react';
+import { Tooltip } from 'components'
 import { HiArrowUturnLeft } from 'react-icons/hi2';
 import { useMergeChunks } from './hooks/useMergeChunks';
 
@@ -43,9 +44,9 @@ export function MergeChunksTool({ chunkIndices, onComplete }: MergeChunksToolPro
     }
 
     return (
-        <Tooltip title="Undo split (merge with next chunk)">
+        <Tooltip content="Undo split (merge with next chunk)">
             <IconButton
-                size="small"
+
                 onClick={handleMerge}
                 disabled={isLoading}
                 aria-label="Undo split (merge with next chunk)"
