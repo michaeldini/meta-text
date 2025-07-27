@@ -4,9 +4,9 @@
 // for potentially very long documents (book-length content).
 import React, { useState, useCallback, useRef } from 'react';
 
-import { Box, Heading, Text, IconButton, Stack, Textarea, Alert } from '@chakra-ui/react';
+import { Box, Heading, Text, IconButton, Stack, Textarea, Alert, CloseButton } from '@chakra-ui/react';
 import { Prose, Tooltip } from 'components';
-import { PencilIcon, CheckIcon, ClearIcon } from 'icons';
+import { HiPencil, HiCheck } from 'react-icons/hi2';
 
 import type { SourceDocumentDetail } from 'types';
 import { useUserConfig } from 'services/userConfigService';
@@ -96,8 +96,10 @@ export default function SourceDoc({ doc, onDocumentUpdate }: SourceDocProps) {
                     <Tooltip content="Edit document text">
                         <IconButton
                             onClick={handleEdit}
+                            variant="ghost"
+                            color="primary"
                         >
-                            <PencilIcon />
+                            <HiPencil />
                         </IconButton>
                     </Tooltip>
                 ) : (
@@ -106,16 +108,20 @@ export default function SourceDoc({ doc, onDocumentUpdate }: SourceDocProps) {
                             <IconButton
                                 onClick={handleSave}
                                 disabled={isSaving}
+                                variant="ghost"
+                                color="primary"
                             >
-                                <CheckIcon />
+                                <HiCheck />
                             </IconButton>
                         </Tooltip>
                         <Tooltip content="Cancel editing">
                             <IconButton
                                 onClick={handleCancel}
                                 disabled={isSaving}
+                                variant="ghost"
+                                color="primary"
                             >
-                                <ClearIcon />
+                                <CloseButton />
                             </IconButton>
                         </Tooltip>
                     </>

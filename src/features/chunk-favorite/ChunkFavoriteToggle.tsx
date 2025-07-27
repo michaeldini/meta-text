@@ -4,7 +4,7 @@
 
 import React, { useState } from 'react';
 import { IconButton, Tooltip, CircularProgress, Box } from '@mui/material';
-import { StarIcon, StarOutlineIcon } from 'icons';
+import { HiStar, HiOutlineStar } from 'react-icons/hi2';
 import { useTheme } from '@mui/material/styles';
 import { api } from 'utils';
 import type { ChunkType } from 'types';
@@ -58,9 +58,9 @@ export function ChunkFavoriteToggle({ chunk }: ChunkFavoriteToggleProps) {
                     {loading ? (
                         <CircularProgress />
                     ) : favorited ? (
-                        <StarIcon />
+                        <HiStar />
                     ) : (
-                        <StarOutlineIcon />
+                        <HiOutlineStar />
                     )}
                 </IconButton>
             </span>

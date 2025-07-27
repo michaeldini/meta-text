@@ -6,8 +6,7 @@ import React from 'react';
 import { IconButton } from '@chakra-ui/react';
 import { Tooltip } from 'components';
 
-import { HashtagIcon } from 'icons';
-
+import { HiHashtag } from "react-icons/hi2";
 
 interface ChunkPositionToggleButtonProps {
     value: boolean;
@@ -25,8 +24,9 @@ export function ChunkPositionToggleButton(props: ChunkPositionToggleButtonProps)
                 color={checked ? "primary" : "default"}
                 data-testid="chunk-position-toggle"
                 disabled={disabled}
+                variant="ghost"
             >
-                <HashtagIcon />
+                <HiHashtag />
             </IconButton>
         </Tooltip>
     );

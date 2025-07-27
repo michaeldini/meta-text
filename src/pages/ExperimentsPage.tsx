@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Box, Paper, Fab } from '@mui/material';
 import { keyframes } from '@emotion/react';
 import {
-    StarsIcon as AddIcon,
-    MenuIcon as EditIcon,
-    UndoArrowIcon as NavigationIcon,
-    QuestionMarkIcon as FavoriteIcon,
-} from '../components/icons';
+    HiOutlineSparkles as AddIcon,
+    HiOutlineDocumentArrowUp as EditIcon,
+    HiOutlineDocumentArrowDown as NavigationIcon,
+    HiOutlineQuestionMarkCircle as FavoriteIcon,
+} from 'react-icons/hi2';
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(24px);}
@@ -76,7 +76,7 @@ export function LayoutFrames() {
                     <EditIcon />
                 </Fab>
                 <Fab variant="extended">
-                    <NavigationIcon sx={{ mr: 1 }} />
+                    <NavigationIcon />
                     Navigate
                 </Fab>
                 <Fab disabled aria-label="like">

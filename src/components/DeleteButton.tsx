@@ -1,7 +1,8 @@
 import React from 'react';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import { DeleteIcon } from './icons';
+import { IconButton } from '@chakra-ui/react';
+import { Tooltip } from 'components';
+import { HiOutlineTrash } from "react-icons/hi2";
+
 import { useTheme } from '@mui/material/styles';
 
 export interface DeleteButtonProps {
@@ -15,7 +16,7 @@ export function DeleteButton(props: DeleteButtonProps): React.ReactElement {
     const { onClick, disabled, label = "Delete", icon } = props;
     const theme = useTheme();
     return (
-        <Tooltip title={label} placement="top">
+        <Tooltip content={label} >
             <span>
                 <IconButton
                     data-testid="delete-button"
@@ -23,9 +24,9 @@ export function DeleteButton(props: DeleteButtonProps): React.ReactElement {
                     disabled={disabled}
                     color="primary"
                     aria-label={label}
-                    size="large"
+                    variant="ghost"
                 >
-                    {icon || <DeleteIcon />}
+                    {icon || <HiOutlineTrash />}
                 </IconButton>
             </span>
         </Tooltip>

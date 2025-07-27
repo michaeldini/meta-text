@@ -4,7 +4,7 @@ import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { useBookmarkUIStore } from './bookmarkStore';
 import { useBookmark, useSetBookmark, useRemoveBookmark } from 'features/documents/useBookmark';
-import { BookmarkIcon, BookmarkOutlineIcon } from 'icons';
+import { HiBookmark, HiOutlineBookmark } from 'react-icons/hi2';
 import { ChunkType } from 'types';
 
 interface ChunkBookmarkToggleProps {
@@ -35,7 +35,7 @@ export function ChunkBookmarkToggle({ chunk }: ChunkBookmarkToggleProps) {
         <Tooltip title="Toggle bookmark" arrow>
             <span style={{ display: 'inline-flex' }}>
                 <IconButton onClick={handleToggle} data-testid={`bookmark-toggle-${chunk.id}`}>
-                    {isBookmarked ? <BookmarkIcon /> : <BookmarkOutlineIcon />}
+                    {isBookmarked ? <HiBookmark /> : <HiOutlineBookmark />}
                 </IconButton>
             </span>
         </Tooltip>

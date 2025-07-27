@@ -5,7 +5,7 @@ import { IconButton } from '@chakra-ui/react';
 import { Tooltip } from 'components';
 import { useBookmarkUIStore } from './bookmarkStore';
 import { useBookmark } from 'features/documents/useBookmark';
-import { BookmarkIcon } from 'icons';
+import { HiBookmark } from "react-icons/hi2";
 
 interface BookmarkNavigateButtonProps {
     metaTextId: number;
@@ -23,8 +23,9 @@ export function BookmarkNavigateButton({ metaTextId }: BookmarkNavigateButtonPro
                     disabled={!bookmarkedChunkId}
                     data-testid="goto-bookmark-button"
                     color={bookmarkedChunkId ? 'primary' : 'default'}
+                    variant="ghost"
                 >
-                    <BookmarkIcon />
+                    <HiBookmark />
                 </IconButton>
             </span>
         </Tooltip>

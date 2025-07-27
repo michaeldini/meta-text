@@ -6,7 +6,7 @@ import React from 'react';
 
 import { IconButton } from '@chakra-ui/react';
 import { Tooltip } from 'components';
-import { DownloadIcon } from 'icons';
+import { HiArrowDownTray } from "react-icons/hi2";
 import { api, downloadJsonAsFile } from 'utils';
 
 
@@ -41,8 +41,9 @@ export function DownloadMetatextButton({ metatextId, disabled }: DownloadMetatex
                 disabled={loading || disabled}
                 color={error ? 'error' : 'primary'}
                 aria-label="Download MetaText"
+                variant="ghost"
             >
-                <DownloadIcon />
+                <HiArrowDownTray />
             </IconButton>
         </Tooltip>
     );

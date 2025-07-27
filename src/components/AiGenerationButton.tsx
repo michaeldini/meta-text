@@ -1,5 +1,5 @@
 import React from 'react';
-import { StarsIcon } from 'icons';
+import { HiOutlineSparkles } from 'react-icons/hi2';
 import { LoadingSpinner } from 'components';
 import { Button, Text } from '@chakra-ui/react';
 import { Tooltip } from 'components';
@@ -48,7 +48,7 @@ export function AiGenerationButton(props: AiGenerationButtonProps): React.ReactE
                     <LoadingSpinner aria-label="Loading AI generation" />
                 ) : (
                     <>
-                        <StarsIcon style={{ marginRight: 8 }} />
+                        <HiOutlineSparkles style={{ marginRight: 8 }} />
                         {label}
                     </>
                 )}

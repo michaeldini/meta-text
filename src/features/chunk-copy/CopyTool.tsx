@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, IconButton, Tooltip, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useNotifications } from 'store';
-import { CopyIcon } from 'icons';
+import { HiDocumentDuplicate } from 'react-icons/hi2';
 import { getSharedToolStyles } from 'features/chunk-shared/styles';
 import type { CopyToolProps } from 'features/chunk-shared/types';
 
@@ -38,7 +38,7 @@ export function CopyTool({ chunkText, 'data-testid': dataTestId = 'copy-tool', s
                         data-testid={dataTestId}
                         sx={styles.copyToolButton}
                     >
-                        <CopyIcon />
+                        <HiDocumentDuplicate />
                     </IconButton>
                 </span>
             </Tooltip>

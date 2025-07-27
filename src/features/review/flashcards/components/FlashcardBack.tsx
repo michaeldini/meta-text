@@ -4,7 +4,7 @@ import React from 'react';
 import { Box, CardActionArea, CardContent, Typography, useTheme } from '@mui/material';
 import parse from 'html-react-parser';
 
-import { MenuIcon, QuestionMarkIcon } from 'icons';
+import { HiBars3, HiQuestionMarkCircle } from 'react-icons/hi2';
 
 import { createFlashcardStyles } from '../Flashcard.styles';
 import InfoButton from './InfoPopoverButton';
@@ -40,7 +40,7 @@ export function FlashcardBack(props: FlashcardBackProps) {
             </CardActionArea>
             <Box sx={styles.buttonsContainer}>
                 <InfoButton
-                    icon={<MenuIcon />}
+                    icon={<HiBars3 />}
                     dialogId="info-dialog"
                     title="Definition In Context"
                     word={word}
@@ -48,7 +48,7 @@ export function FlashcardBack(props: FlashcardBackProps) {
                     typographyVariant="body2"
                 />
                 <InfoButton
-                    icon={<QuestionMarkIcon />}
+                    icon={<HiQuestionMarkCircle />}
                     dialogId="context-dialog"
                     title="Context"
                     word={word}

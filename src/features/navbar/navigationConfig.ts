@@ -4,14 +4,14 @@
  * - Supports authenticated and unauthenticated states
  */
 
-import { MenuIcon, LoginIcon, LogoutIcon, HomeIcon, PlusIcon, ChatBubbleLeftIcon, DocumentUploadIcon, DocumentDownloadIcon, MetaTextLogoIcon } from 'icons';
-import { IconProps } from 'icons';
+import { MetaTextLogoIcon } from 'icons';
+import { HiArrowRightOnRectangle, HiArrowLeftOnRectangle, HiPlus, HiOutlineDocumentArrowDown, HiOutlineDocumentArrowUp } from "react-icons/hi2";
 
 
 interface NavigationItem {
     label: string;
     protected: boolean;
-    icon: React.ComponentType<IconProps>;
+    icon: React.ComponentType<any>;
     action: () => void;
     disabled?: boolean;
 }
@@ -32,31 +32,31 @@ export const getNavigationConfig = (logout: () => void, navigate: (path: string)
         {
             label: 'Login',
             protected: false,
-            icon: LoginIcon,
+            icon: HiArrowRightOnRectangle,
             action: () => navigate('/login')
         },
         {
             label: 'Logout',
             protected: true,
-            icon: LogoutIcon,
+            icon: HiArrowLeftOnRectangle,
             action: () => { logout(); navigate('/login'); }
         },
         {
             label: 'Register',
             protected: false,
-            icon: PlusIcon,
+            icon: HiPlus,
             action: () => navigate('/register')
         },
         {
             label: 'Metatexts',
             protected: true,
-            icon: DocumentUploadIcon,
+            icon: HiOutlineDocumentArrowUp,
             action: () => navigate('/metatext')
         },
         {
             label: 'SourceDocs',
             protected: true,
-            icon: DocumentDownloadIcon,
+            icon: HiOutlineDocumentArrowDown,
             action: () => navigate('/sourcedoc')
         },
     ]

@@ -1,11 +1,11 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { Box, useTheme, Accordion, AccordionSummary, AccordionDetails, Typography, Alert, TextField, IconButton, Tooltip, Snackbar } from '@mui/material';
-import { ExpandMoreIcon, PencilIcon, CheckIcon, ClearIcon } from 'icons';
-
+import { HiChevronDown, HiPencil, HiCheck } from 'react-icons/hi2';
 import { splitToArray } from 'utils';
 import { SourceDocumentDetail, SourceDocumentUpdate } from 'types';
 import { updateSourceDocument } from 'services/sourceDocumentService';
 import { log } from 'utils';
+import { CloseButton } from '@chakra-ui/react';
 
 interface SourceDocInfoProps {
     doc: SourceDocumentDetail;
@@ -172,7 +172,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
                     slotProps={{ transition: { unmountOnExit: true } }}
                     disableGutters={true}
                 >
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <AccordionSummary expandIcon={<HiChevronDown />}>
                         <Typography variant="h6" color="text.secondary">
                             {config.label} (Empty)
                         </Typography>
@@ -189,7 +189,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
                                     size="small"
                                     sx={styles.editButton}
                                 >
-                                    <PencilIcon />
+                                    <HiPencil />
                                 </IconButton>
                             </Tooltip>
                         </Box>
@@ -208,7 +208,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
                     slotProps={{ transition: { unmountOnExit: true } }}
                     disableGutters={true}
                 >
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <AccordionSummary expandIcon={<HiChevronDown />}>
                         <Typography variant="h6">{config.label}</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
@@ -232,7 +232,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
                                             size="small"
                                             sx={styles.saveButton}
                                         >
-                                            <CheckIcon />
+                                            <HiCheck />
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Cancel editing">
@@ -242,7 +242,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
                                             size="small"
                                             sx={styles.cancelButton}
                                         >
-                                            <ClearIcon />
+                                            <CloseButton />
                                         </IconButton>
                                     </Tooltip>
                                 </Box>
@@ -259,7 +259,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
                                         size="small"
                                         sx={styles.editButton}
                                     >
-                                        <PencilIcon />
+                                        <HiPencil />
                                     </IconButton>
                                 </Tooltip>
                             </Box>
@@ -274,7 +274,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
                 key={config.key}
                 slotProps={{ transition: { unmountOnExit: true } }}
             >
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <AccordionSummary expandIcon={<HiChevronDown />}>
                     <Typography variant="h6">{config.label}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -297,7 +297,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
                                         size="small"
                                         sx={styles.saveButton}
                                     >
-                                        <CheckIcon />
+                                        <HiCheck />
                                     </IconButton>
                                 </Tooltip>
                                 <Tooltip title="Cancel editing">
@@ -307,7 +307,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
                                         size="small"
                                         sx={styles.cancelButton}
                                     >
-                                        <ClearIcon />
+                                        <CloseButton />
                                     </IconButton>
                                 </Tooltip>
                             </Box>
@@ -324,7 +324,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
                                     size="small"
                                     sx={styles.editButton}
                                 >
-                                    <PencilIcon />
+                                    <HiPencil />
                                 </IconButton>
                             </Tooltip>
                         </Box>
@@ -338,7 +338,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
     return (
         <Box sx={styles.container} data-testid="source-doc-info">
             <Accordion>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <AccordionSummary expandIcon={<HiChevronDown />}>
                     <Typography variant="h6">Document: {doc.title}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>

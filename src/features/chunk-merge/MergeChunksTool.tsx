@@ -4,7 +4,7 @@
 
 import React, { useState } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
-import { UndoArrowIcon } from 'icons';
+import { HiArrowUturnLeft } from 'react-icons/hi2';
 import { useMergeChunks } from './hooks/useMergeChunks';
 
 import { MergeChunksToolProps } from 'features/chunk-shared/types';
@@ -50,7 +50,7 @@ export function MergeChunksTool({ chunkIndices, onComplete }: MergeChunksToolPro
                 disabled={isLoading}
                 aria-label="Undo split (merge with next chunk)"
             >
-                <UndoArrowIcon />
+                <HiArrowUturnLeft />
             </IconButton>
         </Tooltip>
     );

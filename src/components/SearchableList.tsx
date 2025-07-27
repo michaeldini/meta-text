@@ -4,9 +4,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, CloseButton, Heading, Input, InputGroup, List } from '@chakra-ui/react'
+import { HiMagnifyingGlass } from "react-icons/hi2";
 
 import { ErrorBoundary, LoadingBoundary, DeleteButton, Field } from 'components';
-import { SearchIcon } from 'icons';
 import { useDeleteSourceDocument, useDeleteMetatext } from 'features/documents/useDocumentsData';
 
 import { useFilteredList } from 'hooks';
@@ -93,7 +93,7 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
                         helperText="Search..."
                         aria-label="Search items"
                     />
-                    <InputGroup startElement={<SearchIcon />} endElement={endElement}>
+                    <InputGroup startElement={<HiMagnifyingGlass />} endElement={endElement}>
                         <Input placeholder={searchPlaceholder} value={search} onChange={handleSearchChange} />
                     </InputGroup>
 

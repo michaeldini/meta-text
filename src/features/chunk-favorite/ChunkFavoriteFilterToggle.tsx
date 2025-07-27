@@ -5,8 +5,7 @@
 import React from 'react';
 import { IconButton } from '@chakra-ui/react';
 import { Tooltip } from 'components';
-import { StarIcon as StarFilled } from '@heroicons/react/24/solid';
-import { StarIcon as StarOutline } from '@heroicons/react/24/outline';
+import { HiOutlineStar, HiStar } from 'react-icons/hi2';
 import { useTheme } from '@mui/material/styles';
 
 interface ChunkFavoriteFilterToggleProps {
@@ -21,13 +20,14 @@ export function ChunkFavoriteFilterToggle({ showOnlyFavorites, onToggle }: Chunk
             <span>
                 <IconButton
                     onClick={() => onToggle(!showOnlyFavorites)}
-                    color={showOnlyFavorites ? 'warning' : 'default'}
+                    color={showOnlyFavorites ? 'yellow' : 'primary'}
                     aria-label={showOnlyFavorites ? 'Show all chunks' : 'Show only favorite chunks'}
+                    variant="ghost"
                 >
                     {showOnlyFavorites ? (
-                        <StarFilled />
+                        <HiStar />
                     ) : (
-                        <StarOutline />
+                        <HiOutlineStar />
                     )}
                 </IconButton>
             </span>

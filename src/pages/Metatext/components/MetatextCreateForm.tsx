@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Text, Heading, Stack, createListCollection, Select, Portal, Button, Input } from '@chakra-ui/react';
 import { Field } from 'components';
-import { StarsIcon } from 'icons';
+import { HiOutlineSparkles } from 'react-icons/hi2';
 import { useMetatextCreate } from '../hooks/useMetatextCreate';
 import { SourceDocumentSummary } from 'types';
 
@@ -119,12 +119,12 @@ function MetatextCreateForm(props: MetatextCreateFormProps): React.ReactElement 
                 {/* Submit Button */}
                 <Button
                     type="submit"
-                    variant="ghost"
-                    size="lg"
                     disabled={isSubmitDisabled}
                     data-testid="submit-button"
+                    variant="ghost"
+                    color="primary"
                 >
-                    <StarsIcon />
+                    <HiOutlineSparkles />
                     {loading ? 'Creating...' : 'Create Metatext'}
                 </Button>
             </form>

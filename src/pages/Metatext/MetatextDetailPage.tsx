@@ -4,7 +4,6 @@
 
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import type { Theme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
 import { Box, Stack, Heading, Button, Spinner } from '@chakra-ui/react';
 import {

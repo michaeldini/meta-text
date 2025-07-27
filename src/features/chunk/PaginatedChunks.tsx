@@ -10,7 +10,7 @@ import {
     Stack,
     Text,
 } from '@chakra-ui/react';
-import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
+import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2';
 import useChunkBookmarkNavigation from '../chunk-bookmark/useChunkBookmarkNavigation';
 import { useBookmark } from 'features/documents/useBookmark';
 import { LoadingBoundary, ErrorBoundary, AppAlert } from 'components';

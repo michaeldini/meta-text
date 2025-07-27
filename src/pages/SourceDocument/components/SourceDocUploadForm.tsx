@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 
 import { Field } from 'components';
-import { FileUploadIcon } from 'icons';
+import { HiArrowDownTray } from 'react-icons/hi2';
 
 import { useState, useCallback } from 'react';
 import { useAddSourceDocument } from 'features';
@@ -109,7 +109,7 @@ function SourceDocUploadForm({ onSuccess }: SourceDocUploadFormProps): React.Rea
             disabled={addSourceDocument.isPending || !title.trim() || !file}
             data-testid="submit-button"
         >
-            {!addSourceDocument.isPending ? <FileUploadIcon /> : undefined}
+            {!addSourceDocument.isPending ? <HiArrowDownTray /> : undefined}
             {addSourceDocument.isPending ? 'Uploading...' : 'Upload Document'}
         </Button>
     );
@@ -136,7 +136,7 @@ function SourceDocUploadForm({ onSuccess }: SourceDocUploadFormProps): React.Rea
                 </FileUpload.Label>
                 <FileUpload.Dropzone>
                     <FileUpload.DropzoneContent>
-                        <FileUploadIcon />
+                        <HiArrowDownTray />
                         <Text>
                             {file ? file.name : 'Drag & drop or click to select a text file'}
                         </Text>

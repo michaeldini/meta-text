@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, useTheme, IconButton, Tooltip } from '@mui/material';
-import { TrashIcon } from '@heroicons/react/24/outline';
+import { HiOutlineTrash } from "react-icons/hi2";
 
 import { AiGenerationButton } from 'components';
 
@@ -90,7 +90,7 @@ export function ImageTool(props: ImageToolProps) {
                                     '&:hover': { opacity: 1 }
                                 }}
                             >
-                                <TrashIcon style={{ width: 18, height: 18 }} />
+                                <HiOutlineTrash />
                             </IconButton>
                         </Tooltip>
                     )}

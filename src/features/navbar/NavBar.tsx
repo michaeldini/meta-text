@@ -53,7 +53,7 @@ export function NavBar() {
                         onClick={item.action}
                         variant="ghost"
                         color="primary"
-                        size="lg"
+                        size="xl"
                         fontWeight="medium"
                     >
                         {item.icon ? <item.icon /> : undefined}

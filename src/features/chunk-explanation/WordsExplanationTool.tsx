@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { IconButton } from '@chakra-ui/react';
 import { Tooltip } from 'components';
-import { QuestionMarkIcon } from 'icons';
+import { HiQuestionMarkCircle } from 'react-icons/hi2';
 import { useExplanation } from './hooks/useExplanation';
 import { LoadingSpinner, AppAlert } from 'components';
 import type { ExplanationToolProps } from 'features/chunk-shared/types';
@@ -70,7 +70,7 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
                     {loading ? (
                         <LoadingSpinner />
                     ) : (
-                        <QuestionMarkIcon />
+                        <HiQuestionMarkCircle />
                     )}
                 </IconButton>
             </Tooltip>

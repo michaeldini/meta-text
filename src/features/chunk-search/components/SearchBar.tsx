@@ -2,16 +2,9 @@
 // Provides the main search interface as described in the feature guide
 
 import React, { useCallback } from 'react';
-// import {
-//     TextField,
-//     InputAdornment,
-//     IconButton,
-//     Box,
-//     useTheme
-// } from '@mui/material';
 
-import { Text, Box, IconButton, Textarea, CloseButton, InputGroup, Input } from '@chakra-ui/react';
-import { SearchIcon, ClearIcon } from 'icons';
+import { Box, CloseButton, InputGroup, Input } from '@chakra-ui/react';
+import { HiMagnifyingGlass } from 'react-icons/hi2';
 import { useSearchStore } from '../store/useSearchStore';
 import { useSearch } from '../hooks/useSearch';
 
@@ -61,7 +54,7 @@ export function SearchBar({
     ) : undefined
     return (
         <Box >
-            <InputGroup startElement={<SearchIcon />} endElement={endElement}>
+            <InputGroup startElement={<HiMagnifyingGlass />} endElement={endElement}>
                 <Input placeholder={placeholder} value={query} onChange={handleQueryChange} />
             </InputGroup>
             {/* <Textarea

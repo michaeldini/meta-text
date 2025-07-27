@@ -1,6 +1,7 @@
-import { Typography, IconButton, Tooltip, Box } from '@mui/material';
+import { Heading, IconButton, Box } from '@chakra-ui/react'
+import { Tooltip } from 'components';
 import type { ReactElement } from 'react';
-import { ArrowBackIcon } from 'icons';
+import { HiArrowLeft } from 'react-icons/hi2';
 import { getMetatextReviewStyles } from '../Metatext.styles';
 
 interface HeaderProps {
@@ -17,17 +18,21 @@ interface HeaderProps {
  */
 export function Header({ metatextId, navigate, styles }: HeaderProps): ReactElement {
     return (
-        <Box sx={styles.header}>
+        <Box >
             {metatextId && (
-                <Tooltip title="Back to Metatext Detail">
-                    <IconButton onClick={() => navigate(`/metatext/${metatextId}`)}>
-                        <ArrowBackIcon />
+                <Tooltip content="Back to Metatext Detail">
+                    <IconButton
+                        onClick={() => navigate(`/metatext/${metatextId}`)}
+                        variant="ghost"
+                        color="primary"
+                    >
+                        <HiArrowLeft />
                     </IconButton>
                 </Tooltip>
             )}
-            <Typography variant="h4" gutterBottom sx={metatextId ? styles.title : undefined}>
+            <Heading >
                 Review
-            </Typography>
+            </Heading>
         </Box>
     );
 }

@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Box, Paper } from '@mui/material';
-import { ExpandMoreIcon } from 'icons';
+import { HiChevronDown } from 'react-icons/hi2';
 import { Explanation } from 'types';
 
 import styles from './styles';
@@ -38,7 +38,7 @@ export function PhraseCard({ title, content, elevation = 5 }: PhraseCardProps) {
 export function PhraseItem({ phrase }: PhraseItemProps) {
     return (
         <Accordion sx={styles.accordion}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <AccordionSummary expandIcon={<HiChevronDown />}>
                 <Typography variant="subtitle1">{phrase.words}</Typography>
             </AccordionSummary>
             <AccordionDetails sx={styles.accordionDetails}>

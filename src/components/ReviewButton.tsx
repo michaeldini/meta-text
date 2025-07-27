@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@chakra-ui/react';
 import { Tooltip } from 'components';
-import { AcademicCapIcon } from './icons';
+import { HiAcademicCap } from 'react-icons/hi2'
 import { useNavigate } from 'react-router-dom';
 
 export interface ReviewButtonProps {
@@ -26,7 +26,7 @@ export function ReviewButton(props: ReviewButtonProps): React.ReactElement {
                 disabled={disabled}
                 aria-label={toolTip || 'Review Button'}
             >
-                <AcademicCapIcon style={{ marginRight: 8 }} />
+                <HiAcademicCap />
                 {label}
             </Button>
         </Tooltip>
