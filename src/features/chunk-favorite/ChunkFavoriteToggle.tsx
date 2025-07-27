@@ -6,7 +6,6 @@ import React, { useState } from 'react';
 import { IconButton, Spinner, Box } from '@chakra-ui/react';
 import { Tooltip } from 'components'
 import { HiStar, HiOutlineStar } from 'react-icons/hi2';
-import { useTheme } from '@mui/material/styles';
 import { api } from 'utils';
 import type { ChunkType } from 'types';
 import { useChunkStore } from 'store';
@@ -17,7 +16,6 @@ interface ChunkFavoriteToggleProps {
 
 
 export function ChunkFavoriteToggle({ chunk }: ChunkFavoriteToggleProps) {
-    const theme = useTheme();
     const [loading, setLoading] = useState(false);
 
     // Get chunk store for updating global state

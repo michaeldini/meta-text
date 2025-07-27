@@ -6,7 +6,6 @@ import React from 'react';
 import { IconButton } from '@chakra-ui/react';
 import { Tooltip } from 'components';
 import { HiOutlineStar, HiStar } from 'react-icons/hi2';
-import { useTheme } from '@mui/material/styles';
 
 interface ChunkFavoriteFilterToggleProps {
     showOnlyFavorites: boolean;

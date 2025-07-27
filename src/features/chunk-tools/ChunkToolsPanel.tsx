@@ -27,27 +27,37 @@ export function ChunkToolsPanel() {
     };
 
     return (
-        <Box position='fixed' left={0} right={0} bottom={0} zIndex={1000} >
-            <Box>
-                <ButtonGroup
-                    size="lg"
-                >
-                    {toolsRegistry.map((tool) => (
-                        <Tooltip
-                            key={tool.id}
-                            content={<Text fontSize="sm">{tool.tooltip}</Text>}
+        <Box position='fixed' left={0} right={0} bottom={0} zIndex={9999}
+        >
+            <ButtonGroup
+                size="lg"
+                width="100vw"
+                display="flex"
+                justifyContent="stretch"
+                alignItems="center"
+                gap={0}
+            >
+                {toolsRegistry.map((tool) => (
+                    <Tooltip
+                        key={tool.id}
+                        content={<Text fontSize="sm">{tool.tooltip}</Text>}
+                    >
+                        <IconButton
+                            aria-label={tool.name}
+                            color={activeTabs.includes(tool.id) ? "primary" : "secondary"}
+                            onClick={() => handleToolClick(tool.id)}
+                            flex={1}
+                            minWidth={0}
+                            borderRadius={0}
+                            _hover={{
+                                bg: "primary",
+                            }}
                         >
-                            <IconButton
-                                aria-label={tool.name}
-                                color={activeTabs.includes(tool.id) ? "primary" : "secondary"}
-                                onClick={() => handleToolClick(tool.id)}
-                            >
-                                {tool.icon}
-                            </IconButton>
-                        </Tooltip>
-                    ))}
-                </ButtonGroup>
-            </Box>
+                            {tool.icon}
+                        </IconButton>
+                    </Tooltip>
+                ))}
+            </ButtonGroup>
         </Box>
     );
 };

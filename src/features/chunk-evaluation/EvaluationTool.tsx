@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
-import { Box } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { Box } from '@chakra-ui/react'
 import ReactMarkdown from 'react-markdown';
 
 import { AiGenerationButton } from 'components';
@@ -19,8 +18,6 @@ export function EvaluationTool(props: EvaluationToolProps) {
     if (!isVisible) return null;
 
     const { fetchEvaluationResults, loading, error } = useEvaluation();
-    const theme = useTheme();
-    const styles = getSharedToolStyles(theme);
 
     const handleGenerate = useCallback(async () => {
         const result = await fetchEvaluationResults({
@@ -33,23 +30,26 @@ export function EvaluationTool(props: EvaluationToolProps) {
     }, [chunk, fetchEvaluationResults, updateChunkField]);
 
     return (
-        <Box sx={styles.toolTabContainer}>
+        <Box >
             <AiGenerationButton
                 label="Evaluate"
                 toolTip="Produce an evaluation of your summary and note."
                 loading={loading}
                 onClick={handleGenerate}
-                sx={{ ml: 1 }}
                 disabled={loading || !chunk?.id}
             />
-            <Box sx={styles.scrollableContentContainer}>
+            <Box>
                 {chunk.evaluation ? (
                     <ReactMarkdown>{chunk.evaluation}</ReactMarkdown>
                 ) : (
                     <span>No evaluation yet.</span>
                 )}
             </Box>
-            {error && <Box sx={{ color: 'error.main', fontSize: 12 }}>{error}</Box>}
+            {error && (
+                <Box color="red.500" mt={2}>
+                    <strong>Error:</strong> {error}
+                </Box>
+            )}
         </Box>
     );
 };
