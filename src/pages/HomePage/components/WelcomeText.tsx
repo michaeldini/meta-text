@@ -11,10 +11,10 @@ import { Stack } from "@chakra-ui/react/stack"
 export function WelcomeText() {
     return (
         <Stack>
-            <Heading size="5xl" color="primary">
+            <Heading size="5xl" color="fg">
                 Welcome!
             </Heading>
-            <Heading size="2xl">
+            <Heading size="2xl" color="fg">
                 Imagine unlocking the true depth of every document you read. <b>Meta-Text</b> empowers you to upload, dissect, and truly engage with your texts—one meaningful section at a time. <br /><br />
                 <b>How does it work?</b> Upload a document that sparks your curiosity. Break it into sections that matter to you. Annotate each part with your thoughts, questions, and insights. <br /><br />
                 <i>Transform passive reading into an active, personal journey of discovery. Your ideas belong here.</i>
