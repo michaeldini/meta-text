@@ -7,7 +7,6 @@ import { getMetatextReviewStyles } from '../Metatext.styles';
 interface HeaderProps {
     metatextId?: number;
     navigate: (path: string) => void;
-    styles: ReturnType<typeof getMetatextReviewStyles>;
 }
 
 /**
@@ -16,7 +15,7 @@ interface HeaderProps {
  *
  * @returns {ReactElement} The rendered Header component.
  */
-export function Header({ metatextId, navigate, styles }: HeaderProps): ReactElement {
+export function Header({ metatextId, navigate }: HeaderProps): ReactElement {
     return (
         <Box >
             {metatextId && (

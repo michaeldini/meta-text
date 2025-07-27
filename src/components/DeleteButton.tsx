@@ -3,7 +3,6 @@ import { IconButton } from '@chakra-ui/react';
 import { Tooltip } from 'components';
 import { HiOutlineTrash } from "react-icons/hi2";
 
-import { useTheme } from '@mui/material/styles';
 
 export interface DeleteButtonProps {
     onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -14,7 +13,6 @@ export interface DeleteButtonProps {
 
 export function DeleteButton(props: DeleteButtonProps): React.ReactElement {
     const { onClick, disabled, label = "Delete", icon } = props;
-    const theme = useTheme();
     return (
         <Tooltip content={label} >
             <span>

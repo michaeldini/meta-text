@@ -10,7 +10,6 @@ export { default as DeleteButton } from './DeleteButton';
 export { default as AiGenerationButton } from './AiGenerationButton';
 export { default as ReviewButton } from './ReviewButton';
 export { default as GenerateSourceDocInfoButton } from './GenerateSourceDocInfoButton';
-export { default as ThemeToggle } from './ThemeToggle';
 export { default as GlobalNotifications } from './GlobalNotifications';
 export { default as DocumentHeader } from './DocumentHeader';
 export { AppAlert } from './AppAlert';

@@ -4,13 +4,12 @@
 */
 import React, { useEffect, JSX, Suspense, lazy, ComponentType } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-// import { ThemeProvider, CssBaseline, useTheme, Typography } from '@mui/material';
+
 import { Box, Stack, Text } from '@chakra-ui/react';
 import { NavBar } from 'features';
 import { LoadingFallback, ErrorBoundary, GlobalNotifications, Toaster } from 'components';
 import { useAuthStore } from 'store';
 import { useAuthRefresh } from 'hooks';
-import { getAppStyles, lightTheme, darkTheme } from 'styles';
 import { useUserConfig } from 'services';
 
 import { useThemeContext } from './contexts/ThemeContext';
@@ -100,8 +99,6 @@ const NotFoundElement = (
  * - Sets up theming and routing
  */
 export function App() {
-    const { mode } = useThemeContext();
-    const currentTheme = mode === 'light' ? lightTheme : darkTheme;
 
     return (
         <>

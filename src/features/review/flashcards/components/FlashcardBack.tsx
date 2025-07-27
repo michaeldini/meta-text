@@ -1,12 +1,8 @@
 // Back of a flashcard component that displays the definition and context of a word
 
 import React from 'react';
-import { Box, CardActionArea, CardContent, Typography, useTheme } from '@mui/material';
-import parse from 'html-react-parser';
-
+import { Card, Button, Text, Stack, Box } from '@chakra-ui/react';
 import { HiBars3, HiQuestionMarkCircle } from 'react-icons/hi2';
-
-import { createFlashcardStyles } from '../Flashcard.styles';
 import InfoButton from './InfoPopoverButton';
 
 interface FlashcardBackProps {
@@ -14,7 +10,7 @@ interface FlashcardBackProps {
     definition: string;
     definition_in_context: string;
     context: string;
-    setFlipped: any;
+    setFlipped: (flipped: boolean) => void;
 }
 
 export function FlashcardBack(props: FlashcardBackProps) {
@@ -25,39 +21,47 @@ export function FlashcardBack(props: FlashcardBackProps) {
         context,
         setFlipped
     } = props;
-    const theme = useTheme();
-    const styles = createFlashcardStyles(theme);
+    // Highlight the word in context using <mark>
     const highlightedText: string = context.replace(new RegExp(`(${word})`, 'gi'), '<mark>$1</mark>');
 
     return (
-        <CardContent sx={styles.back}>
-            <CardActionArea
-                sx={styles.cardActionArea}
+        <Card.Body display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="200px" gap="4">
+            <Button
+                variant="ghost"
+                width="100%"
+                height="auto"
                 onClick={() => setFlipped(false)}
+                fontSize="lg"
+                fontWeight="bold"
+                borderRadius="md"
+                _hover={{ bg: 'gray.100' }}
+                mb="2"
             >
-                <Typography variant="h5" fontWeight={700} color={theme.palette.text.secondary}>{word}</Typography>
-                <Typography variant="body1" sx={{ mt: 1 }}>{definition}</Typography>
-            </CardActionArea>
-            <Box sx={styles.buttonsContainer}>
+                <Text fontSize="xl" fontWeight="bold" color="gray.600" textAlign="center">
+                    {word}
+                </Text>
+                <Text fontSize="md" mt="1" textAlign="center">
+                    {definition}
+                </Text>
+            </Button>
+            <Stack direction="row" gap="4" mt="2">
                 <InfoButton
                     icon={<HiBars3 />}
                     dialogId="info-dialog"
                     title="Definition In Context"
                     word={word}
                     content={definition_in_context}
-                    typographyVariant="body2"
                 />
                 <InfoButton
                     icon={<HiQuestionMarkCircle />}
                     dialogId="context-dialog"
                     title="Context"
                     word={word}
-                    content={parse(highlightedText)}
-                    typographyVariant="body2"
+                    content={<Box as="span" dangerouslySetInnerHTML={{ __html: highlightedText }} />}
                 />
-            </Box>
-        </CardContent>
+            </Stack>
+        </Card.Body>
     );
-};
+}
 
 export default FlashcardBack;

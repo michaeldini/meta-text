@@ -3,11 +3,9 @@
 // Extensive use of Material-UI Accordion components for a collapsible view.
 
 import React from 'react';
-import { Accordion, AccordionSummary, AccordionDetails, Typography, Box, Paper } from '@mui/material';
-import { HiChevronDown } from 'react-icons/hi2';
 import { Explanation } from 'types';
-
-import styles from './styles';
+import { Box, Collapsible, Text, Heading } from "@chakra-ui/react"
+import { Alert } from 'components';
 
 
 interface PhrasesProps {
@@ -26,22 +24,22 @@ interface PhraseCardProps {
 
 export function PhraseCard({ title, content, elevation = 5 }: PhraseCardProps) {
     return (
-        <Paper elevation={elevation} sx={styles.paper}>
-            <Typography variant="subtitle2" color="text.secondary">
+        <Box >
+            <Heading color="primary">
                 {title}
-            </Typography>
-            <Typography>{content}</Typography>
-        </Paper>
+            </Heading>
+            <Text>{content}</Text>
+        </Box>
     );
 }
 
 export function PhraseItem({ phrase }: PhraseItemProps) {
     return (
-        <Accordion sx={styles.accordion}>
-            <AccordionSummary expandIcon={<HiChevronDown />}>
-                <Typography variant="subtitle1">{phrase.words}</Typography>
-            </AccordionSummary>
-            <AccordionDetails sx={styles.accordionDetails}>
+        <Collapsible.Root p="4" key={phrase.id}>
+            <Collapsible.Trigger>
+                <Text fontSize="lg" fontWeight="bold">{phrase.words}</Text>
+            </Collapsible.Trigger>
+            <Collapsible.Content>
                 <PhraseCard
                     title="Explanation"
                     content={phrase.explanation}
@@ -52,16 +50,17 @@ export function PhraseItem({ phrase }: PhraseItemProps) {
                     content={phrase.explanation_in_context}
                     elevation={20}
                 />
-            </AccordionDetails>
-        </Accordion>
+            </Collapsible.Content>
+        </Collapsible.Root>
     );
 }
 
 export function Phrases({ phrases }: PhrasesProps) {
-    if (!phrases.length) return null;
+    if (!phrases.length)
+        return <Alert>No phrases yet. Define some phrases in the metatext editor to see them appear here.</Alert>;
 
     return (
-        <Box sx={{ mt: 4 }}>
+        <Box>
             {phrases.map((phrase) => (
                 <PhraseItem
                     key={phrase.id}

@@ -1,56 +1,36 @@
 // Review page for a Metatext document, providing a comprehensive review interface with flashcards, phrases, and chunk data table.
 
 import { useNavigate, useParams } from 'react-router-dom';
-import { Box } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import type { Theme } from '@mui/material/styles';
+import { Box, Spinner, } from '@chakra-ui/react';
 import type { ReactElement } from 'react';
 
-import { AppAlert, LoadingSpinner } from 'components';
+import { AppAlert } from 'components';
 import { Header, ReviewContent } from './components';
 import { useMetatextReviewData } from './hooks/useMetatextReviewData';
-import { useValidatedIdParam } from 'utils';
-
-import { getMetatextReviewStyles } from './Metatext.styles';
-
 function MetatextReviewPage(): ReactElement {
 
     // Get the raw Metatext ID string from the URL parameters (may be undefined or invalid)
-    const { metatextId: rawMetatextId } = useParams<{ metatextId?: string }>();
+    const { metatextId } = useParams<{ metatextId?: string }>();
+    const parsedId = metatextId ? Number(metatextId) : undefined;
 
-    // Validate and parse the raw ID using a utility hook (returns { id, isValid, originalValue })
-    const { id: metatextId, isValid: isValidId, originalValue } = useValidatedIdParam(rawMetatextId);
 
     // React Router navigation function for programmatic navigation
     const navigate = useNavigate();
 
     // Custom hook for fetching all review data
     const { wordList, phraseList, chunks, loading, error } =
-        useMetatextReviewData(metatextId);
+        useMetatextReviewData(parsedId);
 
-    const theme: Theme = useTheme();
-    const styles = getMetatextReviewStyles(theme);
-
-    // Handle invalid ID parameter
-    if (metatextId && !isValidId) {
-        return (
-            <Box sx={styles.root} data-testid="metatext-review-invalid-id">
-                <AppAlert severity="error">
-                    Invalid Metatext ID "{originalValue}". Please provide a valid positive number.
-                </AppAlert>
-            </Box>
-        );
-    }
 
     // Early returns for loading and error states
     if (loading) return (
-        <Box sx={styles.root} data-testid="metatext-review-loading">
-            <LoadingSpinner />
+        <Box data-testid="metatext-review-loading">
+            <Spinner />
         </Box>
     );
 
     if (error) return (
-        <Box sx={styles.root} data-testid="metatext-review-error">
+        <Box data-testid="metatext-review-error">
             <AppAlert severity="error" >
                 {error}
             </AppAlert>
@@ -58,9 +38,9 @@ function MetatextReviewPage(): ReactElement {
     );
 
     return (
-        <Box sx={styles.root} data-testid="metatext-review-page">
+        <Box data-testid="metatext-review-page">
             {/* Page header with navigation and title */}
-            <Header metatextId={metatextId} navigate={navigate} styles={styles} />
+            <Header metatextId={parsedId} navigate={navigate} />
 
             {/* Review content sections */}
             <ReviewContent

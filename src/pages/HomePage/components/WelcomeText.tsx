@@ -7,7 +7,7 @@ import { Box, Typography, SxProps, Theme } from '@mui/material';
 import { Heading, Text, Stack, Center } from "@chakra-ui/react"
 
 interface WelcomeTextProps {
-    welcomeTextStyles: {
+    welcomeTextStyles?: {
         container: SxProps<Theme>;
         title: SxProps<Theme>;
         text: SxProps<Theme>;

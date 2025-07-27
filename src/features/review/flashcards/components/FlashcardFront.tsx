@@ -1,27 +1,32 @@
 // Front of a flashcard component that displays a word and allows flipping to see its definition
 
 import React from 'react';
-import { Box, CardActionArea, CardContent, Typography } from '@mui/material';
+import { Card, Button, Text } from '@chakra-ui/react';
 
 interface FlashcardFrontProps {
     word: string;
-    styles: any;
-    setFlipped: any;
+    setFlipped: (flipped: boolean) => void;
 }
 
 export function FlashcardFront(props: FlashcardFrontProps) {
-    const { word, styles, setFlipped } = props;
+    const { word, setFlipped } = props;
     return (
-        <Box sx={styles.front}>
-            <CardActionArea
-                sx={styles.flashcard}
+        <Card.Body display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="200px">
+            <Button
+                variant="ghost"
+                width="100%"
+                height="100%"
                 onClick={() => setFlipped(true)}
+                fontSize="2xl"
+                fontWeight="bold"
+                borderRadius="md"
+                _hover={{ bg: 'gray.100' }}
             >
-                <CardContent sx={styles.front}>
-                    <Typography variant="h4" fontWeight={700} align="center">{word}</Typography>
-                </CardContent>
-            </CardActionArea>
-        </Box>
+                <Text fontSize="2xl" fontWeight="bold" textAlign="center">
+                    {word}
+                </Text>
+            </Button>
+        </Card.Body>
     );
 }
 

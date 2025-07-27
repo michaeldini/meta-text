@@ -15,7 +15,7 @@ export interface ChunkToolProps {
 
 // Tool definition interface
 export interface ChunkTool {
-    id: string;
+    id: ChunkToolId;
     name: string;
     icon: React.ReactNode;
     tooltip: string;

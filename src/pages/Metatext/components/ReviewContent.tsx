@@ -3,7 +3,6 @@
 
 import type { ReactElement } from 'react';
 import { FlashCards, ReviewTable, Phrases } from 'features';
-// import { PhraseExplanation } from 'services';
 import { ChunkType, Explanation } from 'types';
 import { ReviewSection } from './ReviewSection';
 

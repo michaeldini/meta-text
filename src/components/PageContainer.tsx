@@ -1,6 +1,4 @@
 import React, { ReactNode } from 'react';
-import { useTheme } from '@mui/material';
-import { getAppStyles } from '../styles/styles';
 import { Flex } from '@chakra-ui/react';
 import { ErrorBoundary } from 'components'
 import { LoadingFallback } from 'components';

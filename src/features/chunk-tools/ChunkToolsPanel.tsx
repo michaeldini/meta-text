@@ -3,18 +3,14 @@
 // It allows users to select multiple tools at once and displays them in each chunk
 
 import React from 'react';
-import { useTheme } from '@mui/material/styles';
 import { Box, Text, ButtonGroup, IconButton } from '@chakra-ui/react';
 import { Tooltip } from 'components';
 
 import { useChunkStore } from 'store';
-import { getChunkComponentsStyles } from '../chunk/Chunk.styles';
 import { createChunkToolsRegistry, type ChunkToolId } from './toolsRegistry';
 
 export function ChunkToolsPanel() {
     // This component renders a fixed bottom navigation bar with toggle buttons for chunk tools
-    const theme = useTheme();
-    const styles = getChunkComponentsStyles(theme);
     const activeTabs = useChunkStore(state => state.activeTabs);
     const setActiveTabs = useChunkStore(state => state.setActiveTabs);
 
@@ -40,7 +36,6 @@ export function ChunkToolsPanel() {
                         <Tooltip
                             key={tool.id}
                             content={<Text fontSize="sm">{tool.tooltip}</Text>}
-                            {...styles.chunkToolButtonsToolTip}
                         >
                             <IconButton
                                 aria-label={tool.name}

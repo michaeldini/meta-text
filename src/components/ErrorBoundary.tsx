@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Text, Button } from '@chakra-ui/react'
 import type { Logger } from '../types/global';
 import { AppAlert } from 'components';
 
@@ -48,16 +48,15 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     render() {
         if (this.state.hasError) {
             return (
-                <Box sx={{ textAlign: 'center' }}>
+                <Box >
                     <AppAlert severity="error" title="Something went wrong.">
-                        <Typography variant="body1" color="text.secondary">
+                        <Text>
                             An unexpected error occurred. Please try reloading the page.
-                        </Typography>
+                        </Text>
                     </AppAlert>
                     <Button
-                        variant="contained"
+                        variant="ghost"
                         onClick={this.handleReload}
-                        sx={{ mt: 2 }}
                     >
                         Reload Page
                     </Button>

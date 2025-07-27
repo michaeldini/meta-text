@@ -6,20 +6,14 @@
  * improving perceived performance when users navigate to those pages.
  */
 
-import { Box, Slide, useTheme } from '@mui/material';
-import type { Theme } from '@mui/material/styles';
 import type { ReactElement } from 'react';
-import { useEffect } from 'react';
 
 import { useHydrateUserConfig } from 'hooks';
 import { PageContainer } from 'components';
-import { getAppStyles } from 'styles';
-// import { useDocumentsStore } from 'store';
 import { useSourceDocuments, useMetatexts } from 'features';
 
 import WelcomeText from './components/WelcomeText';
 import NavigationButtons from './components/NavigationButtons';
-// import { FADE_IN_DURATION } from 'constants';
 import HomePageDetails from './components/HomePageDetails';
 import { Center, Stack } from "@chakra-ui/react"
 
@@ -39,17 +33,13 @@ function HomePage(): ReactElement {
     useSourceDocuments();
     useMetatexts();
 
-    // Set up the theme and styles for the HomePage component
-    const theme: Theme = useTheme();
-    const styles = getAppStyles(theme);
-
     return (
         <PageContainer
             loading={false}
             data-testid="homepage-container"
         >
             <Stack data-testid="homepage-content" maxWidth="2xl">
-                <WelcomeText welcomeTextStyles={styles.welcomeText} />
+                <WelcomeText />
                 <Center>
                     <NavigationButtons />
                 </Center>

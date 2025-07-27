@@ -1,11 +1,11 @@
 import React from 'react';
-import { TextField, TextFieldProps } from '@mui/material';
+import { Textarea } from '@chakra-ui/react';
 
-export interface ChunkTextFieldProps extends Omit<TextFieldProps, 'onChange'> {
+export interface ChunkTextFieldProps {
     label: string;
     value: string;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
+    onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    onBlur?: (event: React.FocusEvent<HTMLTextAreaElement>) => void;
     sx?: object;
     minRows?: number;
 }
@@ -13,20 +13,15 @@ export interface ChunkTextFieldProps extends Omit<TextFieldProps, 'onChange'> {
 
 export function ChunkTextField({ label, value, onChange, onBlur, sx, minRows = 2, ...rest }: ChunkTextFieldProps) {
     return (
-        <TextField
-            label={label}
+        <Textarea
+            // label={label}
             value={value}
             onChange={onChange}
             onBlur={onBlur}
-            multiline
-            minRows={minRows}
-            variant="outlined"
-            fullWidth
-            sx={sx}
+            // minRows={minRows}
             {...rest}
             data-testid={`${label} input field`}
         />
     );
 }
-
 export default ChunkTextField;
