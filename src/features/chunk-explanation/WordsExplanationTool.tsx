@@ -4,7 +4,7 @@ import {
     Drawer,
     Box,
     Text,
-    Divide,
+    Heading,
 } from '@chakra-ui/react';
 import { IconButton } from '@chakra-ui/react';
 import { Tooltip } from 'components';
@@ -76,31 +76,21 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
             </Tooltip>
 
             {/* Explanation Drawer*/}
-            <Drawer
-                anchor="right"
+            <Drawer.Root
                 open={showDefinition}
-                onClose={handleCloseDefinition}
+                // onClose={handleCloseDefinition}
                 role="dialog"
                 aria-labelledby="explanation-title"
                 aria-describedby="explanation-content"
-                sx={{
-                    zIndex: DRAWER_Z_INDEX,
-                    '& .MuiDrawer-paper': {
-                        width: { xs: '100vw', sm: DRAWER_WIDTH },
-                        maxWidth: '90vw'
-                    }
-                }}
+
             >
-                <Box sx={{ p: 3 }}>
+                <Box divideX="2px">
                     {/* Drawer Header */}
-                    <Typography
+                    <Heading
                         id="explanation-title"
-                        variant="h6"
-                        gutterBottom
                     >
                         Explaining: {cleanedWord}
-                    </Typography>
-                    <Divider sx={{ mb: 2 }} />
+                    </Heading>
 
                     {/*  Error State Display  */}
                     {error && (
@@ -112,29 +102,29 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
                     {/* Explanation Content Area */}
                     <Box id="explanation-content">
                         {explanation?.explanation && (
-                            <Box sx={{ mb: 3 }}>
-                                <Typography variant="subtitle2" gutterBottom>
+                            <Box >
+                                <Heading >
                                     General Explanation:
-                                </Typography>
-                                <Typography variant="body2" paragraph>
+                                </Heading>
+                                <Text>
                                     {explanation.explanation}
-                                </Typography>
+                                </Text>
                             </Box>
                         )}
 
                         {explanation?.explanation_in_context && (
                             <Box>
-                                <Typography variant="subtitle2" gutterBottom>
+                                <Heading >
                                     Explanation in Context:
-                                </Typography>
-                                <Typography variant="body2">
+                                </Heading>
+                                <Text>
                                     {explanation.explanation_in_context}
-                                </Typography>
+                                </Text>
                             </Box>
                         )}
                     </Box>
                 </Box>
-            </Drawer>
+            </Drawer.Root>
         </>
     );
 });

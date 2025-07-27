@@ -5,7 +5,6 @@ import React, { memo } from 'react';
 import { Popover, Box } from '@chakra-ui/react';
 import { SplitChunkTool } from 'features/chunk-split';
 import { WordsExplanationTool } from 'features/chunk-explanation';
-import { getChunkComponentsStyles } from '../Chunk.styles';
 
 export interface WordsToolbarProps {
     anchorEl: HTMLElement | null;

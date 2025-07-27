@@ -6,7 +6,6 @@ import React, { memo, useRef } from 'react';
 import { Box, Wrap } from '@chakra-ui/react';
 import { MergeChunksTool } from 'features/chunk-merge';
 import WordsToolbar from '../components/WordsToolbar';
-import { getChunkComponentsStyles } from '../Chunk.styles';
 import { useUserConfig } from 'services/userConfigService';
 import { useWordSelection } from '../hooks/useWordSelection';
 import type { ChunkType } from 'types';
@@ -48,21 +47,6 @@ const ChunkWords = memo(function ChunkWords({
             <Box
                 key={wordIdx}
                 paddingX={`${paddingX}rem`}
-                // color={isHighlighted ? 'white' : 'black'}
-                // sx={[
-                //     styles.chunkWord,
-                //     isHighlighted && {
-                //         backgroundColor: theme.palette.secondary.main,
-                //         color: theme.palette.primary.contrastText,
-                //     },
-                //     {
-                //         fontSize: `${textSizePx}px`,
-                //         fontFamily,
-                //         lineHeight,
-                //         paddingLeft: `${paddingX}rem`,
-                //         paddingRight: `${paddingX}rem`,
-                //     }
-                // ]}
                 onMouseDown={e => handleWordDown(wordIdx, e)}
                 onMouseEnter={e => handleWordEnter(wordIdx, e)}
                 onMouseUp={handleWordUp}
@@ -70,6 +54,7 @@ const ChunkWords = memo(function ChunkWords({
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleWordUp}
                 data-word-idx={`${chunkIdx}-${wordIdx}`}
+                _hover={{ bg: "primary", cursor: "pointer" }}
             >
                 {word}
             </Box>
@@ -80,9 +65,9 @@ const ChunkWords = memo(function ChunkWords({
         <Box ref={containerRef} onMouseLeave={() => handleWordUp()}>
             <Wrap>
                 {wordsElements}
+                <MergeChunksTool
+                    chunkIndices={[chunkIdx, chunkIdx + 1]} />
             </Wrap>
-            <MergeChunksTool
-                chunkIndices={[chunkIdx, chunkIdx + 1]} />
 
             {/* Displays on word click or select */}
             <WordsToolbar

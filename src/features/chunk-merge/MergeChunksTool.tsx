@@ -46,10 +46,11 @@ export function MergeChunksTool({ chunkIndices, onComplete }: MergeChunksToolPro
     return (
         <Tooltip content="Undo split (merge with next chunk)">
             <IconButton
-
+                variant="ghost"
                 onClick={handleMerge}
                 disabled={isLoading}
                 aria-label="Undo split (merge with next chunk)"
+                color="primary"
             >
                 <HiArrowUturnLeft />
             </IconButton>

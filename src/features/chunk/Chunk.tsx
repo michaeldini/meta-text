@@ -1,5 +1,5 @@
 import React, { memo, useMemo } from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, Stack } from '@chakra-ui/react';
 
 import { useChunkStore } from 'store';
 
@@ -21,7 +21,7 @@ const Chunk = memo(function Chunk({
 
 
     return (
-        <Box
+        <Stack direction="row"
             data-chunk-id={chunk.id}
         >
             <ChunkWords
@@ -33,7 +33,7 @@ const Chunk = memo(function Chunk({
                 activeTools={activeTabs}
                 updateChunkField={updateChunkField}
             />
-        </Box>
+        </Stack>
     );
 });
 
