@@ -1,23 +1,32 @@
+// Controlled select for rewrite style using Chakra UI v3 Menu
 import React from 'react';
-import { TextField, MenuItem } from '@mui/material';
+import { Button, Menu } from '@chakra-ui/react';
 import type { RewriteStyleSelectProps } from 'features/chunk-shared/types';
 
-export function RewriteStyleSelect(props: RewriteStyleSelectProps) {
-    const { style, onChange, options } = props;
-
+export function RewriteStyleSelect({ style, onChange, options }: RewriteStyleSelectProps) {
     return (
-        <TextField
-            select
-            label="Compression Style"
-            value={style}
-            onChange={onChange}
-            fullWidth
-            margin="normal"
-        >
-            {options.map(opt => (
-                <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
-            ))}
-        </TextField>
+        <Menu.Root>
+            <Menu.Trigger asChild>
+                <Button variant="outline" w="full">
+                    {options.find(opt => opt.value === style)?.label || 'Select style'}
+                </Button>
+            </Menu.Trigger>
+            <Menu.Positioner>
+                <Menu.Content minW="xs">
+                    <Menu.RadioItemGroup
+                        value={style}
+                        onValueChange={details => onChange(details.value)}
+                    >
+                        {options.map(opt => (
+                            <Menu.RadioItem key={opt.value} value={opt.value}>
+                                {opt.label}
+                                <Menu.ItemIndicator />
+                            </Menu.RadioItem>
+                        ))}
+                    </Menu.RadioItemGroup>
+                </Menu.Content>
+            </Menu.Positioner>
+        </Menu.Root>
     );
 }
 export default RewriteStyleSelect;

@@ -247,7 +247,7 @@ export interface RewriteDialogProps {
     /** The currently selected rewrite style */
     style: string;
     /** Callback function to handle style selection changes */
-    onStyleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onStyleChange: (value: string) => void;
     /** Array of available rewrite style options */
     options: StyleOption[];
     /** Loading state for save operation */
@@ -267,7 +267,7 @@ export interface RewriteDialogProps {
  */
 export interface RewriteStyleSelectProps {
     style: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: (value: string) => void;
     options: StyleOption[];
 }
 

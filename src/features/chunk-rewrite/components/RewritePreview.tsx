@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Text } from '@chakra-ui/react';
 import type { RewritePreviewProps } from 'features/chunk-shared/types';
 
 
@@ -7,9 +7,9 @@ export function RewritePreview({ preview }: RewritePreviewProps) {
     if (!preview) return null;
     return (
         <Box mt={3}>
-            <Typography variant="subtitle2">Preview:</Typography>
+            <Text fontSize="lg" fontWeight="bold">Preview:</Text>
             <Box p={2} borderRadius={1} mt={1}>
-                <Typography variant="body1">{preview}</Typography>
+                <Text>{preview}</Text>
             </Box>
         </Box>
     );

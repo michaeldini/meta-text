@@ -24,7 +24,6 @@
     "@chakra-ui/react": "^3.22.0",
     "@emotion/react": "^11.14.0",
     "@heroicons/react": "^2.2.0",
-    "@mui/material": "^7.1.0",
     "@tanstack/react-query": "^5.83.0",
     "html-react-parser": "^5.2.5",
     "ky": "^1.8.2",

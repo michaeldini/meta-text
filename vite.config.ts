@@ -18,7 +18,6 @@ export default defineConfig({
             output: {
                 manualChunks: {
                     // Separate vendor chunks
-                    'mui-core': ['@mui/material'],
                     'react-vendor': ['react', 'react-dom', 'react-router-dom'],
                     'utils': ['zustand', 'loglevel'],
                     // Separate your chunks feature since it's large
@@ -38,14 +37,6 @@ export default defineConfig({
                 propertyReadSideEffects: false,
                 tryCatchDeoptimization: false
             },
-            // Exclude unused icon imports
-            external: (id) => {
-                // Exclude unused Heroicons imports - new format
-                if (id.includes('@heroicons/react/24/')) {
-                    return false; // Include these in the bundle since we use them
-                }
-                return false;
-            }
         },
         // Increase chunk size warning limit since you have a large app
         chunkSizeWarningLimit: 600,

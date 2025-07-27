@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Text } from '@chakra-ui/react';
 import { RewriteTool } from '../RewriteTool';
 import type { RewriteEmptyStateProps } from 'features/chunk-shared/types';
 
@@ -7,8 +7,8 @@ import type { RewriteEmptyStateProps } from 'features/chunk-shared/types';
 export function RewriteEmptyState({ chunk, onRewriteCreated }: RewriteEmptyStateProps) {
     return (
         <Box>
-            <Typography>No rewrites available. Use the Rewrite Tool below to create a new rewrite for this chunk.</Typography>
-            <Box sx={{ mt: 2 }}>
+            <Text>No rewrites available. Use the Rewrite Tool below to create a new rewrite for this chunk.</Text>
+            <Box>
                 <RewriteTool chunk={chunk} onRewriteCreated={onRewriteCreated} />
             </Box>
         </Box>

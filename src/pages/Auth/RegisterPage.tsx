@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-import { Button, TextField, Box, Typography, Paper } from '@mui/material';
+import { Button, Textarea, Box, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuthStore } from 'store';
@@ -35,41 +35,37 @@ export function RegisterPage({ onRegisterSuccess }: RegisterPageProps) {
 
     return (
         <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-            <Paper elevation={3} sx={{ p: 4, minWidth: 320 }}>
-                <Typography variant="h5" mb={2}>Register</Typography>
+            <Box>
+                <Text >Register</Text>
                 <form onSubmit={handleSubmit}>
-                    <TextField
-                        label="Username"
+                    <Textarea
+                        placeholder="Username"
                         value={username}
                         onChange={e => setUsername(e.target.value)}
-                        fullWidth
                         margin="normal"
                         required
                     />
-                    <TextField
-                        label="Password"
-                        type="password"
+                    <Textarea
+                        placeholder="Password"
+                        // type="password"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
-                        fullWidth
                         margin="normal"
                         required
                     />
                     {error && <AppAlert severity="error">{error}</AppAlert>}
                     <Button
                         type="submit"
-                        variant="contained"
+                        variant="ghost"
                         color="primary"
-                        fullWidth
-                        sx={{ mt: 2 }}
                         // disable button while still in development to prevent accidental registrations
-                        disabled={loading}
-                    // disabled={true}
+                        // disabled={loading}
+                        disabled={true}
                     >
                         {loading ? 'Registering...' : 'Register'}
                     </Button>
                 </form>
-            </Paper>
+            </Box>
         </Box>
     );
 };

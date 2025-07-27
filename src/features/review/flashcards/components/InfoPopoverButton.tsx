@@ -1,7 +1,7 @@
 // A Button component that opens a dialog with information about a word
 
 import React, { useState } from 'react';
-import { Dialog, DialogTitle, DialogContent } from '@mui/material';
+import { Dialog } from '@chakra-ui/react';
 import { IconButton, Text, Box } from '@chakra-ui/react';
 import { Tooltip } from 'components'
 interface InfoButtonProps {
@@ -38,20 +38,18 @@ export function InfoButton(props: InfoButtonProps) {
                     {icon}
                 </IconButton>
             </Tooltip>
-            <Dialog
+            <Dialog.Root
                 id={dialogId}
                 open={open}
-                onClose={handleDialogClose}
+                // onClose={handleDialogClose}
                 aria-labelledby={`${dialogId}-title`}
-                maxWidth="lg"
-                fullWidth
             >
-                <DialogTitle id={`${dialogId}-title`}>Word: {word}</DialogTitle>
-                <DialogContent>
+                <Dialog.Title id={`${dialogId}-title`}>Word: {word}</Dialog.Title>
+                <Dialog.Content>
                     <Text>{title}</Text>
                     <Text>{content}</Text>
-                </DialogContent>
-            </Dialog>
+                </Dialog.Content>
+            </Dialog.Root>
         </>
     );
 };
