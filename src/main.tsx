@@ -12,7 +12,7 @@ import {
     createSystem,
     defaultConfig
 } from "@chakra-ui/react"
-import config from "./styles/themes.chakra";
+import config from "./styles/themes";
 
 
 const queryClient = new QueryClient();

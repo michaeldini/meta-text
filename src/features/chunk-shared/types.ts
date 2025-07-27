@@ -234,7 +234,6 @@ export interface RewriteToolButtonProps {
  */
 export interface RewriteDisplayProps {
     selected: Rewrite | undefined;
-    styles: any;
 }
 
 /**
@@ -286,7 +285,6 @@ export interface RewriteSelectProps {
     rewrites: Rewrite[];
     selectedId: number | '';
     setSelectedId: (id: number) => void;
-    styles: any;
 }
 
 /**

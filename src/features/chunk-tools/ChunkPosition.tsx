@@ -2,7 +2,7 @@
 // Encapsulates logic for reading user config and conditional rendering
 
 import React from 'react';
-import { Box } from '@mui/material';
+import { Box } from '@chakra-ui/react';
 import { useUserConfig } from 'services/userConfigService';
 import type { ChunkType } from 'types';
 

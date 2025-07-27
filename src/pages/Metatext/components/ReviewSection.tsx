@@ -1,7 +1,7 @@
-import { Typography, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+
 import type { ReactElement } from 'react';
-import { HiChevronDown } from 'react-icons/hi2';
-import { Box, Collapsible } from "@chakra-ui/react"
+
+import { Collapsible } from "@chakra-ui/react"
 
 
 interface ReviewSectionProps {

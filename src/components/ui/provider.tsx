@@ -3,7 +3,7 @@ import {
   ColorModeProvider,
   type ColorModeProviderProps,
 } from "./color-mode"
-import config from "../../styles/themes.chakra"
+import config from "../../styles/themes"
 
 
 

@@ -3,19 +3,11 @@
 
 
 import React from 'react';
-import { Box, Typography, SxProps, Theme } from '@mui/material';
-import { Heading, Text, Stack, Center } from "@chakra-ui/react"
-
-interface WelcomeTextProps {
-    welcomeTextStyles?: {
-        container: SxProps<Theme>;
-        title: SxProps<Theme>;
-        text: SxProps<Theme>;
-    }
-}
+import { Heading, Stack } from "@chakra-ui/react"
 
 
-export function WelcomeText({ welcomeTextStyles }: WelcomeTextProps) {
+
+export function WelcomeText() {
     return (
         <Stack>
             <Heading size="5xl" color="primary">

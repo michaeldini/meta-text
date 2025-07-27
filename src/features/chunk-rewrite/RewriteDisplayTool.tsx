@@ -1,7 +1,6 @@
 import React from 'react';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Text } from '@chakra-ui/react';
 
-import { getSharedToolStyles } from 'features/chunk-shared/styles';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 import { useChunkStore } from 'store';
 import RewriteTool from './RewriteTool';
@@ -9,7 +8,7 @@ import RewriteSelect from './components/RewriteSelect';
 import RewriteDisplay from './components/RewriteDisplay';
 import RewriteEmptyState from './components/RewriteEmptyState';
 import { useRewrite } from './hooks/useRewrite';
-import { LoadingSpinner } from 'components';
+
 
 interface RewriteDisplayToolProps {
     chunk: ChunkType;
@@ -20,8 +19,6 @@ interface RewriteDisplayToolProps {
 export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
     const { chunk, updateChunkField, isVisible } = props;
     if (!isVisible) return null;
-    const theme = useTheme();
-    const styles = getSharedToolStyles(theme);
     const { refetchChunk } = useChunkStore();
     const {
         rewrites,
@@ -41,7 +38,7 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
     };
 
     return (
-        <Box sx={styles.toolTabContainer}>
+        <Box>
             {rewrites.length === 0 ? (
                 <RewriteEmptyState chunk={chunk} onRewriteCreated={handleRewriteCreated} />
             ) : (
@@ -52,10 +49,9 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
                             rewrites={rewrites}
                             selectedId={selectedId}
                             setSelectedId={setSelectedId}
-                            styles={styles}
                         />
                     </Box>
-                    <RewriteDisplay selected={selected} styles={styles} />
+                    <RewriteDisplay selected={selected} />
                 </>
             )}
         </Box>

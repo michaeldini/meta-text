@@ -4,10 +4,10 @@ import type { RewriteDisplayProps } from 'features/chunk-shared/types';
 
 
 
-export function RewriteDisplay({ selected, styles }: RewriteDisplayProps) {
+export function RewriteDisplay({ selected }: RewriteDisplayProps) {
     if (!selected) return null;
     return (
-        <Box sx={styles.rewriteDisplayWordsContainer}>
+        <Box>
             <Typography variant="body1">{selected.rewrite_text}</Typography>
         </Box>
     );

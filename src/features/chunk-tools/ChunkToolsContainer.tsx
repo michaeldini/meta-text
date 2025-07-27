@@ -2,12 +2,11 @@
 // Replaces the old ChunkTabs component with a simpler, more direct approach
 
 import React, { Suspense } from 'react';
-import { Box, Stack, useTheme } from '@mui/material';
+import { Box, Stack, } from '@chakra-ui/react';
 import { ErrorBoundary, LoadingBoundary } from 'components';
 import { CopyTool } from 'features/chunk-copy';
 import ChunkBookmarkToggle from '../chunk-bookmark/ChunkBookmarkToggle';
 import ChunkFavoriteToggle from '../chunk-favorite/ChunkFavoriteToggle';
-import { getChunkComponentsStyles } from '../chunk/Chunk.styles';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 import type { ChunkToolId } from './toolsRegistry';
 import ChunkPosition from './ChunkPosition';
@@ -27,18 +26,13 @@ interface ChunkToolsContainerProps {
 export function ChunkToolsContainer(props: ChunkToolsContainerProps) {
     const { chunk, activeTools, updateChunkField } = props;
 
-    const theme = useTheme();
-    const styles = getChunkComponentsStyles(theme, activeTools.length > 0);
-
-
 
     return (
-        <Box sx={styles.chunkTabsContainer}
+        <Box
             data-chunk-id={`chunk-tools-${chunk.id}`}>
             {/* Tools Always visible at the top */}
             <Stack
                 flexDirection={activeTools.length > 0 ? 'row' : 'column'}
-                sx={styles.alwaysVisibleToolContainer}
                 alignItems="center"
             >
                 {/* Chunk position display (logic encapsulated in component) */}

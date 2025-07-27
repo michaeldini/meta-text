@@ -5,7 +5,6 @@ import { useChunkStore } from 'store';
 
 import ChunkWords from './components/ChunkWords';
 import { ChunkToolsContainer } from 'features/chunk-tools';
-import { getChunkComponentsStyles } from './Chunk.styles';
 import type { ChunkType } from 'types';
 
 export interface ChunkProps {
