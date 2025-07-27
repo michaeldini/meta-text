@@ -8,7 +8,6 @@ import { AiGenerationButton } from 'components';
 import { useImageTool } from './hooks/useImageTool';
 import ImageDisplay from './components/ImageDisplay';
 import ImageGenerationDialog from './components/ImageGenerationDialog';
-import { getSharedToolStyles } from 'features/chunk-shared/styles';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 
 interface ImageToolProps {

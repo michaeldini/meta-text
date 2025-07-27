@@ -4,20 +4,25 @@
  * A modal dialog for inputting image generation prompts with enhanced UX features.
  * Provides real-time validation, character counting, and improved accessibility.
  */
+/**
+ * ImageGenerationDialog Component
+ *
+ * A modal dialog for inputting image generation prompts with enhanced UX features.
+ * Provides real-time validation, character counting, and improved accessibility.
+ * Uses Chakra UI v3 components.
+ */
 import React from 'react';
 import {
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
     Button,
-    TextField,
+    Drawer,
+    Textarea,
     Box,
-    LinearProgress,
-    Typography,
-    Chip,
-} from '@mui/material';
-import { AppAlert } from 'components';
+    Spinner,
+    Text,
+    Stack,
+    Badge,
+    Portal,
+} from '@chakra-ui/react';
 import type { ImageGenerationDialogProps } from 'features/chunk-shared/types';
 
 // Constants for prompt validation
@@ -28,8 +33,9 @@ const SUGGESTED_PROMPTS = [
     'Abstract geometric patterns',
     'Vintage illustration style',
     'Modern minimalist design',
-    'Watercolor painting style'
+    'Watercolor painting style',
 ];
+
 
 export function ImageGenerationDialog(props: ImageGenerationDialogProps) {
     const { open, prompt, loading, error, onClose, onPromptChange, onSubmit } = props;
@@ -37,100 +43,117 @@ export function ImageGenerationDialog(props: ImageGenerationDialogProps) {
     const isPromptValid = promptLength >= MIN_PROMPT_LENGTH && promptLength <= MAX_PROMPT_LENGTH;
     const isPromptTooLong = promptLength > MAX_PROMPT_LENGTH;
 
-    const handleSuggestedPromptClick = (suggestedPrompt: string) => {
-        const syntheticEvent = {
-            target: { value: suggestedPrompt }
-        } as React.ChangeEvent<HTMLInputElement>;
-        onPromptChange(syntheticEvent);
+    // Accept both input and textarea change events
+    const handlePromptChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        onPromptChange({
+            target: { value: e.target.value }
+        } as React.ChangeEvent<HTMLInputElement>);
     };
 
+    const handleSuggestedPromptClick = (suggestedPrompt: string) => {
+        onPromptChange({
+            target: { value: suggestedPrompt }
+        } as React.ChangeEvent<HTMLInputElement>);
+    };
+
+    const borderColor = 'gray.200';
+
     return (
-        <Dialog
-            open={open}
-            onClose={onClose}
-            maxWidth="sm"
-            fullWidth
-            aria-labelledby="image-generation-dialog-title"
-        >
-            <DialogTitle id="image-generation-dialog-title">
-                Generate AI Image
-            </DialogTitle>
-            <form onSubmit={onSubmit}>
-                <DialogContent>
-                    <TextField
-                        label="Image Prompt"
-                        value={prompt}
-                        onChange={onPromptChange}
-                        fullWidth
-                        autoFocus
-                        multiline
-                        minRows={3}
-                        maxRows={6}
-                        disabled={loading}
-                        placeholder="Describe the image you want to generate in detail..."
-                        error={isPromptTooLong}
-                        helperText={
-                            isPromptTooLong
-                                ? `Prompt is too long (${promptLength}/${MAX_PROMPT_LENGTH} characters)`
-                                : `${promptLength}/${MAX_PROMPT_LENGTH} characters`
-                        }
-                        sx={{ mb: 2 }}
-                    />
+        <Drawer.Root open={open} onOpenChange={(e) => onClose()}>
+            <Portal>
+                <Drawer.Backdrop />
+                <Drawer.Positioner>
+                    <Drawer.Content>
+                        <Drawer.Header>
+                            <Drawer.Title>Generate AI Image</Drawer.Title>
+                        </Drawer.Header>
+                        <form onSubmit={onSubmit}>
+                            <Drawer.Body>
+                                <Stack direction="column" align="stretch" gap={4}>
+                                    <Box>
+                                        <Textarea
+                                            value={prompt}
+                                            onChange={handlePromptChange}
+                                            placeholder="Describe the image you want to generate in detail..."
+                                            minH="80px"
+                                            maxH="180px"
+                                            disabled={loading}
+                                            borderColor={isPromptTooLong ? 'red.500' : borderColor}
+                                            autoFocus
+                                            resize="vertical"
+                                        />
+                                        <Text fontSize="sm" color={isPromptTooLong ? 'red.500' : 'gray.500'} mt={1}>
+                                            {isPromptTooLong
+                                                ? `Prompt is too long (${promptLength}/${MAX_PROMPT_LENGTH} characters)`
+                                                : `${promptLength}/${MAX_PROMPT_LENGTH} characters`}
+                                        </Text>
+                                    </Box>
 
-                    {/* Suggested prompts */}
-                    {promptLength === 0 && (
-                        <Box sx={{ mb: 2 }}>
-                            <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                                Suggested prompts:
-                            </Typography>
-                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                                {SUGGESTED_PROMPTS.map((suggestion, index) => (
-                                    <Chip
-                                        key={index}
-                                        label={suggestion}
-                                        onClick={() => handleSuggestedPromptClick(suggestion)}
-                                        size="small"
-                                        variant="outlined"
-                                        sx={{ cursor: 'pointer' }}
-                                    />
-                                ))}
-                            </Box>
-                        </Box>
-                    )}
+                                    {/* Suggested prompts */}
+                                    {promptLength === 0 && (
+                                        <Box>
+                                            <Text fontSize="sm" color="gray.500" mb={1}>
+                                                Suggested prompts:
+                                            </Text>
+                                            <Stack direction="row" flexWrap="wrap" gap={2}>
+                                                {SUGGESTED_PROMPTS.map((suggestion, index) => (
+                                                    <Badge
+                                                        key={index}
+                                                        variant="outline"
+                                                        colorScheme="blue"
+                                                        px={2}
+                                                        py={1}
+                                                        cursor="pointer"
+                                                        onClick={() => handleSuggestedPromptClick(suggestion)}
+                                                    >
+                                                        {suggestion}
+                                                    </Badge>
+                                                ))}
+                                            </Stack>
+                                        </Box>
+                                    )}
 
-                    {loading && (
-                        <Box sx={{ mt: 2 }}>
-                            <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                                Generating your image...
-                            </Typography>
-                            <LinearProgress />
-                        </Box>
-                    )}
+                                    {loading && (
+                                        <Box textAlign="center">
+                                            <Text fontSize="sm" color="gray.500" mb={2}>
+                                                Generating your image...
+                                            </Text>
+                                            <Spinner size="md" color="blue.500" />
+                                        </Box>
+                                    )}
 
-                    {error && (
-                        <Box sx={{ mt: 2 }}>
-                            <AppAlert severity="error">
-                                {error}
-                            </AppAlert>
-                        </Box>
-                    )}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={onClose} disabled={loading}>
-                        Cancel
-                    </Button>
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        disabled={loading || !isPromptValid}
-                        sx={{ minWidth: 100 }}
-                    >
-                        {loading ? 'Generating...' : 'Generate'}
-                    </Button>
-                </DialogActions>
-            </form>
-        </Dialog>
+                                    {error && (
+                                        <Box mt={2} borderRadius="md" bg="red.50" p={3} color="red.700">
+                                            <Text fontWeight="bold" mb={1}>Error</Text>
+                                            <Text>{error}</Text>
+                                        </Box>
+                                    )}
+                                </Stack>
+                            </Drawer.Body>
+                            <Drawer.Footer>
+                                <Button onClick={onClose} disabled={loading} variant="ghost" mr={2}>
+                                    Cancel
+                                </Button>
+                                <Button
+                                    type="submit"
+                                    colorScheme="blue"
+                                    disabled={loading || !isPromptValid}
+                                    minW={100}
+                                >
+                                    {loading ? 'Generating...' : 'Generate'}
+                                </Button>
+                                <Drawer.CloseTrigger asChild>
+                                    <Button variant="ghost" size="sm" ml={2}>
+                                        Close
+                                    </Button>
+                                </Drawer.CloseTrigger>
+                            </Drawer.Footer>
+                        </form>
+                    </Drawer.Content>
+                </Drawer.Positioner>
+            </Portal>
+        </Drawer.Root>
     );
-};
+}
 
 export default ImageGenerationDialog;
