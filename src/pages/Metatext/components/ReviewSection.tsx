@@ -1,7 +1,7 @@
 
 import type { ReactElement } from 'react';
 
-import { Collapsible } from "@chakra-ui/react"
+import { Collapsible } from "@chakra-ui/react/collapsible";
 
 
 interface ReviewSectionProps {

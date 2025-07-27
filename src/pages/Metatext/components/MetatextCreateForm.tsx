@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Box, Text, Heading, Stack, createListCollection, Select, Portal, Button, Input } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react/box';
+import { Text, Heading, createListCollection } from '@chakra-ui/react';
+import { Stack } from '@chakra-ui/react/stack';
+import { Select } from '@chakra-ui/react/select';
+import { Portal } from '@chakra-ui/react/portal';
+import { Button } from '@chakra-ui/react/button';
+import { Input } from '@chakra-ui/react/input';
 import { Field } from 'components';
 import { HiOutlineSparkles } from 'react-icons/hi2';
 import { useMetatextCreate } from '../hooks/useMetatextCreate';

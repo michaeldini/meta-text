@@ -1,7 +1,8 @@
 // Review page for a Metatext document, providing a comprehensive review interface with flashcards, phrases, and chunk data table.
 
 import { useNavigate, useParams } from 'react-router-dom';
-import { Box, Spinner, } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react/box';
+import { Spinner } from '@chakra-ui/react/spinner';
 import type { ReactElement } from 'react';
 
 import { AppAlert } from 'components';

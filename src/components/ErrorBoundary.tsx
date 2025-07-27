@@ -1,5 +1,7 @@
 import React from 'react';
-import { Box, Text, Button } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react/box';
+import { Button } from '@chakra-ui/react/button';
+import { Text } from '@chakra-ui/react';
 import type { Logger } from '../types/global';
 import { AppAlert } from 'components';
 

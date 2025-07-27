@@ -8,7 +8,9 @@
  * Intended for placement at the end of the HomePage.
  */
 import React from 'react';
-import { Heading, Stack, List } from "@chakra-ui/react"
+import { Heading } from "@chakra-ui/react"
+import { Stack } from "@chakra-ui/react/stack"
+import { List } from "@chakra-ui/react/list"
 export function AboutSection() {
     return (
         <Stack data-testid="about-section" >

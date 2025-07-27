@@ -5,7 +5,8 @@
 // Two buttons to direct users to the SourceDocs and Metatext pages.
 
 import React from 'react';
-import { Button, Stack } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react/button';
+import { Stack } from '@chakra-ui/react/stack';
 import { useNavigate } from 'react-router-dom';
 
 

@@ -13,7 +13,7 @@
  */
 import React, { useState, useCallback } from 'react';
 import { Box, Drawer, IconButton, Text, Image } from '@chakra-ui/react';
-import { XMarkIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
+
 import { LoadingSpinner } from 'components';
 import type { ImageDisplayProps } from 'features/chunk-shared/types';
 
@@ -76,7 +76,7 @@ export function ImageDisplay(props: ImageDisplayProps) {
                         color="primary"
                         aria-label="Retry loading image"
                     >
-                        <ArrowPathIcon style={{ width: 20, height: 20 }} />
+                        {/* <ArrowPathIcon style={{ width: 20, height: 20 }} /> */}
                     </IconButton>
                 </Box>
             )}
@@ -111,7 +111,7 @@ export function ImageDisplay(props: ImageDisplayProps) {
                             onClick={closeLightbox}
                             aria-label="Close lightbox"
                         >
-                            <XMarkIcon style={{ width: 24, height: 24 }} />
+                            {/* <XMarkIcon style={{ width: 24, height: 24 }} /> */}
                         </IconButton>
 
                         <Box onClick={e => e.stopPropagation()}>

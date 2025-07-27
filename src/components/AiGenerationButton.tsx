@@ -1,7 +1,7 @@
 import React from 'react';
 import { HiOutlineSparkles } from 'react-icons/hi2';
 import { LoadingSpinner } from 'components';
-import { Button, Text } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react/button';
 import { Tooltip } from 'components';
 /**
  * Props for the AiGenerationButton component.

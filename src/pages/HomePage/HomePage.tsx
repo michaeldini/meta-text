@@ -15,7 +15,8 @@ import { useSourceDocuments, useMetatexts } from 'features';
 import WelcomeText from './components/WelcomeText';
 import NavigationButtons from './components/NavigationButtons';
 import HomePageDetails from './components/HomePageDetails';
-import { Center, Stack } from "@chakra-ui/react"
+import { Center } from "@chakra-ui/react/center"
+import { Stack } from "@chakra-ui/react/stack"
 
 
 /* HomePage component

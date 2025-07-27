@@ -1,21 +1,45 @@
 // Dialog for rewriting a chunk, using Chakra UI v3 Dialog API
 import React from 'react';
-import { Button, CloseButton, Dialog, Portal, Text } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react/button';
+import { Text, CloseButton } from '@chakra-ui/react';
+import { Drawer } from '@chakra-ui/react/drawer';
+import { Portal } from '@chakra-ui/react/portal';
 import RewriteStyleSelect from './RewriteStyleSelect';
 import { LoadingSpinner } from 'components';
-import type { RewriteDialogProps } from 'features/chunk-shared/types';
 
+
+// Props and option type for RewriteDialog (local, not shared)
+export interface StyleOption {
+    value: string;
+    label: string;
+}
+
+export interface RewriteDialogProps {
+    open: boolean;
+    onClose: () => void;
+    style: string;
+    onStyleChange: (value: string) => void;
+    options: StyleOption[];
+    loading?: boolean;
+    error?: string | null;
+    onSave: () => void;
+    saving?: boolean;
+    canSave?: boolean;
+}
+
+// Drawer for rewriting a chunk, using Chakra UI v3 Drawer API
 export function RewriteDialog({ open, onClose, style, onStyleChange, options, loading, error, onSave, saving, canSave }: Pick<RewriteDialogProps, 'open' | 'onClose' | 'style' | 'onStyleChange' | 'options' | 'loading' | 'error' | 'onSave' | 'saving' | 'canSave'>) {
+
     return (
-        <Dialog.Root lazyMount open={open} onOpenChange={e => { if (!e.open) onClose(); }}>
+        <Drawer.Root open={open} onOpenChange={e => { if (!e.open) onClose(); }}>
             <Portal>
-                <Dialog.Backdrop />
-                <Dialog.Positioner>
-                    <Dialog.Content maxW="sm" w="full">
-                        <Dialog.Header>
-                            <Dialog.Title>Rewrite Chunk</Dialog.Title>
-                        </Dialog.Header>
-                        <Dialog.Body>
+                <Drawer.Backdrop />
+                <Drawer.Positioner>
+                    <Drawer.Content maxW="sm" w="full">
+                        <Drawer.Header>
+                            <Drawer.Title>Rewrite Chunk</Drawer.Title>
+                        </Drawer.Header>
+                        <Drawer.Body>
                             {/* Compression style selection component */}
                             <RewriteStyleSelect
                                 style={style}
@@ -24,23 +48,24 @@ export function RewriteDialog({ open, onClose, style, onStyleChange, options, lo
                             />
                             {/* Error message display */}
                             {error && <Text color="red.500" mt={2}>{error}</Text>}
-                        </Dialog.Body>
-                        <Dialog.Footer>
-                            <Dialog.ActionTrigger asChild>
+                        </Drawer.Body>
+                        <Drawer.Footer>
+                            <Drawer.ActionTrigger asChild>
                                 <Button variant="outline" onClick={onClose} disabled={saving}>Cancel</Button>
-                            </Dialog.ActionTrigger>
+                            </Drawer.ActionTrigger>
                             <Button onClick={onSave} disabled={!canSave || saving} colorScheme="blue">
                                 {saving ? <LoadingSpinner /> : 'Generate & Save'}
                             </Button>
-                        </Dialog.Footer>
-                        <Dialog.CloseTrigger asChild>
+                        </Drawer.Footer>
+                        <Drawer.CloseTrigger asChild>
                             <CloseButton size="sm" />
-                        </Dialog.CloseTrigger>
-                    </Dialog.Content>
-                </Dialog.Positioner>
+                        </Drawer.CloseTrigger>
+                    </Drawer.Content>
+                </Drawer.Positioner>
             </Portal>
-        </Dialog.Root>
+        </Drawer.Root>
     );
 }
 
+// ...existing code...
 export default RewriteDialog;

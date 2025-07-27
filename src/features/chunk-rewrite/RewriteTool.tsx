@@ -24,8 +24,9 @@ export function RewriteTool({ chunk, onRewriteCreated }: RewriteToolProps) {
         setStyle(STYLE_OPTIONS[0].value);
     };
 
-    const handleStyleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setStyle(e.target.value);
+    // Accepts a string value instead of ChangeEvent
+    const handleStyleChange = (value: string) => {
+        setStyle(value);
         setError(null);
     };
 

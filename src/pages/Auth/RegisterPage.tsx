@@ -1,5 +1,8 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-import { Button, Textarea, Box, Text } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react/button';
+import { Textarea } from '@chakra-ui/react/textarea';
+import { Box } from '@chakra-ui/react/box';
+import { Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuthStore } from 'store';

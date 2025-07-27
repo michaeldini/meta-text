@@ -1,8 +1,8 @@
-import { Heading, IconButton, Box } from '@chakra-ui/react'
+import { Heading, IconButton } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react/box';
 import { Tooltip } from 'components';
 import type { ReactElement } from 'react';
 import { HiArrowLeft } from 'react-icons/hi2';
-import { getMetatextReviewStyles } from '../Metatext.styles';
 
 interface HeaderProps {
     metatextId?: number;

@@ -2,4 +2,4 @@
  * Compression hooks
  */
 
-export { useRewrite as useCompression } from './useRewrite';
+export { useRewrite } from './useRewrite';

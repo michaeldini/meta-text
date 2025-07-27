@@ -21,7 +21,6 @@ import { ChunkToolsPanel, PaginatedChunks, SearchContainer, BookmarkNavigateButt
 
 import { useSearchKeyboard, useMetatextDetail, ChunkFavoriteFilterToggle, useSourceDocumentDetail, ChunkPositionToggleButton } from 'features';
 
-import { getMetatextDetailStyles } from './Metatext.styles';
 import DownloadMetatextButton from './components/DownloadMetatextButton';
 
 

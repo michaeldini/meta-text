@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react/box';
 import { keyframes } from '@emotion/react';
 import {
     HiOutlineSparkles as AddIcon,

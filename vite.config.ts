@@ -20,15 +20,21 @@ export default defineConfig({
                     // Separate vendor chunks
                     'react-vendor': ['react', 'react-dom', 'react-router-dom'],
                     'utils': ['zustand', 'loglevel'],
-                    // Separate your chunks feature since it's large
-                    'chunks-features': [
-                        './src/features/chunk-rewrite',
-                        './src/features/chunk-image',
-                        './src/features/chunk-search',
-                    ],
-                    'review-features': [
-                        './src/features/review',
-                    ],
+                    '@chakra-ui': [
+                        '@chakra-ui/react',],
+                    // Split each feature into its own chunk for better code splitting
+                    'chunk-rewrite': ['./src/features/chunk-rewrite'],
+                    'chunk-search': ['./src/features/chunk-search'],
+                    'chunk-bookmark': ['./src/features/chunk-bookmark'],
+                    'chunk-copy': ['./src/features/chunk-copy'],
+                    'chunk-evaluation': ['./src/features/chunk-evaluation'],
+                    'chunk-explanation': ['./src/features/chunk-explanation'],
+                    'chunk-image': ['./src/features/chunk-image'],
+                    'chunk-merge': ['./src/features/chunk-merge'],
+                    'chunk-note': ['./src/features/chunk-note'],
+                    'chunk-position': ['./src/features/chunk-position'],
+                    'chunk-shared': ['./src/features/chunk-shared'],
+                    'review-features': ['./src/features/review'],
                 }
             },
             // Better tree shaking - especially important for icons

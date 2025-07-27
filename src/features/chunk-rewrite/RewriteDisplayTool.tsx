@@ -1,12 +1,10 @@
-import React from 'react';
-import { Box, Text } from '@chakra-ui/react';
 
+import React, { useState } from 'react';
+import { Box, Text, Button } from '@chakra-ui/react';
+import { Drawer } from '@chakra-ui/react/drawer';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 import { useChunkStore } from 'store';
-import RewriteTool from './RewriteTool';
-import RewriteSelect from './components/RewriteSelect';
-import RewriteDisplay from './components/RewriteDisplay';
-import RewriteEmptyState from './components/RewriteEmptyState';
+import RewriteToolButton from './components/RewriteToolButton';
 import { useRewrite } from './hooks/useRewrite';
 
 
@@ -20,42 +18,106 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
     const { chunk, updateChunkField, isVisible } = props;
     if (!isVisible) return null;
     const { refetchChunk } = useChunkStore();
-    const {
-        rewrites,
-        selectedId,
-        selected,
-        setSelectedId,
-        onRewriteCreated: onRewriteCreated
-    } = useRewrite(chunk);
+    const { rewrites } = useRewrite(chunk);
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [style, setStyle] = useState('like im 5');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [selectedId, setSelectedId] = useState<number | ''>('');
 
-    // Handle rewrite creation by refetching only the specific chunk
-    const handleRewriteCreated = async () => {
+    // Open drawer for new rewrite
+    const handleOpenDrawer = () => {
+        setDrawerOpen(true);
+        setError(null);
+        setStyle('like im 5');
+    };
+    const handleCloseDrawer = () => {
+        setDrawerOpen(false);
+        setError(null);
+        setStyle('like im 5');
+    };
+
+    // Submit new rewrite
+    const handleSubmitRewrite = async () => {
+        setLoading(true);
+        setError(null);
         try {
-            await refetchChunk(chunk.id);
-        } catch (error) {
-            console.error('Failed to refetch chunk after rewrite creation:', error);
+            // Replace with your actual rewrite generation logic
+            await refetchChunk(chunk.id); // Simulate rewrite creation
+            handleCloseDrawer();
+        } catch (err) {
+            setError('Failed to generate rewrite.');
+        } finally {
+            setLoading(false);
         }
     };
 
+    // Select previous rewrite
+    const selectedRewrite = rewrites.find(r => r.id === selectedId);
+
     return (
         <Box>
-            {rewrites.length === 0 ? (
-                <RewriteEmptyState chunk={chunk} onRewriteCreated={handleRewriteCreated} />
-            ) : (
-                <>
-                    <Box flexDirection="row" display="flex" alignItems="center">
-                        <RewriteTool chunk={chunk} onRewriteCreated={handleRewriteCreated} />
-                        <RewriteSelect
-                            rewrites={rewrites}
-                            selectedId={selectedId}
-                            setSelectedId={setSelectedId}
-                        />
-                    </Box>
-                    <RewriteDisplay selected={selected} />
-                </>
+            {/* Button to open drawer for new rewrite */}
+            <RewriteToolButton onClick={handleOpenDrawer} disabled={!chunk} />
+
+            {/* Drawer for creating new rewrite */}
+            <Drawer.Root open={drawerOpen} onOpenChange={e => { if (!e.open) handleCloseDrawer(); }}>
+                <Drawer.Backdrop />
+                <Drawer.Positioner>
+                    <Drawer.Content maxW="sm" w="full">
+                        <Drawer.Header>
+                            <Drawer.Title>Generate Rewrite</Drawer.Title>
+                        </Drawer.Header>
+                        <Drawer.Body>
+                            <Box w="full" mb={4}>
+                                <label htmlFor="style-select">Rewrite style:</label>
+                                <select
+                                    id="style-select"
+                                    value={style}
+                                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setStyle(e.target.value)}
+                                    style={{ width: '100%', marginTop: 8 }}
+                                >
+                                    <option value="like im 5">Explain like I’m 5</option>
+                                    <option value="like a bro">Like a bro</option>
+                                    <option value="academic">Academic</option>
+                                </select>
+                            </Box>
+                            {error && <Text color="red.500" mt={2}>{error}</Text>}
+                        </Drawer.Body>
+                        <Drawer.Footer>
+                            <Button onClick={handleCloseDrawer} variant="outline" disabled={loading}>Cancel</Button>
+                            <Button onClick={handleSubmitRewrite} colorScheme="blue" disabled={loading || !style || !chunk}>
+                                {loading ? 'Generating...' : 'Generate & Save'}
+                            </Button>
+                        </Drawer.Footer>
+                    </Drawer.Content>
+                </Drawer.Positioner>
+            </Drawer.Root>
+
+            {/* Select to browse previous rewrites */}
+            {rewrites.length > 0 && (
+                <Box mt={6}>
+                    <label htmlFor="rewrite-select">Browse previous rewrites:</label>
+                    <select
+                        id="rewrite-select"
+                        value={selectedId === '' ? '' : String(selectedId)}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedId(Number(e.target.value))}
+                        style={{ width: '100%', marginTop: 8, marginBottom: 8 }}
+                    >
+                        <option value="">Browse previous rewrites</option>
+                        {rewrites.map(r => (
+                            <option key={r.id} value={r.id}>{r.title || `Rewrite ${r.id}`}</option>
+                        ))}
+                    </select>
+                    {selectedRewrite && (
+                        <Box p={3} borderWidth={1} borderRadius={4} mt={2}>
+                            <Text>{selectedRewrite.rewrite_text}</Text>
+                        </Box>
+                    )}
+                </Box>
             )}
         </Box>
     );
-};
+}
 
 export default RewriteDisplayTool;

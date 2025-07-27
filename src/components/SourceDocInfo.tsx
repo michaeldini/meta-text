@@ -1,20 +1,10 @@
-import React, { useState, useCallback, useMemo } from 'react';
-import { HiChevronDown, HiPencil, HiCheck } from 'react-icons/hi2';
 import {
-    Box,
-    Accordion,
-    IconButton,
     Editable,
-    CloseButton,
     Stack,
     Text,
     Collapsible,
-} from '@chakra-ui/react';
-import { splitToArray } from 'utils';
-import { Tooltip, Alert } from 'components';
-import { SourceDocumentDetail, SourceDocumentUpdate } from 'types';
-import { updateSourceDocument } from 'services/sourceDocumentService';
-import { log } from 'utils';
+} from '@chakra-ui/react'; // TODO: Refactor to modular imports for each component as needed
+import { SourceDocumentDetail } from 'types';
 
 interface SourceDocInfoProps {
     doc: SourceDocumentDetail;

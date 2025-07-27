@@ -11,7 +11,7 @@ import {
     Button,
     Input,
     FileUpload,
-} from '@chakra-ui/react'
+} from '@chakra-ui/react'; // TODO: Refactor to modular imports for each component as needed
 
 import { Field } from 'components';
 import { HiArrowDownTray } from 'react-icons/hi2';

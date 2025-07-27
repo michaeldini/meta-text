@@ -3,7 +3,8 @@
 
 
 import React from 'react';
-import { Heading, Stack } from "@chakra-ui/react"
+import { Heading } from "@chakra-ui/react"
+import { Stack } from "@chakra-ui/react/stack"
 
 
 

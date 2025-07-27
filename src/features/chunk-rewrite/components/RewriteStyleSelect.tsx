@@ -1,7 +1,18 @@
 // Controlled select for rewrite style using Chakra UI v3 Menu
 import React from 'react';
 import { Button, Menu } from '@chakra-ui/react';
-import type { RewriteStyleSelectProps } from 'features/chunk-shared/types';
+
+// Props and option type for RewriteStyleSelect (local, not shared)
+export interface StyleOption {
+    value: string;
+    label: string;
+}
+
+export interface RewriteStyleSelectProps {
+    style: string;
+    onChange: (value: string) => void;
+    options: StyleOption[];
+}
 
 export function RewriteStyleSelect({ style, onChange, options }: RewriteStyleSelectProps) {
     return (

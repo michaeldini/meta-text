@@ -3,7 +3,7 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { Box } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react/box';
 import type { ReactElement } from 'react';
 
 import { PageContainer, SourceDocInfo, GenerateSourceDocInfoButton, StyleControls, DocumentHeader } from 'components';

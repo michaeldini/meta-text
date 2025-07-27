@@ -3,7 +3,11 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, CloseButton, Heading, Input, InputGroup, List } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react/box';
+import { Button } from '@chakra-ui/react/button';
+import { Input } from '@chakra-ui/react/input';
+import { List } from '@chakra-ui/react/list';
+import { CloseButton, Heading, InputGroup, } from '@chakra-ui/react';
 import { HiMagnifyingGlass } from "react-icons/hi2";
 
 import { ErrorBoundary, LoadingBoundary, DeleteButton, Field } from 'components';
