@@ -6,7 +6,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Box, } from '@chakra-ui/react';
 
-import { ChunkTextField, getSharedToolStyles } from 'features';
+import { ChunkTextField } from 'features';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 
 interface NotesToolProps {

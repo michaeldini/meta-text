@@ -22,6 +22,7 @@ export function ImageDisplay(props: ImageDisplayProps) {
     const [loaded, setLoaded] = useState(false);
     const [hasError, setHasError] = useState(false);
     const [lightboxOpen, setLightboxOpen] = useState(false);
+    const [reloadKey, setReloadKey] = useState(0);
 
 
     const handleLoad = useCallback(() => {
@@ -38,9 +39,8 @@ export function ImageDisplay(props: ImageDisplayProps) {
         setLoaded(false);
         setHasError(false);
         // Force image reload by updating src with cache-busting parameter
-        const img = new Image();
-        img.src = src + (src.includes('?') ? '&' : '?') + 'retry=' + Date.now();
-    }, [src]);
+        setReloadKey(prev => prev + 1);
+    }, []);
 
     const openLightbox = useCallback(() => setLightboxOpen(true), []);
     const closeLightbox = useCallback(() => setLightboxOpen(false), []);
@@ -84,7 +84,7 @@ export function ImageDisplay(props: ImageDisplayProps) {
             {/* Successful image display */}
             {!hasError && (
                 <img
-                    src={src}
+                    src={src + (reloadKey ? ((src.includes('?') ? '&' : '?') + 'retry=' + reloadKey) : '')}
                     alt={alt}
                     style={{
                         height,
