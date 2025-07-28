@@ -9,7 +9,6 @@
  */
 import React from 'react';
 import { Heading } from "@chakra-ui/react"
-import { Stack } from "@chakra-ui/react/stack"
 import { List } from "@chakra-ui/react/list"
 export function AboutSection() {
     return (

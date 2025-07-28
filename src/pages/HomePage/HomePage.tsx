@@ -14,7 +14,7 @@ import { Center } from "@chakra-ui/react/center"
 import { Stack } from "@chakra-ui/react/stack"
 import { TooltipButton } from 'components';
 
-import { useHomepage } from './useHomepage';
+import { useHomepage } from './hooks/useHomepage';
 
 function HomePage(): ReactElement {
 

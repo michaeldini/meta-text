@@ -1,10 +1,13 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import { Button } from '@chakra-ui/react/button';
-import { Textarea } from '@chakra-ui/react/textarea';
+import { Heading, Input } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react/box';
 import { Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-
+import {
+    PasswordInput,
+    PasswordStrengthMeter,
+} from "components"
 import { log } from 'utils';
 import { useAuthStore } from 'store';
 import { AppAlert } from 'components';
@@ -32,30 +35,35 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
     };
 
     return (
-        <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+        <Box display="flex" justifyContent="center">
             <Box>
-                <Text >Login</Text>
+                <Heading mb={4}>Login</Heading>
                 <form onSubmit={handleSubmit}>
-                    <Textarea
+                    <Input
                         placeholder="Username"
                         value={username}
                         onChange={e => setUsername(e.target.value)}
-                        margin="normal"
+                        mb={3}
                         required
+                        autoFocus
                     />
-                    <Textarea
+                    <PasswordInput
                         placeholder="Password"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
-                        margin="normal"
+                        mb={3}
                         required
                     />
+                    {/* Optionally show password strength meter */}
+
                     {error && <AppAlert severity="error">{error}</AppAlert>}
                     <Button
                         type="submit"
-                        variant="ghost"
-                        color="primary"
-                        disabled={loading}
+                        variant="solid"
+                        colorScheme="blue"
+                        loading={loading}
+                        width="100%"
+                        mt={2}
                     >
                         {loading ? 'Logging in...' : 'Login'}
                     </Button>

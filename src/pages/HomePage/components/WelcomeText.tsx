@@ -4,7 +4,6 @@
 
 import React from 'react';
 import { Heading } from "@chakra-ui/react"
-import { Stack } from "@chakra-ui/react/stack"
 import { Highlight } from "@chakra-ui/react/highlight"
 
 

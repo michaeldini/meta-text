@@ -1,12 +1,12 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import { Button } from '@chakra-ui/react/button';
-import { Textarea } from '@chakra-ui/react/textarea';
+import { Heading, Input } from '@chakra-ui/react';
+import { PasswordInput, PasswordStrengthMeter } from "components";
 import { Box } from '@chakra-ui/react/box';
 import { Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuthStore } from 'store';
-import { log } from 'utils';
 import { AppAlert } from 'components';
 
 interface RegisterPageProps {
@@ -21,11 +21,6 @@ export function RegisterPage({ onRegisterSuccess }: RegisterPageProps) {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    useEffect(() => {
-        log.info('RegisterPage mounted');
-        return () => log.info('RegisterPage unmounted');
-    }, []);
-
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         const success = await register(username, password);
@@ -37,35 +32,38 @@ export function RegisterPage({ onRegisterSuccess }: RegisterPageProps) {
     };
 
     return (
-        <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+        <Box display="flex" justifyContent="center">
             <Box>
-                <Text >Register</Text>
+                <Heading mb={4}>Register</Heading>
                 <form onSubmit={handleSubmit}>
-                    <Textarea
+                    <Input
                         placeholder="Username"
                         value={username}
                         onChange={e => setUsername(e.target.value)}
-                        margin="normal"
+                        mb={3}
                         required
+                        autoFocus
                     />
-                    <Textarea
+                    <PasswordInput
                         placeholder="Password"
-                        // type="password"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
-                        margin="normal"
+                        mb={3}
                         required
                     />
+                    {/* Optionally show password strength meter */}
+                    <PasswordStrengthMeter value={password.length} max={16} mb={2} />
                     {error && <AppAlert severity="error">{error}</AppAlert>}
                     <Button
                         type="submit"
-                        variant="ghost"
-                        color="primary"
-                        // disable button while still in development to prevent accidental registrations
-                        // disabled={loading}
-                        disabled={true}
+                        variant="solid"
+                        colorScheme="blue"
+                        loading={loading}
+                        width="100%"
+                        mt={2}
+                        disabled={true} // Todo: Enable when registration is open
                     >
-                        {loading ? 'Registering...' : 'Register'}
+                        Register (Currently closed. Come back later!)
                     </Button>
                 </form>
             </Box>
