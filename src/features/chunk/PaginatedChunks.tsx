@@ -2,33 +2,27 @@
 // It handles loading states, errors, and pagination of chunks using Chakra UI v3
 
 import React, { ReactNode, useRef } from 'react';
-import { Box, Center } from '@chakra-ui/react';
-import {
-    Pagination,
-    ButtonGroup,
-    IconButton,
-    Stack,
-    Text,
-} from '@chakra-ui/react';
+import { Center } from '@chakra-ui/react/center';
+import { Box } from '@chakra-ui/react/box';
+import { Pagination } from '@chakra-ui/react/pagination';
+import { ButtonGroup, IconButton } from '@chakra-ui/react/button';
+import { Stack } from '@chakra-ui/react/stack';
+
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2';
-import useChunkBookmarkNavigation from '../chunk-bookmark/useChunkBookmarkNavigation';
-import { useBookmark } from 'features/documents/useBookmark';
+
+import { useBookmark } from 'features';
 import { LoadingBoundary, ErrorBoundary, AppAlert } from 'components';
 import { useChunkStore } from 'store';
 import { Chunk } from 'features';
+
+import useChunkBookmarkNavigation from '../chunk-bookmark/useChunkBookmarkNavigation';
 import { usePaginationStore } from '../chunk-search/store/usePaginationStore';
 import { useSearchStore } from '../chunk-search/store/useSearchStore';
 
-// handleChange: Function to handle when user changes the page
-// This is typically called when the user clicks on a pagination button
-// or changes the page number in the pagination component
-// Children: Optional children to render alongside the pagination
-// The children will be a mapping of the chunks to be displayed
 interface PaginationProps {
     metatextId: number;
     showOnlyFavorites?: boolean;
 }
-
 
 // Main component to display paginated chunks
 

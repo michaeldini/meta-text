@@ -1,6 +1,8 @@
 
 import React, { useState } from 'react';
-import { Box, Text, Button } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react/box';
+import { Text } from '@chakra-ui/react/typography';
+import { Button } from '@chakra-ui/react/button';
 import { Drawer } from '@chakra-ui/react/drawer';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 import { useChunkStore } from 'store';

@@ -32,7 +32,6 @@ export default defineConfig({
                     'chunk-image': ['./src/features/chunk-image'],
                     'chunk-merge': ['./src/features/chunk-merge'],
                     'chunk-note': ['./src/features/chunk-note'],
-                    'chunk-position': ['./src/features/chunk-position'],
                     'chunk-shared': ['./src/features/chunk-shared'],
                     'review-features': ['./src/features/review'],
                 }

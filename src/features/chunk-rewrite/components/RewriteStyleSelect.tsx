@@ -1,6 +1,7 @@
 // Controlled select for rewrite style using Chakra UI v3 Menu
 import React from 'react';
-import { Button, Menu } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react/button';
+import { Menu } from '@chakra-ui/react/menu';
 
 // Props and option type for RewriteStyleSelect (local, not shared)
 export interface StyleOption {

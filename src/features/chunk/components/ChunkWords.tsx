@@ -3,7 +3,8 @@
 // At the end of the chunk, there is a button to merge the current chunk with the next one
 
 import React, { memo, useRef } from 'react';
-import { Box, Wrap } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react/box';
+import { Wrap } from '@chakra-ui/react/wrap';
 import { MergeChunksTool } from 'features/chunk-merge';
 import WordsToolbar from '../components/WordsToolbar';
 import { useUserConfig } from 'services/userConfigService';
