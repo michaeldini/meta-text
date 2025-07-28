@@ -12,9 +12,13 @@
  * - Responsive design for tablet and mobile
  */
 import React, { useState, useCallback } from 'react';
-import { Box, Drawer, IconButton, Text, Image } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react/box';
+import { Text } from '@chakra-ui/react/typography';
+// import { Drawer } from '@chakra-ui/react/drawer';
+import { IconButton } from '@chakra-ui/react/button';
+import { Image } from '@chakra-ui/react/image';
+import { Spinner } from '@chakra-ui/react/spinner';
 
-import { LoadingSpinner } from 'components';
 import type { ImageDisplayProps } from 'features/chunk-shared/types';
 
 export function ImageDisplay(props: ImageDisplayProps) {
@@ -62,7 +66,7 @@ export function ImageDisplay(props: ImageDisplayProps) {
         >
             {/* Loading state */}
             {!loaded && !hasError && (
-                <LoadingSpinner />
+                <Spinner />
             )}
 
             {/* Error state */}

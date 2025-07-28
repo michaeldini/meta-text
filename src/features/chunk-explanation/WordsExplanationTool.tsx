@@ -1,17 +1,17 @@
 
 import React, { useState, useCallback, useMemo } from 'react';
-import {
-    Drawer,
-    Box,
-    Text,
-    Heading,
-} from '@chakra-ui/react';
-import { IconButton } from '@chakra-ui/react';
-import { TooltipButton } from 'components';
+
+import { Text, Heading } from '@chakra-ui/react/typography';
+import { Drawer } from '@chakra-ui/react/drawer';
+import { Box } from '@chakra-ui/react/box';
+// import { IconButton } from '@chakra-ui/react/button';
+import { TooltipButton, AppAlert } from 'components';
+
 import { HiQuestionMarkCircle } from 'react-icons/hi2';
+
 import { useExplanation } from './hooks/useExplanation';
-import { LoadingSpinner, AppAlert } from 'components';
-import type { ExplanationToolProps } from 'features/chunk-shared/types';
+
+import type { ExplanationToolProps } from 'features';
 
 const DRAWER_WIDTH = 500; // Width of the explanation drawer on desktop (px)
 const DRAWER_Z_INDEX = 1300; // Z-index to ensure drawer appears above other content
@@ -63,14 +63,12 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
             {/* Question Mark Icon Button*/}
             <TooltipButton
                 label={`Define "${cleanedWord}"`}
+                tooltip={`Click to get an explanation for "${cleanedWord}"`}
+                icon={<HiQuestionMarkCircle />}
                 onClick={handleDefine}
                 disabled={loading}
+                loading={loading}
                 aria-label={`Define ${cleanedWord}`}
-                icon={loading ? (
-                    <LoadingSpinner />
-                ) : (
-                    <HiQuestionMarkCircle />
-                )}
                 data-testid={`explain-word-${cleanedWord}`}
             />
             {/* Explanation Drawer*/}

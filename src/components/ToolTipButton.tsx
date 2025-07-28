@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react/button';
 import { Tooltip } from 'components';
 
 // Generic button with tooltip for consistent UI usage. Accepts label, icon, onClick, disabled.

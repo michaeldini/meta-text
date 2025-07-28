@@ -1,9 +1,8 @@
-import {
-    Editable,
-    Stack,
-    Text,
-    Collapsible,
-} from '@chakra-ui/react'; // TODO: Refactor to modular imports for each component as needed
+
+import { Editable } from '@chakra-ui/react/editable';
+import { Stack } from '@chakra-ui/react/stack';
+import { Text } from '@chakra-ui/react/typography';
+import { Collapsible } from '@chakra-ui/react/collapsible';
 import { SourceDocumentDetail } from 'types';
 
 interface SourceDocInfoProps {

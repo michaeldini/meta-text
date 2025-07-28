@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import { LoadingSpinner } from 'components';
+import { Spinner } from '@chakra-ui/react/spinner';
 
 /**
  * LoadingBoundary component for showing a loading spinner while loading is true.
@@ -13,11 +13,9 @@ export interface LoadingBoundaryProps {
 export default function LoadingBoundary(props: LoadingBoundaryProps): React.ReactElement {
     const { loading, children } = props;
     if (loading) {
-        return (
-            <LoadingSpinner
-                aria-label="Loading content"
-            />
-        );
+        return (<Spinner
+            aria-label="Loading content"
+        />);
     }
     return <>{children}</>;
 }

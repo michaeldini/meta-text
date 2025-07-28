@@ -1,11 +1,10 @@
 // Dialog for rewriting a chunk, using Chakra UI v3 Dialog API
 import React from 'react';
-import { Button } from '@chakra-ui/react/button';
-import { Text, CloseButton } from '@chakra-ui/react';
+import { Button, CloseButton } from '@chakra-ui/react/button';
+import { Text } from '@chakra-ui/react/typography';
 import { Drawer } from '@chakra-ui/react/drawer';
 import { Portal } from '@chakra-ui/react/portal';
 import RewriteStyleSelect from './RewriteStyleSelect';
-import { LoadingSpinner } from 'components';
 
 
 // Props and option type for RewriteDialog (local, not shared)
@@ -53,8 +52,8 @@ export function RewriteDialog({ open, onClose, style, onStyleChange, options, lo
                             <Drawer.ActionTrigger asChild>
                                 <Button variant="outline" onClick={onClose} disabled={saving}>Cancel</Button>
                             </Drawer.ActionTrigger>
-                            <Button onClick={onSave} disabled={!canSave || saving} colorScheme="blue">
-                                {saving ? <LoadingSpinner /> : 'Generate & Save'}
+                            <Button onClick={onSave} disabled={!canSave || saving} colorScheme="blue" loading={saving} >
+                                'Generate & Save'
                             </Button>
                         </Drawer.Footer>
                         <Drawer.CloseTrigger asChild>

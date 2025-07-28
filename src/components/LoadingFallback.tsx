@@ -1,8 +1,7 @@
 // TODO I don't know how this works. 
 
 import React from 'react';
-import { LoadingSpinner } from 'components';
-
+import { Spinner } from '@chakra-ui/react/spinner';
 
 /**
  * AppSuspenseFallback component provides a loading spinner fallback
@@ -10,7 +9,7 @@ import { LoadingSpinner } from 'components';
  */
 export function LoadingFallback(): React.ReactElement {
     return (
-        <LoadingSpinner
+        <Spinner
             aria-label="Loading application"
         />
     );
