@@ -5,16 +5,8 @@
  * - Metatext: Pages related to Metatext documents
  * - SourceDocument: Pages related to Source Documents
  */
-
-/**
- * HomePage: The entry point for users
- */
-export { default as HomePage } from './HomePage/HomePage';
-
+export * from './Auth';
+export * from './HomePage/HomePage';
 export * from './Metatext';
 export * from './SourceDocument';
-export { default as AboutPage } from './HomePage/components/HomePageDetails';
-export { default as ExperimentsPage } from './ExperimentsPage';
-
-// Authentication pages
-export * from './Auth';
+export * from './ExperimentsPage';

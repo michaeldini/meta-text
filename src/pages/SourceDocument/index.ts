@@ -1,4 +1,5 @@
 
+export { default as HomePage } from '../HomePage/HomePage';
 /**
  * SourceDocumentPage module
  * - Displays the content of a specific Source Document

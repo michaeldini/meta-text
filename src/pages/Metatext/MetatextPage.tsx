@@ -2,9 +2,9 @@
 // Uses DocumentManagementLayout for consistent layout with other document management pages.
 // Provides a searchable list of Metatexts and a form to create new Metatexts from source documents.
 
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement } from 'react';
 
-import { useSourceDocuments, useMetatexts } from 'features';
+import { useMetatextPage } from './hooks/useMetatextPage';
 import {
     PageContainer,
     DocumentManagementLayout,
@@ -14,9 +14,14 @@ import {
 import MetatextCreateForm from './components/MetatextCreateForm';
 
 function MetatextPage(): ReactElement {
-    // Fetch metatexts and source documents using TanStack Query hooks
-    const { data: metatexts, isLoading: metatextsLoading, refetch: refetchMetatexts } = useMetatexts();
-    const { data: sourceDocs, isLoading: sourceDocsLoading } = useSourceDocuments();
+    // Use custom hook for all page logic
+    const {
+        metatexts,
+        metatextsLoading,
+        refetchMetatexts,
+        sourceDocs,
+        sourceDocsLoading
+    } = useMetatextPage();
 
     return (
         <PageContainer

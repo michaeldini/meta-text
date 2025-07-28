@@ -1,37 +1,22 @@
-// Details for a given source document. 
-// This includes a header section, meta-data about the document, and the full document content.
+/**
+* Details for a given source document. 
+* This includes a header section, meta-data about the document, and the full document content.
+ * */
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 
 import { Box } from '@chakra-ui/react/box';
 import type { ReactElement } from 'react';
-
-import { PageContainer, SourceDocInfo, GenerateSourceDocInfoButton, StyleControls, DocumentHeader } from 'components';
-import { useSourceDocumentDetail, useUpdateSourceDocument } from 'features';
+import { HiOutlineSparkles } from 'react-icons/hi2';
+import { PageContainer, SourceDocInfo, StyleControls, DocumentHeader, TooltipButton } from 'components';
+import { useSourceDocDetail } from './hooks/useSourceDocDetail';
 
 import SourceDoc from './components/SourceDoc';
 
 
 function SourceDocDetailPage(): ReactElement {
 
-    // Extract the sourceDocId from the URL parameters
-    const { sourceDocId } = useParams<{ sourceDocId?: string }>();
-
-    // Parse the sourceDocId as a number, or null if not present
-    const parsedId = sourceDocId ? Number(sourceDocId) : null;
-
-    // Fetch and update using the raw ID; backend will validate and send errors
-    const { data: doc, isLoading, error } = useSourceDocumentDetail(parsedId);
-    const updateMutation = useUpdateSourceDocument(parsedId);
-
-    const navigate = useNavigate();
-
-    // Redirect if query error (invalid or not found)
-    React.useEffect(() => {
-        if (error && !isLoading) {
-            navigate('/sourcedoc');
-        }
-    }, [error, isLoading, navigate]);
+    // Use custom hook to handle all page logic
+    const { doc, isLoading, error, updateMutation, generateSourceDocInfo } = useSourceDocDetail();
 
     return (
         <PageContainer
@@ -42,8 +27,13 @@ function SourceDocDetailPage(): ReactElement {
                 {doc && (
                     <>
                         <DocumentHeader title={doc.title}>
-                            <GenerateSourceDocInfoButton
-                                sourceDocumentId={doc.id}
+                            <TooltipButton
+                                label="Generate Info"
+                                tooltip="Generate or update document info using AI"
+                                onClick={generateSourceDocInfo.handleClick}
+                                disabled={generateSourceDocInfo.loading}
+                                loading={generateSourceDocInfo.loading}
+                                icon={<HiOutlineSparkles />}
                             />
                             <StyleControls />
                             <SourceDocInfo doc={doc} onDocumentUpdate={updateMutation.mutate} />

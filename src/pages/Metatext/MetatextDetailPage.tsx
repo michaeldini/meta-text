@@ -1,103 +1,74 @@
 // Details for a given Metatext document.
 // This page displays the details of a specific Metatext, including a header with style controls and document meta-data, the paginated chunks of the Metatext, and additional tools for chunk management.
-
-
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import type { ReactElement } from 'react';
-import { Box, Stack, Heading, Button, Spinner } from '@chakra-ui/react';
-import {
-    PageContainer, SourceDocInfo, GenerateSourceDocInfoButton,
-    StyleControls,
-    DocumentHeader,
-} from 'components';
+import { Stack } from '@chakra-ui/react/stack';
+
+
 import { HiAcademicCap } from 'react-icons/hi2'
 
-import { TooltipButton } from 'components';
+import { PageContainer, SourceDocInfo, StyleControls, DocumentHeader, TooltipButton } from 'components';
 
-import { useUserConfig, useUpdateUserConfig } from 'services';
-
-import { ChunkToolsPanel, PaginatedChunks, SearchContainer, BookmarkNavigateButton } from 'features';
-
-
-
-
-import { useSearchKeyboard, useMetatextDetail, ChunkFavoriteFilterToggle, useSourceDocumentDetail, ChunkPositionToggleButton } from 'features';
+import { ChunkToolsPanel, PaginatedChunks, SearchContainer, BookmarkNavigateButton, ChunkFavoriteFilterToggle, ChunkPositionToggleButton } from 'features';
 
 import DownloadMetatextButton from './components/DownloadMetatextButton';
+import { useMetatextDetailPage } from './useMetatextDetailPage';
 
 
 function MetatextDetailPage(): ReactElement | null {
-    // Extract and parse the metatextId from the URL parameters
-    const { metatextId } = useParams<{ metatextId?: string }>();
-    const parsedId = metatextId ? Number(metatextId) : null;
-
-    const [showOnlyFavorites, setShowOnlyFavorites] = React.useState(false);
-
-    // Fetch the metatext details using the React Query hook
-    const { data: metatext, isLoading, error } = useMetatextDetail(parsedId);
-
-    // Fetch the source document details using the React Query hook
-    const { data: sourceDoc } = useSourceDocumentDetail(
-        metatext ? metatext.source_document_id ?? null : null
-    );
-
-    const navigate = useNavigate();
-    React.useEffect(() => {
-        if (error && !isLoading) {
-            navigate('/metatext');
-        }
-    }, [error, isLoading, navigate]);
-
-    useSearchKeyboard({ enabled: true });
-    const { data: userConfig } = useUserConfig();
-    const updateUserConfig = useUpdateUserConfig();
-    const uiPreferences = userConfig?.uiPreferences || { showChunkPositions: false };
-
-    let content;
-    if (metatext) {
-        // Handler for review navigation
-        const handleReviewClick = () => {
-            navigate(`/metatext/${metatext.id}/review`);
-        };
-        content = (
-            <Stack data-testid="metatext-detail-content">
-                <DocumentHeader title={metatext.title}>
-                    {/* Refactored: Use TooltipButton instead of ReviewButton */}
-                    <TooltipButton
-                        label="Review"
-                        icon={<HiAcademicCap />}
-                        tooltip="Review this metatext"
-                        onClick={handleReviewClick}
-                    // color="primary"
-                    />
-                    <GenerateSourceDocInfoButton sourceDocumentId={metatext.source_document_id} />
-                    <StyleControls />
-                    <ChunkPositionToggleButton
-                        value={uiPreferences.showChunkPositions || false}
-                        onChange={val => updateUserConfig.mutate({ showChunkPositions: val })}
-                    />
-                    <BookmarkNavigateButton metaTextId={metatext.id} />
-                    <DownloadMetatextButton metatextId={metatext.id} />
-                    <ChunkFavoriteFilterToggle
-                        showOnlyFavorites={showOnlyFavorites}
-                        onToggle={setShowOnlyFavorites}
-                    />
-                    <SearchContainer showTagFilters={true} />
-                    {sourceDoc && <SourceDocInfo doc={sourceDoc} />}
-                </DocumentHeader>
-                <ChunkToolsPanel />
-                <PaginatedChunks metatextId={metatext.id} showOnlyFavorites={showOnlyFavorites} />
-            </Stack>
-        );
-    }
+    // Use custom hook to encapsulate all setup logic
+    const {
+        metatext,
+        isLoading,
+        sourceDoc,
+        showOnlyFavorites,
+        setShowOnlyFavorites,
+        updateUserConfig,
+        uiPreferences,
+        handleReviewClick,
+        generateSourceDocInfo,
+    } = useMetatextDetailPage();
 
     return (
         <PageContainer loading={isLoading} data-testid="metatext-detail-page">
-            {content}
+            {metatext && (
+                <Stack data-testid="metatext-detail-content">
+                    <DocumentHeader title={metatext.title}>
+
+                        <TooltipButton
+                            label="Review"
+                            icon={<HiAcademicCap />}
+                            tooltip="Review this metatext"
+                            onClick={handleReviewClick}
+                        />
+                        <TooltipButton
+                            label="Generate Info"
+                            tooltip="Generate or update document info using AI"
+                            onClick={generateSourceDocInfo.handleClick}
+                            disabled={generateSourceDocInfo.loading}
+                            loading={generateSourceDocInfo.loading}
+                        />
+                        <StyleControls />
+                        <ChunkPositionToggleButton
+                            value={uiPreferences.showChunkPositions || false}
+                            onChange={val => updateUserConfig.mutate({ showChunkPositions: val })}
+                        />
+                        <BookmarkNavigateButton metaTextId={metatext.id} />
+                        <DownloadMetatextButton metatextId={metatext.id} />
+                        <ChunkFavoriteFilterToggle
+                            showOnlyFavorites={showOnlyFavorites}
+                            onToggle={setShowOnlyFavorites}
+                        />
+                        <SearchContainer showTagFilters={true} />
+                        {sourceDoc && <SourceDocInfo doc={sourceDoc} />}
+                    </DocumentHeader>
+                    <ChunkToolsPanel />
+                    <PaginatedChunks metatextId={metatext.id} showOnlyFavorites={showOnlyFavorites} />
+                </Stack>
+            )}
         </PageContainer>
+
     );
 }
 
-export { MetatextDetailPage };
 export default MetatextDetailPage;
