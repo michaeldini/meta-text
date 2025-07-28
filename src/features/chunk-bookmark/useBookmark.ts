@@ -5,7 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchBookmark, setBookmark, removeBookmark } from 'services';
 
 // Fetch the bookmarked chunk for a metatext
-export function useBookmark(metaTextId: number | null) {
+export function useBookmark(metaTextId?: number | null) {
     return useQuery<number | null>({
         queryKey: ['bookmark', metaTextId],
         queryFn: async () => {

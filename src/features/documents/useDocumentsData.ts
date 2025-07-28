@@ -63,7 +63,7 @@ export function useSourceDocuments() {
 }
 
 // Fetch a single source document (detail)
-export function useSourceDocumentDetail(id: number | null) {
+export function useSourceDocumentDetail(id?: number | null) {
     const { showError } = useNotifications();
     return useQuery<SourceDocumentDetail>({
         queryKey: ['sourceDocumentDetail', id],

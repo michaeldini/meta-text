@@ -5,22 +5,19 @@ import React from 'react';
 import type { ReactElement } from 'react';
 import { Stack } from '@chakra-ui/react/stack';
 
-
 import { HiAcademicCap, HiArrowDownTray, HiOutlineSparkles, HiHashtag, HiStar, HiOutlineStar, HiBookmark } from 'react-icons/hi2'
 
 import { PageContainer, SourceDocInfo, StyleControls, DocumentHeader, TooltipButton } from 'components';
-
-import { ChunkToolsPanel, PaginatedChunks, SearchContainer, BookmarkNavigateButton } from 'features';
+import { ChunkToolsPanel, PaginatedChunks, SearchContainer } from 'features';
 
 import { useMetatextDetailPage } from './hooks/useMetatextDetailPage';
-import { useBookmarkUIStore } from '../../features/chunk-bookmark/bookmarkStore';
-import { useBookmark } from 'features/documents/useBookmark';
+
 
 function MetatextDetailPage(): ReactElement | null {
     // Use custom hook to encapsulate all setup logic
     const {
         metatext,
-        isLoading,
+        metatextIsLoading,
         sourceDoc,
         showOnlyFavorites,
         setShowOnlyFavorites,
@@ -34,7 +31,7 @@ function MetatextDetailPage(): ReactElement | null {
     } = useMetatextDetailPage();
 
     return (
-        <PageContainer loading={isLoading} data-testid="metatext-detail-page">
+        <PageContainer loading={metatextIsLoading} data-testid="metatext-detail-page">
             {metatext && (
                 <Stack data-testid="metatext-detail-content">
                     <DocumentHeader title={metatext.title}>
@@ -61,12 +58,13 @@ function MetatextDetailPage(): ReactElement | null {
                             loading={downloadMetatext.loading}
                         />
                         <TooltipButton
-                            label={uiPreferences.showChunkPositions ? "Hide Positions" : "Show Positions"}
-                            tooltip={uiPreferences.showChunkPositions ? "Hide chunk positions" : "Show chunk positions"}
+                            label={uiPreferences?.showChunkPositions ? "Hide Positions" : "Show Positions"}
+                            tooltip={uiPreferences?.showChunkPositions ? "Hide chunk positions" : "Show chunk positions"}
                             icon={<HiHashtag />}
-                            onClick={() => updateUserConfig.mutate({ showChunkPositions: !uiPreferences.showChunkPositions })}
+                            onClick={() => updateUserConfig.mutate({ showChunkPositions: !uiPreferences?.showChunkPositions })}
                             role="switch"
-                            aria-checked={uiPreferences.showChunkPositions}
+                            aria-checked={!!uiPreferences?.showChunkPositions}
+                            disabled={uiPreferences == null}
                         />
                         <TooltipButton
                             label={showOnlyFavorites ? "Show All" : "Show Favorites"}

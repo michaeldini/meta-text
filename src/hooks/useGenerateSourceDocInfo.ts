@@ -5,13 +5,13 @@ import { useState } from 'react';
 import { generateSourceDocInfo } from 'services';
 import { useSourceDocuments } from 'features/documents/useDocumentsData';
 
-export function useGenerateSourceDocInfo(sourceDocumentId: number, onSuccess?: () => void) {
+export function useGenerateSourceDocInfo(sourceDocumentId?: number | null, onSuccess?: () => void) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const { refetch: refetchSourceDocs } = useSourceDocuments();
 
     const handleClick = async () => {
-        if (!sourceDocumentId) return;
+        if (sourceDocumentId == null) return;
         setLoading(true);
         setError(null);
         try {

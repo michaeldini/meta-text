@@ -5,12 +5,12 @@
 import React from 'react';
 import { api, downloadJsonAsFile } from 'utils';
 
-export function useDownloadMetatext(metatextId: number | null, disabled?: boolean) {
+export function useDownloadMetatext(metatextId?: number | null, disabled?: boolean) {
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState<string | null>(null);
     // TODO: eventually move to a separate service
     const handleDownload = async () => {
-        if (!metatextId || disabled) return;
+        if (metatextId == null || disabled) return;
         setLoading(true);
         setError(null);
         try {

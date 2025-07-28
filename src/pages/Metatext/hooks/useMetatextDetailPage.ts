@@ -1,5 +1,8 @@
-// Hook for MetatextDetailPage setup
-// Encapsulates all data fetching, state, and navigation logic for MetatextDetailPage
+/**
+ * Hook for MetatextDetailPage setup
+ * Encapsulates all data fetching, state, and navigation logic for MetatextDetailPage
+ * Destructured in MetatextDetailPage component
+ */
 
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -9,64 +12,90 @@ import { useGenerateSourceDocInfo } from 'hooks/useGenerateSourceDocInfo';
 import { useDownloadMetatext } from './useDownloadMetatext';
 import { useBookmarkUIStore } from 'features/chunk-bookmark/bookmarkStore';
 import { useBookmark } from 'features/documents/useBookmark';
+import { getUiPreferences } from 'utils';
 
 export function useMetatextDetailPage() {
-    // Extract and parse the metatextId from the URL parameters
+    // --- Routing and Navigation ---
+    // Extract metatextId from URL and setup navigation
     const { metatextId } = useParams<{ metatextId?: string }>();
+    const navigate = useNavigate();
     const parsedId = metatextId ? Number(metatextId) : null;
 
-    const [showOnlyFavorites, setShowOnlyFavorites] = React.useState(false);
+    // --- Data Fetching ---
+    // Fetch metatext details and related source document
+    const { data: metatext, isLoading: metatextIsLoading, error: metatextError } = useMetatextDetail(parsedId);
+    const { data: sourceDoc } = useSourceDocumentDetail(metatext?.source_document_id);
 
-    // Fetch the metatext details using the React Query hook
-    const { data: metatext, isLoading, error } = useMetatextDetail(parsedId);
-
-    // Fetch the source document details using the React Query hook
-    const { data: sourceDoc } = useSourceDocumentDetail(
-        metatext ? metatext.source_document_id ?? null : null
-    );
-
-    const navigate = useNavigate();
+    // Redirect to metatext list page if ID is invalid
     React.useEffect(() => {
-        if (error && !isLoading) {
+        if (parsedId == null || isNaN(parsedId)) {
             navigate('/metatext');
         }
-    }, [error, isLoading, navigate]);
+    }, [metatextError, parsedId, navigate]);
 
-    useSearchKeyboard({ enabled: true });
+    // --- User Config and UI Preferences ---
+    // Fetch user config and UI preferences
     const { data: userConfig } = useUserConfig();
     const updateUserConfig = useUpdateUserConfig();
-    const uiPreferences = userConfig?.uiPreferences || { showChunkPositions: false };
+    const uiPreferences = getUiPreferences(userConfig);
 
+    // --- Keyboard Shortcuts ---
+    // Enable search keyboard shortcuts
+    useSearchKeyboard({ enabled: true });
+
+    // --- Review Navigation ---
+    // Handler for navigating to review page
     const handleReviewClick = () => {
         if (!metatext) return;
         navigate(`/metatext/${metatext.id}/review`);
     };
 
-    // Setup generateSourceDocInfo hook if metatext is available
-    const generateSourceDocInfo = useGenerateSourceDocInfo(metatext?.source_document_id || 0);
+    // --- Favorites State ---
+    // State for showing only favorites
+    const [showOnlyFavorites, setShowOnlyFavorites] = React.useState(false);
 
-    // Download metatext hook
-    const downloadMetatext = useDownloadMetatext(parsedId);
+    // --- Source Document Info Generation ---
+    // Generate source document info if metatext is available
+    const generateSourceDocInfo = useGenerateSourceDocInfo(metatext?.source_document_id);
 
-    // Bookmark logic
+    // --- Download Metatext ---
+    // Hook for downloading metatext
+    const downloadMetatext = useDownloadMetatext(parsedId ?? undefined);
+
+    // --- Bookmark Logic ---
+    // Setup bookmark UI store and fetch bookmarked chunk
     const { setNavigateToBookmark } = useBookmarkUIStore();
-    const metaTextId = metatext?.id ?? null;
+    const metaTextId = metatext?.id;
     const { data: bookmarkedChunkId } = useBookmark(metaTextId);
 
+    // --- Return all hook values ---
     return {
+        // Data
         metatext,
-        isLoading,
-        error,
+        metatextIsLoading,
+        metatextError,
         sourceDoc,
+
+        // UI State
         showOnlyFavorites,
         setShowOnlyFavorites,
+        uiPreferences,
+
+        // Navigation
         navigate,
+        handleReviewClick,
+
+        // User Config
         userConfig,
         updateUserConfig,
-        uiPreferences,
-        handleReviewClick,
+
+        // Source Doc Info Generation
         generateSourceDocInfo,
+
+        // Download
         downloadMetatext,
+
+        // Bookmark
         setNavigateToBookmark,
         bookmarkedChunkId,
     };
