@@ -2,91 +2,55 @@
 // This component is responsible for rendering the text content of a source document
 // with appropriate styles and preferences set by the user. It supports both view and edit modes
 // for potentially very long documents (book-length content).
-import React, { useState, useCallback, useRef } from 'react';
-
-import { Box, Heading, Text, IconButton, Stack, Textarea, Alert, CloseButton } from '@chakra-ui/react';
-import { Prose, Tooltip } from 'components';
+import React from 'react';
+import { Box } from '@chakra-ui/react/box';
+import { Text } from '@chakra-ui/react/typography';
+import { IconButton } from '@chakra-ui/react/button';
+import { Stack } from '@chakra-ui/react/stack';
+import { Textarea } from '@chakra-ui/react/textarea';
+import { CloseButton } from '@chakra-ui/react/button';
+import { Prose, Tooltip, Alert } from 'components';
 import { HiPencil, HiCheck } from 'react-icons/hi2';
 
+
+// Props for SourceDoc presentational component
 import type { SourceDocumentDetail } from 'types';
-import { useUserConfig } from 'services/userConfigService';
-import { updateSourceDocument } from 'services/sourceDocumentService';
-import { useUpdateSourceDocument } from 'features';
-import { log } from 'utils';
-
-
-interface SourceDocProps {
+export interface SourceDocProps {
     doc: SourceDocumentDetail;
-    onDocumentUpdate?: (updatedDoc: SourceDocumentDetail) => void;
+    isEditing: boolean;
+    editedText: string;
+    isSaving: boolean;
+    showSuccess: boolean;
+    error: string | null;
+    textSizePx: number;
+    fontFamily: string;
+    lineHeight: number;
+    handleEdit: () => void;
+    handleCancel: () => void;
+    handleSave: () => void;
+    handleTextChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
 
 /**
  * Component for displaying and editing source document content
- * Supports both view and edit modes for potentially very long documents
+ * Receives all state and handlers as props from parent
  */
-export default function SourceDoc({ doc, onDocumentUpdate }: SourceDocProps) {
-    const [isEditing, setIsEditing] = useState(false);
-    const [editedText, setEditedText] = useState(doc.text || '');
-    const [isSaving, setIsSaving] = useState(false);
-    const [showSuccess, setShowSuccess] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-
-    // Use UI preferences from server or defaults
-    const { data: userConfig } = useUserConfig();
-    const uiPrefs = userConfig?.uiPreferences || {};
-    const textSizePx = uiPrefs.textSizePx ?? 28;
-    const fontFamily = uiPrefs.fontFamily ?? 'Inter, sans-serif';
-    const lineHeight = uiPrefs.lineHeight ?? 1.5;
-
-
-    const handleEdit = useCallback(() => {
-        setIsEditing(true);
-        setEditedText(doc.text || '');
-        setError(null);
-        // Focus the textarea after it renders
-        setTimeout(() => {
-            textareaRef.current?.focus();
-        }, 0);
-    }, [doc.text]);
-
-    const handleCancel = useCallback(() => {
-        setIsEditing(false);
-        setEditedText(doc.text || '');
-        setError(null);
-    }, [doc.text]);
-
-    const updateSourceDocument = useUpdateSourceDocument(doc.id);
-    const handleSave = useCallback(async () => {
-        if (isSaving) return;
-
-        setIsSaving(true);
-        setError(null);
-
-        try {
-            // use the react-query mutation to update the document
-            updateSourceDocument.mutate({ text: editedText });
-
-            log.info('Source document text updated successfully', { docId: doc.id });
-
-            setIsEditing(false);
-            setShowSuccess(true);
-        } catch (err) {
-            const errorMessage = err instanceof Error ? err.message : 'Failed to save document';
-            log.error('Failed to save source document text', { docId: doc.id, error: errorMessage });
-            setError(errorMessage);
-        } finally {
-            setIsSaving(false);
-        }
-    }, [doc.id, editedText, isSaving, onDocumentUpdate]);
-
-    const handleTextChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setEditedText(event.target.value);
-    }, []);
-
-    console.log('Rendering SourceDoc with styles:', lineHeight, textSizePx, fontFamily);
+export default function SourceDoc({
+    doc,
+    isEditing,
+    editedText,
+    isSaving,
+    showSuccess,
+    error,
+    textSizePx,
+    fontFamily,
+    lineHeight,
+    handleEdit,
+    handleCancel,
+    handleSave,
+    handleTextChange,
+}: SourceDocProps) {
 
     return (
         <Stack direction="row-reverse" data-testid="source-doc-container">
@@ -128,12 +92,18 @@ export default function SourceDoc({ doc, onDocumentUpdate }: SourceDocProps) {
                 )}
             </Stack>
 
+            {/* Error Alert */}
+            {error && (
+                <Alert status="error">
+                    <Text>{error}</Text>
+                </Alert>
+            )}
+
             {/* Content Display/Editor */}
             {isEditing ? (
                 <Box >
                     <Textarea
                         size="xl"
-                        ref={textareaRef}
                         value={editedText}
                         onChange={handleTextChange}
                         disabled={isSaving}
@@ -155,29 +125,6 @@ export default function SourceDoc({ doc, onDocumentUpdate }: SourceDocProps) {
                     {doc.text || 'No content available'}
                 </Prose>
             )}
-
-            {/* Error Display */}
-            {/* {error && (
-                <Alert
-                    severity="error"
-                    onClose={() => setError(null)}
-                >
-                    {error}
-                </Alert>
-            )} */}
-
-            {/* Success Notification */}
-            {/* <Snackbar
-                open={showSuccess}
-                autoHideDuration={3000}
-                onClose={() => setShowSuccess(false)}
-
-            >
-                <Alert severity="success" onClose={() => setShowSuccess(false)}>
-                    Document text updated successfully!
-                </Alert> */}
-            {/* </Snackbar> */}
-
         </Stack>
     );
 }

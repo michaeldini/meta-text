@@ -9,14 +9,17 @@ import type { ReactElement } from 'react';
 import { HiOutlineSparkles } from 'react-icons/hi2';
 import { PageContainer, SourceDocInfo, StyleControls, DocumentHeader, TooltipButton } from 'components';
 import { useSourceDocDetail } from './hooks/useSourceDocDetail';
+import { useSourceDocEditor } from './hooks/useSourceDocEditor';
 
 import SourceDoc from './components/SourceDoc';
 
 
 function SourceDocDetailPage(): ReactElement {
-
     // Use custom hook to handle all page logic
     const { doc, isLoading, error, updateMutation, generateSourceDocInfo } = useSourceDocDetail();
+
+    // Use editor hook only if doc is loaded
+    const editor = useSourceDocEditor(doc ?? null, updateMutation.mutate);
 
     return (
         <PageContainer
@@ -24,7 +27,7 @@ function SourceDocDetailPage(): ReactElement {
             data-testid="sourcedoc-detail-page"
         >
             <Box data-testid="sourcedoc-detail-content">
-                {doc && (
+                {doc && editor && (
                     <>
                         <DocumentHeader title={doc.title}>
                             <TooltipButton
@@ -38,7 +41,21 @@ function SourceDocDetailPage(): ReactElement {
                             <StyleControls />
                             <SourceDocInfo doc={doc} onDocumentUpdate={updateMutation.mutate} />
                         </DocumentHeader>
-                        <SourceDoc doc={doc} onDocumentUpdate={updateMutation.mutate} />
+                        <SourceDoc
+                            doc={doc}
+                            isEditing={editor.isEditing}
+                            editedText={editor.editedText}
+                            isSaving={editor.isSaving}
+                            showSuccess={editor.showSuccess}
+                            error={editor.error}
+                            textSizePx={editor.textSizePx}
+                            fontFamily={editor.fontFamily}
+                            lineHeight={editor.lineHeight}
+                            handleEdit={editor.handleEdit}
+                            handleCancel={editor.handleCancel}
+                            handleSave={editor.handleSave}
+                            handleTextChange={editor.handleTextChange}
+                        />
                     </>
                 )}
             </Box>
