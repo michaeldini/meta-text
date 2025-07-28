@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { Box, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react/box';
+import { Text } from '@chakra-ui/react/typography';
 import { Slider } from 'components';
 const MIN_SIZE = 8;
 const MAX_SIZE = 72;

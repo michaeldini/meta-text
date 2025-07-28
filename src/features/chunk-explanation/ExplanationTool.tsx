@@ -2,7 +2,8 @@ import React, { useCallback } from 'react';
 import { Box } from '@chakra-ui/react';
 import ReactMarkdown from 'react-markdown';
 
-import { AiGenerationButton } from 'components';
+import { TooltipButton } from 'components';
+import { HiOutlineSparkles } from 'react-icons/hi2';
 import { useExplanation } from './hooks/useExplanation';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 
@@ -27,20 +28,19 @@ export function ExplanationTool(props: ExplanationToolProps) {
     }, [chunk, explain, updateChunkField]);
 
     return (
-        <Box >
-            <AiGenerationButton
+        <Box>
+            <TooltipButton
                 label="Explain This Chunk"
-                toolTip="Generate a detailed, in-depth explanation of this chunk's text."
-                loading={loading}
+                tooltip="Generate a detailed, in-depth explanation of this chunk's text."
+                icon={<HiOutlineSparkles />}
                 onClick={handleGenerate}
-
                 disabled={loading || !chunk?.id}
             />
             <Box>
                 {chunk.explanation ? (
                     <ReactMarkdown>{chunk.explanation}</ReactMarkdown>
                 ) : (
-                    <span >No explanation yet.</span>
+                    <span>No explanation yet.</span>
                 )}
             </Box>
             {error && (

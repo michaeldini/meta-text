@@ -9,7 +9,6 @@ export function GlobalNotifications(): React.ReactElement | null {
     const { notifications } = useNotificationStore();
 
     useEffect(() => {
-        console.info(`Notifications: ${notifications.map(n => n.id).join(', ')}`);
         notifications.forEach((notification) => {
             Promise.resolve().then(() => {
                 toaster.create({

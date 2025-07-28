@@ -1,10 +1,9 @@
 import React from 'react';
-import { IconButton, Box } from '@chakra-ui/react';
-import { TooltipButton } from 'components'
+import { Box } from '@chakra-ui/react';
 
-import { HiOutlineTrash } from "react-icons/hi2";
+import { HiOutlineTrash, HiOutlineSparkles } from "react-icons/hi2";
 
-import { AiGenerationButton } from 'components';
+import { TooltipButton } from 'components';
 
 import { useImageTool } from './hooks/useImageTool';
 import ImageDisplay from './components/ImageDisplay';
@@ -62,10 +61,10 @@ export function ImageTool(props: ImageToolProps) {
                 {/* Action buttons container */}
                 <Box>
                     {/* Primary action button for image generation */}
-                    <AiGenerationButton
+                    <TooltipButton
                         label={hasImage ? "Generate New Image" : "Generate Image"}
-                        toolTip="Generate an image for this chunk using AI"
-                        loading={loading}
+                        tooltip="Generate an image for this chunk using AI"
+                        icon={<HiOutlineSparkles />}
                         onClick={openDialog}
                         disabled={loading}
                     />

@@ -3,19 +3,21 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { Input, InputGroup } from '@chakra-ui/react/input';
 import { Box } from '@chakra-ui/react/box';
-
-import { Input } from '@chakra-ui/react/input';
-
 import { List } from '@chakra-ui/react/list';
-import { CloseButton, Heading, InputGroup, } from '@chakra-ui/react';
+import { CloseButton } from '@chakra-ui/react/button';
+import { Heading } from '@chakra-ui/react/typography';
+
 import { HiMagnifyingGlass, HiOutlineTrash } from "react-icons/hi2";
 
 import { ErrorBoundary, LoadingBoundary, Field, TooltipButton } from 'components';
-import { useDeleteSourceDocument, useDeleteMetatext } from 'features/documents/useDocumentsData';
-
+import { useDeleteSourceDocument, useDeleteMetatext } from 'features';
 import { useFilteredList } from 'hooks';
 import type { MetatextSummary, SourceDocumentSummary } from 'types';
+
+
 
 export interface SearchableListProps {
     title: string;

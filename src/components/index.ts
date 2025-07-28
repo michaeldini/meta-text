@@ -6,7 +6,6 @@ export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as LoadingFallback } from './LoadingFallback';
 export { default as LoadingBoundary } from './LoadingBoundary';
 export { default as PageContainer } from './PageContainer';
-export { default as AiGenerationButton } from './AiGenerationButton';
 export { default as GlobalNotifications } from './GlobalNotifications';
 export { default as DocumentHeader } from './DocumentHeader';
 export { AppAlert } from './AppAlert';

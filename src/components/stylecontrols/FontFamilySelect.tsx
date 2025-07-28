@@ -1,18 +1,7 @@
 import React from 'react';
-
-import { createListCollection, Select, Portal, } from '@chakra-ui/react';
-
-const FONT_FAMILIES = [
-    'Inter, sans-serif',
-    'Roboto, sans-serif',
-    'Arial, sans-serif',
-    'Georgia, serif',
-    'Times New Roman, Times, serif',
-    'Courier New, Courier, monospace',
-    'monospace',
-    'Funnel Display, sans-serif',
-    'Open Sans, sans-serif',
-];
+import { Select } from '@chakra-ui/react/select';
+import { Portal } from '@chakra-ui/react/portal';
+import { useFontFamilySelect } from '../../hooks/stylecontrols/useFontFamilySelect';
 
 
 interface FontFamilySelectProps {
@@ -20,21 +9,9 @@ interface FontFamilySelectProps {
     onChange: (val: string) => void;
     disabled?: boolean;
 }
-
-export function FontFamilySelect(props: FontFamilySelectProps): React.ReactElement {
-
+export function FontFamilySelect(props: FontFamilySelectProps) {
     const { value, onChange, disabled = false } = props;
-
-    const handleChange = (event: any) => {
-        onChange(event.target.value);
-    };
-    const fontFamilyOptions = createListCollection({
-        items: FONT_FAMILIES.map(font => ({
-            value: font,
-            label: font.split(',')[0],
-            style: { fontFamily: font }
-        }))
-    });
+    const { fontFamilyOptions, handleChange } = useFontFamilySelect({ value, onChange });
     return (
         <form>
             <Select.Root width="200px" collection={fontFamilyOptions} onChange={handleChange} >

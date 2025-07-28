@@ -2,16 +2,13 @@
 
 import React from 'react';
 
-import {
-    Heading,
-    Stack,
-    Text,
-    Spinner,
-    Box,
-    Button,
-    Input,
-    FileUpload,
-} from '@chakra-ui/react'; // TODO: Refactor to modular imports for each component as needed
+
+import { Heading, Text } from '@chakra-ui/react/typography';
+import { Stack } from '@chakra-ui/react/stack'
+import { Box } from '@chakra-ui/react/box'
+import { Button } from '@chakra-ui/react/button';
+import { Input } from '@chakra-ui/react/input'
+import { FileUpload } from '@chakra-ui/react/file-upload';
 
 import { Field } from 'components';
 import { HiArrowDownTray } from 'react-icons/hi2';
@@ -52,12 +49,13 @@ function SourceDocUploadForm({ onSuccess }: SourceDocUploadFormProps): React.Rea
             Upload a text file to create a new source document.
         </Heading>
     );
-    const LoadingSpinner = addSourceDocument.isPending ? <Spinner /> : null;
+
     const SubmitButton = (
         <Button
             type="submit"
             color="primary"
             variant="ghost"
+            loading={addSourceDocument.isPending}
             size="xl"
             disabled={addSourceDocument.isPending || !title.trim() || !file}
             data-testid="submit-button"
@@ -106,7 +104,6 @@ function SourceDocUploadForm({ onSuccess }: SourceDocUploadFormProps): React.Rea
         <Stack borderRadius="md">
             {UploadHeading}
             {SubHeading}
-            {LoadingSpinner}
             {error && (
                 <Box my={2}>
                     <Box bg="red.100" color="red.800" p={2} borderRadius="md">

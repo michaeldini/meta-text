@@ -1,7 +1,8 @@
 // Component used to display a document header with a title and children components for consistent styling across pages.
 
 import React from 'react';
-import { Collapsible, Stack, Wrap } from "@chakra-ui/react"
+import { Wrap } from "@chakra-ui/react/wrap"
+import { Collapsible } from "@chakra-ui/react/collapsible"
 
 interface DocumentHeaderProps {
     title?: string;
