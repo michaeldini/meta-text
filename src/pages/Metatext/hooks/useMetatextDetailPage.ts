@@ -6,6 +6,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useUserConfig, useUpdateUserConfig } from 'services';
 import { useSearchKeyboard, useMetatextDetail, useSourceDocumentDetail } from 'features';
 import { useGenerateSourceDocInfo } from 'hooks/useGenerateSourceDocInfo';
+import { useDownloadMetatext } from './useDownloadMetatext';
+import { useBookmarkUIStore } from 'features/chunk-bookmark/bookmarkStore';
+import { useBookmark } from 'features/documents/useBookmark';
 
 export function useMetatextDetailPage() {
     // Extract and parse the metatextId from the URL parameters
@@ -40,9 +43,15 @@ export function useMetatextDetailPage() {
     };
 
     // Setup generateSourceDocInfo hook if metatext is available
-    const generateSourceDocInfo = metatext
-        ? useGenerateSourceDocInfo(metatext.source_document_id)
-        : { loading: false, error: null, handleClick: () => { } };
+    const generateSourceDocInfo = useGenerateSourceDocInfo(metatext?.source_document_id || 0);
+
+    // Download metatext hook
+    const downloadMetatext = useDownloadMetatext(parsedId);
+
+    // Bookmark logic
+    const { setNavigateToBookmark } = useBookmarkUIStore();
+    const metaTextId = metatext?.id ?? null;
+    const { data: bookmarkedChunkId } = useBookmark(metaTextId);
 
     return {
         metatext,
@@ -57,5 +66,8 @@ export function useMetatextDetailPage() {
         uiPreferences,
         handleReviewClick,
         generateSourceDocInfo,
+        downloadMetatext,
+        setNavigateToBookmark,
+        bookmarkedChunkId,
     };
 }
