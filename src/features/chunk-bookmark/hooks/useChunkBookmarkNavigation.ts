@@ -2,8 +2,9 @@
 // Extracts the logic from PaginatedChunks to keep the component clean
 
 import React from 'react';
-import { useBookmarkUIStore } from './bookmarkStore';
+import { useBookmarkUIStore } from '../store/bookmarkStore';
 import type { ChunkType } from 'types';
+import { findChunkIndex, getChunkPage, scrollToChunk } from '../handlers/bookmarkHandlers';
 
 /**
  * Navigates and scrolls to a bookmarked chunk when triggered.
@@ -22,15 +23,12 @@ const useChunkBookmarkNavigation = (
 
     React.useEffect(() => {
         if (navigateToBookmark && bookmarkedChunkId != null) {
-            const idx = chunks.findIndex((c) => c.id === bookmarkedChunkId);
+            const idx = findChunkIndex(chunks, bookmarkedChunkId);
             if (idx >= 0) {
-                const page = Math.floor(idx / chunksPerPage) + 1;
+                const page = getChunkPage(idx, chunksPerPage);
                 setPage(page);
                 setTimeout(() => {
-                    const el = document.querySelector(`[data-chunk-id="${bookmarkedChunkId}"]`);
-                    if (el) {
-                        (el as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
+                    scrollToChunk(bookmarkedChunkId);
                 }, 0);
             }
             clearNavigateToBookmark();

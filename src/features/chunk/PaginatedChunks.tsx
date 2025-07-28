@@ -15,7 +15,7 @@ import { LoadingBoundary, ErrorBoundary, AppAlert } from 'components';
 import { useChunkStore } from 'store';
 import { Chunk } from 'features';
 
-import useChunkBookmarkNavigation from '../chunk-bookmark/useChunkBookmarkNavigation';
+import useChunkBookmarkNavigation from '../chunk-bookmark/hooks/useChunkBookmarkNavigation';
 import { usePaginationStore } from '../chunk-search/store/usePaginationStore';
 import { useSearchStore } from '../chunk-search/store/useSearchStore';
 

@@ -5,7 +5,7 @@ import React, { Suspense } from 'react';
 import { Box, Stack, } from '@chakra-ui/react';
 import { ErrorBoundary, LoadingBoundary } from 'components';
 import { CopyTool } from 'features/chunk-copy';
-import ChunkBookmarkToggle from '../chunk-bookmark/ChunkBookmarkToggle';
+import ChunkBookmarkToggle from '../chunk-bookmark/components/ChunkBookmarkToggle';
 import ChunkFavoriteToggle from '../chunk-favorite/ChunkFavoriteToggle';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 import type { ChunkToolId } from './toolsRegistry';
