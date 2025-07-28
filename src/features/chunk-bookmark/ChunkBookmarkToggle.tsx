@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { IconButton } from '@chakra-ui/react';
-import { Tooltip } from 'components'
+import { TooltipButton } from 'components'
 import { useBookmarkUIStore } from './bookmarkStore';
 import { useBookmark, useSetBookmark, useRemoveBookmark } from 'features/documents/useBookmark';
 import { HiBookmark, HiOutlineBookmark } from 'react-icons/hi2';
@@ -33,13 +33,13 @@ export function ChunkBookmarkToggle({ chunk }: ChunkBookmarkToggleProps) {
     };
 
     return (
-        <Tooltip content="Toggle bookmark">
-            <span style={{ display: 'inline-flex' }}>
-                <IconButton onClick={handleToggle} data-testid={`bookmark-toggle-${chunk.id}`}>
-                    {isBookmarked ? <HiBookmark /> : <HiOutlineBookmark />}
-                </IconButton>
-            </span>
-        </Tooltip>
+        <TooltipButton
+            label=""
+            tooltip={isBookmarked ? "Remove Bookmark" : "Bookmark this chunk"}
+            onClick={handleToggle}
+            data-testid={`bookmark-toggle-${chunk.id}`}
+            icon={isBookmarked ? <HiBookmark /> : <HiOutlineBookmark />}
+        />
     );
 }
 

@@ -7,7 +7,7 @@ import {
     Heading,
 } from '@chakra-ui/react';
 import { IconButton } from '@chakra-ui/react';
-import { Tooltip } from 'components';
+import { TooltipButton } from 'components';
 import { HiQuestionMarkCircle } from 'react-icons/hi2';
 import { useExplanation } from './hooks/useExplanation';
 import { LoadingSpinner, AppAlert } from 'components';
@@ -61,20 +61,18 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
     return (
         <>
             {/* Question Mark Icon Button*/}
-            <Tooltip content={`Define "${cleanedWord}"`}>
-                <IconButton
-                    onClick={handleDefine}
-                    disabled={loading}
-                    aria-label={`Define ${cleanedWord}`}
-                >
-                    {loading ? (
-                        <LoadingSpinner />
-                    ) : (
-                        <HiQuestionMarkCircle />
-                    )}
-                </IconButton>
-            </Tooltip>
-
+            <TooltipButton
+                label={`Define "${cleanedWord}"`}
+                onClick={handleDefine}
+                disabled={loading}
+                aria-label={`Define ${cleanedWord}`}
+                icon={loading ? (
+                    <LoadingSpinner />
+                ) : (
+                    <HiQuestionMarkCircle />
+                )}
+                data-testid={`explain-word-${cleanedWord}`}
+            />
             {/* Explanation Drawer*/}
             <Drawer.Root
                 open={showDefinition}

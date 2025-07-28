@@ -19,12 +19,14 @@ export function CopyTool({ chunkText, 'data-testid': dataTestId = 'copy-tool', s
     // Show notification on copy
     return (
         <Box>
-            <Clipboard.Root value={formattedChunk} onCopy={() => showSuccess('Chunk copied to clipboard!', 3000)} onError={() => showError('Failed to copy chunk to clipboard.')}
-                // isDisabled={!chunkText}
+            <Clipboard.Root
+                value={formattedChunk}
+                onCopy={() => showSuccess('Chunk copied to clipboard!', 3000)}
+                onError={() => showError('Failed to copy chunk to clipboard.')}
                 data-testid={dataTestId}
             >
                 <Clipboard.Trigger asChild>
-                    <IconButton variant="surface" size="xs">
+                    <IconButton variant="ghost" color="primary">
                         <Clipboard.Indicator />
                     </IconButton>
                 </Clipboard.Trigger>

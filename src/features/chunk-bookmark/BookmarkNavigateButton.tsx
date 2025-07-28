@@ -1,8 +1,11 @@
-// Button to navigate to bookmarked chunk
+/** 
+ * Button to navigate to bookmarked chunk
+ * (Located in the header of the metatext detail view)
+ */
 
 import React from 'react';
 import { IconButton } from '@chakra-ui/react';
-import { Tooltip } from 'components';
+import { TooltipButton } from 'components';
 import { useBookmarkUIStore } from './bookmarkStore';
 import { useBookmark } from 'features/documents/useBookmark';
 import { HiBookmark } from "react-icons/hi2";
@@ -16,19 +19,16 @@ export function BookmarkNavigateButton({ metaTextId }: BookmarkNavigateButtonPro
     const { setNavigateToBookmark } = useBookmarkUIStore();
     const { data: bookmarkedChunkId } = useBookmark(metaTextId);
     return (
-        <Tooltip content="Go to bookmarked chunk">
-            <span style={{ display: 'inline-flex' }}>
-                <IconButton
-                    onClick={() => bookmarkedChunkId && setNavigateToBookmark()}
-                    disabled={!bookmarkedChunkId}
-                    data-testid="goto-bookmark-button"
-                    color={bookmarkedChunkId ? 'primary' : 'default'}
-                    variant="ghost"
-                >
-                    <HiBookmark />
-                </IconButton>
-            </span>
-        </Tooltip>
+        <TooltipButton
+            label="Go to Bookmark"
+            tooltip="Navigate to the bookmarked chunk in this metatext"
+            icon={<HiBookmark />}
+            onClick={(event) => setNavigateToBookmark()}
+            disabled={!bookmarkedChunkId}
+            data-testid="goto-bookmark-button"
+            color={bookmarkedChunkId ? 'primary' : 'default'}
+        />
+
     );
 }
 

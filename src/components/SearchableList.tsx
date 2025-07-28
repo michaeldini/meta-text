@@ -4,13 +4,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@chakra-ui/react/box';
-import { Button } from '@chakra-ui/react/button';
+
 import { Input } from '@chakra-ui/react/input';
+
 import { List } from '@chakra-ui/react/list';
 import { CloseButton, Heading, InputGroup, } from '@chakra-ui/react';
-import { HiMagnifyingGlass } from "react-icons/hi2";
+import { HiMagnifyingGlass, HiOutlineTrash } from "react-icons/hi2";
 
-import { ErrorBoundary, LoadingBoundary, DeleteButton, Field } from 'components';
+import { ErrorBoundary, LoadingBoundary, Field, TooltipButton } from 'components';
 import { useDeleteSourceDocument, useDeleteMetatext } from 'features/documents/useDocumentsData';
 
 import { useFilteredList } from 'hooks';
@@ -122,28 +123,27 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
                                         role="listitem"
                                     >
                                         <List.Indicator>
-                                            <Button
+                                            <TooltipButton
+                                                label={`${displayText}`}
+                                                tooltip={`Select ${displayText}`}
                                                 data-testid={`item-${item.id}`}
-                                                variant="ghost"
                                                 onClick={() => handleItemClick(item.id)}
                                                 onKeyDown={(e) => handleItemKeyDown(e, item.id)}
-                                                aria-label={`Select ${displayText}`}
-                                                role="button"
                                                 tabIndex={0}
                                                 me={10}
-                                                size="lg"
-                                            >
-                                                {displayText}
-                                            </Button>
+                                            />
 
-                                            <DeleteButton
-                                                onClick={(e: React.MouseEvent) => handleDeleteClick(item.id)}
+                                            <TooltipButton
+                                                label=""
+                                                tooltip={`Delete ${displayText}`}
+                                                icon={<HiOutlineTrash />}
+                                                data-testid={`delete-button-${item.id}`}
+                                                onClick={() => { handleDeleteClick(item.id); }}
                                                 disabled={
                                                     docType === 'sourceDoc'
                                                         ? deleteSourceDocMutation.status === 'pending'
                                                         : deleteMetatextMutation.status === 'pending'
                                                 }
-                                                label={`Delete ${displayText}`}
                                             />
                                         </List.Indicator>
                                     </List.Item>
@@ -153,7 +153,7 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
                     </List.Root>
                 </Box>
             </LoadingBoundary>
-        </ErrorBoundary>
+        </ErrorBoundary >
     );
 }
 

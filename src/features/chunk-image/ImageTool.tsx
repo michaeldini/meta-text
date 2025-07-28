@@ -1,6 +1,7 @@
 import React from 'react';
 import { IconButton, Box } from '@chakra-ui/react';
-import { Tooltip } from 'components'
+import { TooltipButton } from 'components'
+
 import { HiOutlineTrash } from "react-icons/hi2";
 
 import { AiGenerationButton } from 'components';
@@ -71,16 +72,14 @@ export function ImageTool(props: ImageToolProps) {
 
                     {/* Delete button - only show when image exists */}
                     {hasImage && (
-                        <Tooltip content="Delete current image">
-                            <IconButton
-                                onClick={handleDeleteImage}
-                                disabled={loading}
-                                color="error"
-
-                            >
-                                <HiOutlineTrash />
-                            </IconButton>
-                        </Tooltip>
+                        <TooltipButton
+                            label="Delete current image"
+                            tooltip="Delete current image"
+                            onClick={handleDeleteImage}
+                            disabled={loading}
+                            color="error"
+                            icon={<HiOutlineTrash />}
+                        />
                     )}
                 </Box>
 

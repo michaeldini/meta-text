@@ -12,7 +12,7 @@ import WelcomeText from './components/WelcomeText';
 import HomePageDetails from './components/HomePageDetails';
 import { Center } from "@chakra-ui/react/center"
 import { Stack } from "@chakra-ui/react/stack"
-import { ToolTipButton } from 'components';
+import { TooltipButton } from 'components';
 
 import { useHomepage } from './useHomepage';
 
@@ -32,12 +32,12 @@ function HomePage(): ReactElement {
                 <WelcomeText />
                 <Center>
                     <Stack direction="row">
-                        <ToolTipButton
+                        <TooltipButton
                             label="Browse SourceDocs"
                             onClick={handleNavigateToSourceDocs}
                             data-testid="navigate-to-source-docs"
                         />
-                        <ToolTipButton
+                        <TooltipButton
                             label="Browse Metatexts"
                             onClick={handleNavigateToMetatexts}
                             data-testid="navigate-to-metatexts"

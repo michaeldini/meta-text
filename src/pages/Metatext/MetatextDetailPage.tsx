@@ -13,7 +13,7 @@ import {
 } from 'components';
 import { HiAcademicCap } from 'react-icons/hi2'
 
-import { ToolTipButton } from 'components/ToolTipButton';
+import { TooltipButton } from 'components';
 
 import { useUserConfig, useUpdateUserConfig } from 'services';
 
@@ -63,11 +63,11 @@ function MetatextDetailPage(): ReactElement | null {
         content = (
             <Stack data-testid="metatext-detail-content">
                 <DocumentHeader title={metatext.title}>
-                    {/* Refactored: Use ToolTipButton instead of ReviewButton */}
-                    <ToolTipButton
+                    {/* Refactored: Use TooltipButton instead of ReviewButton */}
+                    <TooltipButton
                         label="Review"
                         icon={<HiAcademicCap />}
-                        toolTip="Review this metatext"
+                        tooltip="Review this metatext"
                         onClick={handleReviewClick}
                     // color="primary"
                     />

@@ -2,7 +2,7 @@ import React from 'react';
 import { HiOutlineSparkles } from 'react-icons/hi2';
 import { LoadingSpinner } from 'components';
 import { Button } from '@chakra-ui/react/button';
-import { ToolTipButton } from 'components';
+import { TooltipButton } from 'components';
 /**
  * Props for the AiGenerationButton component.
  * Defines the configuration and behavior for the AI generation action button.
@@ -35,9 +35,9 @@ export function AiGenerationButton(props: AiGenerationButtonProps): React.ReactE
         disabled = false
     } = props;
     return (
-        <ToolTipButton
+        <TooltipButton
             label={label}
-            toolTip={toolTip}
+            tooltip={toolTip}
             onClick={onClick}
             disabled={disabled || loading}
             icon={<HiOutlineSparkles />}

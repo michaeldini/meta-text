@@ -3,30 +3,35 @@ import { Button } from '@chakra-ui/react';
 import { Tooltip } from 'components';
 
 // Generic button with tooltip for consistent UI usage. Accepts label, icon, onClick, disabled.
-export interface ToolTipButtonProps {
+export interface TooltipButtonProps {
     label: string;
     icon?: React.ReactNode;
-    toolTip?: string;
+    tooltip?: string;
     disabled?: boolean;
-    onClick?: () => void;
+    onClick?: (() => void) | ((event: React.MouseEvent<HTMLButtonElement>) => void);
+    onKeyDown?: (event: React.KeyboardEvent) => void;
     type?: 'button' | 'submit' | 'reset';
     color?: string;
     size?: 'sm' | "md" | "lg" | "xl" | "2xl" | "2xs" | "xs";
+    role?: string;
+    [key: string]: any; // Allow additional props for flexibility
 }
 
-export function ToolTipButton({
+export function TooltipButton({
     label,
+    tooltip,
     icon,
-    toolTip,
     disabled = false,
     onClick,
+    onKeyDown,
     type = 'button',
     color = 'primary',
     size = 'lg',
+    role = 'button',
     ...rest
-}: ToolTipButtonProps): React.ReactElement {
+}: TooltipButtonProps): React.ReactElement {
     return (
-        <Tooltip content={toolTip || label}>
+        <Tooltip content={tooltip || label}>
             <Button
                 color={color}
                 size={size}
@@ -34,6 +39,8 @@ export function ToolTipButton({
                 disabled={disabled}
                 aria-label={label}
                 type={type}
+                onKeyDown={onKeyDown}
+                role={role}
                 {...rest}
             >
                 {icon && <span style={{ display: 'inline-flex', alignItems: 'center', marginRight: icon ? 6 : 0 }}>{icon}</span>}
@@ -43,4 +50,4 @@ export function ToolTipButton({
     );
 }
 
-export default ToolTipButton;
+export default TooltipButton;

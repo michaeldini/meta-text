@@ -6,7 +6,6 @@ export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as LoadingFallback } from './LoadingFallback';
 export { default as LoadingBoundary } from './LoadingBoundary';
 export { default as PageContainer } from './PageContainer';
-export { default as DeleteButton } from './DeleteButton';
 export { default as AiGenerationButton } from './AiGenerationButton';
 // export { default as ReviewButton } from './ReviewButton';
 export { default as GenerateSourceDocInfoButton } from './GenerateSourceDocInfoButton';
@@ -21,4 +20,4 @@ export { default as DocumentManagementLayout } from './DocumentManagementLayout'
 export { LoadingSpinner } from './LoadingSpinner';
 export type { LoadingSpinnerProps } from './LoadingSpinner';
 export * from './ui'
-export { ToolTipButton } from './ToolTipButton';
+export { TooltipButton } from './TooltipButton';
