@@ -29,7 +29,7 @@ export function PaddingXInput(props: PaddingXInputProps) {
                 min={MIN_PADDING_X}
                 max={MAX_PADDING_X}
                 step={STEP}
-                onChange={val => onChange(Array.isArray(val) ? val[0] : val)}
+                onValueChange={details => onChange(details.value[0])}
                 aria-label={["Padding X"]}
                 disabled={disabled}
                 colorPalette={"blue"}

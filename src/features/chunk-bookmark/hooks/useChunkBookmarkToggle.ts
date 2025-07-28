@@ -4,7 +4,6 @@
 import { useBookmarkUIStore } from '../store/bookmarkStore';
 import { useBookmark, useSetBookmark, useRemoveBookmark } from 'features';
 import { ChunkType } from 'types';
-import { findChunkIndex } from '../handlers/bookmarkHandlers';
 
 export function useChunkBookmarkToggle(chunk: ChunkType) {
     // Get the current bookmarked chunk from React Query

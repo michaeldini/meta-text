@@ -6,13 +6,6 @@ import { useBookmarkUIStore } from '../store/bookmarkStore';
 import type { ChunkType } from 'types';
 import { findChunkIndex, getChunkPage, scrollToChunk } from '../handlers/bookmarkHandlers';
 
-/**
- * Navigates and scrolls to a bookmarked chunk when triggered.
- * @param chunks - The array of chunks
- * @param chunksPerPage - Number of chunks per page
- * @param setPage - Setter for current page
- * @param bookmarkedChunkId - The id of the bookmarked chunk (from React Query)
- */
 const useChunkBookmarkNavigation = (
     chunks: ChunkType[],
     chunksPerPage: number,

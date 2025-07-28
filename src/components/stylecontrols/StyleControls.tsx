@@ -20,7 +20,6 @@ export function StyleControls(): React.ReactElement {
     const uiPreferences = userConfig?.uiPreferences || DEFAULTS;
 
     return (
-        // <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap sx={{ alignItems: 'center' }}>
         <>
             <TextSizeInput
                 value={uiPreferences.textSizePx || DEFAULTS.textSizePx}
@@ -41,7 +40,6 @@ export function StyleControls(): React.ReactElement {
                 onChange={(val: string) => updateUserConfig.mutate({ fontFamily: val })}
             />
         </>
-        // </Stack>
     );
 }
 

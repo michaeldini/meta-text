@@ -47,7 +47,11 @@ const ChunkWords = memo(function ChunkWords({
         return (
             <Box
                 key={wordIdx}
-                paddingX={`${paddingX}rem`}
+                paddingRight={`${paddingX}rem`}
+                fontSize={`${textSizePx}px`}
+                lineHeight={lineHeight}
+                fontFamily={fontFamily}
+                bg={isHighlighted ? "primary" : "transparent"}
                 onMouseDown={e => handleWordDown(wordIdx, e)}
                 onMouseEnter={e => handleWordEnter(wordIdx, e)}
                 onMouseUp={handleWordUp}
@@ -64,7 +68,7 @@ const ChunkWords = memo(function ChunkWords({
 
     return (
         <Box ref={containerRef} onMouseLeave={() => handleWordUp()}>
-            <Wrap>
+            <Wrap gap={0}>
                 {wordsElements}
                 <MergeChunksTool
                     chunkIndices={[chunkIdx, chunkIdx + 1]} />

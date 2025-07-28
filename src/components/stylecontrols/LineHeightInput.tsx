@@ -27,7 +27,7 @@ export function LineHeightInput(props: LineHeightInputProps) {
                 min={MIN_LINE_HEIGHT}
                 max={MAX_LINE_HEIGHT}
                 step={STEP}
-                onChange={val => onChange(Array.isArray(val) ? val[0] : val)}
+                onValueChange={details => onChange(details.value[0])}
                 aria-label={["Line Height"]}
                 disabled={disabled}
                 colorPalette={"blue"}

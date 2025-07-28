@@ -49,6 +49,7 @@ export function ChunkToolsPanel() {
                             flex={1}
                             minWidth={0}
                             borderRadius={0}
+                            variant="solid"
                             _hover={{
                                 bg: "primary",
                             }}
