@@ -29,6 +29,7 @@ export function useUpdateUserConfig() {
     return useMutation({
         mutationFn: async (config: Partial<UserConfig["uiPreferences"]>) => {
             const payload = { ...config };
+            console.log('[UserConfigService] Sending payload to /user/config:', payload);
             return api.post('user/config', { json: payload }).json<UserConfig>();
         },
         onSuccess: () => {

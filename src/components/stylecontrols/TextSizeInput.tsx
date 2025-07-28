@@ -27,7 +27,7 @@ export function TextSizeInput(props: TextSizeInputProps) {
                 min={MIN_SIZE}
                 max={MAX_SIZE}
                 step={STEP}
-                onValueChange={val => onChange(Array.isArray(val) ? val[0] : val)}
+                onValueChange={details => onChange(details.value[0])}
                 aria-label={["Text Size"]}
                 disabled={disabled}
                 colorPalette={"blue"}

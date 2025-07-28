@@ -16,7 +16,16 @@ import SourceDoc from './components/SourceDoc';
 
 function SourceDocDetailPage(): ReactElement {
     // Use custom hook to handle all page logic
-    const { doc, isLoading, error, updateMutation, generateSourceDocInfo } = useSourceDocDetail();
+    const {
+        doc,
+        isLoading,
+        error,
+        updateMutation,
+        generateSourceDocInfo,
+        textSizePx,
+        fontFamily,
+        lineHeight,
+    } = useSourceDocDetail();
 
     // Use editor hook only if doc is loaded
     const editor = useSourceDocEditor(doc ?? null, updateMutation.mutate);
@@ -43,16 +52,11 @@ function SourceDocDetailPage(): ReactElement {
                         </DocumentHeader>
                         <SourceDoc
                             doc={doc}
-                            isEditing={editor.isEditing}
-                            editedText={editor.editedText}
                             isSaving={editor.isSaving}
-                            showSuccess={editor.showSuccess}
                             error={editor.error}
-                            textSizePx={editor.textSizePx}
-                            fontFamily={editor.fontFamily}
-                            lineHeight={editor.lineHeight}
-                            handleEdit={editor.handleEdit}
-                            handleCancel={editor.handleCancel}
+                            textSizePx={textSizePx}
+                            fontFamily={fontFamily}
+                            lineHeight={lineHeight}
                             handleSave={editor.handleSave}
                             handleTextChange={editor.handleTextChange}
                         />

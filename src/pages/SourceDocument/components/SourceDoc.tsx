@@ -17,18 +17,13 @@ import { HiPencil, HiCheck } from 'react-icons/hi2';
 import type { SourceDocumentDetail } from 'types';
 export interface SourceDocProps {
     doc: SourceDocumentDetail;
-    isEditing: boolean;
-    editedText: string;
     isSaving: boolean;
-    showSuccess: boolean;
     error: string | null;
     textSizePx: number;
     fontFamily: string;
     lineHeight: number;
-    handleEdit: () => void;
-    handleCancel: () => void;
     handleSave: () => void;
-    handleTextChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    handleTextChange: (value: string) => void;
 }
 
 
@@ -36,62 +31,21 @@ export interface SourceDocProps {
  * Component for displaying and editing source document content
  * Receives all state and handlers as props from parent
  */
+// Refactored for Chakra UI Editable integration
+import { Editable } from '@chakra-ui/react';
+
 export default function SourceDoc({
     doc,
-    isEditing,
-    editedText,
     isSaving,
-    showSuccess,
     error,
     textSizePx,
     fontFamily,
     lineHeight,
-    handleEdit,
-    handleCancel,
     handleSave,
     handleTextChange,
 }: SourceDocProps) {
-
     return (
         <Stack direction="row-reverse" data-testid="source-doc-container">
-            {/* Edit Controls */}
-            <Stack direction="row" >
-                {!isEditing ? (
-                    <Tooltip content="Edit document text">
-                        <IconButton
-                            onClick={handleEdit}
-                            variant="ghost"
-                            color="primary"
-                        >
-                            <HiPencil />
-                        </IconButton>
-                    </Tooltip>
-                ) : (
-                    <>
-                        <Tooltip content="Save changes">
-                            <IconButton
-                                onClick={handleSave}
-                                disabled={isSaving}
-                                variant="ghost"
-                                color="primary"
-                            >
-                                <HiCheck />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip content="Cancel editing">
-                            <IconButton
-                                onClick={handleCancel}
-                                disabled={isSaving}
-                                variant="ghost"
-                                color="primary"
-                            >
-                                <CloseButton />
-                            </IconButton>
-                        </Tooltip>
-                    </>
-                )}
-            </Stack>
-
             {/* Error Alert */}
             {error && (
                 <Alert status="error">
@@ -99,32 +53,47 @@ export default function SourceDoc({
                 </Alert>
             )}
 
-            {/* Content Display/Editor */}
-            {isEditing ? (
-                <Box >
-                    <Textarea
-                        size="xl"
-                        value={editedText}
-                        onChange={handleTextChange}
-                        disabled={isSaving}
-                        placeholder="Enter document text..."
-                        resize="vertical"
-                        style={{ minHeight: '80vh', minWidth: '50vw' }}
+            <Box position="sticky" top="0" width="100%" maxH="80vh" overflowY="auto" zIndex={1}>
+                <Editable.Root
+                    value={doc.text}
+                    onValueChange={(e) => handleTextChange(e.value)}
+                    submitMode="blur"
+                    activationMode="dblclick"
+                    placeholder="Enter document text..."
+                    disabled={isSaving}
+                >
+                    <Editable.Preview
+                        fontSize={`${textSizePx}px`}
+                        fontFamily={fontFamily}
+                        // lineHeight={lineHeight}
+                        aria-label="Document Text"
+                        style={{ whiteSpace: 'pre-line', lineHeight: lineHeight }}
                     />
+                    <Editable.Textarea
+                        fontSize={`${textSizePx}px`}
+                        fontFamily={fontFamily}
+                        lineHeight={lineHeight}
+                        disabled={isSaving}
+
+                        style={{
+                            minHeight: '80vh',
+                            zIndex: 1000,
+                            padding: '1rem',
+                            overflowY: 'auto',
+                        }}
+                    />
+                    <Editable.Control>
+                        <Editable.SubmitTrigger asChild>
+                            <HiCheck style={{ fontSize: '1.25em', cursor: 'pointer' }} onClick={handleSave} />
+                        </Editable.SubmitTrigger >
+                    </Editable.Control>
                     {isSaving && (
                         <Box>
                             <Text>Saving...</Text>
                         </Box>
                     )}
-                </Box>
-            ) : (
-                <Prose size="lg"
-                    aria-label="Document Text"
-                    style={{ whiteSpace: 'pre-line', fontSize: `${textSizePx}px`, lineHeight: lineHeight.toString() + 'em', fontFamily: fontFamily }}
-                >
-                    {doc.text || 'No content available'}
-                </Prose>
-            )}
+                </Editable.Root>
+            </Box>
         </Stack>
     );
 }

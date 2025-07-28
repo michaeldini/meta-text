@@ -11,6 +11,7 @@ import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSourceDocumentDetail, useUpdateSourceDocument } from 'features';
 import { useGenerateSourceDocInfo } from 'hooks/useGenerateSourceDocInfo';
+import { useUserConfig } from 'services/userConfigService';
 
 export function useSourceDocDetail() {
     // Extract the sourceDocId from the URL parameters
@@ -33,6 +34,13 @@ export function useSourceDocDetail() {
 
     // Setup generateSourceDocInfo hook if doc is available
     const generateSourceDocInfo = useGenerateSourceDocInfo(doc?.id ?? 0);
+    // UI preferences (moved from useSourceDocEditor)
+    // Fetch user config for UI preferences
+    const { data: userConfig } = useUserConfig();
+    const uiPrefs = userConfig?.uiPreferences || {};
+    const textSizePx = uiPrefs.textSizePx ?? 28;
+    const fontFamily = uiPrefs.fontFamily ?? 'Inter, sans-serif';
+    const lineHeight = uiPrefs.lineHeight ?? 1.5;
 
     return {
         doc,
@@ -41,5 +49,8 @@ export function useSourceDocDetail() {
         updateMutation,
         parsedId,
         generateSourceDocInfo,
+        textSizePx,
+        fontFamily,
+        lineHeight,
     };
 }
