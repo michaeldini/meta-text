@@ -14,18 +14,26 @@ import {
     defaultBaseConfig,
 } from "@chakra-ui/react"
 import {
-    buttonRecipe,
     inputRecipe,
     textareaRecipe,
     headingRecipe,
     spinnerRecipe,
 } from "@chakra-ui/react/theme"
+import { defineRecipe } from "@chakra-ui/react"
 
 const config = defineConfig({
     theme: {
         // Component recipes for Chakra UI core components
         recipes: {
-            button: buttonRecipe,
+            // Custom button recipe: all buttons have a border by default
+            button: defineRecipe({
+                base: {
+                },
+                defaultVariants: {
+                    variant: "ghost",
+                },
+                // You can add variants here if needed
+            }),
             input: inputRecipe,
             textarea: textareaRecipe,
             heading: headingRecipe,

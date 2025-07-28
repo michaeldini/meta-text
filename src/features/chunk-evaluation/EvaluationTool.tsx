@@ -5,7 +5,6 @@ import ReactMarkdown from 'react-markdown';
 import { AiGenerationButton } from 'components';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 import { useEvaluation } from './hooks/useEvaluation';
-import { getSharedToolStyles } from 'features/chunk-shared/styles';
 
 interface EvaluationToolProps {
     chunk: ChunkType;

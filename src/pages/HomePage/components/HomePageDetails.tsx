@@ -13,7 +13,7 @@ import { Stack } from "@chakra-ui/react/stack"
 import { List } from "@chakra-ui/react/list"
 export function AboutSection() {
     return (
-        <Stack data-testid="about-section" >
+        <>
             <Heading py="4" >Instructions</Heading>
             <List.Root >
                 <List.Item>
@@ -29,7 +29,7 @@ export function AboutSection() {
                     Use tools that act on the chunk to add metadata to the chunk: Generate a summary, Generate an image from a prompt that represents the chunk, write notes, write a summary, ask a literature agent to comment on the chunk and your notes.
                 </List.Item>
             </List.Root>
-        </Stack>
+        </>
     );
 }
 

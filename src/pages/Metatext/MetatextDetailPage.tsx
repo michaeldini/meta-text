@@ -7,10 +7,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 import type { ReactElement } from 'react';
 import { Box, Stack, Heading, Button, Spinner } from '@chakra-ui/react';
 import {
-    PageContainer, ReviewButton, SourceDocInfo, GenerateSourceDocInfoButton,
+    PageContainer, SourceDocInfo, GenerateSourceDocInfoButton,
     StyleControls,
     DocumentHeader,
 } from 'components';
+import { HiAcademicCap } from 'react-icons/hi2'
+
+import { ToolTipButton } from 'components/ToolTipButton';
 
 import { useUserConfig, useUpdateUserConfig } from 'services';
 
@@ -53,10 +56,21 @@ function MetatextDetailPage(): ReactElement | null {
 
     let content;
     if (metatext) {
+        // Handler for review navigation
+        const handleReviewClick = () => {
+            navigate(`/metatext/${metatext.id}/review`);
+        };
         content = (
             <Stack data-testid="metatext-detail-content">
                 <DocumentHeader title={metatext.title}>
-                    <ReviewButton metatextId={metatext.id} />
+                    {/* Refactored: Use ToolTipButton instead of ReviewButton */}
+                    <ToolTipButton
+                        label="Review"
+                        icon={<HiAcademicCap />}
+                        toolTip="Review this metatext"
+                        onClick={handleReviewClick}
+                    // color="primary"
+                    />
                     <GenerateSourceDocInfoButton sourceDocumentId={metatext.source_document_id} />
                     <StyleControls />
                     <ChunkPositionToggleButton
