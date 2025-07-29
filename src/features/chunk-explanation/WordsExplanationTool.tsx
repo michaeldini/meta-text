@@ -9,12 +9,9 @@ import { TooltipButton, AppAlert } from 'components';
 
 import { HiQuestionMarkCircle } from 'react-icons/hi2';
 
-import { useExplanation } from './hooks/useExplanation';
+import { useExplainHandler } from './hooks/useExplainHandler';
 
 import type { ExplanationToolProps } from 'features';
-
-const DRAWER_WIDTH = 500; // Width of the explanation drawer on desktop (px)
-const DRAWER_Z_INDEX = 1300; // Z-index to ensure drawer appears above other content
 
 
 const removeTrailingPunctuation = (text: string): string => {
@@ -29,15 +26,15 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
         return null;
     }
     // Custom hook to manage explanation logic
-    const { explain, explanation, loading, error } = useExplanation();
+    const { handleExplain, result: explanation, loading, error } = useExplainHandler({
+    });
 
 
     const [showDefinition, setShowDefinition] = useState(false);
     const cleanedWord = useMemo(() => removeTrailingPunctuation(word), [word]);
 
     const handleDefine = useCallback(async () => {
-        console.log(`Requesting explanation for meta text ID: ${chunk}, word: ${cleanedWord}`);
-        const result = await explain({
+        const result = await handleExplain({
             words: cleanedWord,
             context: chunk.text,
             metatext_id: chunk.metatext_id,
@@ -46,17 +43,9 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
         if (result) {
             setShowDefinition(true);
         }
-    }, [cleanedWord, chunk.text, chunk.metatext_id, explain]);
+    }, [cleanedWord, chunk.text, chunk.metatext_id, handleExplain]);
 
-    const handleCloseDefinition = useCallback(() => {
-        setShowDefinition(false);
-        // Only call onComplete if we have a valid explanation
-        if (explanation) {
-            onComplete?.(true, explanation);
-        } else {
-            onComplete?.(false, undefined);
-        }
-    }, [explanation, onComplete]);
+
 
     return (
         <>

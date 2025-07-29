@@ -3,7 +3,8 @@
 // It uses Card components that flip to show the definition and context of each word
 
 import React from 'react';
-import { Box } from '@chakra-ui/react';
+import { Wrap } from '@chakra-ui/react/wrap';
+import { Box } from '@chakra-ui/react/box';
 import Flashcard from './components/Flashcard';
 import { Explanation } from 'types';
 import { Alert } from 'components';
@@ -19,7 +20,7 @@ export function FlashCards({ flashcardItems }: FlashCardsProps) {
 
     return (
         <>
-            <Box >
+            <Wrap >
                 {flashcardItems.map(item => (
                     <Flashcard
                         key={item.id}
@@ -29,7 +30,7 @@ export function FlashCards({ flashcardItems }: FlashCardsProps) {
                         context={item.context}
                     />
                 ))}
-            </Box>
+            </Wrap>
         </>
     );
 };

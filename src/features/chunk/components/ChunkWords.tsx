@@ -3,7 +3,9 @@
 // At the end of the chunk, there is a button to merge the current chunk with the next one
 
 import React, { memo, useRef, useState } from 'react';
-import { Box, Flex, chakra, Drawer } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react/box';
+import { Flex } from '@chakra-ui/react/flex';
+import { Drawer } from '@chakra-ui/react/drawer';
 import { MergeChunksTool } from 'features/chunk-merge';
 import WordsToolbar from './WordsToolbar';
 import { useUserConfig } from 'services/userConfigService';
@@ -44,6 +46,21 @@ const ChunkWords = memo(function ChunkWords({
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [drawerSelection, setDrawerSelection] = useState<{ word: string; wordIdx: number }[] | null>(null);
 
+    // Clear highlight if clicking outside the container
+    React.useEffect(() => {
+        if (highlightedIndices.length === 0) return;
+        const handleClickOutside = (event: MouseEvent) => {
+            if (!containerRef.current) return;
+            if (!containerRef.current.contains(event.target as Node)) {
+                handleToolbarClose();
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [highlightedIndices.length, handleToolbarClose]);
+
     // Only open drawer on mouseup/touchend (selection finalized)
     const selectionFinalizedRef = useRef(false);
     React.useEffect(() => {
@@ -67,9 +84,12 @@ const ChunkWords = memo(function ChunkWords({
         handleToolbarClose();
     };
 
-    // Render words, highlight selected
+    // Hover highlight state
+    const [hoveredWordIdx, setHoveredWordIdx] = useState<number | null>(null);
+
+    // Render words, highlight selected or hovered
     const wordsElements = words.map((word, wordIdx) => {
-        const isHighlighted = highlightedIndices.includes(wordIdx);
+        const isHighlighted = highlightedIndices.includes(wordIdx) || hoveredWordIdx === wordIdx;
         return (
             <Box
                 as="span"
@@ -86,14 +106,13 @@ const ChunkWords = memo(function ChunkWords({
                 // transition="background 0.1s"
                 display="inline-block"
                 onMouseDown={e => handleWordDown(wordIdx, e)}
-                onMouseEnter={e => handleWordEnter(wordIdx, e)}
+                onMouseEnter={e => { handleWordEnter(wordIdx, e); setHoveredWordIdx(wordIdx); }}
+                onMouseLeave={() => setHoveredWordIdx(null)}
                 onMouseUp={handleWordUpPatched}
                 onTouchStart={e => handleWordDown(wordIdx, e)}
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleWordUpPatched}
                 data-word-idx={`${chunkIdx}-${wordIdx}`}
-                onMouseOver={e => { e.currentTarget.style.background = '#3182ce'; e.currentTarget.style.color = 'white'; }}
-                onMouseOut={e => { if (!isHighlighted) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'inherit'; } }}
             >
                 {word}
             </Box>
@@ -101,7 +120,7 @@ const ChunkWords = memo(function ChunkWords({
     });
 
     return (
-        <Box as="div" ref={containerRef} w="100%">
+        <Box as="div" ref={containerRef} padding={4} w="100%">
             <Flex as="div" flexWrap="wrap" gap={0}>
                 {wordsElements}
                 <Box as="span" display="inline-block">

@@ -1,10 +1,11 @@
 import React, { useCallback } from 'react';
-import { Box } from '@chakra-ui/react';
-import ReactMarkdown from 'react-markdown';
+import { Box } from '@chakra-ui/react/box';
+// import ReactMarkdown from 'react-markdown';
 
-import { TooltipButton } from 'components';
+import { TooltipButton } from 'components/button';
+import { Prose } from 'components/typography';
 import { HiOutlineSparkles } from 'react-icons/hi2';
-import { useExplanation } from './hooks/useExplanation';
+import { useExplainHandler } from './hooks/useExplainHandler';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 
 interface ExplanationToolProps {
@@ -17,15 +18,31 @@ export function ExplanationTool(props: ExplanationToolProps) {
     const { chunk, updateChunkField, isVisible } = props;
     if (!isVisible) return null;
 
-    const { explain, loading, error } = useExplanation();
+    /**
+     * Custom hook to handle chunk explanation logic
+     * Returns a handler function and state for use in UI components
+     */
+    const { handleExplain, loading, error } = useExplainHandler({
+        onComplete: (result) => {
+            if (result && chunk?.id) {
+                updateChunkField(chunk.id, 'explanation', result.explanation);
+            }
+        },
+    });
 
+    /**
+     * Handler to generate explanation for the chunk
+     * Calls the custom hook's handleExplain function with necessary parameters
+     */
     const handleGenerate = useCallback(async () => {
         if (!chunk?.id) return;
-        const result = await explain({ chunk_id: chunk.id, context: chunk.text, words: "" });
-        if (result) {
-            updateChunkField(chunk.id, 'explanation', result.explanation);
-        }
-    }, [chunk, explain, updateChunkField]);
+        await handleExplain({
+            words: "",
+            context: chunk.text,
+            metatext_id: null,
+            chunk_id: chunk.id,
+        });
+    }, [chunk, handleExplain]);
 
     return (
         <Box>
@@ -38,7 +55,7 @@ export function ExplanationTool(props: ExplanationToolProps) {
             />
             <Box>
                 {chunk.explanation ? (
-                    <ReactMarkdown>{chunk.explanation}</ReactMarkdown>
+                    <Prose>{chunk.explanation}</Prose>
                 ) : (
                     <span>No explanation yet.</span>
                 )}

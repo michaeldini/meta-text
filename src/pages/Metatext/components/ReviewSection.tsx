@@ -21,7 +21,7 @@ interface ReviewSectionProps {
  */
 export function ReviewSection({ title, testId, children }: ReviewSectionProps): ReactElement {
     return (
-        <Collapsible.Root p="4">
+        <Collapsible.Root p="4" open={true}>
             <Collapsible.Trigger>Toggle {title}</Collapsible.Trigger>
             <Collapsible.Content>
                 {children}

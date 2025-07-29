@@ -1,7 +1,7 @@
 // Back of a flashcard component that displays the definition and context of a word
 
 import React from 'react';
-import { Card, Button, Text, Stack, Box } from '@chakra-ui/react';
+import { Card, Button, Text, Box, Stack } from '@chakra-ui/react';
 import { HiBars3, HiQuestionMarkCircle } from 'react-icons/hi2';
 import InfoButton from './InfoPopoverButton';
 
@@ -25,26 +25,28 @@ export function FlashcardBack(props: FlashcardBackProps) {
     const highlightedText: string = context.replace(new RegExp(`(${word})`, 'gi'), '<mark>$1</mark>');
 
     return (
-        <Card.Body display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="200px" gap="4">
-            <Button
-                variant="ghost"
-                width="100%"
-                height="auto"
-                onClick={() => setFlipped(false)}
-                fontSize="lg"
-                fontWeight="bold"
-                borderRadius="md"
-                _hover={{ bg: 'gray.100' }}
-                mb="2"
-            >
-                <Text fontSize="xl" fontWeight="bold" color="gray.600" textAlign="center">
+        <>
+            <Card.Body gap="2">
+                <Button
+                    variant="solid"
+                    width="100%"
+                    height="auto"
+                    onClick={() => setFlipped(false)}
+                    fontSize="lg"
+                    fontWeight="bold"
+                    borderRadius="md"
+                    mb="2"
+                >
+                    Go back
+                </Button>
+                <Card.Title>
                     {word}
-                </Text>
-                <Text fontSize="md" mt="1" textAlign="center">
+                </Card.Title>
+                <Card.Description>
                     {definition}
-                </Text>
-            </Button>
-            <Stack direction="row" gap="4" mt="2">
+                </Card.Description>
+            </Card.Body>
+            <Card.Footer justifyContent="flex-end">
                 <InfoButton
                     icon={<HiBars3 />}
                     dialogId="info-dialog"
@@ -59,8 +61,8 @@ export function FlashcardBack(props: FlashcardBackProps) {
                     word={word}
                     content={<Box as="span" dangerouslySetInnerHTML={{ __html: highlightedText }} />}
                 />
-            </Stack>
-        </Card.Body>
+            </Card.Footer>
+        </>
     );
 }
 
