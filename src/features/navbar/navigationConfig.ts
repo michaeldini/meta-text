@@ -26,7 +26,7 @@ export const getNavigationConfig = (logout: () => void, navigate: (path: string)
         {
             label: 'Home',
             protected: false,
-            icon: MetaTextLogoIcon, // replace with metatext logo icon
+            icon: MetaTextLogoIcon,
             action: () => navigate('/')
         },
         {
