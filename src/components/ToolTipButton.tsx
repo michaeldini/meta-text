@@ -46,9 +46,11 @@ export function TooltipButton({
                 role={role}
                 {...rest}
             >
-                <Icon size={iconSize} color="primary">
-                    {icon}
-                </Icon>
+                {icon && (
+                    <Icon size={iconSize} color="primary">
+                        {icon}
+                    </Icon>
+                )}
                 {label}
             </Button>
         </Tooltip>
