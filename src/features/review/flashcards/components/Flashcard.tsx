@@ -19,20 +19,18 @@ export function Flashcard(props: FlashcardProps) {
 
     return (
         <Card.Root variant="elevated" w="300px" p="0" >
-            <Card.Body gap="0">
-                {/* Front and Back are conditionally rendered based on flipped state */}
-                {!flipped ? (
-                    <FlashcardFront word={word} setFlipped={setFlipped} />
-                ) : (
-                    <FlashcardBack
-                        word={word}
-                        definition={definition}
-                        definition_in_context={definition_in_context}
-                        context={context}
-                        setFlipped={setFlipped}
-                    />
-                )}
-            </Card.Body>
+            {/* Front and Back are conditionally rendered based on flipped state */}
+            {!flipped ? (
+                <FlashcardFront word={word} setFlipped={setFlipped} />
+            ) : (
+                <FlashcardBack
+                    word={word}
+                    definition={definition}
+                    definition_in_context={definition_in_context}
+                    context={context}
+                    setFlipped={setFlipped}
+                />
+            )}
         </Card.Root>
     );
 }
