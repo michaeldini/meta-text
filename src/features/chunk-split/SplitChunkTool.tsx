@@ -1,6 +1,5 @@
 import React from 'react';
-import { IconButton } from '@chakra-ui/react';
-import { Tooltip } from 'components';
+import { TooltipButton } from 'components';
 import { HiScissors } from 'react-icons/hi2';
 import { useSplitChunk } from './hooks/useSplitChunk';
 import { log } from 'utils';
@@ -25,15 +24,19 @@ export function SplitChunkTool(props: SplitChunkToolProps) {
     };
 
     return (
-        <Tooltip content={`Split chunk at "${word}"`}>
-            <IconButton
-                onClick={handleSplit}
-                aria-label={`Split chunk at word "${word}"`}
-            >
-                <HiScissors />
-            </IconButton>
-        </Tooltip>
+        <TooltipButton
+            label="Split"
+            tooltip={`Split chunk at "${word}"`}
+            icon={<HiScissors />}
+            iconSize="2xl"
+            onClick={handleSplit}
+            aria-label={`Split chunk at word "${word}"`}
+            size="2xl"
+            color="primary"
+
+        />
     );
-};
+}
+
 
 export default SplitChunkTool;

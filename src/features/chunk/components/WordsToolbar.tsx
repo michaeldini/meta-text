@@ -2,7 +2,7 @@
 // This component provides a popover with tools for splitting and defining words in a chunk
 
 import React, { memo } from 'react';
-import { Popover, Box } from '@chakra-ui/react';
+import { Popover, Box, Stack } from '@chakra-ui/react';
 import { SplitChunkTool } from 'features/chunk-split';
 import { WordsExplanationTool } from 'features/chunk-explanation';
 
@@ -25,7 +25,7 @@ export function WordsToolbar({ onClose, word, wordIdx, chunkIdx, chunk }: WordsT
         onClose();
     };
     return (
-        <Box>
+        <Stack direction="row" gap={4} alignItems="center" justifyContent="center" p={4}>
             <SplitChunkTool
                 chunkId={chunk.id}
                 chunkIdx={chunkIdx}
@@ -39,7 +39,7 @@ export function WordsToolbar({ onClose, word, wordIdx, chunkIdx, chunk }: WordsT
                 chunk={chunk}
                 onComplete={handleToolComplete}
             />
-        </Box>
+        </Stack>
     );
 }
 

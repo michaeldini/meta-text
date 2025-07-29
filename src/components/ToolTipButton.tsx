@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '@chakra-ui/react/button';
 import { Tooltip } from 'components';
+import { Icon } from '@chakra-ui/react/icon';
 
 // Generic button with tooltip for consistent UI usage. Accepts label, icon, onClick, disabled.
 export interface TooltipButtonProps {
@@ -14,6 +15,7 @@ export interface TooltipButtonProps {
     color?: string;
     size?: 'sm' | "md" | "lg" | "xl" | "2xl" | "2xs" | "xs";
     role?: string;
+    iconSize?: 'sm' | "md" | "lg" | "xl" | "2xl" | "xs";
     [key: string]: any; // Allow additional props for flexibility
 }
 
@@ -28,12 +30,13 @@ export function TooltipButton({
     color = 'primary',
     size = 'lg',
     role = 'button',
+    iconSize = 'lg',
     ...rest
 }: TooltipButtonProps): React.ReactElement {
     return (
         <Tooltip content={tooltip || label}>
             <Button
-                color={color}
+                // color={color}
                 size={size}
                 onClick={onClick}
                 disabled={disabled}
@@ -43,7 +46,9 @@ export function TooltipButton({
                 role={role}
                 {...rest}
             >
-                {icon && <span style={{ display: 'inline-flex', alignItems: 'center', marginRight: icon ? 6 : 0 }}>{icon}</span>}
+                <Icon size={iconSize} color="primary">
+                    {icon}
+                </Icon>
                 {label}
             </Button>
         </Tooltip>

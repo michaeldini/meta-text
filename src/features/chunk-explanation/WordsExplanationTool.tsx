@@ -65,11 +65,14 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
                 label={`Define "${cleanedWord}"`}
                 tooltip={`Click to get an explanation for "${cleanedWord}"`}
                 icon={<HiQuestionMarkCircle />}
+                iconSize="2xl"
+                size="2xl"
                 onClick={handleDefine}
                 disabled={loading}
                 loading={loading}
                 aria-label={`Define ${cleanedWord}`}
                 data-testid={`explain-word-${cleanedWord}`}
+
             />
             {/* Explanation Drawer*/}
             <Drawer.Root
