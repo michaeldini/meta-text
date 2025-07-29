@@ -5,9 +5,9 @@ import { Box } from '@chakra-ui/react/box';
 import { Slider } from 'components';
 
 
-const MIN_PADDING_X = 0.1;
-const MAX_PADDING_X = 0.8;
-const STEP = 0.1;
+const MIN_PADDING_X = 1;
+const MAX_PADDING_X = 5;
+const STEP = 1;
 
 
 interface PaddingXInputProps {

@@ -60,70 +60,48 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
 
     return (
         <>
-            {/* Question Mark Icon Button*/}
-            <TooltipButton
-                label={`Define "${cleanedWord}"`}
-                tooltip={`Click to get an explanation for "${cleanedWord}"`}
-                icon={<HiQuestionMarkCircle />}
-                iconSize="2xl"
-                size="2xl"
-                onClick={handleDefine}
-                disabled={loading}
-                loading={loading}
-                aria-label={`Define ${cleanedWord}`}
-                data-testid={`explain-word-${cleanedWord}`}
+            {/* Show button only if not showing definition */}
+            {!showDefinition && (
+                <TooltipButton
+                    label={`Define "${cleanedWord}"`}
+                    tooltip={`Click to get an explanation for "${cleanedWord}"`}
+                    icon={<HiQuestionMarkCircle />}
+                    iconSize="2xl"
+                    size="2xl"
+                    onClick={handleDefine}
+                    disabled={loading}
+                    loading={loading}
+                    aria-label={`Define ${cleanedWord}`}
+                    data-testid={`explain-word-${cleanedWord}`}
+                />
+            )}
 
-            />
-            {/* Explanation Drawer*/}
-            <Drawer.Root
-                open={showDefinition}
-                // onClose={handleCloseDefinition}
-                role="dialog"
-                aria-labelledby="explanation-title"
-                aria-describedby="explanation-content"
-
-            >
-                <Box divideX="2px">
-                    {/* Drawer Header */}
-                    <Heading
-                        id="explanation-title"
-                    >
+            {/* Show explanation only if showDefinition is true */}
+            {showDefinition && (
+                <Box mt={4} p={4}>
+                    <Heading id="explanation-title" size="md" mb={2}>
                         Explaining: {cleanedWord}
                     </Heading>
-
-                    {/*  Error State Display  */}
-                    {error && (
-                        <AppAlert severity="error">
-                            {error}
-                        </AppAlert>
+                    {loading && (
+                        <Text>Loading...</Text>
                     )}
-
-                    {/* Explanation Content Area */}
-                    <Box id="explanation-content">
-                        {explanation?.explanation && (
-                            <Box >
-                                <Heading >
-                                    General Explanation:
-                                </Heading>
-                                <Text>
-                                    {explanation.explanation}
-                                </Text>
-                            </Box>
-                        )}
-
-                        {explanation?.explanation_in_context && (
-                            <Box>
-                                <Heading >
-                                    Explanation in Context:
-                                </Heading>
-                                <Text>
-                                    {explanation.explanation_in_context}
-                                </Text>
-                            </Box>
-                        )}
-                    </Box>
+                    {error && (
+                        <AppAlert severity="error">{error}</AppAlert>
+                    )}
+                    {explanation?.explanation && (
+                        <Box mt={2}>
+                            <Heading size="sm">General Explanation:</Heading>
+                            <Text>{explanation.explanation}</Text>
+                        </Box>
+                    )}
+                    {explanation?.explanation_in_context && (
+                        <Box mt={2}>
+                            <Heading size="sm">Explanation in Context:</Heading>
+                            <Text>{explanation.explanation_in_context}</Text>
+                        </Box>
+                    )}
                 </Box>
-            </Drawer.Root>
+            )}
         </>
     );
 });

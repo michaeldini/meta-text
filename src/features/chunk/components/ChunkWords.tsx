@@ -3,7 +3,7 @@
 // At the end of the chunk, there is a button to merge the current chunk with the next one
 
 import React, { memo, useRef, useState } from 'react';
-import { Drawer } from '@chakra-ui/react';
+import { Box, Flex, chakra, Drawer } from '@chakra-ui/react';
 import { MergeChunksTool } from 'features/chunk-merge';
 import WordsToolbar from './WordsToolbar';
 import { useUserConfig } from 'services/userConfigService';
@@ -71,21 +71,20 @@ const ChunkWords = memo(function ChunkWords({
     const wordsElements = words.map((word, wordIdx) => {
         const isHighlighted = highlightedIndices.includes(wordIdx);
         return (
-            <span
+            <Box
+                as="span"
                 key={wordIdx}
-                style={{
-                    paddingRight: `${paddingX}rem`,
-                    fontSize: `${textSizePx}px`,
-                    lineHeight: lineHeight,
-                    fontFamily: fontFamily,
-                    background: isHighlighted ? '#3182ce' : 'transparent',
-                    color: isHighlighted ? 'white' : 'inherit',
-                    borderRadius: isHighlighted ? '4px' : undefined,
-                    cursor: 'pointer',
-                    userSelect: 'none',
-                    transition: 'background 0.1s',
-                    display: 'inline-block',
-                }}
+                fontSize={`${textSizePx}px`}
+                lineHeight={lineHeight}
+                fontFamily={fontFamily}
+                paddingX={paddingX}
+                background={isHighlighted ? '#3182ce' : 'transparent'}
+                color={isHighlighted ? 'white' : 'inherit'}
+                // borderRadius={isHighlighted ? '4px' : undefined}
+                cursor="pointer"
+                userSelect="none"
+                // transition="background 0.1s"
+                display="inline-block"
                 onMouseDown={e => handleWordDown(wordIdx, e)}
                 onMouseEnter={e => handleWordEnter(wordIdx, e)}
                 onMouseUp={handleWordUpPatched}
@@ -97,18 +96,18 @@ const ChunkWords = memo(function ChunkWords({
                 onMouseOut={e => { if (!isHighlighted) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'inherit'; } }}
             >
                 {word}
-            </span>
+            </Box>
         );
     });
 
     return (
-        <div ref={containerRef} style={{ width: '100%' }}>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 0 }}>
+        <Box as="div" ref={containerRef} w="100%">
+            <Flex as="div" flexWrap="wrap" gap={0}>
                 {wordsElements}
-                <span style={{ display: 'inline-block' }}>
+                <Box as="span" display="inline-block">
                     <MergeChunksTool chunkIndices={[chunkIdx, chunkIdx + 1]} />
-                </span>
-            </div>
+                </Box>
+            </Flex>
 
             <Drawer.Root open={drawerOpen} onOpenChange={e => { if (!e.open) closeDrawer(); }} placement="bottom" size="md">
                 <Drawer.Backdrop />
@@ -131,7 +130,7 @@ const ChunkWords = memo(function ChunkWords({
                     </Drawer.Content>
                 </Drawer.Positioner>
             </Drawer.Root>
-        </div>
+        </Box>
     );
 });
 
