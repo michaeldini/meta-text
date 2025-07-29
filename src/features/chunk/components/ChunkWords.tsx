@@ -2,11 +2,10 @@
 // Each word in the chunk can be selected, and actions can be performed on the selected words
 // At the end of the chunk, there is a button to merge the current chunk with the next one
 
-import React, { memo, useRef } from 'react';
-import { Box } from '@chakra-ui/react/box';
-import { Wrap } from '@chakra-ui/react/wrap';
+import React, { memo, useRef, useState } from 'react';
+import { Drawer } from '@chakra-ui/react';
 import { MergeChunksTool } from 'features/chunk-merge';
-import WordsToolbar from '../components/WordsToolbar';
+import WordsToolbar from './WordsToolbar';
 import { useUserConfig } from 'services/userConfigService';
 import { useWordSelection } from '../hooks/useWordSelection';
 import type { ChunkType } from 'types';
@@ -29,9 +28,9 @@ const ChunkWords = memo(function ChunkWords({
     const paddingX = uiPrefs.paddingX ?? 0.3;
 
 
-    // Use custom hook for word selection logic
+
+    // Word selection logic
     const {
-        dialogAnchor,
         selectedWordIdx,
         highlightedIndices,
         handleWordDown,
@@ -41,49 +40,98 @@ const ChunkWords = memo(function ChunkWords({
         handleTouchMove,
     } = useWordSelection(chunkIdx);
 
-    // Extracted word rendering for readability
+    // Drawer state
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [drawerSelection, setDrawerSelection] = useState<{ word: string; wordIdx: number }[] | null>(null);
+
+    // Only open drawer on mouseup/touchend (selection finalized)
+    const selectionFinalizedRef = useRef(false);
+    React.useEffect(() => {
+        if (selectionFinalizedRef.current && highlightedIndices.length > 0) {
+            setDrawerSelection(highlightedIndices.map(i => ({ word: words[i], wordIdx: i })));
+            setDrawerOpen(true);
+            selectionFinalizedRef.current = false;
+        }
+    }, [highlightedIndices, words]);
+
+    // Patch handleWordUp to set selectionFinalizedRef
+    const handleWordUpPatched = () => {
+        selectionFinalizedRef.current = true;
+        handleWordUp();
+    };
+
+    // Close drawer and clear selection
+    const closeDrawer = () => {
+        setDrawerOpen(false);
+        setDrawerSelection(null);
+        handleToolbarClose();
+    };
+
+    // Render words, highlight selected
     const wordsElements = words.map((word, wordIdx) => {
         const isHighlighted = highlightedIndices.includes(wordIdx);
         return (
-            <Box
+            <span
                 key={wordIdx}
-                paddingRight={`${paddingX}rem`}
-                fontSize={`${textSizePx}px`}
-                lineHeight={lineHeight}
-                fontFamily={fontFamily}
-                bg={isHighlighted ? "primary" : "transparent"}
+                style={{
+                    paddingRight: `${paddingX}rem`,
+                    fontSize: `${textSizePx}px`,
+                    lineHeight: lineHeight,
+                    fontFamily: fontFamily,
+                    background: isHighlighted ? '#3182ce' : 'transparent',
+                    color: isHighlighted ? 'white' : 'inherit',
+                    borderRadius: isHighlighted ? '4px' : undefined,
+                    cursor: 'pointer',
+                    userSelect: 'none',
+                    transition: 'background 0.1s',
+                    display: 'inline-block',
+                }}
                 onMouseDown={e => handleWordDown(wordIdx, e)}
                 onMouseEnter={e => handleWordEnter(wordIdx, e)}
-                onMouseUp={handleWordUp}
+                onMouseUp={handleWordUpPatched}
                 onTouchStart={e => handleWordDown(wordIdx, e)}
                 onTouchMove={handleTouchMove}
-                onTouchEnd={handleWordUp}
+                onTouchEnd={handleWordUpPatched}
                 data-word-idx={`${chunkIdx}-${wordIdx}`}
-                _hover={{ bg: "primary", cursor: "pointer" }}
+                onMouseOver={e => { e.currentTarget.style.background = '#3182ce'; e.currentTarget.style.color = 'white'; }}
+                onMouseOut={e => { if (!isHighlighted) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'inherit'; } }}
             >
                 {word}
-            </Box>
+            </span>
         );
     });
 
     return (
-        <Box ref={containerRef} onMouseLeave={() => handleWordUp()}>
-            <Wrap gap={0}>
+        <div ref={containerRef} style={{ width: '100%' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 0 }}>
                 {wordsElements}
-                <MergeChunksTool
-                    chunkIndices={[chunkIdx, chunkIdx + 1]} />
-            </Wrap>
+                <span style={{ display: 'inline-block' }}>
+                    <MergeChunksTool chunkIndices={[chunkIdx, chunkIdx + 1]} />
+                </span>
+            </div>
 
-            {/* Displays on word click or select */}
-            <WordsToolbar
-                anchorEl={dialogAnchor}
-                onClose={handleToolbarClose}
-                word={highlightedIndices.length > 1 ? highlightedIndices.map(i => words[i]).join(' ') : (selectedWordIdx !== null ? words[selectedWordIdx] : '')}
-                wordIdx={highlightedIndices.length > 1 ? highlightedIndices[0] : (selectedWordIdx || 0)}
-                chunkIdx={chunkIdx}
-                chunk={chunk}
-            />
-        </Box>
+            <Drawer.Root open={drawerOpen} onOpenChange={e => { if (!e.open) closeDrawer(); }} placement="bottom" size="md">
+                <Drawer.Backdrop />
+                <Drawer.Positioner>
+                    <Drawer.Content style={{ minHeight: '220px', marginBottom: '64px' }}>
+                        <Drawer.Header>
+                            <Drawer.Title>Word Tools</Drawer.Title>
+                        </Drawer.Header>
+                        <Drawer.Body style={{ paddingBottom: 48 }}>
+                            {drawerSelection && drawerSelection.length > 0 && (
+                                <WordsToolbar
+                                    onClose={closeDrawer}
+                                    word={drawerSelection.length > 1 ? drawerSelection.map(w => w.word).join(' ') : drawerSelection[0].word}
+                                    wordIdx={drawerSelection[0].wordIdx}
+                                    chunkIdx={chunkIdx}
+                                    chunk={chunk}
+                                />
+                            )}
+                        </Drawer.Body>
+                    </Drawer.Content>
+                </Drawer.Positioner>
+            </Drawer.Root>
+        </div>
     );
 });
 
