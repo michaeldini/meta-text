@@ -20,7 +20,7 @@ export function TextSizeInput(props: TextSizeInputProps) {
 
     return (
         <Box>
-            <Text fontSize="sm" color="primary" mb={2}>
+            <Text fontSize="sm" color="fg" mb={2}>
                 Text Size ({value}px)
             </Text>
             <Slider
@@ -31,7 +31,7 @@ export function TextSizeInput(props: TextSizeInputProps) {
                 onValueChange={details => onChange(details.value[0])}
                 aria-label={["Text Size"]}
                 disabled={disabled}
-                colorPalette={"blue"}
+                colorPalette={"blue"} // TODO: Use theme color
             />
         </Box>
     );

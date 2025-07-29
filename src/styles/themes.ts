@@ -43,9 +43,11 @@ const config = defineConfig({
         tokens: {
             colors: {
                 // Use semantic tokens for robust theming and dark mode support
-                primary: { value: "#0f8dee" },
-                secondary: { value: "#212020" },
-                accent: { value: "#3b82f6" }, // Example accent color
+                // primary: { value: "gray" },
+                // primary: { value: "#0f8dee" },
+                // secondary: { value: "#212020" },
+                // accent: { value: "#3b82f6" }, // Example accent color
+                emphasized: { value: "teal" }, // Light gray for emphasis
                 // Extend with Chakra's built-in color tokens as needed
             },
             fonts: {
@@ -80,8 +82,38 @@ const config = defineConfig({
         // Semantic tokens for backgrounds, text, borders, etc.
         semanticTokens: {
             colors: {
+                // Backgrounds
+                bg: { value: { base: "{colors.gray.50}", _dark: "{colors.gray.900}" } },
+                "bg.subtle": { value: { base: "{colors.gray.100}", _dark: "{colors.gray.800}" } },
+                "bg.muted": { value: { base: "{colors.gray.200}", _dark: "{colors.gray.700}" } },
+                "bg.emphasized": { value: { base: "{colors.emphasized}" } },
+                "bg.inverted": { value: { base: "{colors.gray.900}", _dark: "{colors.gray.50}" } },
+                "bg.panel": { value: { base: "{colors.white}", _dark: "{colors.gray.800}" } },
+                "bg.error": { value: { base: "{colors.red.50}", _dark: "{colors.red.900}" } },
+                "bg.warning": { value: { base: "{colors.yellow.50}", _dark: "{colors.yellow.900}" } },
+                "bg.success": { value: { base: "{colors.green.50}", _dark: "{colors.green.900}" } },
+                "bg.info": { value: { base: "{colors.blue.50}", _dark: "{colors.blue.900}" } },
 
-                // Add more semantic tokens as needed
+                // Text
+                fg: { value: { base: "{colors.gray.900}", _dark: "{colors.gray.50}" } },
+                "fg.muted": { value: { base: "{colors.gray.600}", _dark: "{colors.gray.400}" } },
+                "fg.subtle": { value: { base: "{colors.gray.500}", _dark: "{colors.gray.300}" } },
+                "fg.inverted": { value: { base: "{colors.gray.50}", _dark: "{colors.gray.900}" } },
+                "fg.error": { value: { base: "{colors.red.600}", _dark: "{colors.red.200}" } },
+                "fg.warning": { value: { base: "{colors.yellow.700}", _dark: "{colors.yellow.200}" } },
+                "fg.success": { value: { base: "{colors.green.700}", _dark: "{colors.green.200}" } },
+                "fg.info": { value: { base: "{colors.blue.700}", _dark: "{colors.blue.200}" } },
+
+                // Borders
+                border: { value: { base: "{colors.gray.200}", _dark: "{colors.gray.700}" } },
+                "border.muted": { value: { base: "{colors.gray.100}", _dark: "{colors.gray.800}" } },
+                "border.subtle": { value: { base: "{colors.gray.300}", _dark: "{colors.gray.600}" } },
+                "border.emphasized": { value: { base: "{colors.gray.400}", _dark: "{colors.gray.500}" } },
+                "border.inverted": { value: { base: "{colors.gray.900}", _dark: "{colors.gray.50}" } },
+                "border.error": { value: { base: "{colors.red.200}", _dark: "{colors.red.700}" } },
+                "border.warning": { value: { base: "{colors.yellow.200}", _dark: "{colors.yellow.700}" } },
+                "border.success": { value: { base: "{colors.green.200}", _dark: "{colors.green.700}" } },
+                "border.info": { value: { base: "{colors.blue.200}", _dark: "{colors.blue.700}" } },
             },
         },
         // Add reusable text styles for typography

@@ -21,6 +21,7 @@
     "docs:dev": "npm-run-all --parallel docs:watch docs:serve"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.2.4",
     "@chakra-ui/react": "^3.22.0",
     "@emotion/react": "^11.14.0",
     "@tanstack/react-query": "^5.83.0",

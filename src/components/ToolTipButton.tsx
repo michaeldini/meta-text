@@ -27,7 +27,7 @@ export function TooltipButton({
     onClick,
     onKeyDown,
     type = 'button',
-    color = 'primary',
+    color = 'fg',
     size = 'lg',
     role = 'button',
     iconSize = 'lg',
@@ -36,7 +36,9 @@ export function TooltipButton({
     return (
         <Tooltip content={tooltip || label}>
             <Button
-                // color={color}
+                bg="bg.emphasized"
+                variant="ghost"
+                color={color}
                 size={size}
                 onClick={onClick}
                 disabled={disabled}

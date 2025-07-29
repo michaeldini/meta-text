@@ -18,7 +18,7 @@ export function PageContainer(props: PageContainerProps): React.ReactElement {
     return (
         <ErrorBoundary>
             <React.Suspense fallback={<LoadingFallback />}>
-                <Flex justify="center"  >
+                <Flex justify="center" color="fg"  >
                     {children}
                 </Flex>
             </React.Suspense>

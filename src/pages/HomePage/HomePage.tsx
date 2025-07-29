@@ -34,7 +34,7 @@ function HomePage(): ReactElement {
             <Stack data-testid="homepage-content" maxWidth="2xl">
                 <WelcomeText />
                 <Center>
-                    <Stack direction="row">
+                    <Stack direction="row" gap={4} p={4} align="center" justify="center">
                         <TooltipButton
                             label="Browse SourceDocs"
                             icon={<MetaTextLogoIcon />}

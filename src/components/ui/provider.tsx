@@ -5,11 +5,13 @@ import {
 } from "./color-mode"
 import config from "../../styles/themes"
 
-const system = createSystem(defaultConfig, config)
-export function Provider(props: ColorModeProviderProps) {
+export const system = createSystem(defaultConfig, config)
+export function Provider({ children }: { children: React.ReactNode }) {
   return (
     <ChakraProvider value={system}>
-      <ColorModeProvider {...props} />
+      <ColorModeProvider>
+        {children}
+      </ColorModeProvider>
     </ChakraProvider>
   )
 }
