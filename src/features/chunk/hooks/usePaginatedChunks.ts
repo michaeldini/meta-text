@@ -8,13 +8,27 @@ import { useBookmark } from 'features';
 import useChunkBookmarkNavigation from '../../chunk-bookmark/hooks/useChunkBookmarkNavigation';
 
 interface UsePaginatedChunksProps {
-    metatextId: number;
+    metatextId: number | null;
     showOnlyFavorites?: boolean;
 }
 
 // Type for chunk, fallback to any if not available
 // Replace 'any' with the correct Chunk type if available
 export function usePaginatedChunks({ metatextId, showOnlyFavorites }: UsePaginatedChunksProps) {
+    if (!metatextId) {
+        return {
+            paginatedChunks: [],
+            displayChunks: [],
+            loadingChunks: false,
+            chunksError: null,
+            currentPage: 1,
+            setCurrentPage: () => { },
+            chunksPerPage: 5,
+            pageCount: 0,
+            startIdx: 0,
+            endIdx: 0,
+        };
+    }
     const { chunks, loadingChunks, chunksError, fetchChunks } = useChunkStore();
     const { filteredChunks, isInSearchMode } = useSearchStore();
     const { currentPage, setCurrentPage, setChunksPerPage } = usePaginationStore();

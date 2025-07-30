@@ -21,6 +21,8 @@ export function DocumentHeader(props: DocumentHeaderProps): React.ReactElement {
             <Collapsible.Content>
                 <Wrap
                     rowGap={["0px", "24px"]} columnGap={["4px", "12px"]}
+                    justify="center"
+                    align="center"
                 >
                     {children}
                 </Wrap>

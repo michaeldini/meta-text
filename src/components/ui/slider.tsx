@@ -20,7 +20,7 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
     const hasMarkLabel = !!marks?.some((mark) => mark.label)
 
     return (
-      <ChakraSlider.Root ref={ref} thumbAlignment="center" {...rest}>
+      <ChakraSlider.Root ref={ref} thumbAlignment="center" colorPalette={"blue"} {...rest}>
         {label && !showValue && (
           <ChakraSlider.Label>{label}</ChakraSlider.Label>
         )}

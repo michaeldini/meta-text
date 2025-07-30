@@ -59,7 +59,7 @@ const config = defineConfig({
                 primary: { value: "#0f8dee" },
                 // secondary: { value: "#212020" },
                 // accent: { value: "#3b82f6" }, // Example accent color
-                emphasized: { value: "teal" }, // Light gray for emphasis
+                // emphasized: { value: "teal" }, // Light gray for emphasis
                 // Extend with Chakra's built-in color tokens as needed
             },
             fonts: {

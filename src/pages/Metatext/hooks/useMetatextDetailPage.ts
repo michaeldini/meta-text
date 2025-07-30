@@ -70,6 +70,7 @@ export function useMetatextDetailPage() {
 
     // --- Return all hook values ---
     return {
+        metatextId: parsedId,
         // Data
         metatext,
         metatextIsLoading,

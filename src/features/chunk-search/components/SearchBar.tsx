@@ -3,7 +3,7 @@
 
 import React, { useCallback } from 'react';
 
-import { Box, CloseButton, InputGroup, Input } from '@chakra-ui/react';
+import { Box, CloseButton, InputGroup, Input, Field } from '@chakra-ui/react';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
 import { useSearchStore } from '../store/useSearchStore';
 
@@ -42,9 +42,13 @@ export function SearchBar({
     ) : undefined
     return (
         <Box >
-            <InputGroup startElement={<HiMagnifyingGlass />} endElement={endElement}>
-                <Input placeholder={placeholder} value={query} onChange={handleQueryChange} />
-            </InputGroup>
+            <Field.Root>
+                <Field.Label color="fg">Search Chunks</Field.Label>
+
+                <InputGroup startElement={<HiMagnifyingGlass />} endElement={endElement}>
+                    <Input placeholder={placeholder} value={query} onChange={handleQueryChange} />
+                </InputGroup>
+            </Field.Root>
 
         </Box>
     );

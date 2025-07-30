@@ -1,41 +1,43 @@
-// A component to display paginated chunks of a meta text
-// It handles loading states, errors, and pagination of chunks using Chakra UI v3
 
-import React from 'react';
-import { Center } from '@chakra-ui/react/center';
+import type { ChunkType } from 'types';
+import { Chunk } from 'features';
+import { AppAlert, Boundary } from 'components/Boundaries';
 import { Box } from '@chakra-ui/react/box';
+import { Stack } from '@chakra-ui/react/stack';
+import { Center } from '@chakra-ui/react/center';
 import { Pagination } from '@chakra-ui/react/pagination';
 import { ButtonGroup, IconButton } from '@chakra-ui/react/button';
-import { Stack } from '@chakra-ui/react/stack';
-
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2';
-import { AppAlert } from 'components';
-import { Boundary } from 'components/Boundaries';
-import { Chunk } from 'features';
 
-import { usePaginatedChunks } from './hooks/usePaginatedChunks';
-
-interface PaginationProps {
-    metatextId: number;
-    showOnlyFavorites?: boolean;
+// Props for PaginatedChunks component
+export interface PaginatedChunksProps {
+    paginatedChunks: ChunkType[];
+    displayChunks: ChunkType[];
+    loadingChunks: boolean;
+    chunksError: string | null;
+    currentPage: number;
+    setCurrentPage: (page: number) => void;
+    chunksPerPage: number;
+    pageCount: number;
+    startIdx: number;
+    endIdx: number;
 }
 
+
+
 // Main component to display paginated chunks
-
-const PaginatedChunks = ({ metatextId, showOnlyFavorites }: PaginationProps) => {
-    const {
-        paginatedChunks,
-        displayChunks,
-        loadingChunks,
-        chunksError,
-        currentPage,
-        setCurrentPage,
-        chunksPerPage,
-        pageCount,
-        startIdx,
-        endIdx,
-    } = usePaginatedChunks({ metatextId, showOnlyFavorites });
-
+const PaginatedChunks = ({
+    paginatedChunks,
+    displayChunks,
+    loadingChunks,
+    chunksError,
+    currentPage,
+    setCurrentPage,
+    chunksPerPage,
+    pageCount,
+    startIdx,
+    endIdx,
+}: PaginatedChunksProps) => {
     return (
         <Boundary>
             {chunksError ? (
@@ -79,7 +81,7 @@ const PaginatedChunks = ({ metatextId, showOnlyFavorites }: PaginationProps) => 
                                 </ButtonGroup>
                             </Pagination.Root>
                         </Center>
-                        {paginatedChunks.map((chunk, chunkIdx) => (
+                        {paginatedChunks.map((chunk: ChunkType, chunkIdx: number) => (
                             <Chunk
                                 key={chunk.id}
                                 chunk={chunk}
