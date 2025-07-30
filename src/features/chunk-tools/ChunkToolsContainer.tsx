@@ -1,10 +1,9 @@
 // Container component that renders all active chunk tools
 // Replaces the old ChunkTabs component with a simpler, more direct approach
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Box, Stack, } from '@chakra-ui/react';
-import { Boundary } from 'components/Boundaries';
-import { Spinner } from '@chakra-ui/react';
+import { ErrorBoundary } from 'components';
 import { CopyTool } from 'features/chunk-copy';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 import type { ChunkToolId } from './toolsRegistry';
@@ -25,14 +24,9 @@ interface ChunkToolsContainerProps {
     activeTools: ChunkToolId[];
     updateChunkField: UpdateChunkFieldFn;
 }
-function ChunkToolsContainer(props: ChunkToolsContainerProps) {
-    // Destructure props for easier access  
+export const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = (props) => {
     const { chunk, activeTools, updateChunkField } = props;
 
-    // Helper to wrap each tool with error and suspense boundaries
-    const ToolBoundary: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-        <Boundary fallback={<Spinner aria-label="Loading content" />}>{children}</Boundary>
-    );
 
 
     return (
@@ -50,52 +44,44 @@ function ChunkToolsContainer(props: ChunkToolsContainerProps) {
             </Stack>
             {/* Chunk tools, each wrapped in ToolBoundary for error/loading isolation */}
             {activeTools.includes('note-summary') && (
-                <ToolBoundary>
-                    <NotesTool
-                        chunk={chunk}
-                        updateChunkField={updateChunkField}
-                        isVisible={true}
-                    />
-                </ToolBoundary>
+
+                <NotesTool
+                    chunk={chunk}
+                    updateChunkField={updateChunkField}
+                    isVisible={true}
+                />
+
             )}
             {activeTools.includes('evaluation') && (
-                <ToolBoundary>
-                    <EvaluationTool
-                        chunk={chunk}
-                        updateChunkField={updateChunkField}
-                        isVisible={true}
-                    />
-                </ToolBoundary>
+                <EvaluationTool
+                    chunk={chunk}
+                    updateChunkField={updateChunkField}
+                    isVisible={true}
+                />
             )}
             {activeTools.includes('image') && (
-                <ToolBoundary>
-                    <ImageTool
-                        chunk={chunk}
-                        updateChunkField={updateChunkField}
-                        isVisible={true}
-                    />
-                </ToolBoundary>
+                <ImageTool
+                    chunk={chunk}
+                    updateChunkField={updateChunkField}
+                    isVisible={true}
+                />
             )}
             {activeTools.includes('rewrite') && (
-                <ToolBoundary>
-                    <RewriteDisplayTool
-                        chunk={chunk}
-                        updateChunkField={updateChunkField}
-                        isVisible={true}
-                    />
-                </ToolBoundary>
+                <RewriteDisplayTool
+                    chunk={chunk}
+                    updateChunkField={updateChunkField}
+                    isVisible={true}
+                />
             )}
             {activeTools.includes('explanation') && (
-                <ToolBoundary>
-                    <ExplanationTool
-                        chunk={chunk}
-                        updateChunkField={updateChunkField}
-                        isVisible={true}
-                    />
-                </ToolBoundary>
+                <ExplanationTool
+                    chunk={chunk}
+                    updateChunkField={updateChunkField}
+                    isVisible={true}
+                />
             )}
         </Box>
     );
-}
+};
 
 export default ChunkToolsContainer;
