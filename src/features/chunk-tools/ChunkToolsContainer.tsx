@@ -30,7 +30,8 @@ export const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = (props) =
 
 
     return (
-        <Box data-chunk-id={`chunk-tools-${chunk.id}`}>
+        <Box data-chunk-id={`chunk-tools-${chunk.id}`}
+            maxWidth="40%">
             {/* Tools Always visible at the top */}
             <Stack
                 flexDirection={activeTools.length > 0 ? 'row' : 'column'}

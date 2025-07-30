@@ -22,8 +22,6 @@ const Chunk = memo(function Chunk({
     return (
         <Stack direction="row"
             data-chunk-id={chunk.id}
-        // animationName="fade-in"
-        // animationDuration="slow"
         >
             <ChunkWords
                 chunk={chunk}
