@@ -1,8 +1,15 @@
-// Consolidated store for managing all search state and filtered chunks
-// Handles search input, filtering, results, and navigation
-
+/**
+ * Search system architecture:
+ * - useSearchStore.ts: Zustand store holding all search state, actions, and the core searchChunks logic.
+ * - useSearch.ts: Custom hook that debounces search input and delegates search execution to the store.
+ * - useSearchKeyboard.ts: Hook for keyboard shortcuts (focus, clear, etc), using useSearch for clearing and useSearchStore for state.
+ * 
+ * This structure centralizes search logic in the store, keeps UI logic in hooks, and ensures maintainable, DRY search behavior across the app.
+ */
 import { create } from 'zustand';
-import type { ChunkType } from '../../../types';
+import type { ChunkType } from 'types';
+
+import { log } from 'utils';
 
 interface SearchAndFilterState {
     // Input state (formerly in useSearchStore)
@@ -24,6 +31,9 @@ interface SearchAndFilterState {
     setFilteredChunks: (chunks: ChunkType[], query: string) => void;
     clearSearch: () => void;
     clearResults: () => void;
+
+    // New: search logic centralized in store
+    searchChunks: (query: string, tags: string[], chunks: ChunkType[], minQueryLength?: number) => void;
 }
 
 export const useSearchStore = create<SearchAndFilterState>((set, get) => ({
@@ -81,4 +91,39 @@ export const useSearchStore = create<SearchAndFilterState>((set, get) => ({
         isInSearchMode: false,
         totalMatches: 0
     }),
+
+    // Centralized search logic
+    searchChunks: (query, tags, chunks, minQueryLength = 2) => {
+        if (query.length < minQueryLength) {
+            get().clearSearch();
+            return;
+        }
+
+        set({ isSearching: true });
+
+        try {
+            const searchTermLower = query.toLowerCase();
+            const matchingChunks: ChunkType[] = [];
+
+            log.info(`Searching for "${query}" in ${chunks.length} chunks`);
+
+            for (const chunk of chunks) {
+                const chunkText = chunk.text || '';
+                const chunkTextLower = chunkText.toLowerCase();
+                if (chunkTextLower.includes(searchTermLower)) {
+                    log.info(`Found match in chunk ${chunk.id}: "${query}"`);
+                    matchingChunks.push(chunk);
+                }
+            }
+
+            get().setFilteredChunks(matchingChunks, query);
+            log.info(`Search completed: ${matchingChunks.length} chunks found`);
+        } catch (err) {
+            const errorMessage = err instanceof Error ? err.message : 'Search failed';
+            log.error('Search error:', errorMessage);
+            get().clearSearch();
+        } finally {
+            set({ isSearching: false });
+        }
+    },
 }));

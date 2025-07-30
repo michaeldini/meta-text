@@ -9,4 +9,3 @@ export { SearchContainer } from './components/SearchContainer';
 export { useSearch } from './hooks/useSearch';
 export { useSearchKeyboard } from './hooks/useSearchKeyboard';
 export { useSearchStore } from './store/useSearchStore';
-export { usePaginationStore } from './store/usePaginationStore';

@@ -1,17 +1,16 @@
-
+/**
+ * WordsExplanationTool.tsx
+ * Tool for explaining a word in context. Uses custom hooks for API calls and state management.
+ * Displays explanation and allows user to request definitions.
+ */
 import React, { useState, useCallback, useMemo } from 'react';
-
 import { Text, Heading } from '@chakra-ui/react/typography';
-import { Drawer } from '@chakra-ui/react/drawer';
 import { Box } from '@chakra-ui/react/box';
-// import { IconButton } from '@chakra-ui/react/button';
 import { TooltipButton, AppAlert } from 'components';
-
+import type { ExplanationToolProps } from 'features';
 import { HiQuestionMarkCircle } from 'react-icons/hi2';
-
 import { useExplainHandler } from './hooks/useExplainHandler';
 
-import type { ExplanationToolProps } from 'features';
 
 
 const removeTrailingPunctuation = (text: string): string => {

@@ -1,7 +1,7 @@
 // A component to display paginated chunks of a meta text
 // It handles loading states, errors, and pagination of chunks using Chakra UI v3
 
-import React, { ReactNode, useRef } from 'react';
+import React from 'react';
 import { Center } from '@chakra-ui/react/center';
 import { Box } from '@chakra-ui/react/box';
 import { Pagination } from '@chakra-ui/react/pagination';
@@ -9,18 +9,11 @@ import { ButtonGroup, IconButton } from '@chakra-ui/react/button';
 import { Stack } from '@chakra-ui/react/stack';
 
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2';
-
-import { useBookmark } from 'features';
 import { AppAlert } from 'components';
 import { Boundary } from 'components/Boundaries';
-
-import { Spinner } from '@chakra-ui/react';
-import { useChunkStore } from 'store';
 import { Chunk } from 'features';
 
-import useChunkBookmarkNavigation from '../chunk-bookmark/hooks/useChunkBookmarkNavigation';
-import { usePaginationStore } from '../chunk-search/store/usePaginationStore';
-import { useSearchStore } from '../chunk-search/store/useSearchStore';
+import { usePaginatedChunks } from './hooks/usePaginatedChunks';
 
 interface PaginationProps {
     metatextId: number;
@@ -30,61 +23,18 @@ interface PaginationProps {
 // Main component to display paginated chunks
 
 const PaginatedChunks = ({ metatextId, showOnlyFavorites }: PaginationProps) => {
-    const { chunks, loadingChunks, chunksError, fetchChunks } = useChunkStore();
-    const { filteredChunks, isInSearchMode } = useSearchStore();
-    const { currentPage, setCurrentPage, setChunksPerPage } = usePaginationStore();
-
-    // Combine search and favorite filters
-    let displayChunks = isInSearchMode ? filteredChunks : chunks;
-    if (showOnlyFavorites) {
-        displayChunks = displayChunks.filter(chunk => !!chunk.favorited_by_user_id);
-    }
-
-    // Fetch chunks when metatextId changes
-    React.useEffect(() => {
-        if (metatextId) {
-            fetchChunks(Number(metatextId));
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [metatextId]);
-
-    // Pagination logic
-    const chunksPerPage = 5;
-    React.useEffect(() => {
-        setChunksPerPage(chunksPerPage);
-    }, [setChunksPerPage]);
-
-    const pageCount = displayChunks.length;
-    const startIdx = (currentPage - 1) * chunksPerPage;
-    const endIdx = startIdx + chunksPerPage;
-    const paginatedChunks = displayChunks.slice(startIdx, endIdx);
-
-    // Reset currentPage to 1 if the current page is out of bounds after filtering (e.g., toggling favorites/search)
-    React.useEffect(() => {
-        if (currentPage > Math.ceil(pageCount / chunksPerPage) && pageCount > 0) {
-            setCurrentPage(1);
-        }
-    }, [displayChunks, pageCount, currentPage, setCurrentPage, chunksPerPage]);
-
-    // Wrapper for bookmark navigation to handle the setCurrentPage signature
-    const handlePageChange = React.useCallback((page: React.SetStateAction<number>) => {
-        if (typeof page === 'function') {
-            setCurrentPage(page(currentPage));
-        } else {
-            setCurrentPage(page);
-        }
-    }, [currentPage, setCurrentPage]);
-
-    // Get the current bookmarked chunk from React Query
-    const { data: bookmarkedChunkId } = useBookmark(metatextId);
-    // Handle navigation to bookmarked chunk using custom hook
-    useChunkBookmarkNavigation(displayChunks, chunksPerPage, handlePageChange, bookmarkedChunkId ?? null);
-
-    // Preserve previous chunks for scroll position
-    const prevChunksRef = useRef<any[]>([]);
-    React.useEffect(() => {
-        prevChunksRef.current = displayChunks;
-    }, [displayChunks]);
+    const {
+        paginatedChunks,
+        displayChunks,
+        loadingChunks,
+        chunksError,
+        currentPage,
+        setCurrentPage,
+        chunksPerPage,
+        pageCount,
+        startIdx,
+        endIdx,
+    } = usePaginatedChunks({ metatextId, showOnlyFavorites });
 
     return (
         <Boundary>

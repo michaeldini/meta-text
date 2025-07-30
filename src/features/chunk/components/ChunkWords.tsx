@@ -2,14 +2,14 @@
 // Each word in the chunk can be selected, and actions can be performed on the selected words
 // At the end of the chunk, there is a button to merge the current chunk with the next one
 
-import React, { memo, useRef, useState } from 'react';
+import React, { memo } from 'react';
 import { Box } from '@chakra-ui/react/box';
 import { Flex } from '@chakra-ui/react/flex';
 import { Drawer } from '@chakra-ui/react/drawer';
 import { MergeChunksTool } from 'features/chunk-merge';
 import WordsToolbar from './WordsToolbar';
 import { useUserConfig } from 'services/userConfigService';
-import { useWordSelection } from '../hooks/useWordSelection';
+import { useChunkWords } from '../hooks/useChunkWords';
 import type { ChunkType } from 'types';
 export interface ChunkWordsProps {
     chunk: ChunkType;
@@ -20,8 +20,8 @@ const ChunkWords = memo(function ChunkWords({
     chunk,
     chunkIdx
 }: ChunkWordsProps) {
+    // Split words and get user config for UI
     const words = chunk.text ? chunk.text.split(/\s+/) : [];
-    const containerRef = useRef<HTMLDivElement>(null);
     const { data: userConfig } = useUserConfig();
     const uiPrefs = userConfig?.uiPreferences || {};
     const textSizePx = uiPrefs.textSizePx ?? 28;
@@ -30,8 +30,16 @@ const ChunkWords = memo(function ChunkWords({
     const paddingX = uiPrefs.paddingX ?? 0.3;
 
 
-
-    // Word selection logic
+    // Define a stable handleToolbarClose function to pass to the hook
+    // This is a no-op by default, but will be replaced by the hook's return value
+    // to avoid use-before-declaration
+    const [handleToolbarCloseState, setHandleToolbarCloseState] = React.useState<() => void>(() => () => { });
+    const hookResult = useChunkWords({
+        chunkIdx,
+        words,
+        handleToolbarClose: handleToolbarCloseState,
+    });
+    // Destructure after hook call
     const {
         selectedWordIdx,
         highlightedIndices,
@@ -40,52 +48,19 @@ const ChunkWords = memo(function ChunkWords({
         handleWordUp,
         handleToolbarClose,
         handleTouchMove,
-    } = useWordSelection(chunkIdx);
-
-    // Drawer state
-    const [drawerOpen, setDrawerOpen] = useState(false);
-    const [drawerSelection, setDrawerSelection] = useState<{ word: string; wordIdx: number }[] | null>(null);
-
-    // Clear highlight if clicking outside the container
+        drawerOpen,
+        setDrawerOpen,
+        drawerSelection,
+        setDrawerSelection,
+        closeDrawer,
+        hoveredWordIdx,
+        setHoveredWordIdx,
+        containerRef,
+    } = hookResult;
+    // Update the stateful handleToolbarClose to always point to the latest from the hook
     React.useEffect(() => {
-        if (highlightedIndices.length === 0) return;
-        const handleClickOutside = (event: MouseEvent) => {
-            if (!containerRef.current) return;
-            if (!containerRef.current.contains(event.target as Node)) {
-                handleToolbarClose();
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [highlightedIndices.length, handleToolbarClose]);
-
-    // Only open drawer on mouseup/touchend (selection finalized)
-    const selectionFinalizedRef = useRef(false);
-    React.useEffect(() => {
-        if (selectionFinalizedRef.current && highlightedIndices.length > 0) {
-            setDrawerSelection(highlightedIndices.map(i => ({ word: words[i], wordIdx: i })));
-            setDrawerOpen(true);
-            selectionFinalizedRef.current = false;
-        }
-    }, [highlightedIndices, words]);
-
-    // Patch handleWordUp to set selectionFinalizedRef
-    const handleWordUpPatched = () => {
-        selectionFinalizedRef.current = true;
-        handleWordUp();
-    };
-
-    // Close drawer and clear selection
-    const closeDrawer = () => {
-        setDrawerOpen(false);
-        setDrawerSelection(null);
-        handleToolbarClose();
-    };
-
-    // Hover highlight state
-    const [hoveredWordIdx, setHoveredWordIdx] = useState<number | null>(null);
+        setHandleToolbarCloseState(() => handleToolbarClose);
+    }, [handleToolbarClose]);
 
     // Render words, highlight selected or hovered
     const wordsElements = words.map((word, wordIdx) => {
@@ -108,10 +83,10 @@ const ChunkWords = memo(function ChunkWords({
                 onMouseDown={e => handleWordDown(wordIdx, e)}
                 onMouseEnter={e => { handleWordEnter(wordIdx, e); setHoveredWordIdx(wordIdx); }}
                 onMouseLeave={() => setHoveredWordIdx(null)}
-                onMouseUp={handleWordUpPatched}
+                onMouseUp={handleWordUp}
                 onTouchStart={e => handleWordDown(wordIdx, e)}
                 onTouchMove={handleTouchMove}
-                onTouchEnd={handleWordUpPatched}
+                onTouchEnd={handleWordUp}
                 data-word-idx={`${chunkIdx}-${wordIdx}`}
             >
                 {word}

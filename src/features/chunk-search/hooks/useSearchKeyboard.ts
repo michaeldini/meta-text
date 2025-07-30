@@ -1,6 +1,11 @@
-// Hook for handling keyboard shortcuts for search functionality
-// Implements Cmd+K (or Ctrl+K) to focus search, Escape to clear
-
+/**
+ * Search system architecture:
+ * - useSearchStore.ts: Zustand store holding all search state, actions, and the core searchChunks logic.
+ * - useSearch.ts: Custom hook that debounces search input and delegates search execution to the store.
+ * - useSearchKeyboard.ts: Hook for keyboard shortcuts (focus, clear, etc), using useSearch for clearing and useSearchStore for state.
+ * 
+ * This structure centralizes search logic in the store, keeps UI logic in hooks, and ensures maintainable, DRY search behavior across the app.
+ */
 import { useEffect, useCallback } from 'react';
 import { useSearchStore } from '../store/useSearchStore';
 import { useSearch } from './useSearch';
