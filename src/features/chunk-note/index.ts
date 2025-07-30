@@ -3,4 +3,4 @@
  * Provides notes functionality for chunks
  */
 
-export { default as NotesTool } from './NotesTool';
+export * from './NotesTool';

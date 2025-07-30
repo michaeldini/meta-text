@@ -73,6 +73,13 @@ The user can summarize or take a note on a chunk.
 
 ### Evaluation
 
+## count lines of code
+
     find src -type f \( -name "*.ts" -o -name "*.tsx" \) | xargs wc -l
 4811 backend
 11752 frontend
+
+## Rules
+
+- All routes are wrapped with a  `Boundary` in the `app.tsx` file.
+- All components deconstruct hooks and are presentational only.

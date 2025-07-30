@@ -1,35 +1,42 @@
 // Container component that renders all active chunk tools
 // Replaces the old ChunkTabs component with a simpler, more direct approach
 
-import React, { Suspense } from 'react';
+import React from 'react';
 import { Box, Stack, } from '@chakra-ui/react';
-import { ErrorBoundary, LoadingBoundary } from 'components';
+import { Boundary } from 'components/Boundaries';
+import { Spinner } from '@chakra-ui/react';
 import { CopyTool } from 'features/chunk-copy';
-import ChunkBookmarkToggle from '../chunk-bookmark/components/ChunkBookmarkToggle';
-import ChunkFavoriteToggle from '../chunk-favorite/ChunkFavoriteToggle';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 import type { ChunkToolId } from './toolsRegistry';
+
 import ChunkPosition from './ChunkPosition';
 
-// Import all tool components directly to avoid lazy loading complexity
-import NotesTool from '../chunk-note/NotesTool';
-import EvaluationTool from '../chunk-evaluation/EvaluationTool';
-import ImageTool from '../chunk-image/ImageTool';
-import RewriteDisplayTool from '../chunk-rewrite/RewriteDisplayTool';
-import ExplanationTool from '../chunk-explanation/ExplanationTool';
+import { NotesTool } from 'features/chunk-note';
+import { EvaluationTool } from 'features/chunk-evaluation';
+import { ImageTool } from 'features/chunk-image';
+import { RewriteDisplayTool } from 'features/chunk-rewrite';
+import { ExplanationTool } from 'features/chunk-explanation';
+import { ChunkBookmarkToggle } from 'features/chunk-bookmark';
+import { ChunkFavoriteToggle } from 'features/chunk-favorite';
+
 
 interface ChunkToolsContainerProps {
     chunk: ChunkType;
     activeTools: ChunkToolId[];
     updateChunkField: UpdateChunkFieldFn;
 }
-export function ChunkToolsContainer(props: ChunkToolsContainerProps) {
+function ChunkToolsContainer(props: ChunkToolsContainerProps) {
+    // Destructure props for easier access  
     const { chunk, activeTools, updateChunkField } = props;
+
+    // Helper to wrap each tool with error and suspense boundaries
+    const ToolBoundary: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+        <Boundary fallback={<Spinner aria-label="Loading content" />}>{children}</Boundary>
+    );
 
 
     return (
-        <Box
-            data-chunk-id={`chunk-tools-${chunk.id}`}>
+        <Box data-chunk-id={`chunk-tools-${chunk.id}`}>
             {/* Tools Always visible at the top */}
             <Stack
                 flexDirection={activeTools.length > 0 ? 'row' : 'column'}
@@ -41,56 +48,54 @@ export function ChunkToolsContainer(props: ChunkToolsContainerProps) {
                 <ChunkBookmarkToggle chunk={chunk} />
                 <ChunkFavoriteToggle chunk={chunk} />
             </Stack>
-            <ErrorBoundary>
-                <Suspense fallback={<LoadingBoundary loading={true}><div /></LoadingBoundary>}>
-                    {/* Notes Tool */}
-                    {activeTools.includes('note-summary') && (
-                        <NotesTool
-                            chunk={chunk}
-                            updateChunkField={updateChunkField}
-                            isVisible={true}
-                        />
-                    )}
-
-                    {/* Evaluation Tool */}
-                    {activeTools.includes('evaluation') && (
-                        <EvaluationTool
-                            chunk={chunk}
-                            updateChunkField={updateChunkField}
-                            isVisible={true}
-                        />
-                    )}
-
-                    {/* Image Tool */}
-                    {activeTools.includes('image') && (
-                        <ImageTool
-                            chunk={chunk}
-                            updateChunkField={updateChunkField}
-                            isVisible={true}
-                        />
-                    )}
-
-                    {/* Rewrite Tool */}
-                    {activeTools.includes('rewrite') && (
-                        <RewriteDisplayTool
-                            chunk={chunk}
-                            updateChunkField={updateChunkField}
-                            isVisible={true}
-                        />
-                    )}
-
-                    {/* Explanation Tool */}
-                    {activeTools.includes('explanation') && (
-                        <ExplanationTool
-                            chunk={chunk}
-                            updateChunkField={updateChunkField}
-                            isVisible={true}
-                        />
-                    )}
-                </Suspense>
-            </ErrorBoundary>
+            {/* Chunk tools, each wrapped in ToolBoundary for error/loading isolation */}
+            {activeTools.includes('note-summary') && (
+                <ToolBoundary>
+                    <NotesTool
+                        chunk={chunk}
+                        updateChunkField={updateChunkField}
+                        isVisible={true}
+                    />
+                </ToolBoundary>
+            )}
+            {activeTools.includes('evaluation') && (
+                <ToolBoundary>
+                    <EvaluationTool
+                        chunk={chunk}
+                        updateChunkField={updateChunkField}
+                        isVisible={true}
+                    />
+                </ToolBoundary>
+            )}
+            {activeTools.includes('image') && (
+                <ToolBoundary>
+                    <ImageTool
+                        chunk={chunk}
+                        updateChunkField={updateChunkField}
+                        isVisible={true}
+                    />
+                </ToolBoundary>
+            )}
+            {activeTools.includes('rewrite') && (
+                <ToolBoundary>
+                    <RewriteDisplayTool
+                        chunk={chunk}
+                        updateChunkField={updateChunkField}
+                        isVisible={true}
+                    />
+                </ToolBoundary>
+            )}
+            {activeTools.includes('explanation') && (
+                <ToolBoundary>
+                    <ExplanationTool
+                        chunk={chunk}
+                        updateChunkField={updateChunkField}
+                        isVisible={true}
+                    />
+                </ToolBoundary>
+            )}
         </Box>
     );
-};
+}
 
 export default ChunkToolsContainer;

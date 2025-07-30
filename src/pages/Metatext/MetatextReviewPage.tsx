@@ -2,47 +2,33 @@
 
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box } from '@chakra-ui/react/box';
-import { Spinner } from '@chakra-ui/react/spinner';
 import type { ReactElement } from 'react';
 
-import { AppAlert } from 'components';
+import { Boundary } from 'components/Boundaries';
 import { Header, ReviewContent } from './components';
 import { useMetatextReviewData } from './hooks/useMetatextReviewData';
-function MetatextReviewPage(): ReactElement {
 
+function MetatextReviewPage(): ReactElement {
     // Get the raw Metatext ID string from the URL parameters (may be undefined or invalid)
     const { metatextId } = useParams<{ metatextId?: string }>();
     const parsedId = metatextId ? Number(metatextId) : undefined;
-
-
-    // React Router navigation function for programmatic navigation
     const navigate = useNavigate();
 
-    // Custom hook for fetching all review data
-    const { wordList, phraseList, chunks, loading, error } =
-        useMetatextReviewData(parsedId);
-
-
-    // Early returns for loading and error states
-    if (loading) return (
-        <Box data-testid="metatext-review-loading">
-            <Spinner />
-        </Box>
+    // Use Boundary to handle loading and error states for the review data
+    return (
+        <Boundary fallbackText="Loading review data...">
+            <MetatextReviewContent parsedId={parsedId} navigate={navigate} />
+        </Boundary>
     );
+}
 
-    if (error) return (
-        <Box data-testid="metatext-review-error">
-            <AppAlert severity="error" >
-                {error}
-            </AppAlert>
-        </Box>
-    );
-
+// Extracted content component to be wrapped by Boundary
+function MetatextReviewContent({ parsedId, navigate }: { parsedId?: number, navigate: ReturnType<typeof useNavigate> }) {
+    const { wordList, phraseList, chunks } = useMetatextReviewData(parsedId);
     return (
         <Box data-testid="metatext-review-page">
             {/* Page header with navigation and title */}
             <Header metatextId={parsedId} navigate={navigate} />
-
             {/* Review content sections */}
             <ReviewContent
                 flashcards={wordList}

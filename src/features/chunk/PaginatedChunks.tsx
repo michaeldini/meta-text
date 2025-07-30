@@ -11,7 +11,10 @@ import { Stack } from '@chakra-ui/react/stack';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2';
 
 import { useBookmark } from 'features';
-import { LoadingBoundary, ErrorBoundary, AppAlert } from 'components';
+import { AppAlert } from 'components';
+import { Boundary } from 'components/Boundaries';
+
+import { Spinner } from '@chakra-ui/react';
 import { useChunkStore } from 'store';
 import { Chunk } from 'features';
 
@@ -84,61 +87,59 @@ const PaginatedChunks = ({ metatextId, showOnlyFavorites }: PaginationProps) => 
     }, [displayChunks]);
 
     return (
-        <ErrorBoundary>
-            <LoadingBoundary loading={loadingChunks}>
-                {chunksError ? (
-                    <Box data-testid="chunks-container-error">
-                        <AppAlert severity="error">{chunksError}</AppAlert>
-                    </Box>
-                ) : (
-                    <Box data-testid="chunks-container">
-                        <Stack gap={4}>
-                            <Center>
-                                <Pagination.Root
-                                    count={pageCount}
-                                    pageSize={chunksPerPage}
-                                    page={currentPage}
-                                    onPageChange={e => setCurrentPage(e.page)}
-                                >
-                                    <ButtonGroup variant="ghost" color="fg" >
-                                        <Pagination.PageText format='compact' />
-                                        <Pagination.PrevTrigger asChild color="fg" >
-                                            <IconButton aria-label="Previous page" >
-                                                <HiChevronLeft />
+        <Boundary>
+            {chunksError ? (
+                <Box data-testid="chunks-container-error">
+                    <AppAlert severity="error">{chunksError}</AppAlert>
+                </Box>
+            ) : (
+                <Box data-testid="chunks-container">
+                    <Stack gap={4}>
+                        <Center>
+                            <Pagination.Root
+                                count={pageCount}
+                                pageSize={chunksPerPage}
+                                page={currentPage}
+                                onPageChange={e => setCurrentPage(e.page)}
+                            >
+                                <ButtonGroup variant="ghost" color="fg" >
+                                    <Pagination.PageText format='compact' />
+                                    <Pagination.PrevTrigger asChild color="fg" >
+                                        <IconButton aria-label="Previous page" >
+                                            <HiChevronLeft />
+                                        </IconButton>
+                                    </Pagination.PrevTrigger>
+                                    <Pagination.Items
+                                        color="fg"
+                                        render={({ value }) => (
+                                            <IconButton
+                                                key={value}
+                                                variant={{ base: "ghost", _selected: "outline" }}
+                                                onClick={() => setCurrentPage(value)}
+                                            >
+                                                {value}
                                             </IconButton>
-                                        </Pagination.PrevTrigger>
-                                        <Pagination.Items
-                                            color="fg"
-                                            render={({ value }) => (
-                                                <IconButton
-                                                    key={value}
-                                                    variant={{ base: "ghost", _selected: "outline" }}
-                                                    onClick={() => setCurrentPage(value)}
-                                                >
-                                                    {value}
-                                                </IconButton>
-                                            )}
-                                        />
-                                        <Pagination.NextTrigger asChild color="fg" >
-                                            <IconButton aria-label="Next page">
-                                                <HiChevronRight />
-                                            </IconButton>
-                                        </Pagination.NextTrigger>
-                                    </ButtonGroup>
-                                </Pagination.Root>
-                            </Center>
-                            {paginatedChunks.map((chunk, chunkIdx) => (
-                                <Chunk
-                                    key={chunk.id}
-                                    chunk={chunk}
-                                    chunkIdx={startIdx + chunkIdx}
-                                />
-                            ))}
-                        </Stack>
-                    </Box>
-                )}
-            </LoadingBoundary>
-        </ErrorBoundary>
+                                        )}
+                                    />
+                                    <Pagination.NextTrigger asChild color="fg" >
+                                        <IconButton aria-label="Next page">
+                                            <HiChevronRight />
+                                        </IconButton>
+                                    </Pagination.NextTrigger>
+                                </ButtonGroup>
+                            </Pagination.Root>
+                        </Center>
+                        {paginatedChunks.map((chunk, chunkIdx) => (
+                            <Chunk
+                                key={chunk.id}
+                                chunk={chunk}
+                                chunkIdx={startIdx + chunkIdx}
+                            />
+                        ))}
+                    </Stack>
+                </Box>
+            )}
+        </Boundary>
     );
 };
 

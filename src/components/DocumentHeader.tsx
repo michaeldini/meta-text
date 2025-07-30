@@ -12,6 +12,7 @@ interface DocumentHeaderProps {
 
 export function DocumentHeader(props: DocumentHeaderProps): React.ReactElement {
     const { title, children } = props;
+
     return (
         <Collapsible.Root unmountOnExit open={true} >
             <Collapsible.Trigger padding={4} minWidth={200} borderWidth="1px" borderRadius="md" >

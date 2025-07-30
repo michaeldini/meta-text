@@ -3,10 +3,12 @@
 // This component is designed to be flexible and reusable, allowing for different forms and lists to be
 // passed in as props, making it suitable for various document management scenarios.
 
-import { ReactElement, ReactNode, forwardRef } from 'react';
 
+import React, { ReactElement, ReactNode, forwardRef } from 'react';
 
-import { Heading, Stack, StackSeparator } from '@chakra-ui/react'
+import { Heading } from '@chakra-ui/react/typography';
+import { Stack, StackSeparator } from '@chakra-ui/react/stack';
+
 
 interface DocumentManagementLayoutProps {
     title: string;
@@ -41,8 +43,6 @@ const DocumentManagementLayout = forwardRef<HTMLDivElement, DocumentManagementLa
                     separator={<StackSeparator />}
                     gap={12}
                     p={12}
-
-                // bg="secondary"
                 >
                     {formComponent}
                     {listComponent}

@@ -5,14 +5,13 @@
 import React, { useEffect, JSX, Suspense, lazy, ComponentType } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-import { Box, Stack, Text } from '@chakra-ui/react';
+import { Box, Spinner, Stack, Text } from '@chakra-ui/react';
 import { NavBar } from 'features';
-import { LoadingFallback, ErrorBoundary, GlobalNotifications, Toaster } from 'components';
+import { GlobalNotifications, Toaster } from 'components';
+import { Boundary } from 'components/Boundaries';
 import { useAuthStore } from 'store';
 import { useAuthRefresh } from 'hooks';
 import { useUserConfig } from 'services';
-
-import { useThemeContext } from './contexts/ThemeContext';
 
 /** Dynamically import pages for code splitting using barrel exports
  * This allows for lazy loading of components
@@ -75,7 +74,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps): JSX.Element => {
 
     // Show loading state while checking authentication
     if (loading) {
-        return <LoadingFallback />;
+        return <Spinner aria-label="Loading page" />;
     }
 
     if (!user) {
@@ -94,20 +93,18 @@ const NotFoundElement = (
     </Box>
 );
 
+
 /**
  * Main application component
  * - Sets up theming and routing
  */
-export function App() {
-
+const App = () => {
     return (
-        <>
-            <ErrorBoundary>
-                <AppContent />
-            </ErrorBoundary>
-        </>
+        <Boundary fallbackText="Loading app...">
+            <AppContent />
+        </Boundary>
     );
-}
+};
 
 
 /**
@@ -123,9 +120,9 @@ export const AppContent = () => {
         useUserConfig();
         const Component = route.element;
         const element = (
-            <Suspense fallback={<LoadingFallback />}>
+            <Boundary fallbackText="Loading page...">
                 <Component />
-            </Suspense>
+            </Boundary>
         );
         return (
             <Route

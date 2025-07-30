@@ -1,7 +1,5 @@
 import React, { ReactNode } from 'react';
 import { Flex } from '@chakra-ui/react';
-import { ErrorBoundary } from 'components'
-import { LoadingFallback } from 'components';
 
 interface PageContainerProps {
     children: ReactNode;
@@ -16,13 +14,9 @@ export function PageContainer(props: PageContainerProps): React.ReactElement {
     const { children, loading } = props;
 
     return (
-        <ErrorBoundary>
-            <React.Suspense fallback={<LoadingFallback />}>
-                <Flex justify="center" color="fg"  >
-                    {children}
-                </Flex>
-            </React.Suspense>
-        </ErrorBoundary>
+        <Flex justify="center" color="fg"  >
+            {children}
+        </Flex>
     );
 }
 

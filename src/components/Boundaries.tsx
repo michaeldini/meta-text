@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@chakra-ui/react/box';
 import { Button } from '@chakra-ui/react/button';
-import { Text } from '@chakra-ui/react';
+import { Text, Spinner } from '@chakra-ui/react';
 import type { Logger } from '../types/global';
 import { AppAlert } from 'components';
 
@@ -50,15 +50,14 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     render() {
         if (this.state.hasError) {
             return (
-                <Box >
-                    <AppAlert severity="error" title="Something went wrong.">
-                        <Text>
-                            An unexpected error occurred. Please try reloading the page.
-                        </Text>
-                    </AppAlert>
+                <Box color="fg">
+                    <Text>
+                        An unexpected error occurred. Please try reloading the page.
+                    </Text>
                     <Button
                         variant="ghost"
                         onClick={this.handleReload}
+                        color="fg"
                     >
                         Reload Page
                     </Button>
@@ -69,4 +68,33 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     }
 }
 
-export default ErrorBoundary;
+/**
+
+/**
+ * Combined boundary component for error and suspense handling.
+ * Usage: <Boundary fallbackText="Loading data...">...</Boundary>
+ */
+type BoundaryProps = {
+    children: React.ReactNode,
+    fallback?: React.ReactNode,
+    fallbackText?: string
+};
+
+export const Boundary: React.FC<BoundaryProps> = ({ children, fallback, fallbackText = "Loading..." }) => (
+    <ErrorBoundary>
+        <React.Suspense
+            fallback={
+                fallback || (
+                    <span>
+                        <Spinner aria-label="Loading..." />
+                        <Text as="span">{fallbackText}</Text>
+                    </span>
+                )
+            }
+        >
+            {children}
+        </React.Suspense>
+    </ErrorBoundary>
+);
+
+export { ErrorBoundary };
