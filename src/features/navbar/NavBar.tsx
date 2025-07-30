@@ -51,8 +51,7 @@ export function NavBar() {
                     <Button
                         key={item.label}
                         onClick={item.action}
-                        variant="ghost"
-                        color="primary"
+                        color="fg"
                         size="xl"
                         fontWeight="medium"
                     >

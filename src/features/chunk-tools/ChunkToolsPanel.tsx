@@ -44,15 +44,14 @@ export function ChunkToolsPanel() {
                     >
                         <IconButton
                             aria-label={tool.name}
-                            color={activeTabs.includes(tool.id) ? "primary" : "secondary"}
                             onClick={() => handleToolClick(tool.id)}
                             flex={1}
                             minWidth={0}
                             borderRadius={0}
                             variant="solid"
-                            _hover={{
-                                bg: "primary",
-                            }}
+                            bg={activeTabs.includes(tool.id) ? "primary" : "bg.inverted"}
+                            color={"fg.inverted"}
+                            _hover={{ bg: "bg.muted", color: "primary" }}
                         >
                             {tool.icon}
                         </IconButton>

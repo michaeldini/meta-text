@@ -4,6 +4,7 @@
 
 import React, { useState } from 'react';
 import { IconButton, Spinner, Box } from '@chakra-ui/react';
+import { TooltipButton } from 'components/ToolTipButton';
 import { Tooltip } from 'components'
 import { HiStar, HiOutlineStar } from 'react-icons/hi2';
 import { api } from 'utils';
@@ -45,24 +46,16 @@ export function ChunkFavoriteToggle({ chunk }: ChunkFavoriteToggleProps) {
     };
 
     return (
-        <Tooltip content={favorited ? 'Unfavorite' : 'Favorite'}>
-            <span>
-                <IconButton
-                    onClick={handleToggle}
-                    color={favorited ? 'warning' : 'default'}
-                    disabled={loading}
-                    aria-label={favorited ? 'Unfavorite chunk' : 'Favorite chunk'}
-                >
-                    {loading ? (
-                        <Spinner />
-                    ) : favorited ? (
-                        <HiStar />
-                    ) : (
-                        <HiOutlineStar />
-                    )}
-                </IconButton>
-            </span>
-        </Tooltip>
+        <TooltipButton
+            label=""
+            tooltip={favorited ? 'Unfavorite' : 'Favorite'}
+            icon={favorited ? <HiStar /> : <HiOutlineStar />}
+            loading={loading}
+            onClick={handleToggle}
+            disabled={loading}
+            size="lg"
+            iconSize="lg"
+        />
     )
 }
 

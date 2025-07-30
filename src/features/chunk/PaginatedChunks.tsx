@@ -100,25 +100,26 @@ const PaginatedChunks = ({ metatextId, showOnlyFavorites }: PaginationProps) => 
                                     page={currentPage}
                                     onPageChange={e => setCurrentPage(e.page)}
                                 >
-                                    <ButtonGroup variant="ghost" size="lg">
-                                        <Pagination.PrevTrigger asChild>
-                                            <IconButton aria-label="Previous page">
+                                    <ButtonGroup variant="ghost" color="fg" >
+                                        <Pagination.PageText format='compact' />
+                                        <Pagination.PrevTrigger asChild color="fg" >
+                                            <IconButton aria-label="Previous page" >
                                                 <HiChevronLeft />
                                             </IconButton>
                                         </Pagination.PrevTrigger>
                                         <Pagination.Items
+                                            color="fg"
                                             render={({ value }) => (
                                                 <IconButton
                                                     key={value}
                                                     variant={{ base: "ghost", _selected: "outline" }}
-                                                    // aria-current={currentPage === value ? "page" : undefined}
                                                     onClick={() => setCurrentPage(value)}
                                                 >
                                                     {value}
                                                 </IconButton>
                                             )}
                                         />
-                                        <Pagination.NextTrigger asChild>
+                                        <Pagination.NextTrigger asChild color="fg" >
                                             <IconButton aria-label="Next page">
                                                 <HiChevronRight />
                                             </IconButton>

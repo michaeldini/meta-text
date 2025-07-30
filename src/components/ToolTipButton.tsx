@@ -36,8 +36,8 @@ export function TooltipButton({
     return (
         <Tooltip content={tooltip || label}>
             <Button
-                bg="bg.emphasized"
-                variant="ghost"
+                // bg="bg.emphasized"
+                // variant="ghost"
                 color={color}
                 size={size}
                 onClick={onClick}
@@ -49,7 +49,7 @@ export function TooltipButton({
                 {...rest}
             >
                 {icon && (
-                    <Icon size={iconSize} color="primary">
+                    <Icon size={iconSize}>
                         {icon}
                     </Icon>
                 )}

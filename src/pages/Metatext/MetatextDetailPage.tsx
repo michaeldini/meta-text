@@ -71,7 +71,6 @@ function MetatextDetailPage(): ReactElement | null {
                             tooltip={showOnlyFavorites ? "Show all chunks" : "Show only favorites"}
                             icon={showOnlyFavorites ? <HiStar /> : <HiOutlineStar />}
                             onClick={() => setShowOnlyFavorites(!showOnlyFavorites)}
-                            color={showOnlyFavorites ? "yellow" : "primary"}
                             aria-pressed={showOnlyFavorites}
                             role="switch"
                         />
@@ -82,7 +81,6 @@ function MetatextDetailPage(): ReactElement | null {
                             onClick={() => setNavigateToBookmark()}
                             disabled={!bookmarkedChunkId}
                             data-testid="goto-bookmark-button"
-                            color={bookmarkedChunkId ? 'primary' : 'default'}
                         />
                         <StyleControls />
                         <SearchContainer showTagFilters={true} />

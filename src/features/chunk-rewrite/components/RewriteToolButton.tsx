@@ -14,10 +14,10 @@ export function RewriteToolButton(props: RewriteToolButtonProps) {
 
     return (
         <Tooltip content="Rewrite chunk">
-            <IconButton onClick={onClick} aria-label="Rewrite chunk" disabled={disabled}>
+            <IconButton onClick={onClick} aria-label="Rewrite chunk" disabled={disabled} color="fg">
                 <HiPencilSquare />
             </IconButton>
-        </Tooltip>
+        </Tooltip >
     );
 }
 

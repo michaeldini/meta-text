@@ -2,12 +2,10 @@
 // Displays toggleable chips for common tags as described in the feature guide
 
 import React, { useCallback } from 'react';
-import {
-    Box,
-    Tag,
-    Text,
-    Stack
-} from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react/box';
+import { Tag } from '@chakra-ui/react/tag';
+import { Text } from '@chakra-ui/react/typography';
+import { Stack } from '@chakra-ui/react/stack';
 import { useSearchStore } from '../store/useSearchStore';
 
 interface TagFiltersProps {
@@ -46,7 +44,7 @@ export function TagFilters(props: TagFiltersProps) {
                     const isActive = activeTags.includes(tag);
 
                     return (
-                        <Tag.Root key={tag} >
+                        <Tag.Root key={tag} variant="solid" >
                             <button onClick={() => handleTagToggle(tag)} key={tag}>
                                 <Tag.Label>{tag}</Tag.Label>
                             </button>
@@ -57,3 +55,4 @@ export function TagFilters(props: TagFiltersProps) {
         </Box>
     );
 };
+

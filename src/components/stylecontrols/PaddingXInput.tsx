@@ -21,10 +21,9 @@ export function PaddingXInput(props: PaddingXInputProps) {
     // Chakra UI style, see TextSizeInput for reference
     return (
         <Box>
-            <Text fontSize="sm" color="primary" mb={2}>
-                Padding X ({value}rem)
-            </Text>
             <Slider
+                label="Padding X"
+                showValue
                 defaultValue={[value]}
                 min={MIN_PADDING_X}
                 max={MAX_PADDING_X}
@@ -32,7 +31,6 @@ export function PaddingXInput(props: PaddingXInputProps) {
                 onValueChange={details => onChange(details.value[0])}
                 aria-label={["Padding X"]}
                 disabled={disabled}
-                colorPalette={"blue"}
             />
         </Box>
     );

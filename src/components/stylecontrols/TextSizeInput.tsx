@@ -19,21 +19,17 @@ export function TextSizeInput(props: TextSizeInputProps) {
     const { value, onChange, disabled } = props;
 
     return (
-        <Box>
-            <Text fontSize="sm" color="fg" mb={2}>
-                Text Size ({value}px)
-            </Text>
-            <Slider
-                defaultValue={[value]}
-                min={MIN_SIZE}
-                max={MAX_SIZE}
-                step={STEP}
-                onValueChange={details => onChange(details.value[0])}
-                aria-label={["Text Size"]}
-                disabled={disabled}
-                colorPalette={"blue"} // TODO: Use theme color
-            />
-        </Box>
+        <Slider
+            label="Text Size"
+            showValue
+            defaultValue={[value]}
+            min={MIN_SIZE}
+            max={MAX_SIZE}
+            step={STEP}
+            onValueChange={details => onChange(details.value[0])}
+            aria-label={["Text Size"]}
+            disabled={disabled}
+        />
     );
 }
 

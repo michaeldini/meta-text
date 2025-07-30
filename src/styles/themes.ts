@@ -28,12 +28,24 @@ const config = defineConfig({
             // Custom button recipe: all buttons have a border by default
             button: defineRecipe({
                 base: {
+                    color: "fg",
                 },
                 defaultVariants: {
                     variant: "ghost",
                 },
+                variants: {
+                    variant: {
+                        ghost: {
+                            _hover: {
+                                bg: { base: "bg.subtle", _dark: "bg.muted" },
+                            },
+                        },
+                    },
+                },
+
                 // You can add variants here if needed
             }),
+
             input: inputRecipe,
             textarea: textareaRecipe,
             heading: headingRecipe,
@@ -44,7 +56,7 @@ const config = defineConfig({
             colors: {
                 // Use semantic tokens for robust theming and dark mode support
                 // primary: { value: "gray" },
-                // primary: { value: "#0f8dee" },
+                primary: { value: "#0f8dee" },
                 // secondary: { value: "#212020" },
                 // accent: { value: "#3b82f6" }, // Example accent color
                 emphasized: { value: "teal" }, // Light gray for emphasis

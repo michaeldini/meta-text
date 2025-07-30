@@ -33,7 +33,8 @@ export function EvaluationTool(props: EvaluationToolProps) {
                 tooltip="Produce an evaluation of your summary and note."
                 icon={<HiOutlineSparkles />}
                 onClick={handleGenerate}
-                disabled={loading || !chunk?.id}
+                // disabled={loading || !chunk?.id}
+                loading={loading}
             />
             <Box>
                 {chunk.evaluation ? (

@@ -18,21 +18,17 @@ export function LineHeightInput(props: LineHeightInputProps) {
     const { value, onChange, disabled } = props;
     // Chakra UI style, see TextSizeInput for reference
     return (
-        <Box>
-            <Text fontSize="sm" color="primary" mb={2}>
-                Line Height ({value})
-            </Text>
-            <Slider
-                defaultValue={[value]}
-                min={MIN_LINE_HEIGHT}
-                max={MAX_LINE_HEIGHT}
-                step={STEP}
-                onValueChange={details => onChange(details.value[0])}
-                aria-label={["Line Height"]}
-                disabled={disabled}
-                colorPalette={"blue"}
-            />
-        </Box>
+        <Slider
+            label="Line Height"
+            showValue
+            defaultValue={[value]}
+            min={MIN_LINE_HEIGHT}
+            max={MAX_LINE_HEIGHT}
+            step={STEP}
+            onValueChange={details => onChange(details.value[0])}
+            aria-label={["Line Height"]}
+            disabled={disabled}
+        />
     );
 }
 

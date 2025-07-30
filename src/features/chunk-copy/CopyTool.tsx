@@ -26,7 +26,7 @@ export function CopyTool({ chunkText, 'data-testid': dataTestId = 'copy-tool', s
                 data-testid={dataTestId}
             >
                 <Clipboard.Trigger asChild>
-                    <IconButton variant="ghost" color="primary">
+                    <IconButton variant="ghost" color="fg">
                         <Clipboard.Indicator />
                     </IconButton>
                 </Clipboard.Trigger>
