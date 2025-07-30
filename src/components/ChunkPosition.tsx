@@ -2,7 +2,7 @@
 // Encapsulates logic for reading user config and conditional rendering
 
 import React from 'react';
-import { Box } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react/typography';
 import { useUserConfig } from 'services/userConfigService';
 import type { ChunkType } from 'types';
 
@@ -16,9 +16,9 @@ export function ChunkPosition({ chunk }: ChunkPositionProps) {
     if (!showChunkPositions) return null;
 
     return (
-        <Box>
+        <Text>
             {chunk.position}
-        </Box>
+        </Text>
     );
 };
 

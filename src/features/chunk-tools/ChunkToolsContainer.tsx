@@ -8,7 +8,7 @@ import { CopyTool } from 'features/chunk-copy';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 import type { ChunkToolId } from './toolsRegistry';
 
-import ChunkPosition from './ChunkPosition';
+import { ChunkPosition } from 'components/ChunkPosition';
 
 import { NotesTool } from 'features/chunk-note';
 import { EvaluationTool } from 'features/chunk-evaluation';

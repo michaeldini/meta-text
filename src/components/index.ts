@@ -11,3 +11,4 @@ export { AppAlert } from './AppAlert';
 export { TooltipButton } from './TooltipButton';
 
 export { default as DocumentManagementLayout } from './DocumentManagementLayout';
+export { default as ChunkPosition } from './ChunkPosition';
