@@ -4,8 +4,7 @@
 
 import React, { useState } from 'react';
 import { IconButton, Spinner, Box } from '@chakra-ui/react';
-import { TooltipButton } from 'components/ToolTipButton';
-import { Tooltip } from 'components'
+import { TooltipButton } from 'components/TooltipButton';
 import { HiStar, HiOutlineStar } from 'react-icons/hi2';
 import { api } from 'utils';
 import type { ChunkType } from 'types';

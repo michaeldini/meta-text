@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { Box } from '@chakra-ui/react/box';
 // import ReactMarkdown from 'react-markdown';
 
-import { TooltipButton } from 'components/button';
+import { TooltipButton } from 'components/TooltipButton';
 import { Prose } from 'components/typography';
 import { HiOutlineSparkles } from 'react-icons/hi2';
 import { useExplainHandler } from './hooks/useExplainHandler';

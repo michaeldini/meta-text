@@ -8,7 +8,7 @@ import { List } from '@chakra-ui/react/list';
 import { CloseButton } from '@chakra-ui/react/button';
 import { Heading } from '@chakra-ui/react';
 import { HiMagnifyingGlass, HiOutlineTrash } from "react-icons/hi2";
-import { Boundary, Field, TooltipButton } from 'components/Boundaries';
+import { Boundary, Field, TooltipButton } from 'components';
 import { Spinner } from '@chakra-ui/react';
 import type { MetatextSummary, SourceDocumentSummary } from 'types';
 import { useSearchableList } from '../hooks/useSearchableList';
