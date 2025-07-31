@@ -6,7 +6,7 @@
 
 import React, { ReactElement, ReactNode, forwardRef } from 'react';
 
-import { Heading } from '@chakra-ui/react/typography';
+import { Heading } from '@chakra-ui/react';
 import { Stack, StackSeparator } from '@chakra-ui/react/stack';
 
 

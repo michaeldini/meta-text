@@ -1,7 +1,7 @@
 // Dialog for rewriting a chunk, using Chakra UI v3 Dialog API
 import React from 'react';
 import { Button, CloseButton } from '@chakra-ui/react/button';
-import { Text } from '@chakra-ui/react/typography';
+import { Text } from '@chakra-ui/react';
 import { Drawer } from '@chakra-ui/react/drawer';
 import { Portal } from '@chakra-ui/react/portal';
 import RewriteStyleSelect from './RewriteStyleSelect';

@@ -12,12 +12,17 @@ export interface AppAlertProps {
 
 }
 
+// AppAlert: Triggers a global notification using the toaster system. Defers notification to a microtask to avoid React flushSync errors.
 export function AppAlert({ severity, children, title }: AppAlertProps): ReactElement | null {
     useEffect(() => {
-        toaster.create({
-            description: title ? `${title}: ${children}` : String(children),
-            type: severity,
-            closable: true,
+        queueMicrotask(() => {
+            Promise.resolve().then(() => {
+                toaster.create({
+                    description: title ? `${title}: ${children}` : String(children),
+                    type: severity,
+                    closable: true,
+                });
+            });
         });
     }, [severity, children, title]);
     return null;

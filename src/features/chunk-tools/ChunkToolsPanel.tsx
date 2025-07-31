@@ -6,7 +6,7 @@
 import React from 'react';
 import { ButtonGroup, IconButton } from '@chakra-ui/react/button';
 import { Box } from '@chakra-ui/react/box';
-import { Text } from '@chakra-ui/react/typography';
+import { Text } from '@chakra-ui/react';
 
 import { Tooltip } from 'components';
 

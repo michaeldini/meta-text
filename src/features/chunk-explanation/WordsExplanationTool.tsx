@@ -4,7 +4,7 @@
  * Displays explanation and allows user to request definitions.
  */
 import React, { useState, useCallback, useMemo } from 'react';
-import { Text, Heading } from '@chakra-ui/react/typography';
+import { Text, Heading } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react/box';
 import { TooltipButton, AppAlert } from 'components';
 import type { ExplanationToolProps } from 'features';

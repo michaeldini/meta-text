@@ -43,6 +43,7 @@ export function RegisterPage({ onRegisterSuccess }: RegisterPageProps) {
                         mb={3}
                         required
                         autoFocus
+                        autoComplete="username"
                     />
                     <PasswordInput
                         placeholder="Password"
@@ -50,6 +51,7 @@ export function RegisterPage({ onRegisterSuccess }: RegisterPageProps) {
                         onChange={e => setPassword(e.target.value)}
                         mb={3}
                         required
+                        autoComplete="new-password"
                     />
                     {/* Optionally show password strength meter */}
                     <PasswordStrengthMeter value={password.length} max={16} mb={2} />
@@ -61,7 +63,7 @@ export function RegisterPage({ onRegisterSuccess }: RegisterPageProps) {
                         loading={loading}
                         width="100%"
                         mt={2}
-                        disabled={true} // Todo: Enable when registration is open
+                    // disabled={true} // Todo: Enable when registration is open
                     >
                         Register (Currently closed. Come back later!)
                     </Button>

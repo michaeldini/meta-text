@@ -1,7 +1,7 @@
 import React, { useState, FormEvent } from 'react';
 import { Button } from '@chakra-ui/react/button';
 import { Input } from '@chakra-ui/react/input';
-import { Heading } from '@chakra-ui/react/typography';
+import { Heading } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react/box';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -43,6 +43,7 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
                         mb={3}
                         required
                         autoFocus
+                        autoComplete="username"
                     />
                     <PasswordInput
                         placeholder="Password"
@@ -50,6 +51,7 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
                         onChange={e => setPassword(e.target.value)}
                         mb={3}
                         required
+                        autoComplete="current-password"
                     />
                     {/* Optionally show password strength meter */}
 

@@ -3,7 +3,7 @@
 import React from 'react';
 
 
-import { Heading, Text } from '@chakra-ui/react/typography';
+import { Heading, Text } from '@chakra-ui/react';
 import { Stack } from '@chakra-ui/react/stack'
 import { Box } from '@chakra-ui/react/box'
 import { Button } from '@chakra-ui/react/button';

@@ -4,7 +4,7 @@
 import React, { useCallback } from 'react';
 import { Box } from '@chakra-ui/react/box';
 import { Tag } from '@chakra-ui/react/tag';
-import { Text } from '@chakra-ui/react/typography';
+import { Text } from '@chakra-ui/react';
 import { Stack } from '@chakra-ui/react/stack';
 import { useSearchStore } from '../store/useSearchStore';
 

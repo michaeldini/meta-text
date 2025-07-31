@@ -1,6 +1,6 @@
 // PaddingXInput: Slider input for horizontal padding, using Chakra UI. See TextSizeInput for style reference.
 import React from 'react';
-import { Text } from '@chakra-ui/react/typography';
+import { Text } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react/box';
 import { Slider } from 'components';
 

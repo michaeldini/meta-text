@@ -11,7 +11,6 @@ import { GlobalNotifications, Toaster } from 'components';
 import { Boundary } from 'components/Boundaries';
 import { useAuthStore } from 'store';
 import { useAuthRefresh } from 'hooks';
-import { useUserConfig } from 'services';
 
 /** Dynamically import pages for code splitting using barrel exports
  * This allows for lazy loading of components
@@ -117,7 +116,6 @@ export const AppContent = () => {
     useAuthRefresh();
 
     const renderRoute = (route: RouteConfig) => {
-        useUserConfig();
         const Component = route.element;
         const element = (
             <Boundary fallbackText="Loading page...">

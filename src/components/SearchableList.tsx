@@ -2,11 +2,11 @@
 // This component supports filtering, navigation, and deletion of items.
 
 import React from 'react';
-import { Input, InputGroup } from '@chakra-ui/react/input';
+import { Input, InputGroup } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react/box';
 import { List } from '@chakra-ui/react/list';
 import { CloseButton } from '@chakra-ui/react/button';
-import { Heading } from '@chakra-ui/react/typography';
+import { Heading } from '@chakra-ui/react';
 import { HiMagnifyingGlass, HiOutlineTrash } from "react-icons/hi2";
 import { Boundary, Field, TooltipButton } from 'components/Boundaries';
 import { Spinner } from '@chakra-ui/react';

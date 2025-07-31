@@ -4,7 +4,7 @@
 // for potentially very long documents (book-length content).
 import React from 'react';
 import { Box } from '@chakra-ui/react/box';
-import { Text } from '@chakra-ui/react/typography';
+import { Text } from '@chakra-ui/react';
 import { IconButton } from '@chakra-ui/react/button';
 import { Stack } from '@chakra-ui/react/stack';
 import { Textarea } from '@chakra-ui/react/textarea';

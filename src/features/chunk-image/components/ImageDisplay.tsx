@@ -13,7 +13,7 @@
  */
 import React, { useState, useCallback } from 'react';
 import { Box } from '@chakra-ui/react/box';
-import { Text } from '@chakra-ui/react/typography';
+import { Text } from '@chakra-ui/react';
 // import { Drawer } from '@chakra-ui/react/drawer';
 import { IconButton } from '@chakra-ui/react/button';
 import { Image } from '@chakra-ui/react/image';
