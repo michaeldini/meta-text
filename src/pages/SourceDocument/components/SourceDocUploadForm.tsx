@@ -3,14 +3,14 @@
 import React from 'react';
 
 
-import { Heading, Text } from '@chakra-ui/react';
+import { Heading, Text, Wrap, WrapItem, Tag } from '@chakra-ui/react';
 import { Stack } from '@chakra-ui/react/stack'
 import { Box } from '@chakra-ui/react/box'
 import { Button } from '@chakra-ui/react/button';
 // import { Input } from '@chakra-ui/react/input'
 import { FileUpload } from '@chakra-ui/react/file-upload';
 
-import { Field } from 'components';
+import { Field, Prose } from 'components';
 import { HiArrowDownTray } from 'react-icons/hi2';
 
 import { useSourceDocUploadForm } from '../hooks/useSourceDocUploadForm';
@@ -41,12 +41,12 @@ function SourceDocUploadForm({ onSuccess }: SourceDocUploadFormProps): React.Rea
     // UI
 
     const UploadHeading = (
-        <Heading size="4xl">Batch Upload</Heading>
+        <Heading size="5xl">Upload</Heading>
     );
     const SubHeading = (
-        <Heading size="sm">
+        <Prose>
             Upload one or more .txt files. Each file will be uploaded as a separate document using its filename as the title.
-        </Heading>
+        </Prose>
     );
 
     const SubmitButton = (
@@ -95,33 +95,41 @@ function SourceDocUploadForm({ onSuccess }: SourceDocUploadFormProps): React.Rea
             </FileUpload.Root>
             {files.length > 0 && (
                 <Box mt={2}>
-                    <Text fontWeight="bold">Files to upload:</Text>
-                    <Stack gap={1}>
-                        {files.map((f, idx) => (
-                            <Box key={f.name + f.size} p={2} borderWidth={1} borderRadius="md" bg="gray.50">
-                                <Text>{f.name}</Text>
-                                <Text fontSize="sm" color="fg.muted">{(f.size / 1024).toFixed(1)} KB</Text>
-                                {uploadStatuses && uploadStatuses[idx] && (
-                                    <Text fontSize="sm" color={uploadStatuses[idx].error ? 'red.500' : 'green.600'}>
-                                        {uploadStatuses[idx].error
-                                            ? `Error: ${uploadStatuses[idx].error}`
-                                            : uploadStatuses[idx].success
-                                                ? 'Uploaded'
-                                                : uploadStatuses[idx].uploading
-                                                    ? 'Uploading...'
-                                                    : ''}
-                                    </Text>
-                                )}
-                            </Box>
-                        ))}
-                    </Stack>
+                    <Text fontWeight="bold" mb={2}>Files to upload:</Text>
+                    <Wrap>
+                        {files.map((f, idx) => {
+                            const status = uploadStatuses && uploadStatuses[idx];
+                            let colorPalette: string = 'gray';
+                            let label = f.name;
+                            let icon = null;
+                            if (status) {
+                                if (status.uploading) {
+                                    colorPalette = 'yellow';
+                                    label = `${f.name} (Uploading...)`;
+                                } else if (status.success) {
+                                    colorPalette = 'green';
+                                    label = `${f.name} (Uploaded)`;
+                                } else if (status.error) {
+                                    colorPalette = 'red';
+                                    label = `${f.name} (Error)`;
+                                }
+                            }
+                            return (
+                                <WrapItem key={f.name + f.size}>
+                                    <Tag.Root colorPalette={colorPalette} variant="solid" size="md" maxW="250px">
+                                        <Tag.Label truncate>{label}</Tag.Label>
+                                    </Tag.Root>
+                                </WrapItem>
+                            );
+                        })}
+                    </Wrap>
                 </Box>
             )}
         </Stack>
     );
 
     return (
-        <Stack borderRadius="md">
+        <Stack>
             {UploadHeading}
             {SubHeading}
             {error && (

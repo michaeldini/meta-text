@@ -31,7 +31,8 @@ const DocumentManagementLayout = forwardRef<HTMLDivElement, DocumentManagementLa
                     .replace(/ /g, '-')}-list-content`}
             >
                 <Stack>
-                    <Heading size="6xl">
+                    <Heading
+                        size="6xl">
                         {title}
                     </Heading>
                     <Heading size="md">

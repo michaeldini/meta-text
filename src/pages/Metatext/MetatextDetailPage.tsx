@@ -4,7 +4,7 @@
 import React from 'react';
 import type { ReactElement } from 'react';
 import { Stack } from '@chakra-ui/react/stack';
-import { Skeleton, SkeletonText, SkeletonCircle, Box } from '@chakra-ui/react';
+import { Skeleton, SkeletonText, SkeletonCircle, Box, Heading } from '@chakra-ui/react';
 
 import { HiAcademicCap, HiArrowDownTray, HiOutlineSparkles, HiHashtag, HiStar, HiOutlineStar, HiBookmark } from 'react-icons/hi2'
 
@@ -36,35 +36,10 @@ function MetatextDetailPage(): ReactElement | null {
     const paginatedChunksProps: PaginatedChunksProps = usePaginatedChunks({ metatextId, showOnlyFavorites });
 
 
+    // Wait for paginated chunks to load before rendering
     if (paginatedChunksProps.loadingChunks) {
         return null
     };
-    //     // Skeleton mimics the layout: header, controls, and chunk list
-    //     return (
-    //         <PageContainer loading data-testid="metatext-detail-page">
-    //             <Stack gap={6} padding={8}>
-    //                 {/* Header skeleton */}
-    //                 <Skeleton height="36px" width="40%" />
-    //                 {/* Toolbar skeleton (icons/buttons) */}
-    //                 <Stack direction="row" gap={4}>
-    //                     {[...Array(7)].map((_, i) => (
-    //                         <SkeletonCircle key={i} size="10" />
-    //                     ))}
-    //                 </Stack>
-    //                 {/* Style controls/search/source doc info skeletons */}
-    //                 <Skeleton height="32px" width="60%" />
-    //                 <Skeleton height="24px" width="50%" />
-    //                 <Skeleton height="32px" width="80%" />
-    //                 {/* Chunk tools panel skeleton */}
-    //                 <Skeleton height="48px" width="100%" />
-    //                 {/* Paginated chunks skeleton */}
-    //                 <Box>
-    //                     <SkeletonText noOfLines={8} gap="4" />
-    //                 </Box>
-    //             </Stack>
-    //         </PageContainer>
-    //     );
-    // }
 
     return (
         <PageContainer loading={metatextIsLoading} data-testid="metatext-detail-page">
@@ -73,6 +48,12 @@ function MetatextDetailPage(): ReactElement | null {
 
                     animationName="fade-in"
                     animationDuration="fast">
+                    <Heading size="xl">metatext</Heading>
+                    <Heading size="6xl">
+                        {metatext.title}
+                    </Heading>
+                    {sourceDoc && <SourceDocInfo doc={sourceDoc} />}
+
                     <DocumentHeader title={metatext.title}>
                         <TooltipButton
                             label="Review"
@@ -123,8 +104,8 @@ function MetatextDetailPage(): ReactElement | null {
                         />
                         <StyleControls />
                         <SearchContainer showTagFilters={true} />
-                        {sourceDoc && <SourceDocInfo doc={sourceDoc} />}
                     </DocumentHeader>
+
                     <ChunkToolsPanel />
                     <PaginatedChunks {...paginatedChunksProps} />
                 </Stack>

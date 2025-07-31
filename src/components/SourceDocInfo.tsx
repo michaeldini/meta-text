@@ -1,7 +1,7 @@
 
 import { Editable } from '@chakra-ui/react/editable';
 import { Stack } from '@chakra-ui/react/stack';
-import { Text } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react/text';
 import { Collapsible } from '@chakra-ui/react/collapsible';
 import { SourceDocumentDetail } from 'types';
 
@@ -34,8 +34,11 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
     const { doc, onDocumentUpdate } = props;
 
     return (
-        <Collapsible.Root data-testid="source-doc-info">
-            <Collapsible.Trigger><Text fontWeight="bold">Document Info</Text></Collapsible.Trigger>
+        <Collapsible.Root data-testid="source-doc-info" >
+            <Collapsible.Trigger
+                padding={4} minWidth="200px" borderWidth="1px" borderRadius="md">
+                <Text fontWeight="bold">Document Info</Text>
+            </Collapsible.Trigger>
             <Collapsible.Content>
                 {FIELD_CONFIG.map(config => (
                     <Stack direction="row" key={config.key}>

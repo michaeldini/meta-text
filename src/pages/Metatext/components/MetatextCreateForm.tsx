@@ -83,9 +83,9 @@ function MetatextCreateForm(props: MetatextCreateFormProps): React.ReactElement 
                 <Select.Root collection={sourceDocOptions} onChange={handleSourceDocChange} >
                     <Select.HiddenSelect />
                     <Select.Label>Choose Source Document</Select.Label>
-                    <Select.Control>
+                    <Select.Control  >
                         <Select.Trigger>
-                            <Select.ValueText placeholder="Select Source Document" />
+                            <Select.ValueText placeholder="Republic by Plato" color="fg.muted" />
                         </Select.Trigger>
                         <Select.IndicatorGroup>
                             <Select.Indicator />

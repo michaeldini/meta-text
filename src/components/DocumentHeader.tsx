@@ -3,7 +3,7 @@
 import React from 'react';
 import { Wrap } from "@chakra-ui/react/wrap"
 import { Collapsible } from "@chakra-ui/react/collapsible"
-
+import { Text } from "@chakra-ui/react/text";
 interface DocumentHeaderProps {
     title?: string;
     children: React.ReactNode;
@@ -11,12 +11,14 @@ interface DocumentHeaderProps {
 
 
 export function DocumentHeader(props: DocumentHeaderProps): React.ReactElement {
+
+    // was using title earlier, but now just using children for flexibility
     const { title, children } = props;
 
     return (
-        <Collapsible.Root unmountOnExit open={true} >
+        <Collapsible.Root unmountOnExit >
             <Collapsible.Trigger padding={4} minWidth={200} borderWidth="1px" borderRadius="md" >
-                Show Header for: {title}
+                <Text fontWeight="bold">Header</Text>
             </Collapsible.Trigger>
             <Collapsible.Content>
                 <Wrap
