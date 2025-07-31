@@ -10,73 +10,111 @@ import { useState, useCallback } from 'react';
 import { useAddSourceDocument } from 'features';
 
 export function useSourceDocUploadForm(onSuccess: () => void) {
-    // Local state for form fields
-    const [title, setTitle] = useState('');
-    const [file, setFile] = useState<File | null>(null);
+    // Local state for batch upload
+    const [files, setFiles] = useState<File[]>([]);
     const [error, setError] = useState<string | null>(null);
+    // Track upload status for each file
+    const [uploadStatuses, setUploadStatuses] = useState<{
+        uploading: boolean;
+        success: boolean;
+        error: string | null;
+    }[]>([]);
 
-    // React Query mutation for upload
+    // React Query mutation for upload (single file)
     const addSourceDocument = useAddSourceDocument();
 
-    // Handlers
-    const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setTitle(event.target.value);
-        if (error) setError(null);
+    // Simulate a batch mutation wrapper (simple version)
+    const addSourceDocuments = {
+        isPending: uploadStatuses.length > 0 && uploadStatuses.some(s => s.uploading),
+        mutate: (fileList: File[], callbacks: { onSuccess?: () => void; onError?: () => void }) => {
+            setUploadStatuses(fileList.map(() => ({ uploading: true, success: false, error: null })));
+            let completed = 0;
+            let anyError = false;
+            fileList.forEach((file, idx) => {
+                addSourceDocument.mutate(
+                    { title: file.name.replace(/\.[^.]+$/, ''), file },
+                    {
+                        onSuccess: () => {
+                            setUploadStatuses(prev => {
+                                const next = [...prev];
+                                next[idx] = { ...next[idx], uploading: false, success: true, error: null };
+                                return next;
+                            });
+                            completed++;
+                            if (completed === fileList.length) {
+                                // All uploads finished, force all uploading: false
+                                setUploadStatuses(prev => prev.map(s => ({ ...s, uploading: false })));
+                                if (anyError && callbacks.onError) callbacks.onError();
+                                else if (callbacks.onSuccess) callbacks.onSuccess();
+                            }
+                        },
+                        onError: () => {
+                            setUploadStatuses(prev => {
+                                const next = [...prev];
+                                next[idx] = { ...next[idx], uploading: false, success: false, error: 'Failed to upload' };
+                                return next;
+                            });
+                            anyError = true;
+                            completed++;
+                            if (completed === fileList.length) {
+                                // All uploads finished, force all uploading: false
+                                setUploadStatuses(prev => prev.map(s => ({ ...s, uploading: false })));
+                                if (anyError && callbacks.onError) callbacks.onError();
+                                else if (callbacks.onSuccess) callbacks.onSuccess();
+                            }
+                        },
+                    }
+                );
+            });
+        },
     };
 
-    // Inline handler for file change
-    const handleFileChange = (file: File | null) => {
-        if (file) {
-            const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase();
-            if (fileExtension !== '.txt') {
-                setError('Only .txt files are allowed');
-                return;
-            }
-            if (file.size > 10 * 1024 * 1024) {
-                setError('File size must be less than 10MB');
-                return;
-            }
+    // Handler for file selection (multiple files)
+    const handleFilesChange = (selectedFiles: File[]) => {
+        // Validate all files
+        const invalid = selectedFiles.find(f => {
+            const ext = '.' + f.name.split('.').pop()?.toLowerCase();
+            return ext !== '.txt' || f.size > 50 * 1024 * 1024;
+        });
+        if (invalid) {
+            setError('All files must be .txt and less than 50MB');
+            setFiles([]);
+            setUploadStatuses([]);
+            return;
         }
-        setFile(file);
-        if (error) setError(null);
+        setFiles(selectedFiles);
+        setError(null);
+        setUploadStatuses(selectedFiles.map(() => ({ uploading: false, success: false, error: null })));
     };
 
+    // Handler for batch submit
     const handleSubmit = useCallback((event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setError(null);
-        if (!title.trim()) {
-            setError('Title is required.');
+        if (!files.length) {
+            setError('Please select at least one file to upload.');
             return;
         }
-        if (!file) {
-            setError('Please select a file to upload.');
-            return;
-        }
-        addSourceDocument.mutate(
-            { title: title.trim(), file },
-            {
-                onSuccess: () => {
-                    setTitle('');
-                    setFile(null);
-                    if (onSuccess) onSuccess();
-                },
-                onError: () => {
-                    setError('Failed to upload document.');
-                },
-            }
-        );
-    }, [title, file, addSourceDocument, onSuccess]);
+        addSourceDocuments.mutate(files, {
+            onSuccess: () => {
+                setFiles([]);
+                setUploadStatuses([]);
+                if (onSuccess) onSuccess();
+            },
+            onError: () => {
+                setError('One or more files failed to upload.');
+            },
+        });
+    }, [files, addSourceDocuments, onSuccess]);
 
     return {
-        title,
-        setTitle,
-        file,
-        setFile,
+        files,
+        setFiles,
         error,
         setError,
-        addSourceDocument,
-        handleTitleChange,
-        handleFileChange,
+        addSourceDocuments,
+        handleFilesChange,
         handleSubmit,
+        uploadStatuses,
     };
 }
