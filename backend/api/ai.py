@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends, Form, status
 from sqlmodel import Session
 
 from backend.models import (
-     Rewrite, SourceDocInfoResponse, ImageRead
+     Rewrite, SourceDocInfoResponse, ImageRead, User
 )
 from backend.db import get_session
 
@@ -48,8 +48,8 @@ async def generate_evaluation(
 async def source_doc_info(
     doc_id: int,
     session: Session = Depends(get_session),
-    user = Depends(get_current_user),
-    ai_service = Depends(get_ai_service)
+    user: User = Depends(get_current_user),
+    ai_service: AIService = Depends(get_ai_service)
 ) -> SourceDocInfoResponse:
     """Generate source document information using AI. Requires authentication."""
     try:
