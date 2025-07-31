@@ -1,14 +1,12 @@
-import React, { useState, useEffect, FormEvent } from 'react';
+import React, { useState, FormEvent } from 'react';
 import { Button } from '@chakra-ui/react/button';
-import { Heading, Input } from '@chakra-ui/react';
+import { Input } from '@chakra-ui/react/input';
+import { Heading } from '@chakra-ui/react/typography';
 import { Box } from '@chakra-ui/react/box';
-import { Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import {
     PasswordInput,
-    PasswordStrengthMeter,
 } from "components"
-import { log } from 'utils';
 import { useAuthStore } from 'store';
 import { AppAlert } from 'components';
 
