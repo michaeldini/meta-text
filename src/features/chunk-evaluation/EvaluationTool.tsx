@@ -11,7 +11,6 @@ interface EvaluationToolProps {
     updateChunkField: UpdateChunkFieldFn;
     isVisible: boolean;
 }
-
 export function EvaluationTool(props: EvaluationToolProps) {
     const { chunk, updateChunkField, isVisible } = props;
     if (!isVisible) return null;
