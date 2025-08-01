@@ -1,23 +1,22 @@
 
 import React, { useState } from 'react';
 import { Box } from '@chakra-ui/react/box';
-import { Text } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react/text';
 import { Button } from '@chakra-ui/react/button';
 import { Drawer } from '@chakra-ui/react/drawer';
-import type { ChunkType, UpdateChunkFieldFn } from 'types';
-import { useChunkStore } from 'store';
+import type { ChunkType } from 'types/documents';
+import { useChunkStore } from 'store/chunkStore';
 import RewriteToolButton from './components/RewriteToolButton';
 import { useRewrite } from './hooks/useRewrite';
 
 
 interface RewriteDisplayToolProps {
     chunk: ChunkType;
-    updateChunkField: UpdateChunkFieldFn;
     isVisible: boolean;
 }
 
 export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
-    const { chunk, updateChunkField, isVisible } = props;
+    const { chunk, isVisible } = props;
     if (!isVisible) return null;
     const { refetchChunk } = useChunkStore();
     const { rewrites } = useRewrite(chunk);

@@ -4,4 +4,3 @@
  */
 
 export { default as EvaluationTool } from './EvaluationTool';
-export * from './hooks';

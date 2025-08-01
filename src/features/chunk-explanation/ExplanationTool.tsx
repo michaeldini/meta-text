@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import { Box } from '@chakra-ui/react/box';
-// import ReactMarkdown from 'react-markdown';
 
 import { TooltipButton } from 'components/TooltipButton';
 import { Prose } from 'components/typography';

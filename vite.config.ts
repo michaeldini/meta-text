@@ -1,12 +1,17 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { configDefaults } from 'vitest/config'
+import { visualizer } from 'rollup-plugin-visualizer';
 import path from 'path'
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vite.dev/config/
-export default defineConfig({
-    plugins: [react(), tsconfigPaths()],
+export default defineConfig(({ command }) => ({
+    plugins: [
+        react(),
+        tsconfigPaths(),
+        command === 'build' ? visualizer({ open: true }) : null
+    ].filter(Boolean),
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'src'),
@@ -20,8 +25,7 @@ export default defineConfig({
                     // Separate vendor chunks
                     'react-vendor': ['react', 'react-dom', 'react-router-dom'],
                     'utils': ['zustand', 'loglevel'],
-                    '@chakra-ui': [
-                        '@chakra-ui/react',],
+                    '@chakra-ui': ['@chakra-ui/react',],
                     // Split each feature into its own chunk for better code splitting
                     'chunk-rewrite': ['./src/features/chunk-rewrite'],
                     'chunk-search': ['./src/features/chunk-search'],
@@ -32,7 +36,6 @@ export default defineConfig({
                     'chunk-image': ['./src/features/chunk-image'],
                     'chunk-merge': ['./src/features/chunk-merge'],
                     'chunk-note': ['./src/features/chunk-note'],
-                    'chunk-shared': ['./src/features/chunk-shared'],
                     'review-features': ['./src/features/review'],
                 }
             },
@@ -81,4 +84,4 @@ export default defineConfig({
         setupFiles: "./setup-test.ts",
         exclude: [...configDefaults.exclude, 'tests/e2e/**'],
     },
-})
+}))

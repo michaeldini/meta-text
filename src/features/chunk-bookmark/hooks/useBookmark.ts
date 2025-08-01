@@ -2,7 +2,7 @@
 // Handles loading and setting bookmarks for metatext chunks
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchBookmark, setBookmark, removeBookmark } from 'services';
+import { fetchBookmark, setBookmark, removeBookmark } from 'services/bookmarksService';
 
 // Fetch the bookmarked chunk for a metatext
 export function useBookmark(metaTextId?: number | null) {

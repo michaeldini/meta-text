@@ -2,12 +2,8 @@
 import React from 'react';
 import { Button } from '@chakra-ui/react/button';
 import { Menu } from '@chakra-ui/react/menu';
+import type { StyleOption } from '../types'
 
-// Props and option type for RewriteStyleSelect (local, not shared)
-export interface StyleOption {
-    value: string;
-    label: string;
-}
 
 export interface RewriteStyleSelectProps {
     style: string;

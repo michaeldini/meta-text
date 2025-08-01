@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { generateEvaluation } from 'services';
-import { ToolResult, EvaluationResult, EvaluationToolProps } from 'features/chunk-shared/types';
+import { ToolResult, EvaluationResult, EvaluationToolProps } from 'features';
 /**
  * Hook for evaluation tool functionality
  */

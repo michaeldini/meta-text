@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Rewrite, ChunkType } from 'types';
-import type { UseRewriteReturn } from 'features/chunk-shared/types';
+import type { UseRewriteReturn } from 'features';
 
 export const useRewrite = (chunk: ChunkType | null): UseRewriteReturn => {
     const [selectedId, setSelectedId] = useState<number | ''>('');

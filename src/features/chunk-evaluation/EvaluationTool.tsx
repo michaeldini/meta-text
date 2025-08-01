@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
-import { Box } from '@chakra-ui/react'
-import ReactMarkdown from 'react-markdown';
 
-import { TooltipButton } from 'components';
+
+import { Box } from '@chakra-ui/react/box'
+import { Prose, TooltipButton } from 'components';
 import { HiOutlineSparkles } from 'react-icons/hi2';
 import type { ChunkType, UpdateChunkFieldFn } from 'types';
 import { useEvaluation } from './hooks/useEvaluation';
@@ -38,7 +38,7 @@ export function EvaluationTool(props: EvaluationToolProps) {
             />
             <Box>
                 {chunk.evaluation ? (
-                    <ReactMarkdown>{chunk.evaluation}</ReactMarkdown>
+                    <Prose>{chunk.evaluation}</Prose>
                 ) : (
                     <span>No evaluation yet.</span>
                 )}
