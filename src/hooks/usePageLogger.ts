@@ -1,5 +1,5 @@
 import React from 'react';
-import log from '../utils/logger';
+import log from '@utils/logger';
 
 /**
  * Generalized page lifecycle and event logger for main pages.

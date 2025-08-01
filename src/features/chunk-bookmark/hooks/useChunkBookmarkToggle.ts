@@ -2,8 +2,8 @@
 // Handles state, mutations, and navigation clearing
 
 import { useBookmarkUIStore } from '../store/bookmarkStore';
-import { useBookmark, useSetBookmark, useRemoveBookmark } from 'features';
-import { ChunkType } from 'types';
+import { useBookmark, useSetBookmark, useRemoveBookmark } from '@features/chunk-bookmark';
+import { ChunkType } from '@mtypes/documents';
 
 export function useChunkBookmarkToggle(chunk: ChunkType) {
     // Get the current bookmarked chunk from React Query

@@ -3,9 +3,9 @@
 // Extensive use of Material-UI Accordion components for a collapsible view.
 
 import React from 'react';
-import { Explanation } from 'types';
+import { Explanation } from '@mtypes/MetatextReview.types';
 import { Box, Collapsible, Text, Heading } from "@chakra-ui/react"
-import { Alert } from 'components';
+import { Alert } from '@components/ui/alert';
 
 
 interface PhrasesProps {

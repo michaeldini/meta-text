@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import { useChunkStore } from 'store';
-import { SplitChunkToolProps, ToolResult } from 'features/chunk-shared/types';
+import { useChunkStore } from '@store/chunkStore';
+import { SplitChunkToolProps, ToolResult } from '@features/chunk-shared/types';
 
 /**
  * Hook for split chunk tool functionality

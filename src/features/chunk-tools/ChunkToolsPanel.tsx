@@ -8,7 +8,7 @@ import { ButtonGroup, IconButton } from '@chakra-ui/react/button';
 import { Box } from '@chakra-ui/react/box';
 import { Text } from '@chakra-ui/react';
 
-import { Tooltip } from 'components';
+import { Tooltip } from '@components/ui/tooltip';
 
 import { useChunkToolsPanel } from './useChunkToolsPanel';
 

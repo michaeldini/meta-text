@@ -6,8 +6,9 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { Text, Heading } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react/box';
-import { TooltipButton, AppAlert } from 'components';
-import type { ExplanationToolProps } from 'features';
+import { AppAlert } from '@components/AppAlert';
+import { TooltipButton } from '@components/TooltipButton';
+import type { ExplanationToolProps } from '@features/chunk-shared';
 import { HiQuestionMarkCircle } from 'react-icons/hi2';
 import { useExplainHandler } from './hooks/useExplainHandler';
 

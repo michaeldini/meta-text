@@ -23,7 +23,7 @@ import {
     Badge,
     Portal,
 } from '@chakra-ui/react';
-import type { ImageGenerationDialogProps } from 'features/chunk-shared/types';
+import type { ImageGenerationDialogProps } from '@features/chunk-shared/types';
 
 // Constants for prompt validation
 const MIN_PROMPT_LENGTH = 3;

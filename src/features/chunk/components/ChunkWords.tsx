@@ -6,11 +6,11 @@ import React, { memo } from 'react';
 import { Box } from '@chakra-ui/react/box';
 import { Flex } from '@chakra-ui/react/flex';
 import { Drawer } from '@chakra-ui/react/drawer';
-import { MergeChunksTool } from 'features/chunk-merge';
+import { MergeChunksTool } from '@features/chunk-merge/MergeChunksTool';
+import { useUserConfig } from '@services/userConfigService';
+import type { ChunkType } from '@mtypes/documents';
 import WordsToolbar from './WordsToolbar';
-import { useUserConfig } from '../../../services/userConfigService';
 import { useChunkWords } from '../hooks/useChunkWords';
-import type { ChunkType } from 'types';
 export interface ChunkWordsProps {
     chunk: ChunkType;
     chunkIdx: number;

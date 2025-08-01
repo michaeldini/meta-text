@@ -6,14 +6,14 @@
 
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useUserConfig, useUpdateUserConfig } from '../../../services/userConfigService';
-import { useMetatextDetail, useSourceDocumentDetail } from '../../../features/documents/useDocumentsData';
-import { useSearchKeyboard } from '../../../features/chunk-search/hooks/useSearchKeyboard'
-import { useGenerateSourceDocInfo } from 'hooks/useGenerateSourceDocInfo';
+import { useUserConfig, useUpdateUserConfig } from '@services/userConfigService';
+import { useMetatextDetail, useSourceDocumentDetail } from '@features/documents/useDocumentsData';
+import { useSearchKeyboard } from '@features/chunk-search/hooks/useSearchKeyboard'
+import { useGenerateSourceDocInfo } from '@hooks/useGenerateSourceDocInfo';
 import { useDownloadMetatext } from './useDownloadMetatext';
-import { useBookmarkUIStore } from 'features/chunk-bookmark/bookmarkStore';
-import { useBookmark } from 'features/documents/useBookmark';
-import { getUiPreferences } from 'utils';
+import { useBookmarkUIStore } from '@features/chunk-bookmark/store/bookmarkStore';
+import { useBookmark } from '@features/chunk-bookmark/hooks/useBookmark';
+import getUiPreferences from '@utils/getUiPreferences';
 
 export function useMetatextDetailPage() {
     // --- Routing and Navigation ---

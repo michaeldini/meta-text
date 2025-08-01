@@ -3,8 +3,8 @@
 
 import React, { memo } from 'react';
 import { Popover, Box, Stack } from '@chakra-ui/react';
-import { SplitChunkTool } from 'features/chunk-split';
-import { WordsExplanationTool } from 'features/chunk-explanation';
+import { SplitChunkTool } from '@features/chunk-split';
+import { WordsExplanationTool } from '@features/chunk-explanation';
 
 export interface WordsToolbarProps {
     onClose: () => void;

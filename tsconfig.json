@@ -31,43 +31,40 @@
             "@testing-library/jest-dom"
         ],
         // Path aliases
-        "baseUrl": "src",
+        "baseUrl": ".",
         "paths": {
-            "@/*": [
-                "./src/*"
+            // "@/*": [
+            //     "./src/*"
+            // ],
+            "@utils/*": [
+                "src/utils/*",
             ],
-            "utils/*": [
-                "utils/index.ts",
+            "@hooks/*": [
+                "src/hooks/*"
             ],
-            "hooks/*": [
-                "hooks/index.ts"
+            "@components/*": [
+                "src/components/*"
             ],
-            "components/*": [
-                "components/index.ts"
+            "@features/*": [
+                "src/features/*"
             ],
-            "features/*": [
-                "features/index.ts"
+            "@pages/*": [
+                "src/pages/*"
             ],
-            "pages/*": [
-                "pages/index.ts"
+            "@constants/*": [
+                "src/constants/*",
             ],
-            "constants/*": [
-                "constants/index.ts",
+            "@store/*": [
+                "src/store/*"
             ],
-            "store/*": [
-                "store/index.ts"
+            "@icons": [
+                "src/components/icons/*"
             ],
-            "icons": [
-                "components/icons/index.tsx"
+            "@services/*": [
+                "src/services/*"
             ],
-            "services/*": [
-                "services/index.ts"
-            ],
-            "types/*": [
-                "types/index.ts"
-            ],
-            "styles/*": [
-                "styles/index.ts"
+            "@mtypes/*": [
+                "src/types/*"
             ],
         }
     },

@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react';
 import { Box } from '@chakra-ui/react/box';
-
-import { TooltipButton } from 'components/TooltipButton';
-import { Prose } from 'components/typography';
 import { HiOutlineSparkles } from 'react-icons/hi2';
+
+import { TooltipButton } from '@components/TooltipButton';
+import { Prose } from '@components/ui';
+import type { ChunkType, UpdateChunkFieldFn } from '@mtypes/documents';
 import { useExplainHandler } from './hooks/useExplainHandler';
-import type { ChunkType, UpdateChunkFieldFn } from 'types';
 
 interface ExplanationToolProps {
     chunk: ChunkType;

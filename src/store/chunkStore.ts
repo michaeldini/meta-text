@@ -8,15 +8,15 @@
 
 import { create } from 'zustand';
 
-import { fetchChunks as apiFetchChunks } from 'services/chunkService'
-import { fetchChunk } from 'services/chunkService';
-import { updateChunk } from 'services/chunkService';
-import { splitChunk } from 'services/chunkService';
-import { combineChunks } from 'services/chunkService';
+import { fetchChunks as apiFetchChunks } from '@services/chunkService'
+import { fetchChunk } from '@services/chunkService';
+import { updateChunk } from '@services/chunkService';
+import { splitChunk } from '@services/chunkService';
+import { combineChunks } from '@services/chunkService';
 
-import { getErrorMessage } from 'types/error';
-import type { ChunkType, UpdateChunkFieldFn } from 'types/documents';
-import { log } from 'utils/logger';
+import { getErrorMessage } from '@mtypes/error';
+import type { ChunkType, UpdateChunkFieldFn } from '@mtypes/documents';
+import log from '@utils/logger';
 
 
 import type { ChunkToolId } from '../features/chunk-tools/toolsRegistry';

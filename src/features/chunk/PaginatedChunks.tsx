@@ -1,7 +1,8 @@
 
-import type { ChunkType } from 'types';
-import { Chunk } from 'features';
-import { AppAlert, Boundary } from 'components/Boundaries';
+import type { ChunkType } from '@mtypes/documents';
+import Chunk from '@features/chunk/Chunk';
+import { Boundary } from '@components/Boundaries';
+import { AppAlert } from '@components/AppAlert'
 import { Box } from '@chakra-ui/react/box';
 import { Stack } from '@chakra-ui/react/stack';
 import { Center } from '@chakra-ui/react/center';

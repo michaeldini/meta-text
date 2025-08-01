@@ -7,9 +7,9 @@
  * This structure centralizes search logic in the store, keeps UI logic in hooks, and ensures maintainable, DRY search behavior across the app.
  */
 import { create } from 'zustand';
-import type { ChunkType } from 'types';
+import type { ChunkType } from '@mtypes/documents';
 
-import { log } from 'utils';
+import log from '@utils/logger'
 
 interface SearchAndFilterState {
     // Input state (formerly in useSearchStore)

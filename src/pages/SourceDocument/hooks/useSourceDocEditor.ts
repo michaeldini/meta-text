@@ -1,9 +1,9 @@
 // Hook for managing source document editing state and logic
 // Encapsulates all state, handlers, and UI preferences for editing a source document
 import { useState, useCallback, useRef } from 'react';
-import type { SourceDocumentDetail } from 'types';
-import { useUpdateSourceDocument } from '../../../features/documents/useDocumentsData';
-import { log } from 'utils';
+import type { SourceDocumentDetail } from '@mtypes/documents';
+import { useUpdateSourceDocument } from '@features/documents/useDocumentsData';
+import log from '@utils/logger';
 
 
 // Refactored hook for Chakra UI Editable integration

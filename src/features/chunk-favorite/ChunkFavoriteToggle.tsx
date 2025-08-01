@@ -4,11 +4,11 @@
 
 import React, { useState } from 'react';
 import { IconButton, Spinner, Box } from '@chakra-ui/react';
-import { TooltipButton } from 'components/TooltipButton';
+import { TooltipButton } from '@components/TooltipButton';
 import { HiStar, HiOutlineStar } from 'react-icons/hi2';
-import { api } from 'utils';
-import type { ChunkType } from 'types';
-import { useChunkStore } from 'store';
+import { api } from '@utils/ky';
+import type { ChunkType } from '@mtypes/documents';
+import { useChunkStore } from '@store/chunkStore';
 
 interface ChunkFavoriteToggleProps {
     chunk: ChunkType;

@@ -1,11 +1,11 @@
 // Custom hook to encapsulate business logic for paginated chunks
 // Handles filtering, pagination, fetching, and bookmark navigation
 import React, { useRef, useEffect, useCallback } from 'react';
-import { useChunkStore } from 'store';
-import { useSearchStore } from '../../chunk-search/store/useSearchStore';
+import { useChunkStore } from '@store/chunkStore';
+import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
+import { useBookmark } from '@features/chunk-bookmark';
+import useChunkBookmarkNavigation from '@features/chunk-bookmark/hooks/useChunkBookmarkNavigation';
 import { usePaginationStore } from './usePaginationStore';
-import { useBookmark } from 'features';
-import useChunkBookmarkNavigation from '../../chunk-bookmark/hooks/useChunkBookmarkNavigation';
 
 interface UsePaginatedChunksProps {
     metatextId: number | null;

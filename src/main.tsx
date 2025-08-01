@@ -3,8 +3,8 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Provider } from "./components/ui/provider";
-import { Boundary } from 'components/Boundaries';
+import { Provider } from "@components/ui/provider";
+import { Boundary } from '@components/Boundaries';
 
 
 const queryClient = new QueryClient();

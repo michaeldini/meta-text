@@ -8,8 +8,15 @@ import { Skeleton, SkeletonText, SkeletonCircle, Box, Heading } from '@chakra-ui
 
 import { HiAcademicCap, HiArrowDownTray, HiOutlineSparkles, HiHashtag, HiStar, HiOutlineStar, HiBookmark } from 'react-icons/hi2'
 
-import { PageContainer, SourceDocInfo, StyleControls, DocumentHeader, TooltipButton } from 'components';
-import { ChunkToolsPanel, SearchContainer, usePaginatedChunks } from 'features';
+import { PageContainer } from '@components/PageContainer';
+import { SourceDocInfo } from '@components/SourceDocInfo';
+import { StyleControls } from '@components/stylecontrols';
+import { DocumentHeader } from '@components/DocumentHeader';
+import { TooltipButton } from '@components/TooltipButton';
+
+import { ChunkToolsPanel } from '@features/chunk-tools';
+import { SearchContainer } from '@features/chunk-search';
+import { usePaginatedChunks } from '@features/chunk';
 import PaginatedChunks, { PaginatedChunksProps } from '../../features/chunk/PaginatedChunks';
 
 import { useMetatextDetailPage } from './hooks/useMetatextDetailPage';

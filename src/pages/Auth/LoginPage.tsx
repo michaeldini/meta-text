@@ -6,9 +6,9 @@ import { Box } from '@chakra-ui/react/box';
 import { useNavigate } from 'react-router-dom';
 import {
     PasswordInput,
-} from "components"
-import { useAuthStore } from 'store';
-import { AppAlert } from 'components';
+} from "@components/ui/password-input"
+import { useAuthStore } from '@store/authStore';
+import { AppAlert } from '@components/AppAlert';
 
 interface LoginPageProps {
     onLoginSuccess?: () => void;

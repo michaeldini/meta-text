@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import { useChunkStore } from 'store';
-import { MergeChunksToolProps, ToolResult } from 'features/chunk-shared/types';
+import { useChunkStore } from '@store/chunkStore';
+import { MergeChunksToolProps, ToolResult } from '@features/chunk-shared/types';
 
 /**
  * Hook for merge chunks tool functionality

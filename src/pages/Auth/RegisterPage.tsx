@@ -1,13 +1,13 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import { Button } from '@chakra-ui/react/button';
 import { Heading, Input } from '@chakra-ui/react';
-import { PasswordInput, PasswordStrengthMeter } from "components";
+import { PasswordInput, PasswordStrengthMeter } from "@components/ui";
 import { Box } from '@chakra-ui/react/box';
 import { Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
-import { useAuthStore } from 'store';
-import { AppAlert } from 'components';
+import { useAuthStore } from '@store/authStore';
+import { AppAlert } from '@components/AppAlert';
 
 interface RegisterPageProps {
     onRegisterSuccess?: () => void;

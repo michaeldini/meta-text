@@ -2,8 +2,8 @@
 // Encapsulates loading, error, and handler logic for generating source document info
 
 import { useState } from 'react';
-import { generateSourceDocInfo } from 'services';
-import { useSourceDocuments } from '../features/documents/useDocumentsData';
+import { generateSourceDocInfo } from '@services/aiService';
+import { useSourceDocuments } from '@features/documents/useDocumentsData';
 
 export function useGenerateSourceDocInfo(sourceDocumentId?: number | null, onSuccess?: () => void) {
     const [loading, setLoading] = useState(false);

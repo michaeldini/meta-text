@@ -1,7 +1,6 @@
 // LineHeightInput: Slider input for line height, using Chakra UI. See TextSizeInput for style reference.
 import React from 'react';
-import { Box, Text } from '@chakra-ui/react';
-import { Slider } from 'components';
+import { Slider } from '@components/ui/slider';
 
 const MIN_LINE_HEIGHT = 1.0;
 const MAX_LINE_HEIGHT = 2.5;

@@ -3,12 +3,12 @@ import { Box } from '@chakra-ui/react';
 
 import { HiOutlineTrash, HiOutlineSparkles } from "react-icons/hi2";
 
-import { TooltipButton } from 'components';
+import { TooltipButton } from '@components/TooltipButton';
 
 import { useImageTool } from './hooks/useImageTool';
 import ImageDisplay from './components/ImageDisplay';
 import ImageGenerationDialog from './components/ImageGenerationDialog';
-import type { ChunkType, UpdateChunkFieldFn } from 'types';
+import type { ChunkType, UpdateChunkFieldFn } from '@mtypes/documents';
 
 interface ImageToolProps {
     chunk: ChunkType;

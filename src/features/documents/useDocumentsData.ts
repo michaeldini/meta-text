@@ -4,26 +4,29 @@
 // For maintainability, hooks are grouped by entity type and operation
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useNotifications } from 'store';
+import { useNotifications } from '@store/notificationStore';
 import {
     fetchSourceDocuments,
     fetchSourceDocument,
     updateSourceDocument,
+    deleteSourceDocument,
+    createSourceDocument,
+} from '@services/sourceDocumentService';
+import {
+
     fetchMetatexts,
     fetchMetatext,
-    deleteSourceDocument,
     deleteMetatext,
-    createSourceDocument,
     createMetatext
-} from 'services';
+} from '@services/metatextService';
 import type {
     SourceDocumentSummary,
     SourceDocumentDetail,
     SourceDocumentUpdate,
     MetatextSummary,
     MetatextDetail
-} from 'types';
-import { getErrorMessage } from 'types/error';
+} from '@mtypes/documents';
+import { getErrorMessage } from '@mtypes/error';
 import { HTTPError } from 'ky';
 
 

@@ -4,11 +4,11 @@
 
 import React, { useState } from 'react';
 import { IconButton } from '@chakra-ui/react';
-import { Tooltip } from 'components'
+import { Tooltip } from '@components/ui/tooltip'
 import { HiArrowUturnLeft } from 'react-icons/hi2';
 import { useMergeChunks } from './hooks/useMergeChunks';
 
-import { MergeChunksToolProps } from 'features/chunk-shared/types';
+import { MergeChunksToolProps } from '@features/chunk-shared/types';
 /**
  * Merge Chunks Tool Component
  * Allows merging two consecutive chunks

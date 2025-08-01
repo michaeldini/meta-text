@@ -2,9 +2,9 @@
 // Triggers before token expiry, updates Zustand store, and logs out on failure
 import { useEffect, useRef } from 'react';
 
-import { log } from 'utils';
-import { useAuthStore } from 'store';
-import { refreshToken, getMe } from 'services';
+import log from '@utils/logger';
+import { useAuthStore } from '@store/authStore';
+import { refreshToken, getMe } from '@services/authService';
 
 // Helper to decode JWT and get exp (expiration) in seconds
 function getTokenExpiration(token: string): number | null {

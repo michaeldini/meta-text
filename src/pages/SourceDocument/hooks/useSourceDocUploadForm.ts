@@ -7,7 +7,7 @@
  * Returns all props and handlers needed for the upload form.
  */
 import { useState, useCallback } from 'react';
-import { useAddSourceDocument } from '../../../features/documents/useDocumentsData';
+import { useAddSourceDocument } from '@features/documents/useDocumentsData';
 
 export function useSourceDocUploadForm(onSuccess: () => void) {
     // Local state for batch upload

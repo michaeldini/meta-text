@@ -8,7 +8,7 @@
  */
 import { useEffect, useCallback, useState } from 'react';
 import { useSearchStore } from '../store/useSearchStore';
-import { useChunkStore } from 'store';
+import { useChunkStore } from '@store/chunkStore';
 
 interface UseSearchOptions {
     debounceMs?: number;

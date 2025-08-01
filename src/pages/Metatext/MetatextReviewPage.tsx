@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Box } from '@chakra-ui/react/box';
 import type { ReactElement } from 'react';
 
-import { Boundary } from 'components/Boundaries';
+import { Boundary } from '@components/Boundaries';
 import { Header, ReviewContent } from './components';
 import { useMetatextReviewData } from './hooks/useMetatextReviewData';
 

@@ -6,7 +6,7 @@
 
 import type { ReactElement } from 'react';
 
-import { PageContainer } from 'components';
+import { PageContainer } from '@components/PageContainer';
 
 import WelcomeText from './components/WelcomeText';
 import HomePageDetails from './components/HomePageDetails';

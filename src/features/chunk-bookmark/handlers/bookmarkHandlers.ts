@@ -1,7 +1,7 @@
 // Pure functions for bookmark operations
 // Used by hooks/components for chunk bookmark logic
 
-import type { ChunkType } from 'types';
+import type { ChunkType } from '@mtypes/documents';
 
 // Find chunk index by id
 export function findChunkIndex(chunks: ChunkType[], chunkId: number): number {

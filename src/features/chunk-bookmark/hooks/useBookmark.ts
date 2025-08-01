@@ -1,8 +1,8 @@
 // React Query hooks for bookmark API
 // Handles loading and setting bookmarks for metatext chunks
-
+// TODO split this tanstack import out of this file 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchBookmark, setBookmark, removeBookmark } from 'services/bookmarksService';
+import { fetchBookmark, setBookmark, removeBookmark } from '@services/bookmarksService';
 
 // Fetch the bookmarked chunk for a metatext
 export function useBookmark(metaTextId?: number | null) {

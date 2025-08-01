@@ -1,11 +1,11 @@
 import React, { memo, useMemo } from 'react';
 import { Box, Stack } from '@chakra-ui/react';
 
-import { useChunkStore } from 'store';
+import { useChunkStore } from '@store/chunkStore';
 
 import ChunkWords from './components/ChunkWords';
-import { ChunkToolsContainer } from 'features/chunk-tools';
-import type { ChunkType } from 'types';
+import { ChunkToolsContainer } from '@features/chunk-tools';
+import type { ChunkType } from '@mtypes/documents';
 
 export interface ChunkProps {
     chunk: ChunkType;

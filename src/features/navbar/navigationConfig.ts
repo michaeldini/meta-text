@@ -4,7 +4,7 @@
  * - Supports authenticated and unauthenticated states
  */
 
-import { MetaTextLogoIcon } from 'icons';
+import { MetaTextLogoIcon } from '@components/icons';
 import { HiArrowRightOnRectangle, HiArrowLeftOnRectangle, HiPlus, HiOutlineDocumentArrowDown, HiOutlineDocumentArrowUp } from "react-icons/hi2";
 
 

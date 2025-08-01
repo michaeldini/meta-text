@@ -3,20 +3,19 @@
 
 import React, { Suspense } from 'react';
 import { Box, Stack, } from '@chakra-ui/react';
-import { ErrorBoundary } from 'components';
-import { CopyTool } from 'features/chunk-copy';
-import type { ChunkType, UpdateChunkFieldFn } from 'types';
+import { CopyTool } from '@features/chunk-copy';
+import type { ChunkType, UpdateChunkFieldFn } from '@mtypes/documents';
 import type { ChunkToolId } from './toolsRegistry';
 
-import { ChunkPosition } from 'components/ChunkPosition';
+import { ChunkPosition } from '@components/ChunkPosition';
 
-import { NotesTool } from 'features/chunk-note';
-import { EvaluationTool } from 'features/chunk-evaluation';
-import { ImageTool } from 'features/chunk-image';
-import { RewriteDisplayTool } from 'features/chunk-rewrite';
-import { ExplanationTool } from 'features/chunk-explanation';
-import { ChunkBookmarkToggle } from 'features/chunk-bookmark';
-import { ChunkFavoriteToggle } from 'features/chunk-favorite';
+import { NotesTool } from '@features/chunk-note';
+import { EvaluationTool } from '@features/chunk-evaluation';
+import { ImageTool } from '@features/chunk-image';
+import { RewriteDisplayTool } from '@features/chunk-rewrite';
+import { ExplanationTool } from '@features/chunk-explanation';
+import { ChunkBookmarkToggle } from '@features/chunk-bookmark';
+import { ChunkFavoriteToggle } from '@features/chunk-favorite';
 
 
 interface ChunkToolsContainerProps {

@@ -2,7 +2,7 @@
 // Listens to notification store and displays notifications using Chakra UI
 
 import React, { useEffect } from 'react';
-import { useNotificationStore } from 'store';
+import { useNotificationStore } from '@store/notificationStore';
 import { toaster } from './ui';
 
 export function GlobalNotifications(): React.ReactElement | null {

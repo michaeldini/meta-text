@@ -2,7 +2,7 @@
 // Encapsulates state and handlers for chunk tool selection
 // Used by ChunkToolsPanel to separate business logic from UI
 
-import { useChunkStore } from 'store';
+import { useChunkStore } from '@store/chunkStore';
 import { createChunkToolsRegistry, type ChunkToolId } from './toolsRegistry';
 
 export function useChunkToolsPanel() {

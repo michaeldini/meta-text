@@ -1,4 +1,4 @@
-import { ChunkType, UpdateChunkFieldFn, Rewrite } from 'types';
+import { ChunkType, UpdateChunkFieldFn, Rewrite } from '@mtypes/documents';
 
 // =============================================================================
 // CORE TOOL TYPES

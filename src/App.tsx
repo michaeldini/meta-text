@@ -6,11 +6,12 @@ import React, { useEffect, JSX, Suspense, lazy, ComponentType } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 import { Box, Spinner, Stack, Text } from '@chakra-ui/react';
-import { NavBar } from 'features';
-import { GlobalNotifications, Toaster } from 'components';
-import { Boundary } from 'components/Boundaries';
-import { useAuthStore } from 'store';
-import { useAuthRefresh } from 'hooks';
+import { NavBar } from '@features/navbar';
+import { GlobalNotifications } from '@components/GlobalNotifications';
+import { Toaster } from '@components/ui/toaster'
+import { Boundary } from '@components/Boundaries';
+import { useAuthStore } from '@store/authStore';
+import { useAuthRefresh } from '@hooks/useAuthRefresh';
 
 /** Dynamically import pages for code splitting using barrel exports
  * This allows for lazy loading of components
@@ -18,18 +19,18 @@ import { useAuthRefresh } from 'hooks';
  * Each page is wrapped in a lazy function to enable code splitting.
  * The `default` export is used to ensure compatibility with the lazy loading syntax.
  */
-const HomePage = lazy(() => import('pages').then(module => ({ default: module.HomePage })));
-const LoginPage = lazy(() => import('pages').then(module => ({ default: module.LoginPage })));
-const RegisterPage = lazy(() => import('pages').then(module => ({ default: module.RegisterPage })));
+const HomePage = lazy(() => import('@pages/HomePage/HomePage'));
+const LoginPage = lazy(() => import('@pages/Auth/LoginPage'));
+const RegisterPage = lazy(() => import('@pages/Auth/RegisterPage'));
 
-const SourceDocPage = lazy(() => import('pages').then(module => ({ default: module.SourceDocPage })));
-const SourceDocDetailPage = lazy(() => import('pages').then(module => ({ default: module.SourceDocDetailPage })));
+const SourceDocPage = lazy(() => import('@pages/SourceDocument/SourceDocPage'));
+const SourceDocDetailPage = lazy(() => import('@pages/SourceDocument/SourceDocDetailPage'));
 
-const MetatextPage = lazy(() => import('pages').then(module => ({ default: module.MetatextPage })));
-const MetatextDetailPage = lazy(() => import('pages').then(module => ({ default: module.MetatextDetailPage })));
-const MetatextReviewPage = lazy(() => import('pages').then(module => ({ default: module.MetatextReviewPage })));
+const MetatextPage = lazy(() => import('@pages/Metatext/MetatextPage'));
+const MetatextDetailPage = lazy(() => import('@pages/Metatext/MetatextDetailPage'));
+const MetatextReviewPage = lazy(() => import('@pages/Metatext/MetatextReviewPage'));
 
-const ExperimentsPage = lazy(() => import('pages').then(module => ({ default: module.ExperimentsPage })));
+const ExperimentsPage = lazy(() => import('@pages/ExperimentsPage'));
 
 /**
  * Route configuration interface and route definitions

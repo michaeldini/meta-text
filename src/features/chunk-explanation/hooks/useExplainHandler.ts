@@ -2,7 +2,7 @@
 // Returns a handler function and state for use in UI components
 
 import { useState, useCallback } from 'react';
-import { explainWordsOrChunk, ExplanationRequest, ExplanationResponse } from 'services';
+import { explainWordsOrChunk, ExplanationRequest, ExplanationResponse } from '@services/aiService';
 
 
 interface UseExplainHandlerOptions {

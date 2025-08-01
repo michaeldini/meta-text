@@ -5,7 +5,7 @@
  *  - Refetching metatexts after creation
  * Returns all props needed for MetatextPage.
  */
-import { useMetatexts, useSourceDocuments } from '../../../features/documents/useDocumentsData';
+import { useMetatexts, useSourceDocuments } from '@features/documents/useDocumentsData';
 
 export function useMetatextPage() {
     // Fetch metatexts and source documents using TanStack Query hooks

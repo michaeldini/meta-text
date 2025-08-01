@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { useBookmarkUIStore } from '../store/bookmarkStore';
-import type { ChunkType } from 'types';
+import type { ChunkType } from '@mtypes/documents';
 import { findChunkIndex, getChunkPage, scrollToChunk } from '../handlers/bookmarkHandlers';
 
 const useChunkBookmarkNavigation = (

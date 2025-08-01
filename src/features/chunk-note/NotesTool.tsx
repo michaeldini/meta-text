@@ -6,8 +6,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Box, } from '@chakra-ui/react';
 
-import { ChunkTextField } from 'features';
-import type { ChunkType, UpdateChunkFieldFn } from 'types';
+import { ChunkTextField } from '@features/chunk/components/ChunkTextField';
+import type { ChunkType, UpdateChunkFieldFn } from '@mtypes/documents';
 
 interface NotesToolProps {
     chunk: ChunkType;

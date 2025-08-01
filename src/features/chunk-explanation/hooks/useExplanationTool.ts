@@ -3,7 +3,7 @@
 
 import { useCallback } from 'react';
 import { useExplainHandler } from './useExplainHandler';
-import type { ChunkType, UpdateChunkFieldFn } from 'types';
+import type { ChunkType, UpdateChunkFieldFn } from '@mtypes/documents';
 
 export function useExplanationTool(chunk: ChunkType, updateChunkField: UpdateChunkFieldFn) {
     const { handleExplain, loading, error } = useExplainHandler({

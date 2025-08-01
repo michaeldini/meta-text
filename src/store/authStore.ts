@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { login as apiLogin, register as apiRegister, getMe, refreshToken } from 'services';
-import { log } from 'utils';
-import { getErrorMessage } from 'types';
+import { login as apiLogin, register as apiRegister, getMe, refreshToken } from '@services/authService';
+import log from '@utils/logger';
+import { getErrorMessage } from '@mtypes/error';
 
 
 interface User {

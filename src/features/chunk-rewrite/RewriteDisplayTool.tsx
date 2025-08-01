@@ -4,8 +4,8 @@ import { Box } from '@chakra-ui/react/box';
 import { Text } from '@chakra-ui/react/text';
 import { Button } from '@chakra-ui/react/button';
 import { Drawer } from '@chakra-ui/react/drawer';
-import type { ChunkType } from '../../types/documents';
-import { useChunkStore } from '../../store/chunkStore';
+import type { ChunkType } from '@mtypes/documents';
+import { useChunkStore } from '@store/chunkStore';
 import RewriteToolButton from './components/RewriteToolButton';
 import { useRewrite } from './hooks/useRewrite';
 

@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { HiDocumentText, HiQuestionMarkCircle, HiPhoto, HiCheck, HiPencilSquare, } from 'react-icons/hi2';
-import type { ChunkType, UpdateChunkFieldFn } from 'types';
+import type { ChunkType, UpdateChunkFieldFn } from '@mtypes/documents';
 
 // Tool component interface - all tools must implement this
 export interface ChunkToolProps {

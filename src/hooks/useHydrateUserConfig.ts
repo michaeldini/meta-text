@@ -1,6 +1,6 @@
 
 import { useEffect } from 'react';
-import { useUserConfig } from '../services/userConfigService';
+import { useUserConfig } from '@services/userConfigService';
 
 
 // This hook is now a no-op, as hydration is handled by TanStack Query's cache and useUserConfig

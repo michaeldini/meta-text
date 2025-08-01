@@ -1,6 +1,6 @@
 import { api } from '../utils/ky';
-import { log } from 'utils';
-import type { Explanation } from 'types';
+import log from '@utils/logger';
+import type { Explanation } from '@mtypes/MetatextReview.types';
 
 
 export interface ReviewResponse {

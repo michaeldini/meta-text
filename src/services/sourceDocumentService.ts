@@ -1,5 +1,5 @@
 import { api } from '../utils/ky';
-import type { SourceDocumentSummary, SourceDocumentDetail, SourceDocumentCreate, SourceDocumentUpdate } from 'types';
+import type { SourceDocumentSummary, SourceDocumentDetail, SourceDocumentCreate, SourceDocumentUpdate } from '@mtypes/documents';
 
 // Fetch all source documents
 export async function fetchSourceDocuments(): Promise<SourceDocumentSummary[]> {

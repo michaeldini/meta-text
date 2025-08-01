@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Dialog } from '@chakra-ui/react';
 import { IconButton, Text, Box } from '@chakra-ui/react';
-import { Tooltip } from 'components'
+import { Tooltip } from '@components/ui/tooltip'
 interface InfoButtonProps {
     icon: React.ReactElement;
     dialogId: string;

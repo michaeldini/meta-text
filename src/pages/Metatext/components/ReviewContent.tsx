@@ -2,8 +2,9 @@
 // Composed of multiple accordion sections for better organization and user experience
 
 import type { ReactElement } from 'react';
-import { FlashCards, ReviewTable, Phrases } from 'features';
-import { ChunkType, Explanation } from 'types';
+import { FlashCards, ReviewTable, Phrases } from '@features/review';
+import { ChunkType, } from '@mtypes/documents';
+import { Explanation } from '@mtypes/MetatextReview.types'
 import { ReviewSection } from './ReviewSection';
 
 interface ReviewContentProps {

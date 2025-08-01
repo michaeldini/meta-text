@@ -3,7 +3,8 @@
 // Encapsulates fetch, error, and download logic for use in UI components.
 
 import React from 'react';
-import { api, downloadJsonAsFile } from 'utils';
+import { api } from '@utils/ky';
+import { downloadJsonAsFile } from '@utils/downloadJsonAsFile'
 
 export function useDownloadMetatext(metatextId?: number | null, disabled?: boolean) {
     const [loading, setLoading] = React.useState(false);

@@ -4,7 +4,7 @@
 // Follows the ky pattern for API requests, see sourceDocumentService.ts for reference
 
 import { api } from '../utils/ky';
-import type { Rewrite, ChunkType } from 'types';
+import type { Rewrite, ChunkType } from '@mtypes/documents';
 
 
 // Fetch all chunks for a metatext and user

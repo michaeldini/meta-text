@@ -1,6 +1,6 @@
 import { Heading, IconButton } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react/box';
-import { Tooltip } from 'components';
+import { Tooltip } from '@components/ui/tooltip';
 import type { ReactElement } from 'react';
 import { HiArrowLeft } from 'react-icons/hi2';
 

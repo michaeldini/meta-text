@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import type { MetatextSummary, SourceDocumentSummary, } from 'types'
 
 /**
  * Returns a filtered list of items based on a search string and a key or custom filter function.

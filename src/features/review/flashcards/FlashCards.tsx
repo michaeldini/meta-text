@@ -4,10 +4,9 @@
 
 import React from 'react';
 import { Wrap } from '@chakra-ui/react/wrap';
-import { Box } from '@chakra-ui/react/box';
 import Flashcard from './components/Flashcard';
-import { Explanation } from 'types';
-import { Alert } from 'components';
+import { Explanation } from '@mtypes/MetatextReview.types';
+import { Alert } from '@components/ui/alert';
 
 interface FlashCardsProps {
     flashcardItems: Explanation[];

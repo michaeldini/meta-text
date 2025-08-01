@@ -1,5 +1,5 @@
 import React from 'react';
-import { Textarea } from '@chakra-ui/react';
+import { Textarea } from '@chakra-ui/react/textarea';
 
 export interface ChunkTextFieldProps {
     label: string;

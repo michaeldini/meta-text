@@ -10,10 +10,10 @@
 
 import React from 'react';
 import { Flex, Box, Button, IconButton, Spacer } from '@chakra-ui/react';
-import { ColorModeButton } from 'components';
+import { ColorModeButton } from '@components/ui/color-mode';
 import { useNavigate } from 'react-router-dom';
 
-import { useAuthStore } from 'store';
+import { useAuthStore } from '@store/authStore';
 
 
 import { getNavigationConfig } from './navigationConfig';

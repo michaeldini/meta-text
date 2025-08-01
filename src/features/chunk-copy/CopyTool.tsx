@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, IconButton, Tooltip, Text, Clipboard } from '@chakra-ui/react';
-import { useNotifications } from 'store';
-import type { CopyToolProps } from 'features/chunk-shared/types';
+import { useNotifications } from '@store/notificationStore';
+import type { CopyToolProps } from '@features/chunk-shared/types';
 
 
 export function CopyTool({ chunkText, 'data-testid': dataTestId = 'copy-tool', sx = {} }: CopyToolProps) {

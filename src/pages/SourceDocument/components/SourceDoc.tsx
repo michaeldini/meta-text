@@ -5,16 +5,13 @@
 import React from 'react';
 import { Box } from '@chakra-ui/react/box';
 import { Text } from '@chakra-ui/react';
-import { IconButton } from '@chakra-ui/react/button';
 import { Stack } from '@chakra-ui/react/stack';
-import { Textarea } from '@chakra-ui/react/textarea';
-import { CloseButton } from '@chakra-ui/react/button';
-import { Prose, Tooltip, Alert } from 'components';
-import { HiPencil, HiCheck } from 'react-icons/hi2';
+import { Prose, Tooltip, Alert } from '@components/ui';
+import { HiCheck } from 'react-icons/hi2';
 
 
 // Props for SourceDoc presentational component
-import type { SourceDocumentDetail } from 'types';
+import type { SourceDocumentDetail } from '@mtypes/documents';
 export interface SourceDocProps {
     doc: SourceDocumentDetail;
     isSaving: boolean;

@@ -4,8 +4,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDeleteSourceDocument, useDeleteMetatext } from '../features/documents/useDocumentsData';
-import { useFilteredList } from 'hooks';
-import type { MetatextSummary, SourceDocumentSummary } from 'types';
+import { useFilteredList } from '@hooks/useFilteredList';
+import type { MetatextSummary, SourceDocumentSummary } from '@mtypes/documents';
 
 interface UseSearchableListProps {
     title: string;

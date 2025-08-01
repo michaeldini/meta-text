@@ -13,13 +13,12 @@
  */
 import React, { useState, useCallback } from 'react';
 import { Box } from '@chakra-ui/react/box';
-import { Text } from '@chakra-ui/react';
-// import { Drawer } from '@chakra-ui/react/drawer';
+import { Text } from '@chakra-ui/react/text';
 import { IconButton } from '@chakra-ui/react/button';
 import { Image } from '@chakra-ui/react/image';
 import { Spinner } from '@chakra-ui/react/spinner';
 
-import type { ImageDisplayProps } from 'features/chunk-shared/types';
+import type { ImageDisplayProps } from '@features/chunk-shared/types';
 
 export function ImageDisplay(props: ImageDisplayProps) {
     const { src, alt = '', height = '300px', showModal = true } = props;

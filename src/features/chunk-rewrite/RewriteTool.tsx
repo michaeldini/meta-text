@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { generateRewrite } from '../../services/chunkService';
-import type { RewriteToolProps } from '../../features/chunk-shared/types';
+import { generateRewrite } from '@services/chunkService';
+import type { RewriteToolProps } from '@features/chunk-shared/types';
 import RewriteToolButton from './components/RewriteToolButton';
 import { RewriteDialog } from './components/RewriteDialog';
 

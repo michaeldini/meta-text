@@ -3,7 +3,7 @@
 import React from 'react';
 import { Card } from '@chakra-ui/react/card';
 import { Button } from '@chakra-ui/react/button';
-import { Prose } from 'components/ui';
+import { Prose } from '@components/ui/prose';
 
 interface FlashcardFrontProps {
     word: string;

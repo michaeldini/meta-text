@@ -1,9 +1,9 @@
 // TODO I don't know how this file works. 
 // Custom hook for managing Metatext creation form state and operations
 import { useState, useCallback } from 'react';
-import { createMetatext } from 'services';
-import { useNotifications } from 'store';
-import { log } from 'utils';
+import { createMetatext } from '@services/metatextService';
+import { useNotifications } from '@store/notificationStore';
+import log from '@utils/logger';
 
 // i don't know why this is needed.
 export interface UseMetatextCreateOptions {

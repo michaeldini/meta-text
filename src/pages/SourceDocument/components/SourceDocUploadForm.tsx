@@ -10,7 +10,7 @@ import { Button } from '@chakra-ui/react/button';
 // import { Input } from '@chakra-ui/react/input'
 import { FileUpload } from '@chakra-ui/react/file-upload';
 
-import { Field, Prose } from 'components';
+import { Field, Prose } from '@components/ui';
 import { HiArrowDownTray } from 'react-icons/hi2';
 
 import { useSourceDocUploadForm } from '../hooks/useSourceDocUploadForm';

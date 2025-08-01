@@ -1,10 +1,10 @@
 
 // React Query-based hook for fetching Metatext review data
 import { useQuery } from '@tanstack/react-query';
-import { fetchReviewData } from 'services';
-import { ChunkType, Explanation } from 'types';
-import { useChunkStore } from 'store/chunkStore';
-import { log } from 'utils';
+import { fetchReviewData } from '@services/reviewService';
+import { ChunkType } from '@mtypes/documents';
+import { Explanation } from '@mtypes/MetatextReview.types'
+import { useChunkStore } from '@store/chunkStore';
 
 
 interface UseMetatextReviewDataReturn {

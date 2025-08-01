@@ -2,9 +2,10 @@ import React, { useCallback } from 'react';
 
 
 import { Box } from '@chakra-ui/react/box'
-import { Prose, TooltipButton } from 'components';
+import { Prose } from '@components/ui';
+import { TooltipButton } from '@components/TooltipButton'
 import { HiOutlineSparkles } from 'react-icons/hi2';
-import type { ChunkType, UpdateChunkFieldFn } from 'types';
+import type { ChunkType, UpdateChunkFieldFn } from '@mtypes/documents';
 import { useEvaluation } from './hooks/useEvaluation';
 
 interface EvaluationToolProps {

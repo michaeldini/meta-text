@@ -3,7 +3,7 @@
 // Follows the ky pattern for API requests, see sourceDocumentService.ts for reference
 
 import { api } from '../utils/ky';
-import type { MetatextSummary, MetatextDetail, MetatextCreate } from 'types';
+import type { MetatextSummary, MetatextDetail, MetatextCreate } from '@mtypes/documents';
 
 // Fetch all meta texts
 export async function fetchMetatexts(): Promise<MetatextSummary[]> {

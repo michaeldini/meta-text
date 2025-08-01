@@ -5,14 +5,14 @@
 
 
 import React, { ReactElement } from 'react';
-import { useSourceDocuments } from '../../features/documents/useDocumentsData';
+import { useSourceDocuments } from '@features/documents/useDocumentsData';
 
-import {
-    DocumentManagementLayout,
-    PageContainer,
-    SourceDocUploadForm,
-    SearchableList,
-} from 'components';
+
+import DocumentManagementLayout from '@components/DocumentManagementLayout'
+import { PageContainer } from '@components/PageContainer'
+import SourceDocUploadForm from '@pages/SourceDocument/components/SourceDocUploadForm'
+import { SearchableList } from '@components/SearchableList'
+
 
 function SourceDocPage(): ReactElement {
 

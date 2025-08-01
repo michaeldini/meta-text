@@ -5,11 +5,9 @@
 import React, { ReactElement } from 'react';
 
 import { useMetatextPage } from './hooks/useMetatextPage';
-import {
-    PageContainer,
-    DocumentManagementLayout,
-    SearchableList
-} from 'components';
+import { PageContainer, } from '@components/PageContainer';
+import DocumentManagementLayout from '@components/DocumentManagementLayout'
+import { SearchableList } from '@components/SearchableList'
 
 import MetatextCreateForm from './components/MetatextCreateForm';
 

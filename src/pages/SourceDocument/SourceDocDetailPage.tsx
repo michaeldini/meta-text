@@ -7,7 +7,11 @@ import React from 'react';
 import { Box } from '@chakra-ui/react/box';
 import type { ReactElement } from 'react';
 import { HiOutlineSparkles } from 'react-icons/hi2';
-import { PageContainer, SourceDocInfo, StyleControls, DocumentHeader, TooltipButton } from 'components';
+import { PageContainer } from '@components/PageContainer';
+import { SourceDocInfo } from '@components/SourceDocInfo';
+import { StyleControls } from '@components/stylecontrols';
+import { DocumentHeader } from '@components/DocumentHeader';
+import { TooltipButton } from '@components/TooltipButton';
 import { useSourceDocDetail } from './hooks/useSourceDocDetail';
 import { useSourceDocEditor } from './hooks/useSourceDocEditor';
 
