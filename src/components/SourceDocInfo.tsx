@@ -3,7 +3,7 @@ import { Editable } from '@chakra-ui/react/editable';
 import { Stack } from '@chakra-ui/react/stack';
 import { Text } from '@chakra-ui/react/text';
 import { Collapsible } from '@chakra-ui/react/collapsible';
-import { SourceDocumentDetail } from 'types';
+import { SourceDocumentDetail } from '@mtypes/documents';
 
 interface SourceDocInfoProps {
     doc: SourceDocumentDetail;
@@ -13,7 +13,7 @@ interface SourceDocInfoProps {
 
 // Configuration for rendering fields in the document info
 interface FieldConfig {
-    key: keyof import('types').SourceDocumentSummary;
+    key: keyof import('@mtypes/documents').SourceDocumentSummary;
     label: string;
     isListField?: boolean;
 }

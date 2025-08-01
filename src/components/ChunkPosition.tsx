@@ -4,7 +4,7 @@
 import React from 'react';
 import { Text } from '@chakra-ui/react';
 import { useUserConfig } from '../services/userConfigService';
-import type { ChunkType } from 'types';
+import type { ChunkType } from '@mtypes/documents';
 
 interface ChunkPositionProps {
     chunk: ChunkType;

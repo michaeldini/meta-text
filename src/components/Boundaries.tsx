@@ -3,7 +3,6 @@ import { Box } from '@chakra-ui/react/box';
 import { Button } from '@chakra-ui/react/button';
 import { Text, Spinner } from '@chakra-ui/react';
 import type { Logger } from '../types/global';
-import { AppAlert } from 'components';
 
 interface ErrorBoundaryState {
     hasError: boolean;
