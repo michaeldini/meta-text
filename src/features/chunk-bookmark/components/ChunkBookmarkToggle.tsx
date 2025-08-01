@@ -1,7 +1,6 @@
-// Click this toggle to bookmark or unbookmark a chunk.
+// Click this toggle to bookmark or un-bookmark a chunk.
 
 import React from 'react';
-import { IconButton } from '@chakra-ui/react/button';
 import { TooltipButton } from '@components/TooltipButton'
 import { useChunkBookmarkToggle } from '../hooks/useChunkBookmarkToggle';
 import { HiBookmark, HiOutlineBookmark } from 'react-icons/hi2';
