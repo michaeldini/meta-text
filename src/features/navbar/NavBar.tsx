@@ -9,7 +9,7 @@
  */
 
 import React from 'react';
-import { Flex, Box, Button, IconButton, Spacer } from '@chakra-ui/react';
+import { Flex, Box, Button, Spacer } from '@chakra-ui/react';
 import { ColorModeButton } from '@components/ui/color-mode';
 import { useNavigate } from 'react-router-dom';
 

@@ -11,45 +11,67 @@
 
 import {
     defineConfig,
-    defaultBaseConfig,
 } from "@chakra-ui/react"
-import {
-    inputRecipe,
-    textareaRecipe,
-    headingRecipe,
-    spinnerRecipe,
-} from "@chakra-ui/react/theme"
+// import {
+//     inputRecipe,
+//     textareaRecipe,
+//     headingRecipe,
+//     spinnerRecipe,
+//     buttonRecipe,
+//     iconRecipe,
+//     containerRecipe,
+//     drawerSlotRecipe,
+//     tagSlotRecipe,
+//     cardSlotRecipe,
+//     listSlotRecipe,
+//     fileUploadSlotRecipe,
+
+
+
+// } from "@chakra-ui/react/theme"
 import { defineRecipe } from "@chakra-ui/react"
 
 const config = defineConfig({
     theme: {
+        // slotRecipes: {
+        //     drawer: drawerSlotRecipe,
+        //     tag: tagSlotRecipe,
+        //     card: cardSlotRecipe,
+        //     list: listSlotRecipe,
+        //     fileUPload: fileUploadSlotRecipe,
+
+
+        // },
         // Component recipes for Chakra UI core components
         recipes: {
-            // Custom button recipe: all buttons have a border by default
-            button: defineRecipe({
-                base: {
-                    color: "fg",
-                },
-                defaultVariants: {
-                    variant: "ghost",
-                },
-                variants: {
-                    variant: {
-                        ghost: {
-                            _hover: {
-                                bg: { base: "bg.subtle", _dark: "bg.muted" },
-                            },
-                        },
-                    },
-                },
 
-                // You can add variants here if needed
-            }),
+            // button: defineRecipe({
+            //     base: {
+            //         color: "fg",
+            //     },
+            //     defaultVariants: {
+            //         variant: "ghost",
+            //     },
+            //     variants: {
+            //         variant: {
+            //             ghost: {
+            //                 color: 'red',
+            //                 _hover: {
+            //                     bg: { base: "bg.subtle", _dark: "bg.muted" },
+            //                 },
+            //             },
+            //         },
+            //     },
 
-            input: inputRecipe,
-            textarea: textareaRecipe,
-            heading: headingRecipe,
-            spinner: spinnerRecipe,
+            //     // You can add variants here if needed
+            // }),
+            // button: buttonRecipe,
+            // input: inputRecipe,
+            // container: containerRecipe,
+            // icon: iconRecipe,
+            // textarea: textareaRecipe,
+            // heading: headingRecipe,
+            // spinner: spinnerRecipe,
         },
         // Design tokens for easy customization
         tokens: {

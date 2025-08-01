@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { Rewrite, ChunkType } from '@mtypes/documents';
+import type { ChunkType } from '@mtypes/documents';
 import type { UseRewriteReturn } from '@features/chunk-shared';
 
 export const useRewrite = (chunk: ChunkType | null): UseRewriteReturn => {

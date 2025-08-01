@@ -3,7 +3,7 @@
 // Provides API calls for managing text chunks and rewrites
 // Follows the ky pattern for API requests, see sourceDocumentService.ts for reference
 
-import { api } from '../utils/ky';
+import { api } from '@utils/ky';
 import type { Rewrite, ChunkType } from '@mtypes/documents';
 
 

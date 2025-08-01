@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, IconButton, Tooltip, Text, Clipboard } from '@chakra-ui/react';
+import { Box, IconButton, Clipboard } from '@chakra-ui/react';
 import { useNotifications } from '@store/notificationStore';
 import type { CopyToolProps } from '@features/chunk-shared/types';
 
