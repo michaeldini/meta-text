@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { generateRewrite } from 'services/chunkService/generateRewrite';
-import type { RewriteToolProps } from 'features/chunk-rewrite/types';
+import { generateRewrite } from '../../services/chunkService';
+import type { RewriteToolProps } from '../../features/chunk-shared/types';
 import RewriteToolButton from './components/RewriteToolButton';
 import { RewriteDialog } from './components/RewriteDialog';
 
 const STYLE_OPTIONS = [
-    { value: 'like im 5', label: 'Explain like I’m 5' },
+    { value: 'like im 5', label: 'like I’m 5' },
     { value: 'like a bro', label: 'Like a bro' },
-    { value: 'academic', label: 'Academic' },
+    { value: 'academic', label: 'Like an Academic' },
 ];
 
 

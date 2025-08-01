@@ -5,7 +5,7 @@
 
 
 import React, { ReactElement } from 'react';
-import { useSourceDocuments } from 'features';
+import { useSourceDocuments } from '../../features/documents/useDocumentsData';
 
 import {
     DocumentManagementLayout,

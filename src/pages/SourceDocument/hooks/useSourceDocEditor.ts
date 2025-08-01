@@ -2,8 +2,7 @@
 // Encapsulates all state, handlers, and UI preferences for editing a source document
 import { useState, useCallback, useRef } from 'react';
 import type { SourceDocumentDetail } from 'types';
-import { useUserConfig } from 'services/userConfigService';
-import { useUpdateSourceDocument } from 'features';
+import { useUpdateSourceDocument } from '../../../features/documents/useDocumentsData';
 import { log } from 'utils';
 
 

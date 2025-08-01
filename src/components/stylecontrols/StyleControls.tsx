@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useUserConfig, useUpdateUserConfig } from 'services/userConfigService';
+import { useUserConfig, useUpdateUserConfig } from '../../services/userConfigService';
 import { TextSizeInput, LineHeightInput, PaddingXInput, FontFamilySelect } from 'components';
 
 

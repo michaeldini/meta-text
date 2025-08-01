@@ -1,18 +1,7 @@
 // Service to hydrate Zustand stores with user config from backend
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../utils/ky';
-
-// User config shape returned from backend
-export interface UserConfig {
-    uiPreferences?: {
-        textSizePx?: number;
-        fontFamily?: string;
-        lineHeight?: number;
-        paddingX?: number;
-        showChunkPositions?: boolean;
-    };
-}
-
+import { UserConfig } from '../types/ui-types'
 
 // TanStack Query: Fetch user config
 export function useUserConfig() {

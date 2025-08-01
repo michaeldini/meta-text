@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconButton } from '@chakra-ui/react';
-import { Tooltip } from 'components'
+import { Tooltip } from '../../../components/ui/tooltip'
 import { HiPencilSquare } from 'react-icons/hi2';
 
 // Props for RewriteToolButton (local, not shared)

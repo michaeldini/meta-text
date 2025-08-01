@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import { generateSourceDocInfo } from 'services';
-import { useSourceDocuments } from 'features/documents/useDocumentsData';
+import { useSourceDocuments } from '../features/documents/useDocumentsData';
 
 export function useGenerateSourceDocInfo(sourceDocumentId?: number | null, onSuccess?: () => void) {
     const [loading, setLoading] = useState(false);

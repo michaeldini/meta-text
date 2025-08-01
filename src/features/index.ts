@@ -28,5 +28,3 @@ export * from './chunk-bookmark';
 // Favorite feature
 export * from './chunk-favorite';
 
-// Document management
-export * from './documents';

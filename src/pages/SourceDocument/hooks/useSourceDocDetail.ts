@@ -9,9 +9,9 @@
  */
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSourceDocumentDetail, useUpdateSourceDocument } from 'features';
+import { useSourceDocumentDetail, useUpdateSourceDocument } from '../../../features/documents/useDocumentsData';
 import { useGenerateSourceDocInfo } from 'hooks/useGenerateSourceDocInfo';
-import { useUserConfig } from 'services/userConfigService';
+import { useUserConfig } from '../../../services/userConfigService';
 
 export function useSourceDocDetail() {
     // Extract the sourceDocId from the URL parameters

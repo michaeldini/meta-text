@@ -8,7 +8,7 @@ import { Flex } from '@chakra-ui/react/flex';
 import { Drawer } from '@chakra-ui/react/drawer';
 import { MergeChunksTool } from 'features/chunk-merge';
 import WordsToolbar from './WordsToolbar';
-import { useUserConfig } from 'services/userConfigService';
+import { useUserConfig } from '../../../services/userConfigService';
 import { useChunkWords } from '../hooks/useChunkWords';
 import type { ChunkType } from 'types';
 export interface ChunkWordsProps {

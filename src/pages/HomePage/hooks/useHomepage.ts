@@ -6,7 +6,7 @@
  */
 
 import { useNavigate } from 'react-router-dom';
-import { useSourceDocuments, useMetatexts } from 'features';
+import { useSourceDocuments, useMetatexts } from '../../../features/documents/useDocumentsData';
 import { useHydrateUserConfig } from 'hooks';
 
 

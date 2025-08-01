@@ -6,8 +6,9 @@
 
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useUserConfig, useUpdateUserConfig } from 'services';
-import { useSearchKeyboard, useMetatextDetail, useSourceDocumentDetail } from 'features';
+import { useUserConfig, useUpdateUserConfig } from '../../../services/userConfigService';
+import { useMetatextDetail, useSourceDocumentDetail } from '../../../features/documents/useDocumentsData';
+import { useSearchKeyboard } from '../../../features/chunk-search/hooks/useSearchKeyboard'
 import { useGenerateSourceDocInfo } from 'hooks/useGenerateSourceDocInfo';
 import { useDownloadMetatext } from './useDownloadMetatext';
 import { useBookmarkUIStore } from 'features/chunk-bookmark/bookmarkStore';
