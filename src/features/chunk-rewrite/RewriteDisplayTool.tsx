@@ -8,6 +8,7 @@ import type { ChunkType } from '@mtypes/documents';
 import { useChunkStore } from '@store/chunkStore';
 import RewriteToolButton from './components/RewriteToolButton';
 import { useRewrite } from './hooks/useRewrite';
+import { generateRewrite } from '@services/chunkService';
 
 
 interface RewriteDisplayToolProps {
@@ -43,8 +44,8 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
         setLoading(true);
         setError(null);
         try {
-            // Replace with your actual rewrite generation logic
-            await refetchChunk(chunk.id); // Simulate rewrite creation
+            // generate a new rewrite
+            await generateRewrite(chunk.id, style); // Simulate rewrite creation
             handleCloseDrawer();
         } catch (err) {
             setError('Failed to generate rewrite.');
@@ -78,17 +79,23 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
                                     onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setStyle(e.target.value)}
                                     style={{ width: '100%', marginTop: 8 }}
                                 >
-                                    <option value="like im 5">Explain like I’m 5</option>
+                                    <option value="like im 5">like I’m 5</option>
                                     <option value="like a bro">Like a bro</option>
-                                    <option value="academic">Academic</option>
+                                    <option value="academic">Like an Academic</option>
                                 </select>
                             </Box>
                             {error && <Text color="red.500" mt={2}>{error}</Text>}
                         </Drawer.Body>
-                        <Drawer.Footer>
-                            <Button onClick={handleCloseDrawer} variant="outline" disabled={loading}>Cancel</Button>
-                            <Button onClick={handleSubmitRewrite} colorScheme="blue" disabled={loading || !style || !chunk}>
-                                {loading ? 'Generating...' : 'Generate & Save'}
+                        <Drawer.Footer mb="10">
+                            <Button
+                                onClick={handleCloseDrawer}
+                                color="fg"
+                                disabled={loading}>Cancel</Button>
+                            <Button
+                                onClick={handleSubmitRewrite}
+                                disabled={loading || !style || !chunk}
+                                loading={loading}>
+                                Generate & Save
                             </Button>
                         </Drawer.Footer>
                     </Drawer.Content>
@@ -115,8 +122,12 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
                             <Text>{selectedRewrite.rewrite_text}</Text>
                         </Box>
                     )}
+
                 </Box>
             )}
+            {rewrites.length == 0 && (
+                <Text>No rewrites</Text>)
+            }
         </Box>
     );
 }

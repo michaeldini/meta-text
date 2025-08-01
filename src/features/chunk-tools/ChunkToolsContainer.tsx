@@ -69,7 +69,6 @@ export const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = (props) =
             {activeTools.includes('rewrite') && (
                 <RewriteDisplayTool
                     chunk={chunk}
-                    updateChunkField={updateChunkField}
                     isVisible={true}
                 />
             )}

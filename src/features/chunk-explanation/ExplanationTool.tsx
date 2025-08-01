@@ -3,7 +3,7 @@ import { Box } from '@chakra-ui/react/box';
 import { HiOutlineSparkles } from 'react-icons/hi2';
 
 import { TooltipButton } from '@components/TooltipButton';
-import { Prose } from '@components/ui';
+import { Prose } from '@components/ui/prose';
 import type { ChunkType, UpdateChunkFieldFn } from '@mtypes/documents';
 import { useExplainHandler } from './hooks/useExplainHandler';
 

@@ -24,8 +24,10 @@ export default defineConfig(({ command }) => ({
                 manualChunks: {
                     // Separate vendor chunks
                     'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-                    'utils': ['zustand', 'loglevel'],
+                    'utils': ['zustand', 'loglevel', 'ky'],
                     '@chakra-ui': ['@chakra-ui/react',],
+                    'react-icons': ['react-icons/hi2'],
+                    'react-query': ['@tanstack/react-query'],
                     // Split each feature into its own chunk for better code splitting
                     'chunk-rewrite': ['./src/features/chunk-rewrite'],
                     'chunk-search': ['./src/features/chunk-search'],

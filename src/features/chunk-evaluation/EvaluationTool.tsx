@@ -1,8 +1,6 @@
 import React, { useCallback } from 'react';
-
-
 import { Box } from '@chakra-ui/react/box'
-import { Prose } from '@components/ui';
+import { Prose } from '@components/ui/prose';
 import { TooltipButton } from '@components/TooltipButton'
 import { HiOutlineSparkles } from 'react-icons/hi2';
 import type { ChunkType, UpdateChunkFieldFn } from '@mtypes/documents';
