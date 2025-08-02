@@ -116,9 +116,15 @@ const App = () => {
  * - Protected routes are wrapped in a ProtectedRoute component
  */
 export const AppContent = () => {
+    // Refresh auth token on mount
+    // This will ensure the user is authenticated when the app loads
+    // # TODO: Not sure if or how this is working.
     useAuthRefresh();
+
+    // Hydrate user configuration when user logs in
+    // if there is no user, this will not trigger
     const { user } = useAuthStore();
-    useUserConfig(!!user); // Hydrate user config when user logs in
+    useUserConfig(!!user);
 
 
     const renderRoute = (route: RouteConfig) => {
@@ -140,7 +146,7 @@ export const AppContent = () => {
     };
 
     return (
-        <Box bg="simple">
+        <Box>
             <GlobalNotifications />
             <Toaster />
             <NavBar />

@@ -13,11 +13,12 @@ import HomePageDetails from './components/HomePageDetails';
 import { Center } from "@chakra-ui/react/center"
 import { Stack } from "@chakra-ui/react/stack"
 
-
 import { TooltipButton } from '../../components/TooltipButton';
 import { MetaTextLogoIcon } from '../../components/icons';
 
 import { useHomepage } from './hooks/useHomepage';
+import MetatextPage from '@pages/Metatext/MetatextPage'
+import SourceDocPage from '@pages/SourceDocument/SourceDocPage';
 
 function HomePage(): ReactElement {
 
@@ -32,28 +33,10 @@ function HomePage(): ReactElement {
             loading={isLoading}
             data-testid="homepage-container"
         >
-            <Stack data-testid="homepage-content" maxWidth="2xl">
+            <Stack data-testid="homepage-content" justify="center" alignItems="center" >
                 <WelcomeText />
-                <Center>
-                    <Stack direction="row" gap={4} p={4} align="center" justify="center">
-                        <TooltipButton
-                            label="Browse SourceDocs"
-                            icon={<MetaTextLogoIcon />}
-                            onClick={handleNavigateToSourceDocs}
-                            data-testid="navigate-to-source-docs"
-                            disabled={isLoading}
-                            loading={isLoading}
-                        />
-                        <TooltipButton
-                            label="Browse Metatexts"
-                            icon={<MetaTextLogoIcon />}
-                            onClick={handleNavigateToMetatexts}
-                            data-testid="navigate-to-metatexts"
-                            disabled={isLoading}
-                            loading={isLoading}
-                        />
-                    </Stack>
-                </Center>
+                <MetatextPage />
+                <SourceDocPage />
                 <HomePageDetails />
             </Stack>
 

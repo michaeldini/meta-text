@@ -57,15 +57,12 @@ function MetatextCreateForm(props: MetatextCreateFormProps): React.ReactElement 
 
 
     return (
-        <Stack borderRadius="md" gap={4} >
+        <Stack>
             {/* Form Header */}
             <Box >
-                <Heading as="h2" size="lg" fontWeight="bold">
-                    Create Metatext
+                <Heading size="xl">
+                    New
                 </Heading>
-                <Text >
-                    Select a source document and create a new Metatext.
-                </Text>
             </Box>
 
             {/* Loading Progress */}
@@ -82,10 +79,13 @@ function MetatextCreateForm(props: MetatextCreateFormProps): React.ReactElement 
                 {/* Source Document Selection */}
                 <Select.Root collection={sourceDocOptions} onChange={handleSourceDocChange} >
                     <Select.HiddenSelect />
-                    <Select.Label>Choose Source Document</Select.Label>
+                    <Select.Label>Choose a Document</Select.Label>
                     <Select.Control  >
                         <Select.Trigger>
-                            <Select.ValueText placeholder="Republic by Plato" color="fg.muted" />
+                            <Select.ValueText
+                                placeholder="Republic by Plato"
+                                color="fg.muted"
+                            />
                         </Select.Trigger>
                         <Select.IndicatorGroup>
                             <Select.Indicator />
@@ -108,11 +108,11 @@ function MetatextCreateForm(props: MetatextCreateFormProps): React.ReactElement 
                 {/* Title Input */}
                 <Field
                     p={2}
-                    label="Metatext Title"
+                    label="Choose a Title"
                     required
                     disabled={loading}
                     data-testid="title-input"
-                    helperText="Choose a clear, descriptive title that will help you identify this Metatext later"
+                // helperText="Choose a clear, descriptive title that will help you identify this Metatext later"
                 />
                 <Input
                     placeholder="Enter a descriptive title for your Metatext"

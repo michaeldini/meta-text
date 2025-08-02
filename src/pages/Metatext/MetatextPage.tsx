@@ -27,8 +27,8 @@ function MetatextPage(): ReactElement {
             data-testid="metatext-list-page"
         >
             <DocumentManagementLayout
-                title="Metatext Documents"
-                subtitle="Create new Metatext from a source document or browse existing ones."
+                title="Metatexts"
+                subtitle=""
                 formComponent={
                     <MetatextCreateForm
                         sourceDocs={sourceDocs || []}

@@ -7,7 +7,6 @@
 import React, { ReactElement } from 'react';
 import { useSourceDocuments } from '@features/documents/useDocumentsData';
 
-
 import DocumentManagementLayout from '@components/DocumentManagementLayout'
 import { PageContainer } from '@components/PageContainer'
 import SourceDocUploadForm from '@pages/SourceDocument/components/SourceDocUploadForm'
@@ -25,7 +24,7 @@ function SourceDocPage(): ReactElement {
         >
             <DocumentManagementLayout
                 title="Source Documents"
-                subtitle="Upload a new source document or browse existing ones."
+                subtitle=""
                 formComponent={
                     <SourceDocUploadForm
                         onSuccess={refetch}

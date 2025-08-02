@@ -2,16 +2,18 @@
 // This component supports filtering, navigation, and deletion of items.
 
 import React from 'react';
-import { Input, InputGroup } from '@chakra-ui/react';
+import { Input } from '@chakra-ui/react/input';
+import { InputGroup } from '@chakra-ui/react/input-group';
+import { Stack } from '@chakra-ui/react/stack';
 import { Box } from '@chakra-ui/react/box';
 import { List } from '@chakra-ui/react/list';
 import { CloseButton } from '@chakra-ui/react/button';
-import { Heading } from '@chakra-ui/react';
+import { Heading } from '@chakra-ui/react/heading';
 import { HiMagnifyingGlass, HiOutlineTrash } from "react-icons/hi2";
 import { Boundary } from '@components/Boundaries';
-import { Field } from '@components/ui';
+import { Field } from '@components/ui/field';
 import { TooltipButton } from '@components/TooltipButton'
-import { Spinner } from '@chakra-ui/react';
+import { Spinner } from '@chakra-ui/react/spinner';
 import type { MetatextSummary, SourceDocumentSummary } from '@mtypes/documents';
 import { useSearchableList } from '../hooks/useSearchableList';
 
@@ -66,11 +68,11 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
 
     return (
         <Boundary fallback={<Spinner aria-label="Loading list" />}>
-            <Box>
+            <Box minWidth="300px" >
                 {/* Title */}
                 {title && (
-                    <Heading pb="4">
-                        Browse {title}
+                    <Heading size="lg" >
+                        Load
                     </Heading>
                 )}
                 {/* Search Input */}
@@ -78,6 +80,7 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
                     data-testid="search-input"
                     helperText="Search..."
                     aria-label="Search items"
+                    paddingTop={2}
                 />
                 <InputGroup startElement={<HiMagnifyingGlass />} endElement={endElement}>
                     <Input
@@ -92,6 +95,10 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
                     data-testid="searchable-list"
                     role="list"
                     aria-label={`${filteredItems.length} ${filteredItems.length === 1 ? 'item' : 'items'} found`}
+                    variant="plain"
+                    align="center"
+                    py={4}
+
                 >
                     {filteredItems.length === 0 ? (
                         <List.Item>
@@ -101,16 +108,18 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
                         filteredItems.map((item: SourceDocumentSummary | MetatextSummary) => {
                             const displayText = String(item[filterKey] || '');
                             return (
-                                <List.Item key={item.id} role="listitem">
-                                    <List.Indicator>
+                                <List.Item key={item.id} role="listitem" width="100%">
+                                    <Stack direction="row" alignItems="center" justifyContent="space-between" gap={2} width="100%">
                                         <TooltipButton
                                             label={`${displayText}`}
-                                            tooltip={`Select ${displayText}`}
+                                            tooltip={`View ${displayText} Metatext`}
                                             data-testid={`item-${item.id}`}
                                             onClick={() => handleItemClick(item.id)}
                                             onKeyDown={(e) => handleItemKeyDown(e, item.id)}
                                             tabIndex={0}
-                                            me={10}
+                                            paddingX="0"
+                                            _hover={{ textDecoration: 'underline' }}
+                                            width="auto"
                                         />
                                         <TooltipButton
                                             label=""
@@ -123,8 +132,10 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
                                                     ? deleteSourceDocMutation.status === 'pending'
                                                     : deleteMetatextMutation.status === 'pending'
                                             }
+                                            _hover={{ color: 'red.500' }}
+                                            width="auto"
                                         />
-                                    </List.Indicator>
+                                    </Stack>
                                 </List.Item>
                             );
                         })

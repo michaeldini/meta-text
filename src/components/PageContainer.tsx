@@ -14,7 +14,17 @@ export function PageContainer(props: PageContainerProps): React.ReactElement {
     const { children, loading } = props;
 
     return (
-        <Flex justify="center" color="fg"  >
+        <Flex
+            id="page-container"
+            color="fg"
+            paddingX={{ base: 4, md: 8 }}
+            paddingY={{ base: 4, md: 8 }}
+            maxWidth="6xl"
+            alignItems="center"
+            justifyContent="center"
+            flexDirection="column"
+            marginX="auto"
+        >
             {children}
         </Flex>
     );

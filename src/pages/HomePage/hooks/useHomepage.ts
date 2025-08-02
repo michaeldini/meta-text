@@ -20,6 +20,9 @@ export function useHomepage() {
     // Combined loading state for both queries
     const isLoading = sourceDocsQuery.isLoading || metatextsQuery.isLoading;
 
+    // Handlers for navigation to SourceDoc and Metatext pages
+    // These will only execute if not currently loading
+    // Use on the buttons in HomePage component
     const handleNavigateToSourceDocs = () => {
         if (!isLoading) {
             navigate('/sourcedoc');

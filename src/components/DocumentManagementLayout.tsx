@@ -29,10 +29,11 @@ const DocumentManagementLayout = forwardRef<HTMLDivElement, DocumentManagementLa
                 data-testid={`${title
                     .toLowerCase()
                     .replace(/ /g, '-')}-list-content`}
+                width="100%"
             >
                 <Stack>
                     <Heading
-                        size="6xl">
+                        size="5xl">
                         {title}
                     </Heading>
                     <Heading size="md">
@@ -42,11 +43,10 @@ const DocumentManagementLayout = forwardRef<HTMLDivElement, DocumentManagementLa
                 <Stack
                     direction={{ base: 'column', md: 'row' }}
                     separator={<StackSeparator />}
-                    gap={12}
-                    p={12}
+                    gap={10}
                 >
-                    {formComponent}
                     {listComponent}
+                    {formComponent}
                 </Stack>
             </Stack>
         );

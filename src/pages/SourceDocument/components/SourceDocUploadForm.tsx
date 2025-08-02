@@ -7,7 +7,6 @@ import { Heading, Text, Wrap, WrapItem, Tag } from '@chakra-ui/react';
 import { Stack } from '@chakra-ui/react/stack'
 import { Box } from '@chakra-ui/react/box'
 import { Button } from '@chakra-ui/react/button';
-// import { Input } from '@chakra-ui/react/input'
 import { FileUpload } from '@chakra-ui/react/file-upload';
 
 import { Field, Prose } from '@components/ui';
@@ -41,7 +40,7 @@ function SourceDocUploadForm({ onSuccess }: SourceDocUploadFormProps): React.Rea
     // UI
 
     const UploadHeading = (
-        <Heading size="5xl">Upload</Heading>
+        <Heading size="xl">Upload</Heading>
     );
     const SubHeading = (
         <Prose>
@@ -129,9 +128,9 @@ function SourceDocUploadForm({ onSuccess }: SourceDocUploadFormProps): React.Rea
     );
 
     return (
-        <Stack>
+        <Stack >
             {UploadHeading}
-            {SubHeading}
+            {/* {SubHeading} */}
             {error && (
                 <Box my={2}>
                     <Box bg="red.100" color="red.800" p={2} borderRadius="md">
