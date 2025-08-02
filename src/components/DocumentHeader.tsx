@@ -17,7 +17,7 @@ export function DocumentHeader(props: DocumentHeaderProps): React.ReactElement {
 
     return (
         <Collapsible.Root unmountOnExit >
-            <Collapsible.Trigger padding={4} minWidth={200} borderWidth="1px" borderRadius="md" >
+            <Collapsible.Trigger p={4} minWidth={200} borderWidth="2px" borderRadius="md" >
                 <Text fontWeight="bold">Header</Text>
             </Collapsible.Trigger>
             <Collapsible.Content>

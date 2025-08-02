@@ -16,6 +16,7 @@ import { useSourceDocDetail } from './hooks/useSourceDocDetail';
 import { useSourceDocEditor } from './hooks/useSourceDocEditor';
 
 import SourceDoc from './components/SourceDoc';
+import { Stack } from '@chakra-ui/react/stack';
 
 
 function SourceDocDetailPage(): ReactElement {
@@ -41,7 +42,9 @@ function SourceDocDetailPage(): ReactElement {
         >
             <Box data-testid="sourcedoc-detail-content">
                 {doc && editor && (
-                    <>
+                    <Stack gap="2" pt="2">
+
+                        <SourceDocInfo doc={doc} onDocumentUpdate={updateMutation.mutate} />
                         <DocumentHeader title={doc.title}>
                             <TooltipButton
                                 label="Generate Info"
@@ -52,7 +55,6 @@ function SourceDocDetailPage(): ReactElement {
                                 icon={<HiOutlineSparkles />}
                             />
                             <StyleControls />
-                            <SourceDocInfo doc={doc} onDocumentUpdate={updateMutation.mutate} />
                         </DocumentHeader>
                         <SourceDoc
                             doc={doc}
@@ -64,7 +66,7 @@ function SourceDocDetailPage(): ReactElement {
                             handleSave={editor.handleSave}
                             handleTextChange={editor.handleTextChange}
                         />
-                    </>
+                    </Stack>
                 )}
             </Box>
         </PageContainer>
