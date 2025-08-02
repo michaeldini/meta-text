@@ -10,24 +10,19 @@ import {
 import { useAuthStore } from '@store/authStore';
 import { AppAlert } from '@components/AppAlert';
 
-interface LoginPageProps {
-    onLoginSuccess?: () => void;
-}
-
-export function LoginPage({ onLoginSuccess }: LoginPageProps) {
+export function LoginPage() {
     const login = useAuthStore(state => state.login);
     const loading = useAuthStore(state => state.loading);
     const error = useAuthStore(state => state.error);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         const success = await login(username, password);
         if (success) {
             navigate('/');
-        } else if (onLoginSuccess) {
-            onLoginSuccess();
         }
     };
 

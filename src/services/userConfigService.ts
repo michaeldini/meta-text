@@ -4,11 +4,13 @@ import { api } from '../utils/ky';
 import { UserConfig } from '../types/ui-types'
 
 // TanStack Query: Fetch user config
-export function useUserConfig() {
+// Accepts user object, hydrates only when user is present/changes
+export function useUserConfig(enabled: boolean = true) {
     return useQuery<UserConfig>({
         queryKey: ['user-config'],
         queryFn: async () => api.get('user/config').json<UserConfig>(),
         staleTime: 10 * 60 * 1000,
+        enabled, // only fetch if user exists
     });
 }
 
@@ -25,16 +27,4 @@ export function useUpdateUserConfig() {
             queryClient.invalidateQueries({ queryKey: ['user-config'] });
         },
     });
-}
-
-// Fetch user config from backend API
-export async function fetchUserConfig(): Promise<UserConfig> {
-    return api.get('user/config').json<UserConfig>();
-}
-
-// Set or update user config in backend
-export async function setUserConfig(config: Partial<UserConfig["uiPreferences"]>): Promise<UserConfig> {
-    // POST only the fields that are present in config
-    const payload = { ...config };
-    return api.post('user/config', { json: payload }).json<UserConfig>();
 }

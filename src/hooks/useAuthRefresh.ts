@@ -25,7 +25,7 @@ export function useAuthRefresh() {
     const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
-        log.info('[useAuthRefresh] Effect triggered', { token });
+        // log.info('[useAuthRefresh] Effect triggered', { token });
         if (!token) {
             log.info('[useAuthRefresh] No token, clearing timer');
             if (timerRef.current) clearTimeout(timerRef.current);

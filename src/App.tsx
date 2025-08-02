@@ -13,6 +13,8 @@ import { Boundary } from '@components/Boundaries';
 import { useAuthStore } from '@store/authStore';
 import { useAuthRefresh } from '@hooks/useAuthRefresh';
 
+import { useUserConfig } from '@services/userConfigService';
+
 /** Dynamically import pages for code splitting using barrel exports
  * This allows for lazy loading of components
  * and reduces initial bundle size.
@@ -115,6 +117,9 @@ const App = () => {
  */
 export const AppContent = () => {
     useAuthRefresh();
+    const { user } = useAuthStore();
+    useUserConfig(!!user); // Hydrate user config when user logs in
+
 
     const renderRoute = (route: RouteConfig) => {
         const Component = route.element;
