@@ -3,27 +3,29 @@
 // Provides a searchable list of Metatexts and a form to create new Metatexts from source documents.
 
 import React, { ReactElement } from 'react';
-
-import { useMetatextPage } from './hooks/useMetatextPage';
 import { PageContainer, } from '@components/PageContainer';
 import DocumentManagementLayout from '@components/DocumentManagementLayout'
 import { SearchableList } from '@components/SearchableList'
 
 import MetatextCreateForm from './components/MetatextCreateForm';
+import { MetatextSummary, SourceDocumentSummary } from '@mtypes/index';
 
-function MetatextPage(): ReactElement {
-    // Use custom hook for all page logic
-    const {
-        metatexts,
-        metatextsLoading,
-        refetchMetatexts,
-        sourceDocs,
-        sourceDocsLoading
-    } = useMetatextPage();
+interface MetatextPageProps {
+    metatexts: MetatextSummary[] | undefined;
+    refetch: () => void;
+    sourceDocs: SourceDocumentSummary[] | undefined;
+    isLoading: boolean;
+}
 
+function MetatextPage({
+    metatexts,
+    refetch,
+    sourceDocs,
+    isLoading
+}: MetatextPageProps): ReactElement {
     return (
         <PageContainer
-            loading={metatextsLoading}
+            loading={isLoading}
             data-testid="metatext-list-page"
         >
             <DocumentManagementLayout
@@ -32,8 +34,8 @@ function MetatextPage(): ReactElement {
                 formComponent={
                     <MetatextCreateForm
                         sourceDocs={sourceDocs || []}
-                        sourceDocsLoading={sourceDocsLoading}
-                        onSuccess={refetchMetatexts}
+                        sourceDocsLoading={isLoading}
+                        onSuccess={refetch}
                     />
                 }
                 listComponent={
@@ -41,7 +43,7 @@ function MetatextPage(): ReactElement {
                         items={metatexts || []}
                         filterKey="title"
                         title="Metatext"
-                        loading={metatextsLoading}
+                        loading={isLoading}
                         searchPlaceholder="Search Metatext documents..."
                         emptyMessage="No Metatext documents found. Create some Metatexts from your source documents to get started."
                         ariaLabel="List of Metatext documents"

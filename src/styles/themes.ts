@@ -45,24 +45,24 @@ const config = defineConfig({
         // Component recipes for Chakra UI core components
         recipes: {
 
-            // button: defineRecipe({
-            //     base: {
-            //         color: "fg",
-            //     },
-            //     defaultVariants: {
-            //         variant: "ghost",
-            //     },
-            //     variants: {
-            //         variant: {
-            //             ghost: {
-            //                 color: 'red',
-            //                 _hover: {
-            //                     bg: { base: "bg.subtle", _dark: "bg.muted" },
-            //                 },
-            //             },
-            //         },
-            //     },
-
+            button: defineRecipe({
+                base: {
+                    color: "fg",
+                },
+                defaultVariants: {
+                    variant: "ghost",
+                },
+                variants: {
+                    variant: {
+                        ghost: {
+                            color: 'red',
+                            _hover: {
+                                bg: { base: "bg.subtle", _dark: "bg.muted" },
+                            },
+                        },
+                    },
+                },
+            }),
             //     // You can add variants here if needed
             // }),
             // button: buttonRecipe,

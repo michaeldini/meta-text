@@ -63,7 +63,7 @@ function SourceDocUploadForm({ onSuccess }: SourceDocUploadFormProps): React.Rea
         </Button>
     );
     const FileUploadSection = (
-        <Stack p={4}>
+        <Stack p={4} >
             <FileUpload.Root
                 accept={[".txt"]}
                 maxFiles={100}

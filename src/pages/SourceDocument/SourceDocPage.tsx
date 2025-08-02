@@ -5,18 +5,22 @@
 
 
 import React, { ReactElement } from 'react';
-import { useSourceDocuments } from '@features/documents/useDocumentsData';
 
 import DocumentManagementLayout from '@components/DocumentManagementLayout'
 import { PageContainer } from '@components/PageContainer'
 import SourceDocUploadForm from '@pages/SourceDocument/components/SourceDocUploadForm'
 import { SearchableList } from '@components/SearchableList'
+import { SourceDocumentSummary } from '@mtypes/documents';
 
 
-function SourceDocPage(): ReactElement {
 
-    const { data: sourceDocs, isLoading, refetch } = useSourceDocuments();
+interface SourceDocPageProps {
+    sourceDocs: SourceDocumentSummary[] | undefined;
+    isLoading: boolean;
+    refetch: () => void;
+}
 
+function SourceDocPage({ sourceDocs, isLoading, refetch }: SourceDocPageProps): ReactElement {
     return (
         <PageContainer
             loading={isLoading}

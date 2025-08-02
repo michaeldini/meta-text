@@ -23,8 +23,10 @@ import SourceDocPage from '@pages/SourceDocument/SourceDocPage';
 function HomePage(): ReactElement {
 
     const {
-        handleNavigateToSourceDocs,
-        handleNavigateToMetatexts,
+        sourceDocs,
+        metatexts,
+        refetchSourceDocs,
+        refetchMetatexts,
         isLoading,
     } = useHomepage();
 
@@ -35,8 +37,8 @@ function HomePage(): ReactElement {
         >
             <Stack data-testid="homepage-content" justify="center" alignItems="center" >
                 <WelcomeText />
-                <MetatextPage />
-                <SourceDocPage />
+                <MetatextPage metatexts={metatexts} sourceDocs={sourceDocs} refetch={refetchMetatexts} isLoading={isLoading} />
+                <SourceDocPage sourceDocs={sourceDocs} refetch={refetchSourceDocs} isLoading={isLoading} />
                 <HomePageDetails />
             </Stack>
 
