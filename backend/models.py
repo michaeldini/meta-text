@@ -23,8 +23,7 @@ class User(SQLModel, table=True):
     source_documents: List["SourceDocument"] = Relationship(back_populates="user")
     metatexts: List["Metatext"] = Relationship(back_populates="user")
     ui_preferences: Optional[UserUIPreferences] = Relationship(back_populates="user", sa_relationship_kwargs={"uselist": False})
-    bookmarks: List["Bookmark"] = Relationship(back_populates="user")
-    favorite_chunks: List["Chunk"] = Relationship(back_populates="favorited_by_user")
+    favorite_chunks: List["Chunk"] = Relationship(back_populates="favorited_by_user",sa_relationship_kwargs={"foreign_keys": "Chunk.favorited_by_user_id"})
     explanations: List["Explanation"] = Relationship(back_populates="user")
     
 
@@ -112,6 +111,8 @@ class Chunk(ChunkBase, table=True):
     rewrites: List["Rewrite"] = Relationship(back_populates="chunk") 
     favorited_by_user_id: Optional[int] = Field(default=None, foreign_key="user.id")
     favorited_by_user: Optional["User"] = Relationship(back_populates="favorite_chunks")
+    # New: bookmark functionality
+    bookmarked_by_user_id: Optional[int] = Field(default=None, foreign_key="user.id")  # User who bookmarked this chunk
 
 
 class ChunkRead(ChunkBase):
@@ -223,18 +224,18 @@ class ImageRead(SQLModel):
     path: str
     chunk_id: Optional[int] = None
 
-# --- Bookmark Schemas ---    
-class Bookmark(SQLModel, table=True):
-    id: int = Field(default=None, primary_key=True)
-    user_id: int = Field(foreign_key="user.id")
-    user: Optional["User"] = Relationship(back_populates="bookmarks")
-    chunk_id: int = Field(foreign_key="chunk.id")
+# # --- Bookmark Schemas ---    
+# class Bookmark(SQLModel, table=True):
+#     id: int = Field(default=None, primary_key=True)
+#     user_id: int = Field(foreign_key="user.id")
+#     user: Optional["User"] = Relationship(back_populates="bookmarks")
+#     chunk_id: int = Field(foreign_key="chunk.id")
 
 
-# Pydantic model for setting a bookmark
-class SetBookmarkRequest(BaseModel):
-    metatext_id: int
-    chunk_id: int
+# # Pydantic model for setting a bookmark
+# class SetBookmarkRequest(BaseModel):
+#     metatext_id: int
+#     chunk_id: int
 
 
     

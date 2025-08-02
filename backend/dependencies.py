@@ -9,7 +9,6 @@ from backend.db import get_session
 from sqlmodel import Session
 from backend.services import (
     AIService,
-    BookmarkService,
     ChunkService,
     ExplanationService,
     AuthService,
@@ -21,9 +20,6 @@ def get_explanation_service() -> ExplanationService:
     """Dependency injection function for ExplanationService."""
     return ExplanationService()
 
-# Dependency injection function for BookmarkService
-def get_bookmark_service() -> BookmarkService:
-    return BookmarkService()
 
 
 # Dependency injection function

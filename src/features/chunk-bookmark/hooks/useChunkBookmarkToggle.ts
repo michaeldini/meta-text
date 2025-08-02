@@ -1,35 +1,41 @@
 // Hook to encapsulate bookmark toggle logic for a chunk
 // Handles state, mutations, and navigation clearing
-
+import { useState } from 'react';
 import { useBookmarkUIStore } from '../store/bookmarkStore';
-import { useBookmark, useSetBookmark, useRemoveBookmark } from '@features/chunk-bookmark';
 import { ChunkType } from '@mtypes/documents';
+import { useAuthStore } from '@store/authStore';
+import { useChunkStore } from '@store/chunkStore';
 
 export function useChunkBookmarkToggle(chunk: ChunkType) {
-    // Get the current bookmarked chunk from React Query
-    const { data: bookmarkedChunkId } = useBookmark(chunk.metatext_id);
-    // get the mutation functions
-    const setBookmarkMutation = useSetBookmark(chunk.metatext_id);
-    const removeBookmarkMutation = useRemoveBookmark(chunk.metatext_id);
-    // decide if bookmark is already set
-    const isBookmarked = bookmarkedChunkId === chunk.id;
-    // get handler to clear/disable the navigate to bookmark button
+    const { user } = useAuthStore();
+    const userId = user?.id;
+    const isBookmarked = chunk.bookmarked_by_user_id === userId;
     const { clearNavigateToBookmark } = useBookmarkUIStore();
+    const { updateChunkField } = useChunkStore();
 
-    // Handler for toggling bookmark status
+    const [isLoading, setIsLoading] = useState(false);
+
     const handleToggle = async () => {
-        if (isBookmarked) {
-            removeBookmarkMutation.mutate();
+        setIsLoading(true);
+        try {
+            if (!userId) {
+                console.warn('User not authenticated, cannot toggle bookmark');
+                return;
+            }
+            await updateChunkField(
+                chunk.id,
+                'bookmarked_by_user_id',
+                !isBookmarked ? userId : null
+            );
             clearNavigateToBookmark();
-        } else {
-            setBookmarkMutation.mutate(chunk.id);
-            // setNavigateToBookmark()
-            // how is the navigate to bookmark button being cleared?
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return {
         isBookmarked,
         handleToggle,
+        isLoading,
     };
 }

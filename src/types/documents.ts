@@ -66,6 +66,7 @@ export type ChunkType = {
     images: AiImage[];
     rewrites: Rewrite[];
     favorited_by_user_id?: number | null;
+    bookmarked_by_user_id?: number | null;
 };
 
 export type AiImage = {
@@ -91,6 +92,6 @@ export interface RewriteCreate {
 export type UpdateChunkFieldFn = (
     chunkId: number,
     field: keyof ChunkType,
-    value: string
+    value: string | number | null
 ) => void;
 
