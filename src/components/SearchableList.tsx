@@ -71,8 +71,8 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
             <Box minWidth="300px" >
                 {/* Title */}
                 {title && (
-                    <Heading size="lg" >
-                        Load
+                    <Heading size="4xl" >
+                        Open
                     </Heading>
                 )}
                 {/* Search Input */}

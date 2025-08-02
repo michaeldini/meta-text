@@ -60,7 +60,7 @@ function MetatextCreateForm(props: MetatextCreateFormProps): React.ReactElement 
         <Stack>
             {/* Form Header */}
             <Box >
-                <Heading size="xl">
+                <Heading size="4xl">
                     New
                 </Heading>
             </Box>

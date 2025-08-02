@@ -23,12 +23,12 @@ interface SourceDocPageProps {
 function SourceDocPage({ sourceDocs, isLoading, refetch }: SourceDocPageProps): ReactElement {
     return (
         <Box>
-            <Heading size="5xl">Source Documents</Heading>
             <Stack
                 direction={{ base: 'column', md: 'row' }}
                 separator={<StackSeparator />}
                 gap={10}
             >
+                <Heading size="5xl" minWidth="220px">Sources</Heading>
                 <SearchableList
                     items={sourceDocs ?? []}
                     filterKey="title"

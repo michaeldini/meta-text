@@ -13,25 +13,25 @@ import { MetatextSummary, SourceDocumentSummary } from '@mtypes/index';
 
 interface MetatextPageProps {
     metatexts: MetatextSummary[] | undefined;
-    refetch: () => void;
     sourceDocs: SourceDocumentSummary[] | undefined;
+    refetch: () => void;
     isLoading: boolean;
 }
 
 function MetatextPage({
     metatexts,
-    refetch,
     sourceDocs,
+    refetch,
     isLoading
 }: MetatextPageProps): ReactElement {
     return (
         <Box>
-            <Heading size="5xl">Metatexts</Heading>
             <Stack
                 direction={{ base: 'column', md: 'row' }}
                 separator={<StackSeparator />}
                 gap={10}
             >
+                <Heading size="5xl" minWidth="220px">Metatexts</Heading>
                 <SearchableList
                     items={metatexts || []}
                     filterKey="title"

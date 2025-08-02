@@ -38,8 +38,8 @@ function HomePage(): ReactElement {
             <Stack
                 data-testid="homepage-content"
                 justify="center"
-                // alignItems="center"
                 separator={<StackSeparator />}
+                gap={10}
             >
                 <WelcomeText />
                 <MetatextPage metatexts={metatexts} sourceDocs={sourceDocs} refetch={refetchMetatexts} isLoading={isLoading} />

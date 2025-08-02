@@ -40,7 +40,7 @@ function SourceDocUploadForm({ onSuccess }: SourceDocUploadFormProps): React.Rea
     // UI
 
     const UploadHeading = (
-        <Heading size="xl">Upload</Heading>
+        <Heading size="4xl">Upload</Heading>
     );
     const SubHeading = (
         <Prose>
