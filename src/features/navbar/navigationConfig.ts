@@ -47,17 +47,17 @@ export const getNavigationConfig = (logout: () => void, navigate: (path: string)
             icon: HiPlus,
             action: () => navigate('/register')
         },
-        {
-            label: 'Metatexts',
-            protected: true,
-            icon: HiOutlineDocumentArrowUp,
-            action: () => navigate('/metatext')
-        },
-        {
-            label: 'SourceDocs',
-            protected: true,
-            icon: HiOutlineDocumentArrowDown,
-            action: () => navigate('/sourcedoc')
-        },
+        // {
+        //     label: 'Metatexts',
+        //     protected: true,
+        //     icon: HiOutlineDocumentArrowUp,
+        //     action: () => navigate('/metatext')
+        // },
+        // {
+        //     label: 'SourceDocs',
+        //     protected: true,
+        //     icon: HiOutlineDocumentArrowDown,
+        //     action: () => navigate('/sourcedoc')
+        // },
     ]
 });
