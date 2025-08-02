@@ -15,14 +15,12 @@ interface MetatextPageProps {
     metatexts: MetatextSummary[] | undefined;
     sourceDocs: SourceDocumentSummary[] | undefined;
     refetch: () => void;
-    isLoading: boolean;
 }
 
 function MetatextPage({
     metatexts,
     sourceDocs,
     refetch,
-    isLoading
 }: MetatextPageProps): ReactElement {
     return (
         <Box>
@@ -36,14 +34,15 @@ function MetatextPage({
                     items={metatexts || []}
                     filterKey="title"
                     title="Metatext"
-                    loading={isLoading}
+                    // loading={isLoading}
                     searchPlaceholder="Search Metatext documents..."
                     emptyMessage="No Metatext documents found. Create some Metatexts from your source documents to get started."
                     ariaLabel="List of Metatext documents"
                 />
                 <MetatextCreateForm
                     sourceDocs={sourceDocs || []}
-                    sourceDocsLoading={isLoading}
+                    sourceDocsLoading={false}
+                    // sourceDocsLoading={isLoading}
                     onSuccess={refetch}
                 />
             </Stack>

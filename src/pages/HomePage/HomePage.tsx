@@ -5,49 +5,45 @@
  */
 
 import type { ReactElement } from 'react';
+import { Suspense } from 'react';
+import { Spinner } from '@chakra-ui/react';
+import { Stack, StackSeparator } from "@chakra-ui/react/stack"
 
 import { PageContainer } from '@components/PageContainer';
 
 import WelcomeText from './components/WelcomeText';
 import HomePageDetails from './components/HomePageDetails';
-import { Center } from "@chakra-ui/react/center"
-import { Stack, StackSeparator } from "@chakra-ui/react/stack"
-
-import { TooltipButton } from '../../components/TooltipButton';
-import { MetaTextLogoIcon } from '../../components/icons';
 
 import { useHomepage } from './hooks/useHomepage';
 import MetatextPage from '@pages/Metatext/MetatextPage'
 import SourceDocPage from '@pages/SourceDocument/SourceDocPage';
 
 function HomePage(): ReactElement {
-
     const {
         sourceDocs,
         metatexts,
         refetchSourceDocs,
         refetchMetatexts,
-        isLoading,
     } = useHomepage();
 
     return (
-        <PageContainer
-            loading={isLoading}
-            data-testid="homepage-container"
-        >
-            <Stack
-                data-testid="homepage-content"
-                justify="center"
-                separator={<StackSeparator />}
-                gap={10}
-            >
-                <WelcomeText />
-                <MetatextPage metatexts={metatexts} sourceDocs={sourceDocs} refetch={refetchMetatexts} isLoading={isLoading} />
-                <SourceDocPage sourceDocs={sourceDocs} refetch={refetchSourceDocs} isLoading={isLoading} />
-                <HomePageDetails />
-            </Stack>
-
-        </PageContainer>
+        <Suspense fallback={<Spinner size="xl" data-testid="spinner" />}>
+            <PageContainer>
+                <Stack
+                    data-testid="homepage-content"
+                    justify="center"
+                    separator={<StackSeparator />}
+                    gap={10}
+                >
+                    <WelcomeText />
+                    <MetatextPage metatexts={metatexts} sourceDocs={sourceDocs} refetch={refetchMetatexts} />
+                    <SourceDocPage sourceDocs={sourceDocs} refetch={refetchSourceDocs} />
+                    <HomePageDetails />
+                </Stack>
+            </PageContainer>
+        </Suspense>
     );
 }
+
+
 export default HomePage;

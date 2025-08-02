@@ -3,7 +3,6 @@ import { Flex } from '@chakra-ui/react';
 
 interface PageContainerProps {
     children: ReactNode;
-    loading: boolean;
 }
 
 /**
@@ -11,11 +10,10 @@ interface PageContainerProps {
  * Wraps children in a Container with error boundary and theme-based styles.
  */
 export function PageContainer(props: PageContainerProps): React.ReactElement {
-    const { children, loading } = props;
+    const { children } = props;
 
     return (
         <Flex
-            id="page-container"
             color="fg"
             paddingX={{ base: 4, md: 8 }}
             paddingY={{ base: 4, md: 8 }}
@@ -24,6 +22,7 @@ export function PageContainer(props: PageContainerProps): React.ReactElement {
             justifyContent="center"
             flexDirection="column"
             marginX="auto"
+            data-testid="page-container"
         >
             {children}
         </Flex>

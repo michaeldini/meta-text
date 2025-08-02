@@ -16,11 +16,10 @@ import { SourceDocumentSummary } from '@mtypes/documents';
 
 interface SourceDocPageProps {
     sourceDocs: SourceDocumentSummary[] | undefined;
-    isLoading: boolean;
     refetch: () => void;
 }
 
-function SourceDocPage({ sourceDocs, isLoading, refetch }: SourceDocPageProps): ReactElement {
+function SourceDocPage({ sourceDocs, refetch }: SourceDocPageProps): ReactElement {
     return (
         <Box>
             <Stack
@@ -33,7 +32,7 @@ function SourceDocPage({ sourceDocs, isLoading, refetch }: SourceDocPageProps): 
                     items={sourceDocs ?? []}
                     filterKey="title"
                     title="Source Documents"
-                    loading={isLoading}
+                    // loading={isLoading}
                     searchPlaceholder="Search source documents..."
                     emptyMessage="No source documents found. Upload some documents to get started."
                     ariaLabel="List of source documents"

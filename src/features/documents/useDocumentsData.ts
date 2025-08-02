@@ -62,6 +62,7 @@ export function useSourceDocuments() {
             }
         },
         staleTime: 10 * 60 * 1000, // 10 minutes
+        // suspense is set in QueryClient config
     });
 }
 
@@ -153,6 +154,7 @@ export function useMetatexts() {
             }
         },
         staleTime: 10 * 60 * 1000, // 10 minutes
+        // suspense is set in QueryClient config
     });
 }
 
