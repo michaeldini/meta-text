@@ -11,8 +11,6 @@ import { useMetatextDetail, useSourceDocumentDetail } from '@features/documents/
 import { useSearchKeyboard } from '@features/chunk-search/hooks/useSearchKeyboard'
 import { useGenerateSourceDocInfo } from '@hooks/useGenerateSourceDocInfo';
 import { useDownloadMetatext } from './useDownloadMetatext';
-import { useBookmarkUIStore } from '@features/chunk-bookmark/store/bookmarkStore';
-import { useBookmark } from '@features/chunk-bookmark/hooks/useBookmark';
 import getUiPreferences from '@utils/getUiPreferences';
 
 export function useMetatextDetailPage() {
@@ -63,11 +61,12 @@ export function useMetatextDetailPage() {
     // Hook for downloading metatext
     const downloadMetatext = useDownloadMetatext(parsedId ?? undefined);
 
-    // --- Bookmark Logic ---
-    // Setup bookmark UI store and fetch bookmarked chunk
-    const { setNavigateToBookmark } = useBookmarkUIStore();
-    const metaTextId = metatext?.id;
-    const { data: bookmarkedChunkId } = useBookmark(metaTextId);
+
+
+
+
+
+
 
     // --- Return all hook values ---
     return {
@@ -98,7 +97,6 @@ export function useMetatextDetailPage() {
         downloadMetatext,
 
         // Bookmark
-        setNavigateToBookmark,
-        bookmarkedChunkId,
+        // metatextId is exposed; consuming components should use chunk-bookmark hooks for navigation/bookmark logic
     };
 }

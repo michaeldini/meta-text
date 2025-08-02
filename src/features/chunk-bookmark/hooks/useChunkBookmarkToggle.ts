@@ -11,7 +11,7 @@ export function useChunkBookmarkToggle(chunk: ChunkType) {
     const userId = user?.id;
     const isBookmarked = chunk.bookmarked_by_user_id === userId;
     const { clearNavigateToBookmark } = useBookmarkUIStore();
-    const { updateChunkField } = useChunkStore();
+    const { toggleChunkBookmark } = useChunkStore();
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -22,11 +22,8 @@ export function useChunkBookmarkToggle(chunk: ChunkType) {
                 console.warn('User not authenticated, cannot toggle bookmark');
                 return;
             }
-            await updateChunkField(
-                chunk.id,
-                'bookmarked_by_user_id',
-                !isBookmarked ? userId : null
-            );
+            // Use new toggleChunkBookmark to clear other bookmarks and set/unset this one
+            toggleChunkBookmark(chunk.id, userId, chunk.metatext_id, !isBookmarked);
             clearNavigateToBookmark();
         } finally {
             setIsLoading(false);

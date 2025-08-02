@@ -23,7 +23,10 @@ class User(SQLModel, table=True):
     source_documents: List["SourceDocument"] = Relationship(back_populates="user")
     metatexts: List["Metatext"] = Relationship(back_populates="user")
     ui_preferences: Optional[UserUIPreferences] = Relationship(back_populates="user", sa_relationship_kwargs={"uselist": False})
-    favorite_chunks: List["Chunk"] = Relationship(back_populates="favorited_by_user",sa_relationship_kwargs={"foreign_keys": "Chunk.favorited_by_user_id"})
+    favorite_chunks: List["Chunk"] = Relationship(
+        back_populates="favorited_by_user",
+        sa_relationship_kwargs={"foreign_keys": "Chunk.favorited_by_user_id"}
+    )
     explanations: List["Explanation"] = Relationship(back_populates="user")
     
 
@@ -110,7 +113,10 @@ class Chunk(ChunkBase, table=True):
     # rewrite the chunk in different ways
     rewrites: List["Rewrite"] = Relationship(back_populates="chunk") 
     favorited_by_user_id: Optional[int] = Field(default=None, foreign_key="user.id")
-    favorited_by_user: Optional["User"] = Relationship(back_populates="favorite_chunks")
+    favorited_by_user: Optional["User"] = Relationship(
+        back_populates="favorite_chunks",
+        sa_relationship_kwargs={"foreign_keys": "Chunk.favorited_by_user_id"}
+    )
     # New: bookmark functionality
     bookmarked_by_user_id: Optional[int] = Field(default=None, foreign_key="user.id")  # User who bookmarked this chunk
 

@@ -4,7 +4,7 @@
 import React from 'react';
 import type { ReactElement } from 'react';
 import { Stack } from '@chakra-ui/react/stack';
-import { Skeleton, SkeletonText, SkeletonCircle, Box, Heading } from '@chakra-ui/react';
+import { Heading } from '@chakra-ui/react';
 
 import { HiAcademicCap, HiArrowDownTray, HiOutlineSparkles, HiHashtag, HiStar, HiOutlineStar, HiBookmark } from 'react-icons/hi2'
 
@@ -20,7 +20,7 @@ import { usePaginatedChunks } from '@features/chunk';
 import PaginatedChunks, { PaginatedChunksProps } from '../../features/chunk/PaginatedChunks';
 
 import { useMetatextDetailPage } from './hooks/useMetatextDetailPage';
-
+import { useBookmarkUIStore } from '@features/chunk-bookmark/store/bookmarkStore';
 
 function MetatextDetailPage(): ReactElement | null {
     // Use custom hook to encapsulate all setup logic
@@ -36,10 +36,13 @@ function MetatextDetailPage(): ReactElement | null {
         handleReviewClick,
         generateSourceDocInfo,
         downloadMetatext,
-        setNavigateToBookmark,
-        bookmarkedChunkId,
     } = useMetatextDetailPage();
 
+
+    const { setNavigateToBookmark } = useBookmarkUIStore();
+
+    // instead of deconstructuring the paginated chunks, we can just use the hook directly
+    // this allows us to keep the paginated chunks logic encapsulated and clean, we will just pass the props to the PaginatedChunks component
     const paginatedChunksProps: PaginatedChunksProps = usePaginatedChunks({ metatextId, showOnlyFavorites });
 
 
@@ -106,7 +109,7 @@ function MetatextDetailPage(): ReactElement | null {
                             tooltip="Navigate to the bookmarked chunk in this metatext"
                             icon={<HiBookmark />}
                             onClick={() => setNavigateToBookmark()}
-                            disabled={!bookmarkedChunkId}
+                            disabled={!paginatedChunksProps.bookmarkedChunkId}
                             data-testid="goto-bookmark-button"
                         />
                         <StyleControls />

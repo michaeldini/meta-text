@@ -3,9 +3,9 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 import { useChunkStore } from '@store/chunkStore';
 import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
-import { useBookmark } from '@features/chunk-bookmark';
 import useChunkBookmarkNavigation from '@features/chunk-bookmark/hooks/useChunkBookmarkNavigation';
 import { usePaginationStore } from './usePaginationStore';
+import { ChunkType } from '@mtypes/documents';
 
 interface UsePaginatedChunksProps {
     metatextId: number | null;
@@ -27,6 +27,7 @@ export function usePaginatedChunks({ metatextId, showOnlyFavorites }: UsePaginat
             pageCount: 0,
             startIdx: 0,
             endIdx: 0,
+            bookmarkedChunkId: null,
         };
     }
     const { chunks, loadingChunks, chunksError, fetchChunks } = useChunkStore();
@@ -74,10 +75,11 @@ export function usePaginatedChunks({ metatextId, showOnlyFavorites }: UsePaginat
         }
     }, [currentPage, setCurrentPage]);
 
-    // Get the current bookmarked chunk from React Query
-    const { data: bookmarkedChunkId } = useBookmark(metatextId);
+    // Find the first bookmarked chunk by user
+    const bookmarkedChunk = displayChunks.find((chunk: ChunkType) => !!chunk.bookmarked_by_user_id);
+    const bookmarkedChunkId = bookmarkedChunk ? bookmarkedChunk.id : null;
     // Handle navigation to bookmarked chunk using custom hook
-    useChunkBookmarkNavigation(displayChunks, chunksPerPage, handlePageChange, bookmarkedChunkId ?? null);
+    useChunkBookmarkNavigation(displayChunks, chunksPerPage, handlePageChange, bookmarkedChunkId);
 
     // Preserve previous chunks for scroll position
     const prevChunksRef = useRef<any[]>([]);
@@ -96,5 +98,6 @@ export function usePaginatedChunks({ metatextId, showOnlyFavorites }: UsePaginat
         pageCount,
         startIdx,
         endIdx,
+        bookmarkedChunkId,
     };
 }

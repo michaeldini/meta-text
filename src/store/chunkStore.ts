@@ -35,6 +35,11 @@ type ChunkState = {
     setChunks: (chunks: ChunkType[]) => void;
     refetchChunks: (metatextId: number) => Promise<void>;
     resetChunkState: () => void;
+    /**
+     * Toggle bookmark for a chunk, ensuring only one chunk is bookmarked by the user at a time.
+     * Clears bookmarks from all other chunks for the user, then sets/unsets the bookmark on the selected chunk.
+     */
+    toggleChunkBookmark: (chunkId: number, userId: number | null, metatextId: number, setBookmark: boolean) => void;
 };
 
 export const useChunkStore = create<ChunkState>((set, get) => ({
@@ -93,6 +98,33 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
             const newChunks = [...state.chunks];
             newChunks[idx] = updatedChunk;
             updateChunk(updatedChunk.id, updatedChunk);
+            return { ...state, chunks: newChunks };
+        });
+    },
+    /**
+     * Toggle bookmark for a chunk, ensuring only one chunk is bookmarked by the user at a time.
+     * Clears bookmarks from all other chunks for the user, then sets/unsets the bookmark on the selected chunk.
+     */
+    toggleChunkBookmark: (chunkId: number, userId: number | null, metatextId: number, setBookmark: boolean) => {
+        set((state) => {
+            if (!userId) return state;
+            // Clear bookmarks from all chunks for this user in the same metatext
+            const newChunks = state.chunks.map((chunk) => {
+                if (chunk.metatext_id === metatextId && chunk.bookmarked_by_user_id === userId) {
+                    // Unset bookmark
+                    const updated = { ...chunk, bookmarked_by_user_id: null };
+                    updateChunk(updated.id, updated);
+                    return updated;
+                }
+                return chunk;
+            });
+            // Set/unset bookmark on the selected chunk
+            const idx = newChunks.findIndex((c) => c.id === chunkId);
+            if (idx !== -1) {
+                const updatedChunk = { ...newChunks[idx], bookmarked_by_user_id: setBookmark ? userId : null };
+                newChunks[idx] = updatedChunk;
+                updateChunk(updatedChunk.id, updatedChunk);
+            }
             return { ...state, chunks: newChunks };
         });
     },

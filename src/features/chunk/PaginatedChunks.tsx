@@ -22,6 +22,7 @@ export interface PaginatedChunksProps {
     pageCount: number;
     startIdx: number;
     endIdx: number;
+    bookmarkedChunkId: number | null;
 }
 
 

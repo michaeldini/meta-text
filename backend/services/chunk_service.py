@@ -78,7 +78,7 @@ class ChunkService:
             chunk: The chunk to update
             data: Dictionary of field updates
         """
-        allowed_fields = ['text', 'summary', 'note', 'evaluation']
+        allowed_fields = ['text', 'summary', 'note', 'evaluation', 'bookmarked_by_user_id']
         for field in allowed_fields:
             if field in data:
                 setattr(chunk, field, data[field])
@@ -237,6 +237,23 @@ class ChunkService:
         """
         logger.info(f"Updating chunk with id: {chunk_id} for user_id: {user_id}")
         chunk = self.get_chunk_by_id(chunk_id, user_id, session)
+        # If setting a bookmark, clear all other bookmarks for this user/metatext first
+        if (
+            'bookmarked_by_user_id' in chunk_data
+            and chunk_data['bookmarked_by_user_id'] is not None
+        ):
+            # ORM: Clear bookmarks for all other chunks in the same metatext for this user
+            other_chunks = session.exec(
+                select(Chunk)
+                .where(
+                    (Chunk.metatext_id == chunk.metatext_id) &
+                    (Chunk.bookmarked_by_user_id == user_id) &
+                    (Chunk.id != chunk.id)
+                )
+            ).all()
+            for other_chunk in other_chunks:
+                other_chunk.bookmarked_by_user_id = None
+                session.add(other_chunk)
         try:
             self.update_chunk_fields(chunk, chunk_data)
             session.add(chunk)
