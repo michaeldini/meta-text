@@ -24,11 +24,12 @@ function HomePage(): ReactElement {
     const {
         handleNavigateToSourceDocs,
         handleNavigateToMetatexts,
+        isLoading,
     } = useHomepage();
 
     return (
         <PageContainer
-            loading={false}
+            loading={isLoading}
             data-testid="homepage-container"
         >
             <Stack data-testid="homepage-content" maxWidth="2xl">
@@ -40,12 +41,16 @@ function HomePage(): ReactElement {
                             icon={<MetaTextLogoIcon />}
                             onClick={handleNavigateToSourceDocs}
                             data-testid="navigate-to-source-docs"
+                            disabled={isLoading}
+                            loading={isLoading}
                         />
                         <TooltipButton
                             label="Browse Metatexts"
                             icon={<MetaTextLogoIcon />}
                             onClick={handleNavigateToMetatexts}
                             data-testid="navigate-to-metatexts"
+                            disabled={isLoading}
+                            loading={isLoading}
                         />
                     </Stack>
                 </Center>

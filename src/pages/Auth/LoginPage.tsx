@@ -11,18 +11,28 @@ import { useAuthStore } from '@store/authStore';
 import { AppAlert } from '@components/AppAlert';
 
 export function LoginPage() {
+
+    // get a function to login a user and the loading state from the auth store
+    // also get the error state to show any login errors
     const login = useAuthStore(state => state.login);
     const loading = useAuthStore(state => state.loading);
     const error = useAuthStore(state => state.error);
+
+    // local state for username and password
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
+    // handle form submission
+    // this will call the login function from the auth store
+    // and navigate to the home page on success
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         const success = await login(username, password);
         if (success) {
             navigate('/');
+        } else if (error) {
+            // TODO: Optionally handle login errors here
         }
     };
 
@@ -48,8 +58,6 @@ export function LoginPage() {
                         required
                         autoComplete="current-password"
                     />
-                    {/* Optionally show password strength meter */}
-
                     {error && <AppAlert severity="error">{error}</AppAlert>}
                     <Button
                         type="submit"

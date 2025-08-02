@@ -12,21 +12,29 @@ export function useHomepage() {
 
     // Prefetch source documents & metatexts using TanStack Query
     // This will automatically fetch and cache the list in the background
-    useSourceDocuments();
-    useMetatexts();
+    const sourceDocsQuery = useSourceDocuments();
+    const metatextsQuery = useMetatexts();
 
     const navigate = useNavigate();
 
+    // Combined loading state for both queries
+    const isLoading = sourceDocsQuery.isLoading || metatextsQuery.isLoading;
+
     const handleNavigateToSourceDocs = () => {
-        navigate('/sourcedoc');
+        if (!isLoading) {
+            navigate('/sourcedoc');
+        }
     };
 
     const handleNavigateToMetatexts = () => {
-        navigate('/metatext');
+        if (!isLoading) {
+            navigate('/metatext');
+        }
     };
 
     return {
         handleNavigateToSourceDocs,
         handleNavigateToMetatexts,
+        isLoading,
     };
 }

@@ -1,33 +1,42 @@
-import React, { useState, useEffect, FormEvent } from 'react';
+import React, { useState, FormEvent } from 'react';
 import { Button } from '@chakra-ui/react/button';
-import { Heading, Input } from '@chakra-ui/react';
-import { PasswordInput, PasswordStrengthMeter } from "@components/ui";
+import { Heading } from '@chakra-ui/react/heading';
+import { Input } from '@chakra-ui/react/input';
+import { PasswordInput, PasswordStrengthMeter } from "@components/ui/password-input";
 import { Box } from '@chakra-ui/react/box';
-import { Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuthStore } from '@store/authStore';
 import { AppAlert } from '@components/AppAlert';
 
-interface RegisterPageProps {
-    onRegisterSuccess?: () => void;
-}
 
-export function RegisterPage({ onRegisterSuccess }: RegisterPageProps) {
+
+export function RegisterPage() {
+
+    // get a function to register a user and the loading state from the auth store
+    // also get the error state to show any registration errors
     const register = useAuthStore(state => state.register);
     const loading = useAuthStore(state => state.loading);
     const error = useAuthStore(state => state.error);
+
+    // local state for username and password input
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+    // use navigate from react-router to redirect after registration
     const navigate = useNavigate();
 
+
+    // handle form submission
+    // this will call the register function from the auth store
+    // and redirect to the login page on success
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         const success = await register(username, password);
         if (success) {
             navigate('/login');
-        } else if (onRegisterSuccess) {
-            onRegisterSuccess();
+        } else if (error) {
+            // TODO: Optionally handle registration errors here
         }
     };
 
