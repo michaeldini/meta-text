@@ -37,7 +37,6 @@ function SourceDocDetailPage(): ReactElement {
 
     return (
         <PageContainer
-            loading={isLoading}
             data-testid="sourcedoc-detail-page"
         >
             <Box data-testid="sourcedoc-detail-content">

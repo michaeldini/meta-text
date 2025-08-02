@@ -51,10 +51,7 @@ const routes: RouteConfig[] = [
     { path: '/login', element: LoginPage, protected: false },
     { path: '/register', element: RegisterPage, protected: false },
 
-    { path: '/sourcedoc', element: SourceDocPage, protected: true },
     { path: '/sourcedoc/:sourceDocId', element: SourceDocDetailPage, protected: true },
-
-    { path: '/metatext', element: MetatextPage, protected: true },
     { path: '/metatext/:metatextId', element: MetatextDetailPage, protected: true },
     { path: '/metatext/:metatextId/review', element: MetatextReviewPage, protected: true },
 
@@ -130,7 +127,7 @@ export const AppContent = () => {
     const renderRoute = (route: RouteConfig) => {
         const Component = route.element;
         const element = (
-            <Boundary fallbackText="Loading page...">
+            <Boundary fallbackText="Loading">
                 <Component />
             </Boundary>
         );

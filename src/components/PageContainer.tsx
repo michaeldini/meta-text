@@ -14,7 +14,6 @@ export function PageContainer(props: PageContainerProps): React.ReactElement {
 
     return (
         <Flex
-            color="fg"
             paddingX={{ base: 4, md: 8 }}
             paddingY={{ base: 4, md: 8 }}
             maxWidth="6xl"
@@ -23,6 +22,9 @@ export function PageContainer(props: PageContainerProps): React.ReactElement {
             flexDirection="column"
             marginX="auto"
             data-testid="page-container"
+            bgGradient="to-r"
+            gradientFrom="gray.700"
+            gradientTo="gray.800"
         >
             {children}
         </Flex>

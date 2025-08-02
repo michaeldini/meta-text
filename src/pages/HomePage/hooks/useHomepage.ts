@@ -1,4 +1,4 @@
-
+//  Functions for homepage data fetching
 import { useSourceDocuments, useMetatexts } from '@features/documents/useDocumentsData';
 
 

@@ -3,7 +3,7 @@
 // This file centralizes all hooks for fetching, creating, updating, and deleting documents and metatexts
 // For maintainability, hooks are grouped by entity type and operation
 
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSuspenseQuery, useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNotifications } from '@store/notificationStore';
 import {
     fetchSourceDocuments,
@@ -34,10 +34,9 @@ import { HTTPError } from 'ky';
 
 // Source Document Queries & Mutations
 
-// Fetch all source documents (summary)
 export function useSourceDocuments() {
-    const { showError } = useNotifications();
-    return useQuery<SourceDocumentSummary[]>({
+    const notifications = useNotifications();
+    return useSuspenseQuery<SourceDocumentSummary[]>({
         queryKey: ['source-documents'],
         queryFn: async () => {
             try {
@@ -46,25 +45,25 @@ export function useSourceDocuments() {
                 if (err instanceof HTTPError) {
                     const status = err.response.status;
                     if (status === 404) {
-                        showError('No source documents found.');
+                        notifications.showError('No source documents found.');
                     } else if (status === 400) {
-                        showError('Invalid request.');
+                        notifications.showError('Invalid request.');
                     } else if (status === 422) {
-                        showError('Invalid query parameters.');
+                        notifications.showError('Invalid query parameters.');
                     } else {
-                        showError('Failed to load source documents.');
+                        notifications.showError('Failed to load source documents.');
                     }
                     throw err;
                 }
                 const msg = getErrorMessage(err, 'Failed to load source documents.');
-                showError(msg);
+                notifications.showError(msg);
                 throw new Error(msg);
             }
         },
         staleTime: 10 * 60 * 1000, // 10 minutes
-        // suspense is set in QueryClient config
     });
 }
+
 
 // Fetch a single source document (detail)
 export function useSourceDocumentDetail(id?: number | null) {
@@ -126,10 +125,9 @@ export function useUpdateSourceDocument(docId: number | null) {
 
 // Metatext Queries & Mutations
 
-// Fetch all metatexts (summary)
 export function useMetatexts() {
-    const { showError } = useNotifications();
-    return useQuery<MetatextSummary[]>({
+    const notifications = useNotifications();
+    return useSuspenseQuery<MetatextSummary[]>({
         queryKey: ['metatexts'],
         queryFn: async () => {
             try {
@@ -138,25 +136,25 @@ export function useMetatexts() {
                 if (err instanceof HTTPError) {
                     const status = err.response.status;
                     if (status === 404) {
-                        showError('No metatexts found.');
+                        notifications.showError('No metatexts found.');
                     } else if (status === 400) {
-                        showError('Invalid request.');
+                        notifications.showError('Invalid request.');
                     } else if (status === 422) {
-                        showError('Invalid query parameters.');
+                        notifications.showError('Invalid query parameters.');
                     } else {
-                        showError('Failed to load metatexts.');
+                        notifications.showError('Failed to load metatexts.');
                     }
                     throw err;
                 }
                 const msg = getErrorMessage(err, 'Failed to load metatexts.');
-                showError(msg);
+                notifications.showError(msg);
                 throw new Error(msg);
             }
         },
         staleTime: 10 * 60 * 1000, // 10 minutes
-        // suspense is set in QueryClient config
     });
 }
+
 
 // Fetch a single metatext (detail)
 export function useMetatextDetail(id: number | null) {
