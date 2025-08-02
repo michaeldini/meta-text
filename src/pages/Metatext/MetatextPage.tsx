@@ -4,7 +4,8 @@
 
 import React, { ReactElement } from 'react';
 import { PageContainer, } from '@components/PageContainer';
-import DocumentManagementLayout from '@components/DocumentManagementLayout'
+import { Box, Heading, Stack } from '@chakra-ui/react';
+import { StackSeparator } from '@chakra-ui/react/stack';
 import { SearchableList } from '@components/SearchableList'
 
 import MetatextCreateForm from './components/MetatextCreateForm';
@@ -24,33 +25,29 @@ function MetatextPage({
     isLoading
 }: MetatextPageProps): ReactElement {
     return (
-        <PageContainer
-            loading={isLoading}
-            data-testid="metatext-list-page"
-        >
-            <DocumentManagementLayout
-                title="Metatexts"
-                subtitle=""
-                formComponent={
-                    <MetatextCreateForm
-                        sourceDocs={sourceDocs || []}
-                        sourceDocsLoading={isLoading}
-                        onSuccess={refetch}
-                    />
-                }
-                listComponent={
-                    <SearchableList
-                        items={metatexts || []}
-                        filterKey="title"
-                        title="Metatext"
-                        loading={isLoading}
-                        searchPlaceholder="Search Metatext documents..."
-                        emptyMessage="No Metatext documents found. Create some Metatexts from your source documents to get started."
-                        ariaLabel="List of Metatext documents"
-                    />
-                }
-            />
-        </PageContainer>
+        <Box>
+            <Heading size="5xl">Metatexts</Heading>
+            <Stack
+                direction={{ base: 'column', md: 'row' }}
+                separator={<StackSeparator />}
+                gap={10}
+            >
+                <SearchableList
+                    items={metatexts || []}
+                    filterKey="title"
+                    title="Metatext"
+                    loading={isLoading}
+                    searchPlaceholder="Search Metatext documents..."
+                    emptyMessage="No Metatext documents found. Create some Metatexts from your source documents to get started."
+                    ariaLabel="List of Metatext documents"
+                />
+                <MetatextCreateForm
+                    sourceDocs={sourceDocs || []}
+                    sourceDocsLoading={isLoading}
+                    onSuccess={refetch}
+                />
+            </Stack>
+        </Box>
     );
 }
 

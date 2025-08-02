@@ -6,8 +6,8 @@
 
 import React, { ReactElement } from 'react';
 
-import DocumentManagementLayout from '@components/DocumentManagementLayout'
-import { PageContainer } from '@components/PageContainer'
+import { Box, Heading, Stack } from '@chakra-ui/react';
+import { StackSeparator } from '@chakra-ui/react/stack';
 import SourceDocUploadForm from '@pages/SourceDocument/components/SourceDocUploadForm'
 import { SearchableList } from '@components/SearchableList'
 import { SourceDocumentSummary } from '@mtypes/documents';
@@ -22,31 +22,27 @@ interface SourceDocPageProps {
 
 function SourceDocPage({ sourceDocs, isLoading, refetch }: SourceDocPageProps): ReactElement {
     return (
-        <PageContainer
-            loading={isLoading}
-            data-testid="sourcedoc-list-page"
-        >
-            <DocumentManagementLayout
-                title="Source Documents"
-                subtitle=""
-                formComponent={
-                    <SourceDocUploadForm
-                        onSuccess={refetch}
-                    />
-                }
-                listComponent={
-                    <SearchableList
-                        items={sourceDocs ?? []}
-                        filterKey="title"
-                        title="Source Documents"
-                        loading={isLoading}
-                        searchPlaceholder="Search source documents..."
-                        emptyMessage="No source documents found. Upload some documents to get started."
-                        ariaLabel="List of source documents"
-                    />
-                }
-            />
-        </PageContainer>
+        <Box>
+            <Heading size="5xl">Source Documents</Heading>
+            <Stack
+                direction={{ base: 'column', md: 'row' }}
+                separator={<StackSeparator />}
+                gap={10}
+            >
+                <SearchableList
+                    items={sourceDocs ?? []}
+                    filterKey="title"
+                    title="Source Documents"
+                    loading={isLoading}
+                    searchPlaceholder="Search source documents..."
+                    emptyMessage="No source documents found. Upload some documents to get started."
+                    ariaLabel="List of source documents"
+                />
+                <SourceDocUploadForm
+                    onSuccess={refetch}
+                />
+            </Stack>
+        </Box>
     );
 }
 

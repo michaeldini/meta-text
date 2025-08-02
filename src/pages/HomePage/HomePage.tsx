@@ -11,7 +11,7 @@ import { PageContainer } from '@components/PageContainer';
 import WelcomeText from './components/WelcomeText';
 import HomePageDetails from './components/HomePageDetails';
 import { Center } from "@chakra-ui/react/center"
-import { Stack } from "@chakra-ui/react/stack"
+import { Stack, StackSeparator } from "@chakra-ui/react/stack"
 
 import { TooltipButton } from '../../components/TooltipButton';
 import { MetaTextLogoIcon } from '../../components/icons';
@@ -35,7 +35,12 @@ function HomePage(): ReactElement {
             loading={isLoading}
             data-testid="homepage-container"
         >
-            <Stack data-testid="homepage-content" justify="center" alignItems="center" >
+            <Stack
+                data-testid="homepage-content"
+                justify="center"
+                // alignItems="center"
+                separator={<StackSeparator />}
+            >
                 <WelcomeText />
                 <MetatextPage metatexts={metatexts} sourceDocs={sourceDocs} refetch={refetchMetatexts} isLoading={isLoading} />
                 <SourceDocPage sourceDocs={sourceDocs} refetch={refetchSourceDocs} isLoading={isLoading} />
