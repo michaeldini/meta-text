@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 interface PageContainerProps {
     children: ReactNode;
@@ -13,7 +13,7 @@ export function PageContainer(props: PageContainerProps): React.ReactElement {
     const { children } = props;
 
     return (
-        <Flex
+        <Box
             paddingX={{ base: 4, md: 8 }}
             paddingY={{ base: 4, md: 8 }}
             maxWidth="6xl"
@@ -22,12 +22,10 @@ export function PageContainer(props: PageContainerProps): React.ReactElement {
             flexDirection="column"
             marginX="auto"
             data-testid="page-container"
-            bgGradient="to-r"
-            gradientFrom="gray.700"
-            gradientTo="gray.800"
+
         >
             {children}
-        </Flex>
+        </Box>
     );
 }
 

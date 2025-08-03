@@ -4,6 +4,7 @@ import React from 'react';
 import { Wrap } from "@chakra-ui/react/wrap"
 import { Collapsible } from "@chakra-ui/react/collapsible"
 import { Text } from "@chakra-ui/react/text";
+import { Button } from '@chakra-ui/react/button';
 interface DocumentHeaderProps {
     title?: string;
     children: React.ReactNode;
@@ -16,9 +17,9 @@ export function DocumentHeader(props: DocumentHeaderProps): React.ReactElement {
     const { title, children } = props;
 
     return (
-        <Collapsible.Root unmountOnExit >
-            <Collapsible.Trigger p={4} minWidth={200} borderWidth="2px" borderRadius="md" >
-                <Text fontWeight="bold">Header</Text>
+        <Collapsible.Root unmountOnExit>
+            <Collapsible.Trigger >
+                <Button color="fg" p={4} borderWidth="2px" borderRadius="md">Header</Button>
             </Collapsible.Trigger>
             <Collapsible.Content>
                 <Wrap

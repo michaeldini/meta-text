@@ -8,6 +8,7 @@ import { Portal } from '@chakra-ui/react/portal';
 import { Button } from '@chakra-ui/react/button';
 import { Input } from '@chakra-ui/react/input';
 import { Field } from '@components/ui/field';
+import { Fieldset } from '@chakra-ui/react/fieldset';
 import { HiOutlineSparkles } from 'react-icons/hi2';
 import { useMetatextCreate } from '../hooks/useMetatextCreate';
 import { SourceDocumentSummary } from '@mtypes/documents';
@@ -57,84 +58,78 @@ function MetatextCreateForm(props: MetatextCreateFormProps): React.ReactElement 
 
 
     return (
-        <Stack>
+        <Box
+            width={{ base: '100%', lg: '400px' }}
+            maxWidth="100%"
+            minWidth={0}>
             {/* Form Header */}
             <Box >
-                <Heading size="4xl">
+                <Heading py={2} size="4xl">
                     New
                 </Heading>
             </Box>
-
-            {/* Loading Progress */}
-            {loading && (
-                <Box>
-                    <Text>
-                        Creating Metatext...
-                    </Text>
-                </Box>
-            )}
-
             {/* Create Form */}
             <form onSubmit={handleSubmit}>
-                {/* Source Document Selection */}
-                <Select.Root collection={sourceDocOptions} onChange={handleSourceDocChange} >
-                    <Select.HiddenSelect />
-                    <Select.Label>Choose a Document</Select.Label>
-                    <Select.Control  >
-                        <Select.Trigger>
-                            <Select.ValueText
-                                placeholder="Republic by Plato"
-                                color="fg.muted"
-                            />
-                        </Select.Trigger>
-                        <Select.IndicatorGroup>
-                            <Select.Indicator />
-                        </Select.IndicatorGroup>
-                    </Select.Control>
-                    <Portal>
-                        <Select.Positioner>
-                            <Select.Content>
-                                {sourceDocOptions.items.map((framework) => (
-                                    <Select.Item item={framework} key={framework.value}>
-                                        {framework.label}
-                                        <Select.ItemIndicator />
-                                    </Select.Item>
-                                ))}
-                            </Select.Content>
-                        </Select.Positioner>
-                    </Portal>
-                </Select.Root>
+                <Fieldset.Root>
 
-                {/* Title Input */}
-                <Field
-                    p={2}
-                    label="Choose a Title"
-                    required
-                    disabled={loading}
-                    data-testid="title-input"
-                // helperText="Choose a clear, descriptive title that will help you identify this Metatext later"
-                />
-                <Input
-                    placeholder="Enter a descriptive title for your Metatext"
-                    value={title}
-                    onChange={handleTitleChange}
-                    data-testid="title-input"
-                    required
-                />
+                    {/* Source Document Selection */}
+                    <Select.Root collection={sourceDocOptions} onChange={handleSourceDocChange} >
+                        <Select.HiddenSelect /> {/* Dont't select an option initially */}
+                        <Select.Label>Choose a Document</Select.Label>
+                        <Select.Control  >
+                            <Select.Trigger>
+                                <Select.ValueText
+                                    placeholder="Republic by Plato"
+                                    color="fg.muted"
+                                />
+                            </Select.Trigger>
+                            <Select.IndicatorGroup>
+                                <Select.Indicator />
+                            </Select.IndicatorGroup>
+                        </Select.Control>
+                        <Portal>
+                            <Select.Positioner>
+                                <Select.Content>
+                                    {sourceDocOptions.items.map((framework) => (
+                                        <Select.Item item={framework} key={framework.value}>
+                                            {framework.label}
+                                            <Select.ItemIndicator />
+                                        </Select.Item>
+                                    ))}
+                                </Select.Content>
+                            </Select.Positioner>
+                        </Portal>
+                    </Select.Root>
 
-                {/* Submit Button */}
-                <Button
-                    type="submit"
-                    disabled={isSubmitDisabled}
-                    data-testid="submit-button"
-                    variant="ghost"
-                    color="primary"
-                >
-                    <HiOutlineSparkles />
-                    {loading ? 'Creating...' : 'Create Metatext'}
-                </Button>
+                    {/* Title Input */}
+                    <Field
+                        label="Choose a Title"
+                        required
+                        disabled={loading}
+                        data-testid="title-input"
+                    />
+                    <Input
+                        placeholder="Enter a descriptive title for your Metatext"
+                        value={title}
+                        onChange={handleTitleChange}
+                        data-testid="title-input"
+                        required
+                    />
+
+                    {/* Submit Button */}
+                    <Button
+                        type="submit"
+                        disabled={isSubmitDisabled}
+                        data-testid="submit-button"
+                        color="primary"
+                    >
+                        <HiOutlineSparkles />
+                        {loading ? 'Creating...' : 'Create Metatext'}
+                    </Button>
+                </Fieldset.Root>
+
             </form>
-        </Stack>
+        </Box>
     );
 }
 

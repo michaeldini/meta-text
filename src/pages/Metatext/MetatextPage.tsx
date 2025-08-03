@@ -25,7 +25,7 @@ function MetatextPage({
     return (
         <Box>
             <Stack
-                direction={{ base: 'column', md: 'row' }}
+                direction={{ base: 'column', lg: 'row' }}
                 separator={<StackSeparator />}
                 gap={10}
             >

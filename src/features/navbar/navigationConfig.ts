@@ -5,7 +5,7 @@
  */
 
 import { MetaTextLogoIcon } from '@components/icons';
-import { HiArrowRightOnRectangle, HiArrowLeftOnRectangle, HiPlus, HiOutlineDocumentArrowDown, HiOutlineDocumentArrowUp } from "react-icons/hi2";
+import { HiArrowRightOnRectangle, HiArrowLeftOnRectangle, HiPlus } from "react-icons/hi2";
 
 
 interface NavigationItem {
@@ -47,17 +47,5 @@ export const getNavigationConfig = (logout: () => void, navigate: (path: string)
             icon: HiPlus,
             action: () => navigate('/register')
         },
-        // {
-        //     label: 'Metatexts',
-        //     protected: true,
-        //     icon: HiOutlineDocumentArrowUp,
-        //     action: () => navigate('/metatext')
-        // },
-        // {
-        //     label: 'SourceDocs',
-        //     protected: true,
-        //     icon: HiOutlineDocumentArrowDown,
-        //     action: () => navigate('/sourcedoc')
-        // },
     ]
 });

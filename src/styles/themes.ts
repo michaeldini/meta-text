@@ -55,7 +55,7 @@ const config = defineConfig({
                 variants: {
                     variant: {
                         ghost: {
-                            color: 'red',
+                            // color: 'red',
                             _hover: {
                                 bg: { base: "bg.subtle", _dark: "bg.muted" },
                             },

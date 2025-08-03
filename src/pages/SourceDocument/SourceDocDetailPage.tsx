@@ -5,6 +5,7 @@
 import React from 'react';
 
 import { Box } from '@chakra-ui/react/box';
+import { Text } from '@chakra-ui/react/text';
 import type { ReactElement } from 'react';
 import { HiOutlineSparkles } from 'react-icons/hi2';
 import { PageContainer } from '@components/PageContainer';
@@ -16,15 +17,13 @@ import { useSourceDocDetail } from './hooks/useSourceDocDetail';
 import { useSourceDocEditor } from './hooks/useSourceDocEditor';
 
 import SourceDoc from './components/SourceDoc';
-import { Stack } from '@chakra-ui/react/stack';
+import { Heading } from '@chakra-ui/react/heading';
 
 
-function SourceDocDetailPage(): ReactElement {
+function SourceDocDetailPage(): ReactElement | null {
     // Use custom hook to handle all page logic
     const {
         doc,
-        isLoading,
-        error,
         updateMutation,
         generateSourceDocInfo,
         textSizePx,
@@ -35,45 +34,44 @@ function SourceDocDetailPage(): ReactElement {
     // Use editor hook only if doc is loaded
     const editor = useSourceDocEditor(doc ?? null, updateMutation.mutate);
 
+    if (!doc || !editor) return null;
     return (
-        <PageContainer
-            data-testid="sourcedoc-detail-page"
-        >
-            <Box data-testid="sourcedoc-detail-content">
-                {doc && editor && (
-                    <Stack gap="2" pt="2">
-
-                        <SourceDocInfo doc={doc} onDocumentUpdate={updateMutation.mutate} />
-                        <DocumentHeader title={doc.title}>
-                            <TooltipButton
-                                label="Generate Info"
-                                tooltip="Generate or update document info using AI"
-                                onClick={generateSourceDocInfo.handleClick}
-                                disabled={generateSourceDocInfo.loading}
-                                loading={generateSourceDocInfo.loading}
-                                icon={<HiOutlineSparkles />}
-                            />
-                            <StyleControls />
-                        </DocumentHeader>
-                        <SourceDoc
-                            doc={doc}
-                            isSaving={editor.isSaving}
-                            error={editor.error}
-                            textSizePx={textSizePx}
-                            fontFamily={fontFamily}
-                            lineHeight={lineHeight}
-                            handleSave={editor.handleSave}
-                            handleTextChange={editor.handleTextChange}
-                        />
-                    </Stack>
-                )}
+        <PageContainer data-testid="sourcedoc-detail-page">
+            <Box bg="bg.subtle" p="4" borderRadius="lg" >
+                <Heading size="6xl">
+                    {doc.title}
+                </Heading>
+                <SourceDocInfo doc={doc} onDocumentUpdate={updateMutation.mutate} />
+                <DocumentHeader title={doc.title}>
+                    <TooltipButton
+                        label="Generate Info"
+                        tooltip="Generate or update document info using AI"
+                        onClick={generateSourceDocInfo.handleClick}
+                        disabled={generateSourceDocInfo.loading}
+                        loading={generateSourceDocInfo.loading}
+                        icon={<HiOutlineSparkles />}
+                    />
+                    <StyleControls />
+                </DocumentHeader>
             </Box>
+
+            {/* TODO: add keyboard shortcut to save ctrl+s */}
+            <Heading>Edit this document by double-clicking on the text below. To save changes, click the icon. To discard, click outside the text area.</Heading>
+            <Text color="fg.muted">Tip: Scroll after double-clicking to edit.</Text>
+
+            <SourceDoc
+                doc={doc}
+                isSaving={editor.isSaving}
+                error={editor.error}
+                textSizePx={textSizePx}
+                fontFamily={fontFamily}
+                lineHeight={lineHeight}
+                handleSave={editor.handleSave}
+                handleTextChange={editor.handleTextChange}
+            />
         </PageContainer>
+
     );
 }
 
-// Export with a more descriptive name for TypeDoc
-export { SourceDocDetailPage };
-
-// Default export for React component usage
 export default SourceDocDetailPage;

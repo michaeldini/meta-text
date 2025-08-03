@@ -71,7 +71,7 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
             <Box minWidth="300px" >
                 {/* Title */}
                 {title && (
-                    <Heading size="4xl" >
+                    <Heading py={2} size="4xl" >
                         Open
                     </Heading>
                 )}
@@ -80,7 +80,6 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
                     data-testid="search-input"
                     helperText="Search..."
                     aria-label="Search items"
-                    paddingTop={2}
                 />
                 <InputGroup startElement={<HiMagnifyingGlass />} endElement={endElement}>
                     <Input

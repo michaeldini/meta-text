@@ -143,7 +143,10 @@ export const AppContent = () => {
     };
 
     return (
-        <Box>
+        <Box
+            bgGradient="to-r"
+            gradientFrom="gray.700"
+            gradientTo="gray.800">
             <GlobalNotifications />
             <Toaster />
             <NavBar />

@@ -4,6 +4,7 @@ import { Stack } from '@chakra-ui/react/stack';
 import { Text } from '@chakra-ui/react/text';
 import { Collapsible } from '@chakra-ui/react/collapsible';
 import { SourceDocumentDetail } from '@mtypes/documents';
+import { Button } from '@chakra-ui/react/button';
 
 interface SourceDocInfoProps {
     doc: SourceDocumentDetail;
@@ -35,9 +36,9 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
 
     return (
         <Collapsible.Root data-testid="source-doc-info" >
-            <Collapsible.Trigger
-                padding={4} minWidth="200px" borderWidth="1px" borderRadius="md">
-                <Text fontWeight="bold">Document Info</Text>
+            <Collapsible.Trigger>
+                <Button color="fg" p={4} borderWidth="2px" borderRadius="md">Source Document Info</Button>
+
             </Collapsible.Trigger>
             <Collapsible.Content>
                 {FIELD_CONFIG.map(config => (
