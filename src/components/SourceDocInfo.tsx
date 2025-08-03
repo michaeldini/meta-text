@@ -5,9 +5,16 @@ import { Collapsible } from '@chakra-ui/react/collapsible';
 import { SourceDocumentDetail, SourceDocumentSummary } from '@mtypes/documents';
 import { Button } from '@chakra-ui/react/button';
 
+import { HiOutlineSparkles } from 'react-icons/hi2';
+import { TooltipButton } from '@components/TooltipButton';
+
 interface SourceDocInfoProps {
     doc: SourceDocumentDetail;
     onDocumentUpdate?: (updatedDoc: SourceDocumentDetail) => void;
+    generateSourceDocInfo?: {
+        handleClick: () => void;
+        loading: boolean;
+    };
 }
 
 
@@ -31,7 +38,7 @@ const FIELD_CONFIG: FieldConfig[] = [
  * Uses Material UI Accordions for each field, with inline editing and save/cancel actions.
  */
 export function SourceDocInfo(props: SourceDocInfoProps) {
-    const { doc, onDocumentUpdate } = props;
+    const { doc, onDocumentUpdate, generateSourceDocInfo } = props;
 
     // Handle value commit for editable fields
     const handleValueCommit = (key: keyof SourceDocumentSummary) => (details: { value: string }) => {
@@ -44,9 +51,19 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
     return (
         <Collapsible.Root data-testid="source-doc-info" >
             <Collapsible.Trigger>
-                <Button color="fg" p={4}>Source Document Info</Button>
+                <Button color="fg" p={4}>More Info</Button>
             </Collapsible.Trigger>
             <Collapsible.Content p="4">
+                {generateSourceDocInfo && (
+                    <TooltipButton
+                        label="Generate"
+                        tooltip="Regenerate document info"
+                        onClick={generateSourceDocInfo.handleClick}
+                        disabled={generateSourceDocInfo.loading}
+                        loading={generateSourceDocInfo.loading}
+                        icon={<HiOutlineSparkles />}
+                    />
+                )}
                 <Text color="fg.muted" mb="4">Click on a field to edit. Enter to Save. Tab to Cancel</Text>
                 {FIELD_CONFIG.map(config => (
                     <Stack direction="row" key={config.key} align="center">

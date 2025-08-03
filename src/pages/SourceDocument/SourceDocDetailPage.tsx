@@ -7,28 +7,47 @@ import React from 'react';
 import { Box } from '@chakra-ui/react/box';
 import { Text } from '@chakra-ui/react/text';
 import type { ReactElement } from 'react';
-import { HiOutlineSparkles } from 'react-icons/hi2';
 import { PageContainer } from '@components/PageContainer';
 import { SourceDocInfo } from '@components/SourceDocInfo';
 import { StyleControls } from '@components/stylecontrols';
 import { DocumentHeader } from '@components/DocumentHeader';
-import { TooltipButton } from '@components/TooltipButton';
 import { useSourceDocDetail } from './hooks/useSourceDocDetail';
 import { useSourceDocEditor } from './hooks/useSourceDocEditor';
 
+import { useNavigate, useParams } from 'react-router-dom';
+import { useSourceDocumentDetail, useUpdateSourceDocument } from '@features/documents/useDocumentsData';
+import { useGenerateSourceDocInfo } from '@hooks/useGenerateSourceDocInfo';
+import { useUserConfig } from '@services/userConfigService';
 import SourceDoc from './components/SourceDoc';
 import { Heading } from '@chakra-ui/react/heading';
 
 function SourceDocDetailPage(): ReactElement | null {
     // Use custom hook to handle all page logic
-    const {
-        doc,
-        updateMutation,
-        generateSourceDocInfo,
-        textSizePx,
-        fontFamily,
-        lineHeight,
-    } = useSourceDocDetail();
+    // Extract the sourceDocId from the URL parameters
+    const { sourceDocId } = useParams<{ sourceDocId?: string }>();
+    const parsedId = sourceDocId ? Number(sourceDocId) : null;
+
+    // react-query functions
+    // Fetch and update using the raw ID; backend will validate and send errors
+    const { data: doc, isLoading, error, refetch } = useSourceDocumentDetail(parsedId);
+    const updateMutation = useUpdateSourceDocument(parsedId);
+    const generateSourceDocInfo = useGenerateSourceDocInfo(doc?.id ?? 0, refetch);
+
+
+    // Redirect if query error (invalid or not found)
+    const navigate = useNavigate();
+    React.useEffect(() => {
+        if (error && !isLoading) {
+            navigate('/');
+        }
+    }, [error, isLoading, navigate]);
+    // UI preferences (moved from useSourceDocEditor)
+    // Fetch user config for UI preferences
+    const { data: userConfig } = useUserConfig();
+    const uiPrefs = userConfig?.uiPreferences || {};
+    const textSizePx = uiPrefs.textSizePx ?? 28;
+    const fontFamily = uiPrefs.fontFamily ?? 'Inter, sans-serif';
+    const lineHeight = uiPrefs.lineHeight ?? 1.5;
 
     // Use editor hook only if doc is loaded
     const editor = useSourceDocEditor(doc ?? null, updateMutation.mutate);
@@ -42,16 +61,11 @@ function SourceDocDetailPage(): ReactElement | null {
                 <Heading size="6xl">
                     {doc.title}
                 </Heading>
-                <SourceDocInfo doc={doc} onDocumentUpdate={updateMutation.mutate} />
+                <SourceDocInfo
+                    doc={doc}
+                    onDocumentUpdate={updateMutation.mutate}
+                    generateSourceDocInfo={generateSourceDocInfo} />
                 <DocumentHeader title={doc.title}>
-                    <TooltipButton
-                        label="Generate Info"
-                        tooltip="Generate or update document info using AI"
-                        onClick={generateSourceDocInfo.handleClick}
-                        disabled={generateSourceDocInfo.loading}
-                        loading={generateSourceDocInfo.loading}
-                        icon={<HiOutlineSparkles />}
-                    />
                     <StyleControls mode="sourceDoc" />
                 </DocumentHeader>
             </Box>

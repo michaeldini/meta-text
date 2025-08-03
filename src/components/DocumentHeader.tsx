@@ -19,11 +19,11 @@ export function DocumentHeader(props: DocumentHeaderProps): React.ReactElement {
     return (
         <Collapsible.Root unmountOnExit>
             <Collapsible.Trigger >
-                <Button color="fg" p={4} borderWidth="2px" borderRadius="md">Header</Button>
+                <Button color="fg" p={4} borderWidth="2px" borderRadius="md">Controls</Button>
             </Collapsible.Trigger>
             <Collapsible.Content>
                 <Wrap
-                    rowGap={["0px", "24px"]} columnGap={["4px", "12px"]}
+                    rowGap={["0px", "24px"]} columnGap={["4px", "20px"]}
                     justify="center"
                     align="center"
                 >
