@@ -24,6 +24,19 @@ function HomePage(): ReactElement {
         refetchMetatexts,
     } = useHomepage();
 
+
+    // Common props for Stack and Heading used in SourceDocPage and MetatextPage
+    // This helps maintain consistency and reduces duplication
+    const commonStackProps = {
+        direction: { base: 'column', lg: 'row' },
+        separator: <StackSeparator />,
+        gap: 10,
+    };
+    const commonHeadingProps = {
+        size: '5xl',
+        minWidth: '220px',
+    };
+
     return (
         // pages are wrapped in Suspense and Error boundary to handle loading states
         <PageContainer>
@@ -34,8 +47,19 @@ function HomePage(): ReactElement {
                 gap={10}
             >
                 <WelcomeText />
-                <MetatextPage metatexts={metatexts} sourceDocs={sourceDocs} refetch={refetchMetatexts} />
-                <SourceDocPage sourceDocs={sourceDocs} refetch={refetchSourceDocs} />
+                <MetatextPage
+                    metatexts={metatexts}
+                    sourceDocs={sourceDocs}
+                    refetch={refetchMetatexts}
+                    stackProps={commonStackProps}
+                    headingProps={commonHeadingProps}
+                />
+                <SourceDocPage
+                    sourceDocs={sourceDocs}
+                    refetch={refetchSourceDocs}
+                    stackProps={commonStackProps}
+                    headingProps={commonHeadingProps}
+                />
                 <HomePageDetails />
             </Stack>
         </PageContainer>

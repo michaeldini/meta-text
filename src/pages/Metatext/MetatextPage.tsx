@@ -15,21 +15,21 @@ interface MetatextPageProps {
     metatexts: MetatextSummary[] | undefined;
     sourceDocs: SourceDocumentSummary[] | undefined;
     refetch: () => void;
+    stackProps?: any;
+    headingProps?: any;
 }
 
 function MetatextPage({
     metatexts,
     sourceDocs,
     refetch,
+    stackProps,
+    headingProps,
 }: MetatextPageProps): ReactElement {
     return (
         <Box>
-            <Stack
-                direction={{ base: 'column', lg: 'row' }}
-                separator={<StackSeparator />}
-                gap={10}
-            >
-                <Heading size="5xl" minWidth="220px">Metatexts</Heading>
+            <Stack {...stackProps}>
+                <Heading {...headingProps}>Metatexts</Heading>
                 <SearchableList
                     items={metatexts || []}
                     filterKey="title"

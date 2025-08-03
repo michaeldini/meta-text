@@ -51,7 +51,7 @@ function SourceDocDetailPage(): ReactElement | null {
                         loading={generateSourceDocInfo.loading}
                         icon={<HiOutlineSparkles />}
                     />
-                    <StyleControls />
+                    <StyleControls mode="sourceDoc" />
                 </DocumentHeader>
             </Box>
 

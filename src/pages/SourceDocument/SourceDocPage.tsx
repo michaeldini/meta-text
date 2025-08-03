@@ -17,17 +17,15 @@ import { SourceDocumentSummary } from '@mtypes/documents';
 interface SourceDocPageProps {
     sourceDocs: SourceDocumentSummary[] | undefined;
     refetch: () => void;
+    stackProps?: any;
+    headingProps?: any;
 }
 
-function SourceDocPage({ sourceDocs, refetch }: SourceDocPageProps): ReactElement {
+function SourceDocPage({ sourceDocs, refetch, stackProps, headingProps }: SourceDocPageProps): ReactElement {
     return (
         <Box>
-            <Stack
-                direction={{ base: 'column', md: 'row' }}
-                separator={<StackSeparator />}
-                gap={10}
-            >
-                <Heading size="5xl" minWidth="220px">Sources</Heading>
+            <Stack {...stackProps}>
+                <Heading {...headingProps}>Sources</Heading>
                 <SearchableList
                     items={sourceDocs ?? []}
                     filterKey="title"

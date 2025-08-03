@@ -52,7 +52,7 @@ function MetatextDetailPage(): ReactElement | null {
     };
 
     return (
-        <PageContainer loading={metatextIsLoading} data-testid="metatext-detail-page">
+        <PageContainer data-testid="metatext-detail-page">
             {metatext && (
                 <Stack data-testid="metatext-detail-content"
 

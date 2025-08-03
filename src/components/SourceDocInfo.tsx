@@ -20,7 +20,7 @@ interface FieldConfig {
 const FIELD_CONFIG: FieldConfig[] = [
     { key: 'author', label: 'Author' },
     { key: 'summary', label: 'Summary' },
-    { key: 'characters', label: 'Characters', isListField: true },
+    { key: 'characters', label: 'Characters', isListField: true }, // TODO Remove isListField if not needed
     { key: 'locations', label: 'Locations', isListField: true },
     { key: 'themes', label: 'Themes', isListField: true },
     { key: 'symbols', label: 'Symbols', isListField: true },
@@ -44,7 +44,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
     return (
         <Collapsible.Root data-testid="source-doc-info" >
             <Collapsible.Trigger>
-                <Button color="fg" p={4} borderWidth="2px" borderRadius="md">Source Document Info</Button>
+                <Button color="fg" p={4}>Source Document Info</Button>
             </Collapsible.Trigger>
             <Collapsible.Content p="4">
                 <Text color="fg.muted" mb="4">Click on a field to edit. Enter to Save. Tab to Cancel</Text>

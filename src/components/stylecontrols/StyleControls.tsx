@@ -3,6 +3,13 @@ import React from 'react';
 import { useUserConfig, useUpdateUserConfig } from '@services/userConfigService';
 import { TextSizeInput, LineHeightInput, PaddingXInput, FontFamilySelect } from '@components/stylecontrols';
 
+/**
+ * StyleControls component for adjusting UI preferences.
+ * Use 'mode' prop to control which inputs are rendered:
+ * - 'metatext': shows all controls including PaddingXInput
+ * - 'sourceDoc': excludes PaddingXInput
+ */
+
 
 
 const DEFAULTS = {
@@ -12,11 +19,15 @@ const DEFAULTS = {
     paddingX: 0.3,
 };
 
-export function StyleControls(): React.ReactElement {
+type StyleControlsMode = 'metatext' | 'sourceDoc';
 
+interface StyleControlsProps {
+    mode?: StyleControlsMode;
+}
+
+export function StyleControls({ mode = 'metatext' }: StyleControlsProps): React.ReactElement {
     const { data: userConfig, isLoading } = useUserConfig();
     const updateUserConfig = useUpdateUserConfig();
-
     const uiPreferences = userConfig?.uiPreferences || DEFAULTS;
 
     return (
@@ -29,12 +40,12 @@ export function StyleControls(): React.ReactElement {
                 value={uiPreferences.lineHeight || DEFAULTS.lineHeight}
                 onChange={(val: number) => updateUserConfig.mutate({ lineHeight: val })}
             />
-
-            <PaddingXInput
-                value={uiPreferences.paddingX || DEFAULTS.paddingX}
-                onChange={(val: number) => updateUserConfig.mutate({ paddingX: val })}
-            />
-
+            {mode === 'metatext' && (
+                <PaddingXInput
+                    value={uiPreferences.paddingX || DEFAULTS.paddingX}
+                    onChange={(val: number) => updateUserConfig.mutate({ paddingX: val })}
+                />
+            )}
             <FontFamilySelect
                 value={uiPreferences.fontFamily || DEFAULTS.fontFamily}
                 onChange={(val: string) => updateUserConfig.mutate({ fontFamily: val })}
