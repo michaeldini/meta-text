@@ -43,15 +43,14 @@ export default defineConfig(({ command }) => ({
                     ],
                 }
             },
-            // Better tree shaking - especially important for icons
+            // Better tree shaking
             treeshake: {
                 moduleSideEffects: false,
                 propertyReadSideEffects: false,
                 tryCatchDeoptimization: false
             },
         },
-        // Increase chunk size warning limit since you have a large app
-        chunkSizeWarningLimit: 600,
+        chunkSizeWarningLimit: 500,
         // Optimize source maps for faster builds
         sourcemap: false, // Set to 'inline' for debugging if needed
         // Better minification

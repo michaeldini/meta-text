@@ -7,7 +7,6 @@
 import React, { ReactElement } from 'react';
 
 import { Box, Heading, Stack } from '@chakra-ui/react';
-import { StackSeparator } from '@chakra-ui/react/stack';
 import SourceDocUploadForm from '@pages/SourceDocument/components/SourceDocUploadForm'
 import { SearchableList } from '@components/SearchableList'
 import { SourceDocumentSummary } from '@mtypes/documents';
@@ -25,13 +24,12 @@ interface SourceDocPageProps {
 function SourceDocPage({ sourceDocs, refetch, stackProps, headingProps }: SourceDocPageProps): ReactElement {
     return (
         <Box>
-            <Stack {...stackProps}>
+            <Stack  {...stackProps}>
                 <Heading {...headingProps}>Sources</Heading>
                 <SearchableList
                     items={sourceDocs ?? []}
                     filterKey="title"
                     title="Source Documents"
-                    // loading={isLoading}
                     searchPlaceholder="Search source documents..."
                     emptyMessage="No source documents found. Upload some documents to get started."
                     ariaLabel="List of source documents"

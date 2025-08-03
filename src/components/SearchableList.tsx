@@ -9,6 +9,7 @@ import { Box } from '@chakra-ui/react/box';
 import { List } from '@chakra-ui/react/list';
 import { CloseButton } from '@chakra-ui/react/button';
 import { Heading } from '@chakra-ui/react/heading';
+import { Text } from '@chakra-ui/react/text';
 import { HiMagnifyingGlass, HiOutlineTrash } from "react-icons/hi2";
 import { Boundary } from '@components/Boundaries';
 import { Field } from '@components/ui/field';
@@ -90,6 +91,7 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
                     />
                 </InputGroup>
                 {/* List of items */}
+                <Text> Documents</Text>
                 <List.Root
                     data-testid="searchable-list"
                     role="list"
@@ -108,7 +110,7 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
                             const displayText = String(item[filterKey] || '');
                             return (
                                 <List.Item key={item.id} role="listitem" width="100%">
-                                    <Stack direction="row" alignItems="center" justifyContent="space-between" gap={2} width="100%">
+                                    <Stack direction="row" alignItems="center" justifyContent="space-between" width="100%">
                                         <TooltipButton
                                             label={`${displayText}`}
                                             tooltip={`View ${displayText} Metatext`}

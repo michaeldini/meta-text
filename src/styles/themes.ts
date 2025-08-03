@@ -63,6 +63,25 @@ const config = defineConfig({
                     },
                 },
             }),
+
+            heading: defineRecipe({
+                base: {
+                    color: "fg",
+
+                },
+                variants: {
+                    variant: {
+                        homepage: {
+                            color: 'fg.subtle',
+                            fontSize: { base: "2xl", md: "3xl", lg: "4xl" },
+                            fontWeight: "bold",
+                            lineHeight: "short",
+                            textAlign: "center",
+
+                        },
+                    },
+                },
+            }),
             //     // You can add variants here if needed
             // }),
             // button: buttonRecipe,
@@ -83,6 +102,9 @@ const config = defineConfig({
                 // accent: { value: "#3b82f6" }, // Example accent color
                 // emphasized: { value: "teal" }, // Light gray for emphasis
                 // Extend with Chakra's built-in color tokens as needed
+                headings: {
+                    value: "#212020", // Dark gray for headings
+                },
             },
             fonts: {
                 body: { value: "system-ui, sans-serif" },

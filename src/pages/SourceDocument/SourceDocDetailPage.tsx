@@ -18,7 +18,6 @@ import { useSourceDocEditor } from './hooks/useSourceDocEditor';
 
 import SourceDoc from './components/SourceDoc';
 import { Heading } from '@chakra-ui/react/heading';
-import { Bleed } from '@chakra-ui/react/bleed';
 
 function SourceDocDetailPage(): ReactElement | null {
     // Use custom hook to handle all page logic
@@ -37,6 +36,8 @@ function SourceDocDetailPage(): ReactElement | null {
     if (!doc || !editor) return null;
     return (
         <PageContainer data-testid="sourcedoc-detail-page">
+
+            {/* Document Header */}
             <Box bg="bg.subtle" p="4" borderRadius="lg" mb="10">
                 <Heading size="6xl">
                     {doc.title}
@@ -59,7 +60,6 @@ function SourceDocDetailPage(): ReactElement | null {
             {/* TODO: add keyboard shortcut to save ctrl+s */}
             <Heading>Edit this document by double-clicking on the text below. To save changes, click the icon. To discard, click outside the text area.</Heading>
             <Text color="fg.muted" pb="10">Tip: Scroll after double-clicking to edit.</Text>
-            {/* <Bleed inline="10" color="red" height="4rem"><div></div></Bleed> */}
             <SourceDoc
                 doc={doc}
                 isSaving={editor.isSaving}

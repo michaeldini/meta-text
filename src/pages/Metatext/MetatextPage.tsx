@@ -3,9 +3,7 @@
 // Provides a searchable list of Metatexts and a form to create new Metatexts from source documents.
 
 import React, { ReactElement } from 'react';
-import { PageContainer, } from '@components/PageContainer';
 import { Box, Heading, Stack } from '@chakra-ui/react';
-import { StackSeparator } from '@chakra-ui/react/stack';
 import { SearchableList } from '@components/SearchableList'
 
 import MetatextCreateForm from './components/MetatextCreateForm';
@@ -34,7 +32,6 @@ function MetatextPage({
                     items={metatexts || []}
                     filterKey="title"
                     title="Metatext"
-                    // loading={isLoading}
                     searchPlaceholder="Search Metatext documents..."
                     emptyMessage="No Metatext documents found. Create some Metatexts from your source documents to get started."
                     ariaLabel="List of Metatext documents"
@@ -42,7 +39,6 @@ function MetatextPage({
                 <MetatextCreateForm
                     sourceDocs={sourceDocs || []}
                     sourceDocsLoading={false}
-                    // sourceDocsLoading={isLoading}
                     onSuccess={refetch}
                 />
             </Stack>

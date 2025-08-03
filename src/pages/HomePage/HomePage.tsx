@@ -31,10 +31,12 @@ function HomePage(): ReactElement {
         direction: { base: 'column', lg: 'row' },
         separator: <StackSeparator />,
         gap: 10,
+
     };
     const commonHeadingProps = {
         size: '5xl',
         minWidth: '220px',
+        variant: "homepage"
     };
 
     return (
