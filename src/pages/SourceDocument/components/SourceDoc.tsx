@@ -7,7 +7,7 @@ import { Box } from '@chakra-ui/react/box';
 import { Text } from '@chakra-ui/react';
 import { Stack } from '@chakra-ui/react/stack';
 import { Prose, Tooltip, Alert } from '@components/ui';
-import { HiCheck } from 'react-icons/hi2';
+import { HiCheck, HiOutlinePencil, HiXMark } from 'react-icons/hi2';
 
 
 // Props for SourceDoc presentational component
@@ -63,22 +63,23 @@ export default function SourceDoc({
                     <Editable.Preview
                         fontSize={`${textSizePx}px`}
                         fontFamily={fontFamily}
-                        // lineHeight={lineHeight}
+                        lineHeight={lineHeight}
                         aria-label="Document Text"
                         style={{ whiteSpace: 'pre-line', lineHeight: lineHeight }}
+                        alignItems="flex-start"
+                        width="full"
                     />
                     <Editable.Textarea
                         fontSize={`${textSizePx}px`}
                         fontFamily={fontFamily}
                         lineHeight={lineHeight}
                         disabled={isSaving}
-
-                        style={{
-                            minHeight: '80vh',
-                            zIndex: 1000,
-                            padding: '1rem',
-                            overflowY: 'auto',
-                        }}
+                        style={{ whiteSpace: 'pre-line', lineHeight: lineHeight }}
+                        minHeight="80vh"
+                        zIndex={1000}
+                        padding="1rem"
+                        overflowY="auto"
+                        width="full"
                     />
                     <Editable.Control>
                         <Editable.SubmitTrigger asChild>
