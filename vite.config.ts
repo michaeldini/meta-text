@@ -29,16 +29,18 @@ export default defineConfig(({ command }) => ({
                     'react-icons': ['react-icons/hi2'],
                     'react-query': ['@tanstack/react-query'],
                     // Split each feature into its own chunk for better code splitting
-                    'chunk-rewrite': ['./src/features/chunk-rewrite'],
-                    'chunk-search': ['./src/features/chunk-search'],
-                    'chunk-bookmark': ['./src/features/chunk-bookmark'],
-                    'chunk-copy': ['./src/features/chunk-copy'],
-                    'chunk-evaluation': ['./src/features/chunk-evaluation'],
-                    'chunk-explanation': ['./src/features/chunk-explanation'],
-                    'chunk-image': ['./src/features/chunk-image'],
-                    'chunk-merge': ['./src/features/chunk-merge'],
-                    'chunk-note': ['./src/features/chunk-note'],
-                    'review-features': ['./src/features/review'],
+                    'document-features': [
+                        './src/features/chunk-rewrite',
+                        './src/features/chunk-search',
+                        './src/features/chunk-bookmark',
+                        './src/features/chunk-copy',
+                        './src/features/chunk-evaluation',
+                        './src/features/chunk-explanation',
+                        './src/features/chunk-image',
+                        './src/features/chunk-merge',
+                        './src/features/chunk-note',
+                        './src/features/review',
+                    ],
                 }
             },
             // Better tree shaking - especially important for icons
@@ -61,8 +63,10 @@ export default defineConfig(({ command }) => ({
         include: [
             'react',
             'react-dom',
-            '@mui/material',
-            'zustand'
+            'chakra-ui/react',
+            'zustand',
+            '@tanstack/react-query',
+            'ky',
         ],
         exclude: [
             // Exclude test dependencies from optimization
