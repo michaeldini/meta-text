@@ -49,7 +49,7 @@ export default function SourceDoc({
                     <Text>{error}</Text>
                 </Alert>
             )}
-
+            {/* TODO: Add controls such as "edit", "cancel" and "submit" to Editable for better user experience. &&& autoResize */}
             <Box position="sticky" top="0" width="100%" maxH="80vh" overflowY="auto" zIndex={1}>
                 <Editable.Root
                     value={doc.text}
@@ -58,6 +58,7 @@ export default function SourceDoc({
                     activationMode="dblclick"
                     placeholder="Enter document text..."
                     disabled={isSaving}
+                    selectOnFocus={false} // Prevents auto-select on focus
                 >
                     <Editable.Preview
                         fontSize={`${textSizePx}px`}

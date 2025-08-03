@@ -1,9 +1,8 @@
-
 import { Editable } from '@chakra-ui/react/editable';
 import { Stack } from '@chakra-ui/react/stack';
 import { Text } from '@chakra-ui/react/text';
 import { Collapsible } from '@chakra-ui/react/collapsible';
-import { SourceDocumentDetail } from '@mtypes/documents';
+import { SourceDocumentDetail, SourceDocumentSummary } from '@mtypes/documents';
 import { Button } from '@chakra-ui/react/button';
 
 interface SourceDocInfoProps {
@@ -14,7 +13,7 @@ interface SourceDocInfoProps {
 
 // Configuration for rendering fields in the document info
 interface FieldConfig {
-    key: keyof import('@mtypes/documents').SourceDocumentSummary;
+    key: keyof SourceDocumentSummary;
     label: string;
     isListField?: boolean;
 }
@@ -34,18 +33,28 @@ const FIELD_CONFIG: FieldConfig[] = [
 export function SourceDocInfo(props: SourceDocInfoProps) {
     const { doc, onDocumentUpdate } = props;
 
+    // Handle value commit for editable fields
+    const handleValueCommit = (key: keyof SourceDocumentSummary) => (details: { value: string }) => {
+        const updatedDoc = { ...doc, [key]: details.value };
+        if (onDocumentUpdate) {
+            onDocumentUpdate(updatedDoc);
+        }
+    };
+
     return (
         <Collapsible.Root data-testid="source-doc-info" >
             <Collapsible.Trigger>
                 <Button color="fg" p={4} borderWidth="2px" borderRadius="md">Source Document Info</Button>
-
             </Collapsible.Trigger>
             <Collapsible.Content p="4">
-                <Text color="fg.muted" mb="4">Click on a field to edit.</Text>
+                <Text color="fg.muted" mb="4">Click on a field to edit. Enter to Save. Tab to Cancel</Text>
                 {FIELD_CONFIG.map(config => (
-                    <Stack direction="row" key={config.key}>
-                        <Text fontWeight="bold">{config.label}</Text>
-                        <Editable.Root defaultValue={doc[config.key] != null ? String(doc[config.key]) : 'N/A'}>
+                    <Stack direction="row" key={config.key} align="center">
+                        <Text fontWeight="bold" minWidth="6rem">{config.label}</Text>
+                        <Editable.Root
+                            defaultValue={doc[config.key] != null ? String(doc[config.key]) : 'N/A'}
+                            submitMode={"enter"}
+                            onValueCommit={handleValueCommit(config.key)}>
                             <Editable.Preview />
                             <Editable.Input />
                         </Editable.Root>
