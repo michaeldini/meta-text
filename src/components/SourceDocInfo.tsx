@@ -40,7 +40,8 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
                 <Button color="fg" p={4} borderWidth="2px" borderRadius="md">Source Document Info</Button>
 
             </Collapsible.Trigger>
-            <Collapsible.Content>
+            <Collapsible.Content p="4">
+                <Text color="fg.muted" mb="4">Click on a field to edit.</Text>
                 {FIELD_CONFIG.map(config => (
                     <Stack direction="row" key={config.key}>
                         <Text fontWeight="bold">{config.label}</Text>
