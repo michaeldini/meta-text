@@ -1,33 +1,49 @@
 // Details for a given Metatext document.
 // This page displays the details of a specific Metatext, including a header with style controls and document meta-data, the paginated chunks of the Metatext, and additional tools for chunk management.
-// Favorite chunk filter toggle now uses TooltipButton for a consistent UI.
+
+// Uses a stack layout for the main content
 import React from 'react';
 import type { ReactElement } from 'react';
 import { Stack } from '@chakra-ui/react/stack';
-import { Box, Heading } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react/box';
+import { Heading } from '@chakra-ui/react/heading';
 
-import { HiAcademicCap, HiArrowDownTray, HiOutlineSparkles, HiHashtag, HiStar, HiOutlineStar, HiBookmark } from 'react-icons/hi2'
+// Imports for icons
+import {
+    HiAcademicCap,
+    HiArrowDownTray,
+    HiOutlineSparkles,
+    HiHashtag,
+    HiStar,
+    HiOutlineStar,
+    HiBookmark
+} from 'react-icons/hi2'
 
-import { PageContainer } from '@components/PageContainer';
+
+// Imports for components
 import { SourceDocInfo } from '@components/SourceDocInfo';
 import { StyleControls } from '@components/stylecontrols';
 import { DocumentHeader } from '@components/DocumentHeader';
 import { TooltipButton } from '@components/TooltipButton';
 
+// Import the bottom panel
 import { ChunkToolsPanel } from '@features/chunk-tools';
-import { SearchContainer } from '@features/chunk-search';
-import { usePaginatedChunks } from '@features/chunk';
-import PaginatedChunks, { PaginatedChunksProps } from '../../features/chunk/PaginatedChunks';
 
+// Import the search input
+import { SearchContainer } from '@features/chunk-search';
+
+// This is the list of chunks for the metatext
+import { usePaginatedChunks } from '@features/chunk';
+import PaginatedChunks, { PaginatedChunksProps } from '@features/chunk/PaginatedChunks';
+
+// Custom hook for metatext detail page logic to keep this component clean
 import { useMetatextDetailPage } from './hooks/useMetatextDetailPage';
-import { useBookmarkUIStore } from '@features/chunk-bookmark/store/bookmarkStore';
 
 function MetatextDetailPage(): ReactElement | null {
     // Use custom hook to encapsulate all setup logic
     const {
         metatextId,
         metatext,
-        metatextIsLoading,
         sourceDoc,
         showOnlyFavorites,
         setShowOnlyFavorites,
@@ -36,10 +52,9 @@ function MetatextDetailPage(): ReactElement | null {
         handleReviewClick,
         generateSourceDocInfo,
         downloadMetatext,
+        setNavigateToBookmark
     } = useMetatextDetailPage();
 
-
-    const { setNavigateToBookmark } = useBookmarkUIStore();
 
     // instead of deconstructuring the paginated chunks, we can just use the hook directly
     // this allows us to keep the paginated chunks logic encapsulated and clean, we will just pass the props to the PaginatedChunks component

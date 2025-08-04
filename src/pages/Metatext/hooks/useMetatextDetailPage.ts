@@ -5,19 +5,37 @@
  */
 
 import React from 'react';
+
+// we need to get the parameters from the URL
+// we need also navigate to other pages (just back to the homepage)
 import { useParams, useNavigate } from 'react-router-dom';
+
+// The user config has the style preferences
 import { useUserConfig, useUpdateUserConfig } from '@services/userConfigService';
+
+// Custom hooks for fetching metatext and source document details
 import { useMetatextDetail, useSourceDocumentDetail } from '@features/documents/useDocumentsData';
+
+// Keyboard shortcuts for search functionality
 import { useSearchKeyboard } from '@features/chunk-search/hooks/useSearchKeyboard'
+
+// Custom hook for generating source document info
 import { useGenerateSourceDocInfo } from '@hooks/useGenerateSourceDocInfo';
+
+// Custom hook for downloading metatext as json file
 import { useDownloadMetatext } from './useDownloadMetatext';
+
+// Utility function to get UI preferences from user config 
 import getUiPreferences from '@utils/getUiPreferences';
+
+// Importing the bookmark UI store to manage bookmark navigation
+import { useBookmarkUIStore } from '@features/chunk-bookmark/store/bookmarkStore';
+
 
 export function useMetatextDetailPage() {
     // --- Routing and Navigation ---
     // Extract metatextId from URL and setup navigation
     const { metatextId } = useParams<{ metatextId?: string }>();
-    const navigate = useNavigate();
     const parsedId = metatextId ? Number(metatextId) : null;
 
     // --- Data Fetching ---
@@ -26,6 +44,7 @@ export function useMetatextDetailPage() {
     const { data: sourceDoc } = useSourceDocumentDetail(metatext?.source_document_id);
 
     // Redirect to metatext list page if ID is invalid
+    const navigate = useNavigate();
     React.useEffect(() => {
         if (parsedId == null || isNaN(parsedId)) {
             navigate('/metatext');
@@ -62,7 +81,8 @@ export function useMetatextDetailPage() {
     const downloadMetatext = useDownloadMetatext(parsedId ?? undefined);
 
 
-
+    // Get the function to set the bookmark navigation trigger
+    const { setNavigateToBookmark } = useBookmarkUIStore();
 
 
 
@@ -97,6 +117,7 @@ export function useMetatextDetailPage() {
         downloadMetatext,
 
         // Bookmark
+        setNavigateToBookmark,
         // metatextId is exposed; consuming components should use chunk-bookmark hooks for navigation/bookmark logic
     };
 }
