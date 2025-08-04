@@ -34,7 +34,7 @@ function SourceDocUploadForm(): React.ReactElement {
     // UI
 
     const UploadHeading = (
-        <Heading>Upload</Heading>
+        <Heading py="2">Upload</Heading>
     );
     const SubHeading = (
         <Prose>
@@ -65,6 +65,7 @@ function SourceDocUploadForm(): React.ReactElement {
                 onFileChange={({ acceptedFiles }) => handleFilesChange(acceptedFiles)}
                 disabled={addSourceDocuments.isPending}
                 required
+                alignItems="center"
             >
                 <FileUpload.HiddenInput data-testid="file-input" />
                 <FileUpload.Dropzone>
@@ -119,7 +120,7 @@ function SourceDocUploadForm(): React.ReactElement {
     );
 
     return (
-        <Stack >
+        <Stack width="400px">
             {UploadHeading}
             {/* {SubHeading} */}
             {error && (

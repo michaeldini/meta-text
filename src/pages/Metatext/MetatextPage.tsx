@@ -4,15 +4,14 @@
 
 import React, { ReactElement } from 'react';
 import { Box, Heading, Stack } from '@chakra-ui/react';
-import { SearchableList } from '@components/SearchableList'
 
 import MetatextCreateForm from './components/MetatextCreateForm';
 import { MetatextSummary, SourceDocumentSummary } from '@mtypes/index';
 import { useDeleteMetatext } from '@features/documents/useDocumentsData';
-
+import { SearchInput, ControlledTable, useSearchResults } from '@components/SearchableTable';
 interface MetatextPageProps {
-    metatexts: MetatextSummary[] | undefined;
-    sourceDocs: SourceDocumentSummary[] | undefined;
+    metatexts: MetatextSummary[];
+    sourceDocs: SourceDocumentSummary[];
     stackProps?: any;
     headingProps?: any;
 }
@@ -23,16 +22,27 @@ function MetatextPage({
     stackProps,
     headingProps,
 }: MetatextPageProps): ReactElement {
+
+    const { search, setSearch, inputRef, results } = useSearchResults(metatexts);
     return (
         <Box>
             <Stack {...stackProps}>
                 <Heading {...headingProps}>Metatexts</Heading>
-                <SearchableList
-                    items={metatexts || []}
-                    filterKey="title"
-                    navigateToBase="/metatext/"
-                    deleteItemMutation={useDeleteMetatext()}
-                />
+                <Box>
+
+                    <SearchInput
+                        search={search}
+                        setSearch={setSearch}
+                        inputRef={inputRef}
+                    />
+
+                    <ControlledTable
+                        items={results}
+                        navigateToBase="/metatext/"
+                        deleteItemMutation={useDeleteMetatext()}
+                    />
+                </Box>
+
                 <MetatextCreateForm
                     sourceDocs={sourceDocs || []}
                     sourceDocsLoading={false}

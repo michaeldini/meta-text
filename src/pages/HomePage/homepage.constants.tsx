@@ -17,8 +17,10 @@ export const commonStackProps = {
     gap: { base: 0, lg: 10 }, // Responsive gap
 };
 export const commonHeadingProps = {
-    size: '5xl',
+    // size: '5xl',
     minWidth: '220px',
+    // color: 'red',
+
 };
 
 
@@ -26,7 +28,7 @@ export const commonHeadingProps = {
 export function WelcomeText() {
     return (
         <>
-            <Heading size="6xl" color="emphasized" >
+            <Heading>
                 Welcome!
             </Heading>
             <Heading variant="welcomeText">

@@ -46,13 +46,13 @@ function HomePage(): ReactElement {
             >
                 <WelcomeText />
                 <MetatextPage
-                    metatexts={metatextsQuery.data}
-                    sourceDocs={sourceDocsQuery.data}
+                    metatexts={metatextsQuery.data ?? []}
+                    sourceDocs={sourceDocsQuery.data ?? []}
                     stackProps={commonStackProps}
                     headingProps={commonHeadingProps}
                 />
                 <SourceDocPage
-                    sourceDocs={sourceDocsQuery.data}
+                    sourceDocs={sourceDocsQuery.data ?? []}
                     stackProps={commonStackProps}
                     headingProps={commonHeadingProps}
                 />
