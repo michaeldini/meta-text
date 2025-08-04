@@ -77,21 +77,17 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
                     </Heading>
                 )}
                 {/* Search Input */}
-                <Field
-                    data-testid="search-input"
-                    helperText="Search..."
-                    aria-label="Search items"
-                />
-                <InputGroup startElement={<HiMagnifyingGlass />} endElement={endElement}>
+                <InputGroup startElement={<HiMagnifyingGlass />} endElement={endElement} py="2">
                     <Input
                         ref={inputRef}
-                        placeholder={searchPlaceholder}
+                        // placeholder={searchPlaceholder}
+                        placeholder="Search..."
                         value={search}
                         onChange={handleSearchChange}
                     />
                 </InputGroup>
                 {/* List of items */}
-                <Text> Documents</Text>
+                {/* <Text> Documents</Text>. */}
                 <List.Root
                     data-testid="searchable-list"
                     role="list"
@@ -121,6 +117,9 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
                                             paddingX="0"
                                             _hover={{ textDecoration: 'underline' }}
                                             width="auto"
+                                            bg="bg.subtle"
+                                            p="2"
+                                            m="1"
                                         />
                                         <TooltipButton
                                             label=""
@@ -134,6 +133,7 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
                                                     : deleteMetatextMutation.status === 'pending'
                                             }
                                             _hover={{ color: 'red.500' }}
+                                            color="fg.muted"
                                             width="auto"
                                         />
                                     </Stack>

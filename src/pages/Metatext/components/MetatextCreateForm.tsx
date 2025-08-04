@@ -75,11 +75,10 @@ function MetatextCreateForm(props: MetatextCreateFormProps): React.ReactElement 
                     {/* Source Document Selection */}
                     <Select.Root collection={sourceDocOptions} onChange={handleSourceDocChange} >
                         <Select.HiddenSelect /> {/* Dont't select an option initially */}
-                        <Select.Label>Choose a Document</Select.Label>
                         <Select.Control  >
                             <Select.Trigger>
                                 <Select.ValueText
-                                    placeholder="Republic by Plato"
+                                    placeholder="Select a source document"
                                     color="fg.muted"
                                 />
                             </Select.Trigger>
@@ -102,14 +101,14 @@ function MetatextCreateForm(props: MetatextCreateFormProps): React.ReactElement 
                     </Select.Root>
 
                     {/* Title Input */}
-                    <Field
+                    {/* <Field
                         label="Choose a Title"
                         required
                         disabled={loading}
                         data-testid="title-input"
-                    />
+                    /> */}
                     <Input
-                        placeholder="Enter a descriptive title for your Metatext"
+                        placeholder="Title"
                         value={title}
                         onChange={handleTitleChange}
                         data-testid="title-input"

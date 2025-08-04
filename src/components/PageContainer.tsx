@@ -4,10 +4,10 @@ import { Box, Flex } from '@chakra-ui/react';
 interface PageContainerProps {
     children: ReactNode;
 }
-
 /**
- * Generic page container for consistent layout.
- * Wraps children in a Container with error boundary and theme-based styles.
+ * PageContainer component
+ * This component wraps the main content of the page with consistent padding and layout.
+ * It is used to ensure that all pages have a uniform look and feel.
  */
 export function PageContainer(props: PageContainerProps): React.ReactElement {
     const { children } = props;

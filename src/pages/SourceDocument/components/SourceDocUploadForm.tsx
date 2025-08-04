@@ -3,7 +3,7 @@
 import React from 'react';
 
 
-import { Heading, Text, Wrap, WrapItem, Tag } from '@chakra-ui/react';
+import { Heading, Text, Wrap, WrapItem, Tag, Center } from '@chakra-ui/react';
 import { Stack } from '@chakra-ui/react/stack'
 import { Box } from '@chakra-ui/react/box'
 import { Button } from '@chakra-ui/react/button';
@@ -73,9 +73,6 @@ function SourceDocUploadForm({ onSuccess }: SourceDocUploadFormProps): React.Rea
                 required
             >
                 <FileUpload.HiddenInput data-testid="file-input" />
-                <FileUpload.Label>
-                    <Text>Choose files</Text>
-                </FileUpload.Label>
                 <FileUpload.Dropzone>
                     <FileUpload.DropzoneContent>
                         <HiArrowDownTray />
@@ -139,8 +136,10 @@ function SourceDocUploadForm({ onSuccess }: SourceDocUploadFormProps): React.Rea
                 </Box>
             )}
             <form onSubmit={handleSubmit}>
-                {SubmitButton}
-                {FileUploadSection}
+                <Stack direction="column" >
+                    {FileUploadSection}
+                    {SubmitButton}
+                </Stack>
             </form>
         </Stack>
     );
