@@ -11,13 +11,13 @@ import { PageContainer } from '@components/PageContainer';
 import { SourceDocInfo } from '@components/SourceDocInfo';
 import { StyleControls } from '@components/stylecontrols';
 import { DocumentHeader } from '@components/DocumentHeader';
-import { useSourceDocDetail } from './hooks/useSourceDocDetail';
+// import { useSourceDocDetail } from './hooks/useSourceDocDetail';
 import { useSourceDocEditor } from './hooks/useSourceDocEditor';
 
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSourceDocumentDetail, useUpdateSourceDocument } from '@features/documents/useDocumentsData';
 import { useGenerateSourceDocInfo } from '@hooks/useGenerateSourceDocInfo';
-import { useUserConfig } from '@services/userConfigService';
+import { useUIPreferences } from '@hooks/useUIPreferences';
 import SourceDoc from './components/SourceDoc';
 import { Heading } from '@chakra-ui/react/heading';
 
@@ -32,6 +32,7 @@ function SourceDocDetailPage(): ReactElement | null {
     const { data: doc, isLoading, error, refetch } = useSourceDocumentDetail(parsedId);
     const updateMutation = useUpdateSourceDocument(parsedId);
     const generateSourceDocInfo = useGenerateSourceDocInfo(doc?.id ?? 0, refetch);
+    const { textSizePx, fontFamily, lineHeight } = useUIPreferences();
 
 
     // Redirect if query error (invalid or not found)
@@ -41,13 +42,7 @@ function SourceDocDetailPage(): ReactElement | null {
             navigate('/');
         }
     }, [error, isLoading, navigate]);
-    // UI preferences (moved from useSourceDocEditor)
-    // Fetch user config for UI preferences
-    const { data: userConfig } = useUserConfig();
-    const uiPrefs = userConfig?.uiPreferences || {};
-    const textSizePx = uiPrefs.textSizePx ?? 28;
-    const fontFamily = uiPrefs.fontFamily ?? 'Inter, sans-serif';
-    const lineHeight = uiPrefs.lineHeight ?? 1.5;
+
 
     // Use editor hook only if doc is loaded
     const editor = useSourceDocEditor(doc ?? null, updateMutation.mutate);

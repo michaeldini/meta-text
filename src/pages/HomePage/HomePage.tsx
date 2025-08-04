@@ -9,35 +9,18 @@ import { Stack, StackSeparator } from "@chakra-ui/react/stack"
 
 import { PageContainer } from '@components/PageContainer';
 
-import WelcomeText from './components/WelcomeText';
-import HomePageDetails from './components/HomePageDetails';
 
-import { useHomepage } from './hooks/useHomepage';
 import MetatextPage from '@pages/Metatext/MetatextPage'
 import SourceDocPage from '@pages/SourceDocument/SourceDocPage';
+import { commonStackProps, commonHeadingProps, WelcomeText, AppInstructions } from './homepage.constants';
+import { useSourceDocuments, useMetatexts } from '@features/documents/useDocumentsData';
 
 function HomePage(): ReactElement {
-    const {
-        sourceDocs,
-        metatexts,
-        refetchSourceDocs,
-        refetchMetatexts,
-    } = useHomepage();
 
 
-    // Common props for Stack and Heading used in SourceDocPage and MetatextPage
-    // This helps maintain consistency and reduces duplication
-    const commonStackProps = {
-        direction: { base: 'column', lg: 'row' },
-        separator: <StackSeparator />,
-        gap: 10,
+    const sourceDocsQuery = useSourceDocuments();
+    const metatextsQuery = useMetatexts();
 
-    };
-    const commonHeadingProps = {
-        size: '5xl',
-        minWidth: '220px',
-        variant: "homepage"
-    };
 
     return (
         // pages are wrapped in Suspense and Error boundary to handle loading states
@@ -50,19 +33,19 @@ function HomePage(): ReactElement {
             >
                 <WelcomeText />
                 <MetatextPage
-                    metatexts={metatexts}
-                    sourceDocs={sourceDocs}
-                    refetch={refetchMetatexts}
+                    metatexts={metatextsQuery.data}
+                    sourceDocs={sourceDocsQuery.data}
+                    refetch={metatextsQuery.refetch}
                     stackProps={commonStackProps}
                     headingProps={commonHeadingProps}
                 />
                 <SourceDocPage
-                    sourceDocs={sourceDocs}
-                    refetch={refetchSourceDocs}
+                    sourceDocs={sourceDocsQuery.data}
+                    refetch={sourceDocsQuery.refetch}
                     stackProps={commonStackProps}
                     headingProps={commonHeadingProps}
                 />
-                <HomePageDetails />
+                <AppInstructions />
             </Stack>
         </PageContainer>
     );

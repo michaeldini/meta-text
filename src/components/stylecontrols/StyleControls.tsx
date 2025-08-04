@@ -2,22 +2,13 @@
 import React from 'react';
 import { useUserConfig, useUpdateUserConfig } from '@services/userConfigService';
 import { TextSizeInput, LineHeightInput, PaddingXInput, FontFamilySelect } from '@components/stylecontrols';
-
+import { useUIPreferences } from '@hooks/useUIPreferences';
 /**
  * StyleControls component for adjusting UI preferences.
  * Use 'mode' prop to control which inputs are rendered:
  * - 'metatext': shows all controls including PaddingXInput
  * - 'sourceDoc': excludes PaddingXInput
  */
-
-
-
-const DEFAULTS = {
-    textSizePx: 20,
-    fontFamily: 'Inter, sans-serif',
-    lineHeight: 1.5,
-    paddingX: 0.3,
-};
 
 type StyleControlsMode = 'metatext' | 'sourceDoc';
 
@@ -26,28 +17,25 @@ interface StyleControlsProps {
 }
 
 export function StyleControls({ mode = 'metatext' }: StyleControlsProps): React.ReactElement {
-    const { data: userConfig, isLoading } = useUserConfig();
-    const updateUserConfig = useUpdateUserConfig();
-    const uiPreferences = userConfig?.uiPreferences || DEFAULTS;
-
+    const { textSizePx, fontFamily, lineHeight, paddingX, updateUserConfig } = useUIPreferences();
     return (
         <>
             <TextSizeInput
-                value={uiPreferences.textSizePx || DEFAULTS.textSizePx}
+                value={textSizePx}
                 onChange={(val: number) => updateUserConfig.mutate({ textSizePx: val })}
             />
             <LineHeightInput
-                value={uiPreferences.lineHeight || DEFAULTS.lineHeight}
+                value={lineHeight}
                 onChange={(val: number) => updateUserConfig.mutate({ lineHeight: val })}
             />
             {mode === 'metatext' && (
                 <PaddingXInput
-                    value={uiPreferences.paddingX || DEFAULTS.paddingX}
+                    value={paddingX}
                     onChange={(val: number) => updateUserConfig.mutate({ paddingX: val })}
                 />
             )}
             <FontFamilySelect
-                value={uiPreferences.fontFamily || DEFAULTS.fontFamily}
+                value={fontFamily}
                 onChange={(val: string) => updateUserConfig.mutate({ fontFamily: val })}
             />
         </>
