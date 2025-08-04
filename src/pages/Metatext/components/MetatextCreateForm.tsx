@@ -21,16 +21,11 @@ export interface MetatextCreateFormProps {
     sourceDocs: SourceDocumentSummary[];
     /** Loading state for source documents */
     sourceDocsLoading: boolean;
-    /** Error state for source documents */
-    sourceDocsError?: Error | null;
-    /** Callback function called when creation succeeds */
-    onSuccess?: () => void;
-    /** Optional styling overrides */
-    sx?: object;
+
 }
 
 function MetatextCreateForm(props: MetatextCreateFormProps): React.ReactElement {
-    const { sourceDocs, sourceDocsLoading, sourceDocsError, onSuccess, sx = {} } = props;
+    const { sourceDocs, sourceDocsLoading = false } = props;
     /**
      * Create form state and handlers from custom hook
      */
@@ -45,7 +40,7 @@ function MetatextCreateForm(props: MetatextCreateFormProps): React.ReactElement 
         handleSourceDocChange,
         handleSubmit,
         clearMessages
-    } = useMetatextCreate({ onSuccess });
+    } = useMetatextCreate();
 
 
     const sourceDocOptions = createListCollection({

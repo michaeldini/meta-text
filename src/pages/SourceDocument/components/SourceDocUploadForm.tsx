@@ -36,11 +36,7 @@ function SourceDocUploadForm(): React.ReactElement {
     const UploadHeading = (
         <Heading variant="subHeading">Upload</Heading>
     );
-    const SubHeading = (
-        <Prose>
-            Upload one or more .txt files. Each file will be uploaded as a separate document using its filename as the title.
-        </Prose>
-    );
+
 
     const SubmitButton = (
         <Button

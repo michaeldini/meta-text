@@ -13,6 +13,7 @@ export function useSourceDocUploadForm() {
     // Local state for batch upload
     const [files, setFiles] = useState<File[]>([]);
     const [error, setError] = useState<string | null>(null);
+
     // Track upload status for each file
     const [uploadStatuses, setUploadStatuses] = useState<{
         uploading: boolean;
