@@ -30,7 +30,8 @@ import { useSourceDocuments, useMetatexts } from '@features/documents/useDocumen
 // HomePage component
 function HomePage(): ReactElement {
 
-    // Fetch source documents and metatexts using react-query hooks.
+    // Fetch source documents and metatexts
+    // This componenent has subcomponents that display the data, so we fetch it in the parent component.
     const sourceDocsQuery = useSourceDocuments();
     const metatextsQuery = useMetatexts();
 
@@ -47,13 +48,11 @@ function HomePage(): ReactElement {
                 <MetatextPage
                     metatexts={metatextsQuery.data}
                     sourceDocs={sourceDocsQuery.data}
-                    refetch={metatextsQuery.refetch}
                     stackProps={commonStackProps}
                     headingProps={commonHeadingProps}
                 />
                 <SourceDocPage
                     sourceDocs={sourceDocsQuery.data}
-                    refetch={sourceDocsQuery.refetch}
                     stackProps={commonStackProps}
                     headingProps={commonHeadingProps}
                 />

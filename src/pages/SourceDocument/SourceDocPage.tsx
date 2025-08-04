@@ -1,27 +1,32 @@
-// Landing page for source document management, allowing users to upload and manage source documents.
-// Uses DocumentManagementLayout for consistent layout with other document management pages.
-// Provides a searchable list of source documents and an upload form for new documents.
-
-
-
+// Source Document Page Component
 import React, { ReactElement } from 'react';
 
-import { Box, Heading, Stack } from '@chakra-ui/react';
-import SourceDocUploadForm from '@pages/SourceDocument/components/SourceDocUploadForm'
-import { SearchableList } from '@components/SearchableList'
-import { SourceDocumentSummary } from '@mtypes/documents';
+// Chakra UI components
+import { Box } from '@chakra-ui/react/box';
+import { Heading } from '@chakra-ui/react/heading';
+import { Stack } from '@chakra-ui/react/stack';
 
+// Import the SourceDocUploadForm component for uploading source documents
+import SourceDocUploadForm from '@pages/SourceDocument/components/SourceDocUploadForm'
+
+// Import the SearchableList component to display source documents
+import { SearchableList } from '@components/SearchableList'
+
+// Import the useDeleteSourceDocument hook to handle deletion of source documents in the list
+import { useDeleteSourceDocument } from '@features/documents/useDocumentsData';
+
+// Import types for source documents
+import { SourceDocumentSummary } from '@mtypes/documents';
 
 
 
 interface SourceDocPageProps {
     sourceDocs: SourceDocumentSummary[] | undefined;
-    refetch: () => void;
     stackProps?: any;
     headingProps?: any;
 }
 
-function SourceDocPage({ sourceDocs, refetch, stackProps, headingProps }: SourceDocPageProps): ReactElement {
+function SourceDocPage({ sourceDocs, stackProps, headingProps }: SourceDocPageProps): ReactElement {
     return (
         <Box>
             <Stack  {...stackProps}>
@@ -29,13 +34,11 @@ function SourceDocPage({ sourceDocs, refetch, stackProps, headingProps }: Source
                 <SearchableList
                     items={sourceDocs ?? []}
                     filterKey="title"
-                    title="Source Documents"
-                    searchPlaceholder="Search source documents..."
-                    emptyMessage="No source documents found. Upload some documents to get started."
-                    ariaLabel="List of source documents"
+                    navigateToBase="/sourcedoc/"
+                    deleteItemMutation={useDeleteSourceDocument()}
                 />
                 <SourceDocUploadForm
-                    onSuccess={refetch}
+                // onSuccess={refetch}
                 />
             </Stack>
         </Box>

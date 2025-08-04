@@ -8,11 +8,11 @@ import { SearchableList } from '@components/SearchableList'
 
 import MetatextCreateForm from './components/MetatextCreateForm';
 import { MetatextSummary, SourceDocumentSummary } from '@mtypes/index';
+import { useDeleteMetatext } from '@features/documents/useDocumentsData';
 
 interface MetatextPageProps {
     metatexts: MetatextSummary[] | undefined;
     sourceDocs: SourceDocumentSummary[] | undefined;
-    refetch: () => void;
     stackProps?: any;
     headingProps?: any;
 }
@@ -20,7 +20,6 @@ interface MetatextPageProps {
 function MetatextPage({
     metatexts,
     sourceDocs,
-    refetch,
     stackProps,
     headingProps,
 }: MetatextPageProps): ReactElement {
@@ -31,15 +30,12 @@ function MetatextPage({
                 <SearchableList
                     items={metatexts || []}
                     filterKey="title"
-                    title="Metatext"
-                    searchPlaceholder="Search Metatext documents..."
-                    emptyMessage="No Metatext documents found. Create some Metatexts from your source documents to get started."
-                    ariaLabel="List of Metatext documents"
+                    navigateToBase="/metatext/"
+                    deleteItemMutation={useDeleteMetatext()}
                 />
                 <MetatextCreateForm
                     sourceDocs={sourceDocs || []}
                     sourceDocsLoading={false}
-                    onSuccess={refetch}
                 />
             </Stack>
         </Box>

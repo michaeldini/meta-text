@@ -18,7 +18,7 @@ import { useSourceDocUploadForm } from '../hooks/useSourceDocUploadForm';
  */
 export interface SourceDocUploadFormProps {
     /** Callback function called when upload succeeds */
-    onSuccess: () => void;
+    // onSuccess: () => void;
 }
 /**
  * SourceDocUploadForm component for uploading source documents
@@ -26,7 +26,7 @@ export interface SourceDocUploadFormProps {
  * - Displays form with title and file input
  * - Handles file selection and submission
  */
-function SourceDocUploadForm({ onSuccess }: SourceDocUploadFormProps): React.ReactElement {
+function SourceDocUploadForm({ }: SourceDocUploadFormProps): React.ReactElement {
     // Use custom hook for all form logic
     const {
         files,
@@ -35,7 +35,7 @@ function SourceDocUploadForm({ onSuccess }: SourceDocUploadFormProps): React.Rea
         handleFilesChange,
         handleSubmit,
         uploadStatuses,
-    } = useSourceDocUploadForm(onSuccess);
+    } = useSourceDocUploadForm();
 
     // UI
 

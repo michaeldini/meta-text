@@ -9,7 +9,7 @@
 import { useState, useCallback } from 'react';
 import { useAddSourceDocument } from '@features/documents/useDocumentsData';
 
-export function useSourceDocUploadForm(onSuccess: () => void) {
+export function useSourceDocUploadForm() {
     // Local state for batch upload
     const [files, setFiles] = useState<File[]>([]);
     const [error, setError] = useState<string | null>(null);
@@ -23,7 +23,6 @@ export function useSourceDocUploadForm(onSuccess: () => void) {
     // React Query mutation for upload (single file)
     const addSourceDocument = useAddSourceDocument();
 
-    // Simulate a batch mutation wrapper (simple version)
     const addSourceDocuments = {
         isPending: uploadStatuses.length > 0 && uploadStatuses.some(s => s.uploading),
         mutate: (fileList: File[], callbacks: { onSuccess?: () => void; onError?: () => void }) => {
@@ -99,13 +98,12 @@ export function useSourceDocUploadForm(onSuccess: () => void) {
             onSuccess: () => {
                 setFiles([]);
                 setUploadStatuses([]);
-                if (onSuccess) onSuccess();
             },
             onError: () => {
                 setError('One or more files failed to upload.');
             },
         });
-    }, [files, addSourceDocuments, onSuccess]);
+    }, [files, addSourceDocuments]);
 
     return {
         files,

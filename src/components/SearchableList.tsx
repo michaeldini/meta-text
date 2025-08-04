@@ -18,27 +18,24 @@ import { Spinner } from '@chakra-ui/react/spinner';
 import type { MetatextSummary, SourceDocumentSummary } from '@mtypes/documents';
 import { useSearchableList } from '../hooks/useSearchableList';
 
+import type { UseMutationResult } from '@tanstack/react-query';
+
 
 
 export interface SearchableListProps {
-    title: string;
-    filterKey: keyof (SourceDocumentSummary | MetatextSummary);
     items: Array<SourceDocumentSummary | MetatextSummary>;
-    deleteLoading?: Record<number, boolean>;
-    searchPlaceholder?: string;
-    emptyMessage?: string;
-    ariaLabel?: string;
-    loading?: boolean;
+    filterKey: keyof (SourceDocumentSummary | MetatextSummary);
+    navigateToBase: string;
+    deleteItemMutation: UseMutationResult<any, any, any, any>;
+
 }
 
 export function SearchableList(props: SearchableListProps): React.ReactElement {
     const {
-        title,
-        filterKey,
         items = [],
-        loading = false,
-        emptyMessage,
-        searchPlaceholder
+        filterKey,
+        navigateToBase,
+        deleteItemMutation,
     } = props;
 
     // Use custom hook for all state and logic
@@ -49,12 +46,8 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
         filteredItems,
         handleSearchChange,
         handleItemClick,
-        handleItemKeyDown,
         handleDeleteClick,
-        deleteSourceDocMutation,
-        deleteMetatextMutation,
-        docType
-    } = useSearchableList({ title, filterKey, items, searchPlaceholder });
+    } = useSearchableList({ items, filterKey, navigateToBase, deleteItemMutation });
 
     const endElement = search ? (
         <CloseButton
@@ -71,11 +64,9 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
         <Boundary fallback={<Spinner aria-label="Loading list" />}>
             <Box minWidth="300px" >
                 {/* Title */}
-                {title && (
-                    <Heading py={2} size="4xl" >
-                        Open
-                    </Heading>
-                )}
+                <Heading py={2} size="4xl" >
+                    Open
+                </Heading>
                 {/* Search Input */}
                 <InputGroup startElement={<HiMagnifyingGlass />} endElement={endElement} py="2">
                     <Input
@@ -99,7 +90,7 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
                 >
                     {filteredItems.length === 0 ? (
                         <List.Item>
-                            {emptyMessage || `No ${title} found.`}
+                            {`No documents found.`}
                         </List.Item>
                     ) : (
                         filteredItems.map((item: SourceDocumentSummary | MetatextSummary) => {
@@ -112,7 +103,6 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
                                             tooltip={`View ${displayText} Metatext`}
                                             data-testid={`item-${item.id}`}
                                             onClick={() => handleItemClick(item.id)}
-                                            onKeyDown={(e) => handleItemKeyDown(e, item.id)}
                                             tabIndex={0}
                                             paddingX="0"
                                             _hover={{ textDecoration: 'underline' }}
@@ -127,11 +117,7 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
                                             icon={<HiOutlineTrash />}
                                             data-testid={`delete-button-${item.id}`}
                                             onClick={() => { handleDeleteClick(item.id); }}
-                                            disabled={
-                                                docType === 'sourceDoc'
-                                                    ? deleteSourceDocMutation.status === 'pending'
-                                                    : deleteMetatextMutation.status === 'pending'
-                                            }
+                                            disabled={deleteItemMutation.status === 'pending'}
                                             _hover={{ color: 'red.500' }}
                                             color="fg.muted"
                                             width="auto"
