@@ -64,7 +64,7 @@ export function SearchableList(props: SearchableListProps): React.ReactElement {
         <Boundary fallback={<Spinner aria-label="Loading list" />}>
             <Box minWidth="300px" >
                 {/* Title */}
-                <Heading py={2} size="4xl" >
+                <Heading py={2} >
                     Open
                 </Heading>
                 {/* Search Input */}

@@ -69,15 +69,26 @@ const config = defineConfig({
                     color: "fg",
 
                 },
+                defaultVariants: {
+                    variant: "homepage",
+                },
                 variants: {
                     variant: {
                         homepage: {
                             color: 'fg.subtle',
-                            fontSize: { base: "2xl", md: "3xl", lg: "4xl" },
+                            fontSize: { base: "2xl", lg: "4xl" },
                             fontWeight: "bold",
                             lineHeight: "short",
                             textAlign: "center",
 
+                        },
+                        welcomeText: {
+                            color: 'fg',
+                            fontSize: { base: "lg", lg: "2xl" },
+                            // fontWeight: "normal",
+                            lineHeight: "1.5",
+                            textAlign: "center",
+                            m: "4",
                         },
                     },
                 },

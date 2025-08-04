@@ -13,20 +13,14 @@ import { Field, Prose } from '@components/ui';
 import { HiArrowDownTray } from 'react-icons/hi2';
 
 import { useSourceDocUploadForm } from '../hooks/useSourceDocUploadForm';
-/**
- * Props for the SourceDocUploadForm component
- */
-export interface SourceDocUploadFormProps {
-    /** Callback function called when upload succeeds */
-    // onSuccess: () => void;
-}
+
 /**
  * SourceDocUploadForm component for uploading source documents
  * - Uses custom hook for managing upload state
  * - Displays form with title and file input
  * - Handles file selection and submission
  */
-function SourceDocUploadForm({ }: SourceDocUploadFormProps): React.ReactElement {
+function SourceDocUploadForm(): React.ReactElement {
     // Use custom hook for all form logic
     const {
         files,
@@ -40,7 +34,7 @@ function SourceDocUploadForm({ }: SourceDocUploadFormProps): React.ReactElement 
     // UI
 
     const UploadHeading = (
-        <Heading size="4xl">Upload</Heading>
+        <Heading>Upload</Heading>
     );
     const SubHeading = (
         <Prose>

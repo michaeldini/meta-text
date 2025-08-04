@@ -14,12 +14,11 @@ import { Highlight } from "@chakra-ui/react/highlight"
 export const commonStackProps = {
     direction: { base: 'column', lg: 'row' },
     separator: <StackSeparator />,
-    gap: 10,
+    gap: { base: 0, lg: 10 }, // Responsive gap
 };
 export const commonHeadingProps = {
     size: '5xl',
     minWidth: '220px',
-    variant: "homepage"
 };
 
 
@@ -30,7 +29,7 @@ export function WelcomeText() {
             <Heading size="6xl" color="emphasized" >
                 Welcome!
             </Heading>
-            <Heading size="2xl" mt="4" mb="8" lineHeight="1.5" color="fg">
+            <Heading variant="welcomeText">
                 <Highlight query={["Meta-Text empowers", "Upload a document", "Transform passive reading"]} styles={{ px: '2', py: '1', bg: 'primary' }}>
                     Imagine unlocking the true depth of every document you read. Meta-Text empowers you to upload, dissect, and truly engage with your texts—one meaningful section at a time.
                     How does it work? Upload a document that sparks your curiosity. Break it into sections that matter to you. Annotate each part with your thoughts, questions, and insights.

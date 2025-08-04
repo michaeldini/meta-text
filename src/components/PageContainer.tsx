@@ -14,8 +14,8 @@ export function PageContainer(props: PageContainerProps): React.ReactElement {
 
     return (
         <Box
-            paddingX={{ base: 4, md: 8 }}
-            paddingY={{ base: 4, md: 8 }}
+            paddingX={{ base: 4, lg: 8 }}
+            paddingY={{ base: 4, lg: 8 }}
             maxWidth="6xl"
             alignItems="center"
             justifyContent="center"

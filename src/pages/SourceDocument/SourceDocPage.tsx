@@ -38,7 +38,6 @@ function SourceDocPage({ sourceDocs, stackProps, headingProps }: SourceDocPagePr
                     deleteItemMutation={useDeleteSourceDocument()}
                 />
                 <SourceDocUploadForm
-                // onSuccess={refetch}
                 />
             </Stack>
         </Box>
