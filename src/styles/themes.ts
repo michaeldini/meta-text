@@ -83,8 +83,8 @@ const config = defineConfig({
 
                         },
                         welcomeText: {
-                            color: 'fg',
-                            fontSize: { base: "lg", lg: "2xl" },
+                            color: 'primary',
+                            fontSize: { base: "xl", lg: "4xl" },
                             // fontWeight: "normal",
                             lineHeight: "1.5",
                             textAlign: "center",

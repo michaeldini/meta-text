@@ -86,7 +86,7 @@ export function TableRow({ item, navigate, navigateToBase, deleteItemMutation }:
                     label={item.title}
                     tooltip={`View ${item.title}`}
                     data-testid={`item-${item.id}`}
-                    onClick={() => navigate(`${navigateToBase}/${item.id}`)}
+                    onClick={() => navigate(`${navigateToBase}${item.id}`)}
                     tabIndex={0}
                     _hover={{ textDecoration: 'underline' }}
                     width="auto"

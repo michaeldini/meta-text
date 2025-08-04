@@ -28,10 +28,10 @@ export const commonHeadingProps = {
 export function WelcomeText() {
     return (
         <>
-            <Heading>
+            <Heading variant="welcomeText">
                 Welcome!
             </Heading>
-            <Heading variant="welcomeText">
+            <Heading>
                 <Highlight query={["Meta-Text empowers", "Upload a document", "Transform passive reading"]} styles={{ px: '2', py: '1', bg: 'primary' }}>
                     Imagine unlocking the true depth of every document you read. Meta-Text empowers you to upload, dissect, and truly engage with your texts—one meaningful section at a time.
                     How does it work? Upload a document that sparks your curiosity. Break it into sections that matter to you. Annotate each part with your thoughts, questions, and insights.
