@@ -36,6 +36,14 @@ export interface SearchInputProps {
     inputRef?: React.RefObject<HTMLInputElement | null>;
 }
 
+// Utility function to clear search and focus input
+function clearSearchAndFocus(setSearch: (value: string) => void, inputRef?: React.RefObject<HTMLInputElement | null>) {
+    setSearch("");
+    if (inputRef?.current) {
+        inputRef.current.focus();
+    }
+}
+
 export function SearchInput({ search, setSearch, inputRef }: SearchInputProps) {
     return (
         <Box minWidth="300px">
@@ -43,15 +51,11 @@ export function SearchInput({ search, setSearch, inputRef }: SearchInputProps) {
             <InputGroup startElement={<HiMagnifyingGlass />} endElement={search ? (
                 <CloseButton
                     size="xs"
-                    onClick={() => {
-                        setSearch("");
-                        if (inputRef?.current) {
-                            inputRef.current.focus();
-                        }
-                    }}
+                    py="2"
                     me="-2"
+                    onClick={() => clearSearchAndFocus(setSearch, inputRef)}
                 />
-            ) : undefined} py="2">
+            ) : undefined}>
                 <Input
                     ref={inputRef as React.RefObject<HTMLInputElement>}
                     placeholder="Search..."

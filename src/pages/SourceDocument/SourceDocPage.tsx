@@ -18,6 +18,7 @@ import { SourceDocumentSummary } from '@mtypes/documents';
 
 import { SearchInput, ControlledTable, useSearchResults } from '@components/SearchableTable';
 
+// The source document component takes a list of source documents and displays them in a table. 
 interface SourceDocPageProps {
     sourceDocs: SourceDocumentSummary[];
     stackProps?: any;
@@ -43,6 +44,7 @@ function SourceDocPage({ sourceDocs, stackProps, headingProps }: SourceDocPagePr
                         deleteItemMutation={useDeleteSourceDocument()}
                     />
                 </Box>
+
                 <SourceDocUploadForm />
             </Stack>
         </Box>

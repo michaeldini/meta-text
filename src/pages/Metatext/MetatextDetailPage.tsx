@@ -4,7 +4,7 @@
 import React from 'react';
 import type { ReactElement } from 'react';
 import { Stack } from '@chakra-ui/react/stack';
-import { Heading } from '@chakra-ui/react';
+import { Box, Heading } from '@chakra-ui/react';
 
 import { HiAcademicCap, HiArrowDownTray, HiOutlineSparkles, HiHashtag, HiStar, HiOutlineStar, HiBookmark } from 'react-icons/hi2'
 
@@ -52,7 +52,7 @@ function MetatextDetailPage(): ReactElement | null {
     };
 
     return (
-        <PageContainer data-testid="metatext-detail-page">
+        <Box data-testid="metatext-detail-page">
             {metatext && (
                 <Stack data-testid="metatext-detail-content"
 
@@ -120,7 +120,7 @@ function MetatextDetailPage(): ReactElement | null {
                     <PaginatedChunks {...paginatedChunksProps} />
                 </Stack>
             )}
-        </PageContainer>
+        </Box>
     );
 }
 

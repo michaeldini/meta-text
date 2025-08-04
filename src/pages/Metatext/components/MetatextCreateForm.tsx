@@ -28,13 +28,12 @@ export interface MetatextCreateFormProps {
 }
 
 function MetatextCreateForm(props: MetatextCreateFormProps): React.ReactElement {
-    const { sourceDocs, sourceDocsLoading = false } = props;
+    const { sourceDocs } = props;
     /**
      * Create form state and handlers from custom hook
      */
     const {
         title,
-        sourceDocId,
         loading,
         isSubmitDisabled,
         handleTitleChange,

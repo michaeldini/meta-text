@@ -42,7 +42,7 @@ function HomePage(): ReactElement {
                 data-testid="homepage-content"
                 justify="center"
                 separator={<StackSeparator />}
-                gap={{ base: 0, lg: 10 }} // Responsive gap
+                gap={{ base: 5, lg: 10 }} // Responsive gap
             >
                 <WelcomeText />
                 <MetatextPage

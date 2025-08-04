@@ -13,7 +13,6 @@ export interface MetatextCreateData {
 // Return type for the useMetatextCreate hook
 export interface UseMetatextCreateResult {
     title: string;
-    sourceDocId: number | null;
     loading: boolean;
     isSubmitDisabled: boolean;
     handleTitleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -49,7 +48,6 @@ export function useMetatextCreate(): UseMetatextCreateResult {
 
     return {
         title: data.title,
-        sourceDocId: data.sourceDocId,
         loading,
         isSubmitDisabled,
         handleTitleChange,

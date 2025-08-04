@@ -95,7 +95,8 @@ const ChunkWords = memo(function ChunkWords({
     });
 
     return (
-        <Box as="div" ref={containerRef} padding={4} w="100%">
+        <Box as="div" ref={containerRef} padding={4} width="100%" data-chunk-id={`chunk-${chunkIdx}`}
+        >
             <Flex as="div" flexWrap="wrap" gap={0}>
                 {wordsElements}
                 <Box as="span" display="inline-block">

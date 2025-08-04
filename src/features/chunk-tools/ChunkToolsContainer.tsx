@@ -30,55 +30,65 @@ export const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = (props) =
 
     return (
         <Box data-chunk-id={`chunk-tools-${chunk.id}`}
-            maxWidth="40%">
-            {/* Tools Always visible at the top */}
+            width={activeTools.length > 0 ? '1/3' : '1/12'}
+        >
+            {/* Main sticky stack */}
             <Stack
-                flexDirection={activeTools.length > 0 ? 'row' : 'column'}
-                alignItems="center"
-            >
-                {/* Chunk position display (logic encapsulated in component) */}
-                <ChunkPosition chunk={chunk} />
-                <CopyTool chunkText={chunk.text} />
-                <ChunkBookmarkToggle chunk={chunk} />
-                <ChunkFavoriteToggle chunk={chunk} />
+                position="sticky"
+                top={12}
+                zIndex={1}>
+
+                {/* Tools Always visible at the top */}
+                <Stack
+                    flexDirection={activeTools.length > 0 ? 'row' : 'column'}
+                    alignItems="center"
+                >
+                    {/* Chunk position display (logic encapsulated in component) */}
+                    <ChunkPosition chunk={chunk} />
+                    <CopyTool chunkText={chunk.text} />
+                    <ChunkBookmarkToggle chunk={chunk} />
+                    <ChunkFavoriteToggle chunk={chunk} />
+                </Stack>
+                {/* Chunk tools, each wrapped in ToolBoundary for error/loading isolation */}
+
+                {activeTools.includes('note-summary') && (
+
+                    <NotesTool
+                        chunk={chunk}
+                        updateChunkField={updateChunkField}
+                        isVisible={true}
+                    />
+
+                )}
+                {activeTools.includes('evaluation') && (
+                    <EvaluationTool
+                        chunk={chunk}
+                        updateChunkField={updateChunkField}
+                        isVisible={true}
+                    />
+                )}
+                {activeTools.includes('image') && (
+                    <ImageTool
+                        chunk={chunk}
+                        updateChunkField={updateChunkField}
+                        isVisible={true}
+                    />
+                )}
+                {activeTools.includes('rewrite') && (
+                    <RewriteDisplayTool
+                        chunk={chunk}
+                        isVisible={true}
+                    />
+                )}
+                {activeTools.includes('explanation') && (
+                    <ExplanationTool
+                        chunk={chunk}
+                        updateChunkField={updateChunkField}
+                        isVisible={true}
+                    />
+                )}
             </Stack>
-            {/* Chunk tools, each wrapped in ToolBoundary for error/loading isolation */}
-            {activeTools.includes('note-summary') && (
 
-                <NotesTool
-                    chunk={chunk}
-                    updateChunkField={updateChunkField}
-                    isVisible={true}
-                />
-
-            )}
-            {activeTools.includes('evaluation') && (
-                <EvaluationTool
-                    chunk={chunk}
-                    updateChunkField={updateChunkField}
-                    isVisible={true}
-                />
-            )}
-            {activeTools.includes('image') && (
-                <ImageTool
-                    chunk={chunk}
-                    updateChunkField={updateChunkField}
-                    isVisible={true}
-                />
-            )}
-            {activeTools.includes('rewrite') && (
-                <RewriteDisplayTool
-                    chunk={chunk}
-                    isVisible={true}
-                />
-            )}
-            {activeTools.includes('explanation') && (
-                <ExplanationTool
-                    chunk={chunk}
-                    updateChunkField={updateChunkField}
-                    isVisible={true}
-                />
-            )}
         </Box>
     );
 };
