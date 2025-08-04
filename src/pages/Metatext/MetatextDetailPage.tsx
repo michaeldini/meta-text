@@ -52,7 +52,9 @@ function MetatextDetailPage(): ReactElement | null {
     };
 
     return (
-        <Box data-testid="metatext-detail-page">
+        <Box data-testid="metatext-detail-page"
+            p="1"
+            bg="bg.subtle">
             {metatext && (
                 <Stack data-testid="metatext-detail-content"
 

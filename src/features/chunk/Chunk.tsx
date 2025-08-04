@@ -23,6 +23,8 @@ const Chunk = memo(function Chunk({
         <Stack direction="row"
             data-chunk-id={chunk.id}
             width="100%"
+            borderBottom="1px solid"
+            borderColor="border.subtle"
         >
             <ChunkWords
                 chunk={chunk}

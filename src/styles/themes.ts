@@ -113,9 +113,9 @@ const config = defineConfig({
                 // accent: { value: "#3b82f6" }, // Example accent color
                 // emphasized: { value: "teal" }, // Light gray for emphasis
                 // Extend with Chakra's built-in color tokens as needed
-                headings: {
-                    value: "#212020", // Dark gray for headings
-                },
+                // headings: {
+                //     value: "#212020", // Dark gray for headings
+                // },
             },
             fonts: {
                 body: { value: "system-ui, sans-serif" },
