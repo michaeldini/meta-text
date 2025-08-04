@@ -19,7 +19,7 @@ export const commonStackProps = {
 export const commonHeadingProps = {
     // size: '5xl',
     minWidth: '220px',
-    variant: 'subHeading',
+    size: 'sub',
     // color: 'red',
 
 };
@@ -29,7 +29,7 @@ export const commonHeadingProps = {
 export function WelcomeText() {
     return (
         <>
-            <Heading variant="main">
+            <Heading size="main">
                 Welcome!
             </Heading>
             <Heading>

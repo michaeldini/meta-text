@@ -70,10 +70,10 @@ const config = defineConfig({
 
                 },
                 defaultVariants: {
-                    // variant: "homepage",
+                    // variant: "main",
                 },
                 variants: {
-                    variant: {
+                    size: {
                         main: {
                             color: 'fg',
                             fontSize: { base: "2xl", lg: "5xl" },
@@ -82,7 +82,7 @@ const config = defineConfig({
                             textAlign: "center",
 
                         },
-                        subHeading: {
+                        sub: {
                             color: 'fg.subtle',
                             fontSize: { base: "2xl", lg: "4xl" },
                             fontWeight: "bold",

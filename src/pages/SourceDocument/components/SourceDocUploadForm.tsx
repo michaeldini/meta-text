@@ -34,7 +34,7 @@ function SourceDocUploadForm(): React.ReactElement {
     // UI
 
     const UploadHeading = (
-        <Heading variant="subHeading">Upload</Heading>
+        <Heading size="sub">Upload</Heading>
     );
 
 
