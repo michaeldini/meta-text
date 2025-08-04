@@ -1,13 +1,16 @@
-import React from 'react';
+/** 
+ * Presentational component for creating a new Metatext.
+ * - Uses useMetatextCreate hook for form state and submission logic
+ */
 
+
+import React from 'react';
 import { Box } from '@chakra-ui/react/box';
 import { Text, Heading, createListCollection } from '@chakra-ui/react';
-import { Stack } from '@chakra-ui/react/stack';
 import { Select } from '@chakra-ui/react/select';
 import { Portal } from '@chakra-ui/react/portal';
 import { Button } from '@chakra-ui/react/button';
 import { Input } from '@chakra-ui/react/input';
-import { Field } from '@components/ui/field';
 import { Fieldset } from '@chakra-ui/react/fieldset';
 import { HiOutlineSparkles } from 'react-icons/hi2';
 import { useMetatextCreate } from '../hooks/useMetatextCreate';
@@ -33,13 +36,10 @@ function MetatextCreateForm(props: MetatextCreateFormProps): React.ReactElement 
         title,
         sourceDocId,
         loading,
-        error,
-        success,
         isSubmitDisabled,
         handleTitleChange,
         handleSourceDocChange,
-        handleSubmit,
-        clearMessages
+        handleSubmit
     } = useMetatextCreate();
 
 
