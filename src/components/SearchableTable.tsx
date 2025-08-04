@@ -78,8 +78,50 @@ export interface ControlledTableProps {
     deleteItemMutation: UseMutationResult<any, any, any, any>;
 }
 
+export function TableRow({ item, navigate, navigateToBase, deleteItemMutation }: { item: SourceDocumentSummary | MetatextSummary; navigate: (path: string) => void; navigateToBase: string; deleteItemMutation: UseMutationResult<any, any, any, any> }) {
+    return (
+        <Table.Row key={item.id}>
+            <Table.Cell>
+                <TooltipButton
+                    label={item.title}
+                    tooltip={`View ${item.title}`}
+                    data-testid={`item-${item.id}`}
+                    onClick={() => navigate(`${navigateToBase}/${item.id}`)}
+                    tabIndex={0}
+                    _hover={{ textDecoration: 'underline' }}
+                    width="auto"
+                    pl="2"
+                />
+            </Table.Cell>
+            <Table.Cell textAlign="center">
+                <TooltipButton
+                    label=""
+                    tooltip={`Delete ${item.title}`}
+                    icon={<HiOutlineTrash />}
+                    data-testid={`delete-button-${item.id}`}
+                    onClick={() => deleteItemMutation.mutate(item.id)}
+                    _hover={{ color: 'red.500' }}
+                    color="fg.muted"
+                    width="auto"
+                />
+            </Table.Cell>
+        </Table.Row>
+    );
+}
+
 export function ControlledTable({ items, navigateToBase, deleteItemMutation }: ControlledTableProps) {
     const navigate = useNavigate();
+
+    // If no items are provided, display a message
+    if (!items || items.length === 0) {
+        return (
+            <Box p={4} textAlign="center" color="fg.muted">
+                No documents found.
+            </Box>
+        );
+    }
+
+    // Render the table with items
     return (
         <Table.ScrollArea borderWidth="1px" rounded="md" maxW="2xl" maxH="420px">
             <Table.Root size="sm" stickyHeader>
@@ -90,40 +132,13 @@ export function ControlledTable({ items, navigateToBase, deleteItemMutation }: C
                     </Table.Row>
                 </Table.Header>
                 <Table.Body bg="bg">
-                    {items.length === 0 ? (
-                        <Table.Row>
-                            <Table.Cell colSpan={2} textAlign="center">No documents found.</Table.Cell>
-                        </Table.Row>
-                    ) : (
-                        items.map((item) => (
-                            <Table.Row key={item.id}>
-                                <Table.Cell>
-                                    <TooltipButton
-                                        label={item.title}
-                                        tooltip={`View ${item.title}`}
-                                        data-testid={`item-${item.id}`}
-                                        onClick={() => navigate(`${navigateToBase}${item.id}`)}
-                                        tabIndex={0}
-                                        _hover={{ textDecoration: 'underline' }}
-                                        width="auto"
-                                        pl="2"
-                                    />
-                                </Table.Cell>
-                                <Table.Cell textAlign="center">
-                                    <TooltipButton
-                                        label=""
-                                        tooltip={`Delete ${item.title}`}
-                                        icon={<HiOutlineTrash />}
-                                        data-testid={`delete-button-${item.id}`}
-                                        onClick={() => deleteItemMutation.mutate(item.id)}
-                                        _hover={{ color: 'red.500' }}
-                                        color="fg.muted"
-                                        width="auto"
-                                    />
-                                </Table.Cell>
-                            </Table.Row>
-                        ))
-                    )}
+                    {items.map((item) => (
+                        <TableRow key={item.id}
+                            item={item}
+                            navigate={navigate}
+                            navigateToBase={navigateToBase}
+                            deleteItemMutation={deleteItemMutation} />
+                    ))}
                 </Table.Body>
             </Table.Root>
         </Table.ScrollArea>
