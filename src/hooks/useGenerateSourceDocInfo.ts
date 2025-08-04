@@ -10,8 +10,7 @@ import log from '@utils/logger';
  */
 export function useGenerateSourceDocInfo(
     sourceDocumentId?: number | null,
-    refetchDocument?: () => Promise<any>,
-    onSuccess?: () => void
+    invalidate?: () => void
 ) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -23,8 +22,7 @@ export function useGenerateSourceDocInfo(
         try {
             log.info(`Generating source document info for ID ${sourceDocumentId}`);
             await generateSourceDocInfo(sourceDocumentId);
-            if (refetchDocument) await refetchDocument();
-            if (onSuccess) onSuccess();
+            if (invalidate) invalidate();
 
         } catch (err: any) {
             setError(err.message || 'Failed to generate info');

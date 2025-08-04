@@ -3,7 +3,6 @@ import { useState, useCallback } from 'react';
 import { useAddMetatext } from '@features/documents/useDocumentsData';
 
 
-
 // Form data structure for Metatext creation
 export interface MetatextCreateData {
     title: string;
@@ -16,7 +15,7 @@ export interface UseMetatextCreateResult {
     loading: boolean;
     isSubmitDisabled: boolean;
     handleTitleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    handleSourceDocChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+    handleSourceDocChange: (value: string | null) => void;
     handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
@@ -30,9 +29,11 @@ export function useMetatextCreate(): UseMetatextCreateResult {
         setData(prev => ({ ...prev, title: event.target.value }));
     }, []);
 
-    const handleSourceDocChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-        const value = event.target.value;
-        setData(prev => ({ ...prev, sourceDocId: value ? Number(value) : null }));
+    const handleSourceDocChange = useCallback((value: string | null) => {
+        setData(prev => ({
+            ...prev,
+            sourceDocId: value ? Number(value) : null
+        }));
     }, []);
 
     const handleSubmit = useCallback((event: React.FormEvent<HTMLFormElement>) => {

@@ -67,7 +67,8 @@ function MetatextCreateForm(props: MetatextCreateFormProps): React.ReactElement 
                 <Fieldset.Root>
 
                     {/* Source Document Selection */}
-                    <Select.Root collection={sourceDocOptions} onChange={handleSourceDocChange} >
+                    <Select.Root collection={sourceDocOptions}
+                        onValueChange={(e) => handleSourceDocChange(e.value[0])}>
                         <Select.HiddenSelect /> {/* Dont't select an option initially */}
                         <Select.Control  >
                             <Select.Trigger>

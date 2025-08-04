@@ -4,7 +4,6 @@ import React from 'react';
 import { Wrap } from "@chakra-ui/react/wrap"
 import { Collapsible } from "@chakra-ui/react/collapsible"
 import { Text } from "@chakra-ui/react/text";
-import { Button } from '@chakra-ui/react/button';
 interface DocumentHeaderProps {
     title?: string;
     children: React.ReactNode;

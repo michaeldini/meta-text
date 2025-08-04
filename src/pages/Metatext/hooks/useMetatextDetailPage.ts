@@ -43,7 +43,11 @@ export function useMetatextDetailPage() {
     // --- Data Fetching ---
     // Fetch metatext details and related source document
     const { data: metatext, isLoading: metatextIsLoading, error: metatextError } = useMetatextDetail(parsedId);
-    const { data: sourceDoc, isLoading, error, refetch } = useSourceDocumentDetail(metatext?.source_document_id);
+    const { data: sourceDoc, isLoading, error, invalidate } = useSourceDocumentDetail(metatext?.source_document_id);
+
+    // --- Source Document Info Generation ---
+    // Generate source document info if metatext is available
+    const generateSourceDocInfo = useGenerateSourceDocInfo(metatext?.source_document_id, invalidate);
 
     // Redirect to metatext list page if ID is invalid
     const navigate = useNavigate();
@@ -73,10 +77,6 @@ export function useMetatextDetailPage() {
     // --- Favorites State ---
     // State for showing only favorites
     const [showOnlyFavorites, setShowOnlyFavorites] = React.useState(false);
-
-    // --- Source Document Info Generation ---
-    // Generate source document info if metatext is available
-    const generateSourceDocInfo = useGenerateSourceDocInfo(metatext?.source_document_id, refetch);
 
 
     // --- Download Metatext ---

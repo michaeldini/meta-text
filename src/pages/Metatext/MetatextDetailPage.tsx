@@ -77,9 +77,7 @@ function MetatextDetailPage(): ReactElement | null {
                     animationName="fade-in"
                     animationDuration="fast">
                     <Heading size="xl">metatext</Heading>
-                    <Heading size="6xl">
-                        {metatext.title}
-                    </Heading>
+                    <Heading size="6xl">{metatext.title}</Heading>
                     {sourceDoc &&
                         <SourceDocInfo
                             doc={sourceDoc}

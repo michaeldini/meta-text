@@ -2,7 +2,7 @@
 // React Query hooks for all CRUD operations for source documents and metatexts
 // This file centralizes all hooks for fetching, creating, updating, and deleting documents and metatexts
 // For maintainability, hooks are grouped by entity type and operation
-
+import React from 'react';
 import { useSuspenseQuery, useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNotifications } from '@store/notificationStore';
 import {
@@ -68,7 +68,8 @@ export function useSourceDocuments() {
 // Fetch a single source document (detail)
 export function useSourceDocumentDetail(id?: number | null) {
     const { showError } = useNotifications();
-    return useQuery<SourceDocumentDetail>({
+    const queryClient = useQueryClient();
+    const query = useQuery<SourceDocumentDetail>({
         queryKey: ['sourceDocumentDetail', id],
         queryFn: async () => {
             if (id == null) throw new Error('No document ID provided');
@@ -99,6 +100,16 @@ export function useSourceDocumentDetail(id?: number | null) {
         retry: 1,
         staleTime: 1000 * 60, // 1 minute
     });
+
+    // Invalidate function for this query
+    const invalidate = React.useCallback(() => {
+        queryClient.invalidateQueries({ queryKey: ['sourceDocumentDetail', id] });
+    }, [queryClient, id]);
+
+    return {
+        ...query,
+        invalidate,
+    };
 }
 
 // Update a source document
