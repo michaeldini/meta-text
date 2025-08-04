@@ -1,14 +1,22 @@
-
-// ControlledTable: Displays a striped Chakra UI table with sticky headers and sticky first column.
-// Props: items (array of objects with id and title), onNavigate (function), onDelete (function), isDeleting (boolean)
-
+/**
+ * SearchableTable.tsx
+ * This file contains components and hooks for creating a searchable table interface.
+ * It includes a search input, controlled table, and table row components and a hook for managing search results.
+ */
 import React, { useState, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input, InputGroup, CloseButton, Box, Heading } from '@chakra-ui/react';
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { MetatextSummary, SourceDocumentSummary } from '@mtypes/index';
+import { Table } from '@chakra-ui/react';
+import { HiOutlineTrash } from "react-icons/hi2";
+import { TooltipButton } from '@components/TooltipButton';
+import { UseMutationResult } from '@tanstack/react-query';
+
+
 
 // useSearchResults: Hook to manage search/filter state and results
+// returns results that can be passed to a table component
 export function useSearchResults(items: Array<SourceDocumentSummary | MetatextSummary>) {
     const [search, setSearch] = useState("");
     const inputRef = useRef<HTMLInputElement | null>(null);
@@ -19,7 +27,9 @@ export function useSearchResults(items: Array<SourceDocumentSummary | MetatextSu
     return { search, setSearch, inputRef, results };
 }
 
-// SearchInput: Only controls the input value
+
+// SearchInput: Component for the search input field
+// Accepts search state and a setter function, with an optional ref for focus management
 export interface SearchInputProps {
     search: string;
     setSearch: (value: string) => void;
@@ -28,8 +38,8 @@ export interface SearchInputProps {
 
 export function SearchInput({ search, setSearch, inputRef }: SearchInputProps) {
     return (
-        <Box mb={4} minWidth="300px">
-            <Heading py={2}>Open</Heading>
+        <Box minWidth="300px">
+            <Heading>Open</Heading>
             <InputGroup startElement={<HiMagnifyingGlass />} endElement={search ? (
                 <CloseButton
                     size="xs"
@@ -64,23 +74,20 @@ export function SearchInput({ search, setSearch, inputRef }: SearchInputProps) {
 //     </Box>
 //   );
 // }
-import { Table } from '@chakra-ui/react';
-import { HiOutlineTrash } from "react-icons/hi2";
-import { TooltipButton } from '@components/TooltipButton';
-import { UseMutationResult } from '@tanstack/react-query';
 
 
 
-
-export interface ControlledTableProps {
-    items: Array<SourceDocumentSummary | MetatextSummary>;
+// Simple table row component to keep the code clean
+export interface TableRowProps {
+    item: SourceDocumentSummary | MetatextSummary;
+    navigate: (path: string) => void;
     navigateToBase: string;
     deleteItemMutation: UseMutationResult<any, any, any, any>;
 }
 
-export function TableRow({ item, navigate, navigateToBase, deleteItemMutation }: { item: SourceDocumentSummary | MetatextSummary; navigate: (path: string) => void; navigateToBase: string; deleteItemMutation: UseMutationResult<any, any, any, any> }) {
+export function TableRow({ item, navigate, navigateToBase, deleteItemMutation }: TableRowProps) {
     return (
-        <Table.Row key={item.id}>
+        <Table.Row key={item.id} bg="none">
             <Table.Cell>
                 <TooltipButton
                     label={item.title}
@@ -109,6 +116,16 @@ export function TableRow({ item, navigate, navigateToBase, deleteItemMutation }:
     );
 }
 
+
+
+// ControlledTable: Pass the search results to this component
+export interface ControlledTableProps {
+    items: Array<SourceDocumentSummary | MetatextSummary>;
+    navigateToBase: string;
+    deleteItemMutation: UseMutationResult<any, any, any, any>;
+}
+
+
 export function ControlledTable({ items, navigateToBase, deleteItemMutation }: ControlledTableProps) {
     const navigate = useNavigate();
 
@@ -123,15 +140,15 @@ export function ControlledTable({ items, navigateToBase, deleteItemMutation }: C
 
     // Render the table with items
     return (
-        <Table.ScrollArea borderWidth="1px" rounded="md" maxW="2xl" maxH="420px">
-            <Table.Root size="sm" stickyHeader>
+        <Table.ScrollArea borderWidth="1px" rounded="md" maxW="2xl" maxH="420px" >
+            <Table.Root size="sm" stickyHeader >
                 <Table.Header>
-                    <Table.Row bg="bg">
+                    <Table.Row bg="bg.subtle">
                         <Table.ColumnHeader minW="220px">Title</Table.ColumnHeader>
-                        <Table.ColumnHeader minW="80px" textAlign="center">Delete</Table.ColumnHeader>
+                        <Table.ColumnHeader textAlign="center"></Table.ColumnHeader>
                     </Table.Row>
                 </Table.Header>
-                <Table.Body bg="bg">
+                <Table.Body bg="none">
                     {items.map((item) => (
                         <TableRow key={item.id}
                             item={item}

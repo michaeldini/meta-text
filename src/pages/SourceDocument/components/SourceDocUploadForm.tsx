@@ -57,7 +57,7 @@ function SourceDocUploadForm(): React.ReactElement {
         </Button>
     );
     const FileUploadSection = (
-        <Stack p={4} >
+        <Stack >
             <FileUpload.Root
                 accept={[".txt"]}
                 maxFiles={100}
@@ -68,8 +68,8 @@ function SourceDocUploadForm(): React.ReactElement {
                 alignItems="center"
             >
                 <FileUpload.HiddenInput data-testid="file-input" />
-                <FileUpload.Dropzone>
-                    <FileUpload.DropzoneContent>
+                <FileUpload.Dropzone bg="none">
+                    <FileUpload.DropzoneContent >
                         <HiArrowDownTray />
                         <Text>
                             {files.length

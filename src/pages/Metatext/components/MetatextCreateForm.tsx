@@ -64,7 +64,7 @@ function MetatextCreateForm(props: MetatextCreateFormProps): React.ReactElement 
             minWidth={0}>
             {/* Form Header */}
             <Box >
-                <Heading variant="homepage" py={2} size="4xl">
+                <Heading variant="homepage">
                     New
                 </Heading>
             </Box>

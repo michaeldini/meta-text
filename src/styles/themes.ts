@@ -150,8 +150,8 @@ const config = defineConfig({
         semanticTokens: {
             colors: {
                 // Backgrounds
-                bg: { value: { base: "{colors.gray.50}", _dark: "{colors.gray.800}" } },
-                "bg.subtle": { value: { base: "{colors.gray.100}", _dark: "{colors.gray.800}" } },
+                bg: { value: { base: "{colors.gray.50}", _dark: "linear-gradient(to right, {colors.gray.700}, {colors.gray.800})" } },
+                "bg.subtle": { value: { base: "{colors.gray.100}", _dark: "{colors.gray.700}" } },
                 "bg.muted": { value: { base: "{colors.gray.200}", _dark: "{colors.gray.700}" } },
                 "bg.emphasized": { value: { base: "{colors.emphasized}" } },
                 "bg.inverted": { value: { base: "{colors.gray.900}", _dark: "{colors.gray.50}" } },
