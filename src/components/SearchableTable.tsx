@@ -39,7 +39,7 @@ export interface SearchInputProps {
 export function SearchInput({ search, setSearch, inputRef }: SearchInputProps) {
     return (
         <Box minWidth="300px">
-            <Heading>Open</Heading>
+            <Heading variant="subHeading">Open</Heading>
             <InputGroup startElement={<HiMagnifyingGlass />} endElement={search ? (
                 <CloseButton
                     size="xs"
@@ -140,7 +140,7 @@ export function ControlledTable({ items, navigateToBase, deleteItemMutation }: C
 
     // Render the table with items
     return (
-        <Table.ScrollArea borderWidth="1px" rounded="md" maxW="2xl" maxH="420px" >
+        <Table.ScrollArea borderWidth="1px" rounded="md" maxW="2xl" maxH="300px" >
             <Table.Root size="sm" stickyHeader >
                 <Table.Header>
                     <Table.Row bg="bg.subtle">

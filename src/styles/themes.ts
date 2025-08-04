@@ -70,25 +70,25 @@ const config = defineConfig({
 
                 },
                 defaultVariants: {
-                    variant: "homepage",
+                    // variant: "homepage",
                 },
                 variants: {
                     variant: {
-                        homepage: {
+                        main: {
+                            color: 'fg',
+                            fontSize: { base: "2xl", lg: "5xl" },
+                            fontWeight: "bold",
+                            lineHeight: "short",
+                            textAlign: "center",
+
+                        },
+                        subHeading: {
                             color: 'fg.subtle',
                             fontSize: { base: "2xl", lg: "4xl" },
                             fontWeight: "bold",
                             lineHeight: "short",
                             textAlign: "center",
 
-                        },
-                        welcomeText: {
-                            color: 'primary',
-                            fontSize: { base: "xl", lg: "4xl" },
-                            // fontWeight: "normal",
-                            lineHeight: "1.5",
-                            textAlign: "center",
-                            m: "4",
                         },
                     },
                 },
