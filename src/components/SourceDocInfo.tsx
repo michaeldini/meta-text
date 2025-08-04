@@ -51,7 +51,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
     return (
         <Collapsible.Root data-testid="source-doc-info" >
             <Collapsible.Trigger>
-                <Button color="fg" p={4}>More Info</Button>
+                <Text color="fg" p={4}>More Info</Text>
             </Collapsible.Trigger>
             <Collapsible.Content p="4">
                 {generateSourceDocInfo && (

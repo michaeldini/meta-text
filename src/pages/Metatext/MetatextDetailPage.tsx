@@ -52,7 +52,8 @@ function MetatextDetailPage(): ReactElement | null {
         handleReviewClick,
         generateSourceDocInfo,
         downloadMetatext,
-        setNavigateToBookmark
+        setNavigateToBookmark,
+        updateSourceDocMutation,
     } = useMetatextDetailPage();
 
 
@@ -79,7 +80,11 @@ function MetatextDetailPage(): ReactElement | null {
                     <Heading size="6xl">
                         {metatext.title}
                     </Heading>
-                    {sourceDoc && <SourceDocInfo doc={sourceDoc} />}
+                    {sourceDoc &&
+                        <SourceDocInfo
+                            doc={sourceDoc}
+                            onDocumentUpdate={updateSourceDocMutation.mutate}
+                            generateSourceDocInfo={generateSourceDocInfo} />}
 
                     <DocumentHeader title={metatext.title}>
                         <TooltipButton

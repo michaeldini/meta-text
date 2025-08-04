@@ -19,7 +19,7 @@ export function DocumentHeader(props: DocumentHeaderProps): React.ReactElement {
     return (
         <Collapsible.Root unmountOnExit>
             <Collapsible.Trigger >
-                <Button color="fg" p={4} borderWidth="2px" borderRadius="md">Controls</Button>
+                <Text color="fg" p={4} borderWidth="2px" borderRadius="md">Controls</Text>
             </Collapsible.Trigger>
             <Collapsible.Content>
                 <Wrap

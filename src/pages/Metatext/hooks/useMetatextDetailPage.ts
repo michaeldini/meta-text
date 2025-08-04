@@ -31,6 +31,8 @@ import getUiPreferences from '@utils/getUiPreferences';
 // Importing the bookmark UI store to manage bookmark navigation
 import { useBookmarkUIStore } from '@features/chunk-bookmark/store/bookmarkStore';
 
+import { useUpdateSourceDocument } from '@features/documents/useDocumentsData';
+
 
 export function useMetatextDetailPage() {
     // --- Routing and Navigation ---
@@ -41,7 +43,7 @@ export function useMetatextDetailPage() {
     // --- Data Fetching ---
     // Fetch metatext details and related source document
     const { data: metatext, isLoading: metatextIsLoading, error: metatextError } = useMetatextDetail(parsedId);
-    const { data: sourceDoc } = useSourceDocumentDetail(metatext?.source_document_id);
+    const { data: sourceDoc, isLoading, error, refetch } = useSourceDocumentDetail(metatext?.source_document_id);
 
     // Redirect to metatext list page if ID is invalid
     const navigate = useNavigate();
@@ -74,7 +76,8 @@ export function useMetatextDetailPage() {
 
     // --- Source Document Info Generation ---
     // Generate source document info if metatext is available
-    const generateSourceDocInfo = useGenerateSourceDocInfo(metatext?.source_document_id);
+    const generateSourceDocInfo = useGenerateSourceDocInfo(metatext?.source_document_id, refetch);
+
 
     // --- Download Metatext ---
     // Hook for downloading metatext
@@ -84,6 +87,8 @@ export function useMetatextDetailPage() {
     // Get the function to set the bookmark navigation trigger
     const { setNavigateToBookmark } = useBookmarkUIStore();
 
+
+    const updateSourceDocMutation = useUpdateSourceDocument(parsedId);
 
 
 
@@ -118,6 +123,9 @@ export function useMetatextDetailPage() {
 
         // Bookmark
         setNavigateToBookmark,
-        // metatextId is exposed; consuming components should use chunk-bookmark hooks for navigation/bookmark logic
+
+        // Mutations
+        updateSourceDocMutation,
+
     };
 }
