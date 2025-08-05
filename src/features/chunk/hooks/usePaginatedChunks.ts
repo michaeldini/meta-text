@@ -2,6 +2,7 @@
 // Handles filtering, pagination, fetching, and bookmark navigation
 import React, { useRef, useEffect, useCallback } from 'react';
 import { useChunkStore } from '@store/chunkStore';
+import { useChunksQuery } from '@hooks/useChunksQuery';
 import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
 import useChunkBookmarkNavigation from '@features/chunk-bookmark/hooks/useChunkBookmarkNavigation';
 import { usePaginationStore } from './usePaginationStore';
@@ -30,7 +31,8 @@ export function usePaginatedChunks({ metatextId, showOnlyFavorites }: UsePaginat
             bookmarkedChunkId: null,
         };
     }
-    const { chunks, loadingChunks, chunksError, fetchChunks } = useChunkStore();
+    // Use React Query for chunk data
+    const { data: chunks = [], isLoading: loadingChunks, error: chunksError } = useChunksQuery(Number(metatextId));
     const { filteredChunks, isInSearchMode } = useSearchStore();
     const { currentPage, setCurrentPage, setChunksPerPage } = usePaginationStore();
 
@@ -40,13 +42,7 @@ export function usePaginatedChunks({ metatextId, showOnlyFavorites }: UsePaginat
         displayChunks = displayChunks.filter((chunk: any) => !!chunk.favorited_by_user_id);
     }
 
-    // Fetch chunks when metatextId changes
-    useEffect(() => {
-        if (metatextId) {
-            fetchChunks(Number(metatextId));
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [metatextId]);
+    // Removed useEffect for fetchChunks; React Query handles fetching automatically
 
     // Pagination logic
     const chunksPerPage = 5;

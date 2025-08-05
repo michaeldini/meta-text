@@ -33,7 +33,7 @@ import { useBookmarkUIStore } from '@features/chunk-bookmark/store/bookmarkStore
 
 import { useUpdateSourceDocument } from '@features/documents/useDocumentsData';
 
-
+import { useMetatextStore } from '@store/metatextStore';
 export function useMetatextDetailPage() {
     // --- Routing and Navigation ---
     // Extract metatextId from URL and setup navigation
@@ -45,6 +45,15 @@ export function useMetatextDetailPage() {
     const { data: metatext, isLoading: metatextIsLoading, error: metatextError } = useMetatextDetail(parsedId);
     const { data: sourceDoc, isLoading, error, invalidate } = useSourceDocumentDetail(metatext?.source_document_id);
 
+    const setMetatextId = useMetatextStore((state) => state.setMetatextId);
+    React.useEffect(() => {
+        setMetatextId(parsedId);
+    }, [parsedId, setMetatextId]);
+
+    const setMetatext = useMetatextStore((state) => state.setMetatext);
+    React.useEffect(() => {
+        setMetatext(metatext);
+    }, [metatext, setMetatext]);
     // --- Source Document Info Generation ---
     // Generate source document info if metatext is available
     const generateSourceDocInfo = useGenerateSourceDocInfo(metatext?.source_document_id, invalidate);

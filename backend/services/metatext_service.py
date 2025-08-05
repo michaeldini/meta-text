@@ -79,6 +79,7 @@ class MetatextService:
         if not metatext:
             logger.warning(f"Meta-text not found or not owned by user: id={metatext_id}, user_id={user_id}")
             raise MetatextNotFoundError(metatext_id)
+        metatext.chunks.sort(key=lambda c: c.position)  # Sort chunks by position
         logger.info(f"Meta-text found: id={metatext.id}, title='{metatext.title}', user_id={user_id}")
         return metatext
 

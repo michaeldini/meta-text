@@ -1,33 +1,25 @@
-import { useCallback } from 'react';
-import { useChunkStore } from '@store/chunkStore';
+
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { combineChunks } from '@services/chunkService';
 import { ChunkType } from '@mtypes/documents';
 // import { MergeChunksToolProps, ToolResult } from '@features/chunk-shared/types';
 
 export interface MergeChunksToolProps {
     chunk: ChunkType;
+    metatextId: number;
 }
 /**
- * Hook for merge chunks tool functionality
+ * Hook for merge chunks tool functionality using React Query
  */
 export const useMergeChunks = () => {
-    const handleMergeChunks = useChunkStore(state => state.mergeChunks);
-
-    const mergeChunks = useCallback(async (props: MergeChunksToolProps): Promise<unknown> => {
-        try {
-            const { chunk } = props;
-            await handleMergeChunks(chunk);
-            return {
-                success: true
-            };
-        } catch (error) {
-            return {
-                success: false,
-                error: error instanceof Error ? error.message : 'Failed to merge chunks'
-            };
-        }
-    }, [handleMergeChunks]);
-
-    return {
-        mergeChunks
-    };
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async ({ chunk }: MergeChunksToolProps) => {
+            return await combineChunks(chunk);
+        },
+        onSuccess: (_data, variables) => {
+            // Refetch chunk data for the current metatext
+            queryClient.invalidateQueries({ queryKey: ['chunks', variables.metatextId] });
+        },
+    });
 };
