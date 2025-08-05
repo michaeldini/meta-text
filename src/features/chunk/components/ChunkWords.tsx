@@ -100,7 +100,7 @@ const ChunkWords = memo(function ChunkWords({
             <Flex as="div" flexWrap="wrap" gap={0}>
                 {wordsElements}
                 <Box as="span" display="inline-block">
-                    <MergeChunksTool chunkIndices={[chunkIdx, chunkIdx + 1]} />
+                    <MergeChunksTool chunk={chunk} />
                 </Box>
             </Flex>
 

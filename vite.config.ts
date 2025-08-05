@@ -10,7 +10,7 @@ export default defineConfig(({ command }) => ({
     plugins: [
         react(),
         tsconfigPaths(),
-        command === 'build' ? visualizer({ open: true }) : null
+        // command === 'build' ? visualizer({ open: true }) : null
     ].filter(Boolean),
     resolve: {
         alias: {

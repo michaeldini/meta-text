@@ -77,14 +77,15 @@ async def split_chunk(
 @router.post("/chunk/combine", response_model=ChunkRead, name="combine_chunks")
 async def combine_chunks(
     first_chunk_id: int,
-    second_chunk_id: int,
+    # second_chunk_id: int,
     session: Session = Depends(get_session),
     service: ChunkService = Depends(get_chunk_service),
-    user = Depends(get_current_user)
+    user: User = Depends(get_current_user)
 ):
     """Combine two chunks into one. Requires authentication."""
     try:
-        return service.combine_chunks(first_chunk_id, second_chunk_id, user.id, session)
+        # return service.combine_chunks(first_chunk_id, second_chunk_id, user.id, session)
+        return service.combine_chunks(first_chunk_id, user.id, session)
     except ChunkNotFoundError as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -103,7 +104,7 @@ async def update_chunk(
     update_data: ChunkUpdate,
     session: Session = Depends(get_session),
     service: ChunkService = Depends(get_chunk_service),
-    user = Depends(get_current_user)
+    user: User = Depends(get_current_user)
 ):
     """Update a chunk with new data. Requires authentication."""
     try:

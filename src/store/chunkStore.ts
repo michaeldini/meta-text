@@ -8,7 +8,7 @@
 
 import { create } from 'zustand';
 
-import { fetchChunks as apiFetchChunks } from '@services/chunkService'
+import { fetchChunks as apiFetchChunks, fetchChunks } from '@services/chunkService'
 import { fetchChunk } from '@services/chunkService';
 import { updateChunk } from '@services/chunkService';
 import { splitChunk } from '@services/chunkService';
@@ -31,7 +31,8 @@ type ChunkState = {
     refetchChunk: (chunkId: number) => Promise<void>;
     updateChunkField: UpdateChunkFieldFn;
     handleWordClick: (chunkId: number, chunkIdx: number, wordIdx: number) => Promise<void>;
-    mergeChunks: (chunkIdx: number) => Promise<void>;
+    // mergeChunks: (chunkIdx: number) => Promise<void>;
+    mergeChunks: (chunkIdx: ChunkType) => Promise<void>;
     setChunks: (chunks: ChunkType[]) => void;
     refetchChunks: (metatextId: number) => Promise<void>;
     resetChunkState: () => void;
@@ -143,21 +144,15 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
             return { ...state, chunks: newChunks };
         });
     },
-    mergeChunks: async (chunkIdx) => {
-        const { chunks } = get();
-        const first = chunks[chunkIdx];
-        const second = chunks[chunkIdx + 1];
-        if (!first || !second) return;
-        const combineResult = await combineChunks(first.id, second.id); // returns a single combined Chunk
-        if (!combineResult || !combineResult.id) return;
-        set((state) => {
-            const newChunks = [...state.chunks];
-            // Replace the first chunk with the combined one
-            newChunks[chunkIdx] = combineResult;
-            // Remove the second chunk
-            newChunks.splice(chunkIdx + 1, 1);
-            return { ...state, chunks: newChunks };
-        });
+    mergeChunks: async (chunk) => {
+        // const { chunks } = get();
+        const combineResult = await combineChunks(chunk); // returns a single combined Chunk
+        // if (!combineResult || !combineResult.id) return;
+        const newChunks = await fetchChunks(chunk.metatext_id);
+        set((state) => ({
+            ...state,
+            chunks: newChunks,
+        }));
     },
     refetchChunks: async (metatextId) => {
         set({ loadingChunks: true, chunksError: '' });

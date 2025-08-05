@@ -20,11 +20,11 @@ export async function splitChunk(chunkId: number, wordIndex: number): Promise<Ch
 }
 
 
-// Combine two chunks into one
-export async function combineChunks(firstChunkId: number, secondChunkId: number): Promise<ChunkType | null> {
-    return api.post(`chunk/combine?first_chunk_id=${firstChunkId}&second_chunk_id=${secondChunkId}`).json<ChunkType | null>();
-}
 
+// Combine two chunks into one
+export async function combineChunks(chunk: ChunkType): Promise<ChunkType | null> {
+    return api.post(`chunk/combine?first_chunk_id=${chunk.id}`).json<ChunkType | null>();
+}
 
 // Update a chunk with new data
 export async function updateChunk(chunkId: number, chunkData: Partial<ChunkType>): Promise<ChunkType> {

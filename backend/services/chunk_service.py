@@ -178,7 +178,8 @@ class ChunkService:
         logger.info(f"Chunk split successful: old_chunk_id={chunk.id}, new_chunk_id={new_chunk.id}")
         return [chunk, new_chunk]
     
-    def combine_chunks(self, first_chunk_id: int, second_chunk_id: int, user_id: int, session: Session) -> Chunk:
+    # def combine_chunks(self, first_chunk_id: int, second_chunk_id: int, user_id: int, session: Session) -> Chunk:
+    def combine_chunks(self, first_chunk_id: int, user_id: int, session: Session) -> Chunk:
         """
         Combine two chunks into one.
         
@@ -195,20 +196,25 @@ class ChunkService:
             ChunkNotFoundError: If either chunk is not found
             ChunkCombineError: If chunks cannot be combined
         """
-        logger.info(f"Combining chunks: first_chunk_id={first_chunk_id}, second_chunk_id={second_chunk_id} for user_id={user_id}")
         first = self.get_chunk_by_id(first_chunk_id, user_id, session)
-        second = self.get_chunk_by_id(second_chunk_id, user_id, session)
-        # Validate chunks are from same metatext
-        if first.metatext_id != second.metatext_id:
-            raise ChunkCombineError(
-                first_chunk_id, 
-                second_chunk_id, 
-                "chunks belong to different metatexts"
+        second = session.exec(
+            select(Chunk)
+            .where(
+                (Chunk.metatext_id == first.metatext_id) &
+                (Chunk.position > first.position)
             )
-        # Ensure correct order (first should have lower position)
-        if first.position > second.position:
-            first, second = second, first
-            first_chunk_id, second_chunk_id = second_chunk_id, first_chunk_id
+            .order_by(Chunk.position)  # type: ignore
+        ).first()
+
+        logger.debug(f"Second chunk found: id={second}")
+        if not second:
+            raise ChunkCombineError(
+                first_chunk_id,
+                None,
+                "No adjacent chunk found to combine."
+            )
+       
+        logger.info(f"Found second chunk to combine: id={second.id}")
         # Combine text
         first.text = f"{first.text} {second.text}"
         # Delete second chunk

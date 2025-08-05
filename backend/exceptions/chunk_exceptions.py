@@ -27,7 +27,7 @@ class InvalidSplitIndexError(ChunkServiceError):
 class ChunkCombineError(ChunkServiceError):
     """Raised when chunk combination fails."""
     
-    def __init__(self, first_chunk_id: int, second_chunk_id: int, reason: str):
+    def __init__(self, first_chunk_id: int, second_chunk_id: int | None, reason: str):
         self.first_chunk_id = first_chunk_id
         self.second_chunk_id = second_chunk_id
         self.reason = reason
