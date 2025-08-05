@@ -3,16 +3,16 @@ import { Box } from '@chakra-ui/react/box'
 import { Prose } from '@components/ui/prose';
 import { TooltipButton } from '@components/TooltipButton'
 import { HiOutlineSparkles } from 'react-icons/hi2';
-import type { ChunkType, UpdateChunkFieldFn } from '@mtypes/documents';
+import type { ChunkType, UpdateChunkFieldMutationFn } from '@mtypes/documents';
 import { useEvaluation } from './hooks/useEvaluation';
 
 interface EvaluationToolProps {
     chunk: ChunkType;
-    updateChunkField: UpdateChunkFieldFn;
+    mutateChunkField: UpdateChunkFieldMutationFn;
     isVisible: boolean;
 }
 export function EvaluationTool(props: EvaluationToolProps) {
-    const { chunk, updateChunkField, isVisible } = props;
+    const { chunk, mutateChunkField, isVisible } = props;
     if (!isVisible) return null;
 
     const { fetchEvaluationResults, loading, error } = useEvaluation();
@@ -20,9 +20,9 @@ export function EvaluationTool(props: EvaluationToolProps) {
     const handleGenerate = useCallback(async () => {
         const result = await fetchEvaluationResults({ chunk });
         if (result.success && result.data) {
-            updateChunkField(chunk.id, 'evaluation', result.data.evaluationText);
+            mutateChunkField({ chunkId: chunk.id, field: 'evaluation', value: result.data.evaluationText });
         }
-    }, [chunk, fetchEvaluationResults, updateChunkField]);
+    }, [chunk, fetchEvaluationResults, mutateChunkField]);
 
     return (
         <Box>

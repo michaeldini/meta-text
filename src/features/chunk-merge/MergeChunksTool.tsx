@@ -29,7 +29,7 @@ export interface MergeChunksToolProps {
 export function MergeChunksTool({ chunk }: MergeChunksToolProps) {
 
     // get function that will merge the chunks
-    const { mutateAsync: mergeChunks } = useMergeChunks();
+    const { mutateAsync } = useMergeChunks();
     const metatextId = useMetatextStore((state) => state.metatextId);
 
     // Local state to manage loading state
@@ -47,7 +47,7 @@ export function MergeChunksTool({ chunk }: MergeChunksToolProps) {
                 console.error('Metatext ID is not set, cannot merge chunks');
                 return;
             }
-            const result = await mergeChunks({
+            const result = await mutateAsync({
                 chunk,
                 metatextId,
             });

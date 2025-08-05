@@ -7,18 +7,16 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Box, } from '@chakra-ui/react';
 
 import { ChunkTextField } from '@features/chunk/components/ChunkTextField';
-import type { ChunkType, UpdateChunkFieldFn } from '@mtypes/documents';
+import type { ChunkType, UpdateChunkFieldMutationFn } from '@mtypes/documents';
 
 interface NotesToolProps {
     chunk: ChunkType;
-    updateChunkField: UpdateChunkFieldFn;
+    mutateChunkField: UpdateChunkFieldMutationFn; // UpdateChunkFieldFn type from useUpdateChunkField hook TODO: Replace with actual type when available
     isVisible: boolean;
-    summaryFieldSx?: object;
-    noteFieldSx?: object;
 }
 
 export const NotesTool = React.memo((props: NotesToolProps) => {
-    const { chunk, updateChunkField, isVisible, summaryFieldSx, noteFieldSx } = props;
+    const { chunk, mutateChunkField, isVisible } = props;
     if (!isVisible) return null;
 
 
@@ -32,6 +30,7 @@ export const NotesTool = React.memo((props: NotesToolProps) => {
     // Update local state when props change
     useEffect(() => {
         setLocalSummary(sanitizedSummary);
+
     }, [sanitizedSummary]);
 
     useEffect(() => {
@@ -48,12 +47,14 @@ export const NotesTool = React.memo((props: NotesToolProps) => {
     }, []);
 
     const handleSummaryBlur = useCallback(() => {
-        updateChunkField(chunk.id, 'summary', localSummary);
-    }, [chunk.id, updateChunkField, localSummary]);
+        console.log('NotesTool chunk.id:', chunk.id);
+        mutateChunkField({ chunkId: chunk.id, field: 'summary', value: localSummary });
+
+    }, [chunk.id, mutateChunkField, localSummary]);
 
     const handleNotesBlur = useCallback(() => {
-        updateChunkField(chunk.id, 'note', localNote);
-    }, [chunk.id, updateChunkField, localNote]);
+        mutateChunkField({ chunkId: chunk.id, field: 'note', value: localNote });
+    }, [chunk.id, mutateChunkField, localNote]);
 
 
 

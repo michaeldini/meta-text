@@ -117,7 +117,6 @@ const ChunkWords = memo(function ChunkWords({
                                     onClose={closeDrawer}
                                     word={drawerSelection.length > 1 ? drawerSelection.map(w => w.word).join(' ') : drawerSelection[0].word}
                                     wordIdx={drawerSelection[0].wordIdx}
-                                    chunkIdx={chunkIdx}
                                     chunk={chunk}
                                 />
                             )}

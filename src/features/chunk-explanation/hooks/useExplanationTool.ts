@@ -3,13 +3,13 @@
 
 import { useCallback } from 'react';
 import { useExplainHandler } from './useExplainHandler';
-import type { ChunkType, UpdateChunkFieldFn } from '@mtypes/documents';
+import type { ChunkType } from '@mtypes/documents';
 
-export function useExplanationTool(chunk: ChunkType, updateChunkField: UpdateChunkFieldFn) {
+export function useExplanationTool(chunk: ChunkType, mutateChunkField: any) {
     const { handleExplain, loading, error } = useExplainHandler({
         onComplete: (result) => {
             if (result && chunk?.id) {
-                updateChunkField(chunk.id, 'explanation', result.explanation);
+                mutateChunkField({ chunkId: chunk.id, field: 'explanation', value: result.explanation });
             }
         },
     });

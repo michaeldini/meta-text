@@ -4,17 +4,17 @@ import { HiOutlineSparkles } from 'react-icons/hi2';
 
 import { TooltipButton } from '@components/TooltipButton';
 import { Prose } from '@components/ui/prose';
-import type { ChunkType, UpdateChunkFieldFn } from '@mtypes/documents';
+import type { ChunkType, UpdateChunkFieldFn, UpdateChunkFieldMutationFn } from '@mtypes/documents';
 import { useExplainHandler } from './hooks/useExplainHandler';
 
 interface ExplanationToolProps {
     chunk: ChunkType;
-    updateChunkField: UpdateChunkFieldFn;
+    mutateChunkField: UpdateChunkFieldMutationFn;
     isVisible: boolean;
 }
 
 export function ExplanationTool(props: ExplanationToolProps) {
-    const { chunk, updateChunkField, isVisible } = props;
+    const { chunk, mutateChunkField, isVisible } = props;
     if (!isVisible) return null;
 
     /**
@@ -24,7 +24,7 @@ export function ExplanationTool(props: ExplanationToolProps) {
     const { handleExplain, loading, error } = useExplainHandler({
         onComplete: (result) => {
             if (result && chunk?.id) {
-                updateChunkField(chunk.id, 'explanation', result.explanation);
+                mutateChunkField({ chunkId: chunk.id, field: 'explanation', value: result.explanation });
             }
         },
     });

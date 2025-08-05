@@ -29,7 +29,7 @@ type ChunkState = {
     setActiveTabs: (tabs: ChunkToolId[]) => void;
     fetchChunks: (metatextId: number) => Promise<void>;
     refetchChunk: (chunkId: number) => Promise<void>;
-    updateChunkField: UpdateChunkFieldFn;
+    // updateChunkField: any;
     handleWordClick: (chunkId: number, wordIdx: number) => Promise<void>;
     mergeChunks: (chunkIdx: ChunkType) => Promise<void>;
     setChunks: (chunks: ChunkType[]) => void;
@@ -89,17 +89,17 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
             // Optionally set an error state or handle silently
         }
     },
-    updateChunkField: (chunkId, field, value) => {
-        set((state) => {
-            const idx = state.chunks.findIndex((c) => c.id === chunkId);
-            if (idx === -1) return state;
-            const updatedChunk = { ...state.chunks[idx], [field]: value };
-            const newChunks = [...state.chunks];
-            newChunks[idx] = updatedChunk;
-            updateChunk(updatedChunk.id, updatedChunk);
-            return { ...state, chunks: newChunks };
-        });
-    },
+    // updateChunkField: (chunkId: number, field: string, value: any) => {
+    //     set((state) => {
+    //         const idx = state.chunks.findIndex((c) => c.id === chunkId);
+    //         if (idx === -1) return state;
+    //         const updatedChunk = { ...state.chunks[idx], [field]: value };
+    //         const newChunks = [...state.chunks];
+    //         newChunks[idx] = updatedChunk;
+    //         updateChunk(updatedChunk.id, updatedChunk);
+    //         return { ...state, chunks: newChunks };
+    //     });
+    // },
     /**
      * Toggle bookmark for a chunk, ensuring only one chunk is bookmarked by the user at a time.
      * Clears bookmarks from all other chunks for the user, then sets/unsets the bookmark on the selected chunk.

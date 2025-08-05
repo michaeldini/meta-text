@@ -2,4 +2,4 @@
  * Split hooks
  */
 
-export { useSplitChunk } from './useSplitChunk';
+// export { useSplitChunk } from './useSplitChunk';

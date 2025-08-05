@@ -1,33 +1,33 @@
-import { useCallback } from 'react';
-import { useChunkStore } from '@store/chunkStore';
-import { SplitChunkToolProps, ToolResult } from '@features/chunk-shared/types';
+// import { useCallback } from 'react';
+// import { useChunkStore } from '@store/chunkStore';
+// import { SplitChunkToolProps, ToolResult } from '@features/chunk-shared/types';
 
-/**
- * Hook for split chunk tool functionality
- */
-export const useSplitChunk = () => {
-    const handleWordClick = useChunkStore(state => state.handleWordClick);
+// /**
+//  * Hook for split chunk tool functionality
+//  */
+// export const useSplitChunk = () => {
+//     const handleWordClick = useChunkStore(state => state.handleWordClick);
 
-    const splitChunk = useCallback(async (props: SplitChunkToolProps): Promise<ToolResult> => {
-        try {
-            const { chunkId, wordIdx, word } = props;
+//     const splitChunk = useCallback(async (props: SplitChunkToolProps): Promise<ToolResult> => {
+//         try {
+//             const { chunkId, wordIdx, word } = props;
 
-            // Use the existing store function
-            await handleWordClick(chunkId, wordIdx);
+//             // Use the existing store function
+//             await handleWordClick(chunkId, wordIdx);
 
-            return {
-                success: true,
-                data: { chunkId, wordIdx, word }
-            };
-        } catch (error) {
-            return {
-                success: false,
-                error: error instanceof Error ? error.message : 'Failed to split chunk'
-            };
-        }
-    }, [handleWordClick]);
+//             return {
+//                 success: true,
+//                 data: { chunkId, wordIdx, word }
+//             };
+//         } catch (error) {
+//             return {
+//                 success: false,
+//                 error: error instanceof Error ? error.message : 'Failed to split chunk'
+//             };
+//         }
+//     }, [handleWordClick]);
 
-    return {
-        splitChunk
-    };
-};
+//     return {
+//         splitChunk
+//     };
+// };

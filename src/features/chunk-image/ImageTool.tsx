@@ -8,16 +8,16 @@ import { TooltipButton } from '@components/TooltipButton';
 import { useImageTool } from './hooks/useImageTool';
 import ImageDisplay from './components/ImageDisplay';
 import ImageGenerationDialog from './components/ImageGenerationDialog';
-import type { ChunkType, UpdateChunkFieldFn } from '@mtypes/documents';
+import type { ChunkType, UpdateChunkFieldMutationFn } from '@mtypes/documents';
 
 interface ImageToolProps {
     chunk: ChunkType;
-    updateChunkField: UpdateChunkFieldFn;
+    mutateChunkField: UpdateChunkFieldMutationFn;
     isVisible: boolean;
 }
 
 export function ImageTool(props: ImageToolProps) {
-    const { chunk, updateChunkField, isVisible } = props;
+    const { chunk, mutateChunkField, isVisible } = props;
     if (!isVisible) return null;
     // Initialize hook with chunk data - provides state management and API integration
     const {

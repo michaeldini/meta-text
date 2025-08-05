@@ -5,6 +5,7 @@ import { useChunkStore } from '@store/chunkStore';
 
 import ChunkWords from './components/ChunkWords';
 import { ChunkToolsContainer } from '@features/chunk-tools';
+import { useUpdateChunkField } from '@hooks/useUpdateChunkField';
 import type { ChunkType } from '@mtypes/documents';
 
 export interface ChunkProps {
@@ -16,8 +17,8 @@ const Chunk = memo(function Chunk({
     chunk,
     chunkIdx,
 }: ChunkProps) {
-    const { activeTabs, updateChunkField } = useChunkStore();
-
+    const { activeTabs } = useChunkStore();
+    const updateChunkFieldMutation = useUpdateChunkField();
 
     return (
         <Stack direction="row"
@@ -33,7 +34,7 @@ const Chunk = memo(function Chunk({
             <ChunkToolsContainer
                 chunk={chunk}
                 activeTools={activeTabs}
-                updateChunkField={updateChunkField}
+                updateChunkFieldMutation={updateChunkFieldMutation}
             />
         </Stack>
     );

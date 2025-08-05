@@ -4,7 +4,7 @@
 import React, { Suspense } from 'react';
 import { Box, Stack, } from '@chakra-ui/react';
 import { CopyTool } from '@features/chunk-copy';
-import type { ChunkType, UpdateChunkFieldFn } from '@mtypes/documents';
+import type { ChunkType, UseUpdateChunkFieldType } from '@mtypes/documents';
 import type { ChunkToolId } from './toolsRegistry';
 
 import { ChunkPosition } from '@components/ChunkPosition';
@@ -21,10 +21,26 @@ import { ChunkFavoriteToggle } from '@features/chunk-favorite';
 interface ChunkToolsContainerProps {
     chunk: ChunkType;
     activeTools: ChunkToolId[];
-    updateChunkField: UpdateChunkFieldFn;
+    updateChunkFieldMutation: UseUpdateChunkFieldType; // UpdateChunkFieldFn type from useUpdateChunkField hook TODO: Replace with actual type when available
 }
+
+function renderStationaryTools(chunk: ChunkType, asRow: boolean) {
+    return (
+        <Stack
+            flexDirection={asRow ? 'row' : 'column'}
+            alignItems="center"
+        >
+            {/* Chunk position display (logic encapsulated in component) */}
+            <ChunkPosition chunk={chunk} />
+            <CopyTool chunkText={chunk.text} />
+            <ChunkBookmarkToggle chunk={chunk} />
+            <ChunkFavoriteToggle chunk={chunk} />
+        </Stack>
+    );
+}
+
 export const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = (props) => {
-    const { chunk, activeTools, updateChunkField } = props;
+    const { chunk, activeTools, updateChunkFieldMutation } = props;
 
 
 
@@ -39,38 +55,27 @@ export const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = (props) =
                 zIndex={1}>
 
                 {/* Tools Always visible at the top */}
-                <Stack
-                    flexDirection={activeTools.length > 0 ? 'row' : 'column'}
-                    alignItems="center"
-                >
-                    {/* Chunk position display (logic encapsulated in component) */}
-                    <ChunkPosition chunk={chunk} />
-                    <CopyTool chunkText={chunk.text} />
-                    <ChunkBookmarkToggle chunk={chunk} />
-                    <ChunkFavoriteToggle chunk={chunk} />
-                </Stack>
+                {renderStationaryTools(chunk, activeTools.length > 0)}
+
                 {/* Chunk tools, each wrapped in ToolBoundary for error/loading isolation */}
-
                 {activeTools.includes('note-summary') && (
-
                     <NotesTool
                         chunk={chunk}
-                        updateChunkField={updateChunkField}
+                        mutateChunkField={updateChunkFieldMutation.mutate}
                         isVisible={true}
                     />
-
                 )}
                 {activeTools.includes('evaluation') && (
                     <EvaluationTool
                         chunk={chunk}
-                        updateChunkField={updateChunkField}
+                        mutateChunkField={updateChunkFieldMutation.mutate}
                         isVisible={true}
                     />
                 )}
                 {activeTools.includes('image') && (
                     <ImageTool
                         chunk={chunk}
-                        updateChunkField={updateChunkField}
+                        mutateChunkField={updateChunkFieldMutation.mutate}
                         isVisible={true}
                     />
                 )}
@@ -83,7 +88,7 @@ export const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = (props) =
                 {activeTools.includes('explanation') && (
                     <ExplanationTool
                         chunk={chunk}
-                        updateChunkField={updateChunkField}
+                        mutateChunkField={updateChunkFieldMutation.mutate}
                         isVisible={true}
                     />
                 )}

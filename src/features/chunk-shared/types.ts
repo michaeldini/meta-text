@@ -38,7 +38,7 @@ export interface StyleOption {
  * Props for simple tab components that need to update chunk fields
  */
 export interface SimpleTabProps extends BaseChunkProps {
-    updateChunkField: UpdateChunkFieldFn;
+    mutateChunkField: any;
 }
 
 // =============================================================================

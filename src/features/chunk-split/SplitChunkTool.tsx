@@ -1,7 +1,6 @@
 import React from 'react';
 import { TooltipButton } from '@components/TooltipButton';
 import { HiScissors } from 'react-icons/hi2';
-// import { useSplitChunk } from './hooks/useSplitChunk';
 import { useSplitChunk } from '@features/chunk/hooks/useSplitChunk';
 import log from '@utils/logger';
 import { SplitChunkToolProps } from '@features/chunk-shared/types';
@@ -11,7 +10,7 @@ import { useMetatextStore } from '@store/metatextStore';
 export function SplitChunkTool(props: SplitChunkToolProps) {
     const { chunkId, wordIdx, word, chunk, onComplete } = props;
     const { metatextId } = useMetatextStore((state) => state);
-    const { mutateAsync: splitChunk } = useSplitChunk();
+    const { mutateAsync } = useSplitChunk();
 
     const handleSplit = async () => {
         if (!metatextId) {
@@ -20,7 +19,7 @@ export function SplitChunkTool(props: SplitChunkToolProps) {
         }
         log.debug(`Splitting chunk ${chunkId} at word "${word}"`);
         try {
-            const result = await splitChunk({
+            const result = await mutateAsync({
                 chunkId,
                 wordIdx,
                 metatextId,

@@ -95,3 +95,16 @@ export type UpdateChunkFieldFn = (
     value: string | number | null
 ) => void;
 
+// React Query mutation type for useUpdateChunkField hook
+import type { UseMutationResult } from '@tanstack/react-query';
+
+export type UseUpdateChunkFieldType = UseMutationResult<
+    ChunkType,
+    unknown,
+    { chunkId: number; field: string; value: any },
+    unknown
+>;
+export type UpdateChunkFieldMutationFn = (
+    variables: { chunkId: number; field: string; value: any }
+) => void;
+

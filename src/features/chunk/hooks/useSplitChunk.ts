@@ -9,21 +9,20 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { splitChunk } from '@services/chunkService';
 
 interface SplitChunkArgs {
-  chunkId: number;
-  wordIdx: number;
-  metatextId: number;
+    chunkId: number;
+    wordIdx: number;
+    metatextId: number;
 }
 
 export function useSplitChunk() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async ({ chunkId, wordIdx }: SplitChunkArgs) => {
-      return await splitChunk(chunkId, wordIdx + 1);
-    },
-    onSuccess: (_data, variables) => {
-      // Refetch chunk data for the current metatext
-      queryClient.invalidateQueries({ queryKey: ['chunks', variables.metatextId] });
-    },
-  });
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async ({ chunkId, wordIdx }: SplitChunkArgs) => {
+            return await splitChunk(chunkId, wordIdx + 1);
+        },
+        onSuccess: (_data, variables) => {
+            // Refetch chunk data for the current metatext
+            queryClient.invalidateQueries({ queryKey: ['chunks', variables.metatextId] });
+        },
+    });
 }
