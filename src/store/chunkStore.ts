@@ -30,8 +30,7 @@ type ChunkState = {
     fetchChunks: (metatextId: number) => Promise<void>;
     refetchChunk: (chunkId: number) => Promise<void>;
     updateChunkField: UpdateChunkFieldFn;
-    handleWordClick: (chunkId: number, chunkIdx: number, wordIdx: number) => Promise<void>;
-    // mergeChunks: (chunkIdx: number) => Promise<void>;
+    handleWordClick: (chunkId: number, wordIdx: number) => Promise<void>;
     mergeChunks: (chunkIdx: ChunkType) => Promise<void>;
     setChunks: (chunks: ChunkType[]) => void;
     refetchChunks: (metatextId: number) => Promise<void>;
@@ -129,14 +128,14 @@ export const useChunkStore = create<ChunkState>((set, get) => ({
             return { ...state, chunks: newChunks };
         });
     },
-    handleWordClick: async (chunkId, chunkIdx, wordIdx) => {
-        const { chunks } = get();
-        const idx = chunkIdx;
-        if (idx === -1 || !chunks[idx] || !chunks[idx].id) return;
+    handleWordClick: async (chunkId, wordIdx) => {
         const splitResult = await splitChunk(chunkId, wordIdx + 1); // returns [updatedChunk, newChunk]
         if (!Array.isArray(splitResult) || splitResult.length < 2) return;
         set((state) => {
             const newChunks = [...state.chunks];
+            // Find the index of the updated chunk by id
+            const idx = newChunks.findIndex((c) => c.id === splitResult[0].id);
+            if (idx === -1) return state;
             // Replace the old chunk with the updated one
             newChunks[idx] = splitResult[0];
             // Insert the new chunk right after

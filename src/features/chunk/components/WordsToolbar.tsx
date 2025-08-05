@@ -10,7 +10,6 @@ export interface WordsToolbarProps {
     onClose: () => void;
     word: string;
     wordIdx: number;
-    chunkIdx: number;
     chunk: any;
 }
 
@@ -19,7 +18,7 @@ export interface WordsToolbarProps {
  * WordsToolbar - Layout component that presents word-level tools
  * This is a layout component that uses the split and define tools
  */
-export function WordsToolbar({ onClose, word, wordIdx, chunkIdx, chunk }: WordsToolbarProps) {
+export function WordsToolbar({ onClose, word, wordIdx, chunk }: WordsToolbarProps) {
     // Called when a tool completes
     const handleToolComplete = (success: boolean, result?: any) => {
         onClose();
@@ -28,7 +27,6 @@ export function WordsToolbar({ onClose, word, wordIdx, chunkIdx, chunk }: WordsT
         <Stack direction="row" gap={4} alignItems="center" justifyContent="center" p={4}>
             <SplitChunkTool
                 chunkId={chunk.id}
-                chunkIdx={chunkIdx}
                 wordIdx={wordIdx}
                 word={word}
                 chunk={chunk}

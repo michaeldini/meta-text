@@ -117,7 +117,6 @@ export interface MergeChunksToolProps {
  */
 export interface SplitChunkToolProps extends BaseChunkProps {
     chunkId: number;
-    chunkIdx: number;
     word: string;
     wordIdx: number;
     onComplete?: (success: boolean, result?: any) => void;

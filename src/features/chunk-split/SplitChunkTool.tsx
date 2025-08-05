@@ -6,7 +6,7 @@ import log from '@utils/logger';
 import { SplitChunkToolProps } from '@features/chunk-shared/types';
 
 export function SplitChunkTool(props: SplitChunkToolProps) {
-    const { chunkId, chunkIdx, wordIdx, word, chunk, onComplete } = props;
+    const { chunkId, wordIdx, word, chunk, onComplete } = props;
 
     const { splitChunk } = useSplitChunk();
 
@@ -14,7 +14,6 @@ export function SplitChunkTool(props: SplitChunkToolProps) {
         log.debug(`Splitting chunk ${chunkId} at word "${word}"`);
         const result = await splitChunk({
             chunkId,
-            chunkIdx,
             wordIdx,
             word,
             chunk,

@@ -10,14 +10,14 @@ export const useSplitChunk = () => {
 
     const splitChunk = useCallback(async (props: SplitChunkToolProps): Promise<ToolResult> => {
         try {
-            const { chunkId, chunkIdx, wordIdx, word } = props;
+            const { chunkId, wordIdx, word } = props;
 
             // Use the existing store function
-            await handleWordClick(chunkId, chunkIdx, wordIdx);
+            await handleWordClick(chunkId, wordIdx);
 
             return {
                 success: true,
-                data: { chunkId, chunkIdx, wordIdx, word }
+                data: { chunkId, wordIdx, word }
             };
         } catch (error) {
             return {
