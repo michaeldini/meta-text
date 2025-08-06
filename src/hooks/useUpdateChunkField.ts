@@ -4,7 +4,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateChunk } from '@services/chunkService';
 import type { ChunkType } from '../types/documents';
-// import { useChunkStore } from '../store/chunkStore';
 interface UpdateChunkFieldArgs {
     chunkId: number;
     field: string;

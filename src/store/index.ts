@@ -1,3 +1,3 @@
-export * from './chunkStore';
+export * from './metatextDetailStore';
 export * from './notificationStore';
 export * from './authStore';

@@ -6,6 +6,6 @@ export { SearchBar } from './components/SearchBar';
 export { TagFilters } from './components/TagFilters';
 export { SearchContainer } from './components/SearchContainer';
 
-export { useSearch } from './hooks/useSearch';
+
 export { useSearchKeyboard } from './hooks/useSearchKeyboard';
 export { useSearchStore } from './store/useSearchStore';

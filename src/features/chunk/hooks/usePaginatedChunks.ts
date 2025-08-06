@@ -1,10 +1,9 @@
 // Custom hook to encapsulate business logic for paginated chunks
 // Handles filtering, pagination, fetching, and bookmark navigation
 import React, { useRef, useEffect, useCallback } from 'react';
-import { useChunkStore } from '@store/chunkStore';
 import { useChunksQuery } from '@hooks/useChunksQuery';
 import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
-import useChunkBookmarkNavigation from '@features/chunk-bookmark/hooks/useChunkBookmarkNavigation';
+
 import { usePaginationStore } from './usePaginationStore';
 import { ChunkType } from '@mtypes/documents';
 
@@ -12,9 +11,6 @@ interface UsePaginatedChunksProps {
     metatextId: number | null;
     showOnlyFavorites?: boolean;
 }
-
-// Type for chunk, fallback to any if not available
-// Replace 'any' with the correct Chunk type if available
 export function usePaginatedChunks({ metatextId, showOnlyFavorites }: UsePaginatedChunksProps) {
     if (!metatextId) {
         return {
@@ -42,7 +38,6 @@ export function usePaginatedChunks({ metatextId, showOnlyFavorites }: UsePaginat
         displayChunks = displayChunks.filter((chunk: any) => !!chunk.favorited_by_user_id);
     }
 
-    // Removed useEffect for fetchChunks; React Query handles fetching automatically
 
     // Pagination logic
     const chunksPerPage = 5;
@@ -75,9 +70,9 @@ export function usePaginatedChunks({ metatextId, showOnlyFavorites }: UsePaginat
     const bookmarkedChunk = displayChunks.find((chunk: ChunkType) => !!chunk.bookmarked_by_user_id);
     const bookmarkedChunkId = bookmarkedChunk ? bookmarkedChunk.id : null;
     // Handle navigation to bookmarked chunk using custom hook
-    if (typeof metatextId === 'number') {
-        useChunkBookmarkNavigation(metatextId, displayChunks, chunksPerPage, setCurrentPage);
-    }
+    // if (typeof metatextId === 'number') {
+    //     useChunkBookmarkNavigation(metatextId, displayChunks, chunksPerPage, setCurrentPage);
+    // }
 
     // Preserve previous chunks for scroll position
     const prevChunksRef = useRef<any[]>([]);

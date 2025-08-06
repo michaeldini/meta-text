@@ -5,7 +5,6 @@ import { Text } from '@chakra-ui/react/text';
 import { Button } from '@chakra-ui/react/button';
 import { Drawer } from '@chakra-ui/react/drawer';
 import type { ChunkType } from '@mtypes/documents';
-import { useChunkStore } from '@store/chunkStore';
 import RewriteToolButton from './components/RewriteToolButton';
 import { useRewrite } from './hooks/useRewrite';
 import { generateRewrite } from '@services/chunkService';
@@ -19,7 +18,6 @@ interface RewriteDisplayToolProps {
 export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
     const { chunk, isVisible } = props;
     if (!isVisible) return null;
-    const { refetchChunk } = useChunkStore();
     const { rewrites } = useRewrite(chunk);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [style, setStyle] = useState('like im 5');

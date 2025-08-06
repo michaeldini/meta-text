@@ -86,11 +86,16 @@ export const useSearchStore = create<SearchAndFilterState>((set, get) => ({
         totalMatches: 0
     }),
 
-    clearResults: () => set({
-        filteredChunks: [],
-        isInSearchMode: false,
-        totalMatches: 0
-    }),
+    clearResults: () => {
+        const state = get();
+        if (state.filteredChunks.length > 0 || state.isInSearchMode) {
+            set({
+                filteredChunks: [],
+                isInSearchMode: false,
+                totalMatches: 0
+            });
+        }
+    },
 
     // Centralized search logic
     searchChunks: (query, tags, chunks, minQueryLength = 2) => {

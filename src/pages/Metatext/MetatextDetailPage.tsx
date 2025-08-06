@@ -35,14 +35,15 @@ import { usePaginatedChunks } from '@features/chunk';
 import PaginatedChunks, { PaginatedChunksProps } from '@features/chunk/PaginatedChunks';
 
 // Import the bookmark service and hooks
-import { useBookmark } from '@hooks/useBookmark';
-import useChunkBookmarkNavigation from '@features/chunk-bookmark/hooks/useChunkBookmarkNavigation';
+import { useMetatextBookmark } from './hooks/useMetatextBookmark';
 
 // Custom hook for metatext detail page logic to keep this component clean
 import { useMetatextDetailPage } from './hooks/useMetatextDetailPage';
 
 function MetatextDetailPage(): ReactElement | null {
     // Use custom hook to encapsulate all setup logic
+    const hookResult = useMetatextDetailPage();
+    if (!hookResult) return null;
     const {
         metatextId,
         metatext,
@@ -54,35 +55,22 @@ function MetatextDetailPage(): ReactElement | null {
         handleReviewClick,
         generateSourceDocInfo,
         downloadMetatext,
-        setNavigateToBookmark,
         updateSourceDocMutation,
-    } = useMetatextDetailPage();
+    } = hookResult;
 
-    // Only proceed if metatextId is a number
-    if (typeof metatextId !== 'number') {
-        return null;
-    }
-
-    // Use the new bookmark hook for this metatext
-    const { bookmarkedChunkId } = useBookmark(metatextId);
-
-    // instead of deconstructuring the paginated chunks, we can just use the hook directly
-    // this allows us to keep the paginated chunks logic encapsulated and clean, we will just pass the props to the PaginatedChunks component
-    // Patch: convert chunksError to string if needed
+    // Paginated chunks props
     const rawChunksProps = usePaginatedChunks({ metatextId, showOnlyFavorites });
     const paginatedChunksProps: PaginatedChunksProps = {
         ...rawChunksProps,
         chunksError: rawChunksProps.chunksError instanceof Error ? rawChunksProps.chunksError.message : rawChunksProps.chunksError,
     };
 
-    // Use the new navigation hook for bookmarks
-    // You may need to pass chunks, chunksPerPage, setPage from paginatedChunksProps
-    useChunkBookmarkNavigation(
-        metatextId,
-        paginatedChunksProps.displayChunks,
-        paginatedChunksProps.chunksPerPage,
-        paginatedChunksProps.setCurrentPage
-    );
+    // Use unified bookmark hook
+    const {
+        bookmarkedChunkId,
+        goToBookmark,
+        bookmarkLoading,
+    } = useMetatextBookmark(metatextId, paginatedChunksProps);
 
     // Wait for paginated chunks to load before rendering
     if (paginatedChunksProps.loadingChunks) {
@@ -95,8 +83,9 @@ function MetatextDetailPage(): ReactElement | null {
                 label="Go to Bookmark"
                 tooltip="Navigate to the bookmarked chunk in this metatext"
                 icon={<HiBookmark />}
-                onClick={() => setNavigateToBookmark()}
+                onClick={goToBookmark}
                 disabled={!bookmarkedChunkId}
+                loading={bookmarkLoading}
                 data-testid="goto-bookmark-button"
             />
             <TooltipButton
@@ -124,10 +113,7 @@ function MetatextDetailPage(): ReactElement | null {
                 aria-checked={!!uiPreferences?.showChunkPositions}
                 disabled={uiPreferences == null}
             />
-
-
             <SearchContainer showTagFilters={true} />
-
         </Box>
     );
     const tabsBlock = (

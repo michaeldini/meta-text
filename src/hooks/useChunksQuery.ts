@@ -6,26 +6,24 @@
 
 import React from 'react';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
-import { fetchChunks as apiFetchChunks } from '@services/chunkService';
-import { useChunkStore } from '@store/chunkStore';
+import { fetchChunks } from '@services/chunkService';
 import type { ChunkType } from '@mtypes/documents';
 
 export function useChunksQuery(metatextId: number) {
-    const setChunks = useChunkStore((state) => state.setChunks);
 
     const query = useQuery<ChunkType[], Error>({
         queryKey: ['chunks', metatextId],
         queryFn: async () => {
-            return await apiFetchChunks(metatextId);
+            return await fetchChunks(metatextId);
         },
     });
 
     // Sync Zustand chunk state when query data changes
-    React.useEffect(() => {
-        if (query.data) {
-            setChunks(query.data);
-        }
-    }, [query.data, setChunks]);
+    // React.useEffect(() => {
+    //     if (query.data) {
+    //         setChunks(query.data);
+    //     }
+    // }, [query.data, setChunks]);
 
     return query;
 }

@@ -2,7 +2,6 @@ import { api } from '../utils/ky';
 
 // Fetch the user's bookmarked chunk id for a given metatext
 export async function fetchBookmark(metatextId: number): Promise<number | null> {
-    console.log('metatextId', metatextId)
     const res = await api.get(`bookmarks/${metatextId}`).json<{ chunk_id: number | null }>();
     return res.chunk_id ?? null;
 }

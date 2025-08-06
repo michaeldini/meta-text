@@ -8,17 +8,16 @@
  */
 import { useEffect, useCallback } from 'react';
 import { useSearchStore } from '../store/useSearchStore';
-import { useSearch } from './useSearch';
+// import { useSearch } from './useSearch';
 
 interface UseSearchKeyboardOptions {
     enabled?: boolean;
     searchInputRef?: React.RefObject<HTMLInputElement>;
 }
 
-export const useSearchKeyboard = (options: UseSearchKeyboardOptions = {}) => {
-    const { enabled = true, searchInputRef } = options;
-    const { clearSearch } = useSearch();
-    const { query, totalMatches } = useSearchStore();
+// useSearchKeyboard: Hook for keyboard shortcuts (focus, clear, etc), using useSearchStore for state/actions
+export const useSearchKeyboard = ({ enabled = true, searchInputRef }: UseSearchKeyboardOptions = {}) => {
+    const { clearSearch, query, totalMatches } = useSearchStore();
 
     const handleKeyDown = useCallback((event: KeyboardEvent) => {
         if (!enabled) return;

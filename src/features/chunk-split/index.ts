@@ -4,4 +4,3 @@
  */
 
 export { default as SplitChunkTool } from './SplitChunkTool';
-export * from './hooks';

@@ -13,40 +13,44 @@ import { useSearchKeyboard } from '@features/chunk-search/hooks/useSearchKeyboar
 import { useGenerateSourceDocInfo } from '@hooks/useGenerateSourceDocInfo';
 import { useDownloadMetatext } from './useDownloadMetatext';
 import getUiPreferences from '@utils/getUiPreferences';
-import { useBookmarkUIStore } from '@features/chunk-bookmark/store/bookmarkStore';
-import { useMetatextStore } from '@store/metatextStore';
+
+import { useMetatextDetailStore } from '@store/metatextDetailStore';
 export function useMetatextDetailPage() {
+
     // =========================
     // Routing & Navigation
     // =========================
+    // Get metatextId from route params and parse to number
     const { metatextId } = useParams<{ metatextId?: string }>();
     const parsedId = metatextId ? Number(metatextId) : null;
     const navigate = useNavigate();
 
     // =========================
-    // Data Fetching
+    // Early return if parsedId is invalid
     // =========================
-    const { data: metatext, isLoading: metatextIsLoading, error: metatextError } = useMetatextDetail(parsedId);
-    const { data: sourceDoc, isLoading, error, invalidate } = useSourceDocumentDetail(metatext?.source_document_id);
+    if (parsedId == null || isNaN(parsedId)) {
+        React.useEffect(() => {
+            navigate('/');
+        }, [navigate]);
+        return null;
+    }
 
     // =========================
-    // Navigation Effect (redirect if ID invalid)
+    // Data Fetching
     // =========================
-    React.useEffect(() => {
-        if (parsedId == null || isNaN(parsedId)) {
-            navigate('/metatext');
-        }
-    }, [metatextError, parsedId, navigate]);
+    // Fetch metatext details and source document details
+    const { data: metatext, isLoading: metatextIsLoading, error: metatextError } = useMetatextDetail(parsedId);
+    const { data: sourceDoc, invalidate } = useSourceDocumentDetail(metatext?.source_document_id);
 
     // =========================
     // State Management
     // =========================
-    const setMetatextId = useMetatextStore((state) => state.setMetatextId);
+    const setMetatextId = useMetatextDetailStore((state) => state.setMetatextId);
     React.useEffect(() => {
         setMetatextId(parsedId);
     }, [parsedId, setMetatextId]);
 
-    const setMetatext = useMetatextStore((state) => state.setMetatext);
+    const setMetatext = useMetatextDetailStore((state) => state.setMetatext);
     React.useEffect(() => {
         setMetatext(metatext ? metatext : null);
     }, [metatext, setMetatext]);
@@ -72,10 +76,9 @@ export function useMetatextDetailPage() {
     const generateSourceDocInfo = useGenerateSourceDocInfo(metatext?.source_document_id, invalidate);
 
     // =========================
-    // Download & Bookmark
+    // Download
     // =========================
     const downloadMetatext = useDownloadMetatext(parsedId ?? undefined);
-    const { setNavigateToBookmark } = useBookmarkUIStore();
 
     // =========================
     // Mutations
@@ -116,9 +119,8 @@ export function useMetatextDetailPage() {
         // Source Doc Info Generation
         generateSourceDocInfo,
 
-        // Download & Bookmark
+        // Download
         downloadMetatext,
-        setNavigateToBookmark,
 
         // Mutations
         updateSourceDocMutation,

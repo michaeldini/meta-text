@@ -34,14 +34,6 @@ function renderStationaryTools(chunk: ChunkType, asRow: boolean) {
             <CopyTool chunkText={chunk.text} />
             {/* Replace with your own toggle component */}
             <ChunkBookmarkToggle chunk={chunk} />
-            {/* Example usage:
-                const { isBookmarked, toggleBookmark } = useChunkBookmarkToggle(chunk);
-                <IconButton
-                    aria-label="Bookmark"
-                    icon={isBookmarked ? <BookmarkIcon /> : <BookmarkOutlineIcon />}
-                    onClick={toggleBookmark}
-                />
-            */}
             <ChunkFavoriteToggle chunk={chunk} />
         </Stack>
     );

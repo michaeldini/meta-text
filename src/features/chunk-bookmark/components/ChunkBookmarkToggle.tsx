@@ -11,8 +11,9 @@ interface ChunkBookmarkToggleProps {
 }
 
 function ChunkBookmarkToggle({ chunk }: ChunkBookmarkToggleProps) {
-    // Use the new useBookmark hook for bookmark state and mutations
+
     const { bookmarkedChunkId, setBookmark, removeBookmark, isSetting, isRemoving } = useBookmark(chunk.metatext_id);
+
     const isBookmarked = bookmarkedChunkId === chunk.id;
 
     const handleToggle = () => {

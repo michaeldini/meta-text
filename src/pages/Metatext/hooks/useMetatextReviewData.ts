@@ -4,10 +4,10 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchReviewData } from '@services/reviewService';
 import { ChunkType } from '@mtypes/documents';
 import { Explanation } from '@mtypes/MetatextReview.types'
-import { useChunkStore } from '@store/chunkStore';
+import { useChunksQuery } from '@hooks/useChunksQuery';
 
-
-interface UseMetatextReviewDataReturn {
+// Return type for useMetatextReviewData hook
+export interface UseMetatextReviewDataReturn {
     wordList: Explanation[];
     phraseList: Explanation[];
     chunks: ChunkType[];
@@ -15,8 +15,9 @@ interface UseMetatextReviewDataReturn {
     error: string | null;
 }
 
+// React Query-based hook for fetching Metatext review data and chunks
 export function useMetatextReviewData(metatextId?: number): UseMetatextReviewDataReturn {
-    const chunks = useChunkStore((state) => state.chunks);
+    const { data: chunks = [] } = useChunksQuery(metatextId ?? 0);
 
     const {
         data,

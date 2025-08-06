@@ -8,7 +8,7 @@ import { TooltipButton } from '@components/TooltipButton';
 import { HiStar, HiOutlineStar } from 'react-icons/hi2';
 import { api } from '@utils/ky';
 import type { ChunkType } from '@mtypes/documents';
-import { useChunkStore } from '@store/chunkStore';
+import { useChunksQuery } from '@hooks/useChunksQuery';
 
 interface ChunkFavoriteToggleProps {
     chunk: ChunkType;
@@ -17,26 +17,21 @@ interface ChunkFavoriteToggleProps {
 
 export function ChunkFavoriteToggle({ chunk }: ChunkFavoriteToggleProps) {
     const [loading, setLoading] = useState(false);
-
-    // Get chunk store for updating global state
-    const { chunks, setChunks } = useChunkStore();
+    // Use React Query for chunk data and refetch
+    const metatextId = chunk.metatext_id;
+    const { refetch } = useChunksQuery(metatextId);
     const favorited = !!chunk.favorited_by_user_id;
 
     const handleToggle = async () => {
         setLoading(true);
         try {
-            let updatedChunk: ChunkType;
             if (favorited) {
                 await api.delete(`chunk/${chunk.id}/favorite`);
-                updatedChunk = { ...chunk, favorited_by_user_id: null };
             } else {
                 await api.post(`chunk/${chunk.id}/favorite`);
-                // You may want to use the actual user id here if available
-                updatedChunk = { ...chunk, favorited_by_user_id: 1 };
             }
-            // Update the chunk in the global store
-            const newChunks = chunks.map(c => c.id === chunk.id ? updatedChunk : c);
-            setChunks(newChunks);
+            // Refetch chunks to update UI
+            await refetch();
         } catch (e) {
             // Optionally show error
         } finally {
@@ -55,7 +50,7 @@ export function ChunkFavoriteToggle({ chunk }: ChunkFavoriteToggleProps) {
             size="lg"
             iconSize="lg"
         />
-    )
+    );
 }
 
 export default ChunkFavoriteToggle;
