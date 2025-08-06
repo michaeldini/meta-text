@@ -81,16 +81,16 @@ export interface EvaluationToolProps extends BaseChunkProps {
 /**
  * Props for explanation tool components
  */
-export interface ExplanationToolProps {
-    /** The word or phrase to explain */
-    word?: string;
-    /** The chunk containing context for the explanation */
-    chunk: ChunkType;
-    /** Callback when explanation is updated */
-    onExplanationUpdate?: (explanation: string) => void;
-    /** Optional callback fired when explanation interaction completes */
-    onComplete?: (success: boolean, result?: any) => void;
-}
+// export interface ExplanationToolProps {
+//     /** The word or phrase to explain */
+//     word?: string;
+//     /** The chunk containing context for the explanation */
+//     chunk: ChunkType;
+//     /** Callback when explanation is updated */
+//     onExplanationUpdate?: (explanation: string) => void;
+//     /** Optional callback fired when explanation interaction completes */
+//     onComplete?: (success: boolean, result?: any) => void;
+// }
 
 /**
  * Props for notes tool components
@@ -115,12 +115,13 @@ export interface MergeChunksToolProps {
 /**
  * Props for split chunk tool components
  */
-export interface SplitChunkToolProps extends BaseChunkProps {
-    chunkId: number;
-    word: string;
-    wordIdx: number;
-    onComplete?: (success: boolean, result?: any) => void;
-}
+// export interface SplitChunkToolProps {
+//     chunk: ChunkType;
+//     chunkId: number;
+//     word: string;
+//     wordIdx: number;
+//     onComplete: () => void;
+// }
 
 // =============================================================================
 // HOOK TYPES

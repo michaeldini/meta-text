@@ -8,9 +8,21 @@ import { Text, Heading } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react/box';
 import { AppAlert } from '@components/AppAlert';
 import { TooltipButton } from '@components/TooltipButton';
-import type { ExplanationToolProps } from '@features/chunk-shared';
+// import type { ExplanationToolProps } from '@features/chunk-shared';
 import { HiQuestionMarkCircle } from 'react-icons/hi2';
 import { useExplainHandler } from './hooks/useExplainHandler';
+import { ChunkType } from '@mtypes/documents';
+
+export interface ExplanationToolProps {
+    /** The word or phrase to explain */
+    word?: string;
+    /** The chunk containing context for the explanation */
+    chunk: ChunkType;
+    /** Callback when explanation is updated */
+    onExplanationUpdate?: (explanation: string) => void;
+    /** Optional callback fired when explanation interaction completes */
+    onComplete: () => void;
+}
 
 
 
@@ -40,6 +52,7 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
             metatext_id: chunk.metatext_id,
             chunk_id: null
         });
+        // onComplete();
         if (result) {
             setShowDefinition(true);
         }

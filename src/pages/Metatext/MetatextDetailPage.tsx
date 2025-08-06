@@ -46,8 +46,9 @@ import PaginatedChunks, { PaginatedChunksProps } from '@features/chunk/Paginated
 // Import the bookmark service and hooks
 import { useMetatextBookmark } from './hooks/useMetatextBookmark';
 
-
+let renderCount = 0;
 function MetatextDetailPage(): ReactElement | null {
+    console.log("MetatextDetailPage render count:", ++renderCount);
     // Use custom hook to encapsulate all setup logic
 
     // =========================
@@ -78,57 +79,61 @@ function MetatextDetailPage(): ReactElement | null {
     // =========================
     // State Management
     // =========================
+    const currentMetatextId = useMetatextDetailStore((state) => state.metatextId);
     const setMetatextId = useMetatextDetailStore((state) => state.setMetatextId);
-    React.useEffect(() => {
-        setMetatextId(parsedId);
-    }, [parsedId, setMetatextId]);
+
+    // React.useEffect(() => {
+    //     if (parsedId !== currentMetatextId) {
+    //         setMetatextId(parsedId);
+    //     }
+    // }, [parsedId, currentMetatextId, setMetatextId]);
 
     const setMetatext = useMetatextDetailStore((state) => state.setMetatext);
-    React.useEffect(() => {
-        setMetatext(metatext ? metatext : null);
-    }, [metatext, setMetatext]);
+    // React.useEffect(() => {
+    //     setMetatext(metatext ? metatext : null);
+    // }, [metatext, setMetatext]);
 
-    // State for showing only favorites
+    // // State for showing only favorites
     const [showOnlyFavorites, setShowOnlyFavorites] = React.useState(false);
 
-    // =========================
-    // User Config & UI Preferences
-    // =========================
+    // // =========================
+    // // User Config & UI Preferences
+    // // =========================
     const { data: userConfig } = useUserConfig();
     const updateUserConfig = useUpdateUserConfig();
     const uiPreferences = getUiPreferences(userConfig);
 
-    // =========================
-    // Keyboard Shortcuts
-    // =========================
+    // // =========================
+    // // Keyboard Shortcuts
+    // // =========================
     useSearchKeyboard({ enabled: true });
 
-    // =========================
-    // Source Document Info Generation
-    // =========================
+    // // =========================
+    // // Source Document Info Generation
+    // // =========================
     const generateSourceDocInfo = useGenerateSourceDocInfo(metatext?.source_document_id, invalidate);
 
-    // =========================
-    // Download
-    // =========================
+    // // =========================
+    // // Download
+    // // =========================
     const downloadMetatext = useDownloadMetatext(parsedId ?? undefined);
 
-    // =========================
-    // Mutations
-    // =========================
+    // // =========================
+    // // Mutations
+    // // =========================
     const updateSourceDocMutation = useUpdateSourceDocument(parsedId);
 
-    // =========================
-    // Navigation Handlers
-    // =========================
+    // // =========================
+    // // Navigation Handlers
+    // // =========================
     const handleReviewClick = React.useCallback(() => {
         if (!metatext) return;
         navigate(`/metatext/${metatext.id}/review`);
     }, [metatext, navigate]);
 
 
-    // Paginated chunks props
-    // Pass chunks from metatext to usePaginatedChunks
+    // // Paginated chunks props
+    // // Pass chunks from metatext to usePaginatedChunks
     const rawChunksProps = usePaginatedChunks({
         chunks: metatext?.chunks ?? [],
         showOnlyFavorites,
@@ -137,17 +142,14 @@ function MetatextDetailPage(): ReactElement | null {
         ...rawChunksProps,
     };
 
-    // Use unified bookmark hook
+    // // Use unified bookmark hook
     const {
         bookmarkedChunkId,
         goToBookmark,
         bookmarkLoading,
     } = useMetatextBookmark(parsedId, paginatedChunksProps);
 
-    // Wait for paginated chunks to load before rendering
-    if (paginatedChunksProps.loadingChunks) {
-        return null;
-    }
+
 
     const headerContent = (
         <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -236,6 +238,7 @@ function MetatextDetailPage(): ReactElement | null {
             )}
         </Box>
     );
+
 }
 
 export default MetatextDetailPage;

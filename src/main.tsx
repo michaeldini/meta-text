@@ -16,16 +16,16 @@ if (typeof document !== 'undefined' && document.getElementById('root')) {
 
 export function AppRoot() {
     return (
-        <StrictMode>
-            <Boundary>
-                <BrowserRouter>
-                    <QueryClientProvider client={queryClient}>
-                        <Provider>
-                            <App />
-                        </Provider>
-                    </QueryClientProvider>
-                </BrowserRouter>
-            </Boundary>
-        </StrictMode>
+        // <StrictMode>
+        <Boundary>
+            <BrowserRouter>
+                <QueryClientProvider client={queryClient}>
+                    <Provider>
+                        <App />
+                    </Provider>
+                </QueryClientProvider>
+            </BrowserRouter>
+        </Boundary>
+        // </StrictMode>
     );
 }

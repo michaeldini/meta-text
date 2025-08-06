@@ -3,9 +3,17 @@ import { TooltipButton } from '@components/TooltipButton';
 import { HiScissors } from 'react-icons/hi2';
 import { useSplitChunk } from '@features/chunk/hooks/useSplitChunk';
 import log from '@utils/logger';
-import { SplitChunkToolProps } from '@features/chunk-shared/types';
+// import { SplitChunkToolProps } from '@features/chunk-shared/types';
 import { useMetatextDetailStore } from '@store/metatextDetailStore';
+import { ChunkType } from '@mtypes/index';
 
+export interface SplitChunkToolProps {
+    chunk: ChunkType;
+    chunkId: number;
+    word: string;
+    wordIdx: number;
+    onComplete: () => void;
+}
 
 export function SplitChunkTool(props: SplitChunkToolProps) {
     const { chunkId, wordIdx, word, chunk, onComplete } = props;
@@ -25,7 +33,7 @@ export function SplitChunkTool(props: SplitChunkToolProps) {
                 metatextId,
             });
             // Optionally call onComplete if needed
-            // onComplete?.(result.success, result.data);
+            onComplete();
         } catch (e) {
             log.error('Split chunk mutation failed', e);
         }

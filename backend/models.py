@@ -85,9 +85,11 @@ class Metatext(MetatextBase, table=True):
 class MetatextSummary(MetatextBase):
     id: int
 
-class MetatextDetail(MetatextSummary):
-    text: str
+class MetatextDetail(MetatextBase):
     chunks: List["ChunkRead"]
+    source_document: Optional[SourceDocumentSummary] = None
+    user: Optional["User"] = None
+    explanations: List["Explanation"] = []
 
 class CreateMetatextRequest(BaseModel):
     sourceDocId: int

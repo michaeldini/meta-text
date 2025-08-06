@@ -17,14 +17,14 @@ export function ChunkToolsPanel() {
     const {
         activeTabs,
         setActiveTabs, // in case needed for future
-        toolsRegistry,
+        chunkToolsRegistry,
         handleToolClick,
     } = useChunkToolsPanel();
 
     //  Map tools to buttons
     // Each button toggles the corresponding tool
     // Active tools are highlighted
-    const toolButtons = toolsRegistry.map((tool) => (
+    const toolButtons = chunkToolsRegistry.map((tool) => (
         <Tooltip
             key={tool.id}
             content={<Text fontSize="sm">{tool.tooltip}</Text>}

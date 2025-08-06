@@ -3,15 +3,13 @@
 // Used by ChunkToolsPanel to separate business logic from UI
 
 import { useMetatextDetailStore } from '@store/metatextDetailStore';
-import { createChunkToolsRegistry, type ChunkToolId } from './toolsRegistry';
+import { chunkToolsRegistry, type ChunkToolId } from './toolsRegistry';
 
 export function useChunkToolsPanel() {
     // State from store
     const activeTabs = useMetatextDetailStore(state => state.activeTabs);
     const setActiveTabs = useMetatextDetailStore(state => state.setActiveTabs);
 
-    // Tool definitions
-    const toolsRegistry = createChunkToolsRegistry();
 
     // Toggle tool selection
     const handleToolClick = (toolId: ChunkToolId) => {
@@ -25,7 +23,7 @@ export function useChunkToolsPanel() {
     return {
         activeTabs,
         setActiveTabs,
-        toolsRegistry,
+        chunkToolsRegistry,
         handleToolClick,
     };
 }

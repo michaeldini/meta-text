@@ -20,9 +20,9 @@ export interface WordsToolbarProps {
  */
 export function WordsToolbar({ onClose, word, wordIdx, chunk }: WordsToolbarProps) {
     // Called when a tool completes
-    const handleToolComplete = (success: boolean, result?: any) => {
-        onClose();
-    };
+    // const handleToolComplete = (success: boolean, result?: any) => {
+    //     onClose();
+    // };
     return (
         <Stack direction="row" gap={4} alignItems="center" justifyContent="center" p={4}>
             <SplitChunkTool
@@ -30,12 +30,12 @@ export function WordsToolbar({ onClose, word, wordIdx, chunk }: WordsToolbarProp
                 wordIdx={wordIdx}
                 word={word}
                 chunk={chunk}
-                onComplete={handleToolComplete}
+                onComplete={onClose}
             />
             <WordsExplanationTool
                 word={word}
                 chunk={chunk}
-                onComplete={handleToolComplete}
+                onComplete={onClose}
             />
         </Stack>
     );
