@@ -15,6 +15,11 @@ from backend.services import (
     MetatextService,
     SourceDocumentService,
 )
+from backend.services.bookmark_service import BookmarkService
+# Dependency injection function
+def get_bookmark_service() -> BookmarkService:
+    """Dependency injection function for BookmarkService."""
+    return BookmarkService()
 
 def get_explanation_service() -> ExplanationService:
     """Dependency injection function for ExplanationService."""

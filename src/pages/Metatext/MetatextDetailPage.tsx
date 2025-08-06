@@ -35,6 +35,8 @@ import { SearchContainer } from '@features/chunk-search';
 // This is the list of chunks for the metatext
 import { usePaginatedChunks } from '@features/chunk';
 import PaginatedChunks, { PaginatedChunksProps } from '@features/chunk/PaginatedChunks';
+import { useBookmark } from '@hooks/useBookmark';
+import useChunkBookmarkNavigation from '@features/chunk-bookmark/hooks/useChunkBookmarkNavigation';
 
 // Custom hook for metatext detail page logic to keep this component clean
 import { useMetatextDetailPage } from './hooks/useMetatextDetailPage';
@@ -56,33 +58,50 @@ function MetatextDetailPage(): ReactElement | null {
         updateSourceDocMutation,
     } = useMetatextDetailPage();
 
+    // Only proceed if metatextId is a number
+    if (typeof metatextId !== 'number') {
+        return null;
+    }
+
+    // Use the new bookmark hook for this metatext
+    const { bookmarkedChunkId } = useBookmark(metatextId);
 
     // instead of deconstructuring the paginated chunks, we can just use the hook directly
     // this allows us to keep the paginated chunks logic encapsulated and clean, we will just pass the props to the PaginatedChunks component
-    const paginatedChunksProps: PaginatedChunksProps = usePaginatedChunks({ metatextId, showOnlyFavorites });
+    // Patch: convert chunksError to string if needed
+    const rawChunksProps = usePaginatedChunks({ metatextId, showOnlyFavorites });
+    const paginatedChunksProps: PaginatedChunksProps = {
+        ...rawChunksProps,
+        chunksError: rawChunksProps.chunksError instanceof Error ? rawChunksProps.chunksError.message : rawChunksProps.chunksError,
+    };
 
+    // Use the new navigation hook for bookmarks
+    // You may need to pass chunks, chunksPerPage, setPage from paginatedChunksProps
+    useChunkBookmarkNavigation(
+        metatextId,
+        paginatedChunksProps.displayChunks,
+        paginatedChunksProps.chunksPerPage,
+        paginatedChunksProps.setCurrentPage
+    );
 
     // Wait for paginated chunks to load before rendering
     if (paginatedChunksProps.loadingChunks) {
-        return null
-    };
+        return null;
+    }
 
     return (
-        <Box data-testid="metatext-detail-page"
-            p="1"
-            bg="bg.subtle">
+        <Box data-testid="metatext-detail-page" p="1" bg="bg.subtle">
             {metatext && (
-                <Stack data-testid="metatext-detail-content"
-
-                    animationName="fade-in"
-                    animationDuration="fast">
+                <Stack data-testid="metatext-detail-content" animationName="fade-in" animationDuration="fast">
                     <Heading size="xl">metatext</Heading>
                     <Heading size="6xl">{metatext.title}</Heading>
-                    {sourceDoc &&
+                    {sourceDoc && (
                         <SourceDocInfo
                             doc={sourceDoc}
                             onDocumentUpdate={updateSourceDocMutation.mutate}
-                            generateSourceDocInfo={generateSourceDocInfo} />}
+                            generateSourceDocInfo={generateSourceDocInfo}
+                        />
+                    )}
 
                     <DocumentHeader title={metatext.title}>
                         <TooltipButton
@@ -101,7 +120,7 @@ function MetatextDetailPage(): ReactElement | null {
                         />
                         <TooltipButton
                             label="Download"
-                            tooltip='Download MetaText as JSON'
+                            tooltip="Download MetaText as JSON"
                             icon={<HiArrowDownTray />}
                             onClick={downloadMetatext.handleDownload}
                             disabled={downloadMetatext.disabled}
@@ -129,7 +148,7 @@ function MetatextDetailPage(): ReactElement | null {
                             tooltip="Navigate to the bookmarked chunk in this metatext"
                             icon={<HiBookmark />}
                             onClick={() => setNavigateToBookmark()}
-                            disabled={!paginatedChunksProps.bookmarkedChunkId}
+                            disabled={!bookmarkedChunkId}
                             data-testid="goto-bookmark-button"
                         />
                         <StyleControls />

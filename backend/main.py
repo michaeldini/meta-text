@@ -98,7 +98,7 @@ app.include_router(explanation.router, prefix="/api", tags=["review"])
 app.include_router(logs.router, prefix="/api", tags=["logs"])
 app.include_router(favorite.router, prefix="/api", tags=["favorites"])
 app.include_router(user_config.router, prefix="/api", tags=["user_config"])
-# app.include_router(explain.router, prefix="/api", tags=["explain"])
+app.include_router(bookmark.router, prefix="/api", tags=["bookmarks"])
 
 # Mount static files for generated images
 public_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../public'))

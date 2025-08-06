@@ -75,7 +75,9 @@ export function usePaginatedChunks({ metatextId, showOnlyFavorites }: UsePaginat
     const bookmarkedChunk = displayChunks.find((chunk: ChunkType) => !!chunk.bookmarked_by_user_id);
     const bookmarkedChunkId = bookmarkedChunk ? bookmarkedChunk.id : null;
     // Handle navigation to bookmarked chunk using custom hook
-    useChunkBookmarkNavigation(displayChunks, chunksPerPage, handlePageChange, bookmarkedChunkId);
+    if (typeof metatextId === 'number') {
+        useChunkBookmarkNavigation(metatextId, displayChunks, chunksPerPage, setCurrentPage);
+    }
 
     // Preserve previous chunks for scroll position
     const prevChunksRef = useRef<any[]>([]);

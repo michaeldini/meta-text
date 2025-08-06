@@ -14,9 +14,8 @@ import { EvaluationTool } from '@features/chunk-evaluation';
 import { ImageTool } from '@features/chunk-image';
 import { RewriteDisplayTool } from '@features/chunk-rewrite';
 import { ExplanationTool } from '@features/chunk-explanation';
-import { ChunkBookmarkToggle } from '@features/chunk-bookmark';
 import { ChunkFavoriteToggle } from '@features/chunk-favorite';
-
+import ChunkBookmarkToggle from '@features/chunk-bookmark/components/ChunkBookmarkToggle';
 
 interface ChunkToolsContainerProps {
     chunk: ChunkType;
@@ -33,7 +32,16 @@ function renderStationaryTools(chunk: ChunkType, asRow: boolean) {
             {/* Chunk position display (logic encapsulated in component) */}
             <ChunkPosition chunk={chunk} />
             <CopyTool chunkText={chunk.text} />
+            {/* Replace with your own toggle component */}
             <ChunkBookmarkToggle chunk={chunk} />
+            {/* Example usage:
+                const { isBookmarked, toggleBookmark } = useChunkBookmarkToggle(chunk);
+                <IconButton
+                    aria-label="Bookmark"
+                    icon={isBookmarked ? <BookmarkIcon /> : <BookmarkOutlineIcon />}
+                    onClick={toggleBookmark}
+                />
+            */}
             <ChunkFavoriteToggle chunk={chunk} />
         </Stack>
     );

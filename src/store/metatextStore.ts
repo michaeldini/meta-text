@@ -5,12 +5,13 @@
  */
 
 import { create } from 'zustand';
+import { MetatextDetail } from '@mtypes/documents';
 
 interface MetatextState {
     metatextId: number | null;
     setMetatextId: (id: number | null) => void;
-    metatext: any; // Replace 'any' with your Metatext type if available
-    setMetatext: (metatext: any) => void;
+    metatext: MetatextDetail | null;
+    setMetatext: (metatext: MetatextDetail | null) => void;
 }
 
 export const useMetatextStore = create<MetatextState>((set) => ({

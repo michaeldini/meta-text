@@ -2,6 +2,8 @@
  * Chunk Tools
  * Central tool management and components for chunk-level operations
  */
+
+export * from './ChunkToolsPanel';
 export { default as ChunkToolsContainer } from './ChunkToolsContainer';
 
 /**
