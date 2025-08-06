@@ -17,7 +17,7 @@ export function useUpdateChunkField() {
             updateChunk(chunkId, { [field]: value }),
         onSuccess: (updatedChunk: ChunkType) => {
             // Invalidate or update cache as needed
-            queryClient.invalidateQueries({ queryKey: ['chunks', updatedChunk.metatext_id] });
+            queryClient.invalidateQueries({ queryKey: ['metatextDetail', updatedChunk.metatext_id] });
         },
     });
 }

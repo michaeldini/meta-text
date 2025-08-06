@@ -8,49 +8,43 @@ import { usePaginationStore } from './usePaginationStore';
 import { ChunkType } from '@mtypes/documents';
 
 interface UsePaginatedChunksProps {
-    metatextId: number | null;
+    chunks: ChunkType[];
     showOnlyFavorites?: boolean;
 }
-export function usePaginatedChunks({ metatextId, showOnlyFavorites }: UsePaginatedChunksProps) {
-    if (!metatextId) {
-        return {
-            paginatedChunks: [],
-            displayChunks: [],
-            loadingChunks: false,
-            chunksError: null,
-            currentPage: 1,
-            setCurrentPage: () => { },
-            chunksPerPage: 5,
-            pageCount: 0,
-            startIdx: 0,
-            endIdx: 0,
-            bookmarkedChunkId: null,
-        };
-    }
-    // Use React Query for chunk data
-    const { data: chunks = [], isLoading: loadingChunks, error: chunksError } = useChunksQuery(Number(metatextId));
+export function usePaginatedChunks({ chunks, showOnlyFavorites }: UsePaginatedChunksProps) {
+    // Always call hooks first to follow Rules of Hooks
     const { filteredChunks, isInSearchMode } = useSearchStore();
     const { currentPage, setCurrentPage, setChunksPerPage } = usePaginationStore();
+    const prevChunksRef = useRef<any[]>([]);
 
-    // Combine search and favorite filters
-    let displayChunks = isInSearchMode ? filteredChunks : chunks;
-    if (showOnlyFavorites) {
-        displayChunks = displayChunks.filter((chunk: any) => !!chunk.favorited_by_user_id);
+    // Default values
+    const loadingChunks = false;
+    const chunksError = null;
+    const chunksPerPage = 5;
+    let displayChunks: ChunkType[] = [];
+    let paginatedChunks: ChunkType[] = [];
+    let pageCount = 0;
+    let startIdx = 0;
+    let endIdx = 0;
+    let bookmarkedChunkId = null;
+
+    if (chunks && chunks.length > 0) {
+        displayChunks = isInSearchMode ? filteredChunks : chunks;
+        if (showOnlyFavorites) {
+            displayChunks = displayChunks.filter((chunk: any) => !!chunk.favorited_by_user_id);
+        }
+        pageCount = displayChunks.length;
+        startIdx = (currentPage - 1) * chunksPerPage;
+        endIdx = startIdx + chunksPerPage;
+        paginatedChunks = displayChunks.slice(startIdx, endIdx);
+        const bookmarkedChunk = displayChunks.find((chunk: ChunkType) => !!chunk.bookmarked_by_user_id);
+        bookmarkedChunkId = bookmarkedChunk ? bookmarkedChunk.id : null;
     }
 
-
-    // Pagination logic
-    const chunksPerPage = 5;
     useEffect(() => {
         setChunksPerPage(chunksPerPage);
     }, [setChunksPerPage]);
 
-    const pageCount = displayChunks.length;
-    const startIdx = (currentPage - 1) * chunksPerPage;
-    const endIdx = startIdx + chunksPerPage;
-    const paginatedChunks = displayChunks.slice(startIdx, endIdx);
-
-    // Reset currentPage to 1 if the current page is out of bounds after filtering (e.g., toggling favorites/search)
     useEffect(() => {
         if (currentPage > Math.ceil(pageCount / chunksPerPage) && pageCount > 0) {
             setCurrentPage(1);
@@ -66,16 +60,7 @@ export function usePaginatedChunks({ metatextId, showOnlyFavorites }: UsePaginat
         }
     }, [currentPage, setCurrentPage]);
 
-    // Find the first bookmarked chunk by user
-    const bookmarkedChunk = displayChunks.find((chunk: ChunkType) => !!chunk.bookmarked_by_user_id);
-    const bookmarkedChunkId = bookmarkedChunk ? bookmarkedChunk.id : null;
-    // Handle navigation to bookmarked chunk using custom hook
-    // if (typeof metatextId === 'number') {
-    //     useChunkBookmarkNavigation(metatextId, displayChunks, chunksPerPage, setCurrentPage);
-    // }
-
     // Preserve previous chunks for scroll position
-    const prevChunksRef = useRef<any[]>([]);
     useEffect(() => {
         prevChunksRef.current = displayChunks;
     }, [displayChunks]);

@@ -19,7 +19,7 @@ export const useMergeChunks = () => {
         },
         onSuccess: (_data, variables) => {
             // Refetch chunk data for the current metatext
-            queryClient.invalidateQueries({ queryKey: ['chunks', variables.metatextId] });
+            queryClient.invalidateQueries({ queryKey: ['metatextDetail', variables.metatextId] });
         },
     });
 };

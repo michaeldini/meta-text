@@ -10,6 +10,15 @@ import { Box } from '@chakra-ui/react/box';
 import { Heading } from '@chakra-ui/react/heading';
 import { Tabs } from '@chakra-ui/react/tabs';
 
+import { useParams, useNavigate } from 'react-router-dom';
+import { useUserConfig, useUpdateUserConfig } from '@services/userConfigService';
+import { useMetatextDetail, useSourceDocumentDetail, useUpdateSourceDocument } from '@features/documents/useDocumentsData';
+import { useSearchKeyboard } from '@features/chunk-search/hooks/useSearchKeyboard';
+import { useGenerateSourceDocInfo } from '@hooks/useGenerateSourceDocInfo';
+import { useDownloadMetatext } from './hooks/useDownloadMetatext';
+import getUiPreferences from '@utils/getUiPreferences';
+
+import { useMetatextDetailStore } from '@store/metatextDetailStore';
 // Imports for icons
 import {
     HiAcademicCap,
@@ -37,32 +46,95 @@ import PaginatedChunks, { PaginatedChunksProps } from '@features/chunk/Paginated
 // Import the bookmark service and hooks
 import { useMetatextBookmark } from './hooks/useMetatextBookmark';
 
-// Custom hook for metatext detail page logic to keep this component clean
-import { useMetatextDetailPage } from './hooks/useMetatextDetailPage';
 
 function MetatextDetailPage(): ReactElement | null {
     // Use custom hook to encapsulate all setup logic
-    const hookResult = useMetatextDetailPage();
-    if (!hookResult) return null;
-    const {
-        metatextId,
-        metatext,
-        sourceDoc,
-        showOnlyFavorites,
-        setShowOnlyFavorites,
-        updateUserConfig,
-        uiPreferences,
-        handleReviewClick,
-        generateSourceDocInfo,
-        downloadMetatext,
-        updateSourceDocMutation,
-    } = hookResult;
+
+    // =========================
+    // Routing & Navigation
+    // =========================
+    // Get metatextId from route params and parse to number
+    const { metatextId } = useParams<{ metatextId?: string }>();
+    const parsedId = metatextId ? Number(metatextId) : null;
+    const navigate = useNavigate();
+
+    // =========================
+    // Early return if parsedId is invalid
+    // =========================
+    if (parsedId == null || isNaN(parsedId)) {
+        React.useEffect(() => {
+            navigate('/');
+        }, [navigate]);
+        return null;
+    }
+
+    // =========================
+    // Data Fetching
+    // =========================
+    // Fetch metatext details and source document details
+    const { data: metatext } = useMetatextDetail(parsedId);
+    const { data: sourceDoc, invalidate } = useSourceDocumentDetail(metatext?.source_document_id);
+    console.log("MetatextDetailPage render, metatext:", metatext);
+    // =========================
+    // State Management
+    // =========================
+    const setMetatextId = useMetatextDetailStore((state) => state.setMetatextId);
+    React.useEffect(() => {
+        setMetatextId(parsedId);
+    }, [parsedId, setMetatextId]);
+
+    const setMetatext = useMetatextDetailStore((state) => state.setMetatext);
+    React.useEffect(() => {
+        setMetatext(metatext ? metatext : null);
+    }, [metatext, setMetatext]);
+
+    // State for showing only favorites
+    const [showOnlyFavorites, setShowOnlyFavorites] = React.useState(false);
+
+    // =========================
+    // User Config & UI Preferences
+    // =========================
+    const { data: userConfig } = useUserConfig();
+    const updateUserConfig = useUpdateUserConfig();
+    const uiPreferences = getUiPreferences(userConfig);
+
+    // =========================
+    // Keyboard Shortcuts
+    // =========================
+    useSearchKeyboard({ enabled: true });
+
+    // =========================
+    // Source Document Info Generation
+    // =========================
+    const generateSourceDocInfo = useGenerateSourceDocInfo(metatext?.source_document_id, invalidate);
+
+    // =========================
+    // Download
+    // =========================
+    const downloadMetatext = useDownloadMetatext(parsedId ?? undefined);
+
+    // =========================
+    // Mutations
+    // =========================
+    const updateSourceDocMutation = useUpdateSourceDocument(parsedId);
+
+    // =========================
+    // Navigation Handlers
+    // =========================
+    const handleReviewClick = React.useCallback(() => {
+        if (!metatext) return;
+        navigate(`/metatext/${metatext.id}/review`);
+    }, [metatext, navigate]);
+
 
     // Paginated chunks props
-    const rawChunksProps = usePaginatedChunks({ metatextId, showOnlyFavorites });
+    // Pass chunks from metatext to usePaginatedChunks
+    const rawChunksProps = usePaginatedChunks({
+        chunks: metatext?.chunks ?? [],
+        showOnlyFavorites,
+    });
     const paginatedChunksProps: PaginatedChunksProps = {
         ...rawChunksProps,
-        chunksError: rawChunksProps.chunksError instanceof Error ? rawChunksProps.chunksError.message : rawChunksProps.chunksError,
     };
 
     // Use unified bookmark hook
@@ -70,7 +142,7 @@ function MetatextDetailPage(): ReactElement | null {
         bookmarkedChunkId,
         goToBookmark,
         bookmarkLoading,
-    } = useMetatextBookmark(metatextId, paginatedChunksProps);
+    } = useMetatextBookmark(parsedId, paginatedChunksProps);
 
     // Wait for paginated chunks to load before rendering
     if (paginatedChunksProps.loadingChunks) {
