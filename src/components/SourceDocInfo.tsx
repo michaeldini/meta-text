@@ -1,12 +1,11 @@
 import { Editable } from '@chakra-ui/react/editable';
 import { Stack } from '@chakra-ui/react/stack';
 import { Text } from '@chakra-ui/react/text';
-import { Collapsible } from '@chakra-ui/react/collapsible';
 import { SourceDocumentDetail, SourceDocumentSummary } from '@mtypes/documents';
-import { Button } from '@chakra-ui/react/button';
 
 import { HiOutlineSparkles } from 'react-icons/hi2';
 import { TooltipButton } from '@components/TooltipButton';
+import { Box } from '@chakra-ui/react/box';
 
 interface SourceDocInfoProps {
     doc: SourceDocumentDetail;
@@ -49,36 +48,31 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
     };
 
     return (
-        <Collapsible.Root data-testid="source-doc-info" >
-            <Collapsible.Trigger>
-                <Text color="fg" p={4}>More Info</Text>
-            </Collapsible.Trigger>
-            <Collapsible.Content p="4">
-                {generateSourceDocInfo && (
-                    <TooltipButton
-                        label="Generate"
-                        tooltip="Regenerate document info"
-                        onClick={generateSourceDocInfo.handleClick}
-                        disabled={generateSourceDocInfo.loading}
-                        loading={generateSourceDocInfo.loading}
-                        icon={<HiOutlineSparkles />}
-                    />
-                )}
-                <Text color="fg.muted" mb="4">Click on a field to edit. Enter to Save. Tab to Cancel</Text>
-                {FIELD_CONFIG.map(config => (
-                    <Stack direction="row" key={config.key} align="center">
-                        <Text fontWeight="bold" minWidth="6rem">{config.label}</Text>
-                        <Editable.Root
-                            defaultValue={doc[config.key] != null ? String(doc[config.key]) : 'N/A'}
-                            submitMode={"enter"}
-                            onValueCommit={handleValueCommit(config.key)}>
-                            <Editable.Preview />
-                            <Editable.Input />
-                        </Editable.Root>
-                    </Stack>
-                ))}
-            </Collapsible.Content>
-        </Collapsible.Root>
+        <Box>
+            {generateSourceDocInfo && (
+                <TooltipButton
+                    label="Generate"
+                    tooltip="Regenerate document info"
+                    onClick={generateSourceDocInfo.handleClick}
+                    disabled={generateSourceDocInfo.loading}
+                    loading={generateSourceDocInfo.loading}
+                    icon={<HiOutlineSparkles />}
+                />
+            )}
+            <Text color="fg.muted" mb="4">Click on a field to edit. Enter to Save. Tab to Cancel</Text>
+            {FIELD_CONFIG.map(config => (
+                <Stack direction="row" key={config.key} align="center">
+                    <Text fontWeight="bold" minWidth="6rem">{config.label}</Text>
+                    <Editable.Root
+                        defaultValue={doc[config.key] != null ? String(doc[config.key]) : 'N/A'}
+                        submitMode={"enter"}
+                        onValueCommit={handleValueCommit(config.key)}>
+                        <Editable.Preview />
+                        <Editable.Input />
+                    </Editable.Root>
+                </Stack>
+            ))}
+        </Box>
     );
 }
 

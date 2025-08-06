@@ -1,50 +1,46 @@
 /**
  * Hook for MetatextDetailPage setup
  * Encapsulates all data fetching, state, and navigation logic for MetatextDetailPage
+ * Grouped by related operations for clarity and maintainability
  * Destructured in MetatextDetailPage component
  */
 
 import React from 'react';
-
-// we need to get the parameters from the URL
-// we need also navigate to other pages (just back to the homepage)
 import { useParams, useNavigate } from 'react-router-dom';
-
-// The user config has the style preferences
 import { useUserConfig, useUpdateUserConfig } from '@services/userConfigService';
-
-// Custom hooks for fetching metatext and source document details
-import { useMetatextDetail, useSourceDocumentDetail } from '@features/documents/useDocumentsData';
-
-// Keyboard shortcuts for search functionality
-import { useSearchKeyboard } from '@features/chunk-search/hooks/useSearchKeyboard'
-
-// Custom hook for generating source document info
+import { useMetatextDetail, useSourceDocumentDetail, useUpdateSourceDocument } from '@features/documents/useDocumentsData';
+import { useSearchKeyboard } from '@features/chunk-search/hooks/useSearchKeyboard';
 import { useGenerateSourceDocInfo } from '@hooks/useGenerateSourceDocInfo';
-
-// Custom hook for downloading metatext as json file
 import { useDownloadMetatext } from './useDownloadMetatext';
-
-// Utility function to get UI preferences from user config 
 import getUiPreferences from '@utils/getUiPreferences';
-
-// Importing the bookmark UI store to manage bookmark navigation
 import { useBookmarkUIStore } from '@features/chunk-bookmark/store/bookmarkStore';
-
-import { useUpdateSourceDocument } from '@features/documents/useDocumentsData';
-
 import { useMetatextStore } from '@store/metatextStore';
 export function useMetatextDetailPage() {
-    // --- Routing and Navigation ---
-    // Extract metatextId from URL and setup navigation
+    // =========================
+    // Routing & Navigation
+    // =========================
     const { metatextId } = useParams<{ metatextId?: string }>();
     const parsedId = metatextId ? Number(metatextId) : null;
+    const navigate = useNavigate();
 
-    // --- Data Fetching ---
-    // Fetch metatext details and related source document
+    // =========================
+    // Data Fetching
+    // =========================
     const { data: metatext, isLoading: metatextIsLoading, error: metatextError } = useMetatextDetail(parsedId);
     const { data: sourceDoc, isLoading, error, invalidate } = useSourceDocumentDetail(metatext?.source_document_id);
 
+    // =========================
+    // Navigation Effect (redirect if ID invalid)
+    // =========================
+    React.useEffect(() => {
+        if (parsedId == null || isNaN(parsedId)) {
+            navigate('/metatext');
+        }
+    }, [metatextError, parsedId, navigate]);
+
+    // =========================
+    // State Management
+    // =========================
     const setMetatextId = useMetatextStore((state) => state.setMetatextId);
     React.useEffect(() => {
         setMetatextId(parsedId);
@@ -52,59 +48,56 @@ export function useMetatextDetailPage() {
 
     const setMetatext = useMetatextStore((state) => state.setMetatext);
     React.useEffect(() => {
-        setMetatext(metatext);
+        setMetatext(metatext ? metatext : null);
     }, [metatext, setMetatext]);
-    // --- Source Document Info Generation ---
-    // Generate source document info if metatext is available
-    const generateSourceDocInfo = useGenerateSourceDocInfo(metatext?.source_document_id, invalidate);
 
-    // Redirect to metatext list page if ID is invalid
-    const navigate = useNavigate();
-    React.useEffect(() => {
-        if (parsedId == null || isNaN(parsedId)) {
-            navigate('/metatext');
-        }
-    }, [metatextError, parsedId, navigate]);
+    // State for showing only favorites
+    const [showOnlyFavorites, setShowOnlyFavorites] = React.useState(false);
 
-    // --- User Config and UI Preferences ---
-    // Fetch user config and UI preferences
+    // =========================
+    // User Config & UI Preferences
+    // =========================
     const { data: userConfig } = useUserConfig();
     const updateUserConfig = useUpdateUserConfig();
     const uiPreferences = getUiPreferences(userConfig);
 
-    // --- Keyboard Shortcuts ---
-    // Enable search keyboard shortcuts
+    // =========================
+    // Keyboard Shortcuts
+    // =========================
     useSearchKeyboard({ enabled: true });
 
-    // --- Review Navigation ---
-    // Handler for navigating to review page
-    const handleReviewClick = () => {
-        if (!metatext) return;
-        navigate(`/metatext/${metatext.id}/review`);
-    };
+    // =========================
+    // Source Document Info Generation
+    // =========================
+    const generateSourceDocInfo = useGenerateSourceDocInfo(metatext?.source_document_id, invalidate);
 
-    // --- Favorites State ---
-    // State for showing only favorites
-    const [showOnlyFavorites, setShowOnlyFavorites] = React.useState(false);
-
-
-    // --- Download Metatext ---
-    // Hook for downloading metatext
+    // =========================
+    // Download & Bookmark
+    // =========================
     const downloadMetatext = useDownloadMetatext(parsedId ?? undefined);
-
-
-    // Get the function to set the bookmark navigation trigger
     const { setNavigateToBookmark } = useBookmarkUIStore();
 
-
+    // =========================
+    // Mutations
+    // =========================
     const updateSourceDocMutation = useUpdateSourceDocument(parsedId);
 
+    // =========================
+    // Navigation Handlers
+    // =========================
+    const handleReviewClick = React.useCallback(() => {
+        if (!metatext) return;
+        navigate(`/metatext/${metatext.id}/review`);
+    }, [metatext, navigate]);
 
-
-
-    // --- Return all hook values ---
+    // =========================
+    // Return all hook values
+    // =========================
     return {
+        // Routing & IDs
         metatextId: parsedId,
+        navigate,
+
         // Data
         metatext,
         metatextIsLoading,
@@ -116,10 +109,6 @@ export function useMetatextDetailPage() {
         setShowOnlyFavorites,
         uiPreferences,
 
-        // Navigation
-        navigate,
-        handleReviewClick,
-
         // User Config
         userConfig,
         updateUserConfig,
@@ -127,14 +116,14 @@ export function useMetatextDetailPage() {
         // Source Doc Info Generation
         generateSourceDocInfo,
 
-        // Download
+        // Download & Bookmark
         downloadMetatext,
-
-        // Bookmark
         setNavigateToBookmark,
 
         // Mutations
         updateSourceDocMutation,
 
+        // Navigation Handlers
+        handleReviewClick,
     };
 }
