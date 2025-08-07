@@ -1,28 +1,18 @@
 // Details for a given Metatext document.
 // This page displays the details of a specific Metatext, including a header with style controls and document meta-data, the paginated chunks of the Metatext, and additional tools for chunk management.
+import React, { useCallback, useEffect, useRef } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 
 // Uses a stack layout for the main content
-// Tabs near the top to switch between different header sections
-import React, { useCallback, useEffect, useRef } from 'react';
 import type { ReactElement } from 'react';
 import { Stack } from '@chakra-ui/react/stack';
 import { Box } from '@chakra-ui/react/box';
 import { Heading } from '@chakra-ui/react/heading';
 import { Tabs } from '@chakra-ui/react/tabs';
+import { Center } from '@chakra-ui/react/center';
+import { Pagination } from '@chakra-ui/react/pagination';
+import { ButtonGroup, IconButton } from '@chakra-ui/react/button';
 
-import { useParams, useNavigate } from 'react-router-dom';
-import { useUserConfig, useUpdateUserConfig } from '@services/userConfigService';
-import { useMetatextDetail, useSourceDocumentDetail, useUpdateSourceDocument } from '@features/documents/useDocumentsData';
-import { useSearchKeyboard } from '@features/chunk-search/hooks/useSearchKeyboard';
-import { useGenerateSourceDocInfo } from '@hooks/useGenerateSourceDocInfo';
-import { useDownloadMetatext } from './hooks/useDownloadMetatext';
-import getUiPreferences from '@utils/getUiPreferences';
-
-import { useMetatextDetailStore } from '@store/metatextDetailStore';
-
-import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
-
-import { usePaginationStore } from '../../features/chunk/hooks/usePaginationStore';
 // Imports for icons
 import {
     HiAcademicCap,
@@ -30,26 +20,37 @@ import {
     HiHashtag,
     HiStar,
     HiOutlineStar,
-    HiBookmark
+    HiBookmark,
+    HiChevronLeft,
+    HiChevronRight
 } from 'react-icons/hi2'
-
 
 // Imports for components *** make a controls component for the header
 import { SourceDocInfo } from '@components/SourceDocInfo';
 import { StyleControls } from '@components/stylecontrols';
 import { SearchContainer } from '@features/chunk-search';
 import { TooltipButton } from '@components/TooltipButton';
+import { ChunkToolsPanel } from '@features/chunk-tools'; // Import the bottom panel
+import Chunk from '@features/chunk/Chunk';
 
-// Import the bottom panel
-import { ChunkToolsPanel } from '@features/chunk-tools';
+import { useUserConfig, useUpdateUserConfig } from '@services/userConfigService';
 
-// This gets the list of chunks for the metatext
-// import { usePaginatedChunks } from '@features/chunk';
-import PaginatedChunks, { PaginatedChunksProps } from '@features/chunk/PaginatedChunks';
+import { useMetatextDetail, useSourceDocumentDetail, useUpdateSourceDocument } from '@features/documents/useDocumentsData';
+import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
+import { usePaginationStore } from '@features/chunk/hooks/usePaginationStore';
+import { useSearchKeyboard } from '@features/chunk-search/hooks/useSearchKeyboard';
 
-// Import the bookmark service and hooks
+import { useGenerateSourceDocInfo } from '@hooks/useGenerateSourceDocInfo';
+import { useDownloadMetatext } from './hooks/useDownloadMetatext';
 import { useMetatextBookmark } from './hooks/useMetatextBookmark';
+
+import getUiPreferences from '@utils/getUiPreferences';
+
+import { useMetatextDetailStore } from '@store/metatextDetailStore';
+
 import { ChunkType } from '@mtypes/documents';
+
+
 
 let renderCount = 0;
 function MetatextDetailPage(): ReactElement | null {
@@ -64,15 +65,49 @@ function MetatextDetailPage(): ReactElement | null {
     const parsedId = metatextId ? Number(metatextId) : null;
     const navigate = useNavigate();
 
+    // // State for showing only favorites
+    const [showOnlyFavorites, setShowOnlyFavorites] = React.useState(false);
     // =========================
     // Early return if parsedId is invalid
     // =========================
-    if (parsedId == null || isNaN(parsedId)) {
-        React.useEffect(() => {
+    useEffect(() => {
+        if (parsedId == null || isNaN(parsedId)) {
             navigate('/');
-        }, [navigate]);
-        return null;
-    }
+        }
+    }, [parsedId, navigate]);
+    if (parsedId == null || isNaN(parsedId)) return null;
+
+    // // =========================
+    // // User Config & UI Preferences
+    // // =========================
+    const { data: userConfig } = useUserConfig();
+    const updateUserConfig = useUpdateUserConfig();
+    const uiPreferences = getUiPreferences(userConfig);
+
+    useSearchKeyboard({ enabled: true });
+    const downloadMetatext = useDownloadMetatext(parsedId ?? undefined);
+    const updateSourceDocMutation = useUpdateSourceDocument(parsedId);
+
+
+
+    const { filteredChunks, isInSearchMode } = useSearchStore();
+    const { currentPage, setCurrentPage, setChunksPerPage } = usePaginationStore();
+    const prevChunksRef = useRef<any[]>([]);
+
+    // // Use unified bookmark hook
+    // Default values
+    const chunksPerPage = 5;
+    let displayChunks: ChunkType[] = [];
+    let paginatedChunks: ChunkType[] = [];
+    let pageCount = 0;
+    let startIdx = 0;
+    let endIdx = 0;
+
+    const {
+        bookmarkedChunkId,
+        goToBookmark,
+        bookmarkLoading,
+    } = useMetatextBookmark(parsedId, displayChunks, chunksPerPage, setCurrentPage);
 
     // =========================
     // Data Fetching
@@ -80,7 +115,6 @@ function MetatextDetailPage(): ReactElement | null {
     // Fetch metatext details and source document details
     const { data: metatext } = useMetatextDetail(parsedId);
     const { data: sourceDoc, invalidate } = useSourceDocumentDetail(metatext?.source_document_id);
-    console.log("MetatextDetailPage render, metatext:", metatext);
 
     // =========================
     // State Management
@@ -99,70 +133,18 @@ function MetatextDetailPage(): ReactElement | null {
         setMetatext(metatext ? metatext : null);
     }, [metatext, setMetatext]);
 
-    // // State for showing only favorites
-    const [showOnlyFavorites, setShowOnlyFavorites] = React.useState(false);
-
-    // // =========================
-    // // User Config & UI Preferences
-    // // =========================
-    const { data: userConfig } = useUserConfig();
-    const updateUserConfig = useUpdateUserConfig();
-    const uiPreferences = getUiPreferences(userConfig);
-
-    // // =========================
-    // // Keyboard Shortcuts
-    // // =========================
-    useSearchKeyboard({ enabled: true });
-
-    // // =========================
-    // // Source Document Info Generation
-    // // =========================
     const generateSourceDocInfo = useGenerateSourceDocInfo(metatext?.source_document_id, invalidate);
 
-    // // =========================
-    // // Download
-    // // =========================
-    const downloadMetatext = useDownloadMetatext(parsedId ?? undefined);
-
-    // // =========================
-    // // Mutations
-    // // =========================
-    const updateSourceDocMutation = useUpdateSourceDocument(parsedId);
-
-    // // =========================
-    // // Navigation Handlers
-    // // =========================
     const handleReviewClick = React.useCallback(() => {
         if (!metatext) return;
         navigate(`/metatext/${metatext.id}/review`);
     }, [metatext, navigate]);
 
 
-
-    const { filteredChunks, isInSearchMode } = useSearchStore();
-    const { currentPage, setCurrentPage, setChunksPerPage } = usePaginationStore();
-    const prevChunksRef = useRef<any[]>([]);
-
-    // // Use unified bookmark hook
-    // Default values
-    const loadingChunks = false;
-    const chunksError = null;
-    const chunksPerPage = 5;
-    let displayChunks: ChunkType[] = [];
-    let paginatedChunks: ChunkType[] = [];
-    let pageCount = 0;
-    let startIdx = 0;
-    let endIdx = 0;
-    const {
-        bookmarkedChunkId,
-        goToBookmark,
-        bookmarkLoading,
-    } = useMetatextBookmark(parsedId, displayChunks, chunksPerPage, setCurrentPage);
-
     if (metatext?.chunks && metatext.chunks.length > 0) {
         displayChunks = isInSearchMode ? filteredChunks : metatext.chunks;
         if (showOnlyFavorites) {
-            displayChunks = displayChunks.filter((chunk: any) => !!chunk.favorited_by_user_id);
+            displayChunks = displayChunks.filter((chunk: ChunkType) => !!chunk.favorited_by_user_id);
         }
         pageCount = displayChunks.length;
         startIdx = (currentPage - 1) * chunksPerPage;
@@ -237,11 +219,16 @@ function MetatextDetailPage(): ReactElement | null {
                 aria-checked={!!uiPreferences?.showChunkPositions}
                 disabled={uiPreferences == null}
             />
-            <SearchContainer showTagFilters={true} />
         </Box>
     );
     const tabsBlock = (
-        <Tabs.Root variant="plain" maxW="md" fitted defaultValue={"Controls"}>
+        <Tabs.Root
+            variant="plain"
+            maxW="md"
+            deselectable
+            // fitted
+            defaultValue={"Controls"}
+        >
             <Tabs.List bg="bg.inverted">
                 <Tabs.Trigger value="tab-1">Info</Tabs.Trigger>
                 <Tabs.Trigger value="tab-2">Controls</Tabs.Trigger>
@@ -281,17 +268,57 @@ function MetatextDetailPage(): ReactElement | null {
                         <Heading size="3xl" color="fg.info">{metatext.title}</Heading>
                         {reviewButton}
                     </Stack>
-                    {tabsBlock}
+                    <Stack direction="row" alignItems="start" justifyContent="space-between" >
+                        {tabsBlock}
+                        <SearchContainer showTagFilters={true} />
+                    </Stack>
                     <ChunkToolsPanel />
-                    <PaginatedChunks
-                        paginatedChunks={paginatedChunks}
-                        chunksPerPage={chunksPerPage}
-                        currentPage={currentPage}
-                        setCurrentPage={setCurrentPage}
-                        startIdx={startIdx}
-                        endIdx={endIdx}
-                        pageCount={pageCount}
-                    />
+
+                    <Box data-testid="chunks-container">
+                        <Stack gap={4}>
+                            <Center>
+                                <Pagination.Root
+                                    count={pageCount}
+                                    pageSize={chunksPerPage}
+                                    page={currentPage}
+                                    onPageChange={e => setCurrentPage(e.page)}
+                                >
+                                    <ButtonGroup variant="ghost" color="fg" >
+                                        <Pagination.PageText format='compact' />
+                                        <Pagination.PrevTrigger asChild color="fg" >
+                                            <IconButton aria-label="Previous page" >
+                                                <HiChevronLeft />
+                                            </IconButton>
+                                        </Pagination.PrevTrigger>
+                                        <Pagination.Items
+                                            color="fg"
+                                            render={({ value }) => (
+                                                <IconButton
+                                                    key={value}
+                                                    variant={{ base: "ghost", _selected: "outline" }}
+                                                    onClick={() => setCurrentPage(value)}
+                                                >
+                                                    {value}
+                                                </IconButton>
+                                            )}
+                                        />
+                                        <Pagination.NextTrigger asChild color="fg" >
+                                            <IconButton aria-label="Next page">
+                                                <HiChevronRight />
+                                            </IconButton>
+                                        </Pagination.NextTrigger>
+                                    </ButtonGroup>
+                                </Pagination.Root>
+                            </Center>
+                            {paginatedChunks.map((chunk: ChunkType, chunkIdx: number) => (
+                                <Chunk
+                                    key={chunk.id}
+                                    chunk={chunk}
+                                    chunkIdx={startIdx + chunkIdx}
+                                />
+                            ))}
+                        </Stack>
+                    </Box>
                 </Stack>
             )}
         </Box>

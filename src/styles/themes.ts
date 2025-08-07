@@ -44,6 +44,20 @@ const config = defineConfig({
         // },
         // Component recipes for Chakra UI core components
         recipes: {
+            tabsContent: defineRecipe({
+                base: {
+                    _open: {
+                        animationName: "fade-in, scale-in",
+                        animationDuration: "120ms, 120ms",
+                        animationTimingFunction: "ease-out, ease-out",
+                    },
+                    _closed: {
+                        animationName: "fade-out, scale-out",
+                        animationDuration: "120ms",
+                        animationTimingFunction: "ease-in, ease-in",
+                    },
+                },
+            }),
 
             button: defineRecipe({
                 base: {
