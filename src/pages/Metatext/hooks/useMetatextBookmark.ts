@@ -3,14 +3,13 @@
 import { useBookmark } from '@hooks/useBookmark';
 import useChunkBookmarkNavigation from '@features/chunk-bookmark/hooks/useChunkBookmarkNavigation';
 import { scrollToChunk } from '@features/chunk-bookmark/handlers/bookmarkHandlers';
+import { ChunkType } from '@mtypes/documents';
 
 export function useMetatextBookmark(
     metatextId: number,
-    paginatedChunksProps: {
-        displayChunks: any[];
-        chunksPerPage: number;
-        setCurrentPage: (page: number) => void;
-    }
+    displayChunks: ChunkType[],
+    chunksPerPage: number,
+    setCurrentPage: (page: number) => void
 ) {
     // Get the bookmarked chunk id for this metatext
     const { bookmarkedChunkId, isLoading: bookmarkLoading } = useBookmark(metatextId);
@@ -18,11 +17,11 @@ export function useMetatextBookmark(
     const goToBookmark = () => {
         if (bookmarkedChunkId == null) return;
         // Find chunk index
-        const idx = paginatedChunksProps.displayChunks.findIndex((c: any) => c.id === bookmarkedChunkId);
+        const idx = displayChunks.findIndex((c: any) => c.id === bookmarkedChunkId);
         if (idx < 0) return;
         // Calculate page
-        const page = Math.floor(idx / paginatedChunksProps.chunksPerPage) + 1;
-        paginatedChunksProps.setCurrentPage(page);
+        const page = Math.floor(idx / chunksPerPage) + 1;
+        setCurrentPage(page);
         setTimeout(() => {
             scrollToChunk(bookmarkedChunkId);
         }, 0);

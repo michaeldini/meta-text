@@ -3,7 +3,7 @@
 
 // Uses a stack layout for the main content
 // Tabs near the top to switch between different header sections
-import React from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import type { ReactElement } from 'react';
 import { Stack } from '@chakra-ui/react/stack';
 import { Box } from '@chakra-ui/react/box';
@@ -19,6 +19,10 @@ import { useDownloadMetatext } from './hooks/useDownloadMetatext';
 import getUiPreferences from '@utils/getUiPreferences';
 
 import { useMetatextDetailStore } from '@store/metatextDetailStore';
+
+import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
+
+import { usePaginationStore } from '../../features/chunk/hooks/usePaginationStore';
 // Imports for icons
 import {
     HiAcademicCap,
@@ -40,11 +44,12 @@ import { TooltipButton } from '@components/TooltipButton';
 import { ChunkToolsPanel } from '@features/chunk-tools';
 
 // This gets the list of chunks for the metatext
-import { usePaginatedChunks } from '@features/chunk';
+// import { usePaginatedChunks } from '@features/chunk';
 import PaginatedChunks, { PaginatedChunksProps } from '@features/chunk/PaginatedChunks';
 
 // Import the bookmark service and hooks
 import { useMetatextBookmark } from './hooks/useMetatextBookmark';
+import { ChunkType } from '@mtypes/documents';
 
 let renderCount = 0;
 function MetatextDetailPage(): ReactElement | null {
@@ -76,22 +81,23 @@ function MetatextDetailPage(): ReactElement | null {
     const { data: metatext } = useMetatextDetail(parsedId);
     const { data: sourceDoc, invalidate } = useSourceDocumentDetail(metatext?.source_document_id);
     console.log("MetatextDetailPage render, metatext:", metatext);
+
     // =========================
     // State Management
     // =========================
     const currentMetatextId = useMetatextDetailStore((state) => state.metatextId);
     const setMetatextId = useMetatextDetailStore((state) => state.setMetatextId);
 
-    // React.useEffect(() => {
-    //     if (parsedId !== currentMetatextId) {
-    //         setMetatextId(parsedId);
-    //     }
-    // }, [parsedId, currentMetatextId, setMetatextId]);
+    React.useEffect(() => {
+        if (parsedId !== currentMetatextId) {
+            setMetatextId(parsedId);
+        }
+    }, [parsedId, currentMetatextId, setMetatextId]);
 
     const setMetatext = useMetatextDetailStore((state) => state.setMetatext);
-    // React.useEffect(() => {
-    //     setMetatext(metatext ? metatext : null);
-    // }, [metatext, setMetatext]);
+    React.useEffect(() => {
+        setMetatext(metatext ? metatext : null);
+    }, [metatext, setMetatext]);
 
     // // State for showing only favorites
     const [showOnlyFavorites, setShowOnlyFavorites] = React.useState(false);
@@ -132,22 +138,66 @@ function MetatextDetailPage(): ReactElement | null {
     }, [metatext, navigate]);
 
 
-    // // Paginated chunks props
-    // // Pass chunks from metatext to usePaginatedChunks
-    const rawChunksProps = usePaginatedChunks({
-        chunks: metatext?.chunks ?? [],
-        showOnlyFavorites,
-    });
-    const paginatedChunksProps: PaginatedChunksProps = {
-        ...rawChunksProps,
-    };
+
+    const { filteredChunks, isInSearchMode } = useSearchStore();
+    const { currentPage, setCurrentPage, setChunksPerPage } = usePaginationStore();
+    const prevChunksRef = useRef<any[]>([]);
 
     // // Use unified bookmark hook
+    // Default values
+    const loadingChunks = false;
+    const chunksError = null;
+    const chunksPerPage = 5;
+    let displayChunks: ChunkType[] = [];
+    let paginatedChunks: ChunkType[] = [];
+    let pageCount = 0;
+    let startIdx = 0;
+    let endIdx = 0;
     const {
         bookmarkedChunkId,
         goToBookmark,
         bookmarkLoading,
-    } = useMetatextBookmark(parsedId, paginatedChunksProps);
+    } = useMetatextBookmark(parsedId, displayChunks, chunksPerPage, setCurrentPage);
+
+    if (metatext?.chunks && metatext.chunks.length > 0) {
+        displayChunks = isInSearchMode ? filteredChunks : metatext.chunks;
+        if (showOnlyFavorites) {
+            displayChunks = displayChunks.filter((chunk: any) => !!chunk.favorited_by_user_id);
+        }
+        pageCount = displayChunks.length;
+        startIdx = (currentPage - 1) * chunksPerPage;
+        endIdx = startIdx + chunksPerPage;
+        paginatedChunks = displayChunks.slice(startIdx, endIdx);
+        // const bookmarkedChunk = displayChunks.find((chunk: ChunkType) => !!chunk.bookmarked_by_user_id);
+        // bookmarkedChunkId = bookmarkedChunk ? bookmarkedChunk.id : null;
+    }
+
+    useEffect(() => {
+        setChunksPerPage(chunksPerPage);
+    }, [setChunksPerPage]);
+
+    useEffect(() => {
+        if (currentPage > Math.ceil(pageCount / chunksPerPage) && pageCount > 0) {
+            setCurrentPage(1);
+        }
+    }, [displayChunks, pageCount, currentPage, setCurrentPage, chunksPerPage]);
+
+    // Wrapper for bookmark navigation to handle the setCurrentPage signature
+    const handlePageChange = useCallback((page: React.SetStateAction<number>) => {
+        if (typeof page === 'function') {
+            setCurrentPage(page(currentPage));
+        } else {
+            setCurrentPage(page);
+        }
+    }, [currentPage, setCurrentPage]);
+
+    // Preserve previous chunks for scroll position
+    useEffect(() => {
+        prevChunksRef.current = displayChunks;
+    }, [displayChunks]);
+
+
+
 
 
 
@@ -233,7 +283,15 @@ function MetatextDetailPage(): ReactElement | null {
                     </Stack>
                     {tabsBlock}
                     <ChunkToolsPanel />
-                    <PaginatedChunks {...paginatedChunksProps} />
+                    <PaginatedChunks
+                        paginatedChunks={paginatedChunks}
+                        chunksPerPage={chunksPerPage}
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                        startIdx={startIdx}
+                        endIdx={endIdx}
+                        pageCount={pageCount}
+                    />
                 </Stack>
             )}
         </Box>
