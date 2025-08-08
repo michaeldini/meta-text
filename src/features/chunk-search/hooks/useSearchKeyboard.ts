@@ -17,7 +17,7 @@ interface UseSearchKeyboardOptions {
 
 // useSearchKeyboard: Hook for keyboard shortcuts (focus, clear, etc), using useSearchStore for state/actions
 export const useSearchKeyboard = ({ enabled = true, searchInputRef }: UseSearchKeyboardOptions = {}) => {
-    const { clearSearch, query, totalMatches } = useSearchStore();
+    const { clearSearch, query } = useSearchStore();
 
     const handleKeyDown = useCallback((event: KeyboardEvent) => {
         if (!enabled) return;
@@ -48,7 +48,7 @@ export const useSearchKeyboard = ({ enabled = true, searchInputRef }: UseSearchK
         // Arrow keys to navigate between matches (when search is active)
         // Navigation functionality has been removed
 
-    }, [enabled, searchInputRef, clearSearch, query, totalMatches]);
+    }, [enabled, searchInputRef, clearSearch, query]);
 
     useEffect(() => {
         if (enabled) {

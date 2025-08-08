@@ -1,28 +1,43 @@
-// Store for managing pagination state that can be shared across components
-// Allows search navigation to control pagination
+/**
+ * Store for managing chunk display state including pagination and filtering
+ * Consolidates all chunk display-related state in one place for better cohesion
+ */
 
 import { create } from 'zustand';
 
-interface PaginationState {
+interface DisplayChunksState {
+    // Pagination
     currentPage: number;
     chunksPerPage: number;
     setCurrentPage: (page: number) => void;
     setChunksPerPage: (chunksPerPage: number) => void;
 
-    // Method to calculate which page a chunk index is on
-    getPageForChunkIndex: (chunkIndex: number) => number;
+    // Filtering
+    showOnlyFavorites: boolean;
+    setShowOnlyFavorites: (show: boolean) => void;
 
-    // Method to navigate to a specific chunk by its global index
+    // Navigation helpers
+    getPageForChunkIndex: (chunkIndex: number) => number;
     navigateToChunkByIndex: (chunkIndex: number) => void;
+
+    // Reset all display state (useful when switching metatexts)
+    resetDisplayState: () => void;
 }
 
-export const usePaginationStore = create<PaginationState>((set, get) => ({
+const initialState = {
     currentPage: 1,
     chunksPerPage: 5,
+    showOnlyFavorites: false,
+};
+
+export const useDisplayChunksStore = create<DisplayChunksState>((set, get) => ({
+    ...initialState,
 
     setCurrentPage: (page: number) => set({ currentPage: page }),
 
     setChunksPerPage: (chunksPerPage: number) => set({ chunksPerPage }),
+
+    setShowOnlyFavorites: (show: boolean) => set({ showOnlyFavorites: show }),
 
     getPageForChunkIndex: (chunkIndex: number) => {
         const { chunksPerPage } = get();
@@ -33,5 +48,7 @@ export const usePaginationStore = create<PaginationState>((set, get) => ({
         const { getPageForChunkIndex, setCurrentPage } = get();
         const targetPage = getPageForChunkIndex(chunkIndex);
         setCurrentPage(targetPage);
-    }
+    },
+
+    resetDisplayState: () => set(initialState),
 }));

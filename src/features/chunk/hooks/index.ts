@@ -1,1 +1,1 @@
-export * from './usePaginatedChunks';
+export * from './useDisplayChunksStore';

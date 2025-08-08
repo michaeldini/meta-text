@@ -4,7 +4,6 @@ import { HiScissors } from 'react-icons/hi2';
 import { useSplitChunk } from '@features/chunk/hooks/useSplitChunk';
 import log from '@utils/logger';
 // import { SplitChunkToolProps } from '@features/chunk-shared/types';
-import { useMetatextDetailStore } from '@store/metatextDetailStore';
 import { ChunkType } from '@mtypes/index';
 
 export interface SplitChunkToolProps {
@@ -17,7 +16,7 @@ export interface SplitChunkToolProps {
 
 export function SplitChunkTool(props: SplitChunkToolProps) {
     const { chunkId, wordIdx, word, chunk, onComplete } = props;
-    const { metatextId } = useMetatextDetailStore((state) => state);
+    const metatextId = chunk.metatext_id; // Get from chunk instead of store
     const { mutateAsync } = useSplitChunk();
 
     const handleSplit = async () => {

@@ -1,19 +1,19 @@
 import { Editable } from '@chakra-ui/react/editable';
 import { Stack } from '@chakra-ui/react/stack';
 import { Text } from '@chakra-ui/react/text';
-import { SourceDocumentDetail, SourceDocumentSummary } from '@mtypes/documents';
+import { Flex } from '@chakra-ui/react/flex';
+
+import { SourceDocumentSummary } from '@mtypes/documents';
 
 import { HiOutlineSparkles } from 'react-icons/hi2';
 import { TooltipButton } from '@components/TooltipButton';
 import { Box } from '@chakra-ui/react/box';
 
+import { useSourceDocumentDetail, useUpdateSourceDocument } from '@features/documents/useDocumentsData';
+import { useGenerateSourceDocInfo } from '@hooks/useGenerateSourceDocInfo';
+
 interface SourceDocInfoProps {
-    doc: SourceDocumentDetail;
-    onDocumentUpdate?: (updatedDoc: SourceDocumentDetail) => void;
-    generateSourceDocInfo?: {
-        handleClick: () => void;
-        loading: boolean;
-    };
+    sourceDocumentId?: number | null;
 }
 
 
@@ -25,44 +25,54 @@ interface FieldConfig {
 }
 const FIELD_CONFIG: FieldConfig[] = [
     { key: 'author', label: 'Author' },
-    { key: 'summary', label: 'Summary' },
     { key: 'characters', label: 'Characters', isListField: true }, // TODO Remove isListField if not needed
     { key: 'locations', label: 'Locations', isListField: true },
     { key: 'themes', label: 'Themes', isListField: true },
     { key: 'symbols', label: 'Symbols', isListField: true },
+    { key: 'summary', label: 'Summary' },
 ];
 
 /**
  * Displays and allows editing of source document metadata fields.
- * Uses Material UI Accordions for each field, with inline editing and save/cancel actions.
+ * Fetches its own data using React Query hooks and manages updates internally.
  */
 export function SourceDocInfo(props: SourceDocInfoProps) {
-    const { doc, onDocumentUpdate, generateSourceDocInfo } = props;
+    const { sourceDocumentId } = props;
+
+    // Fetch source document data
+    const { data: doc, invalidate } = useSourceDocumentDetail(sourceDocumentId);
+
+    // Mutations for updating document
+    const updateSourceDocMutation = useUpdateSourceDocument(sourceDocumentId ?? null);
+
+    // Hook for generating source doc info
+    const generateSourceDocInfo = useGenerateSourceDocInfo(sourceDocumentId, invalidate);
+
+    // Early return if no data
+    if (!doc) {
+        return <Text color="fg.muted">No source document information available</Text>;
+    }
 
     // Handle value commit for editable fields
     const handleValueCommit = (key: keyof SourceDocumentSummary) => (details: { value: string }) => {
         const updatedDoc = { ...doc, [key]: details.value };
-        if (onDocumentUpdate) {
-            onDocumentUpdate(updatedDoc);
-        }
+        updateSourceDocMutation.mutate(updatedDoc);
     };
 
     return (
-        <Box>
-            {generateSourceDocInfo && (
-                <TooltipButton
-                    label="Generate"
-                    tooltip="Regenerate document info"
-                    onClick={generateSourceDocInfo.handleClick}
-                    disabled={generateSourceDocInfo.loading}
-                    loading={generateSourceDocInfo.loading}
-                    icon={<HiOutlineSparkles />}
-                />
-            )}
-            <Text color="fg.muted" mb="4">Click on a field to edit. Enter to Save. Tab to Cancel</Text>
+        <Flex wrap="wrap">
+            <TooltipButton
+                label="Generate"
+                tooltip="Regenerate document info"
+                onClick={generateSourceDocInfo.handleClick}
+                disabled={generateSourceDocInfo.loading}
+                loading={generateSourceDocInfo.loading}
+                icon={<HiOutlineSparkles />}
+            />
+            <Text w="100%" color="fg.muted" mb="4">Click on a field to edit. Enter to Save. Tab to Cancel</Text>
             {FIELD_CONFIG.map(config => (
-                <Stack direction="row" key={config.key} align="center">
-                    <Text fontWeight="bold" minWidth="6rem">{config.label}</Text>
+                <Box direction="row" key={config.key} maxWidth="20rem" px="4">
+                    <Text fontWeight="bold">{config.label}</Text>
                     <Editable.Root
                         defaultValue={doc[config.key] != null ? String(doc[config.key]) : 'N/A'}
                         submitMode={"enter"}
@@ -70,9 +80,9 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
                         <Editable.Preview />
                         <Editable.Input />
                     </Editable.Root>
-                </Stack>
+                </Box>
             ))}
-        </Box>
+        </Flex>
     );
 }
 

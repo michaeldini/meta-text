@@ -61,7 +61,9 @@ function SourceDocDetailPage(): ReactElement | null {
                     onDocumentUpdate={updateMutation.mutate}
                     generateSourceDocInfo={generateSourceDocInfo} />
                 <DocumentHeader title={doc.title}>
-                    <StyleControls mode="sourceDoc" />
+                    <StyleControls
+                        showPaddingX={false}
+                    />
                 </DocumentHeader>
             </Box>
 

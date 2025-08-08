@@ -2,13 +2,13 @@
 // Encapsulates state and handlers for chunk tool selection
 // Used by ChunkToolsPanel to separate business logic from UI
 
-import { useMetatextDetailStore } from '@store/metatextDetailStore';
+import { useChunkToolsStore } from '@store/chunkToolsStore';
 import { chunkToolsRegistry, type ChunkToolId } from './toolsRegistry';
 
 export function useChunkToolsPanel() {
     // State from store
-    const activeTabs = useMetatextDetailStore(state => state.activeTabs);
-    const setActiveTabs = useMetatextDetailStore(state => state.setActiveTabs);
+    const activeTabs = useChunkToolsStore(state => state.activeTabs);
+    const setActiveTabs = useChunkToolsStore(state => state.setActiveTabs);
 
 
     // Toggle tool selection

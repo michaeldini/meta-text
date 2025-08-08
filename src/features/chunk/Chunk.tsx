@@ -1,7 +1,7 @@
 import React, { memo, useMemo } from 'react';
 import { Box, Stack } from '@chakra-ui/react';
 
-import { useMetatextDetailStore } from '@store/metatextDetailStore';
+import { useChunkToolsStore } from '@store/chunkToolsStore';
 
 import ChunkWords from './components/ChunkWords';
 import { ChunkToolsContainer } from '@features/chunk-tools';
@@ -17,7 +17,7 @@ const Chunk = memo(function Chunk({
     chunk,
     chunkIdx,
 }: ChunkProps) {
-    const { activeTabs } = useMetatextDetailStore();
+    const { activeTabs } = useChunkToolsStore();
     const updateChunkFieldMutation = useUpdateChunkField();
 
     return (

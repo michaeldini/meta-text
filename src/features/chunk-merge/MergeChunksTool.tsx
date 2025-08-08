@@ -10,7 +10,6 @@ import { HiArrowUturnLeft } from 'react-icons/hi2';
 
 // import a hook to handle merging chunks
 import { useMergeChunks } from './hooks/useMergeChunks';
-import { useMetatextDetailStore } from '@store/metatextDetailStore';
 import { ChunkType } from '@mtypes/documents';
 
 // get the props from shared types where  a lot of tool props are define.
@@ -30,7 +29,7 @@ export function MergeChunksTool({ chunk }: MergeChunksToolProps) {
 
     // get function that will merge the chunks
     const { mutateAsync } = useMergeChunks();
-    const metatextId = useMetatextDetailStore((state) => state.metatextId);
+    const metatextId = chunk.metatext_id; // Get from chunk instead of store
 
     // Local state to manage loading state
     const [isLoading, setIsLoading] = useState(false);

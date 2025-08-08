@@ -3,7 +3,6 @@
 
 export { SearchContainer as default } from './components/SearchContainer';
 export { SearchBar } from './components/SearchBar';
-export { TagFilters } from './components/TagFilters';
 export { SearchContainer } from './components/SearchContainer';
 
 
