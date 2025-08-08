@@ -11,7 +11,7 @@ import { Stack, StackSeparator } from "@chakra-ui/react/stack"
 
 // The whole page is wrapped in a PageContainer for consistent styling
 import { PageContainer } from '@components/PageContainer';
-import { KeyboardShortcutsDisplay } from '@components/KeyboardShortcutsDisplay';
+
 
 // Import the MetatextPage and SourceDocPage components.
 // they were previously pages, hence, the namespace.
@@ -58,7 +58,6 @@ function HomePage(): ReactElement {
                     headingProps={commonHeadingProps}
                 />
                 <AppInstructions />
-                <KeyboardShortcutsDisplay />
             </Stack>
         </PageContainer>
     );

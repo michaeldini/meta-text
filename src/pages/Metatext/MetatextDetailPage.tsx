@@ -22,7 +22,6 @@ import { useMetatextDetailKeyboard } from './hooks/useMetatextDetailKeyboard';
 import { useChunkDisplay } from './hooks/useChunkDisplay';
 import { useValidatedRouteId } from '@hooks/useValidatedRouteId';
 
-
 function MetatextDetailPage(): ReactElement | null {
 
 
@@ -69,7 +68,6 @@ function MetatextDetailPage(): ReactElement | null {
 
     // =========================
     // Unified Keyboard Shortcuts (Navigation + Search)
-    // TODO Shortcuts for tools
     // =========================
     useMetatextDetailKeyboard({
         enabled: true,

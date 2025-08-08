@@ -4,7 +4,7 @@ import { Stack } from '@chakra-ui/react/stack';
 import { Heading } from '@chakra-ui/react/heading';
 import { HiAcademicCap } from 'react-icons/hi2';
 import { TooltipButton } from '@components/TooltipButton';
-
+import { KeyboardShortcutsDisplay } from '@components/KeyboardShortcutsDisplay';
 interface MetatextHeaderProps {
     title: string;
     onReviewClick: () => void;
@@ -41,6 +41,8 @@ export const MetatextHeader: React.FC<MetatextHeaderProps> = ({
                 onClick={onReviewClick}
                 data-testid="review-button"
             />
+            <KeyboardShortcutsDisplay categories={['Metatext', 'Chunk Tools']} />
+
         </Stack>
     );
 };

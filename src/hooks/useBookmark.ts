@@ -1,4 +1,4 @@
-// useBookmark.ts
+// 
 // React Query hook for managing chunk bookmarks per metatext/user
 // Provides bookmark state, set, and remove mutation functions
 

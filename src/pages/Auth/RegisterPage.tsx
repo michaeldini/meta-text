@@ -35,8 +35,6 @@ export function RegisterPage() {
         const success = await register(username, password);
         if (success) {
             navigate('/login');
-        } else if (error) {
-            // TODO: Optionally handle registration errors here
         }
     };
 
@@ -72,7 +70,7 @@ export function RegisterPage() {
                         loading={loading}
                         width="100%"
                         mt={2}
-                    // disabled={true} // Todo: Enable when registration is open
+                        disabled={true} // Todo: Enable when registration is open
                     >
                         Register (Currently closed. Come back later!)
                     </Button>

@@ -20,6 +20,7 @@ import { useUIPreferences } from '@hooks/useUIPreferences';
 import SourceDoc from './components/SourceDoc';
 import { Heading } from '@chakra-ui/react/heading';
 import { useValidatedRouteId } from '@hooks/useValidatedRouteId';
+import { Tabs } from '@chakra-ui/react/tabs';
 
 function SourceDocDetailPage(): ReactElement | null {
     // Route param -> validated numeric id (redirects if invalid)
@@ -48,21 +49,30 @@ function SourceDocDetailPage(): ReactElement | null {
     if (!doc || !editor) return null;
     return (
         <PageContainer data-testid="sourcedoc-detail-page">
-
-            {/* Document Header */}
             <Box bg="bg.subtle" p="4" borderRadius="lg" mb="10">
                 <Heading size="6xl">
                     {doc.title}
                 </Heading>
-                <SourceDocInfo sourceDocumentId={id} />
-                <DocumentHeader title={doc.title}>
-                    <StyleControls
-                        showPaddingX={false}
-                    />
-                </DocumentHeader>
+                <Tabs.Root variant="plain" w="100%" deselectable fitted defaultValue={"Controls"}>
+                    <Tabs.List bg="bg.inverted">
+                        <Tabs.Trigger value="tab-1">Info</Tabs.Trigger>
+                        <Tabs.Trigger value="tab-3">Styles</Tabs.Trigger>
+                    </Tabs.List>
+                    <Tabs.Content value="tab-1">
+                        <SourceDocInfo sourceDocumentId={id} />
+                    </Tabs.Content>
+                    <Tabs.Content value="tab-3">
+                        <StyleControls showPaddingX={false} />
+                    </Tabs.Content>
+                </Tabs.Root>
+                {/* Document Header */}
+                {/* <DocumentHeader title={doc.title}>
+                    <Text>{doc.title}</Text>
+                </DocumentHeader> */}
             </Box>
             <Heading>Edit this document by double-clicking on the text below. To save changes, click the icon. To discard, click outside the text area.</Heading>
             <Text color="fg.muted" pb="10">Tip: Scroll after double-clicking to edit.</Text>
+
             <SourceDoc
                 doc={doc}
                 isSaving={editor.isSaving}

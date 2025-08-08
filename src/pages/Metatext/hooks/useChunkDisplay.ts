@@ -43,6 +43,7 @@ interface UseChunkDisplayResult {
 
     // Local search results state
     const [searchResults, setSearchResults] = useState<ChunkType[]>([]);
+    // TODO why is this unused
     const [isSearching, setIsSearching] = useState(false);
 
     // Get display state (pagination + favorites)

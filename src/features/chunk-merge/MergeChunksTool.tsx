@@ -12,10 +12,6 @@ import { HiArrowUturnLeft } from 'react-icons/hi2';
 import { useMergeChunks } from './hooks/useMergeChunks';
 import { ChunkType } from '@mtypes/documents';
 
-// get the props from shared types where  a lot of tool props are define.
-// TODO: consider moving this to more closed scope
-
-// import { MergeChunksToolProps } from '@features/chunk-shared/types';
 
 export interface MergeChunksToolProps {
     chunk: ChunkType;

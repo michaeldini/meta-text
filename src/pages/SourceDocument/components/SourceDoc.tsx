@@ -42,15 +42,15 @@ export default function SourceDoc({
     handleTextChange,
 }: SourceDocProps) {
     return (
-        <Stack direction="row-reverse" data-testid="source-doc-container">
+        <Box
+            data-testid="source-doc-container">
             {/* Error Alert */}
             {error && (
                 <Alert status="error">
                     <Text>{error}</Text>
                 </Alert>
             )}
-            {/* TODO:fix */}
-            <Box position="sticky" top="0" width="100%" maxH="80vh" overflowY="auto" zIndex={1}>
+            <Box width="100%" zIndex={1}>
                 <Editable.Root
                     value={doc.text}
                     onValueChange={(e) => handleTextChange(e.value)}
@@ -59,7 +59,7 @@ export default function SourceDoc({
                     placeholder="Enter document text..."
                     disabled={isSaving}
                     selectOnFocus={false} // Prevents auto-select on focus
-                    autoResize={true}
+
                 >
                     <Editable.Preview
                         fontSize={`${textSizePx}px`}
@@ -68,7 +68,7 @@ export default function SourceDoc({
                         aria-label="Document Text"
                         style={{ whiteSpace: 'pre-line', lineHeight: lineHeight }}
                         alignItems="flex-start"
-                        width="full"
+                        p="1rem"
                     />
                     <Editable.Textarea
                         fontSize={`${textSizePx}px`}
@@ -79,8 +79,7 @@ export default function SourceDoc({
                         minHeight="80vh"
                         zIndex={1000}
                         padding="1rem"
-                        overflowY="auto"
-                        width="full"
+
                     />
                     <Editable.Control>
                         <Editable.SubmitTrigger asChild>
@@ -94,6 +93,6 @@ export default function SourceDoc({
                     )}
                 </Editable.Root>
             </Box>
-        </Stack>
+        </Box>
     );
 }

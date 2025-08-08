@@ -49,7 +49,7 @@ export function MetatextHeaderControls({
         goToBookmark,
         bookmarkLoading,
     } = useMetatextBookmark(metatextId, displayChunks, 5, setCurrentPage);
-
+    // TODO passing 5 is not good here.
     return (
         <Box display="flex" alignItems="center" justifyContent="space-between">
             <TooltipButton
