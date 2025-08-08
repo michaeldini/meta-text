@@ -11,7 +11,7 @@ import type { ChunkType, UpdateChunkFieldMutationFn } from '@mtypes/documents';
 
 interface NotesToolProps {
     chunk: ChunkType;
-    mutateChunkField: UpdateChunkFieldMutationFn; // UpdateChunkFieldFn type from useUpdateChunkField hook TODO: Replace with actual type when available
+    mutateChunkField: UpdateChunkFieldMutationFn;
     isVisible: boolean;
 }
 

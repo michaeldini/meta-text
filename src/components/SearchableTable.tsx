@@ -47,6 +47,7 @@ function clearSearchAndFocus(setSearch: (value: string) => void, inputRef?: Reac
 export function SearchInput({ search, setSearch, inputRef }: SearchInputProps) {
     return (
         <Box minWidth="300px">
+            {/* <Heading size="2xl">Open</Heading> */}
             <Heading size="sub">Open</Heading>
             <InputGroup startElement={<HiMagnifyingGlass />} endElement={search ? (
                 <CloseButton

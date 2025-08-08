@@ -61,9 +61,6 @@ function SourceDocDetailPage(): ReactElement | null {
                     />
                 </DocumentHeader>
             </Box>
-
-
-            {/* TODO: add keyboard shortcut to save ctrl+s */}
             <Heading>Edit this document by double-clicking on the text below. To save changes, click the icon. To discard, click outside the text area.</Heading>
             <Text color="fg.muted" pb="10">Tip: Scroll after double-clicking to edit.</Text>
             <SourceDoc

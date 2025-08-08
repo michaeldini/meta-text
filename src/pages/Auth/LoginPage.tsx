@@ -1,4 +1,14 @@
 import React, { useState, FormEvent } from 'react';
+import { keyframes } from '@emotion/react';
+// Shake animation keyframes
+const shake = keyframes`
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-8px); }
+    80% { transform: translateX(8px); }
+    100% { transform: translateX(0); }
+`;
 import { Button } from '@chakra-ui/react/button';
 import { Input } from '@chakra-ui/react/input';
 import { Heading } from '@chakra-ui/react';
@@ -22,6 +32,7 @@ export function LoginPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+    const [shakeAnim, setShakeAnim] = useState(false);
 
     // handle form submission
     // this will call the login function from the auth store
@@ -32,13 +43,19 @@ export function LoginPage() {
         if (success) {
             navigate('/');
         } else if (error) {
-            // TODO: Optionally handle login errors here
+            // Clear the password field if there is a login error
+            setPassword('');
+            // Trigger shake animation
+            setShakeAnim(true);
+            setTimeout(() => setShakeAnim(false), 600); // duration matches animation
         }
     };
 
     return (
         <Box display="flex" justifyContent="center">
-            <Box>
+            <Box
+                animation={shakeAnim ? `${shake} 0.6s` : undefined}
+            >
                 <Heading mb={4}>Login</Heading>
                 <form onSubmit={handleSubmit}>
                     <Input

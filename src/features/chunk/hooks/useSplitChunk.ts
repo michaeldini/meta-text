@@ -2,7 +2,6 @@
  * useSplitChunk
  * React Query mutation hook for splitting a chunk and refetching chunk data.
  * Use this in components instead of calling splitChunk directly in Zustand.
- * Keeps Zustand in sync via useChunksQuery effect during migration.
  */
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';

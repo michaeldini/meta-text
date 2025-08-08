@@ -26,3 +26,11 @@ export async function createMetatext(sourceDocId: number, title: string): Promis
 export async function deleteMetatext(id: number): Promise<{ success: boolean }> {
     return api.delete(`metatext/${encodeURIComponent(String(id))}`).json<{ success: boolean }>();
 }
+
+// Download a metatext as raw JSON payload
+// Returns whatever the backend provides for the download endpoint
+export async function downloadMetatext(id: number): Promise<unknown> {
+    return api
+        .get(`metatext/${encodeURIComponent(String(id))}/download`)
+        .json<unknown>();
+}

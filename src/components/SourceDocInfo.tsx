@@ -25,10 +25,10 @@ interface FieldConfig {
 }
 const FIELD_CONFIG: FieldConfig[] = [
     { key: 'author', label: 'Author' },
-    { key: 'characters', label: 'Characters', isListField: true }, // TODO Remove isListField if not needed
-    { key: 'locations', label: 'Locations', isListField: true },
-    { key: 'themes', label: 'Themes', isListField: true },
-    { key: 'symbols', label: 'Symbols', isListField: true },
+    { key: 'characters', label: 'Characters' },
+    { key: 'locations', label: 'Locations' },
+    { key: 'themes', label: 'Themes' },
+    { key: 'symbols', label: 'Symbols' },
     { key: 'summary', label: 'Summary' },
 ];
 

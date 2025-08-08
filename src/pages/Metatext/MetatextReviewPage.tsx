@@ -14,30 +14,24 @@ function MetatextReviewPage(): ReactElement {
     const parsedId = metatextId ? Number(metatextId) : undefined;
     const navigate = useNavigate();
 
+    // Fetch review data using the custom hook
+    const { wordList, phraseList, chunks } = useMetatextReviewData(parsedId ?? 0);
+
     // Use Boundary to handle loading and error states for the review data
     return (
         <Boundary fallbackText="Loading review data...">
-            <MetatextReviewContent parsedId={parsedId} navigate={navigate} />
+            <Box data-testid="metatext-review-page">
+                {/* Page header with navigation and title */}
+                <Header metatextId={parsedId} navigate={navigate} />
+                {/* Review content sections */}
+                <ReviewContent
+                    flashcards={wordList}
+                    phrases={phraseList}
+                    chunkReviewTable={chunks}
+                />
+            </Box>
         </Boundary>
     );
 }
-
-// Extracted content component to be wrapped by Boundary
-function MetatextReviewContent({ parsedId, navigate }: { parsedId?: number, navigate: ReturnType<typeof useNavigate> }) {
-    const { wordList, phraseList, chunks } = useMetatextReviewData(parsedId);
-    return (
-        <Box data-testid="metatext-review-page">
-            {/* Page header with navigation and title */}
-            <Header metatextId={parsedId} navigate={navigate} />
-            {/* Review content sections */}
-            <ReviewContent
-                flashcards={wordList}
-                phrases={phraseList}
-                chunkReviewTable={chunks}
-            />
-        </Box>
-    );
-}
-
 // Default export for React component usage
 export default MetatextReviewPage;

@@ -20,7 +20,7 @@ import ChunkBookmarkToggle from '@features/chunk-bookmark/components/ChunkBookma
 interface ChunkToolsContainerProps {
     chunk: ChunkType;
     activeTools: ChunkToolId[];
-    updateChunkFieldMutation: UseUpdateChunkFieldType; // UpdateChunkFieldFn type from useUpdateChunkField hook TODO: Replace with actual type when available
+    updateChunkFieldMutation: UseUpdateChunkFieldType;
 }
 
 function renderStationaryTools(chunk: ChunkType, asRow: boolean) {

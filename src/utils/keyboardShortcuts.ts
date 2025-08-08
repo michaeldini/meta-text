@@ -121,3 +121,51 @@ export const getShortcutsByCategory = (): Record<string, KeyboardShortcut[]> => 
         return acc;
     }, {} as Record<string, KeyboardShortcut[]>);
 };
+
+/**
+ * michaeldini: create a list of what keys are safe in most browsers to assign for metakey + key keyboard shortcuts?
+
+GitHub Copilot: I’ll compile a concise, practical list of Meta/Cmd + key combos that are generally safe across major browsers, plus ones to avoid or use with caution.
+
+Checklist
+- List keys that are broadly safe for Meta/Cmd + key
+- Call out keys to avoid (reserved)
+- Note “caution” keys and implementation tips
+
+Generally safe (Meta/Cmd + key)
+- K
+- .
+- /
+- ;
+- '
+- \
+- = (only if you also preventDefault and don’t rely on zoom; see caution note)
+- Backslash-adjacent symbols that aren’t locale-shifted (verify on your target keyboard layouts)
+
+Use with caution (may conflict in some browsers/contexts)
+- B (bold in editable fields)
+- I (italic in editable fields; Safari/Firefox also have find/email variants)
+- U (underline in editable fields; some browsers use for View Source with extra modifiers)
+- D (bookmark page in Chrome/Edge)
+- E (use selection for find in Safari/Firefox)
+- G (find next)
+- J (downloads in Chrome)
+- Y (history/redo in some browsers)
+- , (preferences on macOS apps; often Cmd+,)
+- Arrow keys (Cmd+Left/Right = word/line nav on macOS)
+
+Avoid (reserved almost everywhere)
+- A, C, V, X, Z, S, P, W, Q, T, N, O, L, R
+- 0, +, - (zoom)
+- 1–9 (tab switching/selection)
+- [, ] (back/forward)
+- ` (window cycling on macOS)
+- H (hide app), M (minimize)
+- Space (Spotlight on macOS with Cmd+Space)
+
+Implementation tips
+- Prefer “mod” semantics (Cmd on macOS, Ctrl elsewhere); avoid using the Windows key.
+- Always call preventDefault() and stopPropagation() for your handled keys.
+- Don’t trigger shortcuts when focus is in input/textarea/contentEditable.
+- Offer alternate combos (e.g., Meta+Shift+Key) if you need more headroom.
+ */
