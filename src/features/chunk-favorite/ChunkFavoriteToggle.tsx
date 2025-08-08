@@ -8,7 +8,7 @@ import { TooltipButton } from '@components/TooltipButton';
 import { HiStar, HiOutlineStar } from 'react-icons/hi2';
 import { api } from '@utils/ky';
 import type { ChunkType } from '@mtypes/documents';
-import { useChunksQuery } from '@hooks/useChunksQuery';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface ChunkFavoriteToggleProps {
     chunk: ChunkType;
@@ -17,9 +17,8 @@ interface ChunkFavoriteToggleProps {
 
 export function ChunkFavoriteToggle({ chunk }: ChunkFavoriteToggleProps) {
     const [loading, setLoading] = useState(false);
-    // Use React Query for chunk data and refetch
+    const queryClient = useQueryClient();
     const metatextId = chunk.metatext_id;
-    const { refetch } = useChunksQuery(metatextId);
     const favorited = !!chunk.favorited_by_user_id;
 
     const handleToggle = async () => {
@@ -30,8 +29,9 @@ export function ChunkFavoriteToggle({ chunk }: ChunkFavoriteToggleProps) {
             } else {
                 await api.post(`chunk/${chunk.id}/favorite`);
             }
-            // Refetch chunks to update UI
-            await refetch();
+            // Invalidate both caches to ensure UI updates immediately
+            queryClient.invalidateQueries({ queryKey: ['metatextDetail', metatextId] });
+            queryClient.invalidateQueries({ queryKey: ['chunks', metatextId] });
         } catch (e) {
             // Optionally show error
         } finally {

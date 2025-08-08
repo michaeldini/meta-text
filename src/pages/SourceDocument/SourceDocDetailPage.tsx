@@ -14,24 +14,22 @@ import { DocumentHeader } from '@components/DocumentHeader';
 // import { useSourceDocDetail } from './hooks/useSourceDocDetail';
 import { useSourceDocEditor } from './hooks/useSourceDocEditor';
 
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSourceDocumentDetail, useUpdateSourceDocument } from '@features/documents/useDocumentsData';
-import { useGenerateSourceDocInfo } from '@hooks/useGenerateSourceDocInfo';
 import { useUIPreferences } from '@hooks/useUIPreferences';
 import SourceDoc from './components/SourceDoc';
 import { Heading } from '@chakra-ui/react/heading';
+import { useValidatedRouteId } from '@hooks/useValidatedRouteId';
 
 function SourceDocDetailPage(): ReactElement | null {
-    // Use custom hook to handle all page logic
-    // Extract the sourceDocId from the URL parameters
-    const { sourceDocId } = useParams<{ sourceDocId?: string }>();
-    const parsedId = sourceDocId ? Number(sourceDocId) : null;
+    // Route param -> validated numeric id (redirects if invalid)
+    const id = useValidatedRouteId('sourceDocId');
+    if (id === null) return null;
 
     // react-query functions
     // Fetch and update using the raw ID; backend will validate and send errors
-    const { data: doc, isLoading, error, refetch } = useSourceDocumentDetail(parsedId);
-    const updateMutation = useUpdateSourceDocument(parsedId);
-    const generateSourceDocInfo = useGenerateSourceDocInfo(doc?.id ?? 0, refetch);
+    const { data: doc, isLoading, error, refetch } = useSourceDocumentDetail(id);
+    const updateMutation = useUpdateSourceDocument(id);
     const { textSizePx, fontFamily, lineHeight } = useUIPreferences();
 
 
@@ -56,10 +54,7 @@ function SourceDocDetailPage(): ReactElement | null {
                 <Heading size="6xl">
                     {doc.title}
                 </Heading>
-                <SourceDocInfo
-                    doc={doc}
-                    onDocumentUpdate={updateMutation.mutate}
-                    generateSourceDocInfo={generateSourceDocInfo} />
+                <SourceDocInfo sourceDocumentId={id} />
                 <DocumentHeader title={doc.title}>
                     <StyleControls
                         showPaddingX={false}

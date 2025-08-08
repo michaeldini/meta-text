@@ -1,10 +1,46 @@
-import react from 'react';
-import { Box } from '@chakra-ui/react/box';
-export default function MetatextDetailHeader() {
-    return (
-        <Box>
+// Header component for Metatext detail page displaying title and review button
+import React from 'react';
+import { Stack } from '@chakra-ui/react/stack';
+import { Heading } from '@chakra-ui/react/heading';
+import { HiAcademicCap } from 'react-icons/hi2';
+import { TooltipButton } from '@components/TooltipButton';
 
-            {/* Additional header content can be added here */}
-        </Box>
-    );
+interface MetatextHeaderProps {
+    title: string;
+    onReviewClick: () => void;
 }
+
+/**
+ * MetatextHeader - Displays the metatext title and review button
+ * 
+ * A simple presentational component that renders the header section
+ * of the metatext detail page with the title and action button.
+ */
+export const MetatextHeader: React.FC<MetatextHeaderProps> = ({
+    title,
+    onReviewClick
+}) => {
+    return (
+        <Stack
+            direction="row"
+            alignItems="center"
+            data-testid="metatext-header"
+        >
+            <Heading size="md">metatext:</Heading>
+            <Heading
+                size="3xl"
+                color="fg.info"
+                data-testid="metatext-title"
+            >
+                {title}
+            </Heading>
+            <TooltipButton
+                label="Review"
+                tooltip="Review this metatext"
+                icon={<HiAcademicCap />}
+                onClick={onReviewClick}
+                data-testid="review-button"
+            />
+        </Stack>
+    );
+};

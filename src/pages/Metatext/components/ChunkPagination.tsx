@@ -1,0 +1,96 @@
+// Pagination component for chunk navigation
+import React from 'react';
+import { Center } from '@chakra-ui/react/center';
+import { Pagination } from '@chakra-ui/react/pagination';
+import { ButtonGroup, IconButton } from '@chakra-ui/react/button';
+import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2';
+
+interface ChunkPaginationProps {
+    currentPage: number;
+    totalPages: number;
+    onPageChange: (page: number) => void;
+    disabled?: boolean;
+    pageSize?: number;
+}
+
+/**
+ * ChunkPagination - Pagination controls for chunk navigation
+ * 
+ * Provides pagination controls with previous/next buttons and page numbers.
+ * Handles page navigation and displays current page status.
+ */
+export const ChunkPagination: React.FC<ChunkPaginationProps> = ({
+    currentPage,
+    totalPages,
+    onPageChange,
+    disabled = false,
+    pageSize = 5
+}) => {
+    // Don't render if there's only one page or no pages
+    if (totalPages <= 1) {
+        return null;
+    }
+
+    const handlePageChange = (event: { page: number }) => {
+        if (!disabled) {
+            onPageChange(event.page);
+        }
+    };
+
+    const handlePageClick = (page: number) => {
+        if (!disabled) {
+            onPageChange(page);
+        }
+    };
+
+    return (
+        <Center data-testid="chunk-pagination">
+            <Pagination.Root
+                count={totalPages}
+                pageSize={pageSize}
+                page={currentPage}
+                onPageChange={handlePageChange}
+            >
+                <ButtonGroup
+                    variant="ghost"
+                    color="fg"
+                    data-testid="pagination-controls"
+                >
+                    <Pagination.PageText format="compact" />
+                    <Pagination.PrevTrigger asChild color="fg">
+                        <IconButton
+                            aria-label="Previous page"
+                            disabled={disabled || currentPage <= 1}
+                            data-testid="prev-page-button"
+                        >
+                            <HiChevronLeft />
+                        </IconButton>
+                    </Pagination.PrevTrigger>
+                    <Pagination.Items
+                        color="fg"
+                        render={({ value }) => (
+                            <IconButton
+                                key={value}
+                                variant={{ base: "ghost", _selected: "outline" }}
+                                onClick={() => handlePageClick(value)}
+                                disabled={disabled}
+                                data-testid={`page-${value}-button`}
+                            >
+                                {value}
+                            </IconButton>
+                        )}
+                    />
+                    <Pagination.NextTrigger asChild color="fg">
+                        <IconButton
+                            aria-label="Next page"
+                            disabled={disabled || currentPage >= totalPages}
+                            data-testid="next-page-button"
+                        >
+                            <HiChevronRight />
+                        </IconButton>
+                    </Pagination.NextTrigger>
+                </ButtonGroup>
+            </Pagination.Root>
+        </Center>
+    );
+};
