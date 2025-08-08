@@ -1,7 +1,6 @@
 // useMetatextBookmark - Encapsulates all bookmark logic for MetatextDetailPage
 // Returns bookmarkedChunkId, goToBookmark handler, and loading state
 import { useBookmark } from '@hooks/useBookmark';
-import useChunkBookmarkNavigation from '@features/chunk-bookmark/hooks/useChunkBookmarkNavigation';
 import { scrollToChunk } from '@features/chunk-bookmark/handlers/bookmarkHandlers';
 import { ChunkType } from '@mtypes/documents';
 

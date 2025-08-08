@@ -75,7 +75,7 @@ export const NAVIGATION_SHORTCUTS: Record<string, KeyboardShortcut> = {
         category: 'Navigation',
     },
     GOTO_REVIEW: {
-        key: 'r',
+        key: 'i',
         metaKey: true,
         description: 'Go to review mode',
         category: 'Navigation',

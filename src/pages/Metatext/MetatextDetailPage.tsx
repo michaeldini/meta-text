@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import type { ReactElement } from 'react';
 import { Stack } from '@chakra-ui/react/stack';
 import { Box } from '@chakra-ui/react/box';
+import { Alert } from '@chakra-ui/react/alert';
 
 // Imports for icons
 // (icons handled inside subcomponents)
@@ -37,7 +38,7 @@ function MetatextDetailPage(): ReactElement | null {
     // Data Fetching
     // =========================
     // Fetch metatext details
-    const { data: metatext } = useMetatextDetail(id);
+    const { data: metatext, error, isLoading } = useMetatextDetail(id);
 
     // =========================
     // Unified Chunk Display Logic
@@ -60,10 +61,11 @@ function MetatextDetailPage(): ReactElement | null {
     // =========================
     // Other handlers
     // =========================
+    // review button is rendered inside MetatextHeader
     const handleReviewClick = React.useCallback(() => {
-        if (!metatext) return;
-        navigate(`/metatext/${metatext.id}/review`);
-    }, [metatext, navigate]);
+        if (id == null) return;
+        navigate(`/metatext/${id}/review`);
+    }, [id, navigate]);
 
     // =========================
     // Unified Keyboard Shortcuts (Navigation + Search)
@@ -79,10 +81,26 @@ function MetatextDetailPage(): ReactElement | null {
         searchInputRef: undefined, // Could pass a ref here if needed
     });
 
-    // review button is rendered inside MetatextHeader
-
     return (
-        <Box data-testid="metatext-detail-page" paddingLeft="4" bg="bg.subtle">
+        <Box data-testid="metatext-detail-page" paddingLeft="4" bg="bg">
+            {isLoading && (
+                <Box mb="4" aria-live="polite" data-testid="metatext-detail-loading">
+                    Loading metatext...
+                </Box>
+            )}
+            {error && (
+                <Alert.Root status="error" variant="subtle" mb="4" borderRadius="md" data-testid="metatext-detail-error">
+                    <Alert.Indicator />
+                    <Alert.Content>
+                        <Alert.Title>Failed to load metatext</Alert.Title>
+                        <Alert.Description>
+                            {typeof error === 'string'
+                                ? error
+                                : (error as any)?.message || 'Something went wrong while fetching this metatext.'}
+                        </Alert.Description>
+                    </Alert.Content>
+                </Alert.Root>
+            )}
             {metatext && (
                 <Stack data-testid="metatext-detail-content" animationName="fade-in" animationDuration="fast">
                     <MetatextHeader title={metatext.title} onReviewClick={handleReviewClick} />
@@ -96,6 +114,7 @@ function MetatextDetailPage(): ReactElement | null {
                             setShowOnlyFavorites={setShowOnlyFavorites}
                         />
                     </Stack>
+
                     <ChunkToolsPanel />
 
                     <ChunkDisplayContainer
