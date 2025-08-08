@@ -21,6 +21,7 @@ interface UseChunkDisplayResult {
     // Display data
     displayChunks: ChunkType[];
     totalFilteredChunks: number;
+    chunksPerPage: number;
 
     // Pagination
     currentPage: number;
@@ -52,7 +53,8 @@ interface UseChunkDisplayResult {
         setCurrentPage,
         setChunksPerPage,
         showOnlyFavorites,
-        setShowOnlyFavorites
+        setShowOnlyFavorites,
+        chunksPerPage: storeChunksPerPage
     } = useDisplayChunksStore();
 
     // Set chunks per page on mount/change
@@ -114,9 +116,9 @@ interface UseChunkDisplayResult {
 
     // Calculate pagination values
     const totalFilteredChunks = filteredChunks.length;
-    const totalPages = Math.ceil(totalFilteredChunks / chunksPerPage);
-    const startIndex = (currentPage - 1) * chunksPerPage;
-    const endIndex = startIndex + chunksPerPage;
+    const totalPages = Math.ceil(totalFilteredChunks / storeChunksPerPage);
+    const startIndex = (currentPage - 1) * storeChunksPerPage;
+    const endIndex = startIndex + storeChunksPerPage;
     const displayChunks = filteredChunks.slice(startIndex, endIndex);    // Reset to page 1 if current page is beyond available pages
     useEffect(() => {
         if (currentPage > totalPages && totalPages > 0) {
@@ -124,10 +126,18 @@ interface UseChunkDisplayResult {
         }
     }, [filteredChunks, totalPages, currentPage, setCurrentPage]);
 
+    useEffect(() => {
+        log.info(`Filtered Chunks: ${filteredChunks.length}`);
+        log.info(`Total Pages: ${totalPages}`);
+        log.info(`Start Index: ${startIndex}, End Index: ${endIndex}`);
+        log.info(`Current Page: ${currentPage}`);
+    }, [filteredChunks, totalPages, startIndex, endIndex, currentPage]);
+
     return {
         // Display data
         displayChunks,
         totalFilteredChunks,
+        chunksPerPage: storeChunksPerPage,
 
         // Pagination
         currentPage,

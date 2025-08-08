@@ -9,6 +9,7 @@ import type { ChunkType } from '@mtypes/documents';
 interface ChunkDisplayContainerProps {
     displayChunks: ChunkType[];
     totalFilteredChunks: number;
+    chunksPerPage?: number;
     currentPage: number;
     totalPages: number;
     onPageChange: (page: number) => void;
@@ -22,6 +23,7 @@ interface ChunkDisplayContainerProps {
 export const ChunkDisplayContainer: React.FC<ChunkDisplayContainerProps> = ({
     displayChunks,
     totalFilteredChunks,
+    chunksPerPage = 5,
     currentPage,
     totalPages,
     onPageChange,
@@ -40,6 +42,8 @@ export const ChunkDisplayContainer: React.FC<ChunkDisplayContainerProps> = ({
                 <ChunkPagination
                     currentPage={currentPage}
                     totalPages={totalPages}
+                    totalItems={totalFilteredChunks}
+                    pageSize={chunksPerPage}
                     onPageChange={onPageChange}
                 />
 

@@ -8,6 +8,7 @@ import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2';
 interface ChunkPaginationProps {
     currentPage: number;
     totalPages: number;
+    totalItems: number;
     onPageChange: (page: number) => void;
     disabled?: boolean;
     pageSize?: number;
@@ -22,6 +23,7 @@ interface ChunkPaginationProps {
 export const ChunkPagination: React.FC<ChunkPaginationProps> = ({
     currentPage,
     totalPages,
+    totalItems,
     onPageChange,
     disabled = false,
     pageSize = 5
@@ -30,6 +32,9 @@ export const ChunkPagination: React.FC<ChunkPaginationProps> = ({
     if (totalPages <= 1) {
         return null;
     }
+
+    console.log(`Rendering ChunkPagination: currentPage=${currentPage}, totalPages=${totalPages}`);
+    console.log(`Disabled: ${disabled}, PageSize: ${pageSize}`);
 
     const handlePageChange = (event: { page: number }) => {
         if (!disabled) {
@@ -46,7 +51,8 @@ export const ChunkPagination: React.FC<ChunkPaginationProps> = ({
     return (
         <Center data-testid="chunk-pagination">
             <Pagination.Root
-                count={totalPages}
+                // Chakra Pagination expects total items count when using pageSize
+                count={totalItems}
                 pageSize={pageSize}
                 page={currentPage}
                 onPageChange={handlePageChange}

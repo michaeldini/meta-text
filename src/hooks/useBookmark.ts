@@ -8,7 +8,6 @@ import { fetchBookmark, setBookmark, removeBookmark } from '../services/bookmark
 export function useBookmark(metatextId: number) {
     const queryClient = useQueryClient();
     // Fetch the current bookmarked chunk id
-    console.log('metatextId', metatextId)
     const {
         data: bookmarkedChunkId,
         isLoading,

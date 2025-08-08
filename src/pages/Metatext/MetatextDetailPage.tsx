@@ -45,6 +45,7 @@ function MetatextDetailPage(): ReactElement | null {
     const {
         displayChunks,
         totalFilteredChunks,
+        chunksPerPage,
         currentPage,
         totalPages,
         setCurrentPage,
@@ -118,6 +119,7 @@ function MetatextDetailPage(): ReactElement | null {
                     <ChunkDisplayContainer
                         displayChunks={displayChunks}
                         totalFilteredChunks={totalFilteredChunks}
+                        chunksPerPage={chunksPerPage}
                         currentPage={currentPage}
                         totalPages={totalPages}
                         onPageChange={(page) => setCurrentPage(page)}
