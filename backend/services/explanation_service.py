@@ -48,7 +48,7 @@ class ExplanationService:
                 metatext_id=metatext_id
             )
             session.add(log_entry)
-            session.commit()
+            session.commit()  # TODO: DRY
             logger.info(f"Word definition generated and saved for word: '{words}'")
         else:
             log_entry = Explanation.create_with_type(

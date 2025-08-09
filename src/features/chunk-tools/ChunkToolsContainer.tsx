@@ -89,7 +89,6 @@ export const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = (props) =
                 {activeTools.includes('explanation') && (
                     <ExplanationTool
                         chunk={chunk}
-                        mutateChunkField={updateChunkFieldMutation.mutate}
                         isVisible={true}
                     />
                 )}

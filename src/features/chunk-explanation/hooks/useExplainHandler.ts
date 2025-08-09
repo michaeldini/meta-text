@@ -5,13 +5,8 @@ import { useState, useCallback } from 'react';
 import { explainWordsOrChunk, ExplanationRequest, ExplanationResponse } from '@services/aiService';
 
 
-interface UseExplainHandlerOptions {
-    onComplete?: (result: ExplanationResponse | null) => void;
-}
 
-
-export function useExplainHandler(options: UseExplainHandlerOptions) {
-    const { onComplete } = options;
+export function useExplainHandler() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [result, setResult] = useState<ExplanationResponse | null>(null);
@@ -24,17 +19,15 @@ export function useExplainHandler(options: UseExplainHandlerOptions) {
             try {
                 const res = await explainWordsOrChunk(params);
                 setResult(res);
-                onComplete?.(res);
                 return res;
             } catch (err: any) {
                 setError(err?.message || 'Failed to get explanation');
-                onComplete?.(null);
                 return null;
             } finally {
                 setLoading(false);
             }
         },
-        [onComplete]
+        []
     );
 
     return {

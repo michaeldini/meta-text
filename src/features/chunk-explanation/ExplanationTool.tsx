@@ -1,63 +1,70 @@
-import React, { useCallback } from 'react';
+// ExplanationTool
+// Generates an explanation for a chunk's text via API and displays it.
+// Mirrors the pattern used in EvaluationTool: keeps local state (loading, error, text)
+// and syncs with incoming prop updates. Does not mutate parent chunk directly.
+
+import React, { useState, useEffect, useCallback } from 'react';
 import { Box } from '@chakra-ui/react/box';
 import { HiOutlineSparkles } from 'react-icons/hi2';
 
 import { TooltipButton } from '@components/TooltipButton';
 import { Prose } from '@components/ui/prose';
-import type { ChunkType, UpdateChunkFieldMutationFn } from '@mtypes/documents';
-import { useExplainHandler } from './hooks/useExplainHandler';
+import type { ChunkType } from '@mtypes/documents';
+import { explainWordsOrChunk } from '@services/aiService';
 
 interface ExplanationToolProps {
     chunk: ChunkType;
-    mutateChunkField: UpdateChunkFieldMutationFn;
     isVisible: boolean;
 }
 
-export function ExplanationTool(props: ExplanationToolProps) {
-    const { chunk, mutateChunkField, isVisible } = props;
-    if (!isVisible) return null;
+export function ExplanationTool({ chunk, isVisible }: ExplanationToolProps) {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [explanationText, setExplanationText] = useState<string>(chunk.explanation || '');
 
-    /**
-     * Custom hook to handle chunk explanation logic
-     * Returns a handler function and state for use in UI components
-     */
-    const { handleExplain, loading, error } = useExplainHandler({
-        onComplete: (result) => {
-            if (result && chunk?.id) {
-                mutateChunkField({ chunkId: chunk.id, field: 'explanation', value: result.explanation });
-            }
-        },
-    });
+    // Sync local state if parent chunk updates (e.g., after refetch)
+    useEffect(() => {
+        setExplanationText(chunk.explanation || '');
+    }, [chunk.id, chunk.explanation]);
 
-    /**
-     * Handler to generate explanation for the chunk
-     * Calls the custom hook's handleExplain function with necessary parameters
-     */
     const handleGenerate = useCallback(async () => {
-        if (!chunk?.id) return;
-        await handleExplain({
-            words: "",
-            context: chunk.text,
-            metatext_id: null,
-            chunk_id: chunk.id,
-        });
-    }, [chunk, handleExplain]);
+        if (!chunk.id) return;
+        setLoading(true);
+        setError(null);
+        try {
+            const data = await explainWordsOrChunk({
+                words: '',
+                context: chunk.text,
+                metatext_id: null,
+                chunk_id: chunk.id,
+            });
+            // Prefer the primary explanation field; if context-specific explanation exists, append.
+            const combined = data.explanation_in_context
+                ? `${data.explanation}\n\n${data.explanation_in_context}`
+                : data.explanation;
+            setExplanationText(combined);
+        } catch (err) {
+            const msg = err instanceof Error ? err.message : 'Failed to generate explanation';
+            setError(msg);
+        } finally {
+            setLoading(false);
+        }
+    }, [chunk.id, chunk.text]);
+
+    if (!isVisible) return null;
 
     return (
         <Box>
             <TooltipButton
-                label="Explain This Chunk"
-                tooltip="Generate a detailed, in-depth explanation of this chunk's text."
+                label="Explain"
+                tooltip="Generate a detailed explanation of this chunk's text."
                 icon={<HiOutlineSparkles />}
                 onClick={handleGenerate}
-                disabled={loading || !chunk?.id}
+                disabled={loading || !chunk.id}
+                loading={loading}
             />
-            <Box>
-                {chunk.explanation ? (
-                    <Prose>{chunk.explanation}</Prose>
-                ) : (
-                    <span>No explanation yet.</span>
-                )}
+            <Box mt={3}>
+                {explanationText ? <Prose>{explanationText}</Prose> : <span>No explanation yet.</span>}
             </Box>
             {error && (
                 <Box color="red.500" mt={2}>
@@ -66,6 +73,6 @@ export function ExplanationTool(props: ExplanationToolProps) {
             )}
         </Box>
     );
-};
+}
 
 export default ExplanationTool;
