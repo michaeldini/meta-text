@@ -3,7 +3,7 @@ from sqlmodel import Session
 from loguru import logger
 
 from backend.models import (
-    Chunk, Rewrite, SourceDocument, Image,
+    Chunk, EvaluationResponse, Rewrite, SourceDocument, Image,
     SourceDocInfoResponse, SourceDocInfoAiResponse, Explanation, ExplanationResponse, ExplanationRequest, User
 )
 from backend.services.openai_service import OpenAIService
@@ -30,7 +30,7 @@ class AIService:
         self.openai_service = openai_service or OpenAIService()
         self.file_service = file_service or FileService()
     
-    def generate_evaluation(self, chunk_id: int, session: Session) -> dict:
+    def generate_evaluation(self, chunk_id: int, session: Session) -> EvaluationResponse:
         """
         Generate AI evaluation for a chunk's note, summary, and text.
         
@@ -60,18 +60,18 @@ class AIService:
         )
         
         # Generate AI response
-        ai_text = self.openai_service.generate_text_response(
+        evaluation_text = self.openai_service.generate_text_response(
             "instructions/note_summary_comparison_instructions.txt",
             prompt
         )
         
         # Save result to database
-        chunk.evaluation = ai_text
+        chunk.evaluation = evaluation_text
         session.add(chunk)
         session.commit()
 
         logger.info(f"AI evaluation generated and saved for chunk_id: {chunk_id}")
-        return {"result": ai_text}
+        return EvaluationResponse(evaluation_text=evaluation_text)
 
     def generate_word_definition(self, user: User, request: ExplanationRequest, session: Session) -> ExplanationResponse:
         """

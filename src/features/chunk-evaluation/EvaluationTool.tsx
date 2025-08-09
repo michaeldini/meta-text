@@ -1,28 +1,49 @@
-import React, { useCallback } from 'react';
+/**
+ * EvaluationTool
+ * Generates an evaluation/explanation for a chunk via API and displays it.
+ * Avoids mutating incoming props; uses local state and syncs if parent updates chunk.
+ */
+import React, { useState, useEffect, useCallback } from 'react';
 import { Box } from '@chakra-ui/react/box'
 import { Prose } from '@components/ui/prose';
 import { TooltipButton } from '@components/TooltipButton'
 import { HiOutlineSparkles } from 'react-icons/hi2';
-import type { ChunkType, UpdateChunkFieldMutationFn } from '@mtypes/documents';
-import { useEvaluation } from './hooks/useEvaluation';
+import type { ChunkType } from '@mtypes/documents';
+import { generateEvaluation } from '@services/aiService';
 
 interface EvaluationToolProps {
     chunk: ChunkType;
-    mutateChunkField: UpdateChunkFieldMutationFn;
     isVisible: boolean;
 }
-export function EvaluationTool(props: EvaluationToolProps) {
-    const { chunk, mutateChunkField, isVisible } = props;
-    if (!isVisible) return null;
 
-    const { fetchEvaluationResults, loading, error } = useEvaluation();
+export function EvaluationTool({ chunk, isVisible }: EvaluationToolProps) {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [evaluationText, setEvaluationText] = useState<string>(chunk.evaluation || '');
+
+    // Keep local state in sync if parent provides updated evaluation (e.g. after a refetch)
+    useEffect(() => {
+        setEvaluationText(chunk.evaluation || '');
+    }, [chunk.id, chunk.evaluation]);
 
     const handleGenerate = useCallback(async () => {
-        const result = await fetchEvaluationResults({ chunk });
-        if (result.success && result.data) {
-            mutateChunkField({ chunkId: chunk.id, field: 'evaluation', value: result.data.evaluationText });
+        if (!chunk.id) return;
+        setLoading(true);
+        setError(null);
+        try {
+            const data = await generateEvaluation(chunk.id);
+            const text = data.evaluation_text || '';
+            setEvaluationText(text);
+            // (Optional) If you later want parent/global update, pass a callback prop instead of mutating.
+        } catch (err) {
+            const msg = err instanceof Error ? err.message : 'Error generating evaluation';
+            setError(msg);
+        } finally {
+            setLoading(false);
         }
-    }, [chunk, fetchEvaluationResults, mutateChunkField]);
+    }, [chunk.id]);
+
+    if (!isVisible) return null;
 
     return (
         <Box>
@@ -31,15 +52,13 @@ export function EvaluationTool(props: EvaluationToolProps) {
                 tooltip="Produce an evaluation of your summary and note."
                 icon={<HiOutlineSparkles />}
                 onClick={handleGenerate}
-                // disabled={loading || !chunk?.id}
+                disabled={loading || !chunk.id}
                 loading={loading}
             />
-            <Box>
-                {chunk.evaluation ? (
-                    <Prose>{chunk.evaluation}</Prose>
-                ) : (
-                    <span>No evaluation yet.</span>
-                )}
+            <Box mt={3}>
+                {evaluationText
+                    ? <Prose>{evaluationText}</Prose>
+                    : <span>No evaluation yet.</span>}
             </Box>
             {error && (
                 <Box color="red.500" mt={2}>
@@ -48,6 +67,6 @@ export function EvaluationTool(props: EvaluationToolProps) {
             )}
         </Box>
     );
-};
+}
 
 export default EvaluationTool;

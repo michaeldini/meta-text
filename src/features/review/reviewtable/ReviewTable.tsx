@@ -4,7 +4,7 @@
 // A basic review table component to display summaries, notes, and images for chunks
 import React from 'react';
 import { Table } from '@chakra-ui/react';
-import { ImageDisplay } from '@features/chunk-image';
+import { Image } from '@chakra-ui/react';
 import { ChunkType } from '@mtypes/documents';
 
 // Table header for the review table
@@ -31,11 +31,13 @@ function ReviewTableRow({ chunk }: { chunk: ChunkType }) {
             <Table.Cell>{chunk.note}</Table.Cell>
             <Table.Cell>
                 {latestImage && (
-                    <ImageDisplay
+                    <Image
                         src={`/${latestImage.path}`}
                         alt={latestImage.prompt}
-                        height="100px"
-                        showModal={true}
+                        h="100px"
+                        w="100px"
+                        objectFit="cover"
+                        rounded="md"
                     />
                 )}
             </Table.Cell>

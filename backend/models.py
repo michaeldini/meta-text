@@ -258,3 +258,6 @@ class CreateChunk(BaseModel):
     text: str
     position: float
     metatextId: int
+
+class EvaluationResponse(BaseModel):
+    evaluation_text: str

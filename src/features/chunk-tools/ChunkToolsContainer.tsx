@@ -16,7 +16,7 @@ import { RewriteDisplayTool } from '@features/chunk-rewrite';
 import { ExplanationTool } from '@features/chunk-explanation';
 import { ChunkFavoriteToggle } from '@features/chunk-favorite';
 import ChunkBookmarkToggle from '@features/chunk-bookmark/components/ChunkBookmarkToggle';
-import { uiPreferences, UserConfig } from '@mtypes/user';
+import { uiPreferences } from '@mtypes/user';
 
 interface ChunkToolsContainerProps {
     chunk: ChunkType;
@@ -70,14 +70,13 @@ export const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = (props) =
                 {activeTools.includes('evaluation') && (
                     <EvaluationTool
                         chunk={chunk}
-                        mutateChunkField={updateChunkFieldMutation.mutate}
+                        // mutateChunkField={updateChunkFieldMutation.mutate}
                         isVisible={true}
                     />
                 )}
                 {activeTools.includes('image') && (
                     <ImageTool
                         chunk={chunk}
-                        mutateChunkField={updateChunkFieldMutation.mutate}
                         isVisible={true}
                     />
                 )}

@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends, Form, status
 from sqlmodel import Session
 
 from backend.models import (
-     Rewrite, SourceDocInfoResponse, ImageRead, User
+     EvaluationResponse, Rewrite, SourceDocInfoResponse, ImageRead, User
 )
 from backend.db import get_session
 
@@ -27,7 +27,7 @@ async def generate_evaluation(
     session: Session = Depends(get_session),
     user: User = Depends(get_current_user),
     ai_service: AIService = Depends(get_ai_service)
-) -> dict:
+) -> EvaluationResponse:
     """Generate AI evaluation for chunk note, summary, and text. Requires authentication."""
     try:
         return ai_service.generate_evaluation(chunk_id, session)
@@ -77,8 +77,8 @@ async def generate_image(
     prompt: str = Form(...),
     chunk_id: int = Form(None),
     session: Session = Depends(get_session),
-    user = Depends(get_current_user),
-    ai_service = Depends(get_ai_service)
+    user: User = Depends(get_current_user),
+    ai_service: AIService = Depends(get_ai_service)
 ):
     """Generate AI image using DALL-E. Requires authentication."""
     try:
