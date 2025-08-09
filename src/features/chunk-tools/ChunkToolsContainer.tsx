@@ -16,21 +16,23 @@ import { RewriteDisplayTool } from '@features/chunk-rewrite';
 import { ExplanationTool } from '@features/chunk-explanation';
 import { ChunkFavoriteToggle } from '@features/chunk-favorite';
 import ChunkBookmarkToggle from '@features/chunk-bookmark/components/ChunkBookmarkToggle';
+import { uiPreferences, UserConfig } from '@mtypes/user';
 
 interface ChunkToolsContainerProps {
     chunk: ChunkType;
     activeTools: ChunkToolId[];
     updateChunkFieldMutation: UseUpdateChunkFieldType;
+    uiPreferences: uiPreferences;
 }
 
-function renderStationaryTools(chunk: ChunkType, asRow: boolean) {
+function renderStationaryTools(chunk: ChunkType, asRow: boolean, uiPreferences?: uiPreferences) {
     return (
         <Stack
             flexDirection={asRow ? 'row' : 'column'}
             alignItems="center"
         >
             {/* Chunk position display (logic encapsulated in component) */}
-            <ChunkPosition chunk={chunk} />
+            <ChunkPosition chunk={chunk} uiPreferences={uiPreferences} />
             <CopyTool chunkText={chunk.text} />
             {/* Replace with your own toggle component */}
             <ChunkBookmarkToggle chunk={chunk} />
@@ -40,7 +42,7 @@ function renderStationaryTools(chunk: ChunkType, asRow: boolean) {
 }
 
 export const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = (props) => {
-    const { chunk, activeTools, updateChunkFieldMutation } = props;
+    const { chunk, activeTools, updateChunkFieldMutation, uiPreferences } = props;
 
 
 
@@ -55,7 +57,7 @@ export const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = (props) =
                 zIndex={1}>
 
                 {/* Tools Always visible at the top */}
-                {renderStationaryTools(chunk, activeTools.length > 0)}
+                {renderStationaryTools(chunk, activeTools.length > 0, uiPreferences)}
 
                 {/* Chunk tools, each wrapped in ToolBoundary for error/loading isolation */}
                 {activeTools.includes('note-summary') && (

@@ -18,7 +18,7 @@ import { IconButton } from '@chakra-ui/react/button';
 import { Image } from '@chakra-ui/react/image';
 import { Spinner } from '@chakra-ui/react/spinner';
 
-import type { ImageDisplayProps } from '@features/chunk-shared/types';
+import type { ImageDisplayProps } from '@mtypes/tools';
 
 export function ImageDisplay(props: ImageDisplayProps) {
     const { src, alt = '', height = '300px', showModal = true } = props;

@@ -2,7 +2,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { combineChunks } from '@services/chunkService';
 import { ChunkType } from '@mtypes/documents';
-// import { MergeChunksToolProps, ToolResult } from '@features/chunk-shared/types';
 
 export interface MergeChunksToolProps {
     chunk: ChunkType;

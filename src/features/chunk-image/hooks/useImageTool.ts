@@ -6,7 +6,7 @@ import log from '@utils/logger';
 import type { ChunkType, AiImage } from '@mtypes/documents';
 import { pollImageAvailability } from '../utils/imagePolling';
 
-import { ImageToolProps, ToolResult, UseImageToolReturn, ImageResult, ImageToolState } from '@features/chunk-shared/types';
+import { ImageToolProps, ToolResult, UseImageToolReturn, ImageResult, ImageToolState } from '@mtypes/tools';
 
 function getLatestAiImage(ai_images?: AiImage[]): AiImage | undefined {
     if (!ai_images || ai_images.length === 0) return undefined;

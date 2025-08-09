@@ -25,8 +25,8 @@ router = APIRouter()
 async def generate_evaluation(
     chunk_id: int,
     session: Session = Depends(get_session),
-    user = Depends(get_current_user),
-    ai_service = Depends(get_ai_service)
+    user: User = Depends(get_current_user),
+    ai_service: AIService = Depends(get_ai_service)
 ) -> dict:
     """Generate AI evaluation for chunk note, summary, and text. Requires authentication."""
     try:

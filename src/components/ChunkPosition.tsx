@@ -3,15 +3,15 @@
 
 import React from 'react';
 import { Text } from '@chakra-ui/react';
-import { useUserConfig } from '../services/userConfigService';
 import type { ChunkType } from '@mtypes/documents';
+import { uiPreferences } from '@mtypes/user';
 
 interface ChunkPositionProps {
     chunk: ChunkType;
+    uiPreferences?: uiPreferences;
 }
-export function ChunkPosition({ chunk }: ChunkPositionProps) {
-    const { data: userConfig } = useUserConfig();
-    const showChunkPositions = userConfig?.uiPreferences?.showChunkPositions ?? false;
+export function ChunkPosition({ chunk, uiPreferences }: ChunkPositionProps) {
+    const showChunkPositions = uiPreferences?.showChunkPositions ?? false;
 
     if (!showChunkPositions) return null;
 

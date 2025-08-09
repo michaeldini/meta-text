@@ -120,6 +120,7 @@ interface UseChunkDisplayResult {
     const startIndex = (currentPage - 1) * storeChunksPerPage;
     const endIndex = startIndex + storeChunksPerPage;
     const displayChunks = filteredChunks.slice(startIndex, endIndex);    // Reset to page 1 if current page is beyond available pages
+
     useEffect(() => {
         if (currentPage > totalPages && totalPages > 0) {
             setCurrentPage(1);
