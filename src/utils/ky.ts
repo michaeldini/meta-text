@@ -1,3 +1,8 @@
+/**
+ * API client for making requests to the backend
+ * Use to make requests.
+ * Attaches authentication headers to requests.
+ */
 
 import ky from 'ky';
 import { HTTPError } from 'ky';

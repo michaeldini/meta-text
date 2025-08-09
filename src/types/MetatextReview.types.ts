@@ -1,8 +1,8 @@
-// Type definitions for explanations attached to metatext reviews.
-// Used throughout the frontend for type safety and clarity.
-
+// TODO add this to a tool type file. 
 /**
  * Represents an explanation for a word or phrase from a metatext.
+ * 
+ * id: Unique identifier for the explanation
  */
 export interface Explanation {
     /** Unique identifier for the explanation */

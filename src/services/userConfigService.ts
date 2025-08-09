@@ -1,7 +1,7 @@
 // Service to hydrate Zustand stores with user config from backend
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../utils/ky';
-import { UserConfig } from '../types/ui-types'
+import { UserConfig } from '../types/user'
 
 // TanStack Query: Fetch user config
 // Accepts user object, hydrates only when user is present/changes

@@ -1,5 +1,8 @@
 
-// User config shape returned from backend
+/**
+ * User config shape returned from backend. 
+ * 
+ */
 export interface UserConfig {
     uiPreferences?: {
         textSizePx?: number;

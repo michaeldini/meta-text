@@ -1,7 +1,22 @@
-// Document types for the Metatext application
+/**
+ * Document Types:
+ * - SourceDocumentSummary
+ * - SourceDocumentDetail
+ * - SourceDocumentCreate
+ * - SourceDocumentUpdate
+ * - MetatextSummary
+ * - MetatextDetail
+ * - MetatextCreate
+ * - ChunkType
+ * - UpdateChunkFieldFn
+ * - UseUpdateChunkFieldType
+ * - UpdateChunkFieldMutationFn
+ * - AiImage
+ * - Rewrite
+ * - RewriteCreate
+ */
+import type { UseMutationResult } from '@tanstack/react-query';
 
-// Source Document types
-// Types for listing, detailing, and creating source documents
 export type SourceDocumentSummary = {
     id: number;
     title: string;
@@ -69,6 +84,22 @@ export type ChunkType = {
     bookmarked_by_user_id?: number | null;
 };
 
+
+// React Query mutation type for useUpdateChunkField hook
+export type UseUpdateChunkFieldType = UseMutationResult<
+    ChunkType,
+    unknown,
+    { chunkId: number; field: string; value: any },
+    unknown
+>;
+
+export type UpdateChunkFieldMutationFn = (
+    variables: { chunkId: number; field: string; value: any }
+) => void;
+
+
+// add these to a tools type file TODO
+
 export type AiImage = {
     id: number;
     prompt: string;
@@ -88,23 +119,3 @@ export interface RewriteCreate {
     rewrite_text: string;
     chunk_id?: number;
 }
-
-export type UpdateChunkFieldFn = (
-    chunkId: number,
-    field: keyof ChunkType,
-    value: string | number | null
-) => void;
-
-// React Query mutation type for useUpdateChunkField hook
-import type { UseMutationResult } from '@tanstack/react-query';
-
-export type UseUpdateChunkFieldType = UseMutationResult<
-    ChunkType,
-    unknown,
-    { chunkId: number; field: string; value: any },
-    unknown
->;
-export type UpdateChunkFieldMutationFn = (
-    variables: { chunkId: number; field: string; value: any }
-) => void;
-

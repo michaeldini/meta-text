@@ -4,7 +4,7 @@ import { HiOutlineSparkles } from 'react-icons/hi2';
 
 import { TooltipButton } from '@components/TooltipButton';
 import { Prose } from '@components/ui/prose';
-import type { ChunkType, UpdateChunkFieldFn, UpdateChunkFieldMutationFn } from '@mtypes/documents';
+import type { ChunkType, UpdateChunkFieldMutationFn } from '@mtypes/documents';
 import { useExplainHandler } from './hooks/useExplainHandler';
 
 interface ExplanationToolProps {

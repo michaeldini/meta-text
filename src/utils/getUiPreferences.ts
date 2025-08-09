@@ -1,7 +1,7 @@
 // Utility to safely get uiPreferences with defaults
 // Ensures all expected fields are present, so UI code never checks for undefined
 
-import { UserConfig } from '../types/ui-types'
+import { UserConfig } from '../types/user'
 export interface UiPreferences {
     textSizePx?: number;
     fontFamily?: string;

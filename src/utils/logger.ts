@@ -1,3 +1,14 @@
+/**
+ * Logger utility for the application
+ * Use when you need to debug.
+ * Logs messages to the console and optionally sends them to a backend service.
+ * 
+ * Usage:
+ * import log from '@utils/logger';
+ * log.info('This is an info message');
+ * log.error('This is an error message');
+ */
+
 import log from 'loglevel';
 
 // Set log level based on environment

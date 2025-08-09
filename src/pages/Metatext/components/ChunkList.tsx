@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Stack } from '@chakra-ui/react/stack';
 import Chunk from '@features/chunk/Chunk';
 import type { ChunkType } from '@mtypes/documents';
@@ -16,9 +16,12 @@ export const ChunkList: React.FC<ChunkListProps> = ({ chunks, startIndex }) => {
         return null;
     }
 
+    // Memoize chunks to ensure stable references for Chunk components
+    const memoizedChunks = useMemo(() => chunks, [chunks]);
+
     return (
         <Stack gap={4} data-testid="chunk-list">
-            {chunks.map((chunk: ChunkType, idx: number) => (
+            {memoizedChunks.map((chunk: ChunkType, idx: number) => (
                 <Chunk key={chunk.id} chunk={chunk} chunkIdx={startIndex + idx} />
             ))}
         </Stack>

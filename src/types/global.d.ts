@@ -1,3 +1,5 @@
+// TODO: is this needed here?
+
 import React from 'react';
 
 // Global logger interface for error handling

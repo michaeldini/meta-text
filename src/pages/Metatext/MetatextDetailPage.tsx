@@ -8,6 +8,7 @@ import type { ReactElement } from 'react';
 import { Stack } from '@chakra-ui/react/stack';
 import { Box } from '@chakra-ui/react/box';
 import { Alert } from '@chakra-ui/react/alert';
+import { Skeleton, SkeletonText } from '@chakra-ui/react/skeleton';
 
 // Imports for icons
 // (icons handled inside subcomponents)
@@ -79,14 +80,21 @@ function MetatextDetailPage(): ReactElement | null {
         totalPages,
         searchInputRef: undefined, // Could pass a ref here if needed
     });
-
     return (
         <Box data-testid="metatext-detail-page" paddingLeft="4" bg="bg">
-            {isLoading && (
-                <Box mb="4" aria-live="polite" data-testid="metatext-detail-loading">
-                    Loading metatext...
-                </Box>
+
+            {/* {isLoading && ( */}
+            {false && (
+                <Stack direction="column" gap={4} mb={4} aria-live="polite" data-testid="metatext-detail-loading" >
+                    <Skeleton bg="bg.inverted" height="35px" width="30%" /> {/* Simulates the header */}
+                    <Skeleton bg="bg.inverted" height="20px" width="100%" /> {/* Simulates a control tab */}
+                    <Skeleton bg="bg.inverted" height="20px" width="40%" marginX="auto" /> {/* Simulates a control tab */}
+                    <Skeleton bg="bg.inverted" height="20px" width="50%" marginX="auto" /> {/* Simulates a control tab */}
+                    <Skeleton bg="bg.inverted" height="100px" /> {/* Simulates the chunk display */}
+                    <SkeletonText bg="bg.inverted" color="fg" noOfLines={20} width="50%" /> {/* Simulates metadata or description */}
+                </Stack>
             )}
+
             {error && (
                 <Alert.Root status="error" variant="subtle" mb="4" borderRadius="md" data-testid="metatext-detail-error">
                     <Alert.Indicator />
@@ -101,7 +109,11 @@ function MetatextDetailPage(): ReactElement | null {
                 </Alert.Root>
             )}
             {metatext && (
-                <Stack data-testid="metatext-detail-content" animationName="fade-in" animationDuration="fast">
+                <Stack
+                    data-testid="metatext-detail-content"
+                // animationName="fade-in"
+                //  animationDuration="fast"
+                >
                     <MetatextHeader title={metatext.title} onReviewClick={handleReviewClick} />
                     <Stack direction="row" alignItems="start" justifyContent="space-between" >
                         <MetatextControlTabs
