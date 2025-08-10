@@ -70,7 +70,6 @@ export const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = (props) =
                 {activeTools.includes('evaluation') && (
                     <EvaluationTool
                         chunk={chunk}
-                        // mutateChunkField={updateChunkFieldMutation.mutate}
                         isVisible={true}
                     />
                 )}

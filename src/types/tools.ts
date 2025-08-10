@@ -20,17 +20,6 @@ export interface BaseChunkProps {
     chunk: ChunkType;
 }
 
-// =============================================================================
-// IMAGE TOOL TYPES
-// =============================================================================
-
-/**
- * Props for image tool components
- */
-export interface ImageToolProps extends BaseChunkProps {
-    prompt?: string;
-}
-
 
 
 /**
