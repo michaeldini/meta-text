@@ -10,9 +10,6 @@ import { Box } from '@chakra-ui/react/box';
 import { Alert } from '@chakra-ui/react/alert';
 import { Skeleton, SkeletonText } from '@chakra-ui/react/skeleton';
 
-// Imports for icons
-// (icons handled inside subcomponents)
-
 // Imports for components
 import { ChunkToolsPanel } from '@features/chunk-tools';
 import { MetatextHeader, MetatextControlTabs, ChunkDisplayContainer } from '@pages/Metatext/components';
