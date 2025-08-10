@@ -1,3 +1,4 @@
+import { getIconComponent } from '@components/icons/registry';
 /**
  * Navigation configuration for the navbar menu
  * - Defines icons, labels, paths, and visibility conditions for each menu item (includes brand item)
@@ -5,7 +6,6 @@
  */
 
 import { MetaTextLogoIcon } from '@components/icons';
-import { HiArrowRightOnRectangle, HiArrowLeftOnRectangle, HiPlus } from "react-icons/hi2";
 
 
 interface NavigationItem {
@@ -32,19 +32,19 @@ export const getNavigationConfig = (logout: () => void, navigate: (path: string)
         {
             label: 'Login',
             protected: false,
-            icon: HiArrowRightOnRectangle,
+            icon: getIconComponent('Login'),
             action: () => navigate('/login')
         },
         {
             label: 'Logout',
             protected: true,
-            icon: HiArrowLeftOnRectangle,
+            icon: getIconComponent('Logout'),
             action: () => { logout(); navigate('/login'); }
         },
         {
             label: 'Register',
             protected: false,
-            icon: HiPlus,
+            icon: getIconComponent('Add'),
             action: () => navigate('/register')
         },
     ]

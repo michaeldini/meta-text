@@ -1,3 +1,4 @@
+import { Icon } from '@components/icons/Icon';
 /**
  * Rewrite Tool
  * Concept: If you have a text, you can REWRITE it in a specific STYLE
@@ -6,7 +7,6 @@
 import React from 'react';
 import { Box } from '@chakra-ui/react/box';
 import { Text } from '@chakra-ui/react/text';
-import { HiPencilSquare } from 'react-icons/hi2';
 import type { ChunkType } from '@mtypes/documents';
 import { TooltipButton } from '@components/TooltipButton';
 import { useRewriteTool } from './hooks/useRewriteTool';
@@ -39,12 +39,11 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
             <TooltipButton
                 label="Rewrite"
                 tooltip="Generate a rewrite for this chunk"
-                icon={<HiPencilSquare />}
+                icon={<Icon name='EditSquare' />}
                 onClick={openDialog}
                 disabled={!chunk}
                 loading={state.loading}
             />
-
             <RewriteGenerationDialog
                 open={state.dialogOpen}
                 onClose={closeDialog}
@@ -54,7 +53,6 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
                 error={state.error}
                 onSubmit={async () => { await submitRewrite(); }}
             />
-
             {/* Select to browse previous rewrites */}
             {hasRewrites && (
                 <Box mt={6}>

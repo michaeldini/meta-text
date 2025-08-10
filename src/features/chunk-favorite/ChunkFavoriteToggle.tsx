@@ -1,3 +1,4 @@
+import { Icon } from '@components/icons/Icon';
 // ChunkFavoriteToggle.tsx
 // Toggle button for favoriting/unfavoriting a chunk. Uses Material UI IconButton and Heroicons.
 // Handles API calls to backend and updates UI state optimistically.
@@ -8,7 +9,6 @@
 
 import React, { useState } from 'react';
 import { TooltipButton } from '@components/TooltipButton';
-import { HiStar, HiOutlineStar } from 'react-icons/hi2';
 import { api } from '@utils/ky';
 import type { ChunkType } from '@mtypes/documents';
 import { useQueryClient } from '@tanstack/react-query';
@@ -46,7 +46,7 @@ export function ChunkFavoriteToggle({ chunk }: ChunkFavoriteToggleProps) {
         <TooltipButton
             label=""
             tooltip={favorited ? 'Unfavorite' : 'Favorite'}
-            icon={favorited ? <HiStar /> : <HiOutlineStar />}
+            icon={favorited ? <Icon name='FavoriteFilled' /> : <Icon name='Favorite' />}
             loading={loading}
             onClick={handleToggle}
             disabled={loading}

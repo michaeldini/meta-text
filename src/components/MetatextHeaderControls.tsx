@@ -1,16 +1,10 @@
+import { Icon } from '@components/icons/Icon';
 // Header controls for the Metatext detail page
 // Contains bookmark navigation, favorites toggle, download, and position display controls
 // Self-contained component that manages its own state via hooks
 
 import React from 'react';
 import { Box } from '@chakra-ui/react/box';
-import {
-    HiArrowDownTray,
-    HiHashtag,
-    HiStar,
-    HiOutlineStar,
-    HiBookmark,
-} from 'react-icons/hi2';
 
 import { TooltipButton } from '@components/TooltipButton';
 import { useUserConfig, useUpdateUserConfig } from '@services/userConfigService';
@@ -55,7 +49,7 @@ export function MetatextHeaderControls({
             <TooltipButton
                 label="Go to Bookmark"
                 tooltip="Navigate to the bookmarked chunk in this metatext"
-                icon={<HiBookmark />}
+                icon={<Icon name='BookmarkFilled' />}
                 onClick={goToBookmark}
                 disabled={!bookmarkedChunkId}
                 loading={bookmarkLoading}
@@ -64,7 +58,7 @@ export function MetatextHeaderControls({
             <TooltipButton
                 label={showOnlyFavorites ? "Show All" : "Show Favorites"}
                 tooltip={showOnlyFavorites ? "Show all chunks" : "Show only favorites"}
-                icon={showOnlyFavorites ? <HiStar /> : <HiOutlineStar />}
+                icon={showOnlyFavorites ? <Icon name='FavoriteFilled' /> : <Icon name='Favorite' />}
                 onClick={() => setShowOnlyFavorites(!showOnlyFavorites)}
                 aria-pressed={showOnlyFavorites}
                 role="switch"
@@ -72,7 +66,7 @@ export function MetatextHeaderControls({
             <TooltipButton
                 label="Download"
                 tooltip="Download MetaText as JSON"
-                icon={<HiArrowDownTray />}
+                icon={<Icon name='Download' />}
                 onClick={() => void downloadMetatext.handleDownload()}
                 disabled={downloadMetatext.disabled}
                 loading={downloadMetatext.loading}
@@ -80,7 +74,7 @@ export function MetatextHeaderControls({
             <TooltipButton
                 label={uiPreferences?.showChunkPositions ? "Hide Positions" : "Show Positions"}
                 tooltip={uiPreferences?.showChunkPositions ? "Hide chunk positions" : "Show chunk positions"}
-                icon={<HiHashtag />}
+                icon={<Icon name='Positions' />}
                 onClick={() => updateUserConfig.mutate({ showChunkPositions: !uiPreferences?.showChunkPositions })}
                 role="switch"
                 aria-checked={!!uiPreferences?.showChunkPositions}

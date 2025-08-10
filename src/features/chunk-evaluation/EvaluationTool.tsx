@@ -1,3 +1,4 @@
+import { Icon } from '@components/icons/Icon';
 /**
  * EvaluationTool
  * Generates an evaluation/explanation for a chunk via API and displays it.
@@ -7,7 +8,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Box } from '@chakra-ui/react/box'
 import { Prose } from '@components/ui/prose';
 import { TooltipButton } from '@components/TooltipButton'
-import { HiOutlineSparkles } from 'react-icons/hi2';
 import type { ChunkType } from '@mtypes/documents';
 import { generateEvaluation } from '@services/aiService';
 
@@ -50,7 +50,7 @@ export function EvaluationTool({ chunk, isVisible }: EvaluationToolProps) {
             <TooltipButton
                 label="Evaluate"
                 tooltip="Produce an evaluation of your summary and note."
-                icon={<HiOutlineSparkles />}
+                icon={<Icon name='AISparkle' />}
                 onClick={handleGenerate}
                 disabled={loading || !chunk.id}
                 loading={loading}

@@ -1,16 +1,16 @@
+import { Icon } from '@components/icons/Icon';
+
+
 // Custom React component for uploading source documents
 
 import React from 'react';
-
-
 import { Heading, Text, Wrap, WrapItem, Tag, Center } from '@chakra-ui/react';
 import { Stack } from '@chakra-ui/react/stack'
 import { Box } from '@chakra-ui/react/box'
 import { Button } from '@chakra-ui/react/button';
-import { FileUpload } from '@chakra-ui/react/file-upload';
 
+import { FileUpload } from '@chakra-ui/react/file-upload';
 import { Field, Prose } from '@components/ui';
-import { HiArrowDownTray } from 'react-icons/hi2';
 
 import { useSourceDocUploadForm } from '../hooks/useSourceDocUploadForm';
 
@@ -48,7 +48,7 @@ function SourceDocUploadForm(): React.ReactElement {
             disabled={addSourceDocuments.isPending || !files.length}
             data-testid="submit-button"
         >
-            {!addSourceDocuments.isPending ? <HiArrowDownTray /> : undefined}
+            {!addSourceDocuments.isPending ? <Icon name='Download' /> : undefined}
             {addSourceDocuments.isPending ? 'Uploading...' : 'Upload Documents'}
         </Button>
     );
@@ -66,7 +66,7 @@ function SourceDocUploadForm(): React.ReactElement {
                 <FileUpload.HiddenInput data-testid="file-input" />
                 <FileUpload.Dropzone bg="none">
                     <FileUpload.DropzoneContent >
-                        <HiArrowDownTray />
+                        <Icon name='Download' />
                         <Text>
                             {files.length
                                 ? `${files.length} file${files.length > 1 ? 's' : ''} selected`

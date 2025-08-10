@@ -1,3 +1,4 @@
+import { Icon } from '@components/icons/Icon';
 /** 
  * Component to display all available keyboard shortcuts in a drawer
  * Useful for help dialogs or documentation.
@@ -5,7 +6,6 @@
 import React, { useState } from 'react';
 import { Box, Text, VStack, HStack, Badge } from '@chakra-ui/react';
 import { getShortcutsByCategory, formatShortcut, type KeyboardShortcut } from '@utils/keyboardShortcuts';
-import { HiQuestionMarkCircle } from 'react-icons/hi2';
 import { IconButton } from "@chakra-ui/react/button"
 import { Drawer } from "@chakra-ui/react/drawer"
 import { CloseButton } from '@chakra-ui/react/button'
@@ -73,7 +73,7 @@ export const HelpDrawerTrigger = () => {
     return (
         <Box display="flex" justifyContent="flex-end">
             <IconButton aria-label="Open help" variant="ghost" onClick={() => setOpen(true)} color="primary">
-                <HiQuestionMarkCircle />
+                <Icon name='Help' />
             </IconButton>
             <Drawer.Root open={open} onOpenChange={({ open }) => setOpen(open)} placement="end" size="sm">
                 <Drawer.Backdrop />

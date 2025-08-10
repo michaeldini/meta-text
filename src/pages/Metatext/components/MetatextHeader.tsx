@@ -1,8 +1,8 @@
+import { Icon } from '@components/icons/Icon';
 // Header component for Metatext detail page displaying title and review button
 import React from 'react';
 import { Stack } from '@chakra-ui/react/stack';
 import { Heading } from '@chakra-ui/react/heading';
-import { HiAcademicCap } from 'react-icons/hi2';
 import { TooltipButton } from '@components/TooltipButton';
 import { KeyboardShortcutsDisplay } from '@components/KeyboardShortcutsDisplay';
 interface MetatextHeaderProps {
@@ -37,12 +37,11 @@ export const MetatextHeader: React.FC<MetatextHeaderProps> = ({
             <TooltipButton
                 label="Review"
                 tooltip="Review this metatext"
-                icon={<HiAcademicCap />}
+                icon={<Icon name='Academic' />}
                 onClick={onReviewClick}
                 data-testid="review-button"
             />
             <KeyboardShortcutsDisplay categories={['Metatext', 'Chunk Tools']} />
-
         </Stack>
     );
 };

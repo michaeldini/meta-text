@@ -1,19 +1,18 @@
+import { Icon } from '@components/icons/Icon';
+
 /**
  * SearchableTable.tsx
  * This file contains components and hooks for creating a searchable table interface.
  * It includes a search input, controlled table, and table row components and a hook for managing search results.
  */
 import React, { useState, useRef, useMemo } from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import { Input, InputGroup, CloseButton, Box, Heading } from '@chakra-ui/react';
-import { HiMagnifyingGlass } from "react-icons/hi2";
 import { MetatextSummary, SourceDocumentSummary } from '@mtypes/index';
 import { Table } from '@chakra-ui/react';
-import { HiOutlineTrash } from "react-icons/hi2";
 import { TooltipButton } from '@components/TooltipButton';
 import { UseMutationResult } from '@tanstack/react-query';
-
-
 
 // useSearchResults: Hook to manage search/filter state and results
 // returns results that can be passed to a table component
@@ -26,7 +25,6 @@ export function useSearchResults(items: Array<SourceDocumentSummary | MetatextSu
     }, [items, search]);
     return { search, setSearch, inputRef, results };
 }
-
 
 // SearchInput: Component for the search input field
 // Accepts search state and a setter function, with an optional ref for focus management
@@ -49,7 +47,7 @@ export function SearchInput({ search, setSearch, inputRef }: SearchInputProps) {
         <Box minWidth="300px">
             {/* <Heading size="2xl">Open</Heading> */}
             <Heading size="sub">Open</Heading>
-            <InputGroup startElement={<HiMagnifyingGlass />} endElement={search ? (
+            <InputGroup startElement={<Icon name='Search' />} endElement={search ? (
                 <CloseButton
                     size="xs"
                     py="2"
@@ -67,6 +65,7 @@ export function SearchInput({ search, setSearch, inputRef }: SearchInputProps) {
         </Box>
     );
 }
+
 // Example usage: combine useSearchResults, SearchInput, and ControlledTable
 //
 // export function SearchableTableWithSearch(props: Omit<ControlledTableProps, 'items'> & { items: Array<{ id: string | number; title: string }> }) {
@@ -109,7 +108,7 @@ export function TableRow({ item, navigate, navigateToBase, deleteItemMutation }:
                 <TooltipButton
                     label=""
                     tooltip={`Delete ${item.title}`}
-                    icon={<HiOutlineTrash />}
+                    icon={<Icon name='DeleteOutline' />}
                     data-testid={`delete-button-${item.id}`}
                     onClick={() => deleteItemMutation.mutate(item.id)}
                     _hover={{ color: 'red.500' }}
@@ -121,15 +120,12 @@ export function TableRow({ item, navigate, navigateToBase, deleteItemMutation }:
     );
 }
 
-
-
 // ControlledTable: Pass the search results to this component
 export interface ControlledTableProps {
     items: Array<SourceDocumentSummary | MetatextSummary>;
     navigateToBase: string;
     deleteItemMutation: UseMutationResult<any, any, any, any>;
 }
-
 
 export function ControlledTable({ items, navigateToBase, deleteItemMutation }: ControlledTableProps) {
     const navigate = useNavigate();

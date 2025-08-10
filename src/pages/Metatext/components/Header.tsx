@@ -1,8 +1,8 @@
+import { Icon } from '@components/icons/Icon';
 import { Heading, IconButton } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react/box';
 import { Tooltip } from '@components/ui/tooltip';
 import type { ReactElement } from 'react';
-import { HiArrowLeft } from 'react-icons/hi2';
 
 interface HeaderProps {
     metatextId?: number;
@@ -25,7 +25,7 @@ export function Header({ metatextId, navigate }: HeaderProps): ReactElement {
                         variant="ghost"
                         color="primary"
                     >
-                        <HiArrowLeft />
+                        <Icon name='Back' />
                     </IconButton>
                 </Tooltip>
             )}

@@ -1,11 +1,11 @@
+import { Icon } from '@components/icons/Icon';
 import { Editable } from '@chakra-ui/react/editable';
 import { Stack } from '@chakra-ui/react/stack';
 import { Text } from '@chakra-ui/react/text';
+
 import { Flex } from '@chakra-ui/react/flex';
 
 import { SourceDocumentSummary } from '@mtypes/documents';
-
-import { HiOutlineSparkles } from 'react-icons/hi2';
 import { TooltipButton } from '@components/TooltipButton';
 import { Box } from '@chakra-ui/react/box';
 
@@ -67,7 +67,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
                 onClick={generateSourceDocInfo.handleClick}
                 disabled={generateSourceDocInfo.loading}
                 loading={generateSourceDocInfo.loading}
-                icon={<HiOutlineSparkles />}
+                icon={<Icon name='AISparkle' />}
             />
             <Text w="100%" color="fg.muted" mb="4">Click on a field to edit. Enter to Save. Tab to Cancel</Text>
             {FIELD_CONFIG.map(config => (

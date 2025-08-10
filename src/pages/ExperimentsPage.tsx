@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
 import { Box } from '@chakra-ui/react/box';
 import { keyframes } from '@emotion/react';
-import {
-    HiOutlineSparkles as AddIcon,
-    HiOutlineDocumentArrowUp as EditIcon,
-    HiOutlineDocumentArrowDown as NavigationIcon,
-    HiOutlineQuestionMarkCircle as FavoriteIcon,
-} from 'react-icons/hi2';
+// NOTE: Removed direct react-icons/hi2 import; add Icon from registry if/when needed.
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(24px);}
@@ -41,8 +36,6 @@ export function LayoutFrames() {
 
 
 
-export function ExperimentsPage() {
-    return <LayoutFrames />;
-}
+export function ExperimentsPage() { return <LayoutFrames />; }
 
 export default ExperimentsPage;

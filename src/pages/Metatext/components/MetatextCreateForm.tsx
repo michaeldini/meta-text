@@ -1,3 +1,4 @@
+import { Icon } from '@components/icons/Icon';
 /** 
  * Presentational component for creating a new Metatext.
  * - Uses useMetatextCreate hook for form state and submission logic
@@ -12,7 +13,6 @@ import { Portal } from '@chakra-ui/react/portal';
 import { Button } from '@chakra-ui/react/button';
 import { Input } from '@chakra-ui/react/input';
 import { Fieldset } from '@chakra-ui/react/fieldset';
-import { HiOutlineSparkles } from 'react-icons/hi2';
 import { useMetatextCreate } from '../hooks/useMetatextCreate';
 import { SourceDocumentSummary } from '@mtypes/documents';
 
@@ -117,7 +117,7 @@ function MetatextCreateForm(props: MetatextCreateFormProps): React.ReactElement 
                         data-testid="submit-button"
                         color="primary"
                     >
-                        <HiOutlineSparkles />
+                        <Icon name='AISparkle' />
                         {loading ? 'Creating...' : 'Create Metatext'}
                     </Button>
                 </Fieldset.Root>

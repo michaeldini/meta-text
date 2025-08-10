@@ -1,9 +1,9 @@
+import { Icon } from '@components/icons/Icon';
 // Central registry for chunk tools (that appear in the ChunkToolsPanel)
 // Defines available tools with their metadata and components
 // This centralizes tool management and makes it easy to add/remove tools
 
 import React from 'react';
-import { HiDocumentText, HiQuestionMarkCircle, HiPhoto, HiCheck, HiPencilSquare, } from 'react-icons/hi2';
 import type { ChunkType } from '@mtypes/documents';
 
 // Tool component interface - all tools must implement this
@@ -28,35 +28,35 @@ export const createChunkToolsRegistry = (): Omit<ChunkTool, 'component'>[] => [
     {
         id: 'note-summary',
         name: 'Notes & Summary',
-        icon: <HiDocumentText />,
+        icon: <Icon name='Document' />,
         tooltip: 'Show or hide the Notes/Summary editor for all chunks',
         category: 'utility'
     },
     {
         id: 'evaluation',
         name: 'Evaluation',
-        icon: <HiCheck />,
+        icon: <Icon name='Confirm' />,
         tooltip: 'Show or hide the AI-generated evaluation panel for all chunks',
         category: 'ai'
     },
     {
         id: 'image',
         name: 'Image',
-        icon: <HiPhoto />,
+        icon: <Icon name='Image' />,
         tooltip: 'Show or hide the AI image panel for all chunks',
         category: 'ai'
     },
     {
         id: 'rewrite',
         name: 'Rewrite',
-        icon: <HiPencilSquare />,
+        icon: <Icon name='EditSquare' />,
         tooltip: 'Show or hide the rewrites for all chunks',
         category: 'analysis'
     },
     {
         id: 'explanation',
         name: 'Explanation',
-        icon: <HiQuestionMarkCircle />,
+        icon: <Icon name='Help' />,
         tooltip: 'Show or hide the explanation editor for all chunks',
         category: 'ai'
     }

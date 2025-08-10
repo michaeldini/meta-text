@@ -1,3 +1,4 @@
+import { Icon } from '@components/icons/Icon';
 // ExplanationTool
 // Generates an explanation for a chunk's text via API and displays it.
 // Mirrors the pattern used in EvaluationTool: keeps local state (loading, error, text)
@@ -5,7 +6,6 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { Box } from '@chakra-ui/react/box';
-import { HiOutlineSparkles } from 'react-icons/hi2';
 
 import { TooltipButton } from '@components/TooltipButton';
 import { Prose } from '@components/ui/prose';
@@ -58,7 +58,7 @@ export function ExplanationTool({ chunk, isVisible }: ExplanationToolProps) {
             <TooltipButton
                 label="Explain"
                 tooltip="Generate a detailed explanation of this chunk's text."
-                icon={<HiOutlineSparkles />}
+                icon={<Icon name='AISparkle' />}
                 onClick={handleGenerate}
                 disabled={loading || !chunk.id}
                 loading={loading}

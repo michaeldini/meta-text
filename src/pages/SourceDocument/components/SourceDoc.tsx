@@ -1,3 +1,4 @@
+import { Icon } from '@components/icons/Icon';
 // Component for displaying and editing source document content
 // This component is responsible for rendering the text content of a source document
 // with appropriate styles and preferences set by the user. It supports both view and edit modes
@@ -7,7 +8,6 @@ import { Box } from '@chakra-ui/react/box';
 import { Text } from '@chakra-ui/react';
 import { Stack } from '@chakra-ui/react/stack';
 import { Prose, Tooltip, Alert } from '@components/ui';
-import { HiCheck, HiOutlinePencil, HiXMark } from 'react-icons/hi2';
 
 
 // Props for SourceDoc presentational component
@@ -83,7 +83,10 @@ export default function SourceDoc({
                     />
                     <Editable.Control>
                         <Editable.SubmitTrigger asChild>
-                            <HiCheck style={{ fontSize: '1.25em', cursor: 'pointer' }} onClick={handleSave} />
+                            <Icon
+                                name='Confirm'
+                                style={{ fontSize: '1.25em', cursor: 'pointer' }}
+                                onClick={handleSave} />
                         </Editable.SubmitTrigger >
                     </Editable.Control>
                     {isSaving && (

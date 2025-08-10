@@ -1,8 +1,8 @@
+import { Icon } from '@components/icons/Icon';
 // Back of a flashcard component that displays the definition and context of a word
 
 import React from 'react';
 import { Card, Button, Text, Box, Stack } from '@chakra-ui/react';
-import { HiBars3, HiQuestionMarkCircle } from 'react-icons/hi2';
 import InfoButton from './InfoPopoverButton';
 
 interface FlashcardBackProps {
@@ -48,14 +48,14 @@ export function FlashcardBack(props: FlashcardBackProps) {
             </Card.Body>
             <Card.Footer justifyContent="flex-end">
                 <InfoButton
-                    icon={<HiBars3 />}
+                    icon={<Icon name='Menu' />}
                     dialogId="info-dialog"
                     title="Definition In Context"
                     word={word}
                     content={definition_in_context}
                 />
                 <InfoButton
-                    icon={<HiQuestionMarkCircle />}
+                    icon={<Icon name='Help' />}
                     dialogId="context-dialog"
                     title="Context"
                     word={word}

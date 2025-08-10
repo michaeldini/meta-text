@@ -1,3 +1,4 @@
+import { Icon } from '@components/icons/Icon';
 /**
  * WordsExplanationTool.tsx
  * Tool for explaining a word in context. Uses custom hooks for API calls and state management.
@@ -8,8 +9,6 @@ import { Text, Heading } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react/box';
 import { AppAlert } from '@components/AppAlert';
 import { TooltipButton } from '@components/TooltipButton';
-// import type { ExplanationToolProps } from '@features/chunk-shared';
-import { HiQuestionMarkCircle } from 'react-icons/hi2';
 import { useExplainHandler } from './hooks/useExplainHandler';
 import { ChunkType } from '@mtypes/documents';
 
@@ -67,7 +66,7 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
                 <TooltipButton
                     label={`Define "${cleanedWord}"`}
                     tooltip={`Click to get an explanation for "${cleanedWord}"`}
-                    icon={<HiQuestionMarkCircle />}
+                    icon={<Icon name='Help' />}
                     iconSize="2xl"
                     size="2xl"
                     onClick={handleDefine}
@@ -77,7 +76,6 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
                     data-testid={`explain-word-${cleanedWord}`}
                 />
             )}
-
             {/* Show explanation only if showDefinition is true */}
             {showDefinition && (
                 <Box mt={4} p={4}>

@@ -1,3 +1,4 @@
+import { Icon } from '@components/icons/Icon';
 /**
  * Image generation tool
  * Provides an interface for generating and displaying images for text chunks.
@@ -6,9 +7,8 @@ import React from 'react';
 import { Box } from '@chakra-ui/react/box';
 import { Image } from '@chakra-ui/react/image';
 import { Spinner } from '@chakra-ui/react/spinner';
-import { Text } from '@chakra-ui/react/text';
 
-import { HiOutlineSparkles } from "react-icons/hi2";
+import { Text } from '@chakra-ui/react/text';
 import { TooltipButton } from '@components/TooltipButton';
 
 import { useImageTool } from './hooks/useImageTool';
@@ -71,7 +71,7 @@ export function ImageTool(props: ImageToolProps) {
                 <TooltipButton
                     label={hasImage ? "Generate New Image" : "Generate Image"}
                     tooltip="Generate an image for this chunk using AI"
-                    icon={<HiOutlineSparkles />}
+                    icon={<Icon name='AISparkle' />}
                     onClick={openDialog}
                     disabled={loading}
                     loading={loading}
@@ -111,7 +111,6 @@ export function ImageTool(props: ImageToolProps) {
                     </Box>
                 )}
             </Box>
-
             {/* Image generation dialog - always rendered but controlled by state.dialogOpen */}
             <ImageGenerationDialog
                 open={state.dialogOpen}
