@@ -3,7 +3,7 @@ from sqlmodel import Session
 from loguru import logger
 
 from backend.models import (
-    Chunk, EvaluationResponse, Rewrite, SourceDocument, Image,
+    Chunk, EvaluationResponse, Rewrite, RewriteRead, SourceDocument, Image,
     SourceDocInfoResponse, SourceDocInfoAiResponse, Explanation, ExplanationResponse, ExplanationRequest, User
 )
 from backend.services.openai_service import OpenAIService
@@ -199,7 +199,7 @@ class AIService:
         logger.info(f"AI image generated and saved: {rel_path} (chunk_id={chunk_id})")
         return ai_image
     
-    def generate_rewrite(self, chunk_id: int, style_title: str, session: Session) -> Rewrite:
+    def generate_rewrite(self, chunk_id: int, style_title: str, session: Session) -> RewriteRead:
         """
         Generate a compressed version of a chunk's text in a given style using AI, and save it to the database.
         """
@@ -215,19 +215,19 @@ class AIService:
         prompt = f"Compress the following text {style_title}:\n{chunk.text}"
         
         # Generate AI response
-        compressed_text = self.openai_service.generate_text_response(
+        rewrite = self.openai_service.generate_text_response(
             "instructions/chunk_rewrite_instructions.txt", prompt
         )
 
-        obj = Rewrite(chunk_id=chunk_id, title=style_title, rewrite_text=compressed_text)
+        obj = Rewrite(chunk_id=chunk_id, title=style_title, rewrite_text=rewrite)
 
         session.add(obj)
         session.commit()
         session.refresh(obj)
         
         logger.info(f"AI chunk rewrite generated for chunk_id: {chunk_id} style: {style_title}")
-        
-        return obj
+
+        return RewriteRead.model_validate(obj)
 
     def generate_chunk_explanation(self, user: User, chunk_id: int, session: Session) -> dict:
         """

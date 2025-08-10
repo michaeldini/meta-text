@@ -75,3 +75,18 @@ export interface ExplanationResponse {
 export async function explainWordsOrChunk(params: ExplanationRequest): Promise<ExplanationResponse> {
     return api.post('explain', { json: params, timeout: 20000 }).json<ExplanationResponse>();
 }
+
+
+
+export interface RewriteResponse {
+    id: number;
+    title: string;
+    rewrite_text: string;
+    chunk_id: number;
+}
+
+
+// Generate and save a chunk rewrite in one step (no preview)
+export async function generateRewrite(chunkId: number, styleTitle: string): Promise<RewriteResponse> {
+    return api.get(`generate-rewrite/${chunkId}?style_title=${encodeURIComponent(styleTitle)}`, { timeout: 20000 }).json<RewriteResponse>();
+}

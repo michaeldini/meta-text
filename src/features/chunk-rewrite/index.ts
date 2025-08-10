@@ -4,5 +4,6 @@
  */
 
 // export * from './RewriteTool';
-export * from './RewriteDisplayTool';
+export * from './RewriteTool';
 export * from './hooks';
+export * from './hooks/useRewriteTool';

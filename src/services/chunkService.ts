@@ -1,10 +1,10 @@
-
+// TODO: is this file used anymore?
 // Chunk Service
 // Provides API calls for managing text chunks and rewrites
 // Follows the ky pattern for API requests, see sourceDocumentService.ts for reference
 
 import { api } from '@utils/ky';
-import type { Rewrite, ChunkType } from '@mtypes/documents';
+import type { ChunkType } from '@mtypes/documents';
 
 
 // Fetch all chunks for a metatext and user
@@ -48,8 +48,3 @@ export async function fetchChunk(chunkId: number): Promise<ChunkType> {
 }
 
 
-
-// Generate and save a chunk rewrite in one step (no preview)
-export async function generateRewrite(chunkId: number, styleTitle: string): Promise<Rewrite> {
-    return api.get(`generate-rewrite/${chunkId}?style_title=${encodeURIComponent(styleTitle)}`).json<Rewrite>();
-}

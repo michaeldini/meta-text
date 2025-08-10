@@ -1,30 +1,3 @@
-import { ChunkType, Rewrite } from '@mtypes/documents';
-
-// =============================================================================
-// CORE TOOL TYPES
-// =============================================================================
-
-/**
- * Generic result wrapper for all tool operations
- */
-export interface ToolResult<T = any> {
-    success: boolean;
-    data?: T;
-    error?: string;
-}
-
-/**
- * Base interface for all chunk-related components
- */
-export interface BaseChunkProps {
-    chunk: ChunkType;
-}
-
-
-
-/**
- * Props for image generation dialog component
- */
 
 // =============================================================================
 // NOTES TOOL TYPES
@@ -55,45 +28,20 @@ export interface MergeChunksToolProps {
 }
 
 // =============================================================================
-// REWRITE TOOL TYPES
-// =============================================================================
+// CHUNKTYPE ATTRIBUTE TOOL TYPES
+// =====================================================
+// for chunktype
+export type AiImage = {
+    id: number;
+    prompt: string;
+    path: string;
+    chunk_id: number;
+};
 
-/**
- * State interface for rewrite hook
- */
-export interface UseRewriteState {
-    rewrites: Rewrite[];
-    selectedId: number | '';
-    loading: boolean;
-    error: string | null;
-}
-
-/**
- * Actions interface for rewrite hook
- */
-export interface UseRewriteActions {
-    setSelectedId: (id: number | '') => void;
-    onRewriteCreated: () => void;
-}
-
-/**
- * Return type for rewrite hook
- */
-export interface UseRewriteReturn extends UseRewriteState, UseRewriteActions {
-    selected: Rewrite | undefined;
-}
-
-/**
- * Props for rewrite tool button component
- */
-export interface RewriteToolButtonProps {
-    onClick: () => void;
-    disabled: boolean;
-}
-
-/**
- * Props for rewrite display tool extending base chunk props
- */
-export interface RewriteDisplayToolProps extends BaseChunkProps {
-    onRewriteCreated?: () => void;
+// for chunktype
+export interface Rewrite {
+    id: number;
+    title: string;
+    rewrite_text: string;
+    chunk_id: number;
 }

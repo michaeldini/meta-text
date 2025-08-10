@@ -11,12 +11,9 @@
  * - UpdateChunkFieldFn
  * - UseUpdateChunkFieldType
  * - UpdateChunkFieldMutationFn
- * - AiImage
- * - Rewrite
- * - RewriteCreate
  */
 import type { UseMutationResult } from '@tanstack/react-query';
-
+import { AiImage, Rewrite } from '@mtypes/tools'
 export type SourceDocumentSummary = {
     id: number;
     title: string;
@@ -98,24 +95,3 @@ export type UpdateChunkFieldMutationFn = (
 ) => void;
 
 
-// add these to a tools type file TODO
-
-export type AiImage = {
-    id: number;
-    prompt: string;
-    path: string;
-    chunk_id: number;
-};
-
-export interface Rewrite {
-    id: number;
-    title: string;
-    rewrite_text: string;
-    chunk_id: number;
-}
-
-export interface RewriteCreate {
-    title: string;
-    rewrite_text: string;
-    chunk_id?: number;
-}

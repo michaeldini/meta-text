@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends, Form, status
 from sqlmodel import Session
 
 from backend.models import (
-     EvaluationResponse, Rewrite, SourceDocInfoResponse, ImageRead, User
+     EvaluationResponse, Rewrite, RewriteRead, SourceDocInfoResponse, ImageRead, User
 )
 from backend.db import get_session
 
@@ -106,9 +106,9 @@ async def generate_rewrite(
     chunk_id: int,
     style_title: str,
     session: Session = Depends(get_session),
-    user = Depends(get_current_user),
+    user: User = Depends(get_current_user),
     ai_service: AIService = Depends(get_ai_service)
-) -> Rewrite:
+) -> RewriteRead:
     """Generate a compressed version of a chunk's text in a given style using AI (does not save). Requires authentication."""
     try:
         return ai_service.generate_rewrite(chunk_id, style_title, session)
