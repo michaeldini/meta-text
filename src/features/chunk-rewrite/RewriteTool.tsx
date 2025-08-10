@@ -13,7 +13,10 @@ import { useRewriteTool } from './hooks/useRewriteTool';
 import RewriteGenerationDialog from './components/RewriteGenerationDialog';
 
 
-interface RewriteDisplayToolProps { chunk: ChunkType; isVisible: boolean; }
+interface RewriteDisplayToolProps {
+    chunk: ChunkType;
+    isVisible: boolean;
+}
 
 export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
     const { chunk, isVisible } = props;

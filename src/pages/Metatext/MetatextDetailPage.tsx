@@ -111,8 +111,8 @@ function MetatextDetailPage(): ReactElement | null {
             {metatext && (
                 <Stack
                     data-testid="metatext-detail-content"
-                // animationName="fade-in"
-                //  animationDuration="fast"
+                    animationName="fade-in"
+                    animationDuration="fast"
                 >
                     <MetatextHeader title={metatext.title} onReviewClick={handleReviewClick} />
                     <Stack direction="row" alignItems="start" justifyContent="space-between" >

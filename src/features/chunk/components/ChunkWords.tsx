@@ -21,8 +21,10 @@ const ChunkWords = memo(function ChunkWords({
     chunk,
     chunkIdx
 }: ChunkWordsProps) {
-    // Split words and get user config for UI
-    const words = chunk.text ? chunk.text.split(/\s+/) : [];
+    // Split words only when chunk.text changes (avoid rebuilding on unrelated renders)
+    const words = React.useMemo(() => (
+        chunk.text ? chunk.text.split(/\s+/) : []
+    ), [chunk.text]);
     const { data: userConfig } = useUserConfig();
     const uiPrefs = userConfig?.uiPreferences || {};
     const textSizePx = uiPrefs.textSizePx ?? 28;
@@ -54,8 +56,8 @@ const ChunkWords = memo(function ChunkWords({
         drawerSelection,
         setDrawerSelection,
         closeDrawer,
-        hoveredWordIdx,
-        setHoveredWordIdx,
+        // hoveredWordIdx,
+        // setHoveredWordIdx,
         containerRef,
     } = hookResult;
     // Update the stateful handleToolbarClose to always point to the latest from the hook
@@ -63,9 +65,23 @@ const ChunkWords = memo(function ChunkWords({
         setHandleToolbarCloseState(() => handleToolbarClose);
     }, [handleToolbarClose]);
 
-    // Render words, highlight selected or hovered
+    // Precompute a Set for faster membership checks when many words
+    const highlightedSet = React.useMemo(() => new Set(highlightedIndices), [highlightedIndices]);
+
+    // Throttle pointer-enter selection events to reduce overhead on dense word lists
+    const lastEnterTsRef = React.useRef(0);
+    const THROTTLE_MS = 16; // ~60fps cap
+    const throttledPointerEnter = React.useCallback((wordIdx: number, e: React.PointerEvent) => {
+        const now = performance.now();
+        if (now - lastEnterTsRef.current < THROTTLE_MS) return;
+        lastEnterTsRef.current = now;
+        // Cast to any to satisfy hook if it expects Mouse/Touch event; pointer event carries needed data
+        handleWordEnter(wordIdx, e as any);
+    }, [handleWordEnter]);
+
+    // Render words; rely on CSS :hover for transient hover styling to avoid extra React state updates
     const wordsElements = words.map((word, wordIdx) => {
-        const isHighlighted = highlightedIndices.includes(wordIdx) || hoveredWordIdx === wordIdx;
+        const isHighlighted = highlightedSet.has(wordIdx);
         return (
             <Box
                 as="span"
@@ -76,19 +92,19 @@ const ChunkWords = memo(function ChunkWords({
                 paddingX={paddingX}
                 background={isHighlighted ? '#3182ce' : 'transparent'}
                 color={isHighlighted ? 'white' : 'inherit'}
-                // borderRadius={isHighlighted ? '4px' : undefined}
                 cursor="pointer"
                 userSelect="none"
-                // transition="background 0.1s"
                 display="inline-block"
-                onMouseDown={e => handleWordDown(wordIdx, e)}
-                onMouseEnter={e => { handleWordEnter(wordIdx, e); setHoveredWordIdx(wordIdx); }}
-                onMouseLeave={() => setHoveredWordIdx(null)}
-                onMouseUp={handleWordUp}
+                onPointerDown={e => handleWordDown(wordIdx, e as any)}
+                // Use pointer enter (works for mouse, stylus) with throttling for drag/hover selection logic
+                onPointerEnter={e => throttledPointerEnter(wordIdx, e)}
+                onPointerUp={handleWordUp as any}
+                // Touch fallback in case pointer events are not supported (legacy)
                 onTouchStart={e => handleWordDown(wordIdx, e)}
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleWordUp}
                 data-word-idx={`${chunkIdx}-${wordIdx}`}
+                _hover={!isHighlighted ? { background: '#3182ce', color: 'white' } : undefined}
             >
                 {word}
             </Box>

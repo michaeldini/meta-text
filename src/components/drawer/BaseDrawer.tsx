@@ -14,9 +14,8 @@ export interface BaseDrawerProps {
     onClose: () => void;
     title?: React.ReactNode;
     maxW?: string | number;
-    // Chakra v3 Drawer placements: 'start' | 'end' | 'top' | 'bottom'.
-    // Accept legacy aliases ('left' | 'right') and map them.
-    placement?: 'start' | 'end' | 'top' | 'bottom' | 'left' | 'right';
+    // Chakra v3 Drawer placements
+    placement?: 'start' | 'end' | 'top' | 'bottom';
     children: React.ReactNode;
     footer?: React.ReactNode;
     showCloseButton?: boolean;
@@ -41,10 +40,8 @@ export function BaseDrawer({
     contentProps,
     bodyProps
 }: BaseDrawerProps) {
-    // Map legacy left/right to start/end.
-    const chakraPlacement = (placement === 'left' ? 'start' : placement === 'right' ? 'end' : placement) as 'start' | 'end' | 'top' | 'bottom';
     return (
-        <Drawer.Root open={open} onOpenChange={e => { if (!e.open) onClose(); }} placement={chakraPlacement}>
+        <Drawer.Root open={open} onOpenChange={e => { if (!e.open) onClose(); }} placement={placement}>
             <Portal>
                 <Drawer.Backdrop />
                 <Drawer.Positioner>

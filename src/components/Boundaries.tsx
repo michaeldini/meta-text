@@ -1,7 +1,9 @@
 import React from 'react';
 import { Box } from '@chakra-ui/react/box';
 import { Button } from '@chakra-ui/react/button';
-import { Text, Spinner } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react/text';
+import { Spinner } from '@chakra-ui/react/spinner';
+import { Center } from '@chakra-ui/react/center';
 import type { Logger } from '../types/global';
 
 interface ErrorBoundaryState {
@@ -84,10 +86,10 @@ export const Boundary: React.FC<BoundaryProps> = ({ children, fallback, fallback
         <React.Suspense
             fallback={
                 fallback || (
-                    <span>
+                    <Center mt="10">
                         <Spinner aria-label="Loading..." />
                         <Text as="span">{fallbackText}</Text>
-                    </span>
+                    </Center>
                 )
             }
         >
