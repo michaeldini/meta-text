@@ -6,22 +6,19 @@ import { useExplainHandler } from './useExplainHandler';
 import type { ChunkType } from '@mtypes/documents';
 
 export function useExplanationTool(chunk: ChunkType, mutateChunkField: any) {
-    const { handleExplain, loading, error } = useExplainHandler({
-        onComplete: (result) => {
-            if (result && chunk?.id) {
-                mutateChunkField({ chunkId: chunk.id, field: 'explanation', value: result.explanation });
-            }
-        },
-    });
+    const { handleExplain, loading, error } = useExplainHandler();
 
     const handleGenerate = useCallback(async () => {
         if (!chunk?.id) return;
-        await handleExplain({
+        const res = await handleExplain({
             words: '',
             context: chunk.text,
             metatext_id: null,
             chunk_id: chunk.id,
         });
+        if (res && chunk?.id) {
+            mutateChunkField({ chunkId: chunk.id, field: 'explanation', value: res.explanation });
+        }
     }, [chunk, handleExplain]);
 
     return {

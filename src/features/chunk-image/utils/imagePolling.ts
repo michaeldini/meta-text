@@ -6,7 +6,7 @@ export const pollImageAvailability = (
 ): Promise<void> => {
     return new Promise((resolve, reject) => {
         const start = Date.now();
-        let timeoutId: number | null = null;
+        let timeoutId: ReturnType<typeof setTimeout> | null = null;
         let isAborted = false;
 
         const cleanup = () => {
@@ -64,7 +64,7 @@ export const createCancellableImagePoll = (
 
     const promise = new Promise<void>((resolve, reject) => {
         const start = Date.now();
-        let timeoutId: number | null = null;
+        let timeoutId: ReturnType<typeof setTimeout> | null = null;
         let isAborted = false;
 
         cleanup = () => {

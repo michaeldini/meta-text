@@ -9,9 +9,7 @@
  * - Designed for maintainability and clarity.
  */
 
-import {
-    defineConfig,
-} from "@chakra-ui/react"
+import { defineConfig, createSystem, mergeConfigs, defaultConfig } from "@chakra-ui/react"
 // import {
 //     inputRecipe,
 //     textareaRecipe,
@@ -31,7 +29,9 @@ import {
 // } from "@chakra-ui/react/theme"
 import { defineRecipe } from "@chakra-ui/react"
 
-const config = defineConfig({
+// App-specific additions/overrides to Chakra's defaultConfig. We merge instead of replace so
+// core utilities (margin/padding shorthands like mt, mb, px, etc.) remain available in typing.
+const appConfig = defineConfig({
     theme: {
         // slotRecipes: {
         //     drawer: drawerSlotRecipe,
@@ -45,6 +45,7 @@ const config = defineConfig({
         // Component recipes for Chakra UI core components
         recipes: {
             tabsContent: defineRecipe({
+                // Use pseudo-state style keys with underscore which map to conditions (matches generated typing expectations)
                 base: {
                     _open: {
                         animationName: "fade-in, scale-in",
@@ -228,4 +229,7 @@ const config = defineConfig({
     },
 })
 
-export default config
+// Merge with Chakra's defaultConfig to retain base utilities & tokens, then create a system (adds $$chakra).
+const system = createSystem(mergeConfigs(defaultConfig, appConfig))
+
+export default system

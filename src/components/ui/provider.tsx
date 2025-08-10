@@ -1,11 +1,12 @@
-import { ChakraProvider, defaultSystem, createSystem, defaultConfig, defaultBaseConfig } from "@chakra-ui/react"
+import { ChakraProvider } from "@chakra-ui/react"
 import {
   ColorModeProvider,
   type ColorModeProviderProps,
 } from "./color-mode"
-import config from "../../styles/themes"
+// themes.ts now exports a fully-created system (merged with defaultConfig)
+import system from "../../styles/themes"
 
-export const system = createSystem(defaultConfig, config)
+export { system }
 export function Provider({ children }: { children: React.ReactNode }) {
   return (
     <ChakraProvider value={system}>

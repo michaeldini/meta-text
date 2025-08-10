@@ -37,8 +37,7 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
         return null;
     }
     // Custom hook to manage explanation logic
-    const { handleExplain, result: explanation, loading, error } = useExplainHandler({
-    });
+    const { handleExplain, result: explanation, loading, error } = useExplainHandler();
 
 
     const [showDefinition, setShowDefinition] = useState(false);
