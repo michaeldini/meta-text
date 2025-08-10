@@ -40,7 +40,7 @@ export default [
       ],
       'local/no-direct-heroicons': [
         'error',
-        { registryPath: 'src/components/icons/registry.tsx', sources: ['react-icons/hi2'] },
+        { registryPath: 'src/components/icons/registry.ts', sources: ['react-icons/hi2'] },
       ],
     },
   },
