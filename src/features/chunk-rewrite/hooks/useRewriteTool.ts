@@ -7,7 +7,8 @@
  */
 import { useCallback, useEffect, useState } from 'react';
 import { generateRewrite } from '@services/aiService';
-import type { ChunkType, Rewrite } from '@mtypes/documents';
+import type { ChunkType } from '@mtypes/documents';
+import { Rewrite } from '@mtypes/tools'
 
 export interface RewriteToolState {
     dialogOpen: boolean;

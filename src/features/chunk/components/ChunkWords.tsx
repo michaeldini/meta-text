@@ -5,7 +5,8 @@
 import React, { memo } from 'react';
 import { Box } from '@chakra-ui/react/box';
 import { Flex } from '@chakra-ui/react/flex';
-import { Drawer } from '@chakra-ui/react/drawer';
+// Drawer logic replaced by shared BaseDrawer component
+import BaseDrawer from '@components/drawer/BaseDrawer';
 import { MergeChunksTool } from '@features/chunk-merge/MergeChunksTool';
 import { useUserConfig } from '@services/userConfigService';
 import type { ChunkType } from '@mtypes/documents';
@@ -104,26 +105,25 @@ const ChunkWords = memo(function ChunkWords({
                 </Box>
             </Flex>
 
-            <Drawer.Root open={drawerOpen} onOpenChange={e => { if (!e.open) closeDrawer(); }} placement="bottom" size="md">
-                <Drawer.Backdrop />
-                <Drawer.Positioner>
-                    <Drawer.Content style={{ minHeight: '220px', marginBottom: '64px' }}>
-                        <Drawer.Header>
-                            <Drawer.Title>Word Tools</Drawer.Title>
-                        </Drawer.Header>
-                        <Drawer.Body style={{ paddingBottom: 48 }}>
-                            {drawerSelection && drawerSelection.length > 0 && (
-                                <WordsToolbar
-                                    onClose={closeDrawer}
-                                    word={drawerSelection.length > 1 ? drawerSelection.map(w => w.word).join(' ') : drawerSelection[0].word}
-                                    wordIdx={drawerSelection[0].wordIdx}
-                                    chunk={chunk}
-                                />
-                            )}
-                        </Drawer.Body>
-                    </Drawer.Content>
-                </Drawer.Positioner>
-            </Drawer.Root>
+            <BaseDrawer
+                open={drawerOpen}
+                onClose={closeDrawer}
+                title="Word Tools"
+                placement="bottom"
+                maxW="100%"
+                contentProps={{ style: { minHeight: '220px', marginBottom: '64px' } }}
+                bodyProps={{ style: { paddingBottom: 48 } }}
+                showCloseButton
+            >
+                {drawerSelection && drawerSelection.length > 0 && (
+                    <WordsToolbar
+                        onClose={closeDrawer}
+                        word={drawerSelection.length > 1 ? drawerSelection.map(w => w.word).join(' ') : drawerSelection[0].word}
+                        wordIdx={drawerSelection[0].wordIdx}
+                        chunk={chunk}
+                    />
+                )}
+            </BaseDrawer>
         </Box>
     );
 });

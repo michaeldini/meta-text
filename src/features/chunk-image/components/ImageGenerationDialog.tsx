@@ -13,14 +13,13 @@
  */
 import React from 'react';
 import { Button, CloseButton } from '@chakra-ui/react/button';
-import { Drawer } from '@chakra-ui/react/drawer';
 import { Textarea } from '@chakra-ui/react/textarea';
 import { Box } from '@chakra-ui/react/box';
 import { Spinner } from '@chakra-ui/react/spinner';
 import { Text } from '@chakra-ui/react/text';
 import { Stack } from '@chakra-ui/react/stack';
 import { Badge } from '@chakra-ui/react/badge';
-import { Portal } from '@chakra-ui/react/portal';
+import BaseDrawer from '@components/drawer/BaseDrawer';
 
 
 // Constants for prompt validation
@@ -127,9 +126,6 @@ export function ImageGenerationDialog(props: ImageGenerationDialogProps) {
 
     const FooterButtons = () => (
         <>
-            {/* <Button onClick={onClose} disabled={loading} variant="ghost" mr={2}>
-                Cancel
-            </Button> */}
             <Button
                 type="submit"
                 colorScheme="blue"
@@ -139,38 +135,25 @@ export function ImageGenerationDialog(props: ImageGenerationDialogProps) {
             >
                 {loading ? 'Generating...' : 'Generate'}
             </Button>
-            <Drawer.CloseTrigger asChild>
-                <CloseButton />
-            </Drawer.CloseTrigger>
         </>
     );
 
     return (
-        <Drawer.Root open={open} onOpenChange={(e) => onClose()}>
-            <Portal>
-                <Drawer.Backdrop />
-                <Drawer.Positioner>
-                    <Drawer.Content>
-                        <Drawer.Header>
-                            <Drawer.Title>Generate AI Image</Drawer.Title>
-                        </Drawer.Header>
-                        <form onSubmit={onSubmit}>
-                            <Drawer.Body>
-                                <Stack direction="column" align="stretch" gap={4}>
-                                    <PromptInput />
-                                    {promptLength === 0 && <SuggestedPrompts />}
-                                    {/* {loading && <LoadingIndicator />} */}
-                                    {error && <ErrorMessage />}
-                                </Stack>
-                            </Drawer.Body>
-                            <Drawer.Footer>
-                                <FooterButtons />
-                            </Drawer.Footer>
-                        </form>
-                    </Drawer.Content>
-                </Drawer.Positioner>
-            </Portal>
-        </Drawer.Root>
+        <BaseDrawer
+            open={open}
+            onClose={onClose}
+            title="Generate AI Image"
+            error={error}
+            footer={<FooterButtons />}
+        >
+            <form onSubmit={onSubmit}>
+                <Stack direction="column" align="stretch" gap={4}>
+                    <PromptInput />
+                    {promptLength === 0 && <SuggestedPrompts />}
+                    {error && <ErrorMessage />}
+                </Stack>
+            </form>
+        </BaseDrawer>
     );
 }
 

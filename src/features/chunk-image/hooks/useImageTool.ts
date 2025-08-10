@@ -3,7 +3,8 @@ import { useCallback, useState, useEffect } from 'react';
 
 import { generateImage } from '@services/aiService';
 import log from '@utils/logger';
-import type { ChunkType, AiImage } from '@mtypes/documents';
+import type { ChunkType } from '@mtypes/documents';
+import { AiImage } from '@mtypes/tools';
 import { pollImageAvailability } from '../utils/imagePolling';
 
 

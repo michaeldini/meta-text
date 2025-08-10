@@ -1,4 +1,8 @@
-
+/**
+ * Rewrite Tool
+ * Concept: If you have a text, you can REWRITE it in a specific STYLE
+ * Example styles: "like I'm 5", "like a bro", "academic"
+ */
 import React from 'react';
 import { Box } from '@chakra-ui/react/box';
 import { Text } from '@chakra-ui/react/text';
