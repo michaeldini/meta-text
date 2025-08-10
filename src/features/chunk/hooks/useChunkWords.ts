@@ -13,7 +13,6 @@ export interface UseChunkWordsProps {
 export function useChunkWords({ chunkIdx, words, handleToolbarClose }: UseChunkWordsProps) {
     // Word selection logic
     const {
-        selectedWordIdx,
         highlightedIndices,
         handleWordDown,
         handleWordEnter,
@@ -49,8 +48,7 @@ export function useChunkWords({ chunkIdx, words, handleToolbarClose }: UseChunkW
         handleToolbarClose();
     }, [handleToolbarClose]);
 
-    // Hover highlight state
-    const [hoveredWordIdx, setHoveredWordIdx] = useState<number | null>(null);
+    // Hover highlight state removed from public API (CSS hover used instead)
 
     // Clear highlight if clicking outside the container
     const containerRef = useRef<HTMLDivElement>(null);
@@ -69,7 +67,6 @@ export function useChunkWords({ chunkIdx, words, handleToolbarClose }: UseChunkW
     }, [highlightedIndices.length, handleToolbarClose]);
 
     return {
-        selectedWordIdx,
         highlightedIndices,
         handleWordDown,
         handleWordEnter,
@@ -81,8 +78,6 @@ export function useChunkWords({ chunkIdx, words, handleToolbarClose }: UseChunkW
         drawerSelection,
         setDrawerSelection,
         closeDrawer,
-        hoveredWordIdx,
-        setHoveredWordIdx,
         containerRef,
     };
 }

@@ -37,6 +37,7 @@ const ChunkWords = memo(function ChunkWords({
     // This is a no-op by default, but will be replaced by the hook's return value
     // to avoid use-before-declaration
     const [handleToolbarCloseState, setHandleToolbarCloseState] = React.useState<() => void>(() => () => { });
+
     const hookResult = useChunkWords({
         chunkIdx,
         words,
@@ -44,7 +45,6 @@ const ChunkWords = memo(function ChunkWords({
     });
     // Destructure after hook call
     const {
-        selectedWordIdx,
         highlightedIndices,
         handleWordDown,
         handleWordEnter,
@@ -56,8 +56,6 @@ const ChunkWords = memo(function ChunkWords({
         drawerSelection,
         setDrawerSelection,
         closeDrawer,
-        // hoveredWordIdx,
-        // setHoveredWordIdx,
         containerRef,
     } = hookResult;
     // Update the stateful handleToolbarClose to always point to the latest from the hook
