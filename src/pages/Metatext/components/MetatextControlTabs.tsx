@@ -26,16 +26,16 @@ export const MetatextControlTabs: React.FC<MetatextControlTabsProps> = ({
     setShowOnlyFavorites,
 }) => {
     return (
-        <Tabs.Root variant="plain" w="100%" deselectable fitted defaultValue={"Controls"}>
-            <Tabs.List bg="bg.inverted">
-                <Tabs.Trigger value="tab-1">Info</Tabs.Trigger>
-                <Tabs.Trigger value="tab-2">Controls</Tabs.Trigger>
-                <Tabs.Trigger value="tab-3">Styles</Tabs.Trigger>
+        <Tabs.Root w="100%" deselectable fitted defaultValue={"Controls"}>
+            <Tabs.List colorPalette="blue">
+                <Tabs.Trigger value="info">Info</Tabs.Trigger>
+                <Tabs.Trigger value="controls">Controls</Tabs.Trigger>
+                <Tabs.Trigger value="styles">Styles</Tabs.Trigger>
             </Tabs.List>
-            <Tabs.Content value="tab-1">
+            <Tabs.Content value="info">
                 <SourceDocInfo sourceDocumentId={sourceDocumentId} />
             </Tabs.Content>
-            <Tabs.Content value="tab-2">
+            <Tabs.Content value="controls">
                 <MetatextHeaderControls
                     metatextId={metatextId}
                     displayChunks={displayChunks}
@@ -44,7 +44,7 @@ export const MetatextControlTabs: React.FC<MetatextControlTabsProps> = ({
                     setShowOnlyFavorites={setShowOnlyFavorites}
                 />
             </Tabs.Content>
-            <Tabs.Content value="tab-3">
+            <Tabs.Content value="styles">
                 <StyleControls />
             </Tabs.Content>
         </Tabs.Root>

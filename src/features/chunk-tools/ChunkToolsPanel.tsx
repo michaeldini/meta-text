@@ -33,11 +33,8 @@ export function ChunkToolsPanel() {
                 aria-label={tool.name}
                 onClick={() => handleToolClick(tool.id)}
                 flex={1}
-                minWidth={0}
-                borderRadius={0}
-                variant="solid"
-                bg={activeTabs.includes(tool.id) ? "primary" : "bg.inverted"}
-                color={"fg.inverted"}
+                bg="bg.subtle"
+                color={activeTabs.includes(tool.id) ? "primary" : "bg.emphasized"}
                 _hover={{ bg: "bg.muted", color: "primary" }}
             >
                 {tool.icon}

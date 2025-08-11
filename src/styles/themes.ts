@@ -44,22 +44,6 @@ const appConfig = defineConfig({
         // },
         // Component recipes for Chakra UI core components
         recipes: {
-            tabsContent: defineRecipe({
-                // Use pseudo-state style keys with underscore which map to conditions (matches generated typing expectations)
-                base: {
-                    _open: {
-                        animationName: "fade-in, scale-in",
-                        animationDuration: "120ms, 120ms",
-                        animationTimingFunction: "ease-out, ease-out",
-                    },
-                    _closed: {
-                        animationName: "fade-out, scale-out",
-                        animationDuration: "120ms",
-                        animationTimingFunction: "ease-in, ease-in",
-                    },
-                },
-            }),
-
             button: defineRecipe({
                 base: {
                     color: "fg",
@@ -108,6 +92,8 @@ const appConfig = defineConfig({
                     },
                 },
             }),
+
+
             //     // You can add variants here if needed
             // }),
             // button: buttonRecipe,
@@ -121,16 +107,9 @@ const appConfig = defineConfig({
         // Design tokens for easy customization
         tokens: {
             colors: {
-                // Use semantic tokens for robust theming and dark mode support
-                // primary: { value: "gray" },
                 primary: { value: "#0f8dee" },
                 // secondary: { value: "#212020" },
-                // accent: { value: "#3b82f6" }, // Example accent color
                 emphasized: { value: "primary" }, // Light gray for emphasis
-                // Extend with Chakra's built-in color tokens as needed
-                // headings: {
-                //     value: "#212020", // Dark gray for headings
-                // },
             },
             fonts: {
                 body: { value: "system-ui, sans-serif" },

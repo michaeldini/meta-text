@@ -53,15 +53,15 @@ function SourceDocDetailPage(): ReactElement | null {
                 <Heading size="6xl">
                     {doc.title}
                 </Heading>
-                <Tabs.Root variant="plain" w="100%" deselectable fitted defaultValue={"Controls"}>
-                    <Tabs.List bg="bg.inverted">
-                        <Tabs.Trigger value="tab-1">Info</Tabs.Trigger>
-                        <Tabs.Trigger value="tab-3">Styles</Tabs.Trigger>
+                <Tabs.Root w="100%" deselectable fitted defaultValue={"Controls"}>
+                    <Tabs.List colorPalette="blue">
+                        <Tabs.Trigger value="info">Info</Tabs.Trigger>
+                        <Tabs.Trigger value="styles">Styles</Tabs.Trigger>
                     </Tabs.List>
-                    <Tabs.Content value="tab-1">
+                    <Tabs.Content value="info">
                         <SourceDocInfo sourceDocumentId={id} />
                     </Tabs.Content>
-                    <Tabs.Content value="tab-3">
+                    <Tabs.Content value="styles">
                         <StyleControls showPaddingX={false} />
                     </Tabs.Content>
                 </Tabs.Root>
