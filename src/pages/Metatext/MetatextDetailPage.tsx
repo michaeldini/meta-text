@@ -19,7 +19,6 @@ import { useMetatextDetailKeyboard } from './hooks/useMetatextDetailKeyboard';
 
 import { useChunkDisplay } from './hooks/useChunkDisplay';
 import { useValidatedRouteId } from '@hooks/useValidatedRouteId';
-
 function MetatextDetailPage(): ReactElement | null {
 
 
@@ -35,7 +34,7 @@ function MetatextDetailPage(): ReactElement | null {
     // Data Fetching
     // =========================
     // Fetch metatext details
-    const { data: metatext, error, isLoading } = useMetatextDetail(id);
+    const { data: metatext, error } = useMetatextDetail(id);
 
     // =========================
     // Unified Chunk Display Logic
@@ -68,6 +67,7 @@ function MetatextDetailPage(): ReactElement | null {
     // =========================
     // Unified Keyboard Shortcuts (Navigation + Search)
     // =========================
+
     useMetatextDetailKeyboard({
         enabled: true,
         onNextPage: () => setCurrentPage(currentPage + 1),
@@ -79,19 +79,6 @@ function MetatextDetailPage(): ReactElement | null {
     });
     return (
         <Box data-testid="metatext-detail-page" paddingLeft="4" bg="bg">
-
-            {/* {isLoading && ( */}
-            {false && (
-                <Stack direction="column" gap={4} mb={4} aria-live="polite" data-testid="metatext-detail-loading" >
-                    <Skeleton bg="bg.inverted" height="35px" width="30%" /> {/* Simulates the header */}
-                    <Skeleton bg="bg.inverted" height="20px" width="100%" /> {/* Simulates a control tab */}
-                    <Skeleton bg="bg.inverted" height="20px" width="40%" marginX="auto" /> {/* Simulates a control tab */}
-                    <Skeleton bg="bg.inverted" height="20px" width="50%" marginX="auto" /> {/* Simulates a control tab */}
-                    <Skeleton bg="bg.inverted" height="100px" /> {/* Simulates the chunk display */}
-                    <SkeletonText bg="bg.inverted" color="fg" noOfLines={20} width="50%" /> {/* Simulates metadata or description */}
-                </Stack>
-            )}
-
             {error && (
                 <Alert.Root status="error" variant="subtle" mb="4" borderRadius="md" data-testid="metatext-detail-error">
                     <Alert.Indicator />
@@ -112,16 +99,15 @@ function MetatextDetailPage(): ReactElement | null {
                     animationDuration="fast"
                 >
                     <MetatextHeader title={metatext.title} onReviewClick={handleReviewClick} />
-                    <Stack direction="row" alignItems="start" justifyContent="space-between" >
-                        <MetatextControlTabs
-                            metatextId={id}
-                            sourceDocumentId={metatext?.source_document_id}
-                            displayChunks={metatext?.chunks || []}
-                            setCurrentPage={setCurrentPage}
-                            showOnlyFavorites={showOnlyFavorites}
-                            setShowOnlyFavorites={setShowOnlyFavorites}
-                        />
-                    </Stack>
+
+                    <MetatextControlTabs
+                        metatextId={id}
+                        sourceDocumentId={metatext?.source_document_id}
+                        displayChunks={metatext?.chunks || []}
+                        setCurrentPage={setCurrentPage}
+                        showOnlyFavorites={showOnlyFavorites}
+                        setShowOnlyFavorites={setShowOnlyFavorites}
+                    />
 
                     <ChunkToolsPanel />
 

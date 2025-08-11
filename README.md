@@ -1,5 +1,9 @@
 # Meta-Text App
 
+## Developer Docs Quick Links
+
+- [Add a Keyboard Shortcut](./docs/ADD_KEYBOARD_SHORTCUT.md)
+
 ## Authentication / Users
 
 The app uses a simple hashed password authentication system. The user can register, login, and logout. The user is given a JWT token upon successful login, which is used for subsequent requests to protected routes.

@@ -14,7 +14,7 @@ interface MetatextHeaderProps {
  * MetatextHeader - Displays the metatext title and review button
  * 
  * A simple presentational component that renders the header section
- * of the metatext detail page with the title and action button.
+ * of the metatext detail page with the title, review button, and keyboard shortcuts button.
  */
 export const MetatextHeader: React.FC<MetatextHeaderProps> = ({
     title,
@@ -41,7 +41,8 @@ export const MetatextHeader: React.FC<MetatextHeaderProps> = ({
                 onClick={onReviewClick}
                 data-testid="review-button"
             />
-            <KeyboardShortcutsDisplay categories={['Metatext', 'Chunk Tools']} />
+            {/* <KeyboardShortcutsDisplay categories={['Navigation', 'Interface', 'Chunks']} /> */}
+            <KeyboardShortcutsDisplay categories={['Navigation', 'Interface']} />
         </Stack>
     );
 };

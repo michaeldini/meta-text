@@ -1,9 +1,6 @@
-/**i dont know what this file is used for yet.
- * General keyboard shortcuts hook that can be used across the application.
- * Provides a flexible way to register and handle keyboard shortcuts with proper cleanup.
- */
+
 import { useEffect, useCallback, useRef } from 'react';
-import { matchesShortcut, type ShortcutAction } from '../utils/keyboardShortcuts';
+import { matchesShortcut, type ShortcutAction } from '@utils/keyboardShortcuts';
 
 export interface UseKeyboardShortcutsOptions {
     enabled?: boolean;
