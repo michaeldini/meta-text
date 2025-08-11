@@ -4,6 +4,65 @@
 
 - [Add a Keyboard Shortcut](./docs/ADD_KEYBOARD_SHORTCUT.md)
 
+## Outline of Pages/Components
+- The app has three main views, a homepage and a source doc and metatext details page.
+- Every page has the Navbar at the top of it.
+- Other views: Login and Register pages.
+
+### Navbar
+
+**components**:
+- Logo button
+- Dynamic Logout/Login/Register buttons based on authentication state.
+- toggle theme button (setup by chakra UI v3.0)
+
+**the user can:**
+- Click logo to go to homepage
+- Logout
+- Go to Login or Register page 
+- toggle dark/light theme
+
+### Homepage
+
+**components**:
+- List of source docs and metatexts
+- Create metatext form
+- Upload sourcedoc form
+
+**the user can:**
+- Search for a source doc or metatext
+- Open a source doc or metatext.
+- Upload a source doc.
+- Create a metatext.
+
+### Source Doc details
+**components**:
+- Header with title and tabs section
+- Tabs: SourceDoc Info and Style Controls.
+- Editable source document.
+
+**the user can:**
+- Interact with SourceDoc info
+- Adjust styles
+- View and Edit the source doc
+
+### Metatext details 
+**components**:
+- Header with SourceDoc Info, style Controls and chunk controls.
+- Tabs: SourceDoc Info, Chunk controls, and Style Controls.
+- Chunk text search input.
+- Chunk Pagination Controls.
+- Chunk display (list of chunks).
+
+**the user can**
+- Interact with SourceDoc info
+- Adjust styles
+- Adjust chunk controls/toggles.
+- Toggle Visibility of tools. 
+- View Chunks
+- Annotate chunks with tools.
+- Explain words or phrases in chunks.
+
 ## Authentication / Users
 
 The app uses a simple hashed password authentication system. The user can register, login, and logout. The user is given a JWT token upon successful login, which is used for subsequent requests to protected routes.

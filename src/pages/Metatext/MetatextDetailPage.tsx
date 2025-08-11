@@ -8,7 +8,6 @@ import type { ReactElement } from 'react';
 import { Stack } from '@chakra-ui/react/stack';
 import { Box } from '@chakra-ui/react/box';
 import { Alert } from '@chakra-ui/react/alert';
-import { Skeleton, SkeletonText } from '@chakra-ui/react/skeleton';
 
 // Imports for components
 import { ChunkToolsPanel } from '@features/chunk-tools';
