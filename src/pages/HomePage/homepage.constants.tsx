@@ -3,24 +3,13 @@
  * - Used to maintain consistency across homepage sections
  */
 
-import { StackSeparator } from "@chakra-ui/react/stack";
 import { Heading } from "@chakra-ui/react"
 import { List } from "@chakra-ui/react/list"
 import { Highlight } from "@chakra-ui/react/highlight"
 
 
-// The Homepage has two sections, Metatexts and Source Documents,
-// which share common stack and heading properties for consistent styling.
-export const commonStackProps = {
-    direction: { base: 'column', lg: 'row' },
-    separator: <StackSeparator />,
-    gap: { base: 0, lg: 10 }, // Responsive gap
-};
-export const commonHeadingProps = {
-    minWidth: '220px',
-    size: 'sub',
-};
-
+// Note: Former `commonStackProps` has been replaced by the reusable
+// `SectionStack` component located at `@components/SectionStack`.
 
 // The WelcomeText component displays a welcome message with a highlight on key phrases.
 export function WelcomeText() {

@@ -13,7 +13,7 @@ import { PageContainer } from '@components/PageContainer';
 import { Stack, StackSeparator } from "@chakra-ui/react/stack"
 
 // UI Constants
-import { commonStackProps, commonHeadingProps, WelcomeText, AppInstructions } from './homepage.constants';
+import { WelcomeText, AppInstructions } from './homepage.constants';
 
 // Data Fetching Hooks
 import { useSourceDocuments, useMetatexts } from '@features/documents/useDocumentsData';
@@ -38,13 +38,9 @@ function HomePage(): ReactElement {
                 <MetatextManager
                     metatexts={metatextsQuery.data ?? []}
                     sourceDocs={sourceDocsQuery.data ?? []}
-                    stackProps={commonStackProps}
-                    headingProps={commonHeadingProps}
                 />
                 <SourceDocumentsManager
                     sourceDocs={sourceDocsQuery.data ?? []}
-                    stackProps={commonStackProps}
-                    headingProps={commonHeadingProps}
                 />
                 <AppInstructions />
             </Stack>

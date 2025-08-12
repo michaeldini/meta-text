@@ -7,7 +7,7 @@
  */
 import React, { ReactElement } from 'react';
 import { Heading } from '@chakra-ui/react/heading';
-import { Stack } from '@chakra-ui/react/stack';
+import SectionStack from '@components/SectionStack';
 
 import MetatextCreateForm from './MetatextCreateForm';
 import { MetatextSummary, SourceDocumentSummary } from '@mtypes/index';
@@ -17,19 +17,15 @@ import { SearchableTable } from '@components/SearchableTable';
 interface MetatextManagerProps {
     metatexts: MetatextSummary[];
     sourceDocs: SourceDocumentSummary[];
-    stackProps?: any;
-    headingProps?: any;
 }
 
 function MetatextManager({
     metatexts,
     sourceDocs,
-    stackProps,
-    headingProps,
 }: MetatextManagerProps): ReactElement {
     return (
-        <Stack {...stackProps}>
-            <Heading {...headingProps}>Metatexts</Heading>
+        <SectionStack>
+            <Heading size="sub">Metatexts</Heading>
             <SearchableTable
                 documents={metatexts}
                 showTitle={true}
@@ -40,7 +36,7 @@ function MetatextManager({
                 sourceDocs={sourceDocs || []}
                 sourceDocsLoading={false}
             />
-        </Stack>
+        </SectionStack>
     );
 }
 
