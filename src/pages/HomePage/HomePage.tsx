@@ -1,30 +1,21 @@
 /**
  * HomePage component
  * - Displays a welcome message, source documents and metatexts sections, app instructions, and keyboard shortcuts.
+ * - The component is very simple: it fetches a list of source docs and metatexts and passes it to the source doc and metatext components.
  */
-
-
-// The homepage has a vertical stack layout.
 import React from 'react';
 import type { ReactElement } from 'react';
+
+// UI Components
+import MetatextManager from '@sections/Metatext/MetatextManager';
+import SourceDocumentsManager from '@sections/SourceDocuments/SourceDocumentsManager';
+import { PageContainer } from '@components/PageContainer';
 import { Stack, StackSeparator } from "@chakra-ui/react/stack"
 
-// The whole page is wrapped in a PageContainer for consistent styling
-import { PageContainer } from '@components/PageContainer';
-
-
-// Import the MetatextPage and SourceDocPage components.
-// they were previously pages, hence, the namespace.
-import MetatextPage from '@pages/Metatext/MetatextPage'
-import SourceDocPage from '@pages/SourceDocument/SourceDocPage';
-
-
-// Import constants, keeping this file clean and focused on the HomePage logic.
-// Check out the file for the constants used in this page.
+// UI Constants
 import { commonStackProps, commonHeadingProps, WelcomeText, AppInstructions } from './homepage.constants';
 
-// Import hooks to fetch source documents and metatexts.
-// These hooks are used to get the data for the SourceDocPage and MetatextPage
+// Data Fetching Hooks
 import { useSourceDocuments, useMetatexts } from '@features/documents/useDocumentsData';
 
 
@@ -32,10 +23,8 @@ import { useSourceDocuments, useMetatexts } from '@features/documents/useDocumen
 function HomePage(): ReactElement {
 
     // Fetch source documents and metatexts
-    // This componenent has subcomponents that display the data, so we fetch it in the parent component.
     const sourceDocsQuery = useSourceDocuments();
     const metatextsQuery = useMetatexts();
-
 
     return (
         <PageContainer>
@@ -46,13 +35,13 @@ function HomePage(): ReactElement {
                 gap={{ base: 5, lg: 10 }} // Responsive gap
             >
                 <WelcomeText />
-                <MetatextPage
+                <MetatextManager
                     metatexts={metatextsQuery.data ?? []}
                     sourceDocs={sourceDocsQuery.data ?? []}
                     stackProps={commonStackProps}
                     headingProps={commonHeadingProps}
                 />
-                <SourceDocPage
+                <SourceDocumentsManager
                     sourceDocs={sourceDocsQuery.data ?? []}
                     stackProps={commonStackProps}
                     headingProps={commonHeadingProps}

@@ -66,6 +66,9 @@
             "@mtypes/*": [
                 "src/types/*"
             ],
+            "@sections/*": [
+                "src/sections/*"
+            ]
         }
     },
     "include": [

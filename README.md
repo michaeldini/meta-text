@@ -25,15 +25,17 @@
 ### Homepage
 
 **components**:
-- List of source docs and metatexts
-- Create metatext form
-- Upload sourcedoc form
+- Message welcoming user to site.
+- Table of source docs and metatexts.
+- Create metatext form.
+- Upload sourcedoc form.
 
 **the user can:**
-- Search for a source doc or metatext
+- Search for a source doc or metatext.
 - Open a source doc or metatext.
 - Upload a source doc.
 - Create a metatext.
+- Delete meteatext or sourcedoc
 
 ### Source Doc details
 **components**:
@@ -62,6 +64,18 @@
 - View Chunks
 - Annotate chunks with tools.
 - Explain words or phrases in chunks.
+
+## Homepage
+
+### React-Query hooks to fetch data
+
+### SourceDocumentsManager (was SourceDocPage)
+
+#### Search Input + Controlled Table
+
+#### SourceDocUploadForm
+
+### MetatextManager (was MetatextPage)
 
 ## Authentication / Users
 

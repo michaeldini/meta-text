@@ -1,59 +1,17 @@
 import { Icon } from '@components/icons/Icon';
-
-
-// Custom React component for uploading source documents
-
 import React from 'react';
-import { Heading, Text, Wrap, WrapItem, Tag, Center } from '@chakra-ui/react';
-import { Stack } from '@chakra-ui/react/stack'
-import { Box } from '@chakra-ui/react/box'
+import { Heading, Text, Wrap, WrapItem, Tag } from '@chakra-ui/react';
+import { Stack } from '@chakra-ui/react/stack';
+import { Box } from '@chakra-ui/react/box';
 import { Button } from '@chakra-ui/react/button';
-
 import { FileUpload } from '@chakra-ui/react/file-upload';
-import { Field, Prose } from '@components/ui';
+import { useSourceDocUploadForm } from './useSourceDocUploadForm';
 
-import { useSourceDocUploadForm } from '../hooks/useSourceDocUploadForm';
-
-/**
- * SourceDocUploadForm component for uploading source documents
- * - Uses custom hook for managing upload state
- * - Displays form with title and file input
- * - Handles file selection and submission
- */
 function SourceDocUploadForm(): React.ReactElement {
-    // Use custom hook for all form logic
-    const {
-        files,
-        error,
-        addSourceDocuments,
-        handleFilesChange,
-        handleSubmit,
-        uploadStatuses,
-    } = useSourceDocUploadForm();
+    const { files, error, addSourceDocuments, handleFilesChange, handleSubmit, uploadStatuses } = useSourceDocUploadForm();
 
-    // UI
-
-    const UploadHeading = (
-        <Heading size="sub">Upload</Heading>
-    );
-
-
-    const SubmitButton = (
-        <Button
-            type="submit"
-            color="primary"
-            variant="ghost"
-            loading={addSourceDocuments.isPending}
-            size="xl"
-            disabled={addSourceDocuments.isPending || !files.length}
-            data-testid="submit-button"
-        >
-            {!addSourceDocuments.isPending ? <Icon name='Download' /> : undefined}
-            {addSourceDocuments.isPending ? 'Uploading...' : 'Upload Documents'}
-        </Button>
-    );
     const FileUploadSection = (
-        <Stack >
+        <Stack>
             <FileUpload.Root
                 accept={[".txt"]}
                 maxFiles={100}
@@ -65,12 +23,10 @@ function SourceDocUploadForm(): React.ReactElement {
             >
                 <FileUpload.HiddenInput data-testid="file-input" />
                 <FileUpload.Dropzone bg="none">
-                    <FileUpload.DropzoneContent >
+                    <FileUpload.DropzoneContent>
                         <Icon name='Download' />
                         <Text>
-                            {files.length
-                                ? `${files.length} file${files.length > 1 ? 's' : ''} selected`
-                                : 'Drag & drop or click to select .txt files'}
+                            {files.length ? `${files.length} file${files.length > 1 ? 's' : ''} selected` : 'Drag & drop or click to select .txt files'}
                         </Text>
                         <Text fontSize="sm" color="fg.muted">
                             {files.length
@@ -88,7 +44,6 @@ function SourceDocUploadForm(): React.ReactElement {
                             const status = uploadStatuses && uploadStatuses[idx];
                             let colorPalette: string = 'gray';
                             let label = f.name;
-                            let icon = null;
                             if (status) {
                                 if (status.uploading) {
                                     colorPalette = 'yellow';
@@ -117,19 +72,27 @@ function SourceDocUploadForm(): React.ReactElement {
 
     return (
         <Stack width="400px">
-            {UploadHeading}
-            {/* {SubHeading} */}
+            <Heading size="sub">Upload</Heading>
             {error && (
                 <Box my={2}>
-                    <Box bg="red.100" color="red.800" p={2} borderRadius="md">
-                        {error}
-                    </Box>
+                    <Box bg="red.100" color="red.800" p={2} borderRadius="md">{error}</Box>
                 </Box>
             )}
             <form onSubmit={handleSubmit}>
-                <Stack direction="column" >
+                <Stack direction="column">
                     {FileUploadSection}
-                    {SubmitButton}
+                    <Button
+                        type="submit"
+                        color="primary"
+                        variant="ghost"
+                        loading={addSourceDocuments.isPending}
+                        size="xl"
+                        disabled={addSourceDocuments.isPending || !files.length}
+                        data-testid="submit-button"
+                    >
+                        {!addSourceDocuments.isPending ? <Icon name='Download' /> : undefined}
+                        {addSourceDocuments.isPending ? 'Uploading...' : 'Upload Documents'}
+                    </Button>
                 </Stack>
             </form>
         </Stack>

@@ -25,10 +25,8 @@ const HomePage = lazy(() => import('@pages/HomePage/HomePage'));
 const LoginPage = lazy(() => import('@pages/Auth/LoginPage'));
 const RegisterPage = lazy(() => import('@pages/Auth/RegisterPage'));
 
-const SourceDocPage = lazy(() => import('@pages/SourceDocument/SourceDocPage'));
 const SourceDocDetailPage = lazy(() => import('@pages/SourceDocument/SourceDocDetailPage'));
 
-const MetatextPage = lazy(() => import('@pages/Metatext/MetatextPage'));
 const MetatextDetailPage = lazy(() => import('@pages/Metatext/MetatextDetailPage'));
 const MetatextReviewPage = lazy(() => import('@pages/Metatext/MetatextReviewPage'));
 

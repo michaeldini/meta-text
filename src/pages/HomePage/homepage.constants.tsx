@@ -17,11 +17,8 @@ export const commonStackProps = {
     gap: { base: 0, lg: 10 }, // Responsive gap
 };
 export const commonHeadingProps = {
-    // size: '5xl',
     minWidth: '220px',
     size: 'sub',
-    // color: 'red',
-
 };
 
 

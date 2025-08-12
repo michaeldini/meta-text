@@ -1,12 +1,12 @@
-import { Icon } from '@components/icons/Icon';
 
 /**
  * SearchableTable.tsx
  * This file contains components and hooks for creating a searchable table interface.
  * It includes a search input, controlled table, and table row components and a hook for managing search results.
- */
+*/
 import React, { useState, useRef, useMemo } from 'react';
 
+import { Icon } from '@components/icons/Icon';
 import { useNavigate } from 'react-router-dom';
 import { Input, InputGroup, CloseButton, Box, Heading } from '@chakra-ui/react';
 import { MetatextSummary, SourceDocumentSummary } from '@mtypes/index';
@@ -44,42 +44,23 @@ function clearSearchAndFocus(setSearch: (value: string) => void, inputRef?: Reac
 
 export function SearchInput({ search, setSearch, inputRef }: SearchInputProps) {
     return (
-        <Box minWidth="300px">
-            {/* <Heading size="2xl">Open</Heading> */}
-            <Heading size="sub">Open</Heading>
-            <InputGroup startElement={<Icon name='Search' />} endElement={search ? (
-                <CloseButton
-                    size="xs"
-                    py="2"
-                    me="-2"
-                    onClick={() => clearSearchAndFocus(setSearch, inputRef)}
-                />
-            ) : undefined}>
-                <Input
-                    ref={inputRef as React.RefObject<HTMLInputElement>}
-                    placeholder="Search..."
-                    value={search}
-                    onChange={e => setSearch(e.target.value)}
-                />
-            </InputGroup>
-        </Box>
+        <InputGroup startElement={<Icon name='Search' />} endElement={search ? (
+            <CloseButton
+                size="xs"
+                py="2"
+                me="-2"
+                onClick={() => clearSearchAndFocus(setSearch, inputRef)}
+            />
+        ) : undefined}>
+            <Input
+                ref={inputRef as React.RefObject<HTMLInputElement>}
+                placeholder="Search..."
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+            />
+        </InputGroup>
     );
 }
-
-// Example usage: combine useSearchResults, SearchInput, and ControlledTable
-//
-// export function SearchableTableWithSearch(props: Omit<ControlledTableProps, 'items'> & { items: Array<{ id: string | number; title: string }> }) {
-//   const { items, ...tableProps } = props;
-//   const { search, setSearch, inputRef, results } = useSearchResults(items);
-//   return (
-//     <Box>
-//       <SearchInput search={search} setSearch={setSearch} inputRef={inputRef} />
-//       <ControlledTable {...tableProps} items={results} />
-//     </Box>
-//   );
-// }
-
-
 
 // Simple table row component to keep the code clean
 export interface TableRowProps {
@@ -150,6 +131,7 @@ export function ControlledTable({ items, navigateToBase, deleteItemMutation }: C
                     </Table.Row>
                 </Table.Header>
                 <Table.Body bg="none">
+
                     {items.map((item) => (
                         <TableRow key={item.id}
                             item={item}
@@ -160,5 +142,32 @@ export function ControlledTable({ items, navigateToBase, deleteItemMutation }: C
                 </Table.Body>
             </Table.Root>
         </Table.ScrollArea>
+    );
+}
+
+interface SearchableTableProps {
+    documents: Array<SourceDocumentSummary | MetatextSummary>;
+    showTitle: boolean;
+    navigateToBase: string;
+    deleteItemMutation: UseMutationResult<any, any, any, any>;
+}
+
+export function SearchableTable({ documents, showTitle, navigateToBase, deleteItemMutation }: SearchableTableProps) {
+    const { search, setSearch, inputRef, results } = useSearchResults(documents);
+    return (
+
+        <Box>
+            {showTitle && <Heading size="sub">Open</Heading>}
+            <SearchInput
+                search={search}
+                setSearch={setSearch}
+                inputRef={inputRef}
+            />
+            <ControlledTable
+                items={results}
+                navigateToBase={navigateToBase}
+                deleteItemMutation={deleteItemMutation}
+            />
+        </Box>
     );
 }
