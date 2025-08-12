@@ -7,7 +7,7 @@
  */
 import React, { ReactElement } from 'react';
 import { Heading } from '@chakra-ui/react/heading';
-import SectionStack from '@components/SectionStack';
+import ResponsiveGridSection from '@components/SectionStack';
 
 import MetatextCreateForm from './MetatextCreateForm';
 import { MetatextSummary, SourceDocumentSummary } from '@mtypes/index';
@@ -24,7 +24,7 @@ function MetatextManager({
     sourceDocs,
 }: MetatextManagerProps): ReactElement {
     return (
-        <SectionStack>
+        <ResponsiveGridSection>
             <Heading size="sub">Metatexts</Heading>
             <SearchableTable
                 documents={metatexts}
@@ -36,7 +36,7 @@ function MetatextManager({
                 sourceDocs={sourceDocs || []}
                 sourceDocsLoading={false}
             />
-        </SectionStack>
+        </ResponsiveGridSection>
     );
 }
 

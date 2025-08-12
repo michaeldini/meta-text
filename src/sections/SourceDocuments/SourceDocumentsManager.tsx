@@ -9,7 +9,7 @@ import React, { ReactElement } from 'react';
 import SourceDocUploadForm from './SourceDocUploadForm';
 import { SearchableTable } from '@components/SearchableTable';
 import { Heading } from '@chakra-ui/react/heading';
-import SectionStack from '@components/SectionStack';
+import ResponsiveGridSection from '@components/SectionStack';
 import { useDeleteSourceDocument } from '@features/documents/useDocumentsData';
 import { SourceDocumentSummary } from '@mtypes/documents';
 
@@ -23,7 +23,7 @@ function SourceDocumentsManager({
     const deleteItemMutation = useDeleteSourceDocument();
 
     return (
-        <SectionStack>
+        <ResponsiveGridSection>
             <Heading size="sub">Sources</Heading>
             <SearchableTable
                 documents={sourceDocs}
@@ -32,7 +32,7 @@ function SourceDocumentsManager({
                 deleteItemMutation={deleteItemMutation}
             />
             <SourceDocUploadForm />
-        </SectionStack>
+        </ResponsiveGridSection>
     );
 }
 

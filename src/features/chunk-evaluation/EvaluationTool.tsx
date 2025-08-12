@@ -6,6 +6,7 @@ import { Icon } from '@components/icons/Icon';
  */
 import React, { useState, useEffect, useCallback } from 'react';
 import { Box } from '@chakra-ui/react/box'
+import { ErrorAlert } from '@components/ErrorAlert';
 import { Prose } from '@components/ui/prose';
 import { TooltipButton } from '@components/TooltipButton'
 import type { ChunkType } from '@mtypes/documents';
@@ -34,7 +35,6 @@ export function EvaluationTool({ chunk, isVisible }: EvaluationToolProps) {
             const data = await generateEvaluation(chunk.id);
             const text = data.evaluation_text || '';
             setEvaluationText(text);
-            // (Optional) If you later want parent/global update, pass a callback prop instead of mutating.
         } catch (err) {
             const msg = err instanceof Error ? err.message : 'Error generating evaluation';
             setError(msg);
@@ -60,11 +60,7 @@ export function EvaluationTool({ chunk, isVisible }: EvaluationToolProps) {
                     ? <Prose>{evaluationText}</Prose>
                     : <span>No evaluation yet.</span>}
             </Box>
-            {error && (
-                <Box color="red.500" mt={2}>
-                    <strong>Error:</strong> {error}
-                </Box>
-            )}
+            <ErrorAlert message={error} mt={2} />
         </Box>
     );
 }

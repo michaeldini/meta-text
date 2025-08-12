@@ -18,7 +18,7 @@ import {
     PasswordInput,
 } from "@components/ui/password-input"
 import { useAuthStore } from '@store/authStore';
-import { AppAlert } from '@components/AppAlert';
+import { ErrorAlert } from '@components/ErrorAlert';
 
 export function LoginPage() {
 
@@ -75,7 +75,7 @@ export function LoginPage() {
                         required
                         autoComplete="current-password"
                     />
-                    {error && <AppAlert severity="error">{error}</AppAlert>}
+                    <ErrorAlert message={error} data-testid="login-error" mt={2} />
                     <Button
                         type="submit"
                         variant="solid"

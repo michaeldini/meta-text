@@ -7,7 +7,7 @@ import { Portal } from '@chakra-ui/react/portal';
 import { CloseButton } from '@chakra-ui/react/button';
 import { Stack } from '@chakra-ui/react/stack';
 import { Box } from '@chakra-ui/react/box';
-import { Text } from '@chakra-ui/react/text';
+import { ErrorAlert } from '@components/ErrorAlert';
 
 export interface BaseDrawerProps {
     open: boolean;
@@ -58,11 +58,7 @@ export function BaseDrawer({
                         )}
                         <Drawer.Body {...bodyProps}>
                             <Stack gap={bodyGap}>
-                                {error && (
-                                    <Box bg="red.50" borderRadius="md" p={3}>
-                                        <Text color="red.600" fontSize="sm">{error}</Text>
-                                    </Box>
-                                )}
+                                <ErrorAlert message={error} />
                                 {children}
                             </Stack>
                         </Drawer.Body>

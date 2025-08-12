@@ -7,7 +7,7 @@ import { Icon } from '@components/icons/Icon';
 import React, { useState, useCallback, useMemo } from 'react';
 import { Text, Heading } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react/box';
-import { AppAlert } from '@components/AppAlert';
+import { ErrorAlert } from '@components/ErrorAlert';
 import { TooltipButton } from '@components/TooltipButton';
 import { useExplainHandler } from './hooks/useExplainHandler';
 import { ChunkType } from '@mtypes/documents';
@@ -84,9 +84,7 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
                     {loading && (
                         <Text>Loading...</Text>
                     )}
-                    {error && (
-                        <AppAlert severity="error">{error}</AppAlert>
-                    )}
+                    <ErrorAlert message={error} mt={2} />
                     {explanation?.explanation && (
                         <Box mt={2}>
                             <Heading size="sm">General Explanation:</Heading>

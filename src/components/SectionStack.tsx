@@ -7,26 +7,24 @@
  * children and forwards any additional Stack props for extensibility.
  */
 import React from 'react';
-import { Stack } from '@chakra-ui/react/stack';
-import type { StackProps } from '@chakra-ui/react';
-import { StackSeparator } from '@chakra-ui/react/stack';
+import { Grid } from '@chakra-ui/react';
 
-export interface SectionStackProps extends StackProps {
+export interface ResponsiveGridProps {
     children: React.ReactNode;
 
 }
 
-function SectionStack({ children, ...rest }: SectionStackProps) {
+function ResponsiveGridSection({ children, ...rest }: ResponsiveGridProps) {
     return (
-        <Stack
-            direction={{ base: 'column', lg: 'row' }}
-            separator={<StackSeparator />}
-            gap={{ base: 0, lg: 10 }}
+        <Grid
+            templateColumns={{ base: "repeat(1, 1fr)", lg: "repeat(3, 1fr)" }}
+            // direction={{ base: 'column', lg: 'row' }}
+            gap={{ base: 2, lg: 10 }}
             {...rest}
         >
             {children}
-        </Stack>
+        </Grid>
     );
 }
 
-export default SectionStack;
+export default ResponsiveGridSection;

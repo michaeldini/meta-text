@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react/box';
 
 interface PageContainerProps {
     children: ReactNode;
@@ -14,15 +14,14 @@ export function PageContainer(props: PageContainerProps): React.ReactElement {
 
     return (
         <Box
-            paddingX={{ base: 4, lg: 8 }}
-            paddingY={{ base: 4, lg: 8 }}
+            px={{ base: 2, lg: 4 }}
+            py={{ base: 4, lg: 8 }}
             maxWidth="6xl"
             alignItems="center"
             justifyContent="center"
             flexDirection="column"
             marginX="auto"
             data-testid="page-container"
-
         >
             {children}
         </Box>

@@ -9,6 +9,7 @@ import { Image } from '@chakra-ui/react/image';
 import { Spinner } from '@chakra-ui/react/spinner';
 
 import { Text } from '@chakra-ui/react/text';
+import { ErrorAlert } from '@components/ErrorAlert';
 import { TooltipButton } from '@components/TooltipButton';
 
 import { useImageTool } from './hooks/useImageTool';
@@ -87,8 +88,8 @@ export function ImageTool(props: ImageToolProps) {
                         )}
                         {/* Error */}
                         {imgError && (
-                            <Box h="300px" rounded="md" bg="red.50" border="1px solid" borderColor="red.200" p={4} display="flex" alignItems="center" justifyContent="center">
-                                <Text fontSize="sm" color="red.600">Image unavailable</Text>
+                            <Box h="300px" rounded="md" border="1px dashed" borderColor="red.200" p={2} display="flex" alignItems="center" justifyContent="center" bg="red.25">
+                                <ErrorAlert message={<Text fontSize="sm">Image unavailable</Text>} />
                             </Box>
                         )}
                         {/* Image */}

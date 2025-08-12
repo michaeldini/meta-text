@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import type { ReactElement } from 'react';
 import { Stack } from '@chakra-ui/react/stack';
 import { Box } from '@chakra-ui/react/box';
-import { Alert } from '@chakra-ui/react/alert';
+import { ErrorAlert } from '@components/ErrorAlert';
 
 // Imports for components
 import { ChunkToolsPanel } from '@features/chunk-tools';
@@ -78,19 +78,12 @@ function MetatextDetailPage(): ReactElement | null {
     });
     return (
         <Box data-testid="metatext-detail-page" paddingLeft="4" bg="bg">
-            {error && (
-                <Alert.Root status="error" variant="subtle" mb="4" borderRadius="md" data-testid="metatext-detail-error">
-                    <Alert.Indicator />
-                    <Alert.Content>
-                        <Alert.Title>Failed to load metatext</Alert.Title>
-                        <Alert.Description>
-                            {typeof error === 'string'
-                                ? error
-                                : (error as any)?.message || 'Something went wrong while fetching this metatext.'}
-                        </Alert.Description>
-                    </Alert.Content>
-                </Alert.Root>
-            )}
+            <ErrorAlert
+                message={error ? (typeof error === 'string' ? error : (error as any)?.message || 'Something went wrong while fetching this metatext.') : null}
+                title="Failed to load metatext"
+                data-testid="metatext-detail-error"
+                mb={4}
+            />
             {metatext && (
                 <Stack
                     data-testid="metatext-detail-content"

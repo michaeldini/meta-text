@@ -6,6 +6,7 @@ import { Icon } from '@components/icons/Icon';
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { Box } from '@chakra-ui/react/box';
+import { ErrorAlert } from '@components/ErrorAlert';
 
 import { TooltipButton } from '@components/TooltipButton';
 import { Prose } from '@components/ui/prose';
@@ -66,11 +67,7 @@ export function ExplanationTool({ chunk, isVisible }: ExplanationToolProps) {
             <Box mt={3}>
                 {explanationText ? <Prose>{explanationText}</Prose> : <span>No explanation yet.</span>}
             </Box>
-            {error && (
-                <Box color="red.500" mt={2}>
-                    <strong>Error:</strong> {error}
-                </Box>
-            )}
+            <ErrorAlert message={error} mt={2} />
         </Box>
     );
 }

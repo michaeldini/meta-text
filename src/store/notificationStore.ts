@@ -19,7 +19,7 @@ interface NotificationState {
 export const useNotificationStore = create<NotificationState>((set) => ({
     notifications: [],
 
-    showNotification: (message: string, type: NotificationType, duration = 6000) => {
+    showNotification: (message: string, type: NotificationType, duration = 3000) => {
         const id = `notification-${Date.now()}-${Math.random()}`;
         const notification: Notification = { id, message, type, duration };
 

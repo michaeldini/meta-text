@@ -1,97 +1,44 @@
-import { Icon } from '@components/icons/Icon';
+// SourceDocUploadForm: main form wrapper orchestrating file picker + submission
 import React from 'react';
-import { Heading, Text, Wrap, WrapItem, Tag } from '@chakra-ui/react';
-import { Stack } from '@chakra-ui/react/stack';
-import { Box } from '@chakra-ui/react/box';
-import { Button } from '@chakra-ui/react/button';
-import { FileUpload } from '@chakra-ui/react/file-upload';
+
+// UI
+import { Heading } from '@chakra-ui/react/heading';
+import { Button, } from '@chakra-ui/react/button';
+import { Stack, } from '@chakra-ui/react/stack';
+import { ErrorAlert } from '@components/ErrorAlert';
+import { Icon } from '@components/icons/Icon';
+import SourceDocFilePicker from './SourceDocFilePicker';
+
+// Hook
 import { useSourceDocUploadForm } from './useSourceDocUploadForm';
 
 function SourceDocUploadForm(): React.ReactElement {
     const { files, error, addSourceDocuments, handleFilesChange, handleSubmit, uploadStatuses } = useSourceDocUploadForm();
-
-    const FileUploadSection = (
-        <Stack>
-            <FileUpload.Root
-                accept={[".txt"]}
-                maxFiles={100}
-                maxFileSize={50 * 1024 * 1024}
-                onFileChange={({ acceptedFiles }) => handleFilesChange(acceptedFiles)}
-                disabled={addSourceDocuments.isPending}
-                required
-                alignItems="center"
-            >
-                <FileUpload.HiddenInput data-testid="file-input" />
-                <FileUpload.Dropzone bg="none">
-                    <FileUpload.DropzoneContent>
-                        <Icon name='Download' />
-                        <Text>
-                            {files.length ? `${files.length} file${files.length > 1 ? 's' : ''} selected` : 'Drag & drop or click to select .txt files'}
-                        </Text>
-                        <Text fontSize="sm" color="fg.muted">
-                            {files.length
-                                ? files.map(f => `${f.name} (${(f.size / 1024).toFixed(1)} KB)`).join(', ')
-                                : 'Only .txt files are allowed'}
-                        </Text>
-                    </FileUpload.DropzoneContent>
-                </FileUpload.Dropzone>
-            </FileUpload.Root>
-            {files.length > 0 && (
-                <Box mt={2}>
-                    <Text fontWeight="bold" mb={2}>Files to upload:</Text>
-                    <Wrap>
-                        {files.map((f, idx) => {
-                            const status = uploadStatuses && uploadStatuses[idx];
-                            let colorPalette: string = 'gray';
-                            let label = f.name;
-                            if (status) {
-                                if (status.uploading) {
-                                    colorPalette = 'yellow';
-                                    label = `${f.name} (Uploading...)`;
-                                } else if (status.success) {
-                                    colorPalette = 'green';
-                                    label = `${f.name} (Uploaded)`;
-                                } else if (status.error) {
-                                    colorPalette = 'red';
-                                    label = `${f.name} (Error)`;
-                                }
-                            }
-                            return (
-                                <WrapItem key={f.name + f.size}>
-                                    <Tag.Root colorPalette={colorPalette} variant="solid" size="md" maxW="250px">
-                                        <Tag.Label truncate>{label}</Tag.Label>
-                                    </Tag.Root>
-                                </WrapItem>
-                            );
-                        })}
-                    </Wrap>
-                </Box>
-            )}
-        </Stack>
-    );
+    const isPending = addSourceDocuments.isPending;
 
     return (
-        <Stack width="400px">
+        <Stack p="2" borderWidth="4px" borderColor="border.muted" borderRadius="lg" dropShadow="md">
             <Heading size="sub">Upload</Heading>
-            {error && (
-                <Box my={2}>
-                    <Box bg="red.100" color="red.800" p={2} borderRadius="md">{error}</Box>
-                </Box>
-            )}
-            <form onSubmit={handleSubmit}>
+            <ErrorAlert message={error} title="Upload failed" data-testid="upload-error" />
+            <form onSubmit={handleSubmit} aria-busy={isPending}>
                 <Stack direction="column">
-                    {FileUploadSection}
+                    <SourceDocFilePicker
+                        files={files}
+                        disabled={isPending}
+                        onFilesChange={handleFilesChange}
+                        uploadStatuses={uploadStatuses}
+                    />
                     <Button
                         type="submit"
                         color="primary"
                         variant="ghost"
-                        loading={addSourceDocuments.isPending}
+                        loading={isPending}
                         size="xl"
-                        disabled={addSourceDocuments.isPending || !files.length}
+                        disabled={isPending || !files.length}
                         data-testid="submit-button"
                     >
-                        {!addSourceDocuments.isPending ? <Icon name='Download' /> : undefined}
-                        {addSourceDocuments.isPending ? 'Uploading...' : 'Upload Documents'}
+                        {!isPending && <Icon name='Download' />}
+                        {isPending ? 'Uploading...' : 'Upload Documents'}
                     </Button>
                 </Stack>
             </form>

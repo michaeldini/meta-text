@@ -7,7 +7,8 @@ import React from 'react';
 import { Box } from '@chakra-ui/react/box';
 import { Text } from '@chakra-ui/react';
 import { Stack } from '@chakra-ui/react/stack';
-import { Prose, Tooltip, Alert } from '@components/ui';
+import { Prose, Tooltip } from '@components/ui';
+import { ErrorAlert } from '@components/ErrorAlert';
 
 
 // Props for SourceDoc presentational component
@@ -45,11 +46,7 @@ export default function SourceDoc({
         <Box
             data-testid="source-doc-container">
             {/* Error Alert */}
-            {error && (
-                <Alert status="error">
-                    <Text>{error}</Text>
-                </Alert>
-            )}
+            <ErrorAlert message={error} />
             <Box width="100%" zIndex={1}>
                 <Editable.Root
                     value={doc.text}

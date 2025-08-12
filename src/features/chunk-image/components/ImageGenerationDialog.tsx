@@ -117,12 +117,7 @@ export function ImageGenerationDialog(props: ImageGenerationDialogProps) {
     //     </Box>
     // );
 
-    const ErrorMessage = () => (
-        <Box mt={2} borderRadius="md" bg="red.50" p={3} color="red.700">
-            <Text fontWeight="bold" mb={1}>Error</Text>
-            <Text>{error}</Text>
-        </Box>
-    );
+    // Removed local ErrorMessage in favor of unified ErrorAlert (handled in drawer body already)
 
     const FooterButtons = () => (
         <>
@@ -150,7 +145,7 @@ export function ImageGenerationDialog(props: ImageGenerationDialogProps) {
                 <Stack direction="column" align="stretch" gap={4}>
                     <PromptInput />
                     {promptLength === 0 && <SuggestedPrompts />}
-                    {error && <ErrorMessage />}
+                    {/* Inline error removed; BaseDrawer shows the alert at top if needed */}
                 </Stack>
             </form>
         </BaseDrawer>
@@ -158,16 +153,3 @@ export function ImageGenerationDialog(props: ImageGenerationDialogProps) {
 }
 
 export default ImageGenerationDialog;
-
-/**
-dialogue showed error, but main page showed image when it was done. check the response types
-2025-08-09 14:27:12.322 | INFO     | backend.services.ai_service:generate_image:182 - Generating AI image for prompt: 'Abstract geometric patterns' and chunk_id: 725
-2025-08-09 14:27:12.322 | DEBUG    | backend.services.openai_service:generate_image:178 - Generating image for prompt: 'Abstract geometric patterns...'
-2025-08-09 14:27:31.074 | DEBUG    | backend.services.openai_service:generate_image:204 - Image generated successfully
-2025-08-09 14:27:31.074 | DEBUG    | backend.services.file_service:save_base64_image:54 - Saving image to: /Users/michaeldini/Dev/meta-text/backend/api/../../public/generated_images/ai_image_20250809182731074587.png
-2025-08-09 14:27:31.082 | INFO     | backend.services.file_service:save_base64_image:64 - Image saved successfully: generated_images/ai_image_20250809182731074587.png
-2025-08-09 14:27:31.087 | INFO     | backend.services.ai_service:generate_image:199 - AI image generated and saved: generated_images/ai_image_20250809182731074587.png (chunk_id=725)
-2025-08-09 14:27:31.090 | ERROR    | backend.api.logs:frontend_log:17 - [FRONTEND] [127.0.0.1] Request timed out: POST http://localhost:5173/api/generate-image
-INFO:     127.0.0.1:59188 - "POST /api/frontend-log HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59183 - "POST /api/generate-image HTTP/1.1" 200 OK
- */

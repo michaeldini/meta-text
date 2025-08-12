@@ -9,16 +9,22 @@ export function useSourceDocUploadForm() {
     const addSourceDocument = useAddSourceDocument();
     const addSourceDocuments = {
         isPending: uploadStatuses.length > 0 && uploadStatuses.some(s => s.uploading),
-        mutate: (fileList: File[], callbacks: { onSuccess?: () => void; onError?: () => void }) => {
+        mutate: async (fileList: File[], callbacks: { onSuccess?: () => void; onError?: () => void }) => {
+            if (!fileList.length) return;
             setUploadStatuses(fileList.map(() => ({ uploading: true, success: false, error: null })));
-            let completed = 0; let anyError = false;
-            fileList.forEach((file, idx) => {
-                addSourceDocument.mutate({ title: file.name.replace(/\.[^.]+$/, ''), file }, {
-                    onSuccess: () => { setUploadStatuses(prev => { const next = [...prev]; next[idx] = { ...next[idx], uploading: false, success: true, error: null }; return next; }); if (++completed === fileList.length) finalize(); },
-                    onError: () => { setUploadStatuses(prev => { const next = [...prev]; next[idx] = { ...next[idx], uploading: false, success: false, error: 'Failed to upload' }; return next; }); anyError = true; if (++completed === fileList.length) finalize(); }
-                });
-            });
-            function finalize() { setUploadStatuses(prev => prev.map(s => ({ ...s, uploading: false }))); anyError ? callbacks.onError?.() : callbacks.onSuccess?.(); }
+            let anyError = false;
+            for (let idx = 0; idx < fileList.length; idx++) {
+                const file = fileList[idx];
+                try {
+                    await addSourceDocument.mutateAsync({ title: file.name.replace(/\.[^.]+$/, ''), file });
+                    setUploadStatuses(prev => { const next = [...prev]; if (next[idx]) next[idx] = { uploading: false, success: true, error: null }; return next; });
+                } catch {
+                    anyError = true;
+                    setUploadStatuses(prev => { const next = [...prev]; if (next[idx]) next[idx] = { uploading: false, success: false, error: 'Failed to upload' }; return next; });
+                }
+            }
+            setUploadStatuses(prev => prev.map(s => ({ ...s, uploading: false })));
+            anyError ? callbacks.onError?.() : callbacks.onSuccess?.();
         },
     };
     const handleFilesChange = (selected: File[]) => {

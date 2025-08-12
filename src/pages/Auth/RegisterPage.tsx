@@ -7,7 +7,7 @@ import { Box } from '@chakra-ui/react/box';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuthStore } from '@store/authStore';
-import { AppAlert } from '@components/AppAlert';
+import { ErrorAlert } from '@components/ErrorAlert';
 
 
 
@@ -62,7 +62,7 @@ export function RegisterPage() {
                     />
                     {/* Optionally show password strength meter */}
                     <PasswordStrengthMeter value={password.length} max={16} mb={2} />
-                    {error && <AppAlert severity="error">{error}</AppAlert>}
+                    <ErrorAlert message={error} data-testid="register-error" mt={2} />
                     <Button
                         type="submit"
                         variant="solid"

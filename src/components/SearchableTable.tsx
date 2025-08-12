@@ -57,6 +57,7 @@ export function SearchInput({ search, setSearch, inputRef }: SearchInputProps) {
                 placeholder="Search..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
+                borderBottom="1px solid"
             />
         </InputGroup>
     );
@@ -156,7 +157,7 @@ export function SearchableTable({ documents, showTitle, navigateToBase, deleteIt
     const { search, setSearch, inputRef, results } = useSearchResults(documents);
     return (
 
-        <Box>
+        <Box p="2" borderWidth="4px" borderColor="border.muted" borderRadius="lg" dropShadow="md">
             {showTitle && <Heading size="sub">Open</Heading>}
             <SearchInput
                 search={search}
