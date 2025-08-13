@@ -25,6 +25,7 @@ export interface ImageToolState {
     imagePath: string | null;
     prompt: string;
     dialogOpen: boolean;
+    selectedId: number | null; // currently selected image id
 }
 
 export interface UseImageToolReturn {
@@ -32,11 +33,14 @@ export interface UseImageToolReturn {
     loading: boolean;
     error: string | null;
     hasImage: boolean;
+    images: AiImage[]; // list of all images
+    selected: AiImage | null; // currently selected image entity
     handleGenerateImage: () => Promise<ImageResult>;
     getImgSrc: () => string; // Returns the complete image source URL
     openDialog: () => void;
     closeDialog: () => void;
     handlePromptChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    setSelectedId: (id: number | null) => void; // select a different image
 }
 /**
  * Result of successful image generation operation
@@ -58,21 +62,28 @@ export const useImageTool = (chunk: ChunkType): UseImageToolReturn => {
         imagePath: null,          // No image data initially
         prompt: '',          // Empty prompt initially
         dialogOpen: false,   // Dialog closed initially
+        selectedId: null,
     });
 
     useEffect(() => {
-        const aiImage = getLatestAiImage(chunk.images);
-        if (aiImage && typeof aiImage.path === 'string') {
-            // Update state with latest image data and prompt
+        // If images list changes, maintain selection if possible, else default to latest
+        const images = chunk.images || [];
+        if (!images.length) {
+            setState(s => ({ ...s, imagePath: null, prompt: '', selectedId: null }));
+            return;
+        }
+        const currentSelected = images.find(img => img.id === state.selectedId);
+        const fallback = getLatestAiImage(images);
+        const active = currentSelected || fallback;
+        if (active) {
             setState(s => ({
                 ...s,
-                imagePath: aiImage.path ?? null,
-                prompt: aiImage.prompt ?? '',
+                selectedId: active.id,
+                imagePath: active.path ?? null,
+                prompt: active.prompt ?? '',
             }));
-        } else {
-            // Clear state if no valid image exists
-            setState(s => ({ ...s, imagePath: null, prompt: '' }));
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [chunk?.images]);
 
     const handleGenerateImage = useCallback(async (): Promise<ImageResult> => {
@@ -100,6 +111,7 @@ export const useImageTool = (chunk: ChunkType): UseImageToolReturn => {
                 loading: false,
                 error: null,
                 dialogOpen: false,
+                selectedId: result?.id ?? s.selectedId, // NOTE: generateImage currently returns path + prompt; if id returned later, capture it
             }));
 
             return { imagePath: result.path, prompt: result.prompt };
@@ -169,6 +181,25 @@ export const useImageTool = (chunk: ChunkType): UseImageToolReturn => {
         setState(s => ({ ...s, prompt: e.target.value })), []);
 
     /**
+     * Sets currently selected image id and updates displayed image data
+     */
+    const setSelectedId = useCallback((id: number | null) => {
+        if (id === null) {
+            setState(s => ({ ...s, selectedId: null, imagePath: null }));
+            return;
+        }
+        const img = chunk.images?.find(i => i.id === id);
+        if (img) {
+            setState(s => ({
+                ...s,
+                selectedId: id,
+                imagePath: img.path ?? null,
+                prompt: img.prompt ?? s.prompt,
+            }));
+        }
+    }, [chunk.images]);
+
+    /**
      * Hook Return Object
      * 
      * Returns all necessary state and functions for the ImageTool component.
@@ -184,10 +215,13 @@ export const useImageTool = (chunk: ChunkType): UseImageToolReturn => {
         openDialog,             // Opens generation dialog
         closeDialog,            // Closes generation dialog  
         handlePromptChange,     // Handles prompt input changes
+        setSelectedId,
 
         // Convenience state accessors (duplicated for easier access)
         loading: state.loading, // Boolean indicating generation in progress
         error: state.error,     // Current error message (null if no error)
         hasImage: Boolean(state.imagePath), // Boolean indicating if image exists
+        images: chunk.images || [],
+        selected: chunk.images?.find(i => i.id === state.selectedId) || null,
     };
 };

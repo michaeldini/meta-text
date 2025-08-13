@@ -52,7 +52,9 @@ export const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = (props) =
             <Stack
                 position="sticky"
                 top={12}
-                zIndex={1}>
+                zIndex={1}
+                pr="1">
+
 
                 {/* Tools Always visible at the top */}
                 {renderStationaryTools(chunk, activeTools.length > 0, uiPreferences)}

@@ -27,35 +27,51 @@ export function ImageTool(props: ImageToolProps) {
     // Initialize hook with chunk data - provides state management and API integration
     const {
         handleGenerateImage,    // Function to trigger AI image generation
-        state,           // Current component state (loading, error, data, prompt, dialogOpen)
-        getImgSrc,       // Helper to construct image source URL
-        openDialog,      // Function to open the generation dialog
-        closeDialog,     // Function to close the dialog and reset state
-        handlePromptChange, // Handler for prompt input changes
-        loading,         // Boolean indicating if generation is in progress
-        error,           // Error message string (null if no error)
-        hasImage         // Boolean indicating if image exists
+        state,                  // Current component state (loading, error, data, prompt, dialogOpen, selectedId)
+        getImgSrc,              // Helper to construct image source URL from selected image
+        openDialog,             // Opens generation dialog
+        closeDialog,            // Closes dialog
+        handlePromptChange,     // Prompt change handler
+        setSelectedId,          // Sets selected image id
+        loading,                // Generation in progress
+        error,                  // Error state
+        hasImage,               // Whether any image exists
+        images,                 // All images for the chunk
+        selected,               // Currently selected image object
     } = useImageTool(chunk);
 
     // Local UI state
     const [imgLoaded, setImgLoaded] = React.useState(false);
     const [imgError, setImgError] = React.useState(false);
     const [imageSrc, setImageSrc] = React.useState<string | null>(null);
+    const [viewerOpen, setViewerOpen] = React.useState(false);
+    // Close on ESC
+    React.useEffect(() => {
+        if (!viewerOpen) return;
+        const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') setViewerOpen(false); };
+        window.addEventListener('keydown', handler);
+        return () => window.removeEventListener('keydown', handler);
+    }, [viewerOpen]);
 
     // Sync local image src whenever the chunk image availability changes
     React.useEffect(() => {
         if (hasImage) {
             const src = getImgSrc();
-            setImageSrc(src);
-            setImgLoaded(false);
-            setImgError(false);
+            // Only reset loading state if the path actually changed
+            setImageSrc(prev => {
+                if (prev !== src) {
+                    setImgLoaded(false);
+                    setImgError(false);
+                }
+                return src;
+            });
         } else {
             setImageSrc(null);
             setImgLoaded(false);
             setImgError(false);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [hasImage, chunk.id]);
+        // Depend on image path (via state.imagePath through getImgSrc) and selection
+    }, [hasImage, getImgSrc, state.selectedId, chunk.id]);
 
 
     const handleDialogSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -80,6 +96,26 @@ export function ImageTool(props: ImageToolProps) {
 
                 {hasImage && (
                     <Box >
+                        {/* Select to browse previous images */}
+                        {images.length > 1 && (
+                            <Box mt={4} mb={4}>
+                                <label htmlFor={`image-select-${chunk.id}`}>Browse previous images:</label>
+                                <select
+                                    id={`image-select-${chunk.id}`}
+                                    value={state.selectedId === null ? '' : String(state.selectedId)}
+                                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                                        const val = e.target.value === '' ? null : Number(e.target.value);
+                                        setSelectedId(val);
+                                    }}
+                                    style={{ width: '100%', marginTop: 8 }}
+                                >
+                                    <option value="">Latest image</option>
+                                    {images.map(img => (
+                                        <option key={img.id} value={img.id}>{`Image ${img.id}`}</option>
+                                    ))}
+                                </select>
+                            </Box>
+                        )}
                         {/* Loader */}
                         {!imgLoaded && !imgError && (
                             <Box display="flex" alignItems="center" justifyContent="center" h="300px" bg="blackAlpha.50" rounded="md">
@@ -95,13 +131,16 @@ export function ImageTool(props: ImageToolProps) {
                         {/* Image */}
                         {imageSrc && !imgError && (
                             <Image
-                                src={imageSrc}
-                                alt={state.prompt}
+                                src={state.selectedId ? `${imageSrc}?img=${state.selectedId}` : imageSrc}
+                                alt={selected?.prompt || state.prompt}
                                 h="100%"
                                 w="100%"
                                 objectFit="cover"
                                 display={imgLoaded ? 'block' : 'none'}
                                 rounded="md"
+                                cursor={imgLoaded ? 'pointer' : 'default'}
+                                title={imgLoaded ? 'Click to view full size' : undefined}
+                                onClick={() => { if (imgLoaded) setViewerOpen(true); }}
                                 onLoad={() => setImgLoaded(true)}
                                 onError={() => {
                                     setImgLoaded(true);
@@ -122,6 +161,51 @@ export function ImageTool(props: ImageToolProps) {
                 onPromptChange={handlePromptChange}
                 onSubmit={handleDialogSubmit}
             />
+            {viewerOpen && (
+                <Box
+                    position="fixed"
+                    top={0}
+                    left={0}
+                    w="100vw"
+                    h="100vh"
+                    zIndex={1400}
+                    bg="blackAlpha.800"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    onClick={() => setViewerOpen(false)}
+                    role="dialog"
+                    aria-modal="true"
+                >
+                    <Box
+                        position="absolute"
+                        top={3}
+                        right={4}
+                        fontSize="2xl"
+                        color="whiteAlpha.800"
+                        cursor="pointer"
+                        onClick={() => setViewerOpen(false)}
+                        aria-label="Close image viewer"
+
+                    >
+                        ×
+                    </Box>
+                    {imageSrc && (
+                        <Image
+                            src={state.selectedId ? `${imageSrc}?img=${state.selectedId}&full=1` : imageSrc}
+                            alt={selected?.prompt || state.prompt}
+                            maxH="90vh"
+                            maxW="90vw"
+                            objectFit="contain"
+                            rounded="md"
+                            onClick={e => e.stopPropagation()}
+                            animationName="fade-in"
+                            animationDuration=".5s"
+
+                        />
+                    )}
+                </Box>
+            )}
         </>
     );
 };
