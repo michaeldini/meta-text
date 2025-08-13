@@ -25,8 +25,9 @@ export interface ExplanationToolProps {
 
 
 
-const removeTrailingPunctuation = (text: string): string => {
-    return text.replace(/[\p{P}\p{S}]+$/gu, '').trim();
+const trimPunctuation = (text: string): string => {
+    // Remove leading and trailing punctuation/symbols and trim whitespace
+    return text.replace(/^[\p{P}\p{S}]+|[\p{P}\p{S}]+$/gu, '').trim();
 };
 
 export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => {
@@ -41,7 +42,7 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
 
 
     const [showDefinition, setShowDefinition] = useState(false);
-    const cleanedWord = useMemo(() => removeTrailingPunctuation(word), [word]);
+    const cleanedWord = useMemo(() => trimPunctuation(word), [word]);
 
     const handleDefine = useCallback(async () => {
         const result = await handleExplain({
@@ -77,26 +78,17 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
             )}
             {/* Show explanation only if showDefinition is true */}
             {showDefinition && (
-                <Box mt={4} p={4}>
-                    <Heading id="explanation-title" size="md" mb={2}>
-                        Explaining: {cleanedWord}
+                <Box    >
+                    <Heading id="explanation-title" size="xl" mb={10} textAlign="left" textDecoration="underline">
+                        {cleanedWord}
                     </Heading>
-                    {loading && (
-                        <Text>Loading...</Text>
-                    )}
-                    <ErrorAlert message={error} mt={2} />
                     {explanation?.explanation && (
-                        <Box mt={2}>
-                            <Heading size="sm">General Explanation:</Heading>
-                            <Text>{explanation.explanation}</Text>
-                        </Box>
+                        <Text textStyle="lg" mb="2">{explanation.explanation}</Text>
                     )}
                     {explanation?.explanation_in_context && (
-                        <Box mt={2}>
-                            <Heading size="sm">Explanation in Context:</Heading>
-                            <Text>{explanation.explanation_in_context}</Text>
-                        </Box>
+                        <Text textStyle="lg">{explanation.explanation_in_context}</Text>
                     )}
+                    <ErrorAlert message={error} mt={2} />
                 </Box>
             )}
         </>

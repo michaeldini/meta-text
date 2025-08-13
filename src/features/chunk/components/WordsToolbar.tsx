@@ -2,7 +2,7 @@
 // This component provides a popover with tools for splitting and defining words in a chunk
 
 import React, { memo } from 'react';
-import { Popover, Box, Stack } from '@chakra-ui/react';
+import { Stack } from '@chakra-ui/react/stack';
 import { SplitChunkTool } from '@features/chunk-split';
 import { WordsExplanationTool } from '@features/chunk-explanation';
 

@@ -1,7 +1,7 @@
 // Container component that renders all active chunk tools
 // Replaces the old ChunkTabs component with a simpler, more direct approach
 
-import React, { Suspense } from 'react';
+import React from 'react';
 import { Box, Stack, } from '@chakra-ui/react';
 import { CopyTool } from '@features/chunk-copy';
 import type { ChunkType, UseUpdateChunkFieldType } from '@mtypes/documents';
@@ -43,8 +43,6 @@ function renderStationaryTools(chunk: ChunkType, asRow: boolean, uiPreferences?:
 
 export const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = (props) => {
     const { chunk, activeTools, updateChunkFieldMutation, uiPreferences } = props;
-
-
 
     return (
         <Box data-chunk-id={`chunk-tools-${chunk.id}`}

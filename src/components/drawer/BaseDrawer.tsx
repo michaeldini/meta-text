@@ -6,7 +6,6 @@ import { Drawer } from '@chakra-ui/react/drawer';
 import { Portal } from '@chakra-ui/react/portal';
 import { CloseButton } from '@chakra-ui/react/button';
 import { Stack } from '@chakra-ui/react/stack';
-import { Box } from '@chakra-ui/react/box';
 import { ErrorAlert } from '@components/ErrorAlert';
 
 export interface BaseDrawerProps {

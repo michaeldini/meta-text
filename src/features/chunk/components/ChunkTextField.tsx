@@ -7,20 +7,22 @@ export interface ChunkTextFieldProps {
     onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
     onBlur?: (event: React.FocusEvent<HTMLTextAreaElement>) => void;
     placeholder?: string;
-    minRows?: number;
 }
 
 
-export function ChunkTextField({ label, value, onChange, onBlur, placeholder, minRows = 2, ...rest }: ChunkTextFieldProps) {
+export function ChunkTextField({ label, value, onChange, onBlur, placeholder, ...rest }: ChunkTextFieldProps) {
     return (
         <Textarea
             value={value}
             onChange={onChange}
             onBlur={onBlur}
             placeholder={placeholder}
-            // minRows={minRows}
-            {...rest}
             data-testid={`${label} input field`}
+            variant="subtle"
+            size="lg"
+            resize="none"
+            autoresize
+            {...rest}
         />
     );
 }
