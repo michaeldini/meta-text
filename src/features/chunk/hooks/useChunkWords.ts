@@ -19,27 +19,25 @@ export function useChunkWords({ chunkIdx, words, handleToolbarClose }: UseChunkW
         handleWordUp,
         handleToolbarClose: handleToolbarCloseSelection,
         handleTouchMove,
+        // expose selection indices so we can compute selection synchronously on pointer up
+        selectionStartIdx,
+        selectionEndIdx,
     } = useWordSelection(chunkIdx);
 
     // Drawer state
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [drawerSelection, setDrawerSelection] = useState<{ word: string; wordIdx: number }[] | null>(null);
 
-    // Only open drawer on mouseup/touchend (selection finalized)
-    const selectionFinalizedRef = useRef(false);
-    useEffect(() => {
-        if (selectionFinalizedRef.current && highlightedIndices.length > 0) {
-            setDrawerSelection(highlightedIndices.map(i => ({ word: words[i], wordIdx: i })));
-            setDrawerOpen(true);
-            selectionFinalizedRef.current = false;
-        }
-    }, [highlightedIndices, words]);
-
-    // Patch handleWordUp to set selectionFinalizedRef
+    // Patch handleWordUp to compute and open drawer synchronously (removes one render-cycle delay)
     const handleWordUpPatched = useCallback(() => {
-        selectionFinalizedRef.current = true;
+        // Current highlightedIndices already reflect final drag state prior to mouse up (since pointer enter updated end)
+        const indices = highlightedIndices;
+        if (indices.length > 0) {
+            setDrawerSelection(indices.map(i => ({ word: words[i], wordIdx: i })));
+            setDrawerOpen(true);
+        }
         handleWordUp();
-    }, [handleWordUp]);
+    }, [handleWordUp, highlightedIndices, words]);
 
     // Close drawer and clear selection
     const closeDrawer = useCallback(() => {
