@@ -42,7 +42,7 @@ function normalizeSize(raw: IconProps['size']): number | string {
     return Number.isFinite(asNum) ? asNum : 20;
 }
 
-export const Icon: React.FC<IconProps> = ({ name, size = 20, title, ...rest }) => {
+export function Icon({ name, size = 20, title, ...rest }: IconProps) {
     const Cmp = icons[name] as unknown as VendorIconComponent;
     const ariaProps = title ? { role: 'img', 'aria-label': title } : { 'aria-hidden': true };
     const normalized = normalizeSize(size);
@@ -51,4 +51,4 @@ export const Icon: React.FC<IconProps> = ({ name, size = 20, title, ...rest }) =
             {title ? <title>{title}</title> : null}
         </Cmp>
     );
-};
+}

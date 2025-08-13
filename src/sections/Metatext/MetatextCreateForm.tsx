@@ -30,11 +30,13 @@ export interface MetatextCreateFormProps {
 
 // 1. Header ---------------------------------------------------------------
 interface FormHeaderProps { }
-const FormHeader: React.FC<FormHeaderProps> = () => (
-    <Box>
-        <Heading size="sub" mb={4}>New</Heading>
-    </Box>
-);
+function FormHeader(_: FormHeaderProps) {
+    return (
+        <Box>
+            <Heading size="sub" mb={4}>New</Heading>
+        </Box>
+    );
+}
 
 // 2. Source Document Select ----------------------------------------------
 interface SourceDocSelectProps {
@@ -44,58 +46,64 @@ interface SourceDocSelectProps {
     collection: any;
     onChange: (id: string) => void;
 }
-const SourceDocSelect: React.FC<SourceDocSelectProps> = ({ collection, onChange }) => (
-    <Select.Root collection={collection} onValueChange={(e) => onChange(e.value[0])}>
-        <Select.HiddenSelect />
-        <Select.Control>
-            <Select.Trigger>
-                <Select.ValueText placeholder="Select a source document" color="fg.muted" />
-            </Select.Trigger>
-            <Select.IndicatorGroup>
-                <Select.Indicator />
-            </Select.IndicatorGroup>
-        </Select.Control>
-        <Portal>
-            <Select.Positioner>
-                <Select.Content>
-                    {(collection.items as any[]).map((item: any) => (
-                        <Select.Item item={item} key={item.value}>
-                            {item.label}
-                            <Select.ItemIndicator />
-                        </Select.Item>
-                    ))}
-                </Select.Content>
-            </Select.Positioner>
-        </Portal>
-    </Select.Root>
-);
+function SourceDocSelect({ collection, onChange }: SourceDocSelectProps) {
+    return (
+        <Select.Root collection={collection} onValueChange={(e) => onChange(e.value[0])}>
+            <Select.HiddenSelect />
+            <Select.Control>
+                <Select.Trigger>
+                    <Select.ValueText placeholder="Select a source document" color="fg.muted" />
+                </Select.Trigger>
+                <Select.IndicatorGroup>
+                    <Select.Indicator />
+                </Select.IndicatorGroup>
+            </Select.Control>
+            <Portal>
+                <Select.Positioner>
+                    <Select.Content>
+                        {(collection.items as any[]).map((item: any) => (
+                            <Select.Item item={item} key={item.value}>
+                                {item.label}
+                                <Select.ItemIndicator />
+                            </Select.Item>
+                        ))}
+                    </Select.Content>
+                </Select.Positioner>
+            </Portal>
+        </Select.Root>
+    );
+}
 
 // 3. Title Input ----------------------------------------------------------
 interface TitleInputProps {
     value: string;
     onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
-const TitleInput: React.FC<TitleInputProps> = ({ value, onChange }) => (
-    <Input
-        placeholder="Title"
-        value={value}
-        onChange={onChange}
-        data-testid="title-input"
-        required
-    />
-);
+function TitleInput({ value, onChange }: TitleInputProps) {
+    return (
+        <Input
+            placeholder="Title"
+            value={value}
+            onChange={onChange}
+            data-testid="title-input"
+            required
+        />
+    );
+}
 
 // 4. Submit Button --------------------------------------------------------
 interface SubmitButtonProps {
     loading: boolean;
     disabled: boolean;
 }
-const SubmitButton: React.FC<SubmitButtonProps> = ({ loading, disabled }) => (
-    <Button type="submit" disabled={disabled} data-testid="submit-button" color="primary">
-        <Icon name='AISparkle' />
-        {loading ? 'Creating...' : 'Create Metatext'}
-    </Button>
-);
+function SubmitButton({ loading, disabled }: SubmitButtonProps) {
+    return (
+        <Button type="submit" disabled={disabled} data-testid="submit-button" color="primary">
+            <Icon name='AISparkle' />
+            {loading ? 'Creating...' : 'Create Metatext'}
+        </Button>
+    );
+}
 
 // Container / Composition -------------------------------------------------
 function MetatextCreateForm({ sourceDocs }: MetatextCreateFormProps): React.ReactElement {

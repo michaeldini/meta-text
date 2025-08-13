@@ -16,11 +16,11 @@ interface ChunkStatusInfoProps {
  * Shows the current status of chunk filtering and search results,
  * along with the search input component.
  */
-export const ChunkStatusInfo: React.FC<ChunkStatusInfoProps> = ({
+export function ChunkStatusInfo({
     totalFilteredChunks,
     displayChunksCount,
     isSearchActive = false
-}) => {
+}: ChunkStatusInfoProps) {
     const getStatusMessage = () => {
         if (totalFilteredChunks === 0) {
             return isSearchActive
@@ -43,4 +43,4 @@ export const ChunkStatusInfo: React.FC<ChunkStatusInfoProps> = ({
             </Text>
         </Center>
     );
-};
+}

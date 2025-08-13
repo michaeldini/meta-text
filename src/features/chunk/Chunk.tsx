@@ -5,8 +5,6 @@ import { Stack } from '@chakra-ui/react';
 import ChunkWords from './components/ChunkWords';
 import { ChunkToolsContainer } from '@features/chunk-tools';
 
-
-
 // Types
 import type { ChunkType } from '@mtypes/documents';
 import { uiPreferences } from '@mtypes/user';
@@ -27,7 +25,7 @@ const Chunk = memo(function Chunk({
             data-chunk-id={chunk.id}
             width="100%"
             borderBottom="1px solid"
-            borderColor="border.subtle"
+            borderColor="border.emphasized"
         >
             <ChunkWords
                 chunk={chunk}

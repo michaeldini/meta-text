@@ -16,10 +16,10 @@ interface MetatextHeaderProps {
  * A simple presentational component that renders the header section
  * of the metatext detail page with the title, review button, and keyboard shortcuts button.
  */
-export const MetatextHeader: React.FC<MetatextHeaderProps> = ({
+export function MetatextHeader({
     title,
     onReviewClick
-}) => {
+}: MetatextHeaderProps) {
     return (
         <Stack
             direction="row"
@@ -45,4 +45,4 @@ export const MetatextHeader: React.FC<MetatextHeaderProps> = ({
             <KeyboardShortcutsDisplay categories={['Navigation', 'Interface']} />
         </Stack>
     );
-};
+}

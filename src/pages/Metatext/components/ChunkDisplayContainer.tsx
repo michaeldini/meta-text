@@ -20,7 +20,7 @@ interface ChunkDisplayContainerProps {
 /**
  * ChunkDisplayContainer - Combines status, pagination, and list rendering for chunks
  */
-export const ChunkDisplayContainer: React.FC<ChunkDisplayContainerProps> = ({
+export function ChunkDisplayContainer({
     displayChunks,
     totalFilteredChunks,
     chunksPerPage = 5,
@@ -29,7 +29,7 @@ export const ChunkDisplayContainer: React.FC<ChunkDisplayContainerProps> = ({
     onPageChange,
     startIndex,
     isSearchActive = false,
-}) => {
+}: ChunkDisplayContainerProps) {
     return (
         <Box data-testid="chunk-display-container">
             <Stack gap={4}>
@@ -51,4 +51,4 @@ export const ChunkDisplayContainer: React.FC<ChunkDisplayContainerProps> = ({
             </Stack>
         </Box>
     );
-};
+}

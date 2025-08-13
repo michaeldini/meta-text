@@ -3,25 +3,29 @@
 
 import React from 'react';
 import { Box, Stack, } from '@chakra-ui/react';
-import { CopyTool } from '@features/chunk-copy';
-import type { ChunkType, UseUpdateChunkFieldType } from '@mtypes/documents';
-import type { ChunkToolId } from './toolsRegistry';
+import type { ChunkType } from '@mtypes/documents';
 
+// Stationary Tools
 import { ChunkPosition } from '@components/ChunkPosition';
+import { CopyTool } from '@features/chunk-copy';
+import { ChunkFavoriteToggle } from '@features/chunk-favorite';
+import ChunkBookmarkToggle from '@features/chunk-bookmark/components/ChunkBookmarkToggle';
 
+// Tool components
 import { NotesTool } from '@features/chunk-note';
 import { EvaluationTool } from '@features/chunk-evaluation';
 import { ImageTool } from '@features/chunk-image';
 import { RewriteDisplayTool } from '@features/chunk-rewrite';
 import { ExplanationTool } from '@features/chunk-explanation';
-import { ChunkFavoriteToggle } from '@features/chunk-favorite';
-import ChunkBookmarkToggle from '@features/chunk-bookmark/components/ChunkBookmarkToggle';
-import { uiPreferences } from '@mtypes/user';
-import { useUpdateChunkField } from '@hooks/useUpdateChunkField';
 
+// Update API
+import { useUpdateChunkField } from '@hooks/useUpdateChunkField';
 
 // Store
 import { useChunkToolsStore } from '@store/chunkToolsStore';
+
+// Types
+import { uiPreferences } from '@mtypes/user';
 
 function renderStationaryTools(chunk: ChunkType, asRow: boolean, uiPreferences?: uiPreferences) {
     return (
@@ -29,10 +33,8 @@ function renderStationaryTools(chunk: ChunkType, asRow: boolean, uiPreferences?:
             flexDirection={asRow ? 'row' : 'column'}
             alignItems="center"
         >
-            {/* Chunk position display (logic encapsulated in component) */}
             <ChunkPosition chunk={chunk} uiPreferences={uiPreferences} />
             <CopyTool chunkText={chunk.text} />
-            {/* Replace with your own toggle component */}
             <ChunkBookmarkToggle chunk={chunk} />
             <ChunkFavoriteToggle chunk={chunk} />
         </Stack>
@@ -45,7 +47,7 @@ interface ChunkToolsContainerProps {
     uiPreferences: uiPreferences;
 }
 
-export const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = (props) => {
+export function ChunkToolsContainer(props: ChunkToolsContainerProps) {
     const { chunk, uiPreferences } = props;
     const updateChunkFieldMutation = useUpdateChunkField();
     const { activeTools } = useChunkToolsStore();
@@ -101,6 +103,6 @@ export const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = (props) =
 
         </Box>
     );
-};
+}
 
 export default ChunkToolsContainer;

@@ -20,14 +20,14 @@ interface ChunkPaginationProps {
  * Provides pagination controls with previous/next buttons and page numbers.
  * Handles page navigation and displays current page status.
  */
-export const ChunkPagination: React.FC<ChunkPaginationProps> = ({
+export function ChunkPagination({
     currentPage,
     totalPages,
     totalItems,
     onPageChange,
     disabled = false,
     pageSize = 5
-}) => {
+}: ChunkPaginationProps) {
     // Don't render if there's only one page or no pages
     if (totalPages <= 1) {
         return null;
@@ -99,4 +99,4 @@ export const ChunkPagination: React.FC<ChunkPaginationProps> = ({
             </Pagination.Root>
         </Center>
     );
-};
+}

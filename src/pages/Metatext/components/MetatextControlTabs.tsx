@@ -17,14 +17,14 @@ interface MetatextControlTabsProps {
 /**
  * MetatextControlTabs - Renders tabs for Info, Controls, and Styles
  */
-export const MetatextControlTabs: React.FC<MetatextControlTabsProps> = ({
+export function MetatextControlTabs({
     metatextId,
     sourceDocumentId,
     displayChunks,
     setCurrentPage,
     showOnlyFavorites,
     setShowOnlyFavorites,
-}) => {
+}: MetatextControlTabsProps) {
     return (
         <Tabs.Root w="100%" deselectable fitted defaultValue={"Controls"}>
             <Tabs.List colorPalette="blue">
@@ -49,4 +49,4 @@ export const MetatextControlTabs: React.FC<MetatextControlTabsProps> = ({
             </Tabs.Content>
         </Tabs.Root>
     );
-};
+}

@@ -13,7 +13,7 @@ interface ChunkListProps {
 /**
  * ChunkList - Renders a list of Chunk components
  */
-export const ChunkList: React.FC<ChunkListProps> = ({ chunks, startIndex }) => {
+export function ChunkList({ chunks, startIndex }: ChunkListProps) {
     if (!chunks || chunks.length === 0) {
         return null;
     }
@@ -31,4 +31,4 @@ export const ChunkList: React.FC<ChunkListProps> = ({ chunks, startIndex }) => {
             ))}
         </Stack>
     );
-};
+}

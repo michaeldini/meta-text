@@ -118,14 +118,16 @@ export interface KeyboardShortcutItemProps {
     shortcut: KeyboardShortcut;
 }
 
-export const KeyboardShortcutItem: React.FC<KeyboardShortcutItemProps> = memo(({ shortcut }) => (
-    <HStack justify="end" w="full">
-        <Text fontSize="sm">{shortcut.description}</Text>
-        <Badge color="fg" variant="outline" fontFamily="mono" fontSize="xs">
-            {formatShortcut(shortcut)}
-        </Badge>
+export const KeyboardShortcutItem = memo(function KeyboardShortcutItem({ shortcut }: KeyboardShortcutItemProps) {
+    return (
+        <HStack justify="end" w="full">
+            <Text fontSize="sm">{shortcut.description}</Text>
+            <Badge color="fg" variant="outline" fontFamily="mono" fontSize="xs">
+                {formatShortcut(shortcut)}
+            </Badge>
     </HStack>
-));
+    );
+});
 KeyboardShortcutItem.displayName = 'KeyboardShortcutItem';
 
 // 2. LIST ------------------------------------------------------------------
@@ -134,7 +136,7 @@ export interface KeyboardShortcutListProps {
     align?: 'center' | 'flex-start'; // alignment variation (drawer vs elsewhere)
 }
 
-export const KeyboardShortcutList: React.FC<KeyboardShortcutListProps> = ({ categories, align = 'center' }) => {
+export function KeyboardShortcutList({ categories, align = 'center' }: KeyboardShortcutListProps) {
     const shortcutsByCategory = getShortcutsByCategory();
     const categoriesToShow = categories || Object.keys(shortcutsByCategory);
 
@@ -158,7 +160,7 @@ export const KeyboardShortcutList: React.FC<KeyboardShortcutListProps> = ({ cate
             })}
         </>
     );
-};
+}
 
 // 3. CONTAINER / DISPLAY ---------------------------------------------------
 interface KeyboardShortcutsDisplayProps {
@@ -173,7 +175,7 @@ interface KeyboardShortcutsDisplayProps {
  * @param param0 - Props for the component
  * @returns JSX.Element
  */
-export const KeyboardShortcutsDisplay: React.FC<KeyboardShortcutsDisplayProps> = ({ categories }) => {
+export function KeyboardShortcutsDisplay({ categories }: KeyboardShortcutsDisplayProps) {
     const isHelpOpen = useHelpStore(s => s.isHelpOpen);
     const openHelp = useHelpStore(s => s.openHelp);
     const closeHelp = useHelpStore(s => s.closeHelp);
@@ -205,5 +207,5 @@ export const KeyboardShortcutsDisplay: React.FC<KeyboardShortcutsDisplayProps> =
             </BaseDrawer>
         </>
     );
-};
+}
 

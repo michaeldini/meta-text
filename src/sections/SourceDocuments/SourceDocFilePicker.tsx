@@ -14,12 +14,12 @@ export interface SourceDocFilePickerProps {
     uploadStatuses: UploadStatus[];
 }
 
-export const SourceDocFilePicker: React.FC<SourceDocFilePickerProps> = ({
+export function SourceDocFilePicker({
     files,
     disabled = false,
     onFilesChange,
     uploadStatuses,
-}) => {
+}: SourceDocFilePickerProps) {
     const fileCount = files.length;
     const selectedCountLabel = fileCount
         ? `${fileCount} file${fileCount > 1 ? 's' : ''} selected`
@@ -52,6 +52,6 @@ export const SourceDocFilePicker: React.FC<SourceDocFilePickerProps> = ({
             <UploadFileStatusList files={files} statuses={uploadStatuses} />
         </Stack>
     );
-};
+}
 
 export default SourceDocFilePicker;

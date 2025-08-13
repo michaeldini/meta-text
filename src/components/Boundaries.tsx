@@ -81,21 +81,23 @@ type BoundaryProps = {
     fallbackText?: string
 };
 
-export const Boundary: React.FC<BoundaryProps> = ({ children, fallback, fallbackText = "Loading..." }) => (
-    <ErrorBoundary>
-        <React.Suspense
-            fallback={
-                fallback || (
-                    <Center mt="10">
-                        <Spinner aria-label="Loading..." />
-                        <Text as="span">{fallbackText}</Text>
-                    </Center>
-                )
-            }
-        >
-            {children}
-        </React.Suspense>
-    </ErrorBoundary>
-);
+export function Boundary({ children, fallback, fallbackText = "Loading..." }: BoundaryProps) {
+    return (
+        <ErrorBoundary>
+            <React.Suspense
+                fallback={
+                    fallback || (
+                        <Center mt="10">
+                            <Spinner aria-label="Loading..." />
+                            <Text as="span">{fallbackText}</Text>
+                        </Center>
+                    )
+                }
+            >
+                {children}
+            </React.Suspense>
+        </ErrorBoundary>
+    );
+}
 
 export { ErrorBoundary };

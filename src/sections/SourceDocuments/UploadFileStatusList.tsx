@@ -26,7 +26,7 @@ function deriveStatus(file: File, status?: UploadStatus) {
     return { colorPalette: 'gray', label: file.name } as const;
 }
 
-export const UploadFileStatusList: React.FC<UploadFileStatusListProps> = ({ files, statuses }) => {
+export function UploadFileStatusList({ files, statuses }: UploadFileStatusListProps) {
     if (!files.length) return null;
 
     const total = files.length;
@@ -73,6 +73,6 @@ export const UploadFileStatusList: React.FC<UploadFileStatusListProps> = ({ file
             </Wrap>
         </Box>
     );
-};
+}
 
 export default UploadFileStatusList;
