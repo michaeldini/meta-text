@@ -16,6 +16,7 @@ export interface TooltipButtonProps {
     size?: 'sm' | "md" | "lg" | "xl" | "2xl" | "2xs" | "xs";
     role?: string;
     iconSize?: 'sm' | "md" | "lg" | "xl" | "2xl" | "xs";
+    positioning?: any;
     [key: string]: any; // Allow additional props for flexibility
 }
 
@@ -31,10 +32,14 @@ export function TooltipButton({
     size = 'lg',
     role = 'button',
     iconSize = 'lg',
+    positioning = { placement: "left-end" },
     ...rest
 }: TooltipButtonProps): React.ReactElement {
     return (
-        <Tooltip content={tooltip || label}>
+        <Tooltip
+            content={tooltip || label}
+            positioning={positioning}
+        >
             <Button
                 // bg="bg.emphasized"
                 // variant="ghost"
@@ -46,6 +51,7 @@ export function TooltipButton({
                 type={type}
                 onKeyDown={onKeyDown}
                 role={role}
+
                 {...rest}
             >
                 {icon && (
