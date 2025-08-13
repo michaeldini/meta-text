@@ -49,7 +49,7 @@ export const useNotificationStore = create<NotificationState>((set) => ({
 }));
 
 // Convenience hooks for common notification types
-export const useNotifications = () => {
+export function useNotifications() {
     const { showNotification, hideNotification, clearAllNotifications } = useNotificationStore();
 
     return {

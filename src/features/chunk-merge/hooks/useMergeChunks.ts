@@ -10,7 +10,7 @@ export interface MergeChunksToolProps {
 /**
  * Hook for merge chunks tool functionality using React Query
  */
-export const useMergeChunks = () => {
+export function useMergeChunks() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async ({ chunk }: MergeChunksToolProps) => {

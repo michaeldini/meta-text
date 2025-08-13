@@ -215,7 +215,7 @@ export const CHUNK_TOOL_SHORTCUTS: Record<string, KeyboardShortcut[]> = {
  * @param shortcut - The shortcut to match against
  * @returns True if the event matches the shortcut, false otherwise
  */
-export const matchesShortcut = (event: KeyboardEvent, shortcut: KeyboardShortcut): boolean => {
+export function matchesShortcut(event: KeyboardEvent, shortcut: KeyboardShortcut): boolean {
     const keyMatches = event.key === shortcut.key;
     const metaMatches = (shortcut.metaKey ?? false) === (event.metaKey || event.ctrlKey);
     const ctrlMatches = (shortcut.ctrlKey ?? false) === event.ctrlKey;
@@ -235,7 +235,7 @@ export const matchesShortcut = (event: KeyboardEvent, shortcut: KeyboardShortcut
  * @param shortcut - The keyboard shortcut to format
  * @returns A string representation of the shortcut
  */
-export const formatShortcut = (shortcut: KeyboardShortcut): string => {
+export default function formatShortcut(shortcut: KeyboardShortcut): string {
     const parts: string[] = [];
 
     if (shortcut.metaKey) {
@@ -251,7 +251,7 @@ export const formatShortcut = (shortcut: KeyboardShortcut): string => {
 };
 
 // Get all shortcuts grouped by category
-export const getShortcutsByCategory = (): Record<string, KeyboardShortcut[]> => {
+export function getShortcutsByCategory(): Record<string, KeyboardShortcut[]> {
     const flatChunkToolShortcuts = Object.values(CHUNK_TOOL_SHORTCUTS).flat();
     const allShortcuts: KeyboardShortcut[] = [
         ...Object.values(GLOBAL_SHORTCUTS),

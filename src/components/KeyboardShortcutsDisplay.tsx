@@ -125,7 +125,7 @@ export const KeyboardShortcutItem = memo(function KeyboardShortcutItem({ shortcu
             <Badge color="fg" variant="outline" fontFamily="mono" fontSize="xs">
                 {formatShortcut(shortcut)}
             </Badge>
-    </HStack>
+        </HStack>
     );
 });
 KeyboardShortcutItem.displayName = 'KeyboardShortcutItem';
