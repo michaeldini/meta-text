@@ -1,11 +1,13 @@
-import React, { memo, useMemo } from 'react';
-import { Box, Stack } from '@chakra-ui/react';
+import React, { memo } from 'react';
 
-import { useChunkToolsStore } from '@store/chunkToolsStore';
-
+// UI
+import { Stack } from '@chakra-ui/react';
 import ChunkWords from './components/ChunkWords';
 import { ChunkToolsContainer } from '@features/chunk-tools';
-import { useUpdateChunkField } from '@hooks/useUpdateChunkField';
+
+
+
+// Types
 import type { ChunkType } from '@mtypes/documents';
 import { uiPreferences } from '@mtypes/user';
 
@@ -20,8 +22,6 @@ const Chunk = memo(function Chunk({
     chunkIdx,
     uiPreferences
 }: ChunkProps) {
-    const { activeTabs } = useChunkToolsStore();
-    const updateChunkFieldMutation = useUpdateChunkField();
     return (
         <Stack direction="row"
             data-chunk-id={chunk.id}
@@ -35,8 +35,6 @@ const Chunk = memo(function Chunk({
             />
             <ChunkToolsContainer
                 chunk={chunk}
-                activeTools={activeTabs}
-                updateChunkFieldMutation={updateChunkFieldMutation}
                 uiPreferences={uiPreferences}
             />
         </Stack>

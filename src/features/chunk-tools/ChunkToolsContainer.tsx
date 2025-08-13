@@ -17,13 +17,11 @@ import { ExplanationTool } from '@features/chunk-explanation';
 import { ChunkFavoriteToggle } from '@features/chunk-favorite';
 import ChunkBookmarkToggle from '@features/chunk-bookmark/components/ChunkBookmarkToggle';
 import { uiPreferences } from '@mtypes/user';
+import { useUpdateChunkField } from '@hooks/useUpdateChunkField';
 
-interface ChunkToolsContainerProps {
-    chunk: ChunkType;
-    activeTools: ChunkToolId[];
-    updateChunkFieldMutation: UseUpdateChunkFieldType;
-    uiPreferences: uiPreferences;
-}
+
+// Store
+import { useChunkToolsStore } from '@store/chunkToolsStore';
 
 function renderStationaryTools(chunk: ChunkType, asRow: boolean, uiPreferences?: uiPreferences) {
     return (
@@ -41,8 +39,16 @@ function renderStationaryTools(chunk: ChunkType, asRow: boolean, uiPreferences?:
     );
 }
 
+
+interface ChunkToolsContainerProps {
+    chunk: ChunkType;
+    uiPreferences: uiPreferences;
+}
+
 export const ChunkToolsContainer: React.FC<ChunkToolsContainerProps> = (props) => {
-    const { chunk, activeTools, updateChunkFieldMutation, uiPreferences } = props;
+    const { chunk, uiPreferences } = props;
+    const updateChunkFieldMutation = useUpdateChunkField();
+    const { activeTools } = useChunkToolsStore();
 
     return (
         <Box data-chunk-id={`chunk-tools-${chunk.id}`}

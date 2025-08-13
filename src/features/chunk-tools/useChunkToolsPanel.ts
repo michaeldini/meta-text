@@ -7,8 +7,8 @@ import { chunkToolsRegistry, type ChunkToolId } from './toolsRegistry';
 
 export function useChunkToolsPanel() {
     // State from store
-    const activeTabs = useChunkToolsStore(state => state.activeTabs);
-    const setActiveTabs = useChunkToolsStore(state => state.setActiveTabs);
+    const activeTabs = useChunkToolsStore(state => state.activeTools);
+    const setActiveTabs = useChunkToolsStore(state => state.setActiveTools);
 
 
     // Toggle tool selection

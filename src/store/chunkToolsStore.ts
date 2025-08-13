@@ -8,11 +8,11 @@ import { create } from 'zustand';
 import type { ChunkToolId } from '../features/chunk-tools/toolsRegistry';
 
 type ChunkToolsState = {
-    activeTabs: ChunkToolId[];
-    setActiveTabs: (tabs: ChunkToolId[]) => void;
+    activeTools: ChunkToolId[];
+    setActiveTools: (tabs: ChunkToolId[]) => void;
 };
 
 export const useChunkToolsStore = create<ChunkToolsState>((set) => ({
-    activeTabs: [],
-    setActiveTabs: (tabs) => set({ activeTabs: tabs }),
+    activeTools: [],
+    setActiveTools: (tools) => set({ activeTools: tools }),
 }));

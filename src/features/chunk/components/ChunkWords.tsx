@@ -12,6 +12,7 @@ import { useUserConfig } from '@services/userConfigService';
 import type { ChunkType } from '@mtypes/documents';
 import WordsToolbar from './WordsToolbar';
 import { useChunkWords } from '../hooks/useChunkWords';
+
 export interface ChunkWordsProps {
     chunk: ChunkType;
     chunkIdx: number;

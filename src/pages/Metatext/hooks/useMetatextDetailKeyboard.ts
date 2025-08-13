@@ -106,8 +106,8 @@ export const useMetatextDetailKeyboard = ({
     searchInputRef,
 }: UseMetatextDetailKeyboardOptions = {}) => {
     const { clearSearch, query } = useSearchStore();
-    const activeTabs = useChunkToolsStore(state => state.activeTabs);
-    const setActiveTabs = useChunkToolsStore(state => state.setActiveTabs);
+    const activeTabs = useChunkToolsStore(state => state.activeTools);
+    const setActiveTabs = useChunkToolsStore(state => state.setActiveTools);
     const { toggleColorMode } = useColorMode();
     const toggleHelp = useHelpStore(s => s.toggleHelp);
 
