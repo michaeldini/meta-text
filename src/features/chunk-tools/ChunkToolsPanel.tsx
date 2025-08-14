@@ -16,7 +16,6 @@ export function ChunkToolsPanel() {
     // Use custom hook for business logic
     const {
         activeTabs,
-        setActiveTabs, // in case needed for future
         chunkToolsRegistry,
         handleToolClick,
     } = useChunkToolsPanel();

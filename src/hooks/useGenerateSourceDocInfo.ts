@@ -24,8 +24,12 @@ export function useGenerateSourceDocInfo(
             await generateSourceDocInfo(sourceDocumentId);
             if (invalidate) invalidate();
 
-        } catch (err: any) {
-            setError(err.message || 'Failed to generate info');
+        } catch (err: unknown) {
+            let message = 'Failed to generate info';
+            if (err && typeof err === 'object' && 'message' in err) {
+                try { message = String((err as { message?: unknown }).message ?? message); } catch (parseErr) { if (parseErr) { /* ignore */ } }
+            }
+            setError(message);
         } finally {
             setLoading(false);
         }

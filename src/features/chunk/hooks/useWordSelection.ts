@@ -24,14 +24,14 @@ export function useWordSelection(chunkIdx: number) {
 
     const highlightedIndices = getRange();
 
-    const handleWordDown = useCallback((idx: number, event?: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>) => {
+    const handleWordDown = useCallback((idx: number, _event?: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>) => {
         setSelectionStartIdx(idx);
         setSelectionEndIdx(idx);
         setIsSelecting(true);
         // Do NOT set dialog anchor here
     }, []);
 
-    const handleWordEnter = useCallback((idx: number, event?: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>) => {
+    const handleWordEnter = useCallback((idx: number, _event?: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>) => {
         if (isSelecting) {
             setSelectionEndIdx(idx);
             // Do NOT set dialog anchor here

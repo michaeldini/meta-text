@@ -68,7 +68,7 @@ export interface TableRowProps {
     item: SourceDocumentSummary | MetatextSummary;
     navigate: (path: string) => void;
     navigateToBase: string;
-    deleteItemMutation: UseMutationResult<any, any, any, any>;
+    deleteItemMutation: UseMutationResult<unknown, unknown, number, unknown>;
 }
 
 export function TableRow({ item, navigate, navigateToBase, deleteItemMutation }: TableRowProps) {
@@ -106,7 +106,7 @@ export function TableRow({ item, navigate, navigateToBase, deleteItemMutation }:
 export interface ControlledTableProps {
     items: Array<SourceDocumentSummary | MetatextSummary>;
     navigateToBase: string;
-    deleteItemMutation: UseMutationResult<any, any, any, any>;
+    deleteItemMutation: UseMutationResult<unknown, unknown, number, unknown>;
 }
 
 export function ControlledTable({ items, navigateToBase, deleteItemMutation }: ControlledTableProps) {
@@ -151,7 +151,7 @@ interface SearchableTableProps {
     showTitle: boolean;
     navigateToBase: string;
     // eslint-disable-next-line -- required shape
-    deleteItemMutation: UseMutationResult<any, any, any, any>;
+    deleteItemMutation: UseMutationResult<unknown, unknown, number, unknown>;
 }
 
 export function SearchableTable({ documents, showTitle, navigateToBase, deleteItemMutation }: SearchableTableProps) {

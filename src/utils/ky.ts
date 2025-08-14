@@ -7,6 +7,8 @@
 import ky from 'ky';
 import { HTTPError } from 'ky';
 
+type RetryableOptions = RequestInit & { _retried?: boolean };
+
 // Centralized ky instance for all API requests
 export const api = ky.create({
     prefixUrl: '/api',
@@ -21,7 +23,7 @@ export const api = ky.create({
             }
         ],
         afterResponse: [
-            async (request: Request, options: any, response: Response) => {
+            async (request: Request, options: RetryableOptions, response: Response) => {
                 const token = localStorage.getItem('access_token');
                 // Only attempt refresh if user was previously authenticated
                 if ((response.status === 401 || response.status === 403) && token) {

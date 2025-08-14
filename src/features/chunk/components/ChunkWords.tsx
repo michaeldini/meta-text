@@ -53,9 +53,9 @@ const ChunkWords = memo(function ChunkWords({
         handleToolbarClose,
         handleTouchMove,
         drawerOpen,
-        setDrawerOpen,
+        setDrawerOpen: _setDrawerOpen,
         drawerSelection,
-        setDrawerSelection,
+        setDrawerSelection: _setDrawerSelection,
         closeDrawer,
         containerRef,
     } = hookResult;
@@ -75,7 +75,7 @@ const ChunkWords = memo(function ChunkWords({
         if (now - lastEnterTsRef.current < THROTTLE_MS) return;
         lastEnterTsRef.current = now;
         // Cast to any to satisfy hook if it expects Mouse/Touch event; pointer event carries needed data
-        handleWordEnter(wordIdx, e as any);
+        handleWordEnter(wordIdx, e as unknown as React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>);
     }, [handleWordEnter]);
 
     // Render words; rely on CSS :hover for transient hover styling to avoid extra React state updates
@@ -94,12 +94,12 @@ const ChunkWords = memo(function ChunkWords({
                 cursor="pointer"
                 userSelect="none"
                 display="inline-block"
-                onPointerDown={e => handleWordDown(wordIdx, e as any)}
+                onPointerDown={e => handleWordDown(wordIdx, e as unknown as React.MouseEvent<HTMLElement>)}
                 // Use pointer enter (works for mouse, stylus) with throttling for drag/hover selection logic
                 onPointerEnter={e => throttledPointerEnter(wordIdx, e)}
-                onPointerUp={handleWordUp as any}
+                onPointerUp={handleWordUp}
                 // Touch fallback in case pointer events are not supported (legacy)
-                onTouchStart={e => handleWordDown(wordIdx, e)}
+                onTouchStart={e => handleWordDown(wordIdx, e as unknown as React.TouchEvent<HTMLElement>)}
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleWordUp}
                 data-word-idx={`${chunkIdx}-${wordIdx}`}

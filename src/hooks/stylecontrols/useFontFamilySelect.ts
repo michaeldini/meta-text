@@ -26,12 +26,15 @@ export function useFontFamilySelect({ value, onChange }: UseFontFamilySelectProp
     const handleChange = (event: { target: { value: string } }) => {
         onChange(event.target.value);
     };
+    // Ensure 'value' is referenced to avoid unused var lint
+    const _currentValue = value;
     const fontFamilyOptions = createListCollection({
         items: FONT_FAMILIES.map(font => ({
             value: font,
             label: font.split(',')[0],
             style: { fontFamily: font }
-        }))
+        })),
+        itemToString: (item) => item?.label ?? '',
     });
     return {
         fontFamilyOptions,

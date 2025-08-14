@@ -9,7 +9,7 @@ import type { ChunkType } from '@mtypes/documents';
 // Tool component interface - all tools must implement this
 export interface ChunkToolProps {
     chunk: ChunkType;
-    mutateChunkField: any;
+    mutateChunkField: (vars: { chunkId: number; field: string; value: unknown }) => void;
     isVisible: boolean;
 }
 

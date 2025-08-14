@@ -106,8 +106,9 @@ export const useRewriteTool = (chunk: ChunkType | null): UseRewriteToolReturn =>
                 selectedId: rewrite.id
             }));
             return rewrite;
-        } catch (err: any) {
-            const message = err?.message || 'Failed to generate rewrite';
+        } catch (err: unknown) {
+            const e = err as { message?: unknown } | null;
+            const message = e && e.message ? String(e.message) : 'Failed to generate rewrite';
             setState(s => ({ ...s, loading: false, error: message }));
             return null;
         }

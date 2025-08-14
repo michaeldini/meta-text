@@ -5,12 +5,13 @@ import React, { memo } from 'react';
 import { Stack } from '@chakra-ui/react/stack';
 import { SplitChunkTool } from '@features/chunk-split';
 import { WordsExplanationTool } from '@features/chunk-explanation';
+import type { ChunkType } from '@mtypes/documents';
 
 export interface WordsToolbarProps {
     onClose: () => void;
     word: string;
     wordIdx: number;
-    chunk: any;
+    chunk: ChunkType;
 }
 
 

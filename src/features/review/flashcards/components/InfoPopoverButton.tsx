@@ -10,7 +10,6 @@ interface InfoButtonProps {
     title: string;
     word: string;
     content: string | React.ReactNode;
-    typographyVariant?: 'body1' | 'body2';
 }
 
 export function InfoButton(props: InfoButtonProps) {
@@ -20,11 +19,10 @@ export function InfoButton(props: InfoButtonProps) {
         word,
         title,
         content,
-        typographyVariant = 'body2',
     } = props;
     const [open, setOpen] = useState(false);
     const handleDialogOpen = () => setOpen(true);
-    const handleDialogClose = () => setOpen(false);
+    const _handleDialogClose = () => setOpen(false);
 
     return (
         <>
@@ -41,7 +39,6 @@ export function InfoButton(props: InfoButtonProps) {
             <Dialog.Root
                 id={dialogId}
                 open={open}
-                // onClose={handleDialogClose}
                 aria-labelledby={`${dialogId}-title`}
             >
                 <Dialog.Title id={`${dialogId}-title`}>Word: {word}</Dialog.Title>

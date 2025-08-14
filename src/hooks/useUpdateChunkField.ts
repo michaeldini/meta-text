@@ -7,7 +7,7 @@ import type { ChunkType } from '../types/documents';
 interface UpdateChunkFieldArgs {
     chunkId: number;
     field: string;
-    value: any;
+    value: unknown;
 }
 
 export function useUpdateChunkField() {

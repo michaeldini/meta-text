@@ -5,7 +5,9 @@ import { useCallback } from 'react';
 import { useExplainHandler } from './useExplainHandler';
 import type { ChunkType } from '@mtypes/documents';
 
-export function useExplanationTool(chunk: ChunkType, mutateChunkField: any) {
+export type MutateChunkFieldFn = (vars: { chunkId: number; field: string; value: unknown }) => void;
+
+export function useExplanationTool(chunk: ChunkType, mutateChunkField: MutateChunkFieldFn) {
     const { handleExplain, loading, error } = useExplainHandler();
 
     const handleGenerate = useCallback(async () => {

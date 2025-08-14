@@ -1,11 +1,13 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { configDefaults } from 'vitest/config'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { visualizer } from 'rollup-plugin-visualizer';
 import path from 'path'
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vite.dev/config/
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default defineConfig(({ command: COMMAND }) => ({
     plugins: [
         react(),

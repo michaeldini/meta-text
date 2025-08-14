@@ -20,8 +20,8 @@ export function useChunkWords({ chunkIdx, words, handleToolbarClose }: UseChunkW
         handleToolbarClose: handleToolbarCloseSelection,
         handleTouchMove,
         // expose selection indices so we can compute selection synchronously on pointer up
-        selectionStartIdx,
-        selectionEndIdx,
+        selectionStartIdx: _selectionStartIdx,
+        selectionEndIdx: _selectionEndIdx,
     } = useWordSelection(chunkIdx);
 
     // Drawer state

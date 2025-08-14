@@ -26,7 +26,7 @@ export function SplitChunkTool(props: SplitChunkToolProps) {
         }
         log.debug(`Splitting chunk ${chunkId} at word "${word}"`);
         try {
-            const result = await mutateAsync({
+            await mutateAsync({
                 chunkId,
                 wordIdx,
                 metatextId,

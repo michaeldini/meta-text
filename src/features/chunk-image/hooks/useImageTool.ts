@@ -99,9 +99,13 @@ export const useImageTool = (chunk: ChunkType): UseImageToolReturn => {
             const imgUrl = `/${result.path}`;
             try {
                 await pollImageAvailability(imgUrl, 20000, 350);
-            } catch (pollErr: any) {
+            } catch (pollErr: unknown) {
                 // Polling failure shouldn't mask successful generation; log but continue
-                log.warn?.(`Image generated but not yet loadable: ${pollErr?.message}`);
+                let msg = String(pollErr ?? 'polling error');
+                if (pollErr && typeof pollErr === 'object' && 'message' in pollErr) {
+                    try { msg = String((pollErr as { message?: unknown }).message ?? msg); } catch { /* ignore */ }
+                }
+                log.warn?.(`Image generated but not yet loadable: ${msg}`);
             }
 
             setState(s => ({
@@ -115,21 +119,24 @@ export const useImageTool = (chunk: ChunkType): UseImageToolReturn => {
             }));
 
             return { imagePath: result.path, prompt: result.prompt };
-        } catch (err: any) {
+        } catch (err: unknown) {
             // Distinguish between network timeout (ky TimeoutError) and HTTP errors
             let errorMessage = 'Failed to generate image';
-            if (err?.name === 'TimeoutError') {
+            // try to safely inspect known shapes
+            const e = err as { name?: string; response?: Response; message?: unknown } | null;
+            if (e?.name === 'TimeoutError') {
                 errorMessage = 'Image generation timed out. Try again or simplify the prompt.';
-            } else if (err?.response) {
-                // ky HTTPError
-                const statusText = err.response.statusText || 'Error';
-                errorMessage = `Request failed: ${err.response.status} ${statusText}`;
+            } else if (e?.response) {
+                const statusText = e.response.statusText || 'Error';
+                errorMessage = `Request failed: ${e.response.status} ${statusText}`;
                 try {
-                    const data = await err.response.json();
-                    if (data?.detail) errorMessage += ` - ${data.detail}`;
-                } catch (_) { /* ignore */ }
-            } else if (err?.message) {
-                errorMessage = err.message;
+                    const data = await e.response.json();
+                    if (data && typeof data === 'object' && 'detail' in data) {
+                        try { errorMessage += ` - ${String((data as { detail?: unknown }).detail ?? '')}`; } catch { /* ignore inner */ }
+                    }
+                } catch (parseErr) { if (parseErr) { /* parse failed */ } }
+            } else if (e?.message) {
+                errorMessage = String(e.message);
             }
             log.error(errorMessage);
             setState(s => ({ ...s, error: errorMessage, loading: false }));

@@ -20,7 +20,6 @@ interface RewriteDisplayToolProps {
 
 export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
     const { chunk, isVisible } = props;
-    if (!isVisible) return null;
 
     const {
         rewrites,
@@ -34,6 +33,7 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
         hasRewrites,
     } = useRewriteTool(chunk);
 
+    if (!isVisible) return null;
     return (
         <Box>
             <TooltipButton

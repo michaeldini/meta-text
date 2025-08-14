@@ -12,7 +12,7 @@
  * Uses Chakra UI v3 components.
  */
 import React from 'react';
-import { Button, CloseButton } from '@chakra-ui/react/button';
+import { Button } from '@chakra-ui/react/button';
 import { Textarea } from '@chakra-ui/react/textarea';
 import { Box } from '@chakra-ui/react/box';
 import { Spinner } from '@chakra-ui/react/spinner';
@@ -64,49 +64,53 @@ export function ImageGenerationDialog(props: ImageGenerationDialogProps) {
     };
 
     // Subcomponents
-    const PromptInput = () => (
-        <Box>
-            <Textarea
-                value={prompt}
-                onChange={handlePromptChange}
-                placeholder="Describe the image you want to generate in detail..."
-                minH="80px"
-                maxH="180px"
-                disabled={loading}
-                borderColor={isPromptTooLong ? 'red.500' : "fg.info"}
-                autoFocus
-                resize="vertical"
-            />
-            <Text fontSize="sm" color={isPromptTooLong ? 'red.500' : 'gray.500'} mt={1}>
-                {isPromptTooLong
-                    ? `Prompt is too long (${promptLength}/${MAX_PROMPT_LENGTH} characters)`
-                    : `${promptLength}/${MAX_PROMPT_LENGTH} characters`}
-            </Text>
-        </Box>
-    );
+    function PromptInput() {
+        return (
+            <Box>
+                <Textarea
+                    value={prompt}
+                    onChange={handlePromptChange}
+                    placeholder="Describe the image you want to generate in detail..."
+                    minH="80px"
+                    maxH="180px"
+                    disabled={loading}
+                    borderColor={isPromptTooLong ? 'red.500' : "fg.info"}
+                    autoFocus
+                    resize="vertical"
+                />
+                <Text fontSize="sm" color={isPromptTooLong ? 'red.500' : 'gray.500'} mt={1}>
+                    {isPromptTooLong
+                        ? `Prompt is too long (${promptLength}/${MAX_PROMPT_LENGTH} characters)`
+                        : `${promptLength}/${MAX_PROMPT_LENGTH} characters`}
+                </Text>
+            </Box>
+        );
+    }
 
-    const SuggestedPrompts = () => (
-        <Box>
-            <Text fontSize="sm" color="gray.500" mb={1}>
-                Suggested prompts:
-            </Text>
-            <Stack direction="row" flexWrap="wrap" gap={2}>
-                {SUGGESTED_PROMPTS.map((suggestion, index) => (
-                    <Badge
-                        key={index}
-                        variant="outline"
-                        color="fg"
-                        px={2}
-                        py={1}
-                        cursor="pointer"
-                        onClick={() => handleSuggestedPromptClick(suggestion)}
-                    >
-                        {suggestion}
-                    </Badge>
-                ))}
-            </Stack>
-        </Box>
-    );
+    function SuggestedPrompts() {
+        return (
+            <Box>
+                <Text fontSize="sm" color="gray.500" mb={1}>
+                    Suggested prompts:
+                </Text>
+                <Stack direction="row" flexWrap="wrap" gap={2}>
+                    {SUGGESTED_PROMPTS.map((suggestion, index) => (
+                        <Badge
+                            key={index}
+                            variant="outline"
+                            color="fg"
+                            px={2}
+                            py={1}
+                            cursor="pointer"
+                            onClick={() => handleSuggestedPromptClick(suggestion)}
+                        >
+                            {suggestion}
+                        </Badge>
+                    ))}
+                </Stack>
+            </Box>
+        );
+    }
 
     // const LoadingIndicator = () => (
     //     <Box textAlign="center">

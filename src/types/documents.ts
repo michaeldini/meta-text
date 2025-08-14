@@ -86,12 +86,10 @@ export type ChunkType = {
 export type UseUpdateChunkFieldType = UseMutationResult<
     ChunkType,
     unknown,
-    { chunkId: number; field: string; value: any },
+    { chunkId: number; field: string; value: unknown },
     unknown
 >;
 
-export type UpdateChunkFieldMutationFn = (
-    variables: { chunkId: number; field: string; value: any }
-) => void;
+export type UpdateChunkFieldMutationFn = (variables: { chunkId: number; field: string; value: unknown }) => void;
 
 

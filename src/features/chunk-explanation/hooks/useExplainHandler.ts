@@ -20,8 +20,12 @@ export function useExplainHandler() {
                 const res = await explainWordsOrChunk(params);
                 setResult(res);
                 return res;
-            } catch (err: any) {
-                setError(err?.message || 'Failed to get explanation');
+            } catch (err: unknown) {
+                let message = 'Failed to get explanation';
+                if (err && typeof err === 'object' && 'message' in err) {
+                    try { message = String((err as { message?: unknown }).message ?? message); } catch { /* ignore */ }
+                }
+                setError(message);
                 return null;
             } finally {
                 setLoading(false);

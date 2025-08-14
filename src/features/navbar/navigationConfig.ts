@@ -8,10 +8,15 @@ import { getIconComponent } from '@components/icons/registry';
 import { MetaTextLogoIcon } from '@components/icons';
 
 
+type IconComponent = React.ComponentType<React.SVGProps<SVGSVGElement>> | React.ComponentType<{
+    size?: number | string;
+    color?: string;
+}>;
+
 interface NavigationItem {
     label: string;
     protected: boolean;
-    icon: React.ComponentType<any>;
+    icon: IconComponent;
     action: () => void;
     disabled?: boolean;
 }
