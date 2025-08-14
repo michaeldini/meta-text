@@ -27,7 +27,7 @@ function SourceDocDetailPage(): ReactElement | null {
     const id = useValidatedRouteId('sourceDocId');
     // react-query functions
     // Fetch and update using the raw ID; backend will validate and send errors
-    const { data: doc, isLoading, error, refetch } = useSourceDocumentDetail(id);
+    const { data: doc, isLoading, error } = useSourceDocumentDetail(id);
     const updateMutation = useUpdateSourceDocument(id);
     const { textSizePx, fontFamily, lineHeight } = useUIPreferences();
 
@@ -37,7 +37,6 @@ function SourceDocDetailPage(): ReactElement | null {
     // Redirect if query error (invalid or not found)
     const navigate = useNavigate();
 
-    if (id === null) return null;
 
     React.useEffect(() => {
         if (error && !isLoading) {
@@ -45,6 +44,7 @@ function SourceDocDetailPage(): ReactElement | null {
         }
     }, [error, isLoading, navigate]);
 
+    if (id === null) return null;
     if (!doc || !editor) return null;
     return (
         <PageContainer data-testid="sourcedoc-detail-page">

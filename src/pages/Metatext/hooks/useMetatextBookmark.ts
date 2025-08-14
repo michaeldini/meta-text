@@ -16,7 +16,7 @@ export function useMetatextBookmark(
     const goToBookmark = () => {
         if (bookmarkedChunkId == null) return;
         // Find chunk index
-        const idx = displayChunks.findIndex((c: any) => c.id === bookmarkedChunkId);
+        const idx = displayChunks.findIndex((c: ChunkType) => c.id === bookmarkedChunkId);
         if (idx < 0) return;
         // Calculate page
         const page = Math.floor(idx / chunksPerPage) + 1;

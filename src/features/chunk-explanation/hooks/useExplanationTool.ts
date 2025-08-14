@@ -21,7 +21,7 @@ export function useExplanationTool(chunk: ChunkType, mutateChunkField: MutateChu
         if (res && chunk?.id) {
             mutateChunkField({ chunkId: chunk.id, field: 'explanation', value: res.explanation });
         }
-    }, [chunk, handleExplain]);
+    }, [chunk, handleExplain, mutateChunkField]);
 
     return {
         loading,

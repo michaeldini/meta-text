@@ -150,7 +150,7 @@ interface SearchableTableProps {
     documents: Array<SourceDocumentSummary | MetatextSummary>;
     showTitle: boolean;
     navigateToBase: string;
-    // eslint-disable-next-line -- required shape
+    // eslint - disable - next - line-- required shape
     deleteItemMutation: UseMutationResult<unknown, unknown, number, unknown>;
 }
 

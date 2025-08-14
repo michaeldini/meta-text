@@ -16,8 +16,9 @@ export function useDownloadMetatext(metatextId?: number | null, disabled?: boole
         try {
             const data = await downloadMetatext(metatextId);
             downloadJsonAsFile(data, `metatext_${metatextId}.json`);
-        } catch (err: any) {
-            setError(err.message || 'Download failed');
+        } catch (err: unknown) {
+            const message = err && typeof err === 'object' && 'message' in err ? String((err as { message?: unknown }).message) : 'Download failed';
+            setError(message);
         } finally {
             setLoading(false);
         }

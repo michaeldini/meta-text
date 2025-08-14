@@ -11,7 +11,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { pollImageAvailability } from './imagePolling';
 
 // Mock Image constructor
-const mockImage: { onload: (() => void) | null; onerror: ((ev?: any) => void) | null; src: string } = {
+const mockImage: { onload: (() => void) | null; onerror: ((ev?: unknown) => void) | null; src: string } = {
     onload: null,
     onerror: null,
     src: '',

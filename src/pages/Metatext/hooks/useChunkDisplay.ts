@@ -6,7 +6,7 @@
  * on a separate search store for better cohesion and simpler architecture.
  */
 
-import { useEffect, useMemo, useCallback, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDisplayChunksStore } from '@features/chunk/hooks/useDisplayChunksStore';
 import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
 import { ChunkType } from '@mtypes/documents';

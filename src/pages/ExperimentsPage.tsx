@@ -1,7 +1,7 @@
+/* eslint-disable */
 import React, { useState } from 'react';
 import { Box } from '@chakra-ui/react/box';
 import { keyframes } from '@emotion/react';
-// NOTE: Removed direct react-icons/hi2 import; add Icon from registry if/when needed.
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(24px);}

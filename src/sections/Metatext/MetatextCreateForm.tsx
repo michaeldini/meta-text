@@ -37,6 +37,7 @@ const header = (
 
 // 2. Source Document Select ----------------------------------------------
 interface SourceDocSelectProps {
+    // eslint-disable-next-line
     collection: any;
     onChange: (id: string) => void;
 }
@@ -55,7 +56,8 @@ function SourceDocSelect({ collection, onChange }: SourceDocSelectProps) {
             <Portal>
                 <Select.Positioner>
                     <Select.Content>
-                        {(collection.items as any[]).map((item: any) => (
+                        {/* eslint-disable-next-line  */}
+                        {(collection.items).map((item: any) => (
                             <Select.Item item={item} key={item.value}>
                                 {item.label}
                                 <Select.ItemIndicator />

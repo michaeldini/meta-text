@@ -6,7 +6,6 @@ import { Collapsible } from "@chakra-ui/react/collapsible";
 
 interface ReviewSectionProps {
     title: string;
-    testId: string;
     children: ReactElement;
 }
 
@@ -19,7 +18,7 @@ interface ReviewSectionProps {
  * @param {ReactElement} children - The content to display within the section.
  * @returns {ReactElement} The rendered ReviewSection component.
  */
-export function ReviewSection({ title, testId, children }: ReviewSectionProps): ReactElement {
+export function ReviewSection({ title, children }: ReviewSectionProps): ReactElement {
     return (
         <Collapsible.Root p="4" open={true}>
             <Collapsible.Trigger>Toggle {title}</Collapsible.Trigger>

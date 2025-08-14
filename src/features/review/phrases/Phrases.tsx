@@ -19,10 +19,9 @@ interface PhraseItemProps {
 interface PhraseCardProps {
     title: string;
     content: string;
-    elevation?: number;
 }
 
-export function PhraseCard({ title, content, elevation = 5 }: PhraseCardProps) {
+export function PhraseCard({ title, content }: PhraseCardProps) {
     return (
         <Box >
             <Heading color="primary">
@@ -43,12 +42,10 @@ export function PhraseItem({ phrase }: PhraseItemProps) {
                 <PhraseCard
                     title="Explanation"
                     content={phrase.explanation}
-                    elevation={5}
                 />
                 <PhraseCard
                     title="Explanation in Context"
                     content={phrase.explanation_in_context}
-                    elevation={20}
                 />
             </Collapsible.Content>
         </Collapsible.Root>

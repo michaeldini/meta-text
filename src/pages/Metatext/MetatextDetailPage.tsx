@@ -18,6 +18,7 @@ import { useMetatextDetailKeyboard } from './hooks/useMetatextDetailKeyboard';
 
 import { useChunkDisplay } from './hooks/useChunkDisplay';
 import { useValidatedRouteId } from '@hooks/useValidatedRouteId';
+
 function MetatextDetailPage(): ReactElement | null {
 
 
@@ -81,7 +82,7 @@ function MetatextDetailPage(): ReactElement | null {
     return (
         <Box data-testid="metatext-detail-page" paddingLeft="4" bg="bg">
             <ErrorAlert
-                message={error ? (typeof error === 'string' ? error : (error as any)?.message || 'Something went wrong while fetching this metatext.') : null}
+                message={error ? (typeof error === 'string' ? error : (error && typeof error === 'object' && 'message' in error ? String((error as { message?: unknown }).message) : 'Something went wrong while fetching this metatext.')) : null}
                 title="Failed to load metatext"
                 data-testid="metatext-detail-error"
                 mb={4}

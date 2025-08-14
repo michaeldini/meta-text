@@ -32,6 +32,7 @@ export function useWordSelection(chunkIdx: number) {
     }, []);
 
     const handleWordEnter = useCallback((idx: number, _event?: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>) => {
+
         if (isSelecting) {
             setSelectionEndIdx(idx);
             // Do NOT set dialog anchor here
