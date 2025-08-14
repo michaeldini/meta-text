@@ -1,7 +1,7 @@
 // Main search container that combines all search components
 // Orchestrates the search interface as described in the feature guide
 
-import React, { useCallback } from 'react';
+import React from 'react';
 import {
     Box,
     Stack
@@ -11,10 +11,7 @@ import { SearchBar } from './SearchBar';
 // Import search feature styles
 import '../search.css';
 
-interface SearchContainerProps {
-}
-
-export function SearchContainer({ }: SearchContainerProps) {
+export function SearchContainer() {
 
     return (
         <Stack direction="row" alignItems="center">
@@ -24,6 +21,6 @@ export function SearchContainer({ }: SearchContainerProps) {
             </Box>
         </Stack>
     );
-};
+}
 
 export default SearchContainer;

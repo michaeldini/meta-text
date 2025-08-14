@@ -35,7 +35,7 @@ export function ChunkFavoriteToggle({ chunk }: ChunkFavoriteToggleProps) {
             // Invalidate both caches to ensure UI updates immediately
             queryClient.invalidateQueries({ queryKey: ['metatextDetail', metatextId] });
             queryClient.invalidateQueries({ queryKey: ['chunks', metatextId] });
-        } catch (e) {
+        } catch {
             // Optionally show error
         } finally {
             setLoading(false);

@@ -2,7 +2,7 @@
 *  Main application component for MetaText
 *  - Sets up routing and lazy loading for pages
 */
-import React, { useEffect, JSX, Suspense, lazy, ComponentType } from 'react';
+import React, { JSX, Suspense, lazy, ComponentType } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 import { Box, Spinner, Stack, Text } from '@chakra-ui/react';
@@ -40,7 +40,7 @@ const ExperimentsPage = lazy(() => import('@pages/ExperimentsPage'));
 
 interface RouteConfig {
     path: string;
-    element: ComponentType<{}>;
+    element: ComponentType<Record<string, never>>;
     protected?: boolean;
 }
 
@@ -66,7 +66,7 @@ interface ProtectedRouteProps {
     children: JSX.Element;
 }
 
-const ProtectedRoute = ({ children }: ProtectedRouteProps): JSX.Element => {
+function ProtectedRoute({ children }: ProtectedRouteProps): JSX.Element {
     const { user, loading } = useAuthStore();
 
     // Show loading state while checking authentication
@@ -79,7 +79,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps): JSX.Element => {
     }
 
     return children;
-};
+}
 
 // Static 404 component to prevent recreation on each render
 const NotFoundElement = (
@@ -95,13 +95,13 @@ const NotFoundElement = (
  * Main application component
  * - Sets up theming and routing
  */
-const App = () => {
+export default function App() {
     return (
         <Boundary fallbackText="Loading app...">
             <AppContent />
         </Boundary>
     );
-};
+}
 
 
 /**
@@ -110,7 +110,7 @@ const App = () => {
  * - Wraps routes in a Suspense fallback for loading state
  * - Protected routes are wrapped in a ProtectedRoute component
  */
-export const AppContent = () => {
+export function AppContent() {
     // Refresh auth token on mount
     // This will ensure the user is authenticated when the app loads
     // # TODO: Not sure if or how this is working.
@@ -121,8 +121,7 @@ export const AppContent = () => {
     const { user } = useAuthStore();
     useUserConfig(!!user);
 
-
-    const renderRoute = (route: RouteConfig) => {
+    function renderRoute(route: RouteConfig) {
         const Component = route.element;
         const element = (
             <Boundary fallbackText="Loading">
@@ -138,7 +137,7 @@ export const AppContent = () => {
                 }
             />
         );
-    };
+    }
 
     return (
         <Box>
@@ -152,6 +151,4 @@ export const AppContent = () => {
             </Routes>
         </Box>
     );
-};
-
-export default App;
+}

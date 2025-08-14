@@ -5,6 +5,7 @@
  * - Works with custom ESLint rule (local/no-direct-heroicons) to prevent scattered imports.
  * - Add new icons here and reference by IconName elsewhere.
  */
+/* eslint-disable local/no-direct-heroicons */
 import React from 'react';
 import {
     HiAcademicCap,

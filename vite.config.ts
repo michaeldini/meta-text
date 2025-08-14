@@ -6,7 +6,7 @@ import path from 'path'
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vite.dev/config/
-export default defineConfig(({ command }) => ({
+export default defineConfig(({ command: COMMAND }) => ({
     plugins: [
         react(),
         tsconfigPaths(),

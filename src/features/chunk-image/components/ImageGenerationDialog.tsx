@@ -119,8 +119,8 @@ export function ImageGenerationDialog(props: ImageGenerationDialogProps) {
 
     // Removed local ErrorMessage in favor of unified ErrorAlert (handled in drawer body already)
 
-    const FooterButtons = () => (
-        <>
+    function FooterButtons() {
+        return (
             <Button
                 type="submit"
                 colorScheme="blue"
@@ -130,8 +130,8 @@ export function ImageGenerationDialog(props: ImageGenerationDialogProps) {
             >
                 {loading ? 'Generating...' : 'Generate'}
             </Button>
-        </>
-    );
+        );
+    }
 
     return (
         <BaseDrawer
@@ -144,7 +144,7 @@ export function ImageGenerationDialog(props: ImageGenerationDialogProps) {
             <form onSubmit={onSubmit}>
                 <Stack direction="column" align="stretch" gap={4}>
                     <PromptInput />
-                    {promptLength === 0 && <SuggestedPrompts />}
+                    {promptLength === 0 ? <SuggestedPrompts /> : null}
                     {/* Inline error removed; BaseDrawer shows the alert at top if needed */}
                 </Stack>
             </form>

@@ -75,7 +75,7 @@ export function ImageTool(props: ImageToolProps) {
 
     const handleDialogSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const result = await handleGenerateImage();
+        await handleGenerateImage();
         // probably put error handling here, but will need to modify hook first! TODO
     };
     if (!isVisible) return null;

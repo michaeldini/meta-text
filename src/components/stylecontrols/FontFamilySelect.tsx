@@ -10,7 +10,7 @@ interface FontFamilySelectProps {
     disabled?: boolean;
 }
 export function FontFamilySelect(props: FontFamilySelectProps) {
-    const { value, onChange, disabled = false } = props;
+    const { value, onChange } = props;
     const { fontFamilyOptions, handleChange } = useFontFamilySelect({ value, onChange });
     return (
         <form>

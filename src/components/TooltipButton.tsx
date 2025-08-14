@@ -1,10 +1,12 @@
 import React from 'react';
 import { Button } from '@chakra-ui/react/button';
-import { Tooltip } from '@components/ui/tooltip';
+import { Tooltip, type TooltipProps } from '@components/ui/tooltip';
 import { Icon } from '@chakra-ui/react/icon';
+import type { ButtonProps } from '@chakra-ui/react/button';
+// import type { Placement } from '@chakra-ui/react/popper';
 
 // Generic button with tooltip for consistent UI usage. Accepts label, icon, onClick, disabled.
-export interface TooltipButtonProps {
+export interface TooltipButtonProps extends Omit<ButtonProps, 'aria-label' | 'size' | 'color'> {
     label: string;
     icon?: React.ReactNode;
     tooltip?: string;
@@ -13,11 +15,10 @@ export interface TooltipButtonProps {
     onKeyDown?: (event: React.KeyboardEvent) => void;
     type?: 'button' | 'submit' | 'reset';
     color?: string;
-    size?: 'sm' | "md" | "lg" | "xl" | "2xl" | "2xs" | "xs";
+    size?: ButtonProps['size'];
     role?: string;
-    iconSize?: 'sm' | "md" | "lg" | "xl" | "2xl" | "xs";
-    positioning?: any;
-    [key: string]: any; // Allow additional props for flexibility
+    iconSize?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'inherit';
+    positioning?: TooltipProps['positioning'];
 }
 
 export function TooltipButton({

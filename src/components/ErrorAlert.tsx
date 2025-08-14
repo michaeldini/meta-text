@@ -10,8 +10,8 @@ export interface ErrorAlertProps {
     title?: React.ReactNode;
     onClose?: () => void; // Optional external close handler (e.g. clear error in store)
     ['data-testid']?: string;
-    mt?: any;
-    mb?: any;
+    mt?: string | number;
+    mb?: string | number;
 }
 
 export function ErrorAlert({

@@ -23,7 +23,7 @@ interface UseFontFamilySelectProps {
 }
 
 export function useFontFamilySelect({ value, onChange }: UseFontFamilySelectProps) {
-    const handleChange = (event: any) => {
+    const handleChange = (event: { target: { value: string } }) => {
         onChange(event.target.value);
     };
     const fontFamilyOptions = createListCollection({

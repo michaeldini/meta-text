@@ -13,7 +13,7 @@ interface DocumentHeaderProps {
 export function DocumentHeader(props: DocumentHeaderProps): React.ReactElement {
 
     // was using title earlier, but now just using children for flexibility
-    const { title, children } = props;
+    const { children } = props;
 
     return (
         <Collapsible.Root unmountOnExit>

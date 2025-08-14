@@ -42,7 +42,7 @@ export function MergeChunksTool({ chunk }: MergeChunksToolProps) {
                 console.error('Metatext ID is not set, cannot merge chunks');
                 return;
             }
-            const result = await mutateAsync({
+            await mutateAsync({
                 chunk,
                 metatextId,
             });
