@@ -5,7 +5,7 @@
  * Manages dialog visibility, style selection, submission lifecycle, existing rewrite selection,
  * and error/loading flags. Consumes rewrites directly from the provided chunk.
  */
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { generateRewrite } from '@services/aiService';
 import type { ChunkType } from '@mtypes/documents';
 import { Rewrite } from '@mtypes/tools'
@@ -35,7 +35,7 @@ export interface UseRewriteToolReturn {
 const DEFAULT_STYLE = 'like im 5';
 
 export const useRewriteTool = (chunk: ChunkType | null): UseRewriteToolReturn => {
-    const incomingRewrites = chunk?.rewrites || [];
+    const incomingRewrites = useMemo(() => chunk?.rewrites ?? [], [chunk?.rewrites]);
 
     const [state, setState] = useState<RewriteToolState>({
         dialogOpen: false,

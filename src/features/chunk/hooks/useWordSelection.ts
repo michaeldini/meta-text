@@ -25,6 +25,7 @@ export function useWordSelection(chunkIdx: number) {
     const highlightedIndices = getRange();
 
     const handleWordDown = useCallback((idx: number, _event?: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>) => {
+        void _event;
         setSelectionStartIdx(idx);
         setSelectionEndIdx(idx);
         setIsSelecting(true);
@@ -32,6 +33,7 @@ export function useWordSelection(chunkIdx: number) {
     }, []);
 
     const handleWordEnter = useCallback((idx: number, _event?: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>) => {
+        void _event;
 
         if (isSelecting) {
             setSelectionEndIdx(idx);

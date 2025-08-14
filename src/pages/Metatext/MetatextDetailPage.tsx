@@ -54,8 +54,6 @@ function MetatextDetailPage(): ReactElement | null {
         chunksPerPage: 5
     });
 
-    // Redirect if query error (invalid or not found)
-    if (id === null) return null;
 
     // =========================
     // Other handlers
@@ -79,6 +77,8 @@ function MetatextDetailPage(): ReactElement | null {
         totalPages,
         searchInputRef: undefined, // Could pass a ref here if needed
     });
+    // Redirect if query error (invalid or not found)
+    if (id === null) return null;
     return (
         <Box data-testid="metatext-detail-page" paddingLeft="4" bg="bg">
             <ErrorAlert
