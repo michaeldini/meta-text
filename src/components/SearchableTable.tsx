@@ -1,9 +1,10 @@
 
+/* eslint-disable react-refresh/only-export-components */
 /**
  * SearchableTable.tsx
  * This file contains components and hooks for creating a searchable table interface.
  * It includes a search input, controlled table, and table row components and a hook for managing search results.
-*/
+ */
 import React, { useState, useRef, useMemo } from 'react';
 
 import { Icon } from '@components/icons/Icon';
