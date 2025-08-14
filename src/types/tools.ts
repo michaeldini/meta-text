@@ -16,18 +16,6 @@ export interface NotesToolProps {
 }
 
 // =============================================================================
-// MERGE CHUNKS TOOL TYPES
-// =============================================================================
-
-/**
- * Props for merge chunks tool components
- */
-export interface MergeChunksToolProps {
-    chunkIndices: number[];
-    onComplete?: (success: boolean, result?: any) => void;
-}
-
-// =============================================================================
 // CHUNKTYPE ATTRIBUTE TOOL TYPES
 // =====================================================
 // for chunktype

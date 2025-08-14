@@ -29,20 +29,14 @@ export interface MetatextCreateFormProps {
 }
 
 // 1. Header ---------------------------------------------------------------
-interface FormHeaderProps { }
-function FormHeader(_: FormHeaderProps) {
-    return (
-        <Box>
-            <Heading size="sub" mb={4}>New</Heading>
-        </Box>
-    );
-}
+const header = (
+    <Box>
+        <Heading size="sub" mb={4}>New</Heading>
+    </Box>
+);
 
 // 2. Source Document Select ----------------------------------------------
 interface SourceDocSelectProps {
-    // Using 'any' for collection to avoid over‑engineering the generic typing here.
-    // If stronger typing is desired, introduce a SourceDocOption type and alias the
-    // return type of createListCollection with that generic.
     collection: any;
     onChange: (id: string) => void;
 }
@@ -119,7 +113,7 @@ function MetatextCreateForm({ sourceDocs }: MetatextCreateFormProps): React.Reac
 
     return (
         <Box p="2" borderWidth="4px" borderColor="border.muted" borderRadius="lg" dropShadow="md">
-            <FormHeader />
+            {header}
             <form onSubmit={handleSubmit}>
                 <Fieldset.Root>
                     <SourceDocSelect collection={sourceDocOptions} onChange={handleSourceDocChange} />

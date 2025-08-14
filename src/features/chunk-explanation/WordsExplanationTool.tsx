@@ -14,13 +14,11 @@ import { ChunkType } from '@mtypes/documents';
 
 export interface ExplanationToolProps {
     /** The word or phrase to explain */
-    word?: string;
+    word: string;
     /** The chunk containing context for the explanation */
     chunk: ChunkType;
     /** Callback when explanation is updated */
     onExplanationUpdate?: (explanation: string) => void;
-    /** Optional callback fired when explanation interaction completes */
-    onComplete: () => void;
 }
 
 
@@ -31,18 +29,14 @@ const trimPunctuation = (text: string): string => {
 };
 
 export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => {
-    const { word, chunk, onComplete } = props;
+    const { word, chunk } = props;
 
-    // Trim away whitespace and ensure word is not empty
-    if (!word?.trim() || !chunk?.text) {
-        return null;
-    }
     // Custom hook to manage explanation logic
     const { handleExplain, result: explanation, loading, error } = useExplainHandler();
 
 
     const [showDefinition, setShowDefinition] = useState(false);
-    const cleanedWord = useMemo(() => trimPunctuation(word), [word]);
+    const cleanedWord = useMemo(() => trimPunctuation(word.trim()), [word]);
 
     const handleDefine = useCallback(async () => {
         const result = await handleExplain({

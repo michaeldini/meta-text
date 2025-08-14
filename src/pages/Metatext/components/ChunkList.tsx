@@ -14,14 +14,15 @@ interface ChunkListProps {
  * ChunkList - Renders a list of Chunk components
  */
 export function ChunkList({ chunks, startIndex }: ChunkListProps) {
-    if (!chunks || chunks.length === 0) {
-        return null;
-    }
 
     // Memoize chunks to ensure stable references for Chunk components
     const memoizedChunks = useMemo(() => chunks, [chunks]);
     const { data: userConfig } = useUserConfig();
     const uiPreferences = getUiPreferences(userConfig);
+
+    if (!chunks || chunks.length === 0) {
+        return null;
+    }
 
 
     return (

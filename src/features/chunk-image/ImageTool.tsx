@@ -23,7 +23,6 @@ interface ImageToolProps {
 
 export function ImageTool(props: ImageToolProps) {
     const { chunk, isVisible } = props;
-    if (!isVisible) return null;
     // Initialize hook with chunk data - provides state management and API integration
     const {
         handleGenerateImage,    // Function to trigger AI image generation
@@ -79,7 +78,7 @@ export function ImageTool(props: ImageToolProps) {
         const result = await handleGenerateImage();
         // probably put error handling here, but will need to modify hook first! TODO
     };
-
+    if (!isVisible) return null;
     return (
         <>
             {/* Main tool container with consistent styling */}

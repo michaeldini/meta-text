@@ -49,6 +49,7 @@ export const api = ky.create({
                         }
                     } catch (e) {
                         // Refresh failed, log out
+                        console.error('Token refresh failed:', e);
                         localStorage.removeItem('access_token');
                         window.location.href = '/login';
                     }

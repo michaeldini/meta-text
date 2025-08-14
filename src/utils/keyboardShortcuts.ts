@@ -215,7 +215,7 @@ export const CHUNK_TOOL_SHORTCUTS: Record<string, KeyboardShortcut[]> = {
  * @param shortcut - The shortcut to match against
  * @returns True if the event matches the shortcut, false otherwise
  */
-export function matchesShortcut(event: KeyboardEvent, shortcut: KeyboardShortcut): boolean {
+export const matchesShortcut = (event: KeyboardEvent, shortcut: KeyboardShortcut): boolean => {
     const keyMatches = event.key === shortcut.key;
     const metaMatches = (shortcut.metaKey ?? false) === (event.metaKey || event.ctrlKey);
     const ctrlMatches = (shortcut.ctrlKey ?? false) === event.ctrlKey;
@@ -235,7 +235,7 @@ export function matchesShortcut(event: KeyboardEvent, shortcut: KeyboardShortcut
  * @param shortcut - The keyboard shortcut to format
  * @returns A string representation of the shortcut
  */
-export default function formatShortcut(shortcut: KeyboardShortcut): string {
+export const formatShortcut = (shortcut: KeyboardShortcut): string => {
     const parts: string[] = [];
 
     if (shortcut.metaKey) {

@@ -209,3 +209,4 @@ export function KeyboardShortcutsDisplay({ categories }: KeyboardShortcutsDispla
     );
 }
 
+export default KeyboardShortcutsDisplay;

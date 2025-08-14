@@ -206,23 +206,49 @@ class ChunkService:
             .order_by(Chunk.position)  # type: ignore
         ).first()
 
-        logger.debug(f"Second chunk found: id={second}")
+        logger.debug(f"Second chunk found: id={second.id if second else 'None'}")
         if not second:
             raise ChunkCombineError(
                 first_chunk_id,
                 None,
                 "No adjacent chunk found to combine."
             )
-       
-        logger.info(f"Found second chunk to combine: id={second.id}")
-        # Combine text
-        first.text = f"{first.text} {second.text}"
-        # Delete second chunk
-        session.delete(second)
-        session.commit()
-        session.refresh(first)
-        logger.info(f"Chunks combined successfully: kept_chunk_id={first.id}, deleted_chunk_id={second.id}")
-        return first
+
+        try:
+            logger.info(f"Found second chunk to combine: id={second.id}")
+            # Combine text
+            first.text = f"{first.text} {second.text}"
+
+            # Reassign children from second -> first to preserve FKs (e.g., Rewrite.chunk_id NOT NULL)
+            # Load relationships if not already loaded
+            second_rewrites = list(getattr(second, "rewrites", []) or [])
+            second_images = list(getattr(second, "images", []) or [])
+
+            if second_rewrites:
+                logger.debug(f"Reassigning {len(second_rewrites)} rewrites from chunk {second.id} -> {first.id}")
+                for rw in second_rewrites:
+                    # Use relationship assignment so SQLAlchemy updates both sides
+                    rw.chunk = first
+            if second_images:
+                logger.debug(f"Reassigning {len(second_images)} images from chunk {second.id} -> {first.id}")
+                for img in second_images:
+                    img.chunk = first
+
+            # Flush reassignments so DB sees updates before deleting second
+            session.flush()
+
+            # Now safe to delete the second chunk
+            session.delete(second)
+
+            logger.debug(f"Deleted second chunk: id={second.id}")
+            session.commit()
+            session.refresh(first)
+            logger.info(f"Chunks combined successfully: kept_chunk_id={first.id}, deleted_chunk_id={second.id}")
+            return first
+        except Exception as e:
+            session.rollback()
+            logger.exception(f"Error combining chunks {first.id} and {getattr(second, 'id', None)}: {e}")
+            raise ChunkCombineError(first.id, getattr(second, 'id', None), str(e))
     
     def update_chunk(self, chunk_id: int, chunk_data: dict, user_id: int, session: Session) -> Chunk:
         """

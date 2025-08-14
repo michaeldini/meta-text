@@ -17,7 +17,6 @@ interface NotesToolProps {
 
 export const NotesTool = React.memo((props: NotesToolProps) => {
     const { chunk, mutateChunkField, isVisible } = props;
-    if (!isVisible) return null;
 
 
     // Handle null/undefined values by converting to empty string
@@ -57,7 +56,7 @@ export const NotesTool = React.memo((props: NotesToolProps) => {
     }, [chunk.id, mutateChunkField, localNote]);
 
 
-
+    if (!isVisible) return null;
     return (
         <Box>
             <ChunkTextField

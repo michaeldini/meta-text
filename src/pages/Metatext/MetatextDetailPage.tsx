@@ -27,7 +27,6 @@ function MetatextDetailPage(): ReactElement | null {
     const navigate = useNavigate();
     // Validate route param and redirect if invalid
     const id = useValidatedRouteId('metatextId');
-    if (id === null) return null;
 
     // =========================
     // Data Fetching
@@ -53,6 +52,9 @@ function MetatextDetailPage(): ReactElement | null {
         chunks: metatext?.chunks,
         chunksPerPage: 5
     });
+
+    // Redirect if query error (invalid or not found)
+    if (id === null) return null;
 
     // =========================
     // Other handlers

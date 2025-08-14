@@ -25,26 +25,25 @@ import { Tabs } from '@chakra-ui/react/tabs';
 function SourceDocDetailPage(): ReactElement | null {
     // Route param -> validated numeric id (redirects if invalid)
     const id = useValidatedRouteId('sourceDocId');
-    if (id === null) return null;
-
     // react-query functions
     // Fetch and update using the raw ID; backend will validate and send errors
     const { data: doc, isLoading, error, refetch } = useSourceDocumentDetail(id);
     const updateMutation = useUpdateSourceDocument(id);
     const { textSizePx, fontFamily, lineHeight } = useUIPreferences();
 
+    // Use editor hook only if doc is loaded
+    const editor = useSourceDocEditor(doc ?? null, updateMutation.mutate);
 
     // Redirect if query error (invalid or not found)
     const navigate = useNavigate();
+
+    if (id === null) return null;
+
     React.useEffect(() => {
         if (error && !isLoading) {
             navigate('/');
         }
     }, [error, isLoading, navigate]);
-
-
-    // Use editor hook only if doc is loaded
-    const editor = useSourceDocEditor(doc ?? null, updateMutation.mutate);
 
     if (!doc || !editor) return null;
     return (

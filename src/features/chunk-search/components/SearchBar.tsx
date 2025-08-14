@@ -4,24 +4,22 @@ import { Icon } from '@components/icons/Icon';
 // Provides the main search interface as described in the feature guide
 
 import React, { useCallback } from 'react';
-import { Box, CloseButton, InputGroup, Input, Field } from '@chakra-ui/react';
+import { Box, CloseButton, InputGroup, Input, Field, ConditionalValue } from '@chakra-ui/react';
 import { useSearchStore } from '../store/useSearchStore';
 
 
 // Props for the SearchBar component
 interface SearchBarProps {
     placeholder?: string;
-    variant?: 'outlined' | 'filled' | 'standard';
-    size?: 'small' | 'medium';
-    fullWidth?: boolean;
+    variant?: ConditionalValue<"outline" | "subtle" | "flushed" | undefined>
+    size?: 'sm' | 'md';
 }
 
 
 export function SearchBar({
     placeholder = 'Search...(CMD+K)',
-    variant = 'outlined',
-    size = 'small',
-    fullWidth = false
+    variant = 'outline',
+    size = 'sm',
 }: SearchBarProps) {
     const { query, setQuery } = useSearchStore();
 
@@ -46,7 +44,7 @@ export function SearchBar({
                 <Field.Label color="fg">Search Chunks</Field.Label>
 
                 <InputGroup startElement={<Icon name='Search' />} endElement={endElement}>
-                    <Input placeholder={placeholder} value={query} onChange={handleQueryChange} />
+                    <Input placeholder={placeholder} value={query} onChange={handleQueryChange} variant={variant} size={size} />
                 </InputGroup>
             </Field.Root>
         </Box>
