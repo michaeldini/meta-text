@@ -78,7 +78,7 @@ class ChunkService:
             chunk: The chunk to update
             data: Dictionary of field updates
         """
-        allowed_fields = ['text', 'summary', 'note', 'evaluation', 'bookmarked_by_user_id']
+        allowed_fields = ['text', 'summary', 'note', 'evaluation', 'explanation', 'bookmarked_by_user_id']
         for field in allowed_fields:
             if field in data:
                 setattr(chunk, field, data[field])
@@ -217,7 +217,30 @@ class ChunkService:
         try:
             logger.info(f"Found second chunk to combine: id={second.id}")
             # Combine text
-            first.text = f"{first.text} {second.text}"
+            first.text = f"{first.text} {second.text}".strip()
+
+            # Merge other string fields by appending with a newline to preserve all data
+            def _merge_str_field(field_name: str):
+                first_val = getattr(first, field_name, None)
+                second_val = getattr(second, field_name, None)
+                # Treat None as empty for safe merge
+                first_s = (first_val or "").strip()
+                second_s = (second_val or "").strip()
+                if second_s:
+                    if first_s:
+                        # Add a blank line between concatenated strings
+                        setattr(first, field_name, f"{first_s}\n\n{second_s}")
+                    else:
+                        setattr(first, field_name, second_s)
+
+            for fname in ("note", "summary", "evaluation", "explanation"):
+                _merge_str_field(fname)
+
+            # Scalar adoption: if first has no favorite/bookmark but second does, adopt it.
+            if getattr(first, "favorited_by_user_id", None) is None and getattr(second, "favorited_by_user_id", None) is not None:
+                first.favorited_by_user_id = second.favorited_by_user_id
+            if getattr(first, "bookmarked_by_user_id", None) is None and getattr(second, "bookmarked_by_user_id", None) is not None:
+                first.bookmarked_by_user_id = second.bookmarked_by_user_id
 
             # Reassign children from second -> first to preserve FKs (e.g., Rewrite.chunk_id NOT NULL)
             # Load relationships if not already loaded
