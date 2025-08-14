@@ -14,7 +14,7 @@ interface ChunkDisplayContainerProps {
     totalPages: number;
     onPageChange: (page: number) => void;
     startIndex: number;
-    isSearchActive?: boolean;
+    isSearching?: boolean;
 }
 
 /**
@@ -28,7 +28,7 @@ export function ChunkDisplayContainer({
     totalPages,
     onPageChange,
     startIndex,
-    isSearchActive = false,
+    isSearching = false,
 }: ChunkDisplayContainerProps) {
     return (
         <Box data-testid="chunk-display-container">
@@ -36,7 +36,7 @@ export function ChunkDisplayContainer({
                 <ChunkStatusInfo
                     totalFilteredChunks={totalFilteredChunks}
                     displayChunksCount={displayChunks.length}
-                    isSearchActive={isSearchActive}
+                    isSearching={isSearching}
                 />
 
                 <ChunkPagination

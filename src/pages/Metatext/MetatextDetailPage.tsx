@@ -48,7 +48,7 @@ function MetatextDetailPage(): ReactElement | null {
         startIndex,
         showOnlyFavorites,
         setShowOnlyFavorites,
-        isSearchActive,
+        isSearching,
     } = useChunkDisplay({
         chunks: metatext?.chunks,
         chunksPerPage: 5
@@ -114,7 +114,7 @@ function MetatextDetailPage(): ReactElement | null {
                         totalPages={totalPages}
                         onPageChange={(page) => setCurrentPage(page)}
                         startIndex={startIndex}
-                        isSearchActive={isSearchActive}
+                        isSearching={isSearching}
                     />
                 </Stack>
             )}

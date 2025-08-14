@@ -33,8 +33,9 @@ interface UseChunkDisplayResult {
     // Filtering
     showOnlyFavorites: boolean;
     setShowOnlyFavorites: (show: boolean) => void;
-    isSearchActive: boolean;
-}export function useChunkDisplay({
+    isSearching: boolean;
+}
+export function useChunkDisplay({
     chunks,
     chunksPerPage = 5
 }: UseChunkDisplayOptions): UseChunkDisplayResult {
@@ -66,18 +67,22 @@ interface UseChunkDisplayResult {
     useEffect(() => {
         if (!chunks || chunks.length === 0) {
             setSearchResults([]);
+            setIsSearching(false);
             return;
         }
 
         // Clear search if query is too short
         if (query.length < 2) {
             setSearchResults([]);
+            setIsSearching(false);
             return;
         }
 
+        // Mark searching as active immediately (so UI can show spinner during debounce)
+        setIsSearching(true);
+
         // Debounce search execution
         const timeoutId = setTimeout(() => {
-            setIsSearching(true);
             const searchTermLower = query.toLowerCase();
             const matchingChunks: ChunkType[] = [];
 
@@ -96,7 +101,11 @@ interface UseChunkDisplayResult {
             log.info(`Search completed: ${matchingChunks.length} chunks found`);
         }, 300); // 300ms debounce
 
-        return () => clearTimeout(timeoutId);
+        return () => {
+            clearTimeout(timeoutId);
+            // Clear searching state when the pending debounce is cancelled
+            setIsSearching(false);
+        };
     }, [query, chunks]);
 
     // Calculate filtered chunks based on search and favorites
@@ -150,6 +159,6 @@ interface UseChunkDisplayResult {
         // Filtering
         showOnlyFavorites,
         setShowOnlyFavorites,
-        isSearchActive: query.length >= 2,
+        isSearching,
     };
 }
