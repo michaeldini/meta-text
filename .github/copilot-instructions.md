@@ -14,6 +14,8 @@ The codebase uses modern best practices, but prioritizes readability, maintainab
 
 ## Frontend Testing
 - Use Vitest (tests colocated with components)
+- Use `src/tests/__mocks__/documentsData.mock` for consistent mock data
+- Use `src/utils/test-utils.tsx` for common testing utilities
 
 ### Documentation
 - Write brief comments at the top of each file explaining its purpose

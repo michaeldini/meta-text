@@ -9,7 +9,7 @@ export const docsSpies = {
     useAddMetatext: vi.fn(() => ({ mutate: vi.fn(), isPending: false })),
     useDeleteMetatext: vi.fn(() => ({ mutate: vi.fn() })),
     useDeleteSourceDocument: vi.fn(() => ({ mutate: vi.fn() })),
-    useAddSourceDocument: vi.fn(() => ({ mutate: vi.fn() })),
+    useAddSourceDocument: vi.fn(() => ({ mutate: vi.fn(), mutateAsync: vi.fn(), isPending: false })),
     useUpdateSourceDocument: vi.fn(() => ({ mutate: vi.fn() })),
 }
 
