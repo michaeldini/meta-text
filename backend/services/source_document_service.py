@@ -100,7 +100,7 @@ class SourceDocumentService:
         session.delete(doc)
         session.commit()
         return DeleteResponse(
-            message=f"Source document deleted successfully: title='{title}'",
+            message="Source document deleted successfully.",
             deleted_id=doc_id
         )
 

@@ -16,8 +16,12 @@ class _User:
 def override_get_current_user():
     return _User()
 
-# Apply dependency override for this module
-app.dependency_overrides[get_current_user] = override_get_current_user
+# Apply dependency override for this module in setup/teardown to avoid being cleared by other modules
+def setup_module(module):
+    app.dependency_overrides[get_current_user] = override_get_current_user
+
+def teardown_module(module):
+    app.dependency_overrides = {}
 
 client = TestClient(app)
 
@@ -40,15 +44,54 @@ def create_chunk(metatext_id: int, text: str, position: float, note: str, summar
 
 
 def add_rewrites_and_image(chunk_id: int):
-    # Use AI endpoints to create rewrites and images
-    # rewrites (2 styles)
-    r1 = client.get(f"/api/generate-rewrite/{chunk_id}", params={"style_title": "like im 5"})
-    assert r1.status_code == 200, r1.text
-    r2 = client.get(f"/api/generate-rewrite/{chunk_id}", params={"style_title": "academic"})
-    assert r2.status_code == 200, r2.text
-    # image
-    img = client.post("/api/generate-image", data={"prompt": f"img for {chunk_id}", "chunk_id": str(chunk_id)})
-    assert img.status_code == 200, img.text
+        """
+        Seed two rewrites and one image for a chunk without hitting AI endpoints.
+
+        You may optionally place fixture files that will be used if present:
+        - Rewrite texts:
+            backend/tests/fixtures/rewrites/like_im_5.txt
+            backend/tests/fixtures/rewrites/academic.txt
+        - Image file (any valid PNG placed here will be referenced):
+            public/generated_images/test_img_{chunk_id}.png
+
+        If fixture files are missing, fallback placeholder content is inserted.
+        """
+        import os
+        from pathlib import Path
+        from sqlmodel import Session, create_engine
+        from backend.models import Rewrite, Image
+
+        # Try to read rewrite texts from optional fixtures
+        tests_dir = Path(__file__).parent
+        like_im_5_path = tests_dir / "fixtures" / "rewrites" / "like_im_5.txt"
+        academic_path = tests_dir / "fixtures" / "rewrites" / "academic.txt"
+
+        def _read_or_placeholder(p: Path, default: str) -> str:
+                try:
+                        if p.is_file():
+                                return p.read_text(encoding="utf-8").strip() or default
+                except Exception:
+                        pass
+                return default
+
+        rtext1 = _read_or_placeholder(like_im_5_path, f"Rewrite (like im 5) for chunk {chunk_id}")
+        rtext2 = _read_or_placeholder(academic_path, f"Rewrite (academic) for chunk {chunk_id}")
+
+        # Use a predictable relative path for the image under public/generated_images
+        # (The file can be pre-placed by the test environment; existence is not enforced here.)
+        rel_image_path = f"generated_images/test_img_{chunk_id}.png"
+        abs_image_dir = Path(__file__).resolve().parents[3] / "public" / "generated_images"
+        # Ensure folder exists to make it easy to drop a file there (no image content created)
+        os.makedirs(abs_image_dir, exist_ok=True)
+
+        # Use the same persistent test DB as configured in backend/tests/conftest.py
+        test_db_url = "sqlite:///test_database.sqlite"
+        engine = create_engine(test_db_url, connect_args={"check_same_thread": False})
+        with Session(engine) as session:
+                session.add(Rewrite(title="like im 5", rewrite_text=rtext1, chunk_id=chunk_id))
+                session.add(Rewrite(title="academic", rewrite_text=rtext2, chunk_id=chunk_id))
+                session.add(Image(prompt=f"img for {chunk_id}", path=rel_image_path, chunk_id=chunk_id))
+                session.commit()
 
 
 def test_merge_with_strings_and_children():

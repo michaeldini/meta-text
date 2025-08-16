@@ -86,6 +86,7 @@ class MetatextSummary(MetatextBase):
     id: int
 
 class MetatextDetail(MetatextBase):
+    id: int
     chunks: List["ChunkRead"]
     source_document: Optional[SourceDocumentSummary] = None
     user: Optional["User"] = None
