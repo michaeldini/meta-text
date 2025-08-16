@@ -21,8 +21,9 @@ export function useSearchResults(items: Array<SourceDocumentSummary | MetatextSu
     const [search, setSearch] = useState("");
     const inputRef = useRef<HTMLInputElement | null>(null);
     const results = useMemo(() => {
-        if (!search) return items;
-        return items.filter(item => item.title.toLowerCase().includes(search.toLowerCase()));
+        const q = search.trim().toLowerCase();
+        if (!q) return items;
+        return items.filter(item => item.title.toLowerCase().includes(q));
     }, [items, search]);
     return { search, setSearch, inputRef, results };
 }
@@ -80,7 +81,10 @@ export function TableRow({ item, navigate, navigateToBase, deleteItemMutation }:
                     label={item.title}
                     tooltip={`View ${item.title}`}
                     data-testid={`item-${item.id}`}
-                    onClick={() => navigate(`${navigateToBase}${item.id}`)}
+                    onClick={() => {
+                        const base = navigateToBase.endsWith('/') ? navigateToBase : `${navigateToBase}/`;
+                        navigate(`${base}${item.id}`);
+                    }}
                     tabIndex={0}
                     _hover={{ textDecoration: 'underline' }}
                     width="auto"

@@ -1,31 +1,35 @@
-import { render } from "../../test-utils";
-import { screen } from "@testing-library/react";
-import { vi } from "vitest";
+// Smoke test for the real HomePage component.
+// Load test setup first (JSDOM mocks) and then mock the data hooks and
+// heavy child components before importing HomePage so module initialization
+// is safe and deterministic.
+import '../../setup-test'
+import React from 'react'
+import { vi } from 'vitest'
+import { render } from '../../test-utils'
+import { screen } from '@testing-library/react'
+import '../../tests/__mocks__/documentsData.mock'
+import { docsSpies } from '../../tests/__mocks__/documentsData.mock'
 
-// Mock document data hooks to avoid real network / react-query behavior
-vi.mock("@features/documents/useDocumentsData", () => ({
-    useSourceDocuments: () => ({ data: [{ id: 1, name: "Doc 1" }] }),
-    useMetatexts: () => ({ data: [{ id: 1, title: "Meta 1" }] }),
-    useDeleteMetatext: () => ({ mutate: vi.fn() }),
-    useDeleteSourceDocument: () => ({ mutate: vi.fn() }),
-}));
+// Mock heavy child components so they don't pull more hooks at import time
+vi.mock('@sections/Metatext/MetatextManager', () => ({
+    default: (props: any) => React.createElement('div', { 'data-testid': 'metatext-manager' }, 'metatext'),
+}))
+vi.mock('@sections/SourceDocuments/SourceDocumentsManager', () => ({
+    default: (props: any) => React.createElement('div', { 'data-testid': 'source-documents-manager' }, 'source-docs'),
+}))
+vi.mock('@components/PageContainer', () => ({
+    PageContainer: (props: any) => React.createElement('div', { 'data-testid': 'page-container' }, props.children),
+}))
 
-// Mock section managers (keep them simple)
-vi.mock("@sections/Metatext/MetatextManager", () => ({ default: () => <div data-testid='metatext-manager' /> }));
-vi.mock("@sections/SourceDocuments/SourceDocumentsManager", () => ({ default: () => <div data-testid='source-docs-manager' /> }));
+import HomePage from './HomePage'
 
-// Import after mocks so they take effect
-import HomePage from "./HomePage";
-
-describe("HomePage", () => {
-    it("renders homepage container and content", () => {
-        render(<HomePage />);
-        expect(screen.getByTestId("page-container")).toBeInTheDocument();
-        expect(screen.getByTestId("homepage-content")).toBeInTheDocument();
-    });
-
-    it("renders WelcomeText section", async () => {
-        render(<HomePage />);
-        expect(await screen.findByText(/welcome/i)).toBeInTheDocument();
-    });
-});
+describe('HomePage (integration smoke test)', () => {
+    it('renders homepage content element', async () => {
+        docsSpies.useSourceDocuments.mockReturnValue({ data: [], isLoading: false })
+        docsSpies.useMetatexts.mockReturnValue({ data: [], isLoading: false })
+        render(<HomePage />)
+        const el = await screen.findByTestId('homepage-content')
+        expect(el).toBeInTheDocument()
+        expect(el).toHaveTextContent('Welcome')
+    })
+})

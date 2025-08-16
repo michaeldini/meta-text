@@ -9,9 +9,11 @@ The codebase uses modern best practices, but prioritizes readability, maintainab
 - UI Library: Chakra UI v3
 - Icons: Heroicons
 - Design for tablet and mobile.
-- Testing: Vitest (tests colocated with components)
 - Location: `src/` folder
 - Logging: `src/utils/logger.ts`
+
+## Frontend Testing
+- Use Vitest (tests colocated with components)
 
 ### Documentation
 - Write brief comments at the top of each file explaining its purpose
