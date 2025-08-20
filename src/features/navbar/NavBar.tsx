@@ -14,9 +14,8 @@ import { ColorModeButton } from '@components/ui/color-mode';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuthStore } from '@store/authStore';
-
-
 import { getNavigationConfig } from './navigationConfig';
+import { filterNavItems } from './utils';
 
 
 /**
@@ -34,12 +33,7 @@ export function NavBar() {
 
     // Filter items based on authentication
     const isAuthenticated = !!user;
-    const navItems = navConfig.items.filter(item => {
-        if (item.label === 'Login') return !isAuthenticated;
-        if (item.label === 'Register') return !isAuthenticated;
-        if (item.label === 'Logout') return isAuthenticated;
-        return item.protected ? isAuthenticated : true;
-    });
+    const navItems = filterNavItems(navConfig.items, isAuthenticated);
 
     return (
         <Flex

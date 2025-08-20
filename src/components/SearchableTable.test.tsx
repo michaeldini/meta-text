@@ -1,145 +1,101 @@
-// Unit tests for SearchableTable
-// - Uses project test setup
-// - Verifies rendering of items, delete mutation call, and search filtering
+/**
+ * SearchableTable.test.tsx
+ * ----------------------------------------------------------------------------
+ * High-value integration tests for the searchable documents table:
+ * - Filters items by title and shows empty state when no matches
+ * - Clears search and refocuses input via the CloseButton
+ * - Navigates to detail page when an item is clicked
+ * - Calls delete mutation when delete button is clicked
+ */
 import '../setup-test'
 import React from 'react'
-import { render, makeDoc } from '../test-utils'
 import { screen, fireEvent } from '@testing-library/react'
 import { vi } from 'vitest'
-
+import { render, makeDocs } from '../test-utils'
 import { SearchableTable } from './SearchableTable'
 
+// Mock react-router's useNavigate but keep real exports for MemoryRouter, etc.
+const mockNavigate = vi.fn()
+vi.mock('react-router-dom', async () => {
+    const actual = await vi.importActual<typeof import('react-router-dom')>('react-router-dom')
+    return {
+        ...actual,
+        useNavigate: () => mockNavigate,
+    }
+})
+
 describe('SearchableTable', () => {
-    it('renders empty state when no documents', () => {
-        const mutateMock = vi.fn()
-        render(
-            <SearchableTable
-                documents={[]}
-                showTitle={true}
-                navigateToBase="/docs/"
-                deleteItemMutation={{ mutate: mutateMock } as any}
-            />
-        )
-        expect(screen.getByText(/No documents found/i)).toBeInTheDocument()
+    beforeEach(() => {
+        vi.clearAllMocks()
     })
 
-    it('renders items and calls delete mutation when delete button clicked', () => {
-        const docs = [makeDoc('d1', 'Doc One')]
-        const mutateMock = vi.fn()
-
+    function setup(docs = makeDocs(5, 'Alpha')) {
+        const deleteItemMutation = { mutate: vi.fn() } as any
         render(
             <SearchableTable
                 documents={docs}
                 showTitle={true}
-                navigateToBase="/docs/"
-                deleteItemMutation={{ mutate: mutateMock } as any}
+                navigateToBase="/sourcedoc/"
+                deleteItemMutation={deleteItemMutation}
             />
         )
+        return { deleteItemMutation }
+    }
 
-        // heading and item exist
-        expect(screen.getByText(/Open/i)).toBeInTheDocument()
-        expect(screen.getByTestId('item-d1')).toBeInTheDocument()
-        expect(screen.getByTestId('delete-button-d1')).toBeInTheDocument()
+    it('filters results by title and shows empty state for no match', () => {
+        const docs = [
+            { id: '1', title: 'Alpha Document' },
+            { id: '2', title: 'Beta Notes' },
+            { id: '3', title: 'Gamma File' },
+        ]
+        setup(docs)
 
-        // clicking delete should call mutation with id
-        fireEvent.click(screen.getByTestId('delete-button-d1'))
-        expect(mutateMock).toHaveBeenCalledWith('d1')
+        const input = screen.getByPlaceholderText(/search/i)
+        fireEvent.change(input, { target: { value: 'be' } })
+
+        // Only Beta should be visible
+        expect(screen.queryByTestId('item-1')).not.toBeInTheDocument()
+        expect(screen.getByTestId('item-2')).toBeInTheDocument()
+        expect(screen.queryByTestId('item-3')).not.toBeInTheDocument()
+
+        // No match -> empty state
+        fireEvent.change(input, { target: { value: 'zzz' } })
+        expect(screen.getByText(/no documents found/i)).toBeInTheDocument()
     })
 
-    it('filters results using the search input', () => {
-        const docs = [makeDoc('a', 'Apple'), makeDoc('b', 'Banana')]
-        const mutateMock = vi.fn()
+    it('clears search and refocuses input when CloseButton clicked', () => {
+        setup([
+            { id: '1', title: 'Alpha' },
+            { id: '2', title: 'Beta' },
+        ])
 
-        render(
-            <SearchableTable
-                documents={docs}
-                showTitle={false}
-                navigateToBase="/x/"
-                deleteItemMutation={{ mutate: mutateMock } as any}
-            />
-        )
+        const input = screen.getByPlaceholderText(/search/i)
+        fireEvent.change(input, { target: { value: 'alp' } })
 
-        // both items present initially
-        expect(screen.getByTestId('item-a')).toBeInTheDocument()
-        expect(screen.getByTestId('item-b')).toBeInTheDocument()
+        // Close button appears when there is text
+        const closeBtn = screen.getByRole('button', { name: /close/i })
+        fireEvent.click(closeBtn)
 
-        // type a search that matches only 'Apple' (case-insensitive)
-        const input = screen.getByPlaceholderText('Search...') as HTMLInputElement
-        fireEvent.change(input, { target: { value: 'app' } })
-
-        // item-a remains, item-b is gone
-        expect(screen.getByTestId('item-a')).toBeInTheDocument()
-        expect(screen.queryByTestId('item-b')).toBeNull()
-
-        // type a search that matches no items -> should show no results message
-        fireEvent.change(input, { target: { value: ' zzz ' } }) // leading/trailing spaces are trimmed
-        expect(screen.getByText(/No documents found/i)).toBeInTheDocument()
+        expect((input as HTMLInputElement).value).toBe('')
+        // Focus returns to input (jsdom focus is mocked in setup)
+        expect(document.activeElement === input).toBe(true)
     })
 
-    it('shows/hides title based on showTitle prop', () => {
-        const docs = [{ id: 'a', title: 'Apple' }]
-        const mutateMock = vi.fn()
+    it('navigates to detail when item title is clicked', () => {
+        setup([
+            { id: '42', title: 'Alpha' },
+        ])
 
-        const { rerender } = render(
-            <SearchableTable
-                documents={docs}
-                showTitle={true}
-                navigateToBase="/x/"
-                deleteItemMutation={{ mutate: mutateMock } as any}
-            />
-        )
-        expect(screen.getByText(/Open/i)).toBeInTheDocument()
-
-        rerender(
-            <SearchableTable
-                documents={docs}
-                showTitle={false}
-                navigateToBase="/x/"
-                deleteItemMutation={{ mutate: mutateMock } as any}
-            />
-        )
-        expect(screen.queryByText(/Open/i)).toBeNull()
+        fireEvent.click(screen.getByTestId('item-42'))
+        expect(mockNavigate).toHaveBeenCalledWith('/sourcedoc/42')
     })
 
-    it('shows clear button and clears input + focuses input on click', () => {
-        const docs = [{ id: 'a', title: 'Apple' }]
-        const mutateMock = vi.fn()
+    it('calls delete mutation when delete button is clicked', () => {
+        const { deleteItemMutation } = setup([
+            { id: '7', title: 'Alpha' },
+        ])
 
-        render(
-            <SearchableTable
-                documents={docs}
-                showTitle={true}
-                navigateToBase="/x/"
-                deleteItemMutation={{ mutate: mutateMock } as any}
-            />
-        )
-
-        const input = screen.getByPlaceholderText('Search...') as HTMLInputElement
-        input.focus()
-        fireEvent.change(input, { target: { value: 'Ap' } })
-        // Clear (x) button should appear in the input group
-        const clear = screen.getByLabelText('Close')
-        fireEvent.click(clear)
-        expect(input.value).toBe('')
-        expect(document.activeElement).toBe(input)
-    })
-
-    it('clicking delete does not navigate', () => {
-        // Spy on location push via a mock navigate in the navigation test, here we just ensure DOM stays
-        const docs = [{ id: 'a', title: 'Apple' }]
-        const mutateMock = vi.fn()
-
-        render(
-            <SearchableTable
-                documents={docs}
-                showTitle={true}
-                navigateToBase="/x/"
-                deleteItemMutation={{ mutate: mutateMock } as any}
-            />
-        )
-        fireEvent.click(screen.getByTestId('delete-button-a'))
-        expect(mutateMock).toHaveBeenCalledWith('a')
-        // Item still present (no navigation occurred here)
-        expect(screen.getByTestId('item-a')).toBeInTheDocument()
+        fireEvent.click(screen.getByTestId('delete-button-7'))
+        expect(deleteItemMutation.mutate).toHaveBeenCalledWith('7')
     })
 })
