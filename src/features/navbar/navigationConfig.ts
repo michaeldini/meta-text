@@ -25,7 +25,12 @@ interface NavBarProps {
     items: NavigationItem[];
 }
 
-
+/**
+ * Get the navigation configuration for the navbar.
+ * @param logout - Function to call for logging out.
+ * @param navigate - Function to call for navigation.
+ * @returns The navigation configuration for the navbar.
+ */
 export const getNavigationConfig = (logout: () => void, navigate: (path: string) => void): NavBarProps => ({
     items: [
         {

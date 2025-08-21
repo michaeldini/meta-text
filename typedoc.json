@@ -1,28 +1,20 @@
 {
     "entryPoints": [
-        "src/App.tsx",
-        "src/main.tsx",
-        "src/pages",
-        "src/services",
-        // "src/components/index.ts",
-        // "src/features",
-        // "src/hooks/index.ts",
-        // "src/services",
-        // "src/store",
-        // "src/types/index.ts",
-        // "src/utils"
+        "src"
     ],
     "entryPointStrategy": "expand",
     "out": "docs/api",
-    "theme": "default",
-    "customCss": "docs/custom-typedoc.css",
+    "plugin": [
+        "typedoc-plugin-markdown"
+    ],
+    "theme": "markdown",
+    "readme": "none",
     "includeVersion": true,
-    "excludePrivate": false,
-    "excludeProtected": false,
+    "excludePrivate": true,
+    "excludeProtected": true,
     "excludeExternals": true,
     "excludeInternal": false,
-    "readme": "README.md",
-    "name": "Meta-TextDocumentation",
+    "name": "Meta-Text Documentation",
     "tsconfig": "tsconfig.json",
     "categorizeByGroup": true,
     "defaultCategory": "Components",

@@ -1,5 +1,7 @@
 # Meta-Text App
 
+[test](http://localhost:3000/#/components?id=/)]
+
 ## Developer Docs Quick Links
 
 - [Add a Keyboard Shortcut](./docs/ADD_KEYBOARD_SHORTCUT.md)

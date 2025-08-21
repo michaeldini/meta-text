@@ -15,10 +15,11 @@
     "start": "npm-run-all --parallel start:frontend start:backend",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "docs:api": "typedoc",
+    "docs:api": "typedoc --entryPoints src --out docs/api --plugin typedoc-plugin-markdown --theme markdown --readme none",
+    "docs:api:watch": "typedoc --entryPoints src --out docs/api --plugin typedoc-plugin-markdown --theme markdown --readme none --watch",
     "docs:serve": "npx http-server docs -p 3003",
-    "docs:watch": "typedoc --watch",
-    "docs:dev": "npm-run-all --parallel docs:watch docs:serve"
+    "docs:watch": "npm-run-all --parallel docs:api:watch docs:serve",
+    "docs:dev": "npm-run-all --parallel docs:api:watch docs:serve"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.2.4",

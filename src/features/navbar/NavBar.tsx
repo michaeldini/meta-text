@@ -1,13 +1,9 @@
-
 /**
- * Navigation bar for the application.
- * - Basic navigation structure.
- * - Renders buttons for navigation links and actions from config (with icons and labels)
- * - Shows/hides items based on authentication
- * - Uses Material UI AppBar and Toolbar for layout
- * - Theme toggle button included
+ * The Navbar contains a
+ * - logo that redirects to home
+ * - Dynamic Login/Register/Logout buttons
+ * - Chakra UI Color-mode button (toggle light/dark theme)
  */
-
 import React from 'react';
 import { Flex, Box, Button, Spacer } from '@chakra-ui/react';
 import { ColorModeButton } from '@components/ui/color-mode';
