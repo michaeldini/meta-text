@@ -21,7 +21,15 @@ import SourceDoc from './components/SourceDoc';
 import { Heading } from '@chakra-ui/react/heading';
 import { useValidatedRouteId } from '@hooks/useValidatedRouteId';
 import { Tabs } from '@chakra-ui/react/tabs';
+import SourceDocControlTabs from './components/SourceDocControlTabs';
 
+function headingText(title: string) {
+    return <>
+        <Heading size="6xl">{title}</Heading>
+        <Heading size="md">Edit this document by double-clicking on the text below. To save changes, click the icon. To discard, click outside the text area.</Heading>
+        <Text color="fg.muted">Tip: Scroll after double-clicking to edit.</Text>
+    </>
+}
 function SourceDocDetailPage(): ReactElement | null {
     // Route param -> validated numeric id (redirects if invalid)
     const id = useValidatedRouteId('sourceDocId');
@@ -36,8 +44,6 @@ function SourceDocDetailPage(): ReactElement | null {
 
     // Redirect if query error (invalid or not found)
     const navigate = useNavigate();
-
-
     React.useEffect(() => {
         if (error && !isLoading) {
             navigate('/');
@@ -49,29 +55,9 @@ function SourceDocDetailPage(): ReactElement | null {
     return (
         <PageContainer data-testid="sourcedoc-detail-page">
             <Box bg="bg.subtle" p="4" borderRadius="lg" mb="10">
-                <Heading size="6xl">
-                    {doc.title}
-                </Heading>
-                <Tabs.Root w="100%" deselectable fitted defaultValue={"Controls"}>
-                    <Tabs.List colorPalette="blue">
-                        <Tabs.Trigger value="info">Info</Tabs.Trigger>
-                        <Tabs.Trigger value="styles">Styles</Tabs.Trigger>
-                    </Tabs.List>
-                    <Tabs.Content value="info">
-                        <SourceDocInfo sourceDocumentId={id} />
-                    </Tabs.Content>
-                    <Tabs.Content value="styles">
-                        <StyleControls showPaddingX={false} />
-                    </Tabs.Content>
-                </Tabs.Root>
-                {/* Document Header */}
-                {/* <DocumentHeader title={doc.title}>
-                    <Text>{doc.title}</Text>
-                </DocumentHeader> */}
+                {headingText(doc.title)}
+                <SourceDocControlTabs sourceDocumentId={id} showPaddingX={false} />
             </Box>
-            <Heading>Edit this document by double-clicking on the text below. To save changes, click the icon. To discard, click outside the text area.</Heading>
-            <Text color="fg.muted" pb="10">Tip: Scroll after double-clicking to edit.</Text>
-
             <SourceDoc
                 doc={doc}
                 isSaving={editor.isSaving}
