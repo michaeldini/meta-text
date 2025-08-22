@@ -141,8 +141,8 @@ export function AppContent() {
 
     return (
         <Box>
-            <GlobalNotifications />
             <Toaster />
+            <GlobalNotifications />
             <NavBar />
             <Routes>
                 {routes.map(renderRoute)}

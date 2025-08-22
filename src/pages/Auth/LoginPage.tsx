@@ -1,94 +1,23 @@
-import React, { useState, FormEvent } from 'react';
-import { keyframes } from '@emotion/react';
-// Shake animation keyframes
-const shake = keyframes`
-    0% { transform: translateX(0); }
-    20% { transform: translateX(-8px); }
-    40% { transform: translateX(8px); }
-    60% { transform: translateX(-8px); }
-    80% { transform: translateX(8px); }
-    100% { transform: translateX(0); }
-`;
-import { Button } from '@chakra-ui/react/button';
-import { Input } from '@chakra-ui/react/input';
-import { Heading } from '@chakra-ui/react';
-import { Box } from '@chakra-ui/react/box';
-import { useNavigate } from 'react-router-dom';
-import {
-    PasswordInput,
-} from "@components/ui/password-input"
+import React from 'react';
 import { useAuthStore } from '@store/authStore';
-import { ErrorAlert } from '@components/ErrorAlert';
+import { AuthForm } from './AuthForm';
 
 export function LoginPage() {
-
-    // get a function to login a user and the loading state from the auth store
-    // also get the error state to show any login errors
     const login = useAuthStore(state => state.login);
     const loading = useAuthStore(state => state.loading);
     const error = useAuthStore(state => state.error);
 
-    // local state for username and password
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const navigate = useNavigate();
-    const [shakeAnim, setShakeAnim] = useState(false);
-
-    // handle form submission
-    // this will call the login function from the auth store
-    // and navigate to the home page on success
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
-        const success = await login(username, password);
-        if (success) {
-            navigate('/');
-        } else if (error) {
-            // Clear the password field if there is a login error
-            setPassword('');
-            // Trigger shake animation
-            setShakeAnim(true);
-            setTimeout(() => setShakeAnim(false), 600); // duration matches animation
-        }
-    };
-
     return (
-        <Box display="flex" justifyContent="center">
-            <Box
-                animation={shakeAnim ? `${shake} 0.6s` : undefined}
-            >
-                <Heading mb={4}>Login</Heading>
-                <form onSubmit={handleSubmit}>
-                    <Input
-                        placeholder="Username"
-                        value={username}
-                        onChange={e => setUsername(e.target.value)}
-                        mb={3}
-                        required
-                        autoFocus
-                        autoComplete="username"
-                    />
-                    <PasswordInput
-                        placeholder="Password"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                        mb={3}
-                        required
-                        autoComplete="current-password"
-                    />
-                    <ErrorAlert message={error} data-testid="login-error" mt={2} />
-                    <Button
-                        type="submit"
-                        variant="solid"
-                        colorScheme="blue"
-                        loading={loading}
-                        width="100%"
-                        mt={2}
-                    >
-                        {loading ? 'Logging in...' : 'Login'}
-                    </Button>
-                </form>
-            </Box>
-        </Box>
+        <AuthForm
+            title="Login"
+            submitText="Login"
+            authAction={login}
+            redirectOnSuccess="/"
+            loading={loading}
+            error={error}
+            passwordAutoComplete="current-password"
+            errorTestId="login-error"
+        />
     );
 };
 
