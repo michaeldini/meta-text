@@ -26,7 +26,7 @@ export function ChunkList({ chunks, startIndex }: ChunkListProps) {
 
 
     return (
-        <Stack gap={4} data-testid="chunk-list">
+        <Stack gap={4} mb={20} data-testid="chunk-list" >
             {memoizedChunks.map((chunk: ChunkType, idx: number) => (
                 <Chunk key={chunk.id} chunk={chunk} chunkIdx={startIndex + idx} uiPreferences={uiPreferences} />
             ))}
