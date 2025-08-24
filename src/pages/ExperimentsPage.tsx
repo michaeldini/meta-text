@@ -19,21 +19,31 @@ const ExperimentsPage: React.FC = () => {
 
     const [clickedWords, setClickedWords] = useState<ClickedWord[]>([]);
 
-    // Adds the clicked word to state (instead of logging to console)
+    // Adds the clicked word to state
     // Avoid duplicates: only append if the word isn't already present
     const handleWordClick = (word: string) => {
         console.log('[ExperimentsPage] handleWordClick called for', word);
+
+        // If we already have this word and it's either loading or already has an explanation, skip.
+        const existing = clickedWords.find(p => p.word === word);
+        if (existing) {
+            if (existing.loading) {
+                console.log('[ExperimentsPage] word already loading, skipping fetch for', word);
+                return;
+            }
+            if (existing.explanation) {
+                console.log('[ExperimentsPage] word already has explanation, skipping fetch for', word);
+                return;
+            }
+        }
+
         // Add a placeholder entry with loading=true only if it doesn't already exist.
-        let shouldFetch = false;
         setClickedWords(prev => {
-            const existing = prev.find(p => p.word === word);
-            if (existing) return prev;
-            shouldFetch = true;
+            const has = prev.find(p => p.word === word);
+            if (has) return prev;
             console.log('[ExperimentsPage] adding placeholder for', word);
             return [...prev, { word, loading: true, error: null }];
         });
-
-        if (!shouldFetch) return;
 
         // Fetch explanation and update the corresponding entry when it resolves.
         (async () => {
