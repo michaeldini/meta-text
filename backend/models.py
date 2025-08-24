@@ -213,6 +213,13 @@ class ExplanationRequest(BaseModel):
     chunk_id: Optional[int] = Field(None, description="Chunk ID for chunk explanation")
     metatext_id: Optional[int] = Field(None, description="Metatext ID for explanation")
 
+class ExplanationRequest2(BaseModel):
+    word: str = Field(..., description="Word(s) to explain")
+
+class ExplanationResponse2(BaseModel):
+    word: str
+    concise: str
+    comprehensive: str
 
 # --- AI Image Schemas ---
 class Image(SQLModel, table=True):

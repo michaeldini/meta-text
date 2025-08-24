@@ -1,0 +1,15 @@
+#  Instructions
+##  Purpose:
+ Return a concise and comprehensive explanations of a word or topic.
+ 
+## Always return:
+   - concise: <a concise explanation of the word>
+   - comprehensive: <a comrehensive explanation of the word>
+
+## Example
+
+Input:
+chemistry
+Output:
+concise: Chemistry is the science of matter and its transformations, focusing on how atoms and molecules interact to form substances with distinct properties.
+comprehensive: Chemistry is the scientific study of matter—its composition, structure, properties, and the changes it undergoes. It examines how atoms and molecules combine, separate, and rearrange through chemical reactions, governed by principles such as bonding, thermodynamics, kinetics, and quantum mechanics. By linking the microscopic scale of particles to the macroscopic behavior of materials, chemistry explains phenomena like energy transfer, reactivity, and material properties. Often called the "central science," it bridges physics, biology, earth science, and engineering, and provides the foundation for advancements in medicine, energy, environmental science, and technology.

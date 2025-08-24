@@ -8,7 +8,7 @@ Returns a consistent `ExplanationResponse` regardless of input type.
 """
 
 from sqlmodel import Session, select
-from backend.models import ExplanationResponse, ExplanationsResponse, User, Explanation, ExplanationType
+from backend.models import ExplanationResponse,ExplanationResponse2,  ExplanationsResponse, User, Explanation, ExplanationType
 from backend.services.openai_service import OpenAIService
 from backend.exceptions.ai_exceptions import WordDefinitionValidationError
 from loguru import logger
@@ -85,3 +85,27 @@ class ExplanationService:
             word_list=[e for e in explanations if e.type == ExplanationType.word],
             phrase_list=[e for e in explanations if e.type == ExplanationType.phrase]
         )
+
+    def explain2(self, word: str, session: Session) -> ExplanationResponse2:
+        if not word:
+            raise WordDefinitionValidationError("word", "Missing word")
+
+        prompt = f"word='{word}'"
+
+        ai_data: ExplanationResponse2 = self.openai_service.generate_parsed_response(
+            "instructions/explain2.txt",
+            prompt,
+            ExplanationResponse2
+        )
+
+        # log_entry = Explanation.create_with_type(
+        #     user_id=user.id,
+        #     words=word,
+        #     explanation=ai_data.explanation,
+        #     metatext_id=None  # No metatext_id for single word explanations
+        # )
+        # session.add(log_entry)
+        # session.commit()
+        # logger.info(f"Word definition generated and saved for word: '{word}'")
+
+        return ai_data

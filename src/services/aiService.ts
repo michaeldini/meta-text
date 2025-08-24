@@ -75,7 +75,19 @@ export interface ExplanationResponse {
 export async function explainWordsOrChunk(params: ExplanationRequest): Promise<ExplanationResponse> {
     return api.post('explain', { json: params, timeout: 20000 }).json<ExplanationResponse>();
 }
+export interface ExplanationRequest2 {
+    word: string;
+}
 
+export interface ExplanationResponse2 {
+    word: string;
+    concise: string;
+    comprehensive: string;
+}
+
+export async function explain2(params: ExplanationRequest2): Promise<ExplanationResponse2> {
+    return api.post('explain2', { json: params, timeout: 20000 }).json<ExplanationResponse2>();
+}
 
 
 export interface RewriteResponse {

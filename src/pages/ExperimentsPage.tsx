@@ -1,19 +1,53 @@
 // ExperimentsPage: Page with right side panel, main content, and prompt input at bottom.
 
 import React, { useState } from 'react';
-import { Box, Flex, Input, Button, Text } from '@chakra-ui/react';
+import { Box, Flex, Input, Button, Text, Spinner } from '@chakra-ui/react';
+import { explain2, ExplanationResponse2 } from '../services/aiService';
 
 const TESTING_TEXT = "This is a test. Here are some big words to explain: boondoggle, flabbergasted, and sesquipedalian.";
 
 const ExperimentsPage: React.FC = () => {
     const [prompt, setPrompt] = useState('');
     // State to collect words clicked by the user
-    const [clickedWords, setClickedWords] = useState<string[]>([]);
+    // Store clicked words along with their fetched explanations and loading/error state.
+    interface ClickedWord {
+        word: string;
+        explanation?: ExplanationResponse2;
+        loading?: boolean;
+        error?: string | null;
+    }
+
+    const [clickedWords, setClickedWords] = useState<ClickedWord[]>([]);
 
     // Adds the clicked word to state (instead of logging to console)
     // Avoid duplicates: only append if the word isn't already present
     const handleWordClick = (word: string) => {
-        setClickedWords(prev => (prev.includes(word) ? prev : [...prev, word]));
+        console.log('[ExperimentsPage] handleWordClick called for', word);
+        // Add a placeholder entry with loading=true only if it doesn't already exist.
+        let shouldFetch = false;
+        setClickedWords(prev => {
+            const existing = prev.find(p => p.word === word);
+            if (existing) return prev;
+            shouldFetch = true;
+            console.log('[ExperimentsPage] adding placeholder for', word);
+            return [...prev, { word, loading: true, error: null }];
+        });
+
+        if (!shouldFetch) return;
+
+        // Fetch explanation and update the corresponding entry when it resolves.
+        (async () => {
+            console.log('[ExperimentsPage] calling explain2 for', word);
+            try {
+                const res = await explain2({ word });
+                console.log('[ExperimentsPage] explain2 success for', word, res);
+                setClickedWords(prev => prev.map(p => p.word === word ? { ...p, explanation: res, loading: false } : p));
+            } catch (err: any) {
+                console.error('[ExperimentsPage] explain2 failed for', word, err);
+                const msg = err?.message ?? 'Failed to fetch explanation';
+                setClickedWords(prev => prev.map(p => p.word === word ? { ...p, error: msg, loading: false } : p));
+            }
+        })();
     };
 
     // Handles prompt submission
@@ -75,15 +109,27 @@ const ExperimentsPage: React.FC = () => {
                     />
                 </Box>
                 {/* Side panel */}
-                <Box w={{ base: "full", md: "350px" }} borderLeft="1px solid" borderColor="gray.200" p={6} boxShadow="md">
+                <Box borderLeft="1px solid" borderColor="gray.200" p={6} boxShadow="md">
                     <Text fontSize="lg" fontWeight="bold" mb={3}>Clicked words</Text>
                     {clickedWords.length === 0 ? (
                         <Text color="gray.500">No words clicked yet. Click a word in the main pane.</Text>
                     ) : (
-                        <Box as="ul" pl={4} maxH="60vh" overflowY="auto">
-                            {clickedWords.map((w, i) => (
-                                <Box as="li" key={i} py={1}>
-                                    <Text as="span" fontWeight="semibold">{w}</Text>
+                        <Box as="ul" pl={4} maxH="60vh" maxW="40vw" overflowY="auto">
+                            {clickedWords.map((item, i) => (
+                                <Box as="li" key={i} py={2}>
+                                    <Flex align="center" gap={2}>
+                                        <Text as="span" fontWeight="semibold">{item.word}</Text>
+                                        {item.loading && <Spinner size="xs" />}
+                                        {item.error && <Text color="red.500" fontSize="sm">{item.error}</Text>}
+                                    </Flex>
+                                    {item.explanation && (
+                                        <Box mt={2} pl={2}>
+                                            <Text fontSize="sm" fontWeight="semibold">Concise</Text>
+                                            <Text fontSize="sm">{item.explanation.concise}</Text>
+                                            <Text mt={2} fontSize="sm" fontWeight="semibold">Comprehensive</Text>
+                                            <Text fontSize="sm">{item.explanation.comprehensive}</Text>
+                                        </Box>
+                                    )}
                                 </Box>
                             ))}
                         </Box>

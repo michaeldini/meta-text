@@ -8,7 +8,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
 from backend.db import get_session
-from backend.models import  ExplanationsResponse, ExplanationRequest
+from backend.models import  ExplanationRequest2, ExplanationResponse2, ExplanationsResponse, ExplanationRequest
 from backend.services.ai_service import AIService
 from backend.services.explanation_service import ExplanationService 
 from backend.dependencies import get_ai_service, get_explanation_service, get_current_user
@@ -59,3 +59,22 @@ def get_review_data(
     """
     return service.get_review_data(metatext_id, user.id, session)
 
+
+# Experiments page
+
+@router.post("/explain2", response_model=ExplanationResponse2)
+def explain2(
+    request: ExplanationRequest2,
+    session: Session = Depends(get_session),
+    ai_service: AIService = Depends(get_ai_service),
+    explanation_service: ExplanationService = Depends(get_explanation_service),
+    # user = Depends(get_current_user)
+):
+    """
+    Consolidated endpoint for explaining words or a chunk. Requires authentication.
+    Determines the operation based on which fields are provided.
+    """
+    return explanation_service.explain2(
+            word=request.word,
+            session=session
+        )
