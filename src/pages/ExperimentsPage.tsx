@@ -4,10 +4,15 @@ import React, { useState } from 'react';
 import { Box, Flex, Input, Button, Text, Spinner } from '@chakra-ui/react';
 import { explain2, ExplanationResponse2 } from '../services/aiService';
 
-const TESTING_TEXT = "This is a test. Here are some big words to explain: boondoggle, flabbergasted, and sesquipedalian.";
+const TESTING_TEXT = "Submit a prompt to begin";
 
 const ExperimentsPage: React.FC = () => {
     const [prompt, setPrompt] = useState('');
+    // Main content text shown in the WordWrapper. Starts with TESTING_TEXT but will
+    // be replaced with explain2 results when the user submits a prompt.
+    const [mainText, setMainText] = useState(TESTING_TEXT);
+    const [mainLoading, setMainLoading] = useState(false);
+    const [mainError, setMainError] = useState<string | null>(null);
     // State to collect words clicked by the user
     // Store clicked words along with their fetched explanations and loading/error state.
     interface ClickedWord {
@@ -61,10 +66,28 @@ const ExperimentsPage: React.FC = () => {
     };
 
     // Handles prompt submission
-    const handlePromptSubmit = (e: React.FormEvent) => {
+    const handlePromptSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Prompt submitted:", prompt);
-        setPrompt('');
+        const trimmed = prompt.trim();
+        if (!trimmed) return;
+        console.log('[ExperimentsPage] Prompt submitted:', trimmed);
+
+        setMainLoading(true);
+        setMainError(null);
+
+        try {
+            const res = await explain2({ word: trimmed });
+            console.log('[ExperimentsPage] explain2 result for prompt:', res);
+            // Combine the response into a single text blob to render inside WordWrapper.
+            const combined = `${res.word}\n\nConcise: ${res.concise}\n\nComprehensive: ${res.comprehensive}`;
+            setMainText(combined);
+            setPrompt('');
+        } catch (err: any) {
+            console.error('[ExperimentsPage] explain2 failed for prompt', err);
+            setMainError(err?.message ?? 'Failed to fetch explanation');
+        } finally {
+            setMainLoading(false);
+        }
     };
 
     // Component that wraps each word in a Chakra Box (rendered as a span)
@@ -108,15 +131,23 @@ const ExperimentsPage: React.FC = () => {
     };
 
     return (
-        <Flex direction="column" h="100vh">
+        <Flex direction="column">
             {/* Main content and side panel */}
             <Flex flex="1" overflow="hidden">
                 {/* Main content area */}
                 <Box flex="1" p={6} overflowY="auto">
-                    <WordWrapper
-                        text={TESTING_TEXT}
-                        onWordClick={handleWordClick}
-                    />
+                    {mainLoading ? (
+                        <Flex align="center" justify="center" h="100%">
+                            <Spinner />
+                        </Flex>
+                    ) : mainError ? (
+                        <Text color="red.500">{mainError}</Text>
+                    ) : (
+                        <WordWrapper
+                            text={mainText}
+                            onWordClick={handleWordClick}
+                        />
+                    )}
                 </Box>
                 {/* Side panel */}
                 <Box borderLeft="1px solid" borderColor="gray.200" p={6} boxShadow="md">
