@@ -1,5 +1,5 @@
 // future:
-// 1. Include context when explaining a word for a more tailored definition. (easy, high value)
+// 1. allow user to select multiple words (hard, high value)
 // 2. color the cards to trace where the card came from (medium/high, unknown value)
 // 3. make a "mind-map" trace of user interaction with a query (high difficulty/ unknown value)
 // ExperimentsPage v2
@@ -13,8 +13,8 @@ import React, { useState } from 'react';
 import { Box, Flex, Wrap, Input, Button, Text, Spinner } from '@chakra-ui/react';
 // Switch to the mock during development to avoid real API calls.
 // For production, change this import back to: '../services/aiService'
-// import { explain2, ExplanationResponse2 } from '../services/aiService.mock';
-import { explain2, ExplanationResponse2 } from '../services/aiService';
+import { explain2, ExplanationResponse2 } from '../services/aiService.mock';
+// import { explain2, ExplanationResponse2 } from '../services/aiService';
 
 // Helpers for extracting a tight context window around a clicked word
 const MAX_CONTEXT = 600; // total chars cap
@@ -94,40 +94,109 @@ const ExperimentsPage2: React.FC = () => {
     const [initialLoading, setInitialLoading] = useState(false);
     const [initialError, setInitialError] = useState<string | null>(null);
 
-    // Component that wraps each word in a Chakra Box (rendered as a span)
+    // Component that wraps text and enables click-and-drag multi-word selection
     const WordWrapper: React.FC<{
         text: string;
-        onWordClick?: (word: string, contextText: string) => void;
-    }> = ({ text, onWordClick }) => {
-        // Capture words, whitespace, and punctuation separately
-        const parts = Array.from(text.matchAll(/(\w+|\s+|[^\s\w]+)/g)).map(m => m[0]);
+        onSelection?: (selection: string, contextText: string) => void;
+    }> = ({ text, onSelection }) => {
+        // Tokenize into words, whitespace, and punctuation; also track char offsets
+        type Token = { value: string; isWord: boolean; start: number; end: number };
+        const regex = /(\w+|\s+|[^\s\w]+)/g;
+        const tokens: Token[] = [];
+        let cursor = 0;
+        for (const m of text.matchAll(regex)) {
+            const value = m[0];
+            const start = cursor;
+            const end = start + value.length;
+            tokens.push({ value, isWord: /^\w+$/.test(value), start, end });
+            cursor = end;
+        }
+
+        const [isSelecting, setIsSelecting] = useState(false);
+        const [anchorIdx, setAnchorIdx] = useState<number | null>(null); // index in tokens for a word token
+        const [hoverIdx, setHoverIdx] = useState<number | null>(null);
+
+        const resetSelection = () => {
+            setIsSelecting(false);
+            setAnchorIdx(null);
+            setHoverIdx(null);
+        };
+
+        const handleMouseDown = (idx: number) => {
+            setIsSelecting(true);
+            setAnchorIdx(idx);
+            setHoverIdx(idx);
+        };
+
+        const handleMouseEnter = (idx: number) => {
+            if (isSelecting) setHoverIdx(idx);
+        };
+
+        const handleMouseUp = () => {
+            if (!isSelecting || anchorIdx === null || hoverIdx === null) {
+                resetSelection();
+                return;
+            }
+
+            // Determine selection bounds across word tokens
+            const startIdx = Math.min(anchorIdx, hoverIdx);
+            const endIdx = Math.max(anchorIdx, hoverIdx);
+
+            const wordTokenIndices = tokens
+                .map((t, i) => ({ t, i }))
+                .filter(({ t }) => t.isWord)
+                .map(({ i }) => i);
+
+            // If indices are not valid (shouldn't happen), bail
+            if (!wordTokenIndices.includes(startIdx) || !wordTokenIndices.includes(endIdx)) {
+                resetSelection();
+                return;
+            }
+
+            // Compute character range from first->last selected word token
+            const charStart = tokens[startIdx].start;
+            const charEnd = tokens[endIdx].end;
+            let selection = text.slice(charStart, charEnd);
+            selection = selection.trim();
+
+            if (selection.length > 0) {
+                onSelection?.(selection, text);
+            }
+
+            resetSelection();
+        };
+
+        // Calculate whether a token should be visually highlighted
+        const isTokenSelected = (i: number) => {
+            if (!isSelecting || anchorIdx === null || hoverIdx === null) return false;
+            const [lo, hi] = [Math.min(anchorIdx, hoverIdx), Math.max(anchorIdx, hoverIdx)];
+            return i >= lo && i <= hi;
+        };
 
         return (
-            <Text as="span">
-                {parts.map((part, i) => {
-                    // If part is a word (letters/numbers/underscore), make it clickable
-                    if (/^\w+$/.test(part)) {
+            <Text as="span" userSelect={isSelecting ? 'none' : 'text'} onMouseUp={handleMouseUp}>
+                {tokens.map((tok, i) => {
+                    if (tok.isWord) {
                         return (
                             <Box
-                                px={0}
-                                mx={0}
                                 key={i}
                                 as="span"
+                                px={0}
+                                mx={0}
                                 cursor="pointer"
-                                onClick={() => onWordClick?.(part, text)}
+                                onMouseDown={(e) => { e.preventDefault(); handleMouseDown(i); }}
+                                onMouseEnter={() => handleMouseEnter(i)}
                                 _hover={{ background: 'gray.700' }}
+                                background={isTokenSelected(i) ? 'gray.700' : 'transparent'}
                                 display="inline-block"
                             >
-                                {part}
+                                {tok.value}
                             </Box>
                         );
                     }
-
-                    // Otherwise render punctuation/whitespace as-is
+                    // punctuation/whitespace
                     return (
-                        <Box as="span" key={i} display="inline">
-                            {part}
-                        </Box>
+                        <Box key={i} as="span" display="inline">{tok.value}</Box>
                     );
                 })}
             </Text>
@@ -163,19 +232,19 @@ const ExperimentsPage2: React.FC = () => {
         }
     };
 
-    // Step 2: Clicking a word -> append a new panel
-    const appendPanelForWord = async (word: string, fullTextContext: string) => {
-        const contextSlice = buildContextSlice(word, fullTextContext);
+    // Step 2: Mouse selection (multi-word) -> append a new panel
+    const appendPanelForSelection = async (selection: string, fullTextContext: string) => {
+        const contextSlice = buildContextSlice(selection, fullTextContext);
 
         const key = `panel-${Date.now()}-${panels.length}`;
         // optimistic placeholder panel
         setPanels(prev => [
             ...prev,
-            { key, sourceWord: word, loading: true, error: null, viewMode: 'comprehensive' },
+            { key, sourceWord: selection, loading: true, error: null, viewMode: 'comprehensive' },
         ]);
 
         try {
-            const res = await explain2({ word, context: contextSlice });
+            const res = await explain2({ word: selection, context: contextSlice });
             setPanels(prev => prev.map(p => p.key === key
                 ? {
                     ...p,
@@ -226,7 +295,7 @@ const ExperimentsPage2: React.FC = () => {
             {/* Step 2+: Panels row. Appears after first successful response. */}
             {hasStarted && (
                 <Box mt={2} overflowX="auto">
-                    <Flex direction="row" gap={4} align="flex-start" minH="200px" pb={2}>
+                    <Wrap direction="row" gap={4} align="flex-start" minH="200px" pb={2}>
                         {panels.map((panel) => (
                             <Box
                                 key={panel.key}
@@ -270,13 +339,13 @@ const ExperimentsPage2: React.FC = () => {
                                             ? (panel.concise ?? panel.comprehensive ?? '')
                                             : (panel.comprehensive ?? panel.concise ?? '');
                                         return (
-                                            <WordWrapper text={activeText} onWordClick={appendPanelForWord} />
+                                            <WordWrapper text={activeText} onSelection={appendPanelForSelection} />
                                         );
                                     })()
                                 )}
                             </Box>
                         ))}
-                    </Flex>
+                    </Wrap>
                 </Box>
             )}
         </Flex>
