@@ -76,5 +76,6 @@ def explain2(
     """
     return explanation_service.explain2(
             word=request.word,
-            session=session
+            session=session,
+            context=request.context
         )

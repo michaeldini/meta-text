@@ -77,6 +77,8 @@ export async function explainWordsOrChunk(params: ExplanationRequest): Promise<E
 }
 export interface ExplanationRequest2 {
     word: string;
+    // Optional surrounding text to help disambiguate the word's meaning
+    context?: string;
 }
 
 export interface ExplanationResponse2 {

@@ -86,11 +86,17 @@ class ExplanationService:
             phrase_list=[e for e in explanations if e.type == ExplanationType.phrase]
         )
 
-    def explain2(self, word: str, session: Session) -> ExplanationResponse2:
+    def explain2(self, word: str, session: Session, context: str | None = None) -> ExplanationResponse2:
         if not word:
             raise WordDefinitionValidationError("word", "Missing word")
 
         prompt = f"word='{word}'"
+        if context:
+            # Trim excessive context to avoid blowing up prompt size
+            trimmed = context.strip()
+            if len(trimmed) > 1200:
+                trimmed = trimmed[:1200]
+            prompt += f" context='{trimmed}'"
 
         ai_data: ExplanationResponse2 = self.openai_service.generate_parsed_response(
             "instructions/explain2.txt",

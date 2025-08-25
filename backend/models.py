@@ -215,6 +215,7 @@ class ExplanationRequest(BaseModel):
 
 class ExplanationRequest2(BaseModel):
     word: str = Field(..., description="Word(s) to explain")
+    context: Optional[str] = Field(None, description="Surrounding text to help disambiguate the word's meaning")
 
 class ExplanationResponse2(BaseModel):
     word: str

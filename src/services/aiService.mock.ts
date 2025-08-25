@@ -5,6 +5,7 @@
 
 export interface ExplanationRequest2 {
     word: string;
+    context?: string;
 }
 
 export interface ExplanationResponse2 {
@@ -37,11 +38,14 @@ export async function explain2(params: ExplanationRequest2): Promise<Explanation
     await sleep(450 + Math.floor(Math.random() * 400));
 
     const { comprehensive, concise } = makeMockText(params.word);
+    const ctxNote = params.context && params.context.trim()
+        ? ` In this context, it appears near: "${params.context.slice(0, 120)}${params.context.length > 120 ? '…' : ''}"`
+        : '';
 
     return {
         word: params.word,
-        concise,
-        comprehensive,
+        concise: concise + ctxNote,
+        comprehensive: comprehensive + ctxNote,
     };
 }
 

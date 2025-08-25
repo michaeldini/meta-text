@@ -26,7 +26,7 @@ const ExperimentsPage: React.FC = () => {
 
     // Adds the clicked word to state
     // Avoid duplicates: only append if the word isn't already present
-    const handleWordClick = (word: string) => {
+    const handleWordClick = (word: string, fullTextContext: string) => {
         console.log('[ExperimentsPage] handleWordClick called for', word);
 
         // If we already have this word and it's either loading or already has an explanation, skip.
@@ -54,7 +54,49 @@ const ExperimentsPage: React.FC = () => {
         (async () => {
             console.log('[ExperimentsPage] calling explain2 for', word);
             try {
-                const res = await explain2({ word });
+                // Build a tighter context window around the clicked word
+                const MAX_CONTEXT = 600;
+                const WINDOW = 200;
+                const safeText = fullTextContext ?? '';
+                let idx = -1;
+                try {
+                    const wordRegex = new RegExp(`\\b${word.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}\\b`, 'i');
+                    const match = safeText.match(wordRegex);
+                    idx = match && match.index !== undefined ? match.index : -1;
+                } catch {
+                    idx = safeText.toLowerCase().indexOf(word.toLowerCase());
+                }
+                let contextSlice = safeText;
+                if (idx >= 0) {
+                    const leftBoundary = (() => {
+                        const punct = safeText.lastIndexOf('.', idx);
+                        const q = safeText.lastIndexOf('?', idx);
+                        const ex = safeText.lastIndexOf('!', idx);
+                        const nl = safeText.lastIndexOf('\n', idx);
+                        return Math.max(punct, q, ex, nl) + 1 || 0;
+                    })();
+                    const rightBoundary = (() => {
+                        const punct = safeText.indexOf('.', idx);
+                        const q = safeText.indexOf('?', idx);
+                        const ex = safeText.indexOf('!', idx);
+                        const nl = safeText.indexOf('\n', idx);
+                        const ends = [punct, q, ex, nl].filter(n => n !== -1);
+                        return ends.length ? Math.min(...ends) + 1 : safeText.length;
+                    })();
+                    contextSlice = safeText.slice(leftBoundary, rightBoundary);
+                    if (contextSlice.trim().length < 20) {
+                        const start = Math.max(0, idx - WINDOW);
+                        const end = Math.min(safeText.length, idx + word.length + WINDOW);
+                        contextSlice = safeText.slice(start, end);
+                    }
+                } else {
+                    contextSlice = safeText.slice(0, MAX_CONTEXT);
+                }
+                if (contextSlice.length > MAX_CONTEXT) {
+                    contextSlice = contextSlice.slice(0, MAX_CONTEXT);
+                }
+
+                const res = await explain2({ word, context: contextSlice });
                 console.log('[ExperimentsPage] explain2 success for', word, res);
                 setClickedWords(prev => prev.map(p => p.word === word ? { ...p, explanation: res, loading: false } : p));
             } catch (err: any) {
@@ -76,7 +118,7 @@ const ExperimentsPage: React.FC = () => {
         setMainError(null);
 
         try {
-            const res = await explain2({ word: trimmed });
+            const res = await explain2({ word: trimmed, context: trimmed });
             console.log('[ExperimentsPage] explain2 result for prompt:', res);
             // Combine the response into a single text blob to render inside WordWrapper.
             const combined = `${res.word}\n\nConcise: ${res.concise}\n\nComprehensive: ${res.comprehensive}`;
@@ -93,7 +135,7 @@ const ExperimentsPage: React.FC = () => {
     // Component that wraps each word in a Chakra Box (rendered as a span)
     const WordWrapper: React.FC<{
         text: string;
-        onWordClick?: (word: string) => void;
+        onWordClick?: (word: string, contextText: string) => void;
     }> = ({ text, onWordClick }) => {
         // Capture words, whitespace, and punctuation separately
         const parts = Array.from(text.matchAll(/(\w+|\s+|[^\s\w]+)/g)).map(m => m[0]);
@@ -110,7 +152,7 @@ const ExperimentsPage: React.FC = () => {
                                 key={i}
                                 as="span"
                                 cursor="pointer"
-                                onClick={() => onWordClick?.(part)}
+                                onClick={() => onWordClick?.(part, text)}
                                 _hover={{ background: 'gray.600' }}
                                 display="inline-block"
                             >

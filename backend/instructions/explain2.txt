@@ -1,6 +1,7 @@
 #  Instructions
 ##  Purpose:
  Return a concise and comprehensive explanations of a word or topic.
+ If a context string is provided alongside the word, use that surrounding text to disambiguate the intended meaning and tailor both responses accordingly. If context is absent, provide a general explanation.
  
 ## Always return:
    - concise: <a concise explanation of the word>
