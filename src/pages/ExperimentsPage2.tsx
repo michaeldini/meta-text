@@ -3,8 +3,9 @@
 // 2. color the cards to trace where the card came from (medium/high, unknown value)
 // 3. make a "mind-map" trace of user interaction with a query (high difficulty/ unknown value)
 // ExperimentsPage v2
+
 // Purpose: Two-step exploration UI.
-// 1) Show only an input initially. On submit, fetch a response and hide the input.
+// 1) Show the input only when there are no panels. On submit, fetch and create the first panel.
 // 2) Render the response as clickable words inside a container.
 // 3) Clicking any word appends a new container to the right with that word's explanation.
 // 4) Repeat: every click adds another container. All containers are arranged in a horizontal flex row.
@@ -13,8 +14,8 @@ import React, { useState } from 'react';
 import { Box, Flex, Wrap, Input, Button, Text, Spinner } from '@chakra-ui/react';
 // Switch to the mock during development to avoid real API calls.
 // For production, change this import back to: '../services/aiService'
-import { explain2, ExplanationResponse2 } from '../services/aiService.mock';
-// import { explain2, ExplanationResponse2 } from '../services/aiService';
+// import { explain2, ExplanationResponse2 } from '../services/aiService.mock';
+import { explain2, ExplanationResponse2 } from '../services/aiService';
 
 // Helpers for extracting a tight context window around a clicked word
 const MAX_CONTEXT = 600; // total chars cap
@@ -90,10 +91,10 @@ type Panel = {
 
 const ExperimentsPage2: React.FC = () => {
     const [prompt, setPrompt] = useState('');
-    const [hasStarted, setHasStarted] = useState(false);
     const [panels, setPanels] = useState<Panel[]>([]);
     const [initialLoading, setInitialLoading] = useState(false);
     const [initialError, setInitialError] = useState<string | null>(null);
+    const hasPanels = panels.length > 0;
 
     // Component that wraps text and enables click-and-drag multi-word selection
     const WordWrapper: React.FC<{
@@ -225,7 +226,6 @@ const ExperimentsPage2: React.FC = () => {
                 minimized: false,
             };
             setPanels([panel]);
-            setHasStarted(true); // hide input after first successful response
             setPrompt('');
         } catch (err: any) {
             setInitialError(err?.message ?? 'Failed to fetch explanation');
@@ -280,20 +280,13 @@ const ExperimentsPage2: React.FC = () => {
     };
 
     const closePanel = (key: string) => {
-        setPanels(prev => {
-            const next = prev.filter(p => p.key !== key);
-            if (next.length === 0) {
-                // bring back input if all panels are closed.
-                setHasStarted(false);
-            }
-            return next;
-        });
+        setPanels(prev => prev.filter(p => p.key !== key));
     };
 
     return (
         <Flex direction="column" h="100%" p={4}>
-            {/* Step 1: Only input visible before first successful response */}
-            {!hasStarted && (
+            {/* Step 1: Input is visible only when there are no panels */}
+            {!hasPanels && (
                 <Box as="form" onSubmit={handlePromptSubmit} w="100%" maxW="960px" mx="auto">
                     <Flex gap={2} align="center" borderBottom="1px solid" borderColor="gray.200">
                         <Input
@@ -312,8 +305,8 @@ const ExperimentsPage2: React.FC = () => {
                 </Box>
             )}
 
-            {/* Step 2+: Panels row. Appears after first successful response. */}
-            {hasStarted && (
+            {/* Step 2+: Panels row. Appears when at least one panel exists. */}
+            {hasPanels && (
                 <Box mt={2} overflowX="auto">
                     <Wrap direction="row" gap={4} align="flex-start" minH="200px" pb={2}>
                         {panels.map((panel) => (
