@@ -12,10 +12,11 @@ import { explain2, ExplanationResponse2 } from '../services/aiService';
 type Panel = {
     key: string;
     sourceWord: string; // the word that produced this panel
-    text?: string; // text rendered as clickable words (typically comprehensive)
+    text?: string; // legacy text; derived from raw + viewMode when present
     loading?: boolean;
     error?: string | null;
     raw?: ExplanationResponse2; // keep full payload if needed later
+    viewMode?: 'comprehensive' | 'concise';
 };
 
 const ExperimentsPage: React.FC = () => {
@@ -79,9 +80,10 @@ const ExperimentsPage: React.FC = () => {
             const panel: Panel = {
                 key: `panel-${Date.now()}-0`,
                 sourceWord: res.word ?? trimmed,
-                text: res.comprehensive ?? res.concise ?? res.word ?? trimmed,
+                // prefer comprehensive initially; derive text at render time
                 loading: false,
                 raw: res,
+                viewMode: 'comprehensive',
             };
             setPanels([panel]);
             setHasStarted(true); // hide input after first successful response
@@ -108,8 +110,8 @@ const ExperimentsPage: React.FC = () => {
                 ? {
                     ...p,
                     loading: false,
-                    text: res.comprehensive ?? res.concise ?? res.word ?? word,
                     raw: res,
+                    viewMode: 'comprehensive',
                 }
                 : p
             ));
@@ -121,12 +123,19 @@ const ExperimentsPage: React.FC = () => {
         }
     };
 
+    const togglePanelView = (key: string) => {
+        setPanels(prev => prev.map(p => p.key === key
+            ? { ...p, viewMode: p.viewMode === 'comprehensive' ? 'concise' : 'comprehensive' }
+            : p
+        ));
+    };
+
     return (
         <Flex direction="column" h="100%" p={4}>
             {/* Step 1: Only input visible before first successful response */}
             {!hasStarted && (
                 <Box as="form" onSubmit={handlePromptSubmit} w="100%" maxW="960px" mx="auto">
-                    <Wrap gap={2} align="center" borderBottom="1px solid" borderColor="gray.200">
+                    <Flex gap={2} align="center" borderBottom="1px solid" borderColor="gray.200">
                         <Input
                             placeholder="Enter your prompt..."
                             value={prompt}
@@ -136,7 +145,7 @@ const ExperimentsPage: React.FC = () => {
                         <Button type="submit" colorScheme="blue" disabled={!prompt.trim() || initialLoading}>
                             {initialLoading ? <Spinner size="sm" /> : 'Send'}
                         </Button>
-                    </Wrap>
+                    </Flex>
                     {initialError && (
                         <Text mt={2} color="red.400" fontSize="sm">{initialError}</Text>
                     )}
@@ -160,9 +169,19 @@ const ExperimentsPage: React.FC = () => {
                                 color="gray.100"
                                 boxShadow="sm"
                             >
-                                <Text fontWeight="bold" mb={2} title={panel.sourceWord}>
-                                    {panel.sourceWord}
-                                </Text>
+                                <Flex align="center" justify="space-between" gap={2} mb={2}>
+                                    <Text fontWeight="bold" title={panel.sourceWord}>
+                                        {panel.sourceWord}
+                                    </Text>
+                                    <Button
+                                        size="xs"
+                                        colorScheme="blue"
+                                        onClick={() => togglePanelView(panel.key)}
+                                        disabled={panel.loading}
+                                    >
+                                        {panel.viewMode === 'comprehensive' ? 'Show concise' : 'Show comprehensive'}
+                                    </Button>
+                                </Flex>
 
                                 {panel.loading && (
                                     <Flex align="center" justify="center" minH="80px">
@@ -174,8 +193,15 @@ const ExperimentsPage: React.FC = () => {
                                     <Text color="red.300">{panel.error}</Text>
                                 )}
 
-                                {!!panel.text && !panel.loading && !panel.error && (
-                                    <WordWrapper text={panel.text} onWordClick={appendPanelForWord} />
+                                {!panel.loading && !panel.error && (
+                                    (() => {
+                                        const activeText = (panel.viewMode === 'concise')
+                                            ? (panel.raw?.concise ?? panel.raw?.comprehensive ?? panel.raw?.word ?? panel.text ?? '')
+                                            : (panel.raw?.comprehensive ?? panel.raw?.concise ?? panel.raw?.word ?? panel.text ?? '');
+                                        return (
+                                            <WordWrapper text={activeText} onWordClick={appendPanelForWord} />
+                                        );
+                                    })()
                                 )}
                             </Box>
                         ))}
