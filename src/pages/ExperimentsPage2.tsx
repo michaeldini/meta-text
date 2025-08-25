@@ -7,7 +7,9 @@
 
 import React, { useState } from 'react';
 import { Box, Flex, Wrap, Input, Button, Text, Spinner } from '@chakra-ui/react';
-import { explain2, ExplanationResponse2 } from '../services/aiService';
+// Switch to the mock during development to avoid real API calls.
+// For production, change this import back to: '../services/aiService'
+import { explain2, ExplanationResponse2 } from '../services/aiService.mock';
 
 type Panel = {
     key: string;
