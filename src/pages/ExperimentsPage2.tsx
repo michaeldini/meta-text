@@ -85,6 +85,7 @@ type Panel = {
     concise?: string;
     comprehensive?: string;
     viewMode: 'comprehensive' | 'concise';
+    minimized?: boolean; // when true, show only word, maximize & close controls
 };
 
 const ExperimentsPage2: React.FC = () => {
@@ -221,6 +222,7 @@ const ExperimentsPage2: React.FC = () => {
                 concise: res.concise,
                 comprehensive: res.comprehensive,
                 viewMode: 'comprehensive', // prefer comprehensive initially
+                minimized: false,
             };
             setPanels([panel]);
             setHasStarted(true); // hide input after first successful response
@@ -240,7 +242,7 @@ const ExperimentsPage2: React.FC = () => {
         // optimistic placeholder panel
         setPanels(prev => [
             ...prev,
-            { key, sourceWord: selection, loading: true, error: null, viewMode: 'comprehensive' },
+            { key, sourceWord: selection, loading: true, error: null, viewMode: 'comprehensive', minimized: false },
         ]);
 
         try {
@@ -268,6 +270,24 @@ const ExperimentsPage2: React.FC = () => {
             ? { ...p, viewMode: p.viewMode === 'comprehensive' ? 'concise' : 'comprehensive' }
             : p
         ));
+    };
+
+    const toggleMinimizePanel = (key: string, state?: boolean) => {
+        setPanels(prev => prev.map(p => p.key === key
+            ? { ...p, minimized: typeof state === 'boolean' ? state : !p.minimized }
+            : p
+        ));
+    };
+
+    const closePanel = (key: string) => {
+        setPanels(prev => {
+            const next = prev.filter(p => p.key !== key);
+            if (next.length === 0) {
+                // bring back input if all panels are closed.
+                setHasStarted(false);
+            }
+            return next;
+        });
     };
 
     return (
@@ -313,27 +333,66 @@ const ExperimentsPage2: React.FC = () => {
                                     <Text fontWeight="bold" title={panel.sourceWord}>
                                         {panel.sourceWord}
                                     </Text>
-                                    <Button
-                                        size="xs"
-                                        colorScheme="blue"
-                                        onClick={() => togglePanelView(panel.key)}
-                                        disabled={panel.loading}
-                                    >
-                                        {panel.viewMode === 'comprehensive' ? 'Show concise' : 'Show comprehensive'}
-                                    </Button>
+                                    <Flex gap={2} align="center">
+                                        {panel.minimized ? (
+                                            <>
+                                                <Button
+                                                    size="xs"
+                                                    // variant="outline"
+                                                    onClick={() => toggleMinimizePanel(panel.key, false)}
+                                                >
+                                                    Maximize
+                                                </Button>
+                                                <Button
+                                                    size="xs"
+                                                    colorScheme="red"
+                                                    // variant="outline"
+                                                    onClick={() => closePanel(panel.key)}
+                                                >
+                                                    Close
+                                                </Button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Button
+                                                    size="xs"
+                                                    colorScheme="blue"
+                                                    onClick={() => togglePanelView(panel.key)}
+                                                    disabled={panel.loading}
+                                                >
+                                                    {panel.viewMode === 'comprehensive' ? 'Show concise' : 'Show comprehensive'}
+                                                </Button>
+                                                <Button
+                                                    size="xs"
+                                                    // variant="outline"
+                                                    onClick={() => toggleMinimizePanel(panel.key, true)}
+                                                >
+                                                    Minimize
+                                                </Button>
+                                                <Button
+                                                    size="xs"
+                                                    colorScheme="red"
+                                                    // variant="outline"
+                                                    onClick={() => closePanel(panel.key)}
+                                                >
+                                                    Close
+                                                </Button>
+                                            </>
+                                        )}
+                                    </Flex>
                                 </Flex>
 
-                                {panel.loading && (
+                                {!panel.minimized && panel.loading && (
                                     <Flex align="center" justify="center" minH="80px">
                                         <Spinner />
                                     </Flex>
                                 )}
 
-                                {panel.error && (
+                                {!panel.minimized && panel.error && (
                                     <Text color="red.300">{panel.error}</Text>
                                 )}
 
-                                {!panel.loading && !panel.error && (
+                                {!panel.minimized && !panel.loading && !panel.error && (
                                     (() => {
                                         const activeText = panel.viewMode === 'concise'
                                             ? (panel.concise ?? panel.comprehensive ?? '')
