@@ -17,6 +17,7 @@ import { WelcomeText, AppInstructions } from './homepage.constants';
 
 // Data Fetching Hooks
 import { useSourceDocuments, useMetatexts } from '@features/documents/useDocumentsData';
+import { Link } from '@chakra-ui/react';
 
 
 // HomePage component
@@ -28,6 +29,12 @@ function HomePage(): ReactElement {
 
     return (
         <PageContainer>
+            <Link href="/experiments" color="blue.500" fontWeight="bold">
+                Go to Experiments
+            </Link>
+            <Link px="4" href="/experiments2" color="blue.500" fontWeight="bold">
+                Go to Experiments 2
+            </Link>
             <Stack
                 data-testid="homepage-content"
                 justify="center"
