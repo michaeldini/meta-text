@@ -31,6 +31,7 @@ const MetatextDetailPage = lazy(() => import('@pages/Metatext/MetatextDetailPage
 const MetatextReviewPage = lazy(() => import('@pages/Metatext/MetatextReviewPage'));
 
 const ExperimentsPage = lazy(() => import('@pages/ExperimentsPage'));
+const ExperimentsPage2 = lazy(() => import('@pages/ExperimentsPage2'));
 
 /**
  * Route configuration interface and route definitions
@@ -54,6 +55,7 @@ const routes: RouteConfig[] = [
     { path: '/metatext/:metatextId/review', element: MetatextReviewPage, protected: true },
 
     { path: '/experiments', element: ExperimentsPage, protected: true },
+    { path: '/experiments2', element: ExperimentsPage2, protected: true },
 ];
 
 
