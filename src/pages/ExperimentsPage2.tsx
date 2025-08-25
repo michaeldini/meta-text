@@ -14,14 +14,14 @@ import { explain2, ExplanationResponse2 } from '../services/aiService.mock';
 type Panel = {
     key: string;
     sourceWord: string; // the word that produced this panel
-    text?: string; // legacy text; derived from raw + viewMode when present
     loading?: boolean;
     error?: string | null;
-    raw?: ExplanationResponse2; // keep full payload if needed later
-    viewMode?: 'comprehensive' | 'concise';
+    concise?: string;
+    comprehensive?: string;
+    viewMode: 'comprehensive' | 'concise';
 };
 
-const ExperimentsPage: React.FC = () => {
+const ExperimentsPage2: React.FC = () => {
     const [prompt, setPrompt] = useState('');
     const [hasStarted, setHasStarted] = useState(false);
     const [panels, setPanels] = useState<Panel[]>([]);
@@ -82,10 +82,10 @@ const ExperimentsPage: React.FC = () => {
             const panel: Panel = {
                 key: `panel-${Date.now()}-0`,
                 sourceWord: res.word ?? trimmed,
-                // prefer comprehensive initially; derive text at render time
                 loading: false,
-                raw: res,
-                viewMode: 'comprehensive',
+                concise: res.concise,
+                comprehensive: res.comprehensive,
+                viewMode: 'comprehensive', // prefer comprehensive initially
             };
             setPanels([panel]);
             setHasStarted(true); // hide input after first successful response
@@ -103,7 +103,7 @@ const ExperimentsPage: React.FC = () => {
         // optimistic placeholder panel
         setPanels(prev => [
             ...prev,
-            { key, sourceWord: word, loading: true, error: null },
+            { key, sourceWord: word, loading: true, error: null, viewMode: 'comprehensive' },
         ]);
 
         try {
@@ -112,7 +112,8 @@ const ExperimentsPage: React.FC = () => {
                 ? {
                     ...p,
                     loading: false,
-                    raw: res,
+                    concise: res.concise,
+                    comprehensive: res.comprehensive,
                     viewMode: 'comprehensive',
                 }
                 : p
@@ -157,7 +158,7 @@ const ExperimentsPage: React.FC = () => {
             {/* Step 2+: Panels row. Appears after first successful response. */}
             {hasStarted && (
                 <Box mt={2} overflowX="auto">
-                    <Wrap direction="row" gap={4} align="flex-start" minH="200px" pb={2}>
+                    <Flex direction="row" gap={4} align="flex-start" minH="200px" pb={2}>
                         {panels.map((panel) => (
                             <Box
                                 key={panel.key}
@@ -197,9 +198,9 @@ const ExperimentsPage: React.FC = () => {
 
                                 {!panel.loading && !panel.error && (
                                     (() => {
-                                        const activeText = (panel.viewMode === 'concise')
-                                            ? (panel.raw?.concise ?? panel.raw?.comprehensive ?? panel.raw?.word ?? panel.text ?? '')
-                                            : (panel.raw?.comprehensive ?? panel.raw?.concise ?? panel.raw?.word ?? panel.text ?? '');
+                                        const activeText = panel.viewMode === 'concise'
+                                            ? (panel.concise ?? panel.comprehensive ?? '')
+                                            : (panel.comprehensive ?? panel.concise ?? '');
                                         return (
                                             <WordWrapper text={activeText} onWordClick={appendPanelForWord} />
                                         );
@@ -207,13 +208,13 @@ const ExperimentsPage: React.FC = () => {
                                 )}
                             </Box>
                         ))}
-                    </Wrap>
+                    </Flex>
                 </Box>
             )}
         </Flex>
     );
 };
 
-export default ExperimentsPage;
+export default ExperimentsPage2;
 
 
