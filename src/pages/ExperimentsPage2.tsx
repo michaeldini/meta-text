@@ -1,17 +1,19 @@
-// future:
-// 1. allow user to select multiple words (hard, high value)
-// 2. color the cards to trace where the card came from (medium/high, unknown value)
-// 3. make a "mind-map" trace of user interaction with a query (high difficulty/ unknown value)
-// ExperimentsPage v2
-
 // Purpose: Two-step exploration UI.
 // 1) Show the input only when there are no panels. On submit, fetch and create the first panel.
 // 2) Render the response as clickable words inside a container.
 // 3) Clicking any word appends a new container to the right with that word's explanation.
 // 4) Repeat: every click adds another container. All containers are arranged in a horizontal flex row.
 
+// future:
+// 1. allow user to select multiple words (hard, high value)
+// 2. color the cards to trace where the card came from (medium/high, unknown value)
+// 3. make a "mind-map" trace of user interaction with a query (high difficulty/ unknown value)
+// ExperimentsPage v2
+
+
 import React, { useState } from 'react';
 import { Box, Flex, Wrap, Input, Button, Text, Spinner } from '@chakra-ui/react';
+
 // Switch to the mock during development to avoid real API calls.
 // For production, change this import back to: '../services/aiService'
 // import { explain2, ExplanationResponse2 } from '../services/aiService.mock';
