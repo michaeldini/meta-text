@@ -5,13 +5,13 @@
 // - textContext utils: builds a tight context slice when the user makes a selection.
 
 
-import React, { useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
 
 // Switch to the mock during development to avoid real API calls.
 // For production, change this import back to: '../services/aiService'
-// import { explain2, ExplanationResponse2 } from '../services/aiService.mock';
-import { explain2, ExplanationResponse2 } from '../services/aiService';
+import { explain2, ExplanationResponse2 } from '../services/aiService.mock';
+// import { explain2, ExplanationResponse2 } from '../services/aiService';
 import { buildContextSlice } from '../utils/textContext';
 import { Panel } from '../types/experiments';
 import PromptBar from '../components/PromptBar';
@@ -23,6 +23,16 @@ const ExperimentsPage2: React.FC = () => {
     const [initialLoading, setInitialLoading] = useState(false);
     const [initialError, setInitialError] = useState<string | null>(null);
     const hasPanels = panels.length > 0;
+
+    // distinct color generator using golden ratio to spread hues
+    const hueRef = useRef(0.12); // initial hue [0,1)
+    const nextColor = () => {
+        const GOLDEN_RATIO_CONJUGATE = 0.61803398875;
+        hueRef.current = (hueRef.current + GOLDEN_RATIO_CONJUGATE) % 1;
+        const h = Math.round(hueRef.current * 360);
+        // soft pastel with slight transparency so it layers nicely on dark bg
+        return `hsla(${h}, 70%, 60%, 0.35)`;
+    };
 
 
     // Step 1: Initial query -> creates the first panel
@@ -39,8 +49,9 @@ const ExperimentsPage2: React.FC = () => {
                 loading: false,
                 concise: res.concise,
                 comprehensive: res.comprehensive,
-                viewMode: 'comprehensive',
+                viewMode: 'concise',
                 minimized: false,
+                linkColor: undefined,
             };
             setPanels([panel]);
             setPrompt('');
@@ -52,15 +63,38 @@ const ExperimentsPage2: React.FC = () => {
     };
 
     // Step 2: Mouse selection (multi-word) -> append a new panel
-    const appendPanelForSelection = async (selection: string, fullTextContext: string) => {
+    const appendPanelForSelection = async (selection: string, fullTextContext: string, range?: { start: number; end: number }, sourcePanelKey?: string) => {
         const contextSlice = buildContextSlice(selection, fullTextContext);
+        const color = nextColor();
 
         const key = `panel-${Date.now()}-${panels.length}`;
         // optimistic placeholder panel
-        setPanels(prev => [
-            ...prev,
-            { key, sourceWord: selection, loading: true, error: null, viewMode: 'comprehensive', minimized: false },
-        ]);
+        setPanels(prev => {
+            const newPanel: Panel = {
+                key,
+                sourceWord: selection,
+                loading: true,
+                error: null,
+                viewMode: 'concise',
+                minimized: false,
+                linkColor: color,
+                parentKey: sourcePanelKey,
+            };
+            const updated: Panel[] = [...prev, newPanel];
+            if (sourcePanelKey && range) {
+                return updated.map(p => p.key === sourcePanelKey
+                    ? {
+                        ...p,
+                        highlights: [
+                            ...(p.highlights ?? []),
+                            { start: range.start, end: range.end, color, viewMode: p.viewMode },
+                        ],
+                    }
+                    : p
+                );
+            }
+            return updated;
+        });
 
         try {
             const res = await explain2({ word: selection, context: contextSlice });
@@ -70,7 +104,9 @@ const ExperimentsPage2: React.FC = () => {
                     loading: false,
                     concise: res.concise,
                     comprehensive: res.comprehensive,
-                    viewMode: 'comprehensive',
+                    // Preserve whatever the user had selected while loading (defaults to 'concise').
+                    viewMode: p.viewMode,
+                    linkColor: p.linkColor ?? color,
                 }
                 : p
             ));

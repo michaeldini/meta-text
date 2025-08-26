@@ -1,17 +1,20 @@
 // Purpose: Render text as selectable tokens enabling click-and-drag multi-word selection.
-// Emits the selected phrase and the full text via onSelection callback.
+// Emits the selected phrase with the full text and selection char range via onSelection callback.
+// Also supports rendering incoming highlight ranges with custom background colors.
 
 import React, { useState } from 'react';
 import { Box, Text } from '@chakra-ui/react';
+import { Highlight } from '../types/experiments';
 
 export type WordSelectorProps = {
     text: string;
-    onSelection?: (selection: string, contextText: string) => void;
+    onSelection?: (selection: string, contextText: string, range: { start: number; end: number }) => void;
+    highlights?: Highlight[]; // optional colored highlights to render
 };
 
 type Token = { value: string; isWord: boolean; start: number; end: number };
 
-export const WordSelector: React.FC<WordSelectorProps> = ({ text, onSelection }) => {
+export const WordSelector: React.FC<WordSelectorProps> = ({ text, onSelection, highlights }) => {
     // Tokenize into words, whitespace, and punctuation; also track char offsets
     const regex = /(\w+|\s+|[^\s\w]+)/g;
     const tokens: Token[] = [];
@@ -72,7 +75,7 @@ export const WordSelector: React.FC<WordSelectorProps> = ({ text, onSelection })
         selection = selection.trim();
 
         if (selection.length > 0) {
-            onSelection?.(selection, text);
+            onSelection?.(selection, text, { start: charStart, end: charEnd });
         }
 
         resetSelection();
@@ -85,10 +88,19 @@ export const WordSelector: React.FC<WordSelectorProps> = ({ text, onSelection })
         return i >= lo && i <= hi;
     };
 
+    // helper: find highlight color for a token char range, if any
+    const getTokenHighlightColor = (start: number, end: number): string | undefined => {
+        if (!highlights || highlights.length === 0) return undefined;
+        // find the first highlight that overlaps the token range
+        const h = highlights.find(h => !(end <= h.start || start >= h.end));
+        return h?.color;
+    };
+
     return (
         <Text as="span" userSelect={isSelecting ? 'none' : 'text'} onMouseUp={handleMouseUp}>
             {tokens.map((tok, i) => {
                 if (tok.isWord) {
+                    const color = getTokenHighlightColor(tok.start, tok.end);
                     return (
                         <Box
                             key={i}
@@ -98,8 +110,8 @@ export const WordSelector: React.FC<WordSelectorProps> = ({ text, onSelection })
                             cursor="pointer"
                             onMouseDown={(e) => { e.preventDefault(); handleMouseDown(i); }}
                             onMouseEnter={() => handleMouseEnter(i)}
-                            _hover={{ background: 'gray.700' }}
-                            background={isTokenSelected(i) ? 'gray.700' : 'transparent'}
+                            _hover={{ background: color ?? 'gray.700' }}
+                            background={isTokenSelected(i) ? (color ?? 'gray.700') : (color ?? 'transparent')}
                             display="inline-block"
                         >
                             {tok.value}

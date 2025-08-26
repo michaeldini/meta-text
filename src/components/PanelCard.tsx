@@ -11,7 +11,7 @@ export type PanelCardProps = {
     onToggleView: (key: string) => void;
     onMinimize: (key: string, state?: boolean) => void;
     onClose: (key: string) => void;
-    onSelection: (selection: string, fullText: string) => void;
+    onSelection: (selection: string, fullText: string, range: { start: number; end: number }, sourcePanelKey: string) => void;
 };
 
 const PanelCard: React.FC<PanelCardProps> = ({ panel, onToggleView, onMinimize, onClose, onSelection }) => {
@@ -22,19 +22,27 @@ const PanelCard: React.FC<PanelCardProps> = ({ panel, onToggleView, onMinimize, 
     const wikiUrl = `https://en.wikipedia.org/wiki/Special:Search?search=${encodedQuery}`;
     const googleUrl = `https://www.google.com/search?q=${encodedQuery}`;
 
+    const headerBg = panel.linkColor ? panel.linkColor : undefined;
+    const activeHighlights = panel.highlights?.filter(h => h.viewMode === panel.viewMode);
+
+    const leftBorderProps = panel.linkColor
+        ? { borderLeft: '6px solid', borderLeftColor: panel.linkColor }
+        : undefined;
+
     return (
         <Box
             border="1px solid"
-            borderColor="gray.200"
+            borderColor="gray.700"
             borderRadius="md"
             p={4}
             minW={{ base: '280px', md: '360px' }}
             maxW={{ base: '90vw', md: '480px' }}
             bg="gray.800"
             color="gray.100"
-            boxShadow="sm"
+            boxShadow="lg"
+            {...leftBorderProps}
         >
-            <Flex align="center" justify="space-between" gap={2} mb={2}>
+            <Flex align="center" justify="space-between" gap={2} mb={2} bg={headerBg ? headerBg : 'transparent'} borderRadius="sm" px={headerBg ? 2 : 0} py={headerBg ? 1 : 0}>
                 <Flex align="center" gap={3} minW={0}>
                     <Text fontWeight="bold" title={panel.sourceWord} truncate>
                         {panel.sourceWord}
@@ -81,7 +89,11 @@ const PanelCard: React.FC<PanelCardProps> = ({ panel, onToggleView, onMinimize, 
             )}
 
             {!panel.minimized && !panel.loading && !panel.error && (
-                <WordSelector text={activeText} onSelection={onSelection} />
+                <WordSelector
+                    text={activeText}
+                    onSelection={(s, t, r) => onSelection(s, t, r, panel.key)}
+                    highlights={activeHighlights}
+                />
             )}
         </Box>
     );

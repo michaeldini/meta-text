@@ -10,7 +10,7 @@ export type PanelsRowProps = {
     onToggleView: (key: string) => void;
     onMinimize: (key: string, state?: boolean) => void;
     onClose: (key: string) => void;
-    onSelection: (selection: string, context: string) => void;
+    onSelection: (selection: string, context: string, range: { start: number; end: number }, sourcePanelKey: string) => void;
 };
 
 const PanelsRow: React.FC<PanelsRowProps> = ({ panels, onToggleView, onMinimize, onClose, onSelection }) => {
