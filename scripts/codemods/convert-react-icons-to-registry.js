@@ -44,6 +44,8 @@ const iconMap = {
     HiOutlineTrash: 'DeleteOutline',
     HiHashtag: 'Positions',
     HiBars3: 'Menu',
+    HiArrowsPointingOut: 'Expand',
+    HiArrowsPointingIn: 'Collapse',
 };
 
 module.exports = function transformer(file, api) {

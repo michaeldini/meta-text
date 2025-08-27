@@ -34,6 +34,8 @@ import {
     HiOutlineTrash,
     HiHashtag,
     HiBars3,
+    HiArrowsPointingOut,
+    HiArrowsPointingIn,
 } from 'react-icons/hi2';
 
 // Semantic aliases mapped directly to vendor icons.
@@ -64,6 +66,8 @@ export const icons = {
     DeleteOutline: HiOutlineTrash,
     Positions: HiHashtag,
     Menu: HiBars3,
+    Exppand: HiArrowsPointingOut,
+    Collapse: HiArrowsPointingIn,
 } as const;
 
 export type IconName = keyof typeof icons;

@@ -1,10 +1,10 @@
-import { Icon } from '@components/icons/Icon';
 // Header controls for the Metatext detail page
 // Contains bookmark navigation, favorites toggle, download, and position display controls
 // Self-contained component that manages its own state via hooks
 
 import React from 'react';
 import { Box } from '@chakra-ui/react/box';
+import { Icon } from '@components/icons/Icon';
 
 import { TooltipButton } from '@components/TooltipButton';
 import { useUserConfig, useUpdateUserConfig } from '@services/userConfigService';

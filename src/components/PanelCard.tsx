@@ -5,6 +5,12 @@ import React from 'react';
 import { Box, Button, Flex, Spinner, Text, Link } from '@chakra-ui/react';
 import WordSelector from './WordSelector';
 import { Panel } from '../types/experiments';
+import { Icon } from '@components/icons/Icon';
+import {
+    HiArrowsPointingOut,
+    HiArrowsPointingIn,
+} from 'react-icons/hi2';
+import { TooltipButton } from '@components/TooltipButton';
 
 export type PanelCardProps = {
     panel: Panel;
@@ -14,13 +20,87 @@ export type PanelCardProps = {
     onSelection: (selection: string, fullText: string, range: { start: number; end: number }, sourcePanelKey: string) => void;
 };
 
+// Subcomponent: Header showing the source word and window controls
+type PanelHeaderProps = {
+    sourceWord?: string | null;
+    minimized?: boolean;
+    onMinimize: (state?: boolean) => void;
+    onClose: () => void;
+    headerBg?: string;
+};
+
+const PanelHeader: React.FC<PanelHeaderProps> = ({ sourceWord, minimized, onMinimize, onClose, headerBg }) => {
+    return (
+        <>
+            <Flex align="center" justify="space-between" mb={2}>
+                <Text fontWeight="bold" title={sourceWord ?? undefined} truncate bg={headerBg ? headerBg : 'transparent'} p="2">
+                    {sourceWord}
+                </Text>
+                <Flex align="center">
+                    {minimized ? (
+                        <TooltipButton
+                            label=""
+                            tooltip="Maximize"
+                            onClick={() => onMinimize(false)}
+                            icon={<HiArrowsPointingOut />}
+                            size="sm"
+                        />
+                    ) : (
+                        <TooltipButton
+                            label=""
+                            tooltip="Minimize"
+                            onClick={() => onMinimize(true)}
+                            icon={<HiArrowsPointingIn />}
+                            size="sm"
+                        />
+                    )}
+                    <TooltipButton
+                        label=""
+                        tooltip="Close panel"
+                        onClick={onClose}
+                        icon={<Icon name="Close" />}
+                        size="sm"
+                    />
+                </Flex>
+            </Flex>
+        </>
+    );
+};
+
+// Subcomponent: Panel actions with external links and view toggle
+type PanelActionsProps = {
+    sourceWord?: string | null;
+    viewMode: Panel['viewMode'];
+    loading?: boolean;
+    onToggleView: () => void;
+};
+
+const PanelActions: React.FC<PanelActionsProps> = ({ sourceWord, viewMode, loading, onToggleView }) => {
+    const encodedQuery = encodeURIComponent(sourceWord ?? '');
+    const wikiUrl = `https://en.wikipedia.org/wiki/Special:Search?search=${encodedQuery}`;
+    const googleUrl = `https://www.google.com/search?q=${encodedQuery}`;
+
+    return (
+        <Flex align="center" justify="flex-end" gap={2} mb={2}>
+            <Flex gap={2}>
+                <Link href={wikiUrl} target="_blank" rel="noopener noreferrer">
+                    <Button size="xs" variant="ghost" disabled={!sourceWord}>W</Button>
+                </Link>
+                <Link href={googleUrl} target="_blank" rel="noopener noreferrer">
+                    <Button size="xs" variant="ghost" disabled={!sourceWord}>G</Button>
+                </Link>
+            </Flex>
+            <Button size="xs" colorScheme="blue" onClick={onToggleView} disabled={!!loading}>
+                {viewMode === 'comprehensive' ? 'Show concise' : 'Show comprehensive'}
+            </Button>
+        </Flex>
+    );
+};
+
 const PanelCard: React.FC<PanelCardProps> = ({ panel, onToggleView, onMinimize, onClose, onSelection }) => {
     const activeText = panel.viewMode === 'concise'
         ? (panel.concise ?? panel.comprehensive ?? '')
         : (panel.comprehensive ?? panel.concise ?? '');
-    const encodedQuery = encodeURIComponent(panel.sourceWord ?? '');
-    const wikiUrl = `https://en.wikipedia.org/wiki/Special:Search?search=${encodedQuery}`;
-    const googleUrl = `https://www.google.com/search?q=${encodedQuery}`;
 
     const headerBg = panel.linkColor ? panel.linkColor : undefined;
     const activeHighlights = panel.highlights?.filter(h => h.viewMode === panel.viewMode);
@@ -42,41 +122,22 @@ const PanelCard: React.FC<PanelCardProps> = ({ panel, onToggleView, onMinimize, 
             boxShadow="lg"
             {...leftBorderProps}
         >
-            <Flex align="center" justify="space-between" gap={2} mb={2} bg={headerBg ? headerBg : 'transparent'} borderRadius="sm" px={headerBg ? 2 : 0} py={headerBg ? 1 : 0}>
-                <Flex align="center" gap={3} minW={0}>
-                    <Text fontWeight="bold" title={panel.sourceWord} truncate>
-                        {panel.sourceWord}
-                    </Text>
-                    <Flex gap={2} flexShrink={0}>
-                        <Link href={wikiUrl} target="_blank" rel="noopener noreferrer">
-                            <Button size="xs" variant="ghost" disabled={!panel.sourceWord}>
-                                W
-                            </Button>
-                        </Link>
-                        <Link href={googleUrl} target="_blank" rel="noopener noreferrer">
-                            <Button size="xs" variant="ghost" disabled={!panel.sourceWord}>
-                                G
-                            </Button>
-                        </Link>
-                    </Flex>
-                </Flex>
-                <Flex gap={2} align="center">
-                    {panel.minimized ? (
-                        <>
-                            <Button size="xs" onClick={() => onMinimize(panel.key, false)}>Maximize</Button>
-                            <Button size="xs" colorScheme="red" onClick={() => onClose(panel.key)}>Close</Button>
-                        </>
-                    ) : (
-                        <>
-                            <Button size="xs" colorScheme="blue" onClick={() => onToggleView(panel.key)} disabled={panel.loading}>
-                                {panel.viewMode === 'comprehensive' ? 'Show concise' : 'Show comprehensive'}
-                            </Button>
-                            <Button size="xs" onClick={() => onMinimize(panel.key, true)}>Minimize</Button>
-                            <Button size="xs" colorScheme="red" onClick={() => onClose(panel.key)}>Close</Button>
-                        </>
-                    )}
-                </Flex>
-            </Flex>
+            <PanelHeader
+                sourceWord={panel.sourceWord}
+                minimized={panel.minimized}
+                onMinimize={(state) => onMinimize(panel.key, state)}
+                onClose={() => onClose(panel.key)}
+                headerBg={headerBg}
+            />
+
+            {!panel.minimized && (
+                <PanelActions
+                    sourceWord={panel.sourceWord}
+                    viewMode={panel.viewMode}
+                    loading={panel.loading}
+                    onToggleView={() => onToggleView(panel.key)}
+                />
+            )}
 
             {!panel.minimized && panel.loading && (
                 <Flex align="center" justify="center" minH="80px">
