@@ -56,9 +56,8 @@ export function TooltipButton({
                 {...rest}
             >
                 {icon && (
-                    <Icon size={iconSize}>
-                        {icon}
-                    </Icon>
+                    icon
+
                 )}
                 {label}
             </Button>

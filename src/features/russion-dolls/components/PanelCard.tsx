@@ -4,8 +4,8 @@ import { HiXMark } from 'react-icons/hi2';
 
 import React from 'react';
 import { Box, Button, Flex, Spinner, Text, Link } from '@chakra-ui/react';
-import WordSelector from './WordSelector';
-import { Panel } from '../types/experiments';
+import WordSelector from '../../../components/WordSelector';
+import { Panel } from '../../../types/experiments';
 import { HiArrowsPointingOut, HiArrowsPointingIn } from 'react-icons/hi2';
 import { TooltipButton } from '@components/TooltipButton';
 

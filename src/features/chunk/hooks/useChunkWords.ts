@@ -46,8 +46,6 @@ export function useChunkWords({ chunkIdx, words, handleToolbarClose }: UseChunkW
         handleToolbarClose();
     }, [handleToolbarClose]);
 
-    // Hover highlight state removed from public API (CSS hover used instead)
-
     // Clear highlight if clicking outside the container
     const containerRef = useRef<HTMLDivElement>(null);
     useEffect(() => {

@@ -1,4 +1,4 @@
-// Purpose: Build a minimal context by returning only the first sentence of the provided text.
+// Purpose: Build a minimal context by returning only the first sentence of the provided text. Used by RussianDolls
 
 /**
  * Build a minimal context by returning the first sentence from the full text.

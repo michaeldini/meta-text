@@ -8,11 +8,11 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vite.dev/config/
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default defineConfig(({ command: COMMAND }) => ({
+export default defineConfig(({ command }) => ({
     plugins: [
         react(),
         tsconfigPaths(),
-        // command === 'build' ? visualizer({ open: true }) : null
+        command === 'build' ? visualizer({ open: true }) : null
     ].filter(Boolean),
     resolve: {
         alias: {
@@ -25,7 +25,7 @@ export default defineConfig(({ command: COMMAND }) => ({
             output: {
                 manualChunks: {
                     // Separate vendor chunks
-                    'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+                    'react-vendor': ['react', 'react-dom', 'react-dom/client', 'react-router-dom'],
                     'utils': ['zustand', 'loglevel', 'ky'],
                     '@chakra-ui': ['@chakra-ui/react',],
                     'react-icons': ['react-icons/hi2'],

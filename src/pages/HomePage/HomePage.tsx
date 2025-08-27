@@ -32,7 +32,7 @@ function HomePage(): ReactElement {
             <Link href="/experiments" color="blue.500" fontWeight="bold">
                 Go to Experiments
             </Link>
-            <Link px="4" href="/experiments2" color="blue.500" fontWeight="bold">
+            <Link px="4" href="/russiandolls" color="blue.500" fontWeight="bold">
                 Go to Experiments 2
             </Link>
             <Stack

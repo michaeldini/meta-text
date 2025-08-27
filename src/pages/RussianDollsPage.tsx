@@ -5,7 +5,7 @@
 // - textContext utils: builds a tight context slice when the user makes a selection.
 
 
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
 
 // Switch to the mock during development to avoid real API calls.
@@ -14,10 +14,10 @@ import { Box, Flex } from '@chakra-ui/react';
 import { explain2, ExplanationResponse2 } from '../services/aiService';
 import { buildContextSlice } from '../utils/textContext';
 import { Panel } from '../types/experiments';
-import PromptBar from '../components/PromptBar';
-import PanelsRow from '../components/PanelsRow';
+import PromptBar from '../features/russion-dolls/components/PromptBar';
+import PanelsRow from '../features/russion-dolls/components/PanelsRow';
 
-const ExperimentsPage2: React.FC = () => {
+const RussianDollsPage: React.FC = () => {
     const [prompt, setPrompt] = useState('');
     const [panels, setPanels] = useState<Panel[]>([]);
     const [initialLoading, setInitialLoading] = useState(false);
@@ -163,6 +163,6 @@ const ExperimentsPage2: React.FC = () => {
     );
 };
 
-export default ExperimentsPage2;
+export default RussianDollsPage;
 
 

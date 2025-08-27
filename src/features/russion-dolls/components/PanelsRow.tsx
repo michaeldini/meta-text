@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { Box, Wrap } from '@chakra-ui/react';
-import PanelCard from '../features/russion-dolls/components/PanelCard';
-import { Panel } from '../types/experiments';
+import PanelCard from './PanelCard';
+import { Panel } from '../../../types/experiments';
 
 export type PanelsRowProps = {
     panels: Panel[];
