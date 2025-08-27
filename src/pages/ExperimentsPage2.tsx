@@ -10,8 +10,8 @@ import { Box, Flex } from '@chakra-ui/react';
 
 // Switch to the mock during development to avoid real API calls.
 // For production, change this import back to: '../services/aiService'
-import { explain2, ExplanationResponse2 } from '../services/aiService.mock';
-// import { explain2, ExplanationResponse2 } from '../services/aiService';
+// import { explain2, ExplanationResponse2 } from '../services/aiService.mock';
+import { explain2, ExplanationResponse2 } from '../services/aiService';
 import { buildContextSlice } from '../utils/textContext';
 import { Panel } from '../types/experiments';
 import PromptBar from '../components/PromptBar';
