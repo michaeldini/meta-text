@@ -1,12 +1,12 @@
+import { HiArrowDownTray } from 'react-icons/hi2';
+
 // SourceDocUploadForm: main form wrapper orchestrating file picker + submission
 import React from 'react';
-
 // UI
 import { Heading } from '@chakra-ui/react/heading';
 import { Button, } from '@chakra-ui/react/button';
 import { Stack, } from '@chakra-ui/react/stack';
 import { ErrorAlert } from '@components/ErrorAlert';
-import { Icon } from '@components/icons/Icon';
 import SourceDocFilePicker from './SourceDocFilePicker';
 
 // Hook
@@ -37,7 +37,7 @@ function SourceDocUploadForm(): React.ReactElement {
                         disabled={isPending || !files.length}
                         data-testid="submit-button"
                     >
-                        {!isPending && <Icon name='Download' />}
+                        {!isPending && <HiArrowDownTray />}
                         {isPending ? 'Uploading...' : 'Upload Documents'}
                     </Button>
                 </Stack>

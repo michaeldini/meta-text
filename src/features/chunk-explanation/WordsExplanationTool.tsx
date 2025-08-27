@@ -1,4 +1,4 @@
-import { Icon } from '@components/icons/Icon';
+import { HiQuestionMarkCircle } from 'react-icons/hi2';
 /**
  * WordsExplanationTool.tsx
  * Tool for explaining a word in context. Uses custom hooks for API calls and state management.
@@ -61,7 +61,7 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
                     <TooltipButton
                         label={`Explain`}
                         tooltip={`Click to get an explanation for "${cleanedWord}"`}
-                        icon={<Icon name='Help' />}
+                        icon={<HiQuestionMarkCircle />}
                         iconSize="2xl"
                         size="2xl"
                         onClick={handleDefine}

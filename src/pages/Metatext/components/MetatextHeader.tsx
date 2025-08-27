@@ -1,4 +1,4 @@
-import { Icon } from '@components/icons/Icon';
+import { HiAcademicCap } from 'react-icons/hi2';
 // Header component for Metatext detail page displaying title and review button
 import React from 'react';
 import { Stack } from '@chakra-ui/react/stack';
@@ -37,7 +37,7 @@ export function MetatextHeader({
             <TooltipButton
                 label="Review"
                 tooltip="Review this metatext"
-                icon={<Icon name='Academic' />}
+                icon={<HiAcademicCap />}
                 onClick={onReviewClick}
                 data-testid="review-button"
             />

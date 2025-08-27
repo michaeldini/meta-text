@@ -1,6 +1,6 @@
+import { HiOutlineStar, HiStar } from 'react-icons/hi2';
 // TODO: move api calls to service file
 import React, { useState } from 'react';
-import { Icon } from '@components/icons/Icon';
 import { TooltipButton } from '@components/TooltipButton';
 import { api } from '@utils/ky';
 import type { ChunkType } from '@mtypes/documents';
@@ -39,7 +39,7 @@ export function ChunkFavoriteToggle({ chunk }: ChunkFavoriteToggleProps) {
         <TooltipButton
             label=""
             tooltip={favorited ? 'Unfavorite' : 'Favorite'}
-            icon={favorited ? <Icon name='FavoriteFilled' /> : <Icon name='Favorite' />}
+            icon={favorited ? <HiStar /> : <HiOutlineStar />}
             loading={loading}
             onClick={handleToggle}
             disabled={loading}

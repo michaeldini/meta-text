@@ -1,4 +1,4 @@
-import { Icon } from '@components/icons/Icon';
+import { HiBars3, HiQuestionMarkCircle } from 'react-icons/hi2';
 // Back of a flashcard component that displays the definition and context of a word
 
 import React from 'react';
@@ -48,14 +48,14 @@ export function FlashcardBack(props: FlashcardBackProps) {
             </Card.Body>
             <Card.Footer justifyContent="flex-end">
                 <InfoButton
-                    icon={<Icon name='Menu' />}
+                    icon={<HiBars3 />}
                     dialogId="info-dialog"
                     title="Definition In Context"
                     word={word}
                     content={definition_in_context}
                 />
                 <InfoButton
-                    icon={<Icon name='Help' />}
+                    icon={<HiQuestionMarkCircle />}
                     dialogId="context-dialog"
                     title="Context"
                     word={word}

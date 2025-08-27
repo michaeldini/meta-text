@@ -1,4 +1,4 @@
-import { Icon } from '@components/icons/Icon';
+import { HiArrowUturnLeft } from 'react-icons/hi2';
 // Merge Chunks Tool Component
 // Provides functionality to merge two consecutive chunks into one  
 // Strictly removes meta-data from the other chunk when merging.
@@ -61,7 +61,7 @@ export function MergeChunksTool({ chunk }: MergeChunksToolProps) {
                 aria-label="Undo split (merge with next chunk)"
                 color="primary"
             >
-                <Icon name='Undo' />
+                <HiArrowUturnLeft />
             </IconButton>
         </Tooltip>
     );

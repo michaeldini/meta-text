@@ -1,17 +1,4 @@
-/**
- * MetatextCreateForm
- * ------------------
- * Presents a small form to create a new Metatext. This file purposefully
- * separates the UI into four tiny, clearly-named presentational subcomponents
- * so the layout & data flow are obvious at a glance:
- *   1. Header            -> <FormHeader />
- *   2. Source Doc Select -> <SourceDocSelect />
- *   3. Title Input       -> <TitleInput />
- *   4. Submit Button     -> <SubmitButton />
- * The container component (<MetatextCreateForm />) owns the hook, data shaping,
- * and passes minimal props to each piece to keep concerns isolated.
- */
-import { Icon } from '@components/icons/Icon';
+import { HiOutlineSparkles } from 'react-icons/hi2';
 import React from 'react';
 import { Box } from '@chakra-ui/react/box';
 import { Heading, createListCollection } from '@chakra-ui/react';
@@ -95,7 +82,7 @@ interface SubmitButtonProps {
 function SubmitButton({ loading, disabled }: SubmitButtonProps) {
     return (
         <Button type="submit" disabled={disabled} data-testid="submit-button" color="primary">
-            <Icon name='AISparkle' />
+            <HiOutlineSparkles />
             {loading ? 'Creating...' : 'Create Metatext'}
         </Button>
     );

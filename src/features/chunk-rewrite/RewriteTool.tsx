@@ -1,4 +1,4 @@
-import { Icon } from '@components/icons/Icon';
+import { HiPencilSquare } from 'react-icons/hi2';
 /**
  * Rewrite Tool
  * Concept: If you have a text, you can REWRITE it in a specific STYLE
@@ -39,7 +39,7 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
             <TooltipButton
                 label="Rewrite"
                 tooltip="Generate a rewrite for this chunk"
-                icon={<Icon name='EditSquare' />}
+                icon={<HiPencilSquare />}
                 onClick={openDialog}
                 disabled={!chunk}
                 loading={state.loading}

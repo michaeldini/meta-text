@@ -1,4 +1,4 @@
-import { Icon } from '@components/icons/Icon';
+import { HiArrowLeft } from 'react-icons/hi2';
 import { Heading, IconButton } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react/box';
 import { Tooltip } from '@components/ui/tooltip';
@@ -25,7 +25,7 @@ export function Header({ metatextId, navigate }: HeaderProps): ReactElement {
                         variant="ghost"
                         color="primary"
                     >
-                        <Icon name='Back' />
+                        <HiArrowLeft />
                     </IconButton>
                 </Tooltip>
             )}

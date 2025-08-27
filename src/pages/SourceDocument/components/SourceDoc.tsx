@@ -1,4 +1,4 @@
-import { Icon } from '@components/icons/Icon';
+import { HiCheck } from 'react-icons/hi2';
 // Component for displaying and editing source document content
 // This component is responsible for rendering the text content of a source document
 // with appropriate styles and preferences set by the user. It supports both view and edit modes
@@ -80,10 +80,7 @@ export default function SourceDoc({
                     />
                     <Editable.Control>
                         <Editable.SubmitTrigger asChild>
-                            <Icon
-                                name='Confirm'
-                                style={{ fontSize: '1.25em', cursor: 'pointer' }}
-                                onClick={handleSave} />
+                            <HiCheck style={{ fontSize: '1.25em', cursor: 'pointer' }} onClick={handleSave} />
                         </Editable.SubmitTrigger >
                     </Editable.Control>
                     {isSaving && (

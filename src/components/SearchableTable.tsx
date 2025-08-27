@@ -1,4 +1,6 @@
 
+import { HiMagnifyingGlass, HiOutlineTrash } from 'react-icons/hi2';
+
 /* eslint-disable react-refresh/only-export-components */
 /**
  * SearchableTable.tsx
@@ -6,8 +8,6 @@
  * It includes a search input, controlled table, and table row components and a hook for managing search results.
  */
 import React, { useState, useRef, useMemo } from 'react';
-
-import { Icon } from '@components/icons/Icon';
 import { useNavigate } from 'react-router-dom';
 import { Input, InputGroup, CloseButton, Box, Heading } from '@chakra-ui/react';
 import { MetatextSummary, SourceDocumentSummary } from '@mtypes/index';
@@ -46,7 +46,7 @@ function clearSearchAndFocus(setSearch: (value: string) => void, inputRef?: Reac
 
 export function SearchInput({ search, setSearch, inputRef }: SearchInputProps) {
     return (
-        <InputGroup startElement={<Icon name='Search' />} endElement={search ? (
+        <InputGroup startElement={<HiMagnifyingGlass />} endElement={search ? (
             <CloseButton
                 size="xs"
                 py="2"
@@ -95,7 +95,7 @@ export function TableRow({ item, navigate, navigateToBase, deleteItemMutation }:
                 <TooltipButton
                     label=""
                     tooltip={`Delete ${item.title}`}
-                    icon={<Icon name='DeleteOutline' />}
+                    icon={<HiOutlineTrash />}
                     data-testid={`delete-button-${item.id}`}
                     onClick={() => deleteItemMutation.mutate(item.id)}
                     _hover={{ color: 'red.500' }}

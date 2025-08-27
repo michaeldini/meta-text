@@ -1,3 +1,4 @@
+import { HiArrowDownTray } from 'react-icons/hi2';
 // SourceDocFilePicker: encapsulates the file selection + status list for source document uploads
 // This keeps the parent form lean and makes the picker independently testable.
 import React from 'react';
@@ -5,7 +6,6 @@ import { Stack } from '@chakra-ui/react/stack';
 import { Text } from '@chakra-ui/react';
 import { FileUpload } from '@chakra-ui/react/file-upload';
 import UploadFileStatusList, { UploadStatus } from './UploadFileStatusList';
-import { Icon } from '@components/icons/Icon';
 
 export interface SourceDocFilePickerProps {
     files: File[];
@@ -43,7 +43,7 @@ export function SourceDocFilePicker({
                 <FileUpload.HiddenInput data-testid="file-input" aria-label="Select text files to upload" />
                 <FileUpload.Dropzone bg="none">
                     <FileUpload.DropzoneContent>
-                        <Icon name='Download' />
+                        <HiArrowDownTray />
                         <Text aria-live="polite">{selectedCountLabel}</Text>
                         <Text fontSize="sm" color="fg.muted" aria-live="polite">{selectedFilesDetail}</Text>
                     </FileUpload.DropzoneContent>

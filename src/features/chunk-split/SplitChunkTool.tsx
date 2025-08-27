@@ -1,4 +1,4 @@
-import { Icon } from '@components/icons/Icon';
+import { HiScissors } from 'react-icons/hi2';
 import React from 'react';
 import { TooltipButton } from '@components/TooltipButton';
 import { useSplitChunk } from '@features/chunk/hooks/useSplitChunk';
@@ -42,7 +42,7 @@ export function SplitChunkTool(props: SplitChunkToolProps) {
         <TooltipButton
             label="Split"
             tooltip={`Split chunk at "${word}"`}
-            icon={<Icon name='Split' />}
+            icon={<HiScissors />}
             iconSize="2xl"
             onClick={handleSplit}
             aria-label={`Split chunk at word "${word}"`}

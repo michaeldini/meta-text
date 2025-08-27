@@ -1,4 +1,4 @@
-import { Icon } from '@components/icons/Icon';
+import { HiBookmark, HiOutlineBookmark } from 'react-icons/hi2';
 // Click this toggle to bookmark or un-bookmark a chunk.
 
 import React from 'react';
@@ -30,7 +30,7 @@ function ChunkBookmarkToggle({ chunk }: ChunkBookmarkToggleProps) {
             tooltip={isBookmarked ? "Remove Bookmark" : "Bookmark this chunk"}
             onClick={handleToggle}
             data-testid={`bookmark-toggle-${chunk.id}`}
-            icon={isBookmarked ? <Icon name='BookmarkFilled' /> : <Icon name='Bookmark' />}
+            icon={isBookmarked ? <HiBookmark /> : <HiOutlineBookmark />}
             loading={isSetting || isRemoving}
             disabled={isSetting || isRemoving}
         />

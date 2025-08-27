@@ -1,4 +1,4 @@
-import { Icon } from '@components/icons/Icon';
+import { HiOutlineSparkles } from 'react-icons/hi2';
 import { Editable } from '@chakra-ui/react/editable';
 import { Stack } from '@chakra-ui/react/stack';
 import { Text } from '@chakra-ui/react/text';
@@ -67,7 +67,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
                 onClick={generateSourceDocInfo.handleClick}
                 disabled={generateSourceDocInfo.loading}
                 loading={generateSourceDocInfo.loading}
-                icon={<Icon name='AISparkle' />}
+                icon={<HiOutlineSparkles />}
             />
             <Text w="100%" color="fg.muted" mb="4">Click on a field to edit. Enter to Save. Tab to Cancel</Text>
             {FIELD_CONFIG.map(config => (

@@ -1,4 +1,4 @@
-import { Icon } from '@components/icons/Icon';
+import { HiMagnifyingGlass } from 'react-icons/hi2';
 
 // Search bar component with icon, input field, and clear functionality
 // Provides the main search interface as described in the feature guide
@@ -43,7 +43,7 @@ export function SearchBar({
             <Field.Root>
                 <Field.Label color="fg">Search Chunks</Field.Label>
 
-                <InputGroup startElement={<Icon name='Search' />} endElement={endElement}>
+                <InputGroup startElement={<HiMagnifyingGlass />} endElement={endElement}>
                     <Input placeholder={placeholder} value={query} onChange={handleQueryChange} variant={variant} size={size} />
                 </InputGroup>
             </Field.Root>

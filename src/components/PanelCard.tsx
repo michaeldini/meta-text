@@ -1,3 +1,4 @@
+import { HiXMark } from 'react-icons/hi2';
 // Purpose: Display a single explanation panel, with controls (toggle view, minimize, close)
 // and the content rendered via WordSelector to enable creating follow-up panels.
 
@@ -5,11 +6,7 @@ import React from 'react';
 import { Box, Button, Flex, Spinner, Text, Link } from '@chakra-ui/react';
 import WordSelector from './WordSelector';
 import { Panel } from '../types/experiments';
-import { Icon } from '@components/icons/Icon';
-import {
-    HiArrowsPointingOut,
-    HiArrowsPointingIn,
-} from 'react-icons/hi2';
+import { HiArrowsPointingOut, HiArrowsPointingIn } from 'react-icons/hi2';
 import { TooltipButton } from '@components/TooltipButton';
 
 export type PanelCardProps = {
@@ -58,7 +55,7 @@ const PanelHeader: React.FC<PanelHeaderProps> = ({ sourceWord, minimized, onMini
                         label=""
                         tooltip="Close panel"
                         onClick={onClose}
-                        icon={<Icon name="Close" />}
+                        icon={<HiXMark />}
                         size="sm"
                     />
                 </Flex>

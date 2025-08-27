@@ -1,4 +1,4 @@
-import { getIconComponent } from '@components/icons/registry';
+import { HiArrowLeftOnRectangle, HiArrowRightOnRectangle, HiPlus } from 'react-icons/hi2';
 /**
  * Navigation configuration for the navbar menu
  * - Defines icons, labels, paths, and visibility conditions for each menu item (includes brand item)
@@ -42,19 +42,19 @@ export const getNavigationConfig = (logout: () => void, navigate: (path: string)
         {
             label: 'Login',
             protected: false,
-            icon: getIconComponent('Login'),
+            icon: HiArrowRightOnRectangle,
             action: () => navigate('/login')
         },
         {
             label: 'Logout',
             protected: true,
-            icon: getIconComponent('Logout'),
+            icon: HiArrowLeftOnRectangle,
             action: () => { logout(); navigate('/login'); }
         },
         {
             label: 'Register',
             protected: false,
-            icon: getIconComponent('Add'),
+            icon: HiPlus,
             action: () => navigate('/register')
         },
     ]

@@ -1,4 +1,4 @@
-import { Icon } from '@components/icons/Icon';
+import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2';
 // Pagination component for chunk navigation
 import React from 'react';
 import { Center } from '@chakra-ui/react/center';
@@ -69,7 +69,7 @@ export function ChunkPagination({
                             disabled={disabled || currentPage <= 1}
                             data-testid="prev-page-button"
                         >
-                            <Icon name='PagePrev' />
+                            <HiChevronLeft />
                         </IconButton>
                     </Pagination.PrevTrigger>
                     <Pagination.Items
@@ -92,7 +92,7 @@ export function ChunkPagination({
                             disabled={disabled || currentPage >= totalPages}
                             data-testid="next-page-button"
                         >
-                            <Icon name='PageNext' />
+                            <HiChevronRight />
                         </IconButton>
                     </Pagination.NextTrigger>
                 </ButtonGroup>

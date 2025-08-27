@@ -1,4 +1,4 @@
-import { Icon } from '@components/icons/Icon';
+import { HiOutlineSparkles } from 'react-icons/hi2';
 // ExplanationTool
 // Generates an explanation for a chunk's text via API and displays it.
 // Mirrors the pattern used in EvaluationTool: keeps local state (loading, error, text)
@@ -59,7 +59,7 @@ export function ExplanationTool({ chunk, isVisible }: ExplanationToolProps) {
             <TooltipButton
                 label="Explain"
                 tooltip="Generate a detailed explanation of this chunk's text."
-                icon={<Icon name='AISparkle' />}
+                icon={<HiOutlineSparkles />}
                 onClick={handleGenerate}
                 disabled={loading || !chunk.id}
                 loading={loading}

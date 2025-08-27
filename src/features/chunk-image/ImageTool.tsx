@@ -1,4 +1,4 @@
-import { Icon } from '@components/icons/Icon';
+import { HiOutlineSparkles } from 'react-icons/hi2';
 /**
  * Image generation tool
  * Provides an interface for generating and displaying images for text chunks.
@@ -87,7 +87,7 @@ export function ImageTool(props: ImageToolProps) {
                 <TooltipButton
                     label={hasImage ? "Generate New Image" : "Generate Image"}
                     tooltip="Generate an image for this chunk using AI"
-                    icon={<Icon name='AISparkle' />}
+                    icon={<HiOutlineSparkles />}
                     onClick={openDialog}
                     disabled={loading}
                     loading={loading}

@@ -1,4 +1,4 @@
-import { Icon } from '@components/icons/Icon';
+import { HiOutlineSparkles } from 'react-icons/hi2';
 /**
  * EvaluationTool
  * Generates an evaluation/explanation for a chunk via API and displays it.
@@ -50,7 +50,7 @@ export function EvaluationTool({ chunk, isVisible }: EvaluationToolProps) {
             <TooltipButton
                 label="Evaluate"
                 tooltip="Produce an evaluation of your summary and note."
-                icon={<Icon name='AISparkle' />}
+                icon={<HiOutlineSparkles />}
                 onClick={handleGenerate}
                 disabled={loading || !chunk.id}
                 loading={loading}

@@ -5,7 +5,6 @@ import reactPlugin from 'eslint-plugin-react'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tsParser from '@typescript-eslint/parser'
 import tsPlugin from '@typescript-eslint/eslint-plugin'
-import noDirectHeroicons from './scripts/eslint-rules/no-direct-heroicons.js'
 
 export default [
   { ignores: ['dist'] },
@@ -32,7 +31,6 @@ export default [
       react: reactPlugin,
       'react-refresh': reactRefresh,
       '@typescript-eslint': tsPlugin,
-      local: { rules: { 'no-direct-heroicons': noDirectHeroicons } },
     },
     rules: {
       ...js.configs.recommended.rules,
@@ -49,10 +47,7 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
-      'local/no-direct-heroicons': [
-        'error',
-        { registryPath: 'src/components/icons/registry.ts', sources: ['react-icons/hi2'] },
-      ],
+      // Allow direct imports from react-icons subsets for tree-shaking
       // Enforce function declarations for React components; avoid React.FC
       'react/function-component-definition': ['error', {
         namedComponents: 'function-declaration',

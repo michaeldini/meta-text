@@ -1,3 +1,4 @@
+import { HiQuestionMarkCircle } from 'react-icons/hi2';
 /**
  * Keyboard Shortcut UI Components
  * =================================
@@ -108,7 +109,6 @@
 import React, { memo } from 'react';
 import { Box, Text, VStack, HStack, Badge } from '@chakra-ui/react';
 import { IconButton } from '@chakra-ui/react/button';
-import { Icon } from '@components/icons/Icon';
 import BaseDrawer from '@components/drawer/BaseDrawer';
 import { getShortcutsByCategory, formatShortcut, type KeyboardShortcut } from '@utils/keyboardShortcuts';
 import { useHelpStore } from '@store/helpStore';
@@ -189,7 +189,7 @@ export function KeyboardShortcutsDisplay({ categories }: KeyboardShortcutsDispla
                     onClick={openHelp}
                     color="primary"
                 >
-                    <Icon name='Help' />
+                    <HiQuestionMarkCircle />
                 </IconButton>
             </Box>
             <BaseDrawer
