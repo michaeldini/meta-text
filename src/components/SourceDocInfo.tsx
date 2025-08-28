@@ -70,18 +70,20 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
                 icon={<HiOutlineSparkles />}
             />
             <Text w="100%" color="fg.muted" mb="4">Click on a field to edit. Enter to Save. Tab to Cancel</Text>
-            {FIELD_CONFIG.map(config => (
-                <Box direction="row" key={config.key} maxWidth="20rem" px="4">
-                    <Text fontWeight="bold">{config.label}</Text>
-                    <Editable.Root
-                        defaultValue={doc[config.key] != null ? String(doc[config.key]) : 'N/A'}
-                        submitMode={"enter"}
-                        onValueCommit={handleValueCommit(config.key)}>
-                        <Editable.Preview />
-                        <Editable.Input />
-                    </Editable.Root>
-                </Box>
-            ))}
+            <Flex border="1px solid" borderColor="fg.muted" p="4">
+                {FIELD_CONFIG.map(config => (
+                    <Box direction="row" key={config.key} maxWidth="20rem" px="4" >
+                        <Text fontWeight="bold">{config.label}</Text>
+                        <Editable.Root
+                            defaultValue={doc[config.key] != null ? String(doc[config.key]) : 'N/A'}
+                            submitMode={"enter"}
+                            onValueCommit={handleValueCommit(config.key)}>
+                            <Editable.Preview />
+                            <Editable.Textarea minH="48px" alignItems="flex-start" width="full" />
+                        </Editable.Root>
+                    </Box>
+                ))}
+            </Flex>
         </Flex>
     );
 }

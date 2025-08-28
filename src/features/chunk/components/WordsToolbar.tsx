@@ -1,5 +1,4 @@
 // Toolbar for word-level tools in a chunk
-// This component provides a popover with tools for splitting and defining words in a chunk
 
 import React, { memo } from 'react';
 import { Stack } from '@chakra-ui/react/stack';
@@ -14,16 +13,11 @@ export interface WordsToolbarProps {
     chunk: ChunkType;
 }
 
-
 /**
  * WordsToolbar - Layout component that presents word-level tools
  * This is a layout component that uses the split and define tools
  */
 export function WordsToolbar({ onClose, word, wordIdx, chunk }: WordsToolbarProps) {
-    // Called when a tool completes
-    // const handleToolComplete = (success: boolean, result?: any) => {
-    //     onClose();
-    // };
     return (
         <Stack direction="row" gap={4} alignItems="center" justifyContent="center" p={4}>
             <SplitChunkTool

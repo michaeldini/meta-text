@@ -40,11 +40,11 @@ export function BaseDrawer({
     bodyProps
 }: BaseDrawerProps) {
     return (
-        <Drawer.Root open={open} onOpenChange={e => { if (!e.open) onClose(); }} placement={placement}>
+        <Drawer.Root open={open} onOpenChange={e => { if (!e.open) onClose(); }} placement={placement} >
             <Portal>
                 <Drawer.Backdrop />
                 <Drawer.Positioner>
-                    <Drawer.Content maxW={maxW} w="full" {...contentProps}>
+                    <Drawer.Content maxW={maxW} w="full" mb="10" {...contentProps} >
                         {title && (
                             <Drawer.Header>
                                 <Drawer.Title>{title}</Drawer.Title>
