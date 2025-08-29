@@ -18,6 +18,8 @@ import { create } from 'zustand';
 export const DRAWERS = {
     keyboardShortcuts: 'keyboardShortcuts',
     sourceDocInfo: 'sourceDocInfo',
+    // Global rewrite drawer (only one rewrite drawer open at a time)
+    chunkRewrite: 'chunkRewrite',
 } as const;
 
 export type DrawerId = typeof DRAWERS[keyof typeof DRAWERS] | (string & {});

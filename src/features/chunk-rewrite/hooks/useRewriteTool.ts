@@ -11,7 +11,6 @@ import type { ChunkType } from '@mtypes/documents';
 import { Rewrite } from '@mtypes/tools'
 
 export interface RewriteToolState {
-    dialogOpen: boolean;
     loading: boolean;
     error: string | null;
     style: string;
@@ -24,12 +23,11 @@ export interface UseRewriteToolReturn {
     selected: Rewrite | undefined;
     loading: boolean;
     error: string | null;
-    openDialog: () => void;
-    closeDialog: () => void;
     setStyle: (val: string) => void;
     submitRewrite: () => Promise<Rewrite | null>;
     setSelectedId: (id: number | '') => void;
     hasRewrites: boolean;
+    reset: () => void;
 }
 
 const DEFAULT_STYLE = 'like im 5';
@@ -38,7 +36,6 @@ export const useRewriteTool = (chunk: ChunkType | null): UseRewriteToolReturn =>
     const incomingRewrites = useMemo(() => chunk?.rewrites ?? [], [chunk?.rewrites]);
 
     const [state, setState] = useState<RewriteToolState>({
-        dialogOpen: false,
         loading: false,
         error: null,
         style: DEFAULT_STYLE,
@@ -71,12 +68,8 @@ export const useRewriteTool = (chunk: ChunkType | null): UseRewriteToolReturn =>
         });
     }, [localRewrites]);
 
-    const openDialog = useCallback(() => {
-        setState(s => ({ ...s, dialogOpen: true, error: null, style: DEFAULT_STYLE }));
-    }, []);
-
-    const closeDialog = useCallback(() => {
-        setState(s => ({ ...s, dialogOpen: false, error: null, style: DEFAULT_STYLE }));
+    const reset = useCallback(() => {
+        setState(s => ({ ...s, error: null, style: DEFAULT_STYLE }));
     }, []);
 
     const setStyle = useCallback((val: string) => {
@@ -101,7 +94,6 @@ export const useRewriteTool = (chunk: ChunkType | null): UseRewriteToolReturn =>
             setState(s => ({
                 ...s,
                 loading: false,
-                dialogOpen: false,
                 error: null,
                 selectedId: rewrite.id
             }));
@@ -122,12 +114,11 @@ export const useRewriteTool = (chunk: ChunkType | null): UseRewriteToolReturn =>
         selected,
         loading: state.loading,
         error: state.error,
-        openDialog,
-        closeDialog,
         setStyle,
         submitRewrite,
         setSelectedId,
-        hasRewrites: localRewrites.length > 0
+        hasRewrites: localRewrites.length > 0,
+        reset,
     };
 };
 

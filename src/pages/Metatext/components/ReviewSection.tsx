@@ -7,6 +7,7 @@ import { Collapsible } from "@chakra-ui/react/collapsible";
 interface ReviewSectionProps {
     title: string;
     children: ReactElement;
+    testId: string;
 }
 
 /**

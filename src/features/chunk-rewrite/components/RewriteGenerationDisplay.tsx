@@ -7,7 +7,7 @@ import { Button } from '@chakra-ui/react/button';
 import { Box } from '@chakra-ui/react/box';
 import BaseDrawer from '@components/drawer/BaseDrawer';
 
-export interface RewriteGenerationDialogProps {
+export interface RewriteGenerationDisplayProps {
     open: boolean;
     onClose: () => void;
     styleValue: string;
@@ -23,7 +23,7 @@ const STYLE_OPTIONS = [
     { value: 'academic', label: 'Academic' }
 ];
 
-export function RewriteGenerationDialog(props: RewriteGenerationDialogProps) {
+export function RewriteGenerationDisplay(props: RewriteGenerationDisplayProps) {
     const { open, onClose, styleValue, onStyleChange, loading, error, onSubmit } = props;
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => onStyleChange(e.target.value);
     const handleFormSubmit = async (e: React.FormEvent) => { e.preventDefault(); await onSubmit(); };
@@ -61,4 +61,4 @@ export function RewriteGenerationDialog(props: RewriteGenerationDialogProps) {
     );
 }
 
-export default RewriteGenerationDialog;
+export default RewriteGenerationDisplay;

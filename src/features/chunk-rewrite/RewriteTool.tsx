@@ -9,8 +9,9 @@ import { Box } from '@chakra-ui/react/box';
 import { Text } from '@chakra-ui/react/text';
 import type { ChunkType } from '@mtypes/documents';
 import { TooltipButton } from '@components/TooltipButton';
+import { useDrawer, DRAWERS } from '@store/drawerStore';
 import { useRewriteTool } from './hooks/useRewriteTool';
-import RewriteGenerationDialog from './components/RewriteGenerationDialog';
+import RewriteGenerationDisplay from './components/RewriteGenerationDisplay';
 
 
 interface RewriteDisplayToolProps {
@@ -25,13 +26,15 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
         rewrites,
         selected,
         state,
-        openDialog,
-        closeDialog,
         setStyle,
         submitRewrite,
         setSelectedId,
         hasRewrites,
+        reset,
     } = useRewriteTool(chunk);
+
+    // Single global drawer ID for rewrite
+    const { isOpen, open, close } = useDrawer(DRAWERS.chunkRewrite);
 
     if (!isVisible) return null;
     return (
@@ -40,13 +43,13 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
                 label="Rewrite"
                 tooltip="Generate a rewrite for this chunk"
                 icon={<HiPencilSquare />}
-                onClick={openDialog}
+                onClick={() => { reset(); open(); }}
                 disabled={!chunk}
                 loading={state.loading}
             />
-            <RewriteGenerationDialog
-                open={state.dialogOpen}
-                onClose={closeDialog}
+            <RewriteGenerationDisplay
+                open={isOpen}
+                onClose={() => { reset(); close(); }}
                 styleValue={state.style}
                 onStyleChange={setStyle}
                 loading={state.loading}
