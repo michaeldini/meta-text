@@ -15,6 +15,7 @@ import { TooltipButton } from '@components/TooltipButton';
 import { useImageTool } from './hooks/useImageTool';
 import ImageGenerationDialog from './components/ImageGenerationDialog';
 import type { ChunkType } from '@mtypes/documents';
+import { useDrawer, DRAWERS } from '@store/drawerStore';
 
 interface ImageToolProps {
     chunk: ChunkType;
@@ -28,8 +29,7 @@ export function ImageTool(props: ImageToolProps) {
         handleGenerateImage,    // Function to trigger AI image generation
         state,                  // Current component state (loading, error, data, prompt, dialogOpen, selectedId)
         getImgSrc,              // Helper to construct image source URL from selected image
-        openDialog,             // Opens generation dialog
-        closeDialog,            // Closes dialog
+        reset,
         handlePromptChange,     // Prompt change handler
         setSelectedId,          // Sets selected image id
         loading,                // Generation in progress
@@ -38,6 +38,9 @@ export function ImageTool(props: ImageToolProps) {
         images,                 // All images for the chunk
         selected,               // Currently selected image object
     } = useImageTool(chunk);
+
+    // Drawer visibility (global singleton)
+    const { isOpen, open, close } = useDrawer(DRAWERS.chunkImage);
 
     // Local UI state
     const [imgLoaded, setImgLoaded] = React.useState(false);
@@ -75,8 +78,10 @@ export function ImageTool(props: ImageToolProps) {
 
     const handleDialogSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        await handleGenerateImage();
-        // probably put error handling here, but will need to modify hook first! TODO
+        const result = await handleGenerateImage();
+        if (result.imagePath) {
+            close();
+        }
     };
     if (!isVisible) return null;
     return (
@@ -88,7 +93,7 @@ export function ImageTool(props: ImageToolProps) {
                     label={hasImage ? "Generate New Image" : "Generate Image"}
                     tooltip="Generate an image for this chunk using AI"
                     icon={<HiOutlineSparkles />}
-                    onClick={openDialog}
+                    onClick={() => { reset(); open(); }}
                     disabled={loading}
                     loading={loading}
                 />
@@ -150,13 +155,13 @@ export function ImageTool(props: ImageToolProps) {
                     </Box>
                 )}
             </Box>
-            {/* Image generation dialog - always rendered but controlled by state.dialogOpen */}
+            {/* Image generation drawer - visibility controlled by global drawer store */}
             <ImageGenerationDialog
-                open={state.dialogOpen}
+                open={isOpen}
                 prompt={state.prompt}
                 loading={loading}
                 error={error}
-                onClose={closeDialog}
+                onClose={() => { reset(); close(); }}
                 onPromptChange={handlePromptChange}
                 onSubmit={handleDialogSubmit}
             />

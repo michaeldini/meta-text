@@ -24,7 +24,6 @@ export interface ImageToolState {
     error: string | null;
     imagePath: string | null;
     prompt: string;
-    dialogOpen: boolean;
     selectedId: number | null; // currently selected image id
 }
 
@@ -37,10 +36,9 @@ export interface UseImageToolReturn {
     selected: AiImage | null; // currently selected image entity
     handleGenerateImage: () => Promise<ImageResult>;
     getImgSrc: () => string; // Returns the complete image source URL
-    openDialog: () => void;
-    closeDialog: () => void;
     handlePromptChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     setSelectedId: (id: number | null) => void; // select a different image
+    reset: () => void;
 }
 /**
  * Result of successful image generation operation
@@ -61,7 +59,6 @@ export const useImageTool = (chunk: ChunkType): UseImageToolReturn => {
         error: null,         // No errors on initialization
         imagePath: null,          // No image data initially
         prompt: '',          // Empty prompt initially
-        dialogOpen: false,   // Dialog closed initially
         selectedId: null,
     });
 
@@ -114,7 +111,6 @@ export const useImageTool = (chunk: ChunkType): UseImageToolReturn => {
                 prompt: result.prompt,
                 loading: false,
                 error: null,
-                dialogOpen: false,
                 selectedId: result?.id ?? s.selectedId, // NOTE: generateImage currently returns path + prompt; if id returned later, capture it
             }));
 
@@ -158,24 +154,9 @@ export const useImageTool = (chunk: ChunkType): UseImageToolReturn => {
      */
     const getImgSrc = useCallback(() => (state.imagePath ? `/${state.imagePath}` : ''), [state.imagePath]);
 
-    /**
-     * Opens the image generation dialog and resets form state
-     * Clears any previous errors and prompt text for a fresh start
-     */
-    const openDialog = useCallback(() => setState(s => ({
+    /** Resets transient form state (prompt and error) without managing visibility */
+    const reset = useCallback(() => setState(s => ({
         ...s,
-        dialogOpen: true,
-        error: null,
-        prompt: ''
-    })), []);
-
-    /**
-     * Closes the image generation dialog and resets form state
-     * Clears errors and prompt text when user cancels or completes generation
-     */
-    const closeDialog = useCallback(() => setState(s => ({
-        ...s,
-        dialogOpen: false,
         error: null,
         prompt: ''
     })), []);
@@ -219,10 +200,10 @@ export const useImageTool = (chunk: ChunkType): UseImageToolReturn => {
         state,                   // Complete internal state object
         // Helper functions
         getImgSrc,              // Constructs image source URL
-        openDialog,             // Opens generation dialog
-        closeDialog,            // Closes generation dialog  
+        // Visibility handled by global drawer store
         handlePromptChange,     // Handles prompt input changes
         setSelectedId,
+        reset,
 
         // Convenience state accessors (duplicated for easier access)
         loading: state.loading, // Boolean indicating generation in progress

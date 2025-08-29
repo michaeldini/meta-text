@@ -20,6 +20,8 @@ export const DRAWERS = {
     sourceDocInfo: 'sourceDocInfo',
     // Global rewrite drawer (only one rewrite drawer open at a time)
     chunkRewrite: 'chunkRewrite',
+    // Global image generation drawer (single instance)
+    chunkImage: 'chunkImage',
 } as const;
 
 export type DrawerId = typeof DRAWERS[keyof typeof DRAWERS] | (string & {});
