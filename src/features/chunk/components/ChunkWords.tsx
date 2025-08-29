@@ -32,7 +32,6 @@ const ChunkWords = memo(function ChunkWords({
     const lineHeight = uiPrefs.lineHeight ?? 1.5;
     const paddingX = uiPrefs.paddingX ?? 0.3;
 
-
     // Define a stable handleToolbarClose function to pass to the hook
     // This is a no-op by default, but will be replaced by the hook's return value
     // to avoid use-before-declaration
@@ -88,8 +87,7 @@ const ChunkWords = memo(function ChunkWords({
                 lineHeight={lineHeight}
                 fontFamily={fontFamily}
                 paddingX={paddingX}
-                background={isHighlighted ? '#3182ce' : 'transparent'}
-                color={isHighlighted ? 'white' : 'inherit'}
+                color={isHighlighted ? 'white' : undefined}
                 cursor="pointer"
                 userSelect="none"
                 display="inline-block"
@@ -102,7 +100,7 @@ const ChunkWords = memo(function ChunkWords({
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleWordUp}
                 data-word-idx={`${chunkIdx}-${wordIdx}`}
-                _hover={!isHighlighted ? { background: '#3182ce', color: 'white' } : undefined}
+                _hover={!isHighlighted ? { color: 'white' } : undefined}
             >
                 {word}
             </Box>
@@ -112,7 +110,7 @@ const ChunkWords = memo(function ChunkWords({
     return (
         <Box as="div" ref={containerRef} padding={4} width="100%" data-chunk-id={`chunk-${chunkIdx}`}
         >
-            <Flex as="div" flexWrap="wrap" gap={0}>
+            <Flex as="div" flexWrap="wrap" gap={0} color="gray.400">
                 {wordsElements}
                 <Box as="span" display="inline-block">
                     <MergeChunksTool chunk={chunk} />

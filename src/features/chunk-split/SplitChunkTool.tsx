@@ -47,7 +47,6 @@ export function SplitChunkTool(props: SplitChunkToolProps) {
             onClick={handleSplit}
             aria-label={`Split chunk at word "${word}"`}
             size="2xl"
-            color="primary"
 
         />
     );
