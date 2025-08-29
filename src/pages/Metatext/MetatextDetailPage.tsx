@@ -11,7 +11,7 @@ import { ErrorAlert } from '@components/ErrorAlert';
 
 // Imports for components
 import { ChunkToolsPanel } from '@features/chunk-tools';
-import { MetatextHeader, MetatextControlTabs, ChunkDisplayContainer } from '@pages/Metatext/components';
+import { MetatextHeader, ChunkDisplayContainer } from '@pages/Metatext/components';
 
 import { useMetatextDetail } from '@features/documents/useDocumentsData';
 import { useMetatextDetailKeyboard } from './hooks/useMetatextDetailKeyboard';
@@ -101,15 +101,6 @@ function MetatextDetailPage(): ReactElement | null {
                         showOnlyFavorites={showOnlyFavorites}
                         setShowOnlyFavorites={setShowOnlyFavorites}
                     />
-
-                    {/* <MetatextControlTabs
-                        metatextId={id}
-                        sourceDocumentId={metatext?.source_document_id}
-                        displayChunks={metatext?.chunks || []}
-                        setCurrentPage={setCurrentPage}
-                        showOnlyFavorites={showOnlyFavorites}
-                        setShowOnlyFavorites={setShowOnlyFavorites}
-                    /> */}
 
                     <ChunkDisplayContainer
                         displayChunks={displayChunks}
