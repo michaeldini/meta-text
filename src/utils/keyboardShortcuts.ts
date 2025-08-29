@@ -124,13 +124,13 @@ export const GLOBAL_SHORTCUTS: Record<string, KeyboardShortcut> = {
     },
     TOGGLE_THEME: {
         key: 'u',
-        metaKey: false,
+        metaKey: true,
         description: 'Toggle dark/light theme',
         category: 'Interface',
     },
     TOGGLE_HELP: {
         key: 'h',
-        metaKey: false,
+        metaKey: true,
         shiftKey: false,
         description: 'Toggle help panel',
         category: 'Interface',
