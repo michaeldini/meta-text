@@ -7,21 +7,17 @@ import { useWordSelection } from '../hooks/useWordSelection';
 export interface UseChunkWordsProps {
     chunkIdx: number;
     words: string[];
-    handleToolbarClose: () => void;
 }
 
-export function useChunkWords({ chunkIdx, words, handleToolbarClose }: UseChunkWordsProps) {
+export function useChunkWords({ chunkIdx, words }: UseChunkWordsProps) {
     // Word selection logic
     const {
         highlightedIndices,
         handleWordDown,
         handleWordEnter,
         handleWordUp,
-        handleToolbarClose: handleToolbarCloseSelection,
+        handleToolbarClose,
         handleTouchMove,
-        // expose selection indices so we can compute selection synchronously on pointer up
-        selectionStartIdx: _selectionStartIdx,
-        selectionEndIdx: _selectionEndIdx,
     } = useWordSelection(chunkIdx);
 
     // Drawer state
@@ -43,7 +39,6 @@ export function useChunkWords({ chunkIdx, words, handleToolbarClose }: UseChunkW
     const closeDrawer = useCallback(() => {
         setDrawerOpen(false);
         setDrawerSelection(null);
-        handleToolbarClose();
     }, [handleToolbarClose]);
 
     // Clear highlight if clicking outside the container
@@ -67,7 +62,7 @@ export function useChunkWords({ chunkIdx, words, handleToolbarClose }: UseChunkW
         handleWordDown,
         handleWordEnter,
         handleWordUp: handleWordUpPatched,
-        handleToolbarClose: handleToolbarCloseSelection,
+        handleToolbarClose,
         handleTouchMove,
         drawerOpen,
         setDrawerOpen,

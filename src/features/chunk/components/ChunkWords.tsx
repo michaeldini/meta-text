@@ -32,23 +32,14 @@ const ChunkWords = memo(function ChunkWords({
     const lineHeight = uiPrefs.lineHeight ?? 1.5;
     const paddingX = uiPrefs.paddingX ?? 0.3;
 
-    // Define a stable handleToolbarClose function to pass to the hook
-    // This is a no-op by default, but will be replaced by the hook's return value
-    // to avoid use-before-declaration
-    const [handleToolbarCloseState, setHandleToolbarCloseState] = React.useState<() => void>(() => () => { });
 
-    const hookResult = useChunkWords({
-        chunkIdx,
-        words,
-        handleToolbarClose: handleToolbarCloseState,
-    });
+    const hookResult = useChunkWords({ chunkIdx, words });
     // Destructure after hook call
     const {
         highlightedIndices,
         handleWordDown,
         handleWordEnter,
         handleWordUp,
-        handleToolbarClose,
         handleTouchMove,
         drawerOpen,
         setDrawerOpen: _setDrawerOpen,
@@ -57,10 +48,7 @@ const ChunkWords = memo(function ChunkWords({
         closeDrawer,
         containerRef,
     } = hookResult;
-    // Update the stateful handleToolbarClose to always point to the latest from the hook
-    React.useEffect(() => {
-        setHandleToolbarCloseState(() => handleToolbarClose);
-    }, [handleToolbarClose]);
+
 
     // Precompute a Set for faster membership checks when many words
     const highlightedSet = React.useMemo(() => new Set(highlightedIndices), [highlightedIndices]);
