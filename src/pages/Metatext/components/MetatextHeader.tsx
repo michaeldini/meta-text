@@ -1,17 +1,15 @@
-import { HiAcademicCap } from 'react-icons/hi2';
 // Header component for Metatext detail page displaying title and review button
 import React from 'react';
 import { Stack } from '@chakra-ui/react/stack';
 import { Heading } from '@chakra-ui/react/heading';
-import { TooltipButton } from '@components/TooltipButton';
 import { KeyboardShortcutsDisplay } from '@components/KeyboardShortcutsDisplay';
 import type { ChunkType } from '@mtypes/documents';
 import { MetatextHeaderControls, SourceDocInfo, StyleControls } from 'src';
 import { SourceDocInfoDisplay } from '@components/SourceDocInfo';
+import { ReviewMetatextButton } from './ReviewMetatextButton';
 
 interface MetatextHeaderProps {
     title: string;
-    onReviewClick: () => void;
     metatextId: number;
     sourceDocumentId?: number;
     displayChunks: ChunkType[];
@@ -28,7 +26,6 @@ interface MetatextHeaderProps {
  */
 export function MetatextHeader({
     title,
-    onReviewClick,
     metatextId,
     sourceDocumentId,
     displayChunks,
@@ -50,13 +47,7 @@ export function MetatextHeader({
             >
                 {title}
             </Heading>
-            <TooltipButton
-                label=""
-                tooltip="Review this metatext"
-                icon={<HiAcademicCap />}
-                onClick={onReviewClick}
-                data-testid="review-button"
-            />
+            <ReviewMetatextButton />
             {/* <KeyboardShortcutsDisplay categories={['Navigation', 'Interface', 'Chunks']} /> */}
             <KeyboardShortcutsDisplay categories={['Navigation', 'Interface']} />
             <MetatextHeaderControls

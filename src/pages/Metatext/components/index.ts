@@ -2,6 +2,7 @@
 
 // Phase 1 refactored components
 export { MetatextHeader } from './MetatextHeader';
+export { ReviewMetatextButton } from './ReviewMetatextButton';
 export { ChunkStatusInfo } from './ChunkStatusInfo';
 export { ChunkPagination } from './ChunkPagination';
 // Phase 2 refactored components

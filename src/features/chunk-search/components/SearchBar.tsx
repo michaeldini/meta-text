@@ -19,7 +19,7 @@ interface SearchBarProps {
 export function SearchBar({
     placeholder = 'Search...(CMD+K)',
     variant = 'outline',
-    size = 'sm',
+    size = 'md',
 }: SearchBarProps) {
     const { query, setQuery } = useSearchStore();
 
@@ -39,14 +39,22 @@ export function SearchBar({
         />
     ) : undefined
     return (
-        <Box >
-            <Field.Root>
-                <Field.Label color="fg">Search Chunks</Field.Label>
 
-                <InputGroup startElement={<HiMagnifyingGlass />} endElement={endElement}>
-                    <Input placeholder={placeholder} value={query} onChange={handleQueryChange} variant={variant} size={size} />
-                </InputGroup>
-            </Field.Root>
-        </Box>
+        <Field.Root orientation="horizontal">
+            <Field.Label color="fg" minWidth="fit-content">Search Chunks</Field.Label>
+            <InputGroup
+                startElement={<HiMagnifyingGlass />}
+                endElement={endElement}
+            >
+                <Input
+                    placeholder={placeholder}
+                    value={query}
+                    onChange={handleQueryChange}
+                    variant={variant}
+                    size={size}
+                    borderBottom="1px solid"
+                />
+            </InputGroup>
+        </Field.Root>
     );
 }

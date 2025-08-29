@@ -32,7 +32,7 @@ export function ChunkDisplayContainer({
 }: ChunkDisplayContainerProps) {
     return (
         <Box data-testid="chunk-display-container">
-            <Stack gap={4}>
+            <Stack gap={10}>
                 <ChunkStatusInfo
                     totalFilteredChunks={totalFilteredChunks}
                     displayChunksCount={displayChunks.length}

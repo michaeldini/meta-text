@@ -14,12 +14,10 @@ import '../search.css';
 export function SearchContainer() {
 
     return (
-        <Stack direction="row" alignItems="center">
-            {/* Search Bar */}
-            <Box >
-                <SearchBar />
-            </Box>
-        </Stack>
+        <Box width="100%">
+            <SearchBar />
+        </Box>
+
     );
 }
 

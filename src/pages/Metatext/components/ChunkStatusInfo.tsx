@@ -1,6 +1,7 @@
 // Component for displaying chunk count and status information
 import React from 'react';
-import { Center } from '@chakra-ui/react/center';
+import { Stack } from '@chakra-ui/react/stack';
+import { Box } from '@chakra-ui/react/box';
 import { Text } from '@chakra-ui/react/text';
 import { SearchContainer } from '@features/chunk-search';
 import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
@@ -36,16 +37,19 @@ export function ChunkStatusInfo({
     };
 
     return (
-        <Center data-testid="chunk-status-info">
+        <Stack direction="row" data-testid="chunk-status-info">
             <SearchContainer />
             {isSearching && <Spinner size="sm" mr={2} data-testid="chunk-search-spinner" />}
             <Text
                 fontSize="sm"
                 color="fg.muted"
                 data-testid="chunk-status-text"
+                alignSelf="center"
+                minWidth="fit-content"
+                px="10"
             >
                 {getStatusMessage()}
             </Text>
-        </Center>
+        </Stack>
     );
-}
+} 10

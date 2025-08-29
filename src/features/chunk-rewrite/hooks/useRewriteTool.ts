@@ -1,123 +1,86 @@
 /**
- * useRewriteTool Hook
+ * useRewriteTool Hook (simplified)
  *
- * Provides a cohesive API for the Rewrite tool similar to useImageTool.
- * Manages dialog visibility, style selection, submission lifecycle, existing rewrite selection,
- * and error/loading flags. Consumes rewrites directly from the provided chunk.
+ * Responsibilities:
+ * - Hold local style input only.
+ * - Create a rewrite via mutation.
+ * - Invalidate chunk/metatext queries so rewrites refresh from server.
+ * - Do not keep a local rewrites list or selection.
  */
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { generateRewrite } from '@services/aiService';
 import type { ChunkType } from '@mtypes/documents';
-import { Rewrite } from '@mtypes/tools'
-
-export interface RewriteToolState {
-    loading: boolean;
-    error: string | null;
-    style: string;
-    selectedId: number | '';
-}
+import type { Rewrite } from '@mtypes/tools';
+import { queryKeys } from '@services/queryKeys';
 
 export interface UseRewriteToolReturn {
-    state: RewriteToolState;
     rewrites: Rewrite[];
-    selected: Rewrite | undefined;
-    loading: boolean;
-    error: string | null;
+    style: string;
     setStyle: (val: string) => void;
     submitRewrite: () => Promise<Rewrite | null>;
-    setSelectedId: (id: number | '') => void;
+    isLoading: boolean;
+    error: string | null;
     hasRewrites: boolean;
     reset: () => void;
 }
 
-const DEFAULT_STYLE = 'like im 5';
+const DEFAULT_STYLE = "like I'm 5";
 
 export const useRewriteTool = (chunk: ChunkType | null): UseRewriteToolReturn => {
-    const incomingRewrites = useMemo(() => chunk?.rewrites ?? [], [chunk?.rewrites]);
+    const rewrites = useMemo(() => chunk?.rewrites ?? [], [chunk?.rewrites]);
+    const [style, setStyle] = useState<string>(DEFAULT_STYLE);
+    const [error, setError] = useState<string | null>(null);
+    const queryClient = useQueryClient();
 
-    const [state, setState] = useState<RewriteToolState>({
-        loading: false,
-        error: null,
-        style: DEFAULT_STYLE,
-        selectedId: ''
+    const mutation = useMutation({
+        mutationFn: async () => {
+            if (!chunk) throw new Error('No chunk selected');
+            return generateRewrite(chunk.id, style);
+        },
+        onSuccess: () => {
+            // Invalidate queries so the latest chunk.rewrites is fetched
+            if (chunk) {
+                queryClient.invalidateQueries({ queryKey: queryKeys.chunk(chunk.id) });
+                if (typeof chunk.metatext_id === 'number') {
+                    queryClient.invalidateQueries({ queryKey: queryKeys.metatextDetail(chunk.metatext_id) });
+                    queryClient.invalidateQueries({ queryKey: queryKeys.chunks(chunk.metatext_id) });
+                }
+            }
+            // Reset style and clear error to simplify UX
+            setStyle(DEFAULT_STYLE);
+            setError(null);
+        },
+        onError: (err: unknown) => {
+            const e = err as { message?: unknown } | null;
+            const message = e && e.message ? String(e.message) : 'Failed to generate rewrite';
+            setError(message);
+        },
     });
-
-    // Maintain local rewrites so we can append newly created ones without full page refresh.
-    const [localRewrites, setLocalRewrites] = useState<Rewrite[]>(incomingRewrites);
-
-    // Merge in new rewrites from chunk (server source of truth) while preserving any locally added ones.
-    useEffect(() => {
-        setLocalRewrites(prev => {
-            if (!incomingRewrites.length) return prev.length ? prev : [];
-            const map = new Map<number, Rewrite>();
-            // Server rewrites preferred (overwrite optimistic if same id)
-            for (const r of incomingRewrites) map.set(r.id, r);
-            // Add any local rewrites not yet on server list (should be rare since server returns created one)
-            for (const r of prev) if (!map.has(r.id)) map.set(r.id, r);
-            // Preserve original ordering: newest first (assuming higher id newer)
-            return Array.from(map.values()).sort((a, b) => b.id - a.id);
-        });
-    }, [chunk?.id, incomingRewrites]);
-
-    // Ensure a selected rewrite exists
-    useEffect(() => {
-        setState(s => {
-            if (!localRewrites.length) return { ...s, selectedId: '' };
-            if (s.selectedId && localRewrites.find(r => r.id === s.selectedId)) return s;
-            return { ...s, selectedId: localRewrites[0].id };
-        });
-    }, [localRewrites]);
-
-    const reset = useCallback(() => {
-        setState(s => ({ ...s, error: null, style: DEFAULT_STYLE }));
-    }, []);
-
-    const setStyle = useCallback((val: string) => {
-        setState(s => ({ ...s, style: val }));
-    }, []);
-
-    const setSelectedId = useCallback((id: number | '') => {
-        setState(s => ({ ...s, selectedId: id }));
-    }, []);
 
     const submitRewrite = useCallback(async (): Promise<Rewrite | null> => {
         if (!chunk) return null;
-        const currentStyle = state.style;
-        setState(s => ({ ...s, loading: true, error: null }));
         try {
-            const rewrite = await generateRewrite(chunk.id, currentStyle);
-            // Insert new rewrite at top (newest first) if not already present
-            setLocalRewrites(prev => {
-                if (prev.find(r => r.id === rewrite.id)) return prev; // already merged
-                return [rewrite, ...prev];
-            });
-            setState(s => ({
-                ...s,
-                loading: false,
-                error: null,
-                selectedId: rewrite.id
-            }));
-            return rewrite;
-        } catch (err: unknown) {
-            const e = err as { message?: unknown } | null;
-            const message = e && e.message ? String(e.message) : 'Failed to generate rewrite';
-            setState(s => ({ ...s, loading: false, error: message }));
+            const res = await mutation.mutateAsync();
+            return res;
+        } catch {
             return null;
         }
-    }, [chunk, state.style]);
+    }, [chunk, mutation]);
 
-    const selected = localRewrites.find(r => r.id === state.selectedId);
+    const reset = useCallback(() => {
+        setStyle(DEFAULT_STYLE);
+        setError(null);
+    }, []);
 
     return {
-        state,
-        rewrites: localRewrites,
-        selected,
-        loading: state.loading,
-        error: state.error,
+        rewrites,
+        style,
         setStyle,
         submitRewrite,
-        setSelectedId,
-        hasRewrites: localRewrites.length > 0,
+        isLoading: mutation.isPending,
+        error,
+        hasRewrites: rewrites.length > 0,
         reset,
     };
 };

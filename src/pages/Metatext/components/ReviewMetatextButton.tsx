@@ -1,0 +1,29 @@
+// Small button component to navigate to the Metatext review page using route params
+import React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { TooltipButton } from '@components/TooltipButton';
+import { HiAcademicCap } from 'react-icons/hi2';
+
+export function ReviewMetatextButton(): React.ReactElement | null {
+    const navigate = useNavigate();
+    const { metatextId } = useParams<{ metatextId: string }>();
+
+    // If route param is missing, don't render the button
+    if (!metatextId) return null;
+
+    const onClick = React.useCallback(() => {
+        navigate(`/metatext/${metatextId}/review`);
+    }, [navigate, metatextId]);
+
+    return (
+        <TooltipButton
+            label=""
+            tooltip="Review this metatext"
+            icon={<HiAcademicCap />}
+            onClick={onClick}
+            data-testid="review-button"
+        />
+    );
+}
+
+export default ReviewMetatextButton;

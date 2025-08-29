@@ -5,7 +5,6 @@
 import React, { memo } from 'react';
 import { Box } from '@chakra-ui/react/box';
 import { Flex } from '@chakra-ui/react/flex';
-// Drawer logic replaced by shared BaseDrawer component
 import BaseDrawer from '@components/drawer/BaseDrawer';
 import { MergeChunksTool } from '@features/chunk-merge/MergeChunksTool';
 import { useUserConfig } from '@services/userConfigService';

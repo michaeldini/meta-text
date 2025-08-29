@@ -4,14 +4,14 @@ import { HiPencilSquare } from 'react-icons/hi2';
  * Concept: If you have a text, you can REWRITE it in a specific STYLE
  * Example styles: "like I'm 5", "like a bro", "academic"
  */
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { Box } from '@chakra-ui/react/box';
 import { Text } from '@chakra-ui/react/text';
-import type { ChunkType } from '@mtypes/documents';
 import { TooltipButton } from '@components/TooltipButton';
-import { useDrawer, DRAWERS } from '@store/drawerStore';
-import { useRewriteTool } from './hooks/useRewriteTool';
 import RewriteGenerationDisplay from './components/RewriteGenerationDisplay';
+import { useDrawer } from '@store/drawerStore';
+import { useRewriteTool } from './hooks/useRewriteTool';
+import type { ChunkType } from '@mtypes/documents';
 
 
 interface RewriteDisplayToolProps {
@@ -24,17 +24,24 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
 
     const {
         rewrites,
-        selected,
-        state,
+        style,
         setStyle,
         submitRewrite,
-        setSelectedId,
+        isLoading,
+        error,
         hasRewrites,
         reset,
     } = useRewriteTool(chunk);
 
-    // Single global drawer ID for rewrite
-    const { isOpen, open, close } = useDrawer(DRAWERS.chunkRewrite);
+    // Local selection is a pure UI concern
+    const [selectedId, setSelectedId] = useState<number | ''>('');
+    // Derive selected rewrite without side effects
+    const selected = useMemo(() =>
+        rewrites.find(r => r.id === selectedId), [rewrites, selectedId]);
+
+    // Drawer scoped per chunk to avoid cross-instance interference
+    const drawerId = `chunkRewrite:${chunk.id}` as const;
+    const { isOpen, open, close } = useDrawer(drawerId);
 
     if (!isVisible) return null;
     return (
@@ -45,15 +52,15 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
                 icon={<HiPencilSquare />}
                 onClick={() => { reset(); open(); }}
                 disabled={!chunk}
-                loading={state.loading}
+                loading={isLoading}
             />
             <RewriteGenerationDisplay
                 open={isOpen}
                 onClose={() => { reset(); close(); }}
-                styleValue={state.style}
+                styleValue={style}
                 onStyleChange={setStyle}
-                loading={state.loading}
-                error={state.error}
+                loading={isLoading}
+                error={error}
                 onSubmit={async () => { await submitRewrite(); }}
             />
             {/* Select to browse previous rewrites */}
@@ -62,8 +69,11 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
                     <label htmlFor="rewrite-select">Browse previous rewrites:</label>
                     <select
                         id="rewrite-select"
-                        value={state.selectedId === '' ? '' : String(state.selectedId)}
-                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedId(Number(e.target.value))}
+                        value={selectedId === '' ? '' : String(selectedId)}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                            const v = e.target.value;
+                            setSelectedId(v === '' ? '' : Number(v));
+                        }}
                         style={{ width: '100%', marginTop: 8, marginBottom: 8 }}
                     >
                         <option value="">Browse previous rewrites</option>

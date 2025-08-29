@@ -58,8 +58,8 @@ function MetatextDetailPage(): ReactElement | null {
     // =========================
     // Other handlers
     // =========================
-    // review button is rendered inside MetatextHeader
-    const handleReviewClick = React.useCallback(() => {
+    // review button navigates itself; keep a handler only for keyboard shortcut
+    const goToReview = React.useCallback(() => {
         if (id == null) return;
         navigate(`/metatext/${id}/review`);
     }, [id, navigate]);
@@ -72,7 +72,7 @@ function MetatextDetailPage(): ReactElement | null {
         enabled: true,
         onNextPage: () => setCurrentPage(currentPage + 1),
         onPrevPage: () => setCurrentPage(currentPage - 1),
-        onGotoReview: handleReviewClick,
+        onGotoReview: goToReview,
         currentPage,
         totalPages,
         searchInputRef: undefined, // Could pass a ref here if needed
@@ -93,7 +93,8 @@ function MetatextDetailPage(): ReactElement | null {
                     animationName="fade-in"
                     animationDuration="fast"
                 >
-                    <MetatextHeader title={metatext.title} onReviewClick={handleReviewClick}
+                    <MetatextHeader
+                        title={metatext.title}
                         metatextId={id}
                         sourceDocumentId={metatext?.source_document_id}
                         displayChunks={metatext?.chunks || []}
