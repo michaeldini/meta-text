@@ -104,8 +104,6 @@ function MetatextDetailPage(): ReactElement | null {
                         setShowOnlyFavorites={setShowOnlyFavorites}
                     />
 
-                    <ChunkToolsPanel />
-
                     <ChunkDisplayContainer
                         displayChunks={displayChunks}
                         totalFilteredChunks={totalFilteredChunks}
@@ -116,6 +114,9 @@ function MetatextDetailPage(): ReactElement | null {
                         startIndex={startIndex}
                         isSearching={isSearching}
                     />
+
+                    <ChunkToolsPanel />
+
                 </Stack>
             )}
         </Box>

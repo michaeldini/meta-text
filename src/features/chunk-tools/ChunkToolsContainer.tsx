@@ -2,7 +2,7 @@
 // Replaces the old ChunkTabs component with a simpler, more direct approach
 
 import React from 'react';
-import { Box, Stack, } from '@chakra-ui/react';
+import { Box, Stack, StackSeparator, } from '@chakra-ui/react';
 import type { ChunkType } from '@mtypes/documents';
 
 // Stationary Tools
@@ -61,7 +61,9 @@ export function ChunkToolsContainer(props: ChunkToolsContainerProps) {
                 position="sticky"
                 top={12}
                 zIndex={1}
-                pr="1">
+                pr="1"
+                separator={<StackSeparator />}
+            >
 
 
                 {/* Tools Always visible at the top */}

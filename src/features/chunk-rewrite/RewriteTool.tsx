@@ -77,7 +77,7 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
                 </Box>
             )}
             {!hasRewrites && (
-                <Text>No rewrites</Text>)
+                <Text textAlign="right" color="fg.muted">No rewrites yet.</Text>)
             }
         </Box>
     );

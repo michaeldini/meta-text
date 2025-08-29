@@ -5,7 +5,7 @@ import { HiOutlineSparkles } from 'react-icons/hi2';
 // and syncs with incoming prop updates. Does not mutate parent chunk directly.
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Box } from '@chakra-ui/react/box';
+import { Box, Text } from '@chakra-ui/react';
 import { ErrorAlert } from '@components/ErrorAlert';
 
 import { TooltipButton } from '@components/TooltipButton';
@@ -65,7 +65,7 @@ export function ExplanationTool({ chunk, isVisible }: ExplanationToolProps) {
                 loading={loading}
             />
             <Box mt={3}>
-                {explanationText ? <Prose>{explanationText}</Prose> : <span>No explanation yet.</span>}
+                {explanationText ? <Prose>{explanationText}</Prose> : <Text textAlign="right" color="fg.muted">No explanation yet.</Text>}
             </Box>
             <ErrorAlert message={error} mt={2} />
         </Box>

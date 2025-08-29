@@ -6,6 +6,7 @@ import { HiOutlineSparkles } from 'react-icons/hi2';
  */
 import React, { useState, useEffect, useCallback } from 'react';
 import { Box } from '@chakra-ui/react/box'
+import { Text } from '@chakra-ui/react/text'
 import { ErrorAlert } from '@components/ErrorAlert';
 import { Prose } from '@components/ui/prose';
 import { TooltipButton } from '@components/TooltipButton'
@@ -58,7 +59,7 @@ export function EvaluationTool({ chunk, isVisible }: EvaluationToolProps) {
             <Box mt={3}>
                 {evaluationText
                     ? <Prose>{evaluationText}</Prose>
-                    : <span>No evaluation yet.</span>}
+                    : <Text textAlign="right" color="fg.muted">No evaluation yet.</Text>}
             </Box>
             <ErrorAlert message={error} mt={2} />
         </Box>
