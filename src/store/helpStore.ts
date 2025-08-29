@@ -1,10 +1,9 @@
 /**
- * Help (Keyboard Shortcuts Drawer) Store
- * -------------------------------------
- * Central UI state for the keyboard shortcuts / help drawer so it can be
- * controlled from both UI (IconButton) and keyboard shortcut handlers.
- *
- * Pattern: mirrors other lightweight Zustand stores (see chunkToolsStore).
+ * DEPRECATED: Help (Keyboard Shortcuts Drawer) Store
+ * --------------------------------------------------
+ * Replaced by the generic drawer store in `@store/drawerStore`.
+ * Keep this file temporarily to avoid breaking imports while migrating.
+ * New code should NOT import from this module.
  */
 import { create } from 'zustand';
 

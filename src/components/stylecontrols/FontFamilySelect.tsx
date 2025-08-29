@@ -6,7 +6,7 @@ import { useFontFamilySelect } from '../../hooks/stylecontrols/useFontFamilySele
 
 interface FontFamilySelectProps {
     value: string;
-    onChange: (val: string) => void;
+    onChange: (value: string) => void;
     disabled?: boolean;
 }
 export function FontFamilySelect(props: FontFamilySelectProps) {
@@ -16,7 +16,7 @@ export function FontFamilySelect(props: FontFamilySelectProps) {
         <form>
             <Select.Root width="200px" collection={fontFamilyOptions} onChange={handleChange} >
                 <Select.HiddenSelect />
-                <Select.Label color="fg">Font</Select.Label>
+                {/* <Select.Label color="fg">Font</Select.Label> */}
                 <Select.Control>
                     <Select.Trigger>
                         <Select.ValueText placeholder="Font" />

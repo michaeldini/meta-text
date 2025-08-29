@@ -1,4 +1,3 @@
-import { HiQuestionMarkCircle } from 'react-icons/hi2';
 /**
  * Keyboard Shortcut UI Components
  * =================================
@@ -109,9 +108,10 @@ import { HiQuestionMarkCircle } from 'react-icons/hi2';
 import React, { memo } from 'react';
 import { Box, Text, VStack, HStack, Badge } from '@chakra-ui/react';
 import { IconButton } from '@chakra-ui/react/button';
+import { useDrawer, DRAWERS } from '@store/drawerStore';
 import BaseDrawer from '@components/drawer/BaseDrawer';
 import { getShortcutsByCategory, formatShortcut, type KeyboardShortcut } from '@utils/keyboardShortcuts';
-import { useHelpStore } from '@store/helpStore';
+import { HiQuestionMarkCircle } from 'react-icons/hi2';
 
 // 1. ITEM ------------------------------------------------------------------
 export interface KeyboardShortcutItemProps {
@@ -176,9 +176,8 @@ interface KeyboardShortcutsDisplayProps {
  * @returns JSX.Element
  */
 export function KeyboardShortcutsDisplay({ categories }: KeyboardShortcutsDisplayProps) {
-    const isHelpOpen = useHelpStore(s => s.isHelpOpen);
-    const openHelp = useHelpStore(s => s.openHelp);
-    const closeHelp = useHelpStore(s => s.closeHelp);
+    // Use dedicated drawer id so it doesn't conflict with other drawers
+    const { isOpen, open, close } = useDrawer(DRAWERS.keyboardShortcuts);
 
     return (
         <>
@@ -186,15 +185,14 @@ export function KeyboardShortcutsDisplay({ categories }: KeyboardShortcutsDispla
                 <IconButton
                     aria-label="Open help"
                     variant="ghost"
-                    onClick={openHelp}
-                    color="primary"
+                    onClick={open}
                 >
                     <HiQuestionMarkCircle />
                 </IconButton>
             </Box>
             <BaseDrawer
-                open={isHelpOpen}
-                onClose={closeHelp}
+                open={isOpen}
+                onClose={close}
                 title="Help"
                 placement="end"
                 maxW="sm"

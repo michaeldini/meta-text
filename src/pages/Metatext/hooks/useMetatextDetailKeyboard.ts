@@ -81,7 +81,7 @@ import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
 import { useChunkToolsStore } from '@store/chunkToolsStore';
 import type { ChunkToolId } from '@features/chunk-tools/toolsRegistry';
 import { useColorMode } from '@components/ui/color-mode'
-import { useHelpStore } from '@store/helpStore';
+import { useDrawerStore, DRAWERS } from '@store/drawerStore';
 
 interface UseMetatextDetailKeyboardOptions {
     enabled?: boolean;
@@ -109,7 +109,7 @@ export const useMetatextDetailKeyboard = ({
     const activeTabs = useChunkToolsStore(state => state.activeTools);
     const setActiveTabs = useChunkToolsStore(state => state.setActiveTools);
     const { toggleColorMode } = useColorMode();
-    const toggleHelp = useHelpStore(s => s.toggleHelp);
+    const toggleDrawer = useDrawerStore(s => s.toggleDrawer);
 
     const handleNextPage = useCallback(() => {
         if (currentPage < totalPages) {
@@ -218,7 +218,7 @@ export const useMetatextDetailKeyboard = ({
         },
         {
             ...GLOBAL_SHORTCUTS.TOGGLE_HELP,
-            handler: () => toggleHelp(),
+            handler: () => toggleDrawer(DRAWERS.keyboardShortcuts),
             enabled,
         },
         // Chunk tool shortcuts (Control+Shift+1..5)

@@ -93,9 +93,7 @@ function MetatextDetailPage(): ReactElement | null {
                     animationName="fade-in"
                     animationDuration="fast"
                 >
-                    <MetatextHeader title={metatext.title} onReviewClick={handleReviewClick} />
-
-                    <MetatextControlTabs
+                    <MetatextHeader title={metatext.title} onReviewClick={handleReviewClick}
                         metatextId={id}
                         sourceDocumentId={metatext?.source_document_id}
                         displayChunks={metatext?.chunks || []}
@@ -103,6 +101,15 @@ function MetatextDetailPage(): ReactElement | null {
                         showOnlyFavorites={showOnlyFavorites}
                         setShowOnlyFavorites={setShowOnlyFavorites}
                     />
+
+                    {/* <MetatextControlTabs
+                        metatextId={id}
+                        sourceDocumentId={metatext?.source_document_id}
+                        displayChunks={metatext?.chunks || []}
+                        setCurrentPage={setCurrentPage}
+                        showOnlyFavorites={showOnlyFavorites}
+                        setShowOnlyFavorites={setShowOnlyFavorites}
+                    /> */}
 
                     <ChunkDisplayContainer
                         displayChunks={displayChunks}

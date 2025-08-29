@@ -5,9 +5,19 @@ import { Stack } from '@chakra-ui/react/stack';
 import { Heading } from '@chakra-ui/react/heading';
 import { TooltipButton } from '@components/TooltipButton';
 import { KeyboardShortcutsDisplay } from '@components/KeyboardShortcutsDisplay';
+import type { ChunkType } from '@mtypes/documents';
+import { MetatextHeaderControls, SourceDocInfo, StyleControls } from 'src';
+import { SourceDocInfoDisplay } from '@components/SourceDocInfo';
+
 interface MetatextHeaderProps {
     title: string;
     onReviewClick: () => void;
+    metatextId: number;
+    sourceDocumentId?: number;
+    displayChunks: ChunkType[];
+    setCurrentPage: (page: number) => void;
+    showOnlyFavorites: boolean;
+    setShowOnlyFavorites: (show: boolean) => void;
 }
 
 /**
@@ -18,7 +28,13 @@ interface MetatextHeaderProps {
  */
 export function MetatextHeader({
     title,
-    onReviewClick
+    onReviewClick,
+    metatextId,
+    sourceDocumentId,
+    displayChunks,
+    setCurrentPage,
+    showOnlyFavorites,
+    setShowOnlyFavorites
 }: MetatextHeaderProps) {
     return (
         <Stack
@@ -35,7 +51,7 @@ export function MetatextHeader({
                 {title}
             </Heading>
             <TooltipButton
-                label="Review"
+                label=""
                 tooltip="Review this metatext"
                 icon={<HiAcademicCap />}
                 onClick={onReviewClick}
@@ -43,6 +59,15 @@ export function MetatextHeader({
             />
             {/* <KeyboardShortcutsDisplay categories={['Navigation', 'Interface', 'Chunks']} /> */}
             <KeyboardShortcutsDisplay categories={['Navigation', 'Interface']} />
+            <MetatextHeaderControls
+                metatextId={metatextId}
+                displayChunks={displayChunks}
+                setCurrentPage={setCurrentPage}
+                showOnlyFavorites={showOnlyFavorites}
+                setShowOnlyFavorites={setShowOnlyFavorites}
+            />
+            <SourceDocInfoDisplay sourceDocumentId={sourceDocumentId} />
+            <StyleControls />
         </Stack>
     );
 }

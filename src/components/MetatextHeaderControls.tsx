@@ -47,7 +47,7 @@ export function MetatextHeaderControls({
     return (
         <Box display="flex" alignItems="center" justifyContent="space-between">
             <TooltipButton
-                label="Go to Bookmark"
+                label=""
                 tooltip="Navigate to the bookmarked chunk in this metatext"
                 icon={<HiBookmark />}
                 onClick={goToBookmark}
@@ -56,7 +56,7 @@ export function MetatextHeaderControls({
                 data-testid="goto-bookmark-button"
             />
             <TooltipButton
-                label={showOnlyFavorites ? "Show All" : "Show Favorites"}
+                label=""
                 tooltip={showOnlyFavorites ? "Show all chunks" : "Show only favorites"}
                 icon={showOnlyFavorites ? <HiStar /> : <HiOutlineStar />}
                 onClick={() => setShowOnlyFavorites(!showOnlyFavorites)}
@@ -64,7 +64,7 @@ export function MetatextHeaderControls({
                 role="switch"
             />
             <TooltipButton
-                label="Download"
+                label=""
                 tooltip="Download MetaText as JSON"
                 icon={<HiArrowDownTray />}
                 onClick={() => void downloadMetatext.handleDownload()}
@@ -72,7 +72,7 @@ export function MetatextHeaderControls({
                 loading={downloadMetatext.loading}
             />
             <TooltipButton
-                label={uiPreferences?.showChunkPositions ? "Hide Positions" : "Show Positions"}
+                label=""
                 tooltip={uiPreferences?.showChunkPositions ? "Hide chunk positions" : "Show chunk positions"}
                 icon={<HiHashtag />}
                 onClick={() => updateUserConfig.mutate({ showChunkPositions: !uiPreferences?.showChunkPositions })}

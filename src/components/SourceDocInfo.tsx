@@ -1,13 +1,15 @@
-import { HiOutlineSparkles } from 'react-icons/hi2';
+import React from 'react';
+import { Box, Text, Stack } from '@chakra-ui/react';
 import { Editable } from '@chakra-ui/react/editable';
-import { Stack } from '@chakra-ui/react/stack';
-import { Text } from '@chakra-ui/react/text';
-
 import { Flex } from '@chakra-ui/react/flex';
+import BaseDrawer from '@components/drawer/BaseDrawer';
+
+
+import { HiOutlineSparkles } from 'react-icons/hi2';
 
 import { SourceDocumentSummary } from '@mtypes/documents';
 import { TooltipButton } from '@components/TooltipButton';
-import { Box } from '@chakra-ui/react/box';
+
 
 import { useSourceDocumentDetail, useUpdateSourceDocument } from '@features/documents/useDocumentsData';
 import { useGenerateSourceDocInfo } from '@hooks/useGenerateSourceDocInfo';
@@ -70,7 +72,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
                 icon={<HiOutlineSparkles />}
             />
             <Text w="100%" color="fg.muted" mb="4">Click on a field to edit. Enter to Save. Tab to Cancel</Text>
-            <Flex border="1px solid" borderColor="fg.muted" p="4">
+            <Stack p="2">
                 {FIELD_CONFIG.map(config => (
                     <Box direction="row" key={config.key} maxWidth="20rem" px="4" >
                         <Text fontWeight="bold">{config.label}</Text>
@@ -83,9 +85,37 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
                         </Editable.Root>
                     </Box>
                 ))}
-            </Flex>
+            </Stack>
         </Flex>
     );
 }
 
-export default SourceDocInfo;
+
+import { useDrawer, DRAWERS } from '@store/drawerStore';
+export function SourceDocInfoDisplay({ sourceDocumentId }: SourceDocInfoProps) {
+    const { isOpen, open, close } = useDrawer(DRAWERS.sourceDocInfo);
+
+    return (
+        <>
+            <Box display="flex" justifyContent="flex-end">
+                <TooltipButton
+                    label="Info"
+                    tooltip={isOpen ? "Close info" : "Open info"}
+                    onClick={open}
+                />
+
+            </Box>
+            <BaseDrawer
+                open={isOpen}
+                onClose={close}
+                title="Source Document Info"
+                placement="end"
+                maxW="sm"
+            >
+                <SourceDocInfo sourceDocumentId={sourceDocumentId} />
+            </BaseDrawer>
+        </>
+    );
+}
+
+export default SourceDocInfoDisplay;
