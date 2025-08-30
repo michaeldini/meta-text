@@ -11,9 +11,6 @@ export function useWordSelection(chunkIdx: number) {
     const [selectionStartIdx, setSelectionStartIdx] = useState<number | null>(null);
     const [selectionEndIdx, setSelectionEndIdx] = useState<number | null>(null);
     const [isSelecting, setIsSelecting] = useState(false);
-    const [dialogAnchor, setDialogAnchor] = useState<HTMLElement | null>(null);
-    const [selectedWordIdx, setSelectedWordIdx] = useState<number | null>(null);
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     // Helper: get min/max for range
     const getRange = useCallback(() => {
@@ -24,7 +21,7 @@ export function useWordSelection(chunkIdx: number) {
 
     const highlightedIndices = getRange();
 
-    const handleWordDown = useCallback((idx: number, _event?: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>) => {
+    const handleWordDown = useCallback((idx: number, _event?: React.PointerEvent<HTMLElement>) => {
         void _event;
         setSelectionStartIdx(idx);
         setSelectionEndIdx(idx);
@@ -32,7 +29,7 @@ export function useWordSelection(chunkIdx: number) {
         // Do NOT set dialog anchor here
     }, []);
 
-    const handleWordEnter = useCallback((idx: number, _event?: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>) => {
+    const handleWordEnter = useCallback((idx: number, _event?: React.PointerEvent<HTMLElement>) => {
         void _event;
 
         if (isSelecting) {
@@ -43,58 +40,31 @@ export function useWordSelection(chunkIdx: number) {
 
     const handleWordUp = useCallback(() => {
         setIsSelecting(false);
-        if (
-            selectionStartIdx !== null &&
-            selectionEndIdx !== null
-        ) {
-            // Find the last word in the selection
-            const lastIdx = [selectionStartIdx, selectionEndIdx].sort((a, b) => a - b)[1];
-            // Try to get the element for the last word in this chunk
-            const el = document.querySelector(`[data-word-idx='${chunkIdx}-${lastIdx}']`);
-            if (el) {
-                setDialogAnchor(el as HTMLElement);
-                // If single word, open dialog
-                if (selectionStartIdx === selectionEndIdx) {
-                    setSelectedWordIdx(selectionStartIdx);
-                    setAnchorEl(el as HTMLElement);
-                }
-            }
+        if (selectionStartIdx !== null && selectionEndIdx !== null) {
+            // Range selection completed. Parent can derive the last index from
+            // selectionStartIdx/selectionEndIdx or from `highlightedIndices`.
         }
         // else: range is highlighted, show toolbar (handled in render)
-    }, [selectionStartIdx, selectionEndIdx, chunkIdx]);
+    }, [selectionStartIdx, selectionEndIdx]);
 
-    const handleToolbarClose = useCallback(() => {
-        setAnchorEl(null);
-        setSelectedWordIdx(null);
+    // Clear selection. Parent handles dialogs/toolbars.
+    const clearSelection = useCallback(() => {
+        setIsSelecting(false);
         setSelectionStartIdx(null);
         setSelectionEndIdx(null);
-        setDialogAnchor(null);
     }, []);
 
-    // Handle touch move for mobile word selection
-    const handleTouchMove = useCallback((e: React.TouchEvent<HTMLElement>) => {
-        const touch = e.touches[0];
-        const el = document.elementFromPoint(touch.clientX, touch.clientY);
-        if (el && (el as HTMLElement).dataset && (el as HTMLElement).dataset.wordIdx) {
-            const idx = parseInt((el as HTMLElement).dataset.wordIdx!.split('-')[1], 10);
-            if (!isNaN(idx)) handleWordEnter(idx, e);
-        }
-    }, [handleWordEnter]);
+    // Note: DOM pointer-to-index resolution lives in the parent. The hook
+    // exposes index-based handlers only.
 
     return {
         selectionStartIdx,
         selectionEndIdx,
         isSelecting,
-        dialogAnchor,
-        selectedWordIdx,
-        anchorEl,
         highlightedIndices,
-        setAnchorEl,
-        setSelectedWordIdx,
         handleWordDown,
         handleWordEnter,
         handleWordUp,
-        handleToolbarClose,
-        handleTouchMove,
+        clearSelection,
     };
 }

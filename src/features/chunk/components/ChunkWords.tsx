@@ -20,7 +20,9 @@ export interface ChunkWordsProps {
     chunkIdx: number;
     uiPreferences: uiPreferences;
 }
-
+/**
+ * A container for the interactive text in a chunk
+ */
 const ChunkWords = memo(function ChunkWords({
     chunk,
     chunkIdx,
@@ -42,19 +44,17 @@ const ChunkWords = memo(function ChunkWords({
         handleWordDown,
         handleWordEnter,
         handleWordUp,
-        handleToolbarClose,
-        handleTouchMove,
+        clearSelection,
     } = useWordSelection(chunkIdx);
 
-    // Drawer state
     const [drawerOpen, setDrawerOpen] = React.useState(false);
-    const [drawerSelection, setDrawerSelection] = React.useState<{ word: string; wordIdx: number }[] | null>(null);
+    const [selectedWords, setSelectedWords] = React.useState<{ word: string; wordIdx: number }[] | null>(null);
 
     // Open drawer synchronously on mouse up using current highlight
     const handleWordUpPatched = React.useCallback(() => {
         const indices = highlightedIndices;
         if (indices.length > 0) {
-            setDrawerSelection(indices.map(i => ({ word: words[i], wordIdx: i })));
+            setSelectedWords(indices.map(i => ({ word: words[i], wordIdx: i })));
             setDrawerOpen(true);
         }
         handleWordUp();
@@ -63,19 +63,19 @@ const ChunkWords = memo(function ChunkWords({
     // Close drawer and clear selection
     const closeDrawer = React.useCallback(() => {
         setDrawerOpen(false);
-        setDrawerSelection(null);
-        handleToolbarClose()
-    }, []);
+        setSelectedWords(null);
+        clearSelection();
+    }, [clearSelection]);
 
     // Throttle pointer-enter selection events to reduce overhead on dense word lists
     const lastEnterTsRef = React.useRef(0);
     const THROTTLE_MS = 16; // ~60fps cap
-    const throttledPointerEnter = React.useCallback((wordIdx: number, e: React.PointerEvent) => {
+    const throttledPointerEnter = React.useCallback((wordIdx: number, e: React.PointerEvent<HTMLElement>) => {
         const now = performance.now();
         if (now - lastEnterTsRef.current < THROTTLE_MS) return;
         lastEnterTsRef.current = now;
-        // Cast to any to satisfy hook if it expects Mouse/Touch event; pointer event carries needed data
-        handleWordEnter(wordIdx, e as unknown as React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>);
+        // Pass PointerEvent directly to the handler
+        handleWordEnter(wordIdx, e);
     }, [handleWordEnter]);
 
     return (
@@ -92,8 +92,8 @@ const ChunkWords = memo(function ChunkWords({
                     paddingX={paddingX}
                     onWordDown={handleWordDown}
                     onWordEnter={throttledPointerEnter}
-                    onWordUp={handleWordUpPatched as any}
-                    onTouchMove={handleTouchMove}
+                    onWordUp={handleWordUpPatched}
+                // pointer-move handling is implemented at component level when needed
                 />
                 <Box as="span" display="inline-block">
                     <MergeChunksTool chunk={chunk} />
@@ -110,11 +110,11 @@ const ChunkWords = memo(function ChunkWords({
                 bodyProps={{ style: { paddingBottom: 48 } }}
                 showCloseButton
             >
-                {drawerSelection && drawerSelection.length > 0 && (
+                {selectedWords && selectedWords.length > 0 && (
                     <WordsToolbar
                         onClose={closeDrawer}
-                        word={drawerSelection.length > 1 ? drawerSelection.map(w => w.word).join(' ') : drawerSelection[0].word}
-                        wordIdx={drawerSelection[0].wordIdx}
+                        word={selectedWords.length > 1 ? selectedWords.map(w => w.word).join(' ') : selectedWords[0].word}
+                        wordIdx={selectedWords[0].wordIdx}
                         chunk={chunk}
                     />
                 )}

@@ -14,11 +14,11 @@ export interface InteractiveTextProps {
     paddingX: number;
     onWordDown: (
         wordIdx: number,
-        e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>
+        e: React.PointerEvent<HTMLElement>
     ) => void;
     onWordEnter: (wordIdx: number, e: React.PointerEvent<HTMLElement>) => void;
-    onWordUp: (e: any) => void;
-    onTouchMove: React.TouchEventHandler<HTMLElement>;
+    onWordUp: (e: React.PointerEvent<HTMLElement>) => void;
+    onPointerMove?: React.PointerEventHandler<HTMLElement>;
 }
 
 const InteractiveText = memo(function InteractiveText({
@@ -32,7 +32,7 @@ const InteractiveText = memo(function InteractiveText({
     onWordDown,
     onWordEnter,
     onWordUp,
-    onTouchMove,
+    onPointerMove,
 }: InteractiveTextProps) {
     const highlightedSet = React.useMemo(() => new Set(highlightedIndices), [highlightedIndices]);
 
@@ -52,12 +52,10 @@ const InteractiveText = memo(function InteractiveText({
                         cursor="pointer"
                         userSelect="none"
                         display="inline-block"
-                        onPointerDown={(e) => onWordDown(wordIdx, e as unknown as React.MouseEvent<HTMLElement>)}
+                        onPointerDown={(e) => onWordDown(wordIdx, e)}
                         onPointerEnter={(e) => onWordEnter(wordIdx, e)}
-                        onPointerUp={onWordUp as any}
-                        onTouchStart={(e) => onWordDown(wordIdx, e as unknown as React.TouchEvent<HTMLElement>)}
-                        onTouchMove={onTouchMove}
-                        onTouchEnd={onWordUp as any}
+                        onPointerUp={onWordUp}
+                        onPointerMove={onPointerMove}
                         data-word-idx={`${chunkIdx}-${wordIdx}`}
                         _hover={!isHighlighted ? { color: 'white' } : undefined}
                     >
