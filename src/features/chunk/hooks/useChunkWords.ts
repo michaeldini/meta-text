@@ -1,4 +1,4 @@
-// useChunkWords.ts
+// useChunkWords.ts DEPRECATED
 // Custom hook for managing chunk word selection, highlighting, and drawer state for a chunk
 // Used by ChunkWords component to encapsulate business logic
 import React, { useRef, useState, useEffect, useCallback } from 'react';

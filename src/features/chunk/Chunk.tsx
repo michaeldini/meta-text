@@ -30,6 +30,7 @@ const Chunk = memo(function Chunk({
             <ChunkWords
                 chunk={chunk}
                 chunkIdx={chunkIdx}
+                uiPreferences={uiPreferences}
             />
             <ChunkToolsContainer
                 chunk={chunk}

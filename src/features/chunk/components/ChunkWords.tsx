@@ -6,52 +6,66 @@ import React, { memo } from 'react';
 import { Box } from '@chakra-ui/react/box';
 import { Flex } from '@chakra-ui/react/flex';
 import BaseDrawer from '@components/drawer/BaseDrawer';
-import { MergeChunksTool } from '@features/chunk-merge/MergeChunksTool';
-import { useUserConfig } from '@services/userConfigService';
-import type { ChunkType } from '@mtypes/documents';
+
+import InteractiveText from './InteractiveText';
 import WordsToolbar from './WordsToolbar';
-import { useChunkWords } from '../hooks/useChunkWords';
+
+import { MergeChunksTool } from '@features/chunk-merge/MergeChunksTool';
+import { useWordSelection } from '../hooks/useWordSelection';
+import type { ChunkType } from '@mtypes/documents';
+import { uiPreferences } from '@mtypes/user';
 
 export interface ChunkWordsProps {
     chunk: ChunkType;
     chunkIdx: number;
+    uiPreferences: uiPreferences;
 }
 
 const ChunkWords = memo(function ChunkWords({
     chunk,
-    chunkIdx
+    chunkIdx,
+    uiPreferences
 }: ChunkWordsProps) {
-    // Split words only when chunk.text changes (avoid rebuilding on unrelated renders)
+
     const words = React.useMemo(() => (
         chunk.text ? chunk.text.split(/\s+/) : []
     ), [chunk.text]);
-    const { data: userConfig } = useUserConfig();
-    const uiPrefs = userConfig?.uiPreferences || {};
-    const textSizePx = uiPrefs.textSizePx ?? 28;
-    const fontFamily = uiPrefs.fontFamily ?? 'Inter, sans-serif';
-    const lineHeight = uiPrefs.lineHeight ?? 1.5;
-    const paddingX = uiPrefs.paddingX ?? 0.3;
+    const textSizePx = uiPreferences.textSizePx ?? 28;
+    const fontFamily = uiPreferences.fontFamily ?? 'Inter, sans-serif';
+    const lineHeight = uiPreferences.lineHeight ?? 1.5;
+    const paddingX = uiPreferences.paddingX ?? 0.3;
+    const color = 'gray.400';
 
-
-    const hookResult = useChunkWords({ chunkIdx, words });
-    // Destructure after hook call
+    // Selection state and handlers from shared hook
     const {
         highlightedIndices,
         handleWordDown,
         handleWordEnter,
         handleWordUp,
+        handleToolbarClose,
         handleTouchMove,
-        drawerOpen,
-        setDrawerOpen: _setDrawerOpen,
-        drawerSelection,
-        setDrawerSelection: _setDrawerSelection,
-        closeDrawer,
-        containerRef,
-    } = hookResult;
+    } = useWordSelection(chunkIdx);
 
+    // Drawer state
+    const [drawerOpen, setDrawerOpen] = React.useState(false);
+    const [drawerSelection, setDrawerSelection] = React.useState<{ word: string; wordIdx: number }[] | null>(null);
 
-    // Precompute a Set for faster membership checks when many words
-    const highlightedSet = React.useMemo(() => new Set(highlightedIndices), [highlightedIndices]);
+    // Open drawer synchronously on mouse up using current highlight
+    const handleWordUpPatched = React.useCallback(() => {
+        const indices = highlightedIndices;
+        if (indices.length > 0) {
+            setDrawerSelection(indices.map(i => ({ word: words[i], wordIdx: i })));
+            setDrawerOpen(true);
+        }
+        handleWordUp();
+    }, [handleWordUp, highlightedIndices, words]);
+
+    // Close drawer and clear selection
+    const closeDrawer = React.useCallback(() => {
+        setDrawerOpen(false);
+        setDrawerSelection(null);
+        handleToolbarClose()
+    }, []);
 
     // Throttle pointer-enter selection events to reduce overhead on dense word lists
     const lastEnterTsRef = React.useRef(0);
@@ -64,42 +78,23 @@ const ChunkWords = memo(function ChunkWords({
         handleWordEnter(wordIdx, e as unknown as React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>);
     }, [handleWordEnter]);
 
-    // Render words; rely on CSS :hover for transient hover styling to avoid extra React state updates
-    const wordsElements = words.map((word, wordIdx) => {
-        const isHighlighted = highlightedSet.has(wordIdx);
-        return (
-            <Box
-                as="span"
-                key={wordIdx}
-                fontSize={`${textSizePx}px`}
-                lineHeight={lineHeight}
-                fontFamily={fontFamily}
-                paddingX={paddingX}
-                color={isHighlighted ? 'white' : undefined}
-                cursor="pointer"
-                userSelect="none"
-                display="inline-block"
-                onPointerDown={e => handleWordDown(wordIdx, e as unknown as React.MouseEvent<HTMLElement>)}
-                // Use pointer enter (works for mouse, stylus) with throttling for drag/hover selection logic
-                onPointerEnter={e => throttledPointerEnter(wordIdx, e)}
-                onPointerUp={handleWordUp}
-                // Touch fallback in case pointer events are not supported (legacy)
-                onTouchStart={e => handleWordDown(wordIdx, e as unknown as React.TouchEvent<HTMLElement>)}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleWordUp}
-                data-word-idx={`${chunkIdx}-${wordIdx}`}
-                _hover={!isHighlighted ? { color: 'white' } : undefined}
-            >
-                {word}
-            </Box>
-        );
-    });
-
     return (
-        <Box as="div" ref={containerRef} padding={4} width="100%" data-chunk-id={`chunk-${chunkIdx}`}
+        <Box as="div" padding={4} width="100%" data-chunk-id={`chunk-${chunkIdx}`}
         >
-            <Flex as="div" flexWrap="wrap" gap={0} color="gray.400">
-                {wordsElements}
+            <Flex as="div" flexWrap="wrap" gap={0} color={color}>
+                <InteractiveText
+                    words={words}
+                    chunkIdx={chunkIdx}
+                    highlightedIndices={highlightedIndices}
+                    textSizePx={textSizePx}
+                    lineHeight={lineHeight}
+                    fontFamily={fontFamily}
+                    paddingX={paddingX}
+                    onWordDown={handleWordDown}
+                    onWordEnter={throttledPointerEnter}
+                    onWordUp={handleWordUpPatched as any}
+                    onTouchMove={handleTouchMove}
+                />
                 <Box as="span" display="inline-block">
                     <MergeChunksTool chunk={chunk} />
                 </Box>
