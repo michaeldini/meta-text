@@ -7,7 +7,7 @@ import { Box } from '@chakra-ui/react/box';
 export interface InteractiveTextProps {
     words: string[];
     chunkIdx: number;
-    highlightedIndices: number[];
+    selectedWordIndices: number[];
     textSizePx: number;
     lineHeight: number | string;
     fontFamily: string;
@@ -21,7 +21,7 @@ export interface InteractiveTextProps {
 const InteractiveText = memo(function InteractiveText({
     words,
     chunkIdx,
-    highlightedIndices,
+    selectedWordIndices,
     textSizePx,
     lineHeight,
     fontFamily,
@@ -31,7 +31,7 @@ const InteractiveText = memo(function InteractiveText({
     onWordUp,
     onPointerMove,
 }: InteractiveTextProps) {
-    const highlightedSet = React.useMemo(() => new Set(highlightedIndices), [highlightedIndices]);
+    const highlightedSet = React.useMemo(() => new Set(selectedWordIndices), [selectedWordIndices]);
 
     return (
         <>

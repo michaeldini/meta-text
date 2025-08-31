@@ -7,15 +7,14 @@ import log from '@utils/logger';
 import { ChunkType } from '@mtypes/index';
 
 export interface SplitChunkToolProps {
-    chunk: ChunkType;
-    chunkId: number;
-    word: string;
-    wordIdx: number;
+    chunk: ChunkType; // needed to get metatextId and chunkId
+    word: string; // needed for the tooltip
+    wordIdx?: number | null; // needed to split at this index. disable button if null
     onComplete: () => void;
 }
 
 export function SplitChunkTool(props: SplitChunkToolProps) {
-    const { chunkId, wordIdx, word, chunk, onComplete } = props;
+    const { wordIdx, word, chunk, onComplete } = props;
     const metatextId = chunk.metatext_id; // Get from chunk instead of store
     const { mutateAsync } = useSplitChunk();
 
@@ -24,10 +23,16 @@ export function SplitChunkTool(props: SplitChunkToolProps) {
             log.error('Metatext ID is not set, cannot split chunk');
             return;
         }
-        log.debug(`Splitting chunk ${chunkId} at word "${word}"`);
+        log.debug(`Splitting chunk ${chunk.id} at word "${word}"`);
+
         try {
+            if (wordIdx == null) {
+                log.error('Word index is not set, cannot split chunk');
+                return;
+            }
+
             await mutateAsync({
-                chunkId,
+                chunkId: chunk.id,
                 wordIdx,
                 metatextId,
             });
@@ -47,6 +52,7 @@ export function SplitChunkTool(props: SplitChunkToolProps) {
             onClick={handleSplit}
             aria-label={`Split chunk at word "${word}"`}
             size="2xl"
+            disabled={!wordIdx}
 
         />
     );

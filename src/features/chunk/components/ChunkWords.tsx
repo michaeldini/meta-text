@@ -29,41 +29,38 @@ const ChunkWords = memo(function ChunkWords({
     uiPreferences
 }: ChunkWordsProps) {
 
-    const words = React.useMemo(() => (
-        chunk.text ? chunk.text.split(/\s+/) : []
-    ), [chunk.text]);
     const textSizePx = uiPreferences.textSizePx ?? 28;
     const fontFamily = uiPreferences.fontFamily ?? 'Inter, sans-serif';
     const lineHeight = uiPreferences.lineHeight ?? 1.5;
     const paddingX = uiPreferences.paddingX ?? 0.3;
     const color = 'gray.400';
 
-    // Selection state and handlers from shared hook
+    // Selection state and handlers from shared hook. The hook now accepts
+    // the chunk so it can compute and expose `words` directly.
     const {
-        highlightedIndices,
+        words,
+        selectedWordIndices,
+        selectedWords,
         handleWordDown,
         handleWordEnter,
         handleWordUp,
         clearSelection,
-    } = useWordSelection();
+    } = useWordSelection(chunk);
 
     const [drawerOpen, setDrawerOpen] = React.useState(false);
-    const [selectedWords, setSelectedWords] = React.useState<{ word: string; wordIdx: number }[] | null>(null);
 
     // Open drawer synchronously on mouse up using current highlight
-    const handleWordUpPatched = React.useCallback(() => {
-        const indices = highlightedIndices;
+    const openDrawer = React.useCallback(() => {
+        const indices = selectedWordIndices;
         if (indices.length > 0) {
-            setSelectedWords(indices.map(i => ({ word: words[i], wordIdx: i })));
             setDrawerOpen(true);
         }
         handleWordUp();
-    }, [handleWordUp, highlightedIndices, words]);
+    }, [handleWordUp, selectedWordIndices, words]);
 
     // Close drawer and clear selection
     const closeDrawer = React.useCallback(() => {
         setDrawerOpen(false);
-        setSelectedWords(null);
         clearSelection();
     }, [clearSelection]);
 
@@ -85,14 +82,14 @@ const ChunkWords = memo(function ChunkWords({
                 <InteractiveText
                     words={words}
                     chunkIdx={chunkIdx}
-                    highlightedIndices={highlightedIndices}
+                    selectedWordIndices={selectedWordIndices}
                     textSizePx={textSizePx}
                     lineHeight={lineHeight}
                     fontFamily={fontFamily}
                     paddingX={paddingX}
                     onWordDown={handleWordDown}
                     onWordEnter={throttledPointerEnter}
-                    onWordUp={handleWordUpPatched}
+                    onWordUp={openDrawer}
                 // pointer-move handling is implemented at component level when needed
                 />
                 <Box as="span" display="inline-block">
@@ -110,8 +107,8 @@ const ChunkWords = memo(function ChunkWords({
                 {selectedWords && selectedWords.length > 0 && (
                     <WordsToolbar
                         onClose={closeDrawer}
-                        word={selectedWords.length > 1 ? selectedWords.map(w => w.word).join(' ') : selectedWords[0].word}
-                        wordIdx={selectedWords[0].wordIdx}
+                        word={selectedWords}
+                        wordIdx={selectedWordIndices.length === 1 ? selectedWordIndices[0] : null}
                         chunk={chunk}
                     />
                 )}

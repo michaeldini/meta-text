@@ -9,7 +9,7 @@ import type { ChunkType } from '@mtypes/documents';
 export interface WordsToolbarProps {
     onClose: () => void;
     word: string;
-    wordIdx: number;
+    wordIdx: number | null;
     chunk: ChunkType;
 }
 
@@ -21,7 +21,6 @@ export function WordsToolbar({ onClose, word, wordIdx, chunk }: WordsToolbarProp
     return (
         <Stack gap={4} alignItems="center" justifyContent="center" p={4}>
             <SplitChunkTool
-                chunkId={chunk.id}
                 wordIdx={wordIdx}
                 word={word}
                 chunk={chunk}
