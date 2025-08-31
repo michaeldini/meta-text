@@ -45,7 +45,7 @@ const ChunkWords = memo(function ChunkWords({
         handleWordEnter,
         handleWordUp,
         clearSelection,
-    } = useWordSelection(chunkIdx);
+    } = useWordSelection();
 
     const [drawerOpen, setDrawerOpen] = React.useState(false);
     const [selectedWords, setSelectedWords] = React.useState<{ word: string; wordIdx: number }[] | null>(null);
@@ -70,12 +70,12 @@ const ChunkWords = memo(function ChunkWords({
     // Throttle pointer-enter selection events to reduce overhead on dense word lists
     const lastEnterTsRef = React.useRef(0);
     const THROTTLE_MS = 16; // ~60fps cap
-    const throttledPointerEnter = React.useCallback((wordIdx: number, e: React.PointerEvent<HTMLElement>) => {
+    const throttledPointerEnter = React.useCallback((wordIdx: number) => {
         const now = performance.now();
         if (now - lastEnterTsRef.current < THROTTLE_MS) return;
         lastEnterTsRef.current = now;
         // Pass PointerEvent directly to the handler
-        handleWordEnter(wordIdx, e);
+        handleWordEnter(wordIdx);
     }, [handleWordEnter]);
 
     return (
@@ -104,10 +104,7 @@ const ChunkWords = memo(function ChunkWords({
                 open={drawerOpen}
                 onClose={closeDrawer}
                 title="Word Tools"
-                placement="bottom"
-                maxW="100%"
-                contentProps={{ style: { minHeight: '220px', marginBottom: '64px' } }}
-                bodyProps={{ style: { paddingBottom: 48 } }}
+                placement="end"
                 showCloseButton
             >
                 {selectedWords && selectedWords.length > 0 && (

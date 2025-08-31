@@ -12,12 +12,9 @@ export interface InteractiveTextProps {
     lineHeight: number | string;
     fontFamily: string;
     paddingX: number;
-    onWordDown: (
-        wordIdx: number,
-        e: React.PointerEvent<HTMLElement>
-    ) => void;
-    onWordEnter: (wordIdx: number, e: React.PointerEvent<HTMLElement>) => void;
-    onWordUp: (e: React.PointerEvent<HTMLElement>) => void;
+    onWordDown: (wordIdx: number) => void;
+    onWordEnter: (wordIdx: number) => void;
+    onWordUp: () => void;
     onPointerMove?: React.PointerEventHandler<HTMLElement>;
 }
 
@@ -52,8 +49,8 @@ const InteractiveText = memo(function InteractiveText({
                         cursor="pointer"
                         userSelect="none"
                         display="inline-block"
-                        onPointerDown={(e) => onWordDown(wordIdx, e)}
-                        onPointerEnter={(e) => onWordEnter(wordIdx, e)}
+                        onPointerDown={() => onWordDown(wordIdx)}
+                        onPointerEnter={() => onWordEnter(wordIdx)}
                         onPointerUp={onWordUp}
                         onPointerMove={onPointerMove}
                         data-word-idx={`${chunkIdx}-${wordIdx}`}
