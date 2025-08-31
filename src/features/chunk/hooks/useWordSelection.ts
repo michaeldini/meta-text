@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { ChunkType } from '@mtypes/documents';
 /**
  * useWordSelection - Custom hook for managing word selection
@@ -35,16 +35,18 @@ export function useWordSelection(chunk: ChunkType) {
         return Array.from({ length: to - from + 1 }, (_, i) => from + i);
     }, [selection?.start, selection?.end]);
 
-    // Map selected indices to actual word strings, filtering out out-of-bounds values.
-    const selectedWords = useMemo(() => {
-        if (!words.length || !selectedWordIndices.length) return '' as string;
-        return selectedWordIndices
-            .map(i => words[i])
-            .filter((w): w is string => typeof w === 'string')
-            .join(' ');
-    }, [selectedWordIndices, words]);
+    // Final selected words string. We compute and store this once on pointer-up
+    // so callers can treat a non-empty string as "selection complete".
+    const [finalSelectedWords, setFinalSelectedWords] = useState<string>('');
+
+    // Clear any finalized selection when the words (chunk text) change.
+    useEffect(() => {
+        setFinalSelectedWords('');
+    }, [words]);
 
     const handleWordDown = useCallback((idx: number) => {
+        // Starting a new selection clears any previously finalized selection
+        setFinalSelectedWords('');
         setSelection({ start: idx, end: idx, isSelecting: true });
     }, []);
 
@@ -57,20 +59,29 @@ export function useWordSelection(chunk: ChunkType) {
     }, []);
 
     const handleWordUp = useCallback(() => {
-        setSelection(prev => (prev ? { ...prev, isSelecting: false } : prev));
-    }, []);
+        // Finalize selected words when pointer is lifted. Use the functional
+        // updater to read the most recent selection, and compute the final
+        // string from the current `words` array.
+        setSelection(prev => {
+            if (!prev) return prev;
+            const start = prev.start;
+            const end = prev.end ?? prev.start;
+            const from = Math.min(start, end);
+            const to = Math.max(start, end);
+            setFinalSelectedWords(words.length ? words.slice(from, to + 1).join(' ') : '');
+            return { ...prev, isSelecting: false };
+        });
+    }, [words]);
 
     const clearSelection = useCallback(() => {
         setSelection(null);
+        setFinalSelectedWords('');
     }, []);
 
     return {
-        selectionStartIdx: selection?.start ?? null,
-        selectionEndIdx: selection?.end ?? null,
-        isSelecting: selection?.isSelecting ?? false,
-        selectedWordIndices,
         words,
-        selectedWords,
+        selectedWordIndices,
+        selectedWords: finalSelectedWords,
         handleWordDown,
         handleWordEnter,
         handleWordUp,

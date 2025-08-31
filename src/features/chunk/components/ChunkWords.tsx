@@ -2,9 +2,8 @@
 // Each word in the chunk can be selected, and actions can be performed on the selected words
 // At the end of the chunk, there is a button to merge the current chunk with the next one
 
-import React, { memo } from 'react';
-import { Box } from '@chakra-ui/react/box';
-import { Flex } from '@chakra-ui/react/flex';
+import React, { memo, useCallback, useRef, useState, useEffect } from 'react';
+import { Box, Flex } from '@chakra-ui/react';
 import BaseDrawer from '@components/drawer/BaseDrawer';
 
 import InteractiveText from './InteractiveText';
@@ -38,42 +37,42 @@ const ChunkWords = memo(function ChunkWords({
     // Selection state and handlers from shared hook. The hook now accepts
     // the chunk so it can compute and expose `words` directly.
     const {
-        words,
-        selectedWordIndices,
-        selectedWords,
+        words, // The array of words in the chunk
+        selectedWordIndices, // The indices of the selected words
+        selectedWords, // The selected words as a string
         handleWordDown,
         handleWordEnter,
         handleWordUp,
         clearSelection,
     } = useWordSelection(chunk);
 
-    const [drawerOpen, setDrawerOpen] = React.useState(false);
-
-    // Open drawer synchronously on mouse up using current highlight
-    const openDrawer = React.useCallback(() => {
-        const indices = selectedWordIndices;
-        if (indices.length > 0) {
-            setDrawerOpen(true);
-        }
-        handleWordUp();
-    }, [handleWordUp, selectedWordIndices, words]);
+    const [drawerOpen, setDrawerOpen] = useState(false);
 
     // Close drawer and clear selection
-    const closeDrawer = React.useCallback(() => {
+    const closeDrawer = useCallback(() => {
         setDrawerOpen(false);
         clearSelection();
     }, [clearSelection]);
 
     // Throttle pointer-enter selection events to reduce overhead on dense word lists
-    const lastEnterTsRef = React.useRef(0);
+    const lastEnterTsRef = useRef(0);
     const THROTTLE_MS = 16; // ~60fps cap
-    const throttledPointerEnter = React.useCallback((wordIdx: number) => {
-        const now = performance.now();
+    const throttledPointerEnter = useCallback((wordIdx: number) => {
+        const now = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
         if (now - lastEnterTsRef.current < THROTTLE_MS) return;
         lastEnterTsRef.current = now;
         // Pass PointerEvent directly to the handler
         handleWordEnter(wordIdx);
     }, [handleWordEnter]);
+
+    // React to finalized selection from the hook instead of opening the
+    // drawer inside the pointer handler. This keeps selection logic in the
+    // hook and UI reactions here.
+    useEffect(() => {
+        if (selectedWords && selectedWords.length > 0 && selectedWordIndices.length > 0) {
+            setDrawerOpen(true);
+        }
+    }, [selectedWords, selectedWordIndices]);
 
     return (
         <Box as="div" padding={4} width="100%" data-chunk-id={`chunk-${chunkIdx}`}
@@ -89,8 +88,7 @@ const ChunkWords = memo(function ChunkWords({
                     paddingX={paddingX}
                     onWordDown={handleWordDown}
                     onWordEnter={throttledPointerEnter}
-                    onWordUp={openDrawer}
-                // pointer-move handling is implemented at component level when needed
+                    onWordUp={handleWordUp}
                 />
                 <Box as="span" display="inline-block">
                     <MergeChunksTool chunk={chunk} />
