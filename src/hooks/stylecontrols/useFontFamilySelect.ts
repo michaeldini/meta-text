@@ -3,6 +3,7 @@
  * useFontFamilySelect - Hook for FontFamilySelect presentational logic
  * Handles font family options and change handler for FontFamilySelect component.
  */
+import React from 'react';
 import { createListCollection } from '@chakra-ui/react/collection';
 
 const FONT_FAMILIES = [
@@ -23,8 +24,13 @@ interface UseFontFamilySelectProps {
 }
 
 export function useFontFamilySelect({ value, onChange }: UseFontFamilySelectProps) {
-    const handleChange = (event: { target: { value: string } }) => {
-        onChange(event.target.value);
+    const handleChange = (event: React.FormEvent<HTMLDivElement>) => {
+        // The Select.Root component provides a FormEvent whose target may not
+        // be a native input. Coerce carefully and fallback to the current
+        // value if extraction fails.
+        const target = event.target as unknown as { value?: string } | null;
+        const val = target && typeof target.value === 'string' ? target.value : value;
+        onChange(val);
     };
     // Ensure 'value' is referenced to avoid unused var lint
     const _currentValue = value;

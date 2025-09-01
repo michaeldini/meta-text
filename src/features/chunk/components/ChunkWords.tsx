@@ -2,7 +2,7 @@
 // Each word in the chunk can be selected, and actions can be performed on the selected words
 // At the end of the chunk, there is a button to merge the current chunk with the next one
 
-import React, { memo, useCallback, useRef, useState, useEffect } from 'react';
+import React, { memo, useCallback, useState, useEffect } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
 import BaseDrawer from '@components/drawer/BaseDrawer';
 
@@ -54,17 +54,6 @@ const ChunkWords = memo(function ChunkWords({
         clearSelection();
     }, [clearSelection]);
 
-    // Throttle pointer-enter selection events to reduce overhead on dense word lists
-    const lastEnterTsRef = useRef(0);
-    const THROTTLE_MS = 16; // ~60fps cap
-    const throttledPointerEnter = useCallback((wordIdx: number) => {
-        const now = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
-        if (now - lastEnterTsRef.current < THROTTLE_MS) return;
-        lastEnterTsRef.current = now;
-        // Pass PointerEvent directly to the handler
-        handleWordEnter(wordIdx);
-    }, [handleWordEnter]);
-
     // React to finalized selection from the hook instead of opening the
     // drawer inside the pointer handler. This keeps selection logic in the
     // hook and UI reactions here.
@@ -87,7 +76,7 @@ const ChunkWords = memo(function ChunkWords({
                     fontFamily={fontFamily}
                     paddingX={paddingX}
                     onWordDown={handleWordDown}
-                    onWordEnter={throttledPointerEnter}
+                    onWordEnter={handleWordEnter}
                     onWordUp={handleWordUp}
                 />
                 <Box as="span" display="inline-block">

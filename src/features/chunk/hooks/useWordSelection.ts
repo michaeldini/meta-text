@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { ChunkType } from '@mtypes/documents';
 /**
  * useWordSelection - Custom hook for managing word selection
@@ -50,13 +50,26 @@ export function useWordSelection(chunk: ChunkType) {
         setSelection({ start: idx, end: idx, isSelecting: true });
     }, []);
 
-    const handleWordEnter = useCallback((idx: number) => {
+    // Raw enter handler that updates selection end.
+    const rawHandleWordEnter = useCallback((idx: number) => {
         setSelection(prev => {
             if (!prev || !prev.isSelecting) return prev;
             // Update end while preserving start/isSelecting
             return { ...prev, end: idx };
         });
     }, []);
+
+    // Throttle pointer-enter selection events to reduce overhead on dense word lists.
+    // We keep this logic inside the hook because it's selection-related behavior
+    // (pointer sampling) and belongs with the selection state management.
+    const lastEnterTsRef = useRef(0);
+    const THROTTLE_MS = 16; // ~60fps cap
+    const handleWordEnter = useCallback((wordIdx: number) => {
+        const now = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+        if (now - lastEnterTsRef.current < THROTTLE_MS) return;
+        lastEnterTsRef.current = now;
+        rawHandleWordEnter(wordIdx);
+    }, [rawHandleWordEnter]);
 
     const handleWordUp = useCallback(() => {
         // Finalize selected words when pointer is lifted. Use the functional
