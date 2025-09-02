@@ -39,7 +39,7 @@ const ChunkWords = memo(function ChunkWords({
     const {
         words, // The array of words in the chunk
         selectedWordIndices, // The indices of the selected words
-        selectedWords, // The selected words as a string
+        selectedWords, // The selected words as a string or ''
         handleWordDown,
         handleWordEnter,
         handleWordUp,
@@ -64,9 +64,8 @@ const ChunkWords = memo(function ChunkWords({
     }, [selectedWords, selectedWordIndices]);
 
     return (
-        <Box as="div" padding={4} width="100%" data-chunk-id={`chunk-${chunkIdx}`}
-        >
-            <Flex as="div" flexWrap="wrap" gap={0} color={color}>
+        <Box as="div" padding={4} width="100%" data-chunk-id={`chunk-${chunkIdx}`}>
+            <Flex as="div" flexWrap="wrap" gap={0} color={color} touchAction="none" userSelect="none">
                 <InteractiveText
                     words={words}
                     chunkIdx={chunkIdx}

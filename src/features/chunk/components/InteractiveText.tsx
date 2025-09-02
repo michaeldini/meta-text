@@ -48,6 +48,7 @@ const InteractiveText = memo(function InteractiveText({
                         color={isHighlighted ? 'white' : undefined}
                         cursor="pointer"
                         userSelect="none"
+                        touchAction="none"
                         display="inline-block"
                         onPointerDown={() => onWordDown(wordIdx)}
                         onPointerEnter={() => onWordEnter(wordIdx)}
