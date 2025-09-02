@@ -1,5 +1,7 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { ChunkType } from '@mtypes/documents';
+import { trimPunctuation } from '@utils/trimPunctuation';
+
 /**
  * useWordSelection - Custom hook for managing word selection
  * Handles mouse/touch selection and highlighted indices
@@ -81,7 +83,8 @@ export function useWordSelection(chunk: ChunkType) {
             const end = prev.end ?? prev.start;
             const from = Math.min(start, end);
             const to = Math.max(start, end);
-            setFinalSelectedWords(words.length ? words.slice(from, to + 1).join(' ') : '');
+            const joined = words.length ? words.slice(from, to + 1).join(' ') : '';
+            setFinalSelectedWords(trimPunctuation(joined));
             return { ...prev, isSelecting: false };
         });
     }, [words]);

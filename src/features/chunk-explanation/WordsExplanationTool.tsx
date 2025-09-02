@@ -13,34 +13,19 @@ import { useExplainHandler } from './hooks/useExplainHandler';
 import { ChunkType } from '@mtypes/documents';
 
 export interface ExplanationToolProps {
-    /** The word or phrase to explain */
     word: string;
-    /** The chunk containing context for the explanation */
     chunk: ChunkType;
-    /** Callback when explanation is updated */
-    onExplanationUpdate?: (explanation: string) => void;
 }
-
-
-
-const trimPunctuation = (text: string): string => {
-    // Remove leading and trailing punctuation/symbols and trim whitespace
-    return text.replace(/^[\p{P}\p{S}]+|[\p{P}\p{S}]+$/gu, '').trim();
-};
 
 export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => {
     const { word, chunk } = props;
 
     // Custom hook to manage explanation logic
     const { handleExplain, result: explanation, loading, error } = useExplainHandler();
-
-
     const [showDefinition, setShowDefinition] = useState(false);
-    const cleanedWord = useMemo(() => trimPunctuation(word.trim()), [word]);
-
     const handleDefine = useCallback(async () => {
         const result = await handleExplain({
-            words: cleanedWord,
+            words: word,
             context: chunk.text,
             metatext_id: chunk.metatext_id,
             chunk_id: null
@@ -49,10 +34,7 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
         if (result) {
             setShowDefinition(true);
         }
-    }, [cleanedWord, chunk.text, chunk.metatext_id, handleExplain]);
-
-
-
+    }, [chunk.text, chunk.metatext_id, handleExplain]);
     return (
         <>
             {/* Show button only if not showing definition */}
@@ -60,24 +42,24 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
                 <>
                     <TooltipButton
                         label={`Explain`}
-                        tooltip={`Click to get an explanation for "${cleanedWord}"`}
+                        tooltip={`Get an explanation for "${word}"`}
                         icon={<HiQuestionMarkCircle />}
                         iconSize="2xl"
                         size="2xl"
                         onClick={handleDefine}
                         disabled={loading}
                         loading={loading}
-                        aria-label={`Define ${cleanedWord}`}
-                        data-testid={`explain-word-${cleanedWord}`}
+                        aria-label={`Define ${word}`}
+                        data-testid={`explain-word-${word}`}
                         positioning={{ placement: "top" }}
                     />
                 </>
             )}
             {/* Show explanation only if showDefinition is true */}
             {showDefinition && (
-                <Box    >
+                <Box>
                     <Heading id="explanation-title" size="xl" mb={10} textAlign="left" textDecoration="underline">
-                        {cleanedWord}
+                        {word}
                     </Heading>
                     {explanation?.explanation && (
                         <Text textStyle="lg" mb="2">{explanation.explanation}</Text>

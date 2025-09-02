@@ -29,7 +29,6 @@ export function WordsToolbar({ onClose, word, wordIdx, chunk }: WordsToolbarProp
             <WordsExplanationTool
                 word={word}
                 chunk={chunk}
-                onExplanationUpdate={onClose}
             />
         </Stack>
     );

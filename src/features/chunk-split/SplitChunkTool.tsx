@@ -15,7 +15,7 @@ export interface SplitChunkToolProps {
 
 export function SplitChunkTool(props: SplitChunkToolProps) {
     const { wordIdx, word, chunk, onComplete } = props;
-    const metatextId = chunk.metatext_id; // Get from chunk instead of store
+    const metatextId = chunk.metatext_id;
     const { mutateAsync } = useSplitChunk();
 
     const handleSplit = async () => {
@@ -24,19 +24,16 @@ export function SplitChunkTool(props: SplitChunkToolProps) {
             return;
         }
         log.debug(`Splitting chunk ${chunk.id} at word "${word}"`);
-
         try {
             if (wordIdx == null) {
                 log.error('Word index is not set, cannot split chunk');
                 return;
             }
-
             await mutateAsync({
                 chunkId: chunk.id,
                 wordIdx,
                 metatextId,
             });
-            // Optionally call onComplete if needed
             onComplete();
         } catch (e) {
             log.error('Split chunk mutation failed', e);

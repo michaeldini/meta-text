@@ -65,7 +65,7 @@ const ChunkWords = memo(function ChunkWords({
 
     return (
         <Box as="div" padding={4} width="100%" data-chunk-id={`chunk-${chunkIdx}`}>
-            <Flex as="div" flexWrap="wrap" gap={0} color={color} touchAction="none" userSelect="none">
+            <Flex as="div" flexWrap="wrap" gap={0} color={color} touchAction="none" userSelect="none" overscrollBehavior="contain">
                 <InteractiveText
                     words={words}
                     chunkIdx={chunkIdx}

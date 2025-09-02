@@ -16,9 +16,6 @@ export * from './chunk-copy';
 export * from './chunk-note';
 export * from './chunk-image';
 
-// Shared utilities
-export * from './chunk-shared';
-
 // Full-text search feature
 export * from './chunk-search';
 
