@@ -4,7 +4,7 @@
 
 import React, { useState } from 'react';
 import { Box, Text } from '@chakra-ui/react';
-import { Highlight } from '../types/experiments';
+import { Highlight } from '../../../types/experiments';
 
 export type WordSelectorProps = {
     text: string;
