@@ -68,9 +68,6 @@ const appConfig = defineConfig({
                     color: "fg",
 
                 },
-                defaultVariants: {
-                    // variant: "main",
-                },
                 variants: {
                     size: {
                         main: {
@@ -92,6 +89,7 @@ const appConfig = defineConfig({
                     },
                 },
             }),
+
 
 
             //     // You can add variants here if needed
