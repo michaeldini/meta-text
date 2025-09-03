@@ -77,6 +77,9 @@ export default defineConfig(({ command }) => ({
         ]
     },
     server: {
+        // host: true, // for local dev
+        // port: 5173, // for local dev
+        // hmr: { host: '192.168.1.177' }, // for local dev
         proxy: {
             '/api': {
                 target: 'http://127.0.0.1:3001',

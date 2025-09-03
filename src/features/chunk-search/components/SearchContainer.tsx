@@ -14,7 +14,7 @@ import '../search.css';
 export function SearchContainer() {
 
     return (
-        <Box width="100%">
+        <Box width="60%">
             <SearchBar />
         </Box>
 

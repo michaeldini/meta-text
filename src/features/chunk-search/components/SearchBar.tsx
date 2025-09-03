@@ -41,7 +41,7 @@ export function SearchBar({
     return (
 
         <Field.Root orientation="horizontal">
-            <Field.Label color="fg" minWidth="fit-content">Search Chunks</Field.Label>
+            {/* <Field.Label color="fg" minWidth="fit-content">Search Chunks</Field.Label> */}
             <InputGroup
                 startElement={<HiMagnifyingGlass />}
                 endElement={endElement}

@@ -37,6 +37,7 @@ export function MetatextHeader({
         <Stack
             direction="row"
             alignItems="center"
+            wrap="wrap"
             data-testid="metatext-header"
         >
             <Heading size="md">metatext:</Heading>

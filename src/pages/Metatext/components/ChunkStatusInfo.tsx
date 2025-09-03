@@ -37,7 +37,8 @@ export function ChunkStatusInfo({
     };
 
     return (
-        <Stack direction="row" data-testid="chunk-status-info">
+        <Stack direction="row" data-testid="chunk-status-info"
+            wrap="wrap">
             <SearchContainer />
             {isSearching && <Spinner size="sm" mr={2} data-testid="chunk-search-spinner" />}
             <Text

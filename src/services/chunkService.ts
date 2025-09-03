@@ -47,4 +47,14 @@ export async function fetchChunk(chunkId: number): Promise<ChunkType> {
     return data;
 }
 
+// Favorite a chunk for the current user
+export async function favoriteChunk(chunkId: number): Promise<void> {
+    await api.post(`chunk/${chunkId}/favorite`);
+}
+
+// Remove favorite for a chunk for the current user
+export async function unfavoriteChunk(chunkId: number): Promise<void> {
+    await api.delete(`chunk/${chunkId}/favorite`);
+}
+
 
