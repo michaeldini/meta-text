@@ -1,11 +1,10 @@
-import { HiArrowLeftOnRectangle, HiArrowRightOnRectangle, HiPlus } from 'react-icons/hi2';
 /**
  * Navigation configuration for the navbar menu
  * - Defines icons, labels, paths, and visibility conditions for each menu item (includes brand item)
  * - Supports authenticated and unauthenticated states
- */
-
+*/
 import { MetaTextLogoIcon } from '@components/icons';
+import { HiArrowLeftOnRectangle, HiArrowRightOnRectangle, HiPlus } from 'react-icons/hi2';
 
 
 type IconComponent = React.ComponentType<React.SVGProps<SVGSVGElement>> | React.ComponentType<{

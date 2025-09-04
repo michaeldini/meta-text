@@ -3,7 +3,7 @@
 import React from 'react';
 import { Card } from '@chakra-ui/react/card';
 import { Button } from '@chakra-ui/react/button';
-import { Prose } from '@components/ui/prose';
+import { Text } from '@chakra-ui/react/text';
 
 interface FlashcardFrontProps {
     word: string;
@@ -22,9 +22,9 @@ export function FlashcardFront(props: FlashcardFrontProps) {
                 width="100%"
                 height="auto"
             >
-                <Prose fontSize="2xl" fontWeight="bold" textAlign="center">
+                <Text fontSize="2xl" fontWeight="bold" textAlign="center">
                     {word}
-                </Prose>
+                </Text>
             </Button>
         </Card.Body>
     );

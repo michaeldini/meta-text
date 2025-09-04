@@ -9,7 +9,6 @@ import { Box, Text } from '@chakra-ui/react';
 import { ErrorAlert } from '@components/ErrorAlert';
 
 import { TooltipButton } from '@components/TooltipButton';
-import { Prose } from '@components/ui/prose';
 import type { ChunkType } from '@mtypes/documents';
 import { explainWordsOrChunk } from '@services/aiService';
 
@@ -65,7 +64,7 @@ export function ExplanationTool({ chunk, isVisible }: ExplanationToolProps) {
                 loading={loading}
             />
             <Box mt={3}>
-                {explanationText ? <Prose>{explanationText}</Prose> : <Text textAlign="right" color="fg.muted">No explanation yet.</Text>}
+                {explanationText ? <Text>{explanationText}</Text> : <Text textAlign="right" color="fg.muted">No explanation yet.</Text>}
             </Box>
             <ErrorAlert message={error} mt={2} />
         </Box>

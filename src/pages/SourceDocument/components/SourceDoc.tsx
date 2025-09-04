@@ -6,8 +6,6 @@ import { HiCheck } from 'react-icons/hi2';
 import React from 'react';
 import { Box } from '@chakra-ui/react/box';
 import { Text } from '@chakra-ui/react';
-import { Stack } from '@chakra-ui/react/stack';
-import { Prose, Tooltip } from '@components/ui';
 import { ErrorAlert } from '@components/ErrorAlert';
 
 

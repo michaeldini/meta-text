@@ -1,14 +1,13 @@
 import { HiOutlineSparkles } from 'react-icons/hi2';
 /**
  * EvaluationTool
- * Generates an evaluation/explanation for a chunk via API and displays it.
+ * Generates an evaluation for a chunk via API and displays it.
  * Avoids mutating incoming props; uses local state and syncs if parent updates chunk.
  */
 import React, { useState, useEffect, useCallback } from 'react';
 import { Box } from '@chakra-ui/react/box'
 import { Text } from '@chakra-ui/react/text'
 import { ErrorAlert } from '@components/ErrorAlert';
-import { Prose } from '@components/ui/prose';
 import { TooltipButton } from '@components/TooltipButton'
 import type { ChunkType } from '@mtypes/documents';
 import { generateEvaluation } from '@services/aiService';
@@ -58,7 +57,7 @@ export function EvaluationTool({ chunk, isVisible }: EvaluationToolProps) {
             />
             <Box mt={3}>
                 {evaluationText
-                    ? <Prose>{evaluationText}</Prose>
+                    ? <Text>{evaluationText}</Text>
                     : <Text textAlign="right" color="fg.muted">No evaluation yet.</Text>}
             </Box>
             <ErrorAlert message={error} mt={2} />

@@ -18,15 +18,14 @@ interface CopyToolProps {
 }
 
 export function CopyTool({ chunkText }: CopyToolProps) {
-    const { showSuccess, showError } = useNotifications();
+    const { showSuccess } = useNotifications();
     const formattedChunk = chunkText ? chunkText.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim() : '';
 
     return (
         <Box>
             <Clipboard.Root
                 value={formattedChunk}
-                onCopy={() => showSuccess('Chunk copied to clipboard!', 3000)}
-                onError={() => showError('Failed to copy chunk to clipboard.')}
+                onStatusChange={() => showSuccess('Chunk copied to clipboard!', 3000)}
                 data-testid='copy-tool'
             >
                 <Clipboard.Trigger asChild>
