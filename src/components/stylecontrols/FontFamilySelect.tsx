@@ -1,8 +1,7 @@
 import React from 'react';
 import { Select } from '@chakra-ui/react/select';
 import { Portal } from '@chakra-ui/react/portal';
-import { useFontFamilySelect } from '../../hooks/stylecontrols/useFontFamilySelect';
-
+import { useFontFamilySelect } from '@hooks/stylecontrols/useFontFamilySelect';
 
 interface FontFamilySelectProps {
     value: string;
