@@ -38,7 +38,6 @@ export interface UseImageToolReturn {
     getImgSrc: () => string; // Returns the complete image source URL
     handlePromptChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     setSelectedId: (id: number | null) => void; // select a different image
-    reset: () => void;
 }
 /**
  * Result of successful image generation operation
@@ -154,12 +153,6 @@ export const useImageTool = (chunk: ChunkType): UseImageToolReturn => {
      */
     const getImgSrc = useCallback(() => (state.imagePath ? `/${state.imagePath}` : ''), [state.imagePath]);
 
-    /** Resets transient form state (prompt and error) without managing visibility */
-    const reset = useCallback(() => setState(s => ({
-        ...s,
-        error: null,
-        prompt: ''
-    })), []);
 
     /**
      * Handles prompt input changes in the generation dialog
@@ -203,7 +196,6 @@ export const useImageTool = (chunk: ChunkType): UseImageToolReturn => {
         // Visibility handled by global drawer store
         handlePromptChange,     // Handles prompt input changes
         setSelectedId,
-        reset,
 
         // Convenience state accessors (duplicated for easier access)
         loading: state.loading, // Boolean indicating generation in progress

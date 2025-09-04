@@ -8,10 +8,6 @@ import { Box } from '@chakra-ui/react/box';
 import { Text } from '@chakra-ui/react/text';
 import type { ReactElement } from 'react';
 import { PageContainer } from '@components/PageContainer';
-import { SourceDocInfo } from '@components/SourceDocInfo';
-import { StyleControls } from '@components/stylecontrols';
-import { DocumentHeader } from '@components/DocumentHeader';
-// import { useSourceDocDetail } from './hooks/useSourceDocDetail';
 import { useSourceDocEditor } from './hooks/useSourceDocEditor';
 
 import { useNavigate } from 'react-router-dom';
@@ -20,7 +16,6 @@ import { useUIPreferences } from '@hooks/useUIPreferences';
 import SourceDoc from './components/SourceDoc';
 import { Heading } from '@chakra-ui/react/heading';
 import { useValidatedRouteId } from '@hooks/useValidatedRouteId';
-import { Tabs } from '@chakra-ui/react/tabs';
 import SourceDocControlTabs from './components/SourceDocControlTabs';
 
 function headingText(title: string) {

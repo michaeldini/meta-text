@@ -2,7 +2,7 @@
  * For ChunkWords.tsx, you can:
 
 Render <SelectableText /> in place of the per-word map.
-Wire onSelection to open your BaseDrawer and feed WordsToolbar (single-word or multi-word).
+Wire onSelection to open your SimpleDrawer and feed WordsToolbar (single-word or multi-word).
 Keep <MergeChunksTool /> as-is after <SelectableText />.
 For WordSelector.tsx, you can:
 

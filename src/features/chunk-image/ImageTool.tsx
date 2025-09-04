@@ -9,13 +9,14 @@ import { Image } from '@chakra-ui/react/image';
 import { Spinner } from '@chakra-ui/react/spinner';
 
 import { Text } from '@chakra-ui/react/text';
+import { Button } from '@chakra-ui/react/button';
 import { ErrorAlert } from '@components/ErrorAlert';
 import { TooltipButton } from '@components/TooltipButton';
 
 import { useImageTool } from './hooks/useImageTool';
 import ImageGenerationDialog from './components/ImageGenerationDialog';
 import type { ChunkType } from '@mtypes/documents';
-import { useDrawer, DRAWERS } from '@store/drawerStore';
+import { SimpleDrawer } from '@components/ui';
 
 interface ImageToolProps {
     chunk: ChunkType;
@@ -29,7 +30,6 @@ export function ImageTool(props: ImageToolProps) {
         handleGenerateImage,    // Function to trigger AI image generation
         state,                  // Current component state (loading, error, data, prompt, dialogOpen, selectedId)
         getImgSrc,              // Helper to construct image source URL from selected image
-        reset,
         handlePromptChange,     // Prompt change handler
         setSelectedId,          // Sets selected image id
         loading,                // Generation in progress
@@ -39,8 +39,6 @@ export function ImageTool(props: ImageToolProps) {
         selected,               // Currently selected image object
     } = useImageTool(chunk);
 
-    // Drawer visibility (global singleton)
-    const { isOpen, open, close } = useDrawer(DRAWERS.chunkImage);
 
     // Local UI state
     const [imgLoaded, setImgLoaded] = React.useState(false);
@@ -86,18 +84,7 @@ export function ImageTool(props: ImageToolProps) {
     if (!isVisible) return null;
     return (
         <>
-            {/* Main tool container with consistent styling */}
             <Box>
-                {/* Primary action button for image generation */}
-                <TooltipButton
-                    label={hasImage ? "Generate New Image" : "Generate Image"}
-                    tooltip="Generate an image for this chunk using AI"
-                    icon={<HiOutlineSparkles />}
-                    onClick={() => { reset(); open(); }}
-                    disabled={loading}
-                    loading={loading}
-                />
-
                 {hasImage && (
                     <Box >
                         {/* Select to browse previous images */}
@@ -155,16 +142,24 @@ export function ImageTool(props: ImageToolProps) {
                     </Box>
                 )}
             </Box>
-            {/* Image generation drawer - visibility controlled by global drawer store */}
-            <ImageGenerationDialog
-                open={isOpen}
-                prompt={state.prompt}
-                loading={loading}
-                error={error}
-                onClose={() => { reset(); close(); }}
-                onPromptChange={handlePromptChange}
-                onSubmit={handleDialogSubmit}
-            />
+            <SimpleDrawer
+                title="Generate Image"
+                triggerButton={<TooltipButton
+                    label={hasImage ? "Generate New Image" : "Generate Image"}
+                    tooltip="Generate an image for this chunk using AI"
+                    icon={<HiOutlineSparkles />}
+                    disabled={loading}
+                    loading={loading}
+                />}
+            >
+                <ImageGenerationDialog
+                    prompt={state.prompt}
+                    loading={loading}
+                    error={error}
+                    onPromptChange={handlePromptChange}
+                    onSubmit={handleDialogSubmit}
+                />
+            </SimpleDrawer>
             {viewerOpen && (
                 <Box
                     position="fixed"

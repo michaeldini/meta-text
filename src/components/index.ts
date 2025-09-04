@@ -4,7 +4,7 @@ export * from './Boundaries';
 export { default as SourceDocInfo } from './SourceDocInfo';
 export { default as PageContainer } from './PageContainer';
 export { default as GlobalNotifications } from './GlobalNotifications';
-export { default as DocumentHeader } from './DocumentHeader'; export { TooltipButton } from './TooltipButton';
+export { TooltipButton } from './TooltipButton';
 export { default as ChunkPosition } from './ChunkPosition';
 export { MetatextHeaderControls } from './MetatextHeaderControls';
 export { ErrorAlert } from './ErrorAlert';

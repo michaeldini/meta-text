@@ -55,7 +55,7 @@ export function SearchInput({ search, setSearch, inputRef }: SearchInputProps) {
             />
         ) : undefined}>
             <Input
-                ref={inputRef as React.RefObject<HTMLInputElement>}
+                ref={inputRef}
                 placeholder="Search..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}

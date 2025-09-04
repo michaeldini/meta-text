@@ -2,8 +2,7 @@ import React from 'react';
 import { Box, Text, Stack } from '@chakra-ui/react';
 import { Editable } from '@chakra-ui/react/editable';
 import { Flex } from '@chakra-ui/react/flex';
-import BaseDrawer from '@components/drawer/BaseDrawer';
-
+import { SimpleDrawer } from '@components/ui';
 
 import { HiOutlineSparkles } from 'react-icons/hi2';
 
@@ -26,6 +25,7 @@ interface FieldConfig {
     isListField?: boolean;
 }
 const FIELD_CONFIG: FieldConfig[] = [
+    { key: 'title', label: 'Title' },
     { key: 'author', label: 'Author' },
     { key: 'characters', label: 'Characters' },
     { key: 'locations', label: 'Locations' },
@@ -91,30 +91,18 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
 }
 
 
-import { useDrawer, DRAWERS } from '@store/drawerStore';
+
 export function SourceDocInfoDisplay({ sourceDocumentId }: SourceDocInfoProps) {
-    const { isOpen, open, close } = useDrawer(DRAWERS.sourceDocInfo);
-
     return (
-        <>
-            <Box display="flex" justifyContent="flex-end">
-                <TooltipButton
-                    label="Info"
-                    tooltip={isOpen ? "Close info" : "Open info"}
-                    onClick={open}
-                />
-
-            </Box>
-            <BaseDrawer
-                open={isOpen}
-                onClose={close}
-                title="Source Document Info"
-                placement="end"
-                maxW="sm"
-            >
-                <SourceDocInfo sourceDocumentId={sourceDocumentId} />
-            </BaseDrawer>
-        </>
+        <SimpleDrawer
+            title="Source Document Info"
+            triggerButton={<TooltipButton
+                label="Info"
+                tooltip="Show Info"
+            />}
+        >
+            <SourceDocInfo sourceDocumentId={sourceDocumentId} />
+        </SimpleDrawer>
     );
 }
 

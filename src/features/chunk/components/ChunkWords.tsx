@@ -4,7 +4,7 @@
 
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
-import BaseDrawer from '@components/drawer/BaseDrawer';
+import { ControlledDrawer } from '@components/ui';
 
 import InteractiveText from './InteractiveText';
 import WordsToolbar from './WordsToolbar';
@@ -83,12 +83,11 @@ const ChunkWords = memo(function ChunkWords({
                 </Box>
             </Flex>
 
-            <BaseDrawer
+            <ControlledDrawer
                 open={drawerOpen}
                 onClose={closeDrawer}
                 title="Word Tools"
                 placement="end"
-                showCloseButton
             >
                 {selectedWords && selectedWords.length > 0 && (
                     <WordsToolbar
@@ -98,7 +97,7 @@ const ChunkWords = memo(function ChunkWords({
                         chunk={chunk}
                     />
                 )}
-            </BaseDrawer>
+            </ControlledDrawer>
         </Box>
     );
 });

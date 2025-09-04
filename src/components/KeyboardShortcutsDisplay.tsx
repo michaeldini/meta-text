@@ -57,7 +57,6 @@
  * Accessibility Notes
  * -------------------
  *  - IconButton has an aria-label ("Open help").
- *  - Drawer component (BaseDrawer) should manage focus trapping & aria role semantics.
  *  - Shortcut keys are presented in a <Badge> with a monospace font for legibility.
  *  - Categories use semantic <Text> but could be upgraded to proper headings if needed.
  *
@@ -82,7 +81,6 @@
  * Extending
  * ---------
  *  - Add new categories/shortcuts: modify `@utils/keyboardShortcuts` definitions.
- *  - Change drawer placement/size: update the <BaseDrawer> props in KeyboardShortcutsDisplay.
  *  - Inline (non-drawer) displays can reuse KeyboardShortcutList directly.
  *  - To add search/filter inside the drawer, wrap <KeyboardShortcutList> with stateful controls here.
  *
@@ -108,11 +106,9 @@
 import React, { memo } from 'react';
 import { Box, Text, VStack, HStack, Badge } from '@chakra-ui/react';
 import { IconButton } from '@chakra-ui/react/button';
-import { useDrawer, DRAWERS } from '@store/drawerStore';
-import BaseDrawer from '@components/drawer/BaseDrawer';
 import { getShortcutsByCategory, formatShortcut, type KeyboardShortcut } from '@utils/keyboardShortcuts';
 import { HiQuestionMarkCircle } from 'react-icons/hi2';
-
+import { SimpleDrawer } from '@components/ui/simple-drawer';
 // 1. ITEM ------------------------------------------------------------------
 export interface KeyboardShortcutItemProps {
     shortcut: KeyboardShortcut;
@@ -176,33 +172,26 @@ interface KeyboardShortcutsDisplayProps {
  * @returns JSX.Element
  */
 export function KeyboardShortcutsDisplay({ categories }: KeyboardShortcutsDisplayProps) {
-    // Use dedicated drawer id so it doesn't conflict with other drawers
-    const { isOpen, open, close } = useDrawer(DRAWERS.keyboardShortcuts);
 
     return (
         <>
-            <Box display="flex" justifyContent="flex-end">
-                <IconButton
-                    aria-label="Open help"
-                    variant="ghost"
-                    onClick={open}
-                >
-                    <HiQuestionMarkCircle />
-                </IconButton>
-            </Box>
-            <BaseDrawer
-                open={isOpen}
-                onClose={close}
+            <SimpleDrawer
+                triggerButton={
+                    <IconButton
+                        aria-label="Open help"
+                        variant="ghost"
+                    >
+                        <HiQuestionMarkCircle />
+                    </IconButton>
+                }
                 title="Help"
-                placement="end"
-                maxW="sm"
             >
                 <VStack align="start" gap={4} w="full">
                     <Text color="fg" fontWeight="semibold">Keyboard Shortcuts</Text>
                     <Text fontSize="sm" color="fg.muted">Use these shortcuts to speed up your workflow.</Text>
                     <KeyboardShortcutList categories={categories} align="flex-start" />
                 </VStack>
-            </BaseDrawer>
+            </SimpleDrawer>
         </>
     );
 }

@@ -15,11 +15,9 @@ import React from 'react';
 import { Button } from '@chakra-ui/react/button';
 import { Textarea } from '@chakra-ui/react/textarea';
 import { Box } from '@chakra-ui/react/box';
-import { Spinner } from '@chakra-ui/react/spinner';
 import { Text } from '@chakra-ui/react/text';
 import { Stack } from '@chakra-ui/react/stack';
 import { Badge } from '@chakra-ui/react/badge';
-import BaseDrawer from '@components/drawer/BaseDrawer';
 
 
 // Constants for prompt validation
@@ -35,8 +33,6 @@ const SUGGESTED_PROMPTS = [
 
 
 export interface ImageGenerationDialogProps {
-    open: boolean;
-    onClose: () => void;
     prompt: string;
     onPromptChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -45,7 +41,7 @@ export interface ImageGenerationDialogProps {
 }
 
 export function ImageGenerationDialog(props: ImageGenerationDialogProps) {
-    const { open, prompt, loading, error, onClose, onPromptChange, onSubmit } = props;
+    const { prompt, loading, error, onPromptChange, onSubmit } = props;
     const promptLength = prompt.length;
     const isPromptValid = promptLength >= MIN_PROMPT_LENGTH && promptLength <= MAX_PROMPT_LENGTH;
     const isPromptTooLong = promptLength > MAX_PROMPT_LENGTH;
@@ -112,47 +108,24 @@ export function ImageGenerationDialog(props: ImageGenerationDialogProps) {
         );
     }
 
-    // const LoadingIndicator = () => (
-    //     <Box textAlign="center">
-    //         <Text fontSize="sm" color="gray.500" mb={2}>
-    //             Generating your image...
-    //         </Text>
-    //         <Spinner size="md" color="blue.500" />
-    //     </Box>
-    // );
-
-    // Removed local ErrorMessage in favor of unified ErrorAlert (handled in drawer body already)
-
-    function FooterButtons() {
-        return (
-            <Button
-                type="submit"
-                colorScheme="blue"
-                disabled={loading || !isPromptValid}
-                minW={100}
-                loading={loading}
-            >
-                {loading ? 'Generating...' : 'Generate'}
-            </Button>
-        );
-    }
-
     return (
-        <BaseDrawer
-            open={open}
-            onClose={onClose}
-            title="Generate AI Image"
-            error={error}
-            footer={<FooterButtons />}
-        >
-            <form onSubmit={onSubmit}>
-                <Stack direction="column" align="stretch" gap={4}>
-                    <PromptInput />
-                    {promptLength === 0 ? <SuggestedPrompts /> : null}
-                    {/* Inline error removed; BaseDrawer shows the alert at top if needed */}
-                </Stack>
-            </form>
-        </BaseDrawer>
+
+        <form onSubmit={onSubmit}>
+            <Stack direction="column" align="stretch" gap={4}>
+                <PromptInput />
+                {promptLength === 0 ? <SuggestedPrompts /> : null}
+                <Button
+                    type="submit"
+                    colorScheme="blue"
+                    disabled={loading || !isPromptValid}
+                    minW={100}
+                    loading={loading}
+                >
+                    {loading ? 'Generating...' : 'Generate'}
+                </Button>
+
+            </Stack>
+        </form>
     );
 }
 

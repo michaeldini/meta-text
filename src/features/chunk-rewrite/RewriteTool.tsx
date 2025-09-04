@@ -8,10 +8,18 @@ import React, { useMemo, useState } from 'react';
 import { Box } from '@chakra-ui/react/box';
 import { Text } from '@chakra-ui/react/text';
 import { TooltipButton } from '@components/TooltipButton';
-import RewriteGenerationDisplay from './components/RewriteGenerationDisplay';
-import { useDrawer } from '@store/drawerStore';
 import { useRewriteTool } from './hooks/useRewriteTool';
 import type { ChunkType } from '@mtypes/documents';
+import { SimpleDrawer, EmptyState } from '@components/ui';
+import { Button } from '@chakra-ui/react/button';
+
+
+
+const STYLE_OPTIONS = [
+    { value: 'like im 5', label: 'Like I’m 5' },
+    { value: 'like a bro', label: 'Like a Bro' },
+    { value: 'academic', label: 'Academic' }
+];
 
 
 interface RewriteDisplayToolProps {
@@ -30,43 +38,55 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
         isLoading,
         error,
         hasRewrites,
-        reset,
     } = useRewriteTool(chunk);
 
-    // Local selection is a pure UI concern
+    // The selected rewrite currently being viewed
     const [selectedId, setSelectedId] = useState<number | ''>('');
-    // Derive selected rewrite without side effects
     const selected = useMemo(() =>
         rewrites.find(r => r.id === selectedId), [rewrites, selectedId]);
 
-    // Drawer scoped per chunk to avoid cross-instance interference
-    const drawerId = `chunkRewrite:${chunk.id}` as const;
-    const { isOpen, open, close } = useDrawer(drawerId);
+    // Handle form submission to create a new rewrite
+    const handleFormSubmit = async (e: React.FormEvent) => { e.preventDefault(); await submitRewrite(); };
 
     if (!isVisible) return null;
     return (
         <Box>
-            <TooltipButton
-                label="Rewrite"
-                tooltip="Generate a rewrite for this chunk"
-                icon={<HiPencilSquare />}
-                onClick={() => { reset(); open(); }}
-                disabled={!chunk}
-                loading={isLoading}
-            />
-            <RewriteGenerationDisplay
-                open={isOpen}
-                onClose={() => { reset(); close(); }}
-                styleValue={style}
-                onStyleChange={setStyle}
-                loading={isLoading}
-                error={error}
-                onSubmit={async () => { await submitRewrite(); }}
-            />
+            <SimpleDrawer
+                title="Generate Rewrite"
+                triggerButton={<TooltipButton
+                    label="Rewrite"
+                    tooltip="Generate a rewrite for this chunk"
+                    icon={<HiPencilSquare />}
+                />}
+            >
+                <Box>
+                    <form id="rewrite-gen-form" onSubmit={handleFormSubmit}>
+                        <Button type="submit" form="rewrite-gen-form" disabled={isLoading} loading={isLoading}>Generate & Save</Button>
+                        <Box>
+                            <label htmlFor="rewrite-style">Rewrite style:</label>
+                            <select
+                                id="rewrite-style"
+                                value={style}
+                                onChange={e => setStyle(e.target.value)}
+                                style={{ width: '100%', marginTop: 8 }}
+                                disabled={isLoading}
+                            >
+                                {STYLE_OPTIONS.map(opt => (
+                                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                                ))}
+                            </select>
+                        </Box>
+                    </form>
+                    {error && (
+                        <Box mt={2} color="red.500">
+                            {error}
+                        </Box>
+                    )}
+                </Box>
+            </SimpleDrawer>
             {/* Select to browse previous rewrites */}
             {hasRewrites && (
                 <Box mt={6}>
-                    <label htmlFor="rewrite-select">Browse previous rewrites:</label>
                     <select
                         id="rewrite-select"
                         value={selectedId === '' ? '' : String(selectedId)}
@@ -90,8 +110,8 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
                 </Box>
             )}
             {!hasRewrites && (
-                <Text textAlign="right" color="fg.muted">No rewrites yet.</Text>)
-            }
+                <EmptyState title="No Rewrites Yet" icon="✏️" description="Create a new rewrite to see it here." />
+            )}
         </Box>
     );
 }

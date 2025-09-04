@@ -22,7 +22,6 @@ export interface UseRewriteToolReturn {
     isLoading: boolean;
     error: string | null;
     hasRewrites: boolean;
-    reset: () => void;
 }
 
 const DEFAULT_STYLE = "like I'm 5";
@@ -44,7 +43,7 @@ export const useRewriteTool = (chunk: ChunkType | null): UseRewriteToolReturn =>
                 queryClient.invalidateQueries({ queryKey: queryKeys.chunk(chunk.id) });
                 if (typeof chunk.metatext_id === 'number') {
                     queryClient.invalidateQueries({ queryKey: queryKeys.metatextDetail(chunk.metatext_id) });
-                    queryClient.invalidateQueries({ queryKey: queryKeys.chunks(chunk.metatext_id) });
+                    // queryClient.invalidateQueries({ queryKey: queryKeys.chunks(chunk.metatext_id) });
                 }
             }
             // Reset style and clear error to simplify UX
@@ -68,11 +67,6 @@ export const useRewriteTool = (chunk: ChunkType | null): UseRewriteToolReturn =>
         }
     }, [chunk, mutation]);
 
-    const reset = useCallback(() => {
-        setStyle(DEFAULT_STYLE);
-        setError(null);
-    }, []);
-
     return {
         rewrites,
         style,
@@ -81,7 +75,6 @@ export const useRewriteTool = (chunk: ChunkType | null): UseRewriteToolReturn =>
         isLoading: mutation.isPending,
         error,
         hasRewrites: rewrites.length > 0,
-        reset,
     };
 };
 
