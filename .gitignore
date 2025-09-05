@@ -36,6 +36,7 @@ certs
 Notes.md
 
 public/generated_images/
+public/audio/
 *.log
 */logs/
 backend/erd_from_sqlite.pdf
