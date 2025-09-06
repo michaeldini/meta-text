@@ -24,7 +24,7 @@ export interface UseRewriteToolReturn {
     hasRewrites: boolean;
 }
 
-const DEFAULT_STYLE = "like I'm 5";
+const DEFAULT_STYLE = "like im 5";
 
 export const useRewriteTool = (chunk: ChunkType | null): UseRewriteToolReturn => {
     const rewrites = useMemo(() => chunk?.rewrites ?? [], [chunk?.rewrites]);

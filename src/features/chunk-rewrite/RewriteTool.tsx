@@ -11,6 +11,7 @@ import { TooltipButton } from '@components/TooltipButton';
 import { useRewriteTool } from './hooks/useRewriteTool';
 import type { ChunkType } from '@mtypes/documents';
 import { SimpleDrawer, EmptyState } from '@components/ui';
+import { Select } from '@components/ui/select';
 import { Button } from '@chakra-ui/react/button';
 
 
@@ -64,17 +65,15 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
                         <Button type="submit" form="rewrite-gen-form" disabled={isLoading} loading={isLoading}>Generate & Save</Button>
                         <Box>
                             <label htmlFor="rewrite-style">Rewrite style:</label>
-                            <select
-                                id="rewrite-style"
+                            <Select
+                                options={STYLE_OPTIONS}
                                 value={style}
-                                onChange={e => setStyle(e.target.value)}
-                                style={{ width: '100%', marginTop: 8 }}
+                                onChange={(val: string) => setStyle(val)}
                                 disabled={isLoading}
-                            >
-                                {STYLE_OPTIONS.map(opt => (
-                                    <option key={opt.value} value={opt.value}>{opt.label}</option>
-                                ))}
-                            </select>
+                                width="100%"
+                                placeholder="Select style"
+                                disablePortal={true}
+                            />
                         </Box>
                     </form>
                     {error && (
@@ -87,26 +86,18 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
             {/* Select to browse previous rewrites */}
             {hasRewrites && (
                 <Box mt={6}>
-                    <select
-                        id="rewrite-select"
+                    <Select
+                        options={[{ label: "Browse previous rewrites", value: "" }, ...rewrites.map(r => ({ label: r.title || `Rewrite ${r.id}`, value: String(r.id) }))]}
                         value={selectedId === '' ? '' : String(selectedId)}
-                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                            const v = e.target.value;
-                            setSelectedId(v === '' ? '' : Number(v));
-                        }}
-                        style={{ width: '100%', marginTop: 8, marginBottom: 8 }}
-                    >
-                        <option value="">Browse previous rewrites</option>
-                        {rewrites.map(r => (
-                            <option key={r.id} value={r.id}>{r.title || `Rewrite ${r.id}`}</option>
-                        ))}
-                    </select>
+                        onChange={(val: string) => setSelectedId(val === '' ? '' : Number(val))}
+                        width="100%"
+                        placeholder="Browse previous rewrites"
+                    />
                     {selected && (
                         <Box p={3} borderWidth={1} borderRadius={4} mt={2}>
                             <Text>{selected.rewrite_text}</Text>
                         </Box>
                     )}
-
                 </Box>
             )}
             {!hasRewrites && (

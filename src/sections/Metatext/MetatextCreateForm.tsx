@@ -1,12 +1,8 @@
 import { HiOutlineSparkles } from 'react-icons/hi2';
 import React from 'react';
-import { Box } from '@chakra-ui/react/box';
-import { Heading, createListCollection } from '@chakra-ui/react';
-import { Select } from '@chakra-ui/react/select';
-import { Portal } from '@chakra-ui/react/portal';
-import { Button } from '@chakra-ui/react/button';
-import { Input } from '@chakra-ui/react/input';
-import { Fieldset } from '@chakra-ui/react/fieldset';
+import { Box, Heading, Button, Input } from '@chakra-ui/react';
+import { Fieldset } from '@chakra-ui/react';
+import { Select } from '@components/ui/select';
 import { useMetatextCreate } from './useMetatextCreate';
 import { SourceDocumentSummary } from '@mtypes/documents';
 
@@ -23,37 +19,22 @@ const header = (
 );
 
 // 2. Source Document Select ----------------------------------------------
+
 interface SourceDocSelectProps {
-    // eslint-disable-next-line
-    collection: any;
+    options: { label: string; value: string }[];
+    value: string;
     onChange: (id: string) => void;
 }
-function SourceDocSelect({ collection, onChange }: SourceDocSelectProps) {
+function SourceDocSelect({ options, value, onChange }: SourceDocSelectProps) {
     return (
-        <Select.Root collection={collection} onValueChange={(e) => onChange(e.value[0])}>
-            <Select.HiddenSelect />
-            <Select.Control>
-                <Select.Trigger>
-                    <Select.ValueText placeholder="Select a source document" color="fg.muted" />
-                </Select.Trigger>
-                <Select.IndicatorGroup>
-                    <Select.Indicator />
-                </Select.IndicatorGroup>
-            </Select.Control>
-            <Portal>
-                <Select.Positioner>
-                    <Select.Content>
-                        {/* eslint-disable-next-line  */}
-                        {(collection.items).map((item: any) => (
-                            <Select.Item item={item} key={item.value}>
-                                {item.label}
-                                <Select.ItemIndicator />
-                            </Select.Item>
-                        ))}
-                    </Select.Content>
-                </Select.Positioner>
-            </Portal>
-        </Select.Root>
+        <Select
+            options={options}
+            value={value}
+            onChange={onChange}
+            placeholder="Select a source document"
+            label="Source Document"
+            width="100%"
+        />
     );
 }
 
@@ -81,8 +62,8 @@ interface SubmitButtonProps {
 }
 function SubmitButton({ loading, disabled }: SubmitButtonProps) {
     return (
-        <Button type="submit" disabled={disabled} data-testid="submit-button" color="primary">
-            <HiOutlineSparkles />
+        <Button type="submit" disabled={disabled} data-testid="submit-button" colorScheme="primary">
+            <HiOutlineSparkles style={{ marginRight: 8 }} />
             {loading ? 'Creating...' : 'Create Metatext'}
         </Button>
     );
@@ -90,22 +71,22 @@ function SubmitButton({ loading, disabled }: SubmitButtonProps) {
 
 // Container / Composition -------------------------------------------------
 function MetatextCreateForm({ sourceDocs }: MetatextCreateFormProps): React.ReactElement {
-    const { title, loading, isSubmitDisabled, handleTitleChange, handleSourceDocChange, handleSubmit } = useMetatextCreate();
+    const { title, loading, isSubmitDisabled, handleTitleChange, handleSourceDocChange, handleSubmit, selectedSourceDocId } = useMetatextCreate();
 
-    // Shape the select options once per render of the container.
-    const sourceDocOptions = React.useMemo(() => createListCollection({
-        items: sourceDocs.map(doc => ({
-            value: doc.id,
-            label: `${doc.title} ${doc.author ? `by ${doc.author}` : ''}`,
-        }))
-    }), [sourceDocs]);
+    const sourceDocOptions = React.useMemo(() => sourceDocs.map(doc => ({
+        value: String(doc.id),
+        label: `${doc.title} ${doc.author ? `by ${doc.author}` : ''}`,
+    })), [sourceDocs]);
+
+    // Ensure selectedSourceDocId is always a string
+    const selectedSourceDocIdStr = selectedSourceDocId ? String(selectedSourceDocId) : '';
 
     return (
-        <Box p="2" borderWidth="4px" borderColor="border.muted" borderRadius="lg" dropShadow="md">
+        <Box p={2} borderWidth={"4px"} borderColor="border.muted" borderRadius="lg" boxShadow="md">
             {header}
             <form onSubmit={handleSubmit}>
                 <Fieldset.Root>
-                    <SourceDocSelect collection={sourceDocOptions} onChange={handleSourceDocChange} />
+                    <SourceDocSelect options={sourceDocOptions} value={selectedSourceDocIdStr} onChange={handleSourceDocChange} />
                     <TitleInput value={title} onChange={handleTitleChange} />
                     <SubmitButton loading={loading} disabled={isSubmitDisabled} />
                 </Fieldset.Root>

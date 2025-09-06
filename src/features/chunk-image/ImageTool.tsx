@@ -17,6 +17,7 @@ import { useImageTool } from './hooks/useImageTool';
 import ImageGenerationDialog from './components/ImageGenerationDialog';
 import type { ChunkType } from '@mtypes/documents';
 import { SimpleDrawer } from '@components/ui';
+import { Select } from '@components/ui/select';
 
 interface ImageToolProps {
     chunk: ChunkType;
@@ -91,20 +92,13 @@ export function ImageTool(props: ImageToolProps) {
                         {images.length > 1 && (
                             <Box mt={4} mb={4}>
                                 <label htmlFor={`image-select-${chunk.id}`}>Browse previous images:</label>
-                                <select
-                                    id={`image-select-${chunk.id}`}
-                                    value={state.selectedId === null ? '' : String(state.selectedId)}
-                                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                                        const val = e.target.value === '' ? null : Number(e.target.value);
-                                        setSelectedId(val);
-                                    }}
-                                    style={{ width: '100%', marginTop: 8 }}
-                                >
-                                    <option value="">Latest image</option>
-                                    {images.map(img => (
-                                        <option key={img.id} value={img.id}>{`Image ${img.id}`}</option>
-                                    ))}
-                                </select>
+                                <Select
+                                    options={[{ label: "Latest image", value: "" }, ...images.map(img => ({ label: `Image ${img.id}`, value: String(img.id) }))]}
+                                    value={state.selectedId === null ? "" : String(state.selectedId)}
+                                    onChange={(val: string) => setSelectedId(val === "" ? null : Number(val))}
+                                    placeholder="Browse previous images"
+                                    width="100%"
+                                />
                             </Box>
                         )}
                         {/* Loader */}

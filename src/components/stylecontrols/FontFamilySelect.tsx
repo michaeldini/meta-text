@@ -1,43 +1,27 @@
 import React from 'react';
-import { Select } from '@chakra-ui/react/select';
-import { Portal } from '@chakra-ui/react/portal';
+import { Select } from '@components/ui/select';
 import { useFontFamilySelect } from '@hooks/stylecontrols/useFontFamilySelect';
+
 
 interface FontFamilySelectProps {
     value: string;
     onChange: (value: string) => void;
     disabled?: boolean;
 }
+
 export function FontFamilySelect(props: FontFamilySelectProps) {
-    const { value, onChange } = props;
-    const { fontFamilyOptions, handleChange } = useFontFamilySelect({ value, onChange });
+    const { value, onChange, disabled } = props;
+    const { fontFamilyOptions } = useFontFamilySelect({ value, onChange });
     return (
-        <form>
-            <Select.Root width="200px" collection={fontFamilyOptions} onChange={handleChange} >
-                <Select.HiddenSelect />
-                {/* <Select.Label color="fg">Font</Select.Label> */}
-                <Select.Control>
-                    <Select.Trigger>
-                        <Select.ValueText placeholder="Font" />
-                    </Select.Trigger>
-                    <Select.IndicatorGroup>
-                        <Select.Indicator />
-                    </Select.IndicatorGroup>
-                </Select.Control>
-                <Portal >
-                    <Select.Positioner>
-                        <Select.Content>
-                            {fontFamilyOptions.items.map((framework) => (
-                                <Select.Item item={framework} key={framework.value}>
-                                    {framework.label}
-                                    <Select.ItemIndicator />
-                                </Select.Item>
-                            ))}
-                        </Select.Content>
-                    </Select.Positioner>
-                </Portal>
-            </Select.Root>
-        </form>
+        <Select
+            options={fontFamilyOptions.items}
+            value={value}
+            onChange={onChange}
+            placeholder="Font"
+            disabled={disabled}
+            width="200px"
+            label="Font"
+        />
     );
 }
 

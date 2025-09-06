@@ -8,6 +8,7 @@ export interface UseMetatextCreateResult {
     handleTitleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     handleSourceDocChange: (value: string | null) => void;
     handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+    selectedSourceDocId?: number | null;
 }
 export function useMetatextCreate(): UseMetatextCreateResult {
     const [data, setData] = useState<MetatextCreateData>({ title: '', sourceDocId: null });
@@ -15,7 +16,8 @@ export function useMetatextCreate(): UseMetatextCreateResult {
     const handleTitleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => { setData(p => ({ ...p, title: e.target.value })); }, []);
     const handleSourceDocChange = useCallback((value: string | null) => { setData(p => ({ ...p, sourceDocId: value ? Number(value) : null })); }, []);
     const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => { e.preventDefault(); if (!data.title.trim() || !data.sourceDocId) return; mutation.mutate({ sourceDocId: data.sourceDocId, title: data.title.trim() }, { onSuccess: () => setData({ title: '', sourceDocId: null }) }); }, [data, mutation]);
+    const selectedSourceDocId = data.sourceDocId;
     const loading = mutation.isPending;
     const isSubmitDisabled = loading || !data.title.trim() || !data.sourceDocId;
-    return { title: data.title, loading, isSubmitDisabled, handleTitleChange, handleSourceDocChange, handleSubmit };
+    return { title: data.title, loading, isSubmitDisabled, handleTitleChange, handleSourceDocChange, handleSubmit, selectedSourceDocId };
 }
