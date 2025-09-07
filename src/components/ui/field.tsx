@@ -1,3 +1,6 @@
+/**
+ * A Field component generated from Chakra CLI.
+ */
 import { Field as ChakraField } from "@chakra-ui/react"
 import * as React from "react"
 

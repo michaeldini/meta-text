@@ -16,7 +16,8 @@ import { useUIPreferences } from '@hooks/useUIPreferences';
 import SourceDoc from './components/SourceDoc';
 import { Heading } from '@chakra-ui/react/heading';
 import { useValidatedRouteId } from '@hooks/useValidatedRouteId';
-import SourceDocControlTabs from './components/SourceDocControlTabs';
+import { SourceDocInfoDisplay } from '@components/SourceDocInfo';
+import { StyleControls } from '@components/stylecontrols';
 
 function headingText(title: string) {
     return <>
@@ -49,9 +50,11 @@ function SourceDocDetailPage(): ReactElement | null {
     if (!doc || !editor) return null;
     return (
         <PageContainer data-testid="sourcedoc-detail-page">
-            <Box bg="bg.subtle" p="4" borderRadius="lg" mb="10">
+
+            <Box bg="bg.subtle" p="4" mb="10">
                 {headingText(doc.title)}
-                <SourceDocControlTabs sourceDocumentId={id} showPaddingX={false} />
+                <SourceDocInfoDisplay sourceDocumentId={id} />
+                <StyleControls showPaddingX={false} />
             </Box>
             <SourceDoc
                 doc={doc}

@@ -54,7 +54,7 @@ export const Select: React.FC<SelectProps> = ({
             width={width}
         >
             <ChakraSelect.HiddenSelect />
-            {label && <ChakraSelect.Label>{label}</ChakraSelect.Label>}
+            {label && <ChakraSelect.Label color="fg.muted">{label}</ChakraSelect.Label>}
             <ChakraSelect.Control>
                 <ChakraSelect.Trigger>
                     <ChakraSelect.ValueText placeholder={placeholder} />

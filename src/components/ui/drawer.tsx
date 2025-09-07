@@ -1,4 +1,4 @@
-import { Button, CloseButton, Drawer, Portal } from "@chakra-ui/react"
+import { CloseButton, Drawer, Portal } from "@chakra-ui/react"
 export interface SimpleDrawerProps {
     triggerButton: React.ReactNode
     title: string

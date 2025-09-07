@@ -1,5 +1,6 @@
 import React from 'react';
-import { TextSizeInput, LineHeightInput, PaddingXInput, FontFamilySelect } from '@components/stylecontrols';
+import { FontFamilySelect } from '@components/stylecontrols';
+import { Field, NumberInput } from '@chakra-ui/react';
 import { useUIPreferences } from '@hooks/useUIPreferences';
 import { TooltipButton } from '@components/TooltipButton';
 
@@ -14,6 +15,37 @@ interface StyleControlsProps {
     showLineHeight?: boolean;
     showPaddingX?: boolean;
     showFontFamily?: boolean;
+}
+
+
+interface StyleNumberInputProps {
+    label: string;
+    value: number;
+    min: number;
+    max: number;
+    step: number;
+    onChange: (val: number) => void;
+    disabled?: boolean;
+}
+
+// DRY: Common number input for style controls
+function StyleNumberInput({ label, value, min, max, step, onChange, disabled }: StyleNumberInputProps) {
+    return (
+        <Field.Root width="100px">
+            <Field.HelperText>{label}</Field.HelperText>
+            <NumberInput.Root
+                min={min}
+                max={max}
+                step={step}
+                value={String(value)}
+                onValueChange={details => onChange(Number((details as any).value || details))}
+                disabled={disabled}
+            >
+                <NumberInput.Control />
+                <NumberInput.Input />
+            </NumberInput.Root>
+        </Field.Root>
+    );
 }
 
 export function StyleControls({
@@ -34,21 +66,33 @@ export function StyleControls({
             {visible && (
                 <>
                     {showTextSize && (
-                        <TextSizeInput
+                        <StyleNumberInput
+                            label="Text Size"
                             value={textSizePx}
-                            onChange={(val: number) => updateUserConfig.mutate({ textSizePx: val })}
+                            min={8}
+                            max={72}
+                            step={1}
+                            onChange={val => updateUserConfig.mutate({ textSizePx: val })}
                         />
                     )}
                     {showLineHeight && (
-                        <LineHeightInput
+                        <StyleNumberInput
+                            label="Line Height"
                             value={lineHeight}
-                            onChange={(val: number) => updateUserConfig.mutate({ lineHeight: val })}
+                            min={1.0}
+                            max={2.5}
+                            step={0.05}
+                            onChange={val => updateUserConfig.mutate({ lineHeight: val })}
                         />
                     )}
                     {showPaddingX && (
-                        <PaddingXInput
+                        <StyleNumberInput
+                            label="Padding X"
                             value={paddingX}
-                            onChange={(val: number) => updateUserConfig.mutate({ paddingX: val })}
+                            min={1}
+                            max={5}
+                            step={1}
+                            onChange={val => updateUserConfig.mutate({ paddingX: val })}
                         />
                     )}
                     {showFontFamily && (

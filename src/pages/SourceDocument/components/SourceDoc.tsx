@@ -53,6 +53,7 @@ export default function SourceDoc({
                     placeholder="Enter document text..."
                     disabled={isSaving}
                     selectOnFocus={false} // Prevents auto-select on focus
+                    autoResize={false} // Disable auto-resize to manage height manually
 
                 >
                     <Editable.Preview
@@ -61,8 +62,10 @@ export default function SourceDoc({
                         lineHeight={lineHeight}
                         aria-label="Document Text"
                         style={{ whiteSpace: 'pre-line', lineHeight: lineHeight }}
-                        alignItems="flex-start"
                         p="1rem"
+                        minH="48px"
+                        alignItems="flex-start"
+                        width="full"
                     />
                     <Editable.Textarea
                         fontSize={`${textSizePx}px`}
