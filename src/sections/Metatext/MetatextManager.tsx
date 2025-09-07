@@ -7,7 +7,7 @@
  */
 import React, { ReactElement } from 'react';
 import { Heading } from '@chakra-ui/react/heading';
-import ResponsiveGridSection from '@components/SectionStack';
+import ResponsiveGridSection from '@components/ResponsiveGridSection';
 
 import MetatextCreateForm from './MetatextCreateForm';
 import { MetatextSummary, SourceDocumentSummary } from '@mtypes/index';

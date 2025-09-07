@@ -108,7 +108,7 @@ import { Box, Text, VStack, HStack, Badge } from '@chakra-ui/react';
 import { IconButton } from '@chakra-ui/react/button';
 import { getShortcutsByCategory, formatShortcut, type KeyboardShortcut } from '@utils/keyboardShortcuts';
 import { HiQuestionMarkCircle } from 'react-icons/hi2';
-import { SimpleDrawer } from '@components/ui/simple-drawer';
+import { SimpleDrawer } from '@components/ui/drawer';
 // 1. ITEM ------------------------------------------------------------------
 export interface KeyboardShortcutItemProps {
     shortcut: KeyboardShortcut;

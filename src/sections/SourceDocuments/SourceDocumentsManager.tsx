@@ -9,7 +9,7 @@ import React, { ReactElement } from 'react';
 import SourceDocUploadForm from './SourceDocUploadForm';
 import { SearchableTable } from '@components/SearchableTable';
 import { Heading } from '@chakra-ui/react/heading';
-import ResponsiveGridSection from '@components/SectionStack';
+import ResponsiveGridSection from '@components/ResponsiveGridSection';
 import { useDeleteSourceDocument } from '@features/documents/useDocumentsData';
 import { SourceDocumentSummary } from '@mtypes/documents';
 

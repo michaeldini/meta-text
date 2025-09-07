@@ -18,7 +18,6 @@ function ResponsiveGridSection({ children, ...rest }: ResponsiveGridProps) {
     return (
         <Grid
             templateColumns={{ base: "repeat(1, 1fr)", lg: "repeat(3, 1fr)" }}
-            // direction={{ base: 'column', lg: 'row' }}
             gap={{ base: 2, lg: 10 }}
             {...rest}
         >

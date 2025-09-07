@@ -43,7 +43,6 @@ export default function SourceDoc({
     return (
         <Box
             data-testid="source-doc-container">
-            {/* Error Alert */}
             <ErrorAlert message={error} />
             <Box width="100%" zIndex={1}>
                 <Editable.Root

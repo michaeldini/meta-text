@@ -1,79 +1,76 @@
-// // BaseDrawer component
-// // Centralizes Chakra Drawer structure (Root, Portal, Backdrop, Positioner, Content, Header, Body, Footer)
-// // for consistent styling and behavior across feature-specific drawers.
-// import React from 'react';
-// import { Drawer } from '@chakra-ui/react/drawer';
-// import { Portal } from '@chakra-ui/react/portal';
-// import { CloseButton } from '@chakra-ui/react/button';
-// import { Stack } from '@chakra-ui/react/stack';
-// import { ErrorAlert } from '@components/ErrorAlert';
+import { Button, CloseButton, Drawer, Portal } from "@chakra-ui/react"
+export interface SimpleDrawerProps {
+    triggerButton: React.ReactNode
+    title: string
+    children: React.ReactNode
+    header?: React.ReactNode
+    footer?: React.ReactNode
+    placement?: 'start' | 'end' | 'top' | 'bottom'
+}
 
-// export interface BaseDrawerProps {
-//     trigger?: React.ReactNode;
-//     open: boolean;
-//     onClose: () => void;
-//     title?: React.ReactNode;
-//     maxW?: string | number;
-//     // Chakra v3 Drawer placements
-//     placement?: 'start' | 'end' | 'top' | 'bottom';
-//     children: React.ReactNode;
-//     footer?: React.ReactNode;
-//     showCloseButton?: boolean;
-//     error?: string | null;
-//     bodyGap?: number;
-//     // Advanced customization hooks for specific drawers (optional, keeps component flexible)
-//     contentProps?: React.ComponentProps<typeof Drawer.Content>;
-//     bodyProps?: React.ComponentProps<typeof Drawer.Body>;
-// }
+export function SimpleDrawer({ triggerButton, title, children, header, footer, placement = 'end' }: SimpleDrawerProps) {
+    return (
+        <Drawer.Root placement={placement}>
+            <Drawer.Trigger>
+                {triggerButton}
+            </Drawer.Trigger>
+            <Portal>
+                <Drawer.Backdrop />
+                <Drawer.Positioner>
+                    <Drawer.Content w="full" mb="10">
+                        <Drawer.Header>
+                            <Drawer.Title>{title}</Drawer.Title>
+                            {header}
+                        </Drawer.Header>
+                        <Drawer.Body>
+                            {children}
+                        </Drawer.Body>
+                        <Drawer.Footer>
+                            {footer}
+                        </Drawer.Footer>
+                        <Drawer.CloseTrigger asChild>
+                            <CloseButton size="sm" />
+                        </Drawer.CloseTrigger>
+                    </Drawer.Content>
+                </Drawer.Positioner>
+            </Portal>
+        </Drawer.Root>
+    )
+}
 
-// export function BaseDrawer({
-//     trigger,
-//     open,
-//     onClose,
-//     title,
-//     maxW = 'sm',
-//     placement = 'end',
-//     children,
-//     footer,
-//     showCloseButton = true,
-//     error,
-//     bodyGap = 4,
-//     contentProps,
-//     bodyProps
-// }: BaseDrawerProps) {
-//     return (
-//         <Drawer.Root open={open} onOpenChange={e => { if (!e.open) onClose(); }} placement={placement} >
-//             {trigger && <Drawer.Trigger asChild>{trigger}</Drawer.Trigger>}
-//             <Portal>
-//                 <Drawer.Backdrop />
-//                 <Drawer.Positioner>
-//                     <Drawer.Content maxW={maxW} w="full" mb="10" {...contentProps} >
-//                         {title && (
-//                             <Drawer.Header>
-//                                 <Drawer.Title>{title}</Drawer.Title>
-//                                 {showCloseButton && (
-//                                     <Drawer.CloseTrigger asChild>
-//                                         <CloseButton />
-//                                     </Drawer.CloseTrigger>
-//                                 )}
-//                             </Drawer.Header>
-//                         )}
-//                         <Drawer.Body {...bodyProps}>
-//                             <Stack gap={bodyGap}>
-//                                 <ErrorAlert message={error} />
-//                                 {children}
-//                             </Stack>
-//                         </Drawer.Body>
-//                         {footer && (
-//                             <Drawer.Footer pb="10">
-//                                 {footer}
-//                             </Drawer.Footer>
-//                         )}
-//                     </Drawer.Content>
-//                 </Drawer.Positioner>
-//             </Portal>
-//         </Drawer.Root>
-//     );
-// }
+export interface ControlledDrawerProps {
+    open: boolean
+    onClose: () => void
+    title: string
+    children: React.ReactNode
+    header?: React.ReactNode
+    footer?: React.ReactNode
+    placement?: 'start' | 'end' | 'top' | 'bottom'
+}
 
-// export default BaseDrawer;
+export function ControlledDrawer({ open, onClose, title, children, header, footer, placement = 'end' }: ControlledDrawerProps) {
+    return (
+        <Drawer.Root open={open} onOpenChange={e => { if (!e.open) onClose(); }} placement={placement}>
+            <Portal>
+                <Drawer.Backdrop />
+                <Drawer.Positioner>
+                    <Drawer.Content w="full" mb="10">
+                        <Drawer.Header>
+                            <Drawer.Title>{title}</Drawer.Title>
+                            {header}
+                        </Drawer.Header>
+                        <Drawer.Body>
+                            {children}
+                        </Drawer.Body>
+                        <Drawer.Footer>
+                            {footer}
+                        </Drawer.Footer>
+                        <Drawer.CloseTrigger asChild>
+                            <CloseButton size="sm" />
+                        </Drawer.CloseTrigger>
+                    </Drawer.Content>
+                </Drawer.Positioner>
+            </Portal>
+        </Drawer.Root>
+    )
+}

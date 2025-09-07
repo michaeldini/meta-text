@@ -6,7 +6,7 @@ import React from 'react';
 import { Wrap } from '@chakra-ui/react/wrap';
 import Flashcard from './components/Flashcard';
 import { Explanation } from '@mtypes/MetatextReview.types';
-import { Alert } from '@components/ui/alert';
+import { EmptyState } from '@components/ui';
 
 interface FlashCardsProps {
     flashcardItems: Explanation[];
@@ -14,7 +14,7 @@ interface FlashCardsProps {
 export function FlashCards({ flashcardItems }: FlashCardsProps) {
 
     if (flashcardItems.length === 0) {
-        return <Alert>No words yet. Define some words in the metatext editor to see them appear here.</Alert>;
+        return <EmptyState title="No Flashcards Yet" icon="😕" description="Explain a word to see it here." />;
     }
 
     return (

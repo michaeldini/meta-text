@@ -1,6 +1,9 @@
-/* eslint-disable react-refresh/only-export-components */
-"use client"
 
+/**
+ * Color mode management using next-themes and Chakra UI
+ * - Provides a ThemeProvider to wrap the application
+ * - Code provided by Chakra CLI. 
+ */
 import type { IconButtonProps, SpanProps } from "@chakra-ui/react"
 import { ClientOnly, IconButton, Skeleton, Span } from "@chakra-ui/react"
 import { ThemeProvider, useTheme } from "next-themes"

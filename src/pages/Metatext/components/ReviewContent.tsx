@@ -5,7 +5,8 @@ import type { ReactElement } from 'react';
 import { FlashCards, ReviewTable, Phrases } from '@features/review';
 import { ChunkType, } from '@mtypes/documents';
 import { Explanation } from '@mtypes/MetatextReview.types'
-import { ReviewSection } from './ReviewSection';
+import { useState } from 'react';
+import { Box, Button } from '@chakra-ui/react';
 
 interface ReviewContentProps {
     flashcards: Explanation[];
@@ -16,43 +17,52 @@ interface ReviewContentProps {
 /**
  * ReviewContent component
  * - Displays explanations, flashcards, and a review table in separate sections
- * - Uses ReviewSection for each part to allow expansion/collapse
  *
  * @param {ReviewContentProps} props - Contains flashcards, phrases, and chunkReviewTable data
  * @returns {ReactElement} The rendered ReviewContent component
  */
-export function ReviewContent({
-    flashcards,
-    phrases,
-    chunkReviewTable
-}: ReviewContentProps): ReactElement {
-    console.log('ReviewContent data:', {
-        flashcards,
-        phrases,
-        chunkReviewTable
-    });
+export function ReviewContent({ flashcards, phrases, chunkReviewTable }: ReviewContentProps): ReactElement {
+    const [showExplanations, setShowExplanations] = useState(true);
+    const [showFlashcards, setShowFlashcards] = useState(true);
+    const [showReviewTable, setShowReviewTable] = useState(true);
+
     return (
         <>
-            <ReviewSection
-                title="Explanations"
-                testId="explanations-accordion"
-            >
-                <Phrases phrases={phrases} />
-            </ReviewSection>
+            <Box mb={4}>
+                <Button
+                    data-testid="explanations-toggle"
+                    onClick={() => setShowExplanations((v) => !v)}
+                    mb={2}
+                    size="sm"
+                >
+                    {showExplanations ? 'Hide' : 'Show'} Explanations
+                </Button>
+                {showExplanations && <Phrases phrases={phrases} />}
+            </Box>
 
-            <ReviewSection
-                title="Flashcards"
-                testId="flashcards-accordion"
-            >
-                <FlashCards flashcardItems={flashcards} />
-            </ReviewSection>
+            <Box mb={4}>
+                <Button
+                    data-testid="flashcards-toggle"
+                    onClick={() => setShowFlashcards((v) => !v)}
+                    mb={2}
+                    size="sm"
+                >
+                    {showFlashcards ? 'Hide' : 'Show'} Flashcards
+                </Button>
+                {showFlashcards && <FlashCards flashcardItems={flashcards} />}
+            </Box>
 
-            <ReviewSection
-                title="ReviewTable"
-                testId="chunks-accordion"
-            >
-                <ReviewTable chunks={chunkReviewTable} />
-            </ReviewSection>
+            <Box mb={4}>
+                <Button
+                    data-testid="reviewtable-toggle"
+                    onClick={() => setShowReviewTable((v) => !v)}
+                    mb={2}
+                    size="sm"
+                >
+                    {showReviewTable ? 'Hide' : 'Show'} Review Table
+                </Button>
+                {showReviewTable && <ReviewTable chunks={chunkReviewTable} />}
+            </Box>
         </>
     );
 }

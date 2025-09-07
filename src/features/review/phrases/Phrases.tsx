@@ -5,7 +5,7 @@
 import React from 'react';
 import { Explanation } from '@mtypes/MetatextReview.types';
 import { Box, Collapsible, Text, Heading } from "@chakra-ui/react"
-import { Alert } from '@components/ui/alert';
+import { EmptyState } from '@components/ui/empty-state';
 
 
 interface PhrasesProps {
@@ -54,7 +54,8 @@ export function PhraseItem({ phrase }: PhraseItemProps) {
 
 export function Phrases({ phrases }: PhrasesProps) {
     if (!phrases.length)
-        return <Alert>No phrases yet. Define some phrases in the metatext editor to see them appear here.</Alert>;
+        return <EmptyState title="No Explanations Yet" icon="😕" description="Create a new explanation to see it here." />
+
 
     return (
         <Box>
