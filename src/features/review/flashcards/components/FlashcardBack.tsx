@@ -2,8 +2,8 @@ import { HiBars3, HiQuestionMarkCircle } from 'react-icons/hi2';
 // Back of a flashcard component that displays the definition and context of a word
 
 import React from 'react';
-import { Card, Button, Text, Box, Stack } from '@chakra-ui/react';
-import InfoButton from './InfoPopoverButton';
+import { Card, Button, Text, Box, Stack, IconButton, Highlight } from '@chakra-ui/react';
+import { SimpleDrawer, Tooltip } from '@components/ui';
 
 interface FlashcardBackProps {
     word: string;
@@ -37,30 +37,55 @@ export function FlashcardBack(props: FlashcardBackProps) {
                     borderRadius="md"
                     mb="2"
                 >
-                    Go back
+                    <Card.Title>
+                        {word}
+                    </Card.Title>
                 </Button>
-                <Card.Title>
-                    {word}
-                </Card.Title>
-                <Card.Description>
+                <Card.Description >
                     {definition}
                 </Card.Description>
             </Card.Body>
+
             <Card.Footer justifyContent="flex-end">
-                <InfoButton
-                    icon={<HiBars3 />}
-                    dialogId="info-dialog"
+                {/* Definition In Context */}
+                <SimpleDrawer
+                    triggerButton={
+                        <Tooltip content="Definition In Context">
+                            <IconButton
+                                aria-label={`open-definition-${word}`}
+                                color="secondary"
+                            >
+                                <HiBars3 />
+                            </IconButton>
+                        </Tooltip>
+                    }
                     title="Definition In Context"
-                    word={word}
-                    content={definition_in_context}
-                />
-                <InfoButton
-                    icon={<HiQuestionMarkCircle />}
-                    dialogId="context-dialog"
+                >
+                    <Box p="4">
+                        <Text fontWeight="bold">Word: {word}</Text>
+                        <Text mt="2">{definition_in_context}</Text>
+                    </Box>
+                </SimpleDrawer>
+
+                {/* Context */}
+                <SimpleDrawer
+                    triggerButton={
+                        <Tooltip content="Context">
+                            <IconButton
+                                aria-label={`open-context-${word}`}
+                                color="secondary"
+                            >
+                                <HiQuestionMarkCircle />
+                            </IconButton>
+                        </Tooltip>
+                    }
                     title="Context"
-                    word={word}
-                    content={<Box as="span" dangerouslySetInnerHTML={{ __html: highlightedText }} />}
-                />
+                    size="xl"
+                >
+                    <Highlight query={word}
+                        styles={{ px: "0.5", bg: "orange.subtle", color: "orange.fg" }}
+                    >{context}</Highlight>
+                </SimpleDrawer>
             </Card.Footer>
         </>
     );

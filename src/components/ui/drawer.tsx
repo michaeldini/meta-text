@@ -6,11 +6,12 @@ export interface SimpleDrawerProps {
     header?: React.ReactNode
     footer?: React.ReactNode
     placement?: 'start' | 'end' | 'top' | 'bottom'
+    size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
 }
 
-export function SimpleDrawer({ triggerButton, title, children, header, footer, placement = 'end' }: SimpleDrawerProps) {
+export function SimpleDrawer({ triggerButton, title, children, header, footer, placement = 'end', size = 'md' }: SimpleDrawerProps) {
     return (
-        <Drawer.Root placement={placement}>
+        <Drawer.Root placement={placement} size={size}>
             <Drawer.Trigger>
                 {triggerButton}
             </Drawer.Trigger>
@@ -46,11 +47,12 @@ export interface ControlledDrawerProps {
     header?: React.ReactNode
     footer?: React.ReactNode
     placement?: 'start' | 'end' | 'top' | 'bottom'
+    size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
 }
 
-export function ControlledDrawer({ open, onClose, title, children, header, footer, placement = 'end' }: ControlledDrawerProps) {
+export function ControlledDrawer({ open, onClose, title, children, header, footer, placement = 'end', size = 'md' }: ControlledDrawerProps) {
     return (
-        <Drawer.Root open={open} onOpenChange={e => { if (!e.open) onClose(); }} placement={placement}>
+        <Drawer.Root open={open} onOpenChange={e => { if (!e.open) onClose(); }} placement={placement} size={size}>
             <Portal>
                 <Drawer.Backdrop />
                 <Drawer.Positioner>

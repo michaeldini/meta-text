@@ -13,20 +13,20 @@ interface FlashcardFrontProps {
 export function FlashcardFront(props: FlashcardFrontProps) {
     const { word, setFlipped } = props;
     return (
-        <Card.Body gap="0">
-            <Button
-                onClick={() => setFlipped(true)}
-                fontSize="2xl"
-                fontWeight="bold"
-                borderRadius="md"
-                width="100%"
-                height="auto"
-            >
+        <Button
+            onClick={() => setFlipped(true)}
+            fontSize="2xl"
+            fontWeight="bold"
+            borderRadius="md"
+            width="100%"
+            height="auto"
+        >
+            <Card.Body gap="0">
                 <Text fontSize="2xl" fontWeight="bold" textAlign="center">
                     {word}
                 </Text>
-            </Button>
-        </Card.Body>
+            </Card.Body>
+        </Button>
     );
 }
 
