@@ -13,15 +13,6 @@ import { PasswordInput, PasswordStrengthMeter } from '@components/ui/password-in
 import { ErrorAlert } from '@components/ErrorAlert';
 import { useNavigate } from 'react-router-dom';
 
-const shake = keyframes`
-  0% { transform: translateX(0); }
-  20% { transform: translateX(-8px); }
-  40% { transform: translateX(8px); }
-  60% { transform: translateX(-8px); }
-  80% { transform: translateX(8px); }
-  100% { transform: translateX(0); }
-`;
-
 export type AuthFormProps = {
     title: string;
     submitText: string;
@@ -67,7 +58,7 @@ export function AuthForm({
 
     return (
         <Box display="flex" justifyContent="center">
-            <Box animation={shakeAnim ? `${shake} 0.6s` : undefined}>
+            <Box animation={shakeAnim ? `shakeX 0.6s` : undefined}>
                 <Heading mb={4}>{title}</Heading>
                 <form onSubmit={handleSubmit}>
                     <Input

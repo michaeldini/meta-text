@@ -10,40 +10,46 @@
  */
 
 import { defineConfig, createSystem, mergeConfigs, defaultConfig } from "@chakra-ui/react"
-// import {
-//     inputRecipe,
-//     textareaRecipe,
-//     headingRecipe,
-//     spinnerRecipe,
-//     buttonRecipe,
-//     iconRecipe,
-//     containerRecipe,
-//     drawerSlotRecipe,
-//     tagSlotRecipe,
-//     cardSlotRecipe,
-//     listSlotRecipe,
-//     fileUploadSlotRecipe,
-
-
-
-// } from "@chakra-ui/react/theme"
 import { defineRecipe } from "@chakra-ui/react"
-
-// App-specific additions/overrides to Chakra's defaultConfig. We merge instead of replace so
-// core utilities (margin/padding shorthands like mt, mb, px, etc.) remain available in typing.
 const appConfig = defineConfig({
     theme: {
-        // slotRecipes: {
-        //     drawer: drawerSlotRecipe,
-        //     tag: tagSlotRecipe,
-        //     card: cardSlotRecipe,
-        //     list: listSlotRecipe,
-        //     fileUPload: fileUploadSlotRecipe,
+        keyframes: {
+            shakeX: {
+                "0%": { transform: "translateX(0)" },
+                "20%": { transform: "translateX(-8px)" },
+                "40%": { transform: "translateX(8px)" },
+                "60%": { transform: "translateX(-8px)" },
+                "80%": { transform: "translateX(8px)" },
+                "100%": { transform: "translateX(0)" },
+            },
+        },
 
-
-        // },
-        // Component recipes for Chakra UI core components
         recipes: {
+            box: defineRecipe({
+                base: {
+                    bg: "bg.panel",
+                    borderWidth: "1px",
+                    borderColor: "border",
+                    borderRadius: "md",
+                    boxShadow: "sm",
+                    padding: 4,
+                },
+                variants: {
+                    variant: {
+                        elevated: {
+                            padding: 2,
+                            borderWidth: "4px",
+                            borderColor: "border.muted",
+                            borderRadius: "lg",
+                            boxShadow: "md",
+                            minWidth: "xs",
+                        },
+                        outlined: {
+                            borderWidth: "2px",
+                        },
+                    },
+                },
+            }),
             button: defineRecipe({
                 base: {
                     color: "fg",
@@ -104,6 +110,9 @@ const appConfig = defineConfig({
         },
         // Design tokens for easy customization
         tokens: {
+            animations: {
+                shakeX: { value: "shakeX 0.6s ease-in-out" },
+            },
             colors: {
                 primary: { value: "#0f8dee" },
                 // secondary: { value: "#212020" },

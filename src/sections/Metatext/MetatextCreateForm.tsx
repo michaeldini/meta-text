@@ -82,7 +82,7 @@ function MetatextCreateForm({ sourceDocs }: MetatextCreateFormProps): React.Reac
     const selectedSourceDocIdStr = selectedSourceDocId ? String(selectedSourceDocId) : '';
 
     return (
-        <Box p={2} borderWidth={"4px"} borderColor="border.muted" borderRadius="lg" boxShadow="md">
+        <Box p={2} borderWidth={"4px"} borderColor="border.muted" borderRadius="lg" shadow="md" minWidth="xs">
             {header}
             <form onSubmit={handleSubmit}>
                 <Fieldset.Root>

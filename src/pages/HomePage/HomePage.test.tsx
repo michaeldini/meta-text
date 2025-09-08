@@ -17,9 +17,7 @@ vi.mock('@sections/Metatext/MetatextManager', () => ({
 vi.mock('@sections/SourceDocuments/SourceDocumentsManager', () => ({
     default: (props: any) => React.createElement('div', { 'data-testid': 'source-documents-manager' }, 'source-docs'),
 }))
-vi.mock('@components/PageContainer', () => ({
-    PageContainer: (props: any) => React.createElement('div', { 'data-testid': 'page-container' }, props.children),
-}))
+
 
 import HomePage from './HomePage'
 

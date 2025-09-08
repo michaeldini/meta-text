@@ -7,7 +7,6 @@ import React from 'react';
 import { Box } from '@chakra-ui/react/box';
 import { Text } from '@chakra-ui/react/text';
 import type { ReactElement } from 'react';
-import { PageContainer } from '@components/PageContainer';
 import { useSourceDocEditor } from './hooks/useSourceDocEditor';
 
 import { useNavigate } from 'react-router-dom';
@@ -49,7 +48,7 @@ function SourceDocDetailPage(): ReactElement | null {
     if (id === null) return null;
     if (!doc || !editor) return null;
     return (
-        <PageContainer data-testid="sourcedoc-detail-page">
+        <Box maxWidth="3xl" marginX="auto" data-testid="sourcedoc-detail-page">
 
             <Box bg="bg.subtle" p="4" mb="10">
                 {headingText(doc.title)}
@@ -66,7 +65,7 @@ function SourceDocDetailPage(): ReactElement | null {
                 handleSave={editor.handleSave}
                 handleTextChange={editor.handleTextChange}
             />
-        </PageContainer>
+        </Box>
 
     );
 }

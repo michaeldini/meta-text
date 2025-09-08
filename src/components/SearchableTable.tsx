@@ -153,18 +153,18 @@ export function ControlledTable({ items, navigateToBase, deleteItemMutation }: C
 
 interface SearchableTableProps {
     documents: Array<SourceDocumentSummary | MetatextSummary>;
-    showTitle: boolean;
+    title: string;
     navigateToBase: string;
     // eslint - disable - next - line-- required shape
     deleteItemMutation: UseMutationResult<unknown, unknown, number, unknown>;
 }
 
-export function SearchableTable({ documents, showTitle, navigateToBase, deleteItemMutation }: SearchableTableProps) {
+export function SearchableTable({ documents, title, navigateToBase, deleteItemMutation }: SearchableTableProps) {
     const { search, setSearch, inputRef, results } = useSearchResults(documents);
     return (
 
-        <Box p="2" borderWidth="4px" borderColor="border.muted" borderRadius="lg" dropShadow="md">
-            {showTitle && <Heading size="sub">Open</Heading>}
+        <Box p="2" borderWidth="4px" borderColor="border.muted" borderRadius="lg" dropShadow="md" minWidth="xs" >
+            {title && <Heading size="sub">{title}</Heading>}
             <SearchInput
                 search={search}
                 setSearch={setSearch}

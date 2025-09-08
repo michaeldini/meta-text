@@ -7,17 +7,14 @@ import React from 'react';
 import type { ReactElement } from 'react';
 
 // UI Components
-import MetatextManager from '@sections/Metatext/MetatextManager';
-import SourceDocumentsManager from '@sections/SourceDocuments/SourceDocumentsManager';
-import { PageContainer } from '@components/PageContainer';
-import { Stack, StackSeparator } from "@chakra-ui/react/stack"
-
-// UI Constants
-import { WelcomeText, AppInstructions } from './homepage.constants';
+import { Wrap, Box } from "@chakra-ui/react"
 
 // Data Fetching Hooks
-import { useSourceDocuments, useMetatexts } from '@features/documents/useDocumentsData';
+import { useSourceDocuments, useMetatexts, useDeleteMetatext, useDeleteSourceDocument } from '@features/documents/useDocumentsData';
 import { Link } from '@chakra-ui/react';
+import MetatextCreateForm from '@sections/Metatext/MetatextCreateForm';
+import { SearchableTable } from '@components/SearchableTable';
+import SourceDocUploadForm from '@sections/SourceDocuments/SourceDocUploadForm';
 
 
 // HomePage component
@@ -28,30 +25,38 @@ function HomePage(): ReactElement {
     const metatextsQuery = useMetatexts();
 
     return (
-        <PageContainer>
+        <Box>
+            <Wrap
+                data-testid="homepage-content"
+                justify="center"
+                gap={{ base: 5, lg: 10 }} // Responsive gap
+            >
+                <SearchableTable
+                    documents={metatextsQuery.data ?? []}
+                    title="Metatexts"
+                    navigateToBase="/metatext/"
+                    deleteItemMutation={useDeleteMetatext()}
+                />
+                <MetatextCreateForm
+                    sourceDocs={sourceDocsQuery.data ?? []}
+                    sourceDocsLoading={sourceDocsQuery.isLoading}
+                />
+                <SearchableTable
+                    documents={sourceDocsQuery.data ?? []}
+                    title='SourceDocs'
+                    navigateToBase="/sourcedoc/"
+                    deleteItemMutation={useDeleteSourceDocument()}
+                />
+                <SourceDocUploadForm />
+            </Wrap>
+
             <Link href="/experiments" color="blue.500" fontWeight="bold">
                 Go to Experiments
             </Link>
             <Link px="4" href="/russiandolls" color="blue.500" fontWeight="bold">
                 Go to Experiments 2
             </Link>
-            <Stack
-                data-testid="homepage-content"
-                justify="center"
-                separator={<StackSeparator />}
-                gap={{ base: 5, lg: 10 }} // Responsive gap
-            >
-                <WelcomeText />
-                <MetatextManager
-                    metatexts={metatextsQuery.data ?? []}
-                    sourceDocs={sourceDocsQuery.data ?? []}
-                />
-                <SourceDocumentsManager
-                    sourceDocs={sourceDocsQuery.data ?? []}
-                />
-                <AppInstructions />
-            </Stack>
-        </PageContainer>
+        </Box>
     );
 }
 
