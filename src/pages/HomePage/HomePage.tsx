@@ -30,6 +30,7 @@ function HomePage(): ReactElement {
                 data-testid="homepage-content"
                 justify="center"
                 gap={{ base: 5, lg: 10 }} // Responsive gap
+
             >
                 <SearchableTable
                     documents={metatextsQuery.data ?? []}
@@ -41,13 +42,13 @@ function HomePage(): ReactElement {
                     sourceDocs={sourceDocsQuery.data ?? []}
                     sourceDocsLoading={sourceDocsQuery.isLoading}
                 />
+                <SourceDocUploadForm />
                 <SearchableTable
                     documents={sourceDocsQuery.data ?? []}
                     title='SourceDocs'
                     navigateToBase="/sourcedoc/"
                     deleteItemMutation={useDeleteSourceDocument()}
                 />
-                <SourceDocUploadForm />
             </Wrap>
 
             <Link href="/experiments" color="blue.500" fontWeight="bold">

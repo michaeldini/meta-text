@@ -17,8 +17,8 @@ function SourceDocUploadForm(): React.ReactElement {
     const isPending = addSourceDocuments.isPending;
 
     return (
-        <Stack p="2" borderWidth="4px" borderColor="border.muted" borderRadius="lg" dropShadow="md" minWidth="xs">
-            <Heading size="sub">Upload</Heading>
+        <Stack p="4" minWidth="xs" >
+            <Heading size="sub" mb="4">Upload</Heading>
             <ErrorAlert message={error} title="Upload failed" data-testid="upload-error" />
             <form onSubmit={handleSubmit} aria-busy={isPending}>
                 <Stack direction="column">

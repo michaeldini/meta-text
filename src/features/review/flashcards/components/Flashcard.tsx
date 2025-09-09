@@ -18,7 +18,7 @@ export function Flashcard(props: FlashcardProps) {
     const [flipped, setFlipped] = useState(false);
 
     return (
-        <Card.Root variant="elevated" w="300px" p="0" >
+        <Card.Root w="300px" p="0" >
             {/* Front and Back are conditionally rendered based on flipped state */}
             {!flipped ? (
                 <FlashcardFront word={word} setFlipped={setFlipped} />

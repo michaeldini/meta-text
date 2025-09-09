@@ -87,8 +87,7 @@ export function TableRow({ item, navigate, navigateToBase, deleteItemMutation }:
                     }}
                     tabIndex={0}
                     _hover={{ textDecoration: 'underline' }}
-                    width="auto"
-                    pl="2"
+                    width="100%"
                 />
             </Table.Cell>
             <Table.Cell textAlign="center">
@@ -128,12 +127,12 @@ export function ControlledTable({ items, navigateToBase, deleteItemMutation }: C
 
     // Render the table with items
     return (
-        <Table.ScrollArea borderWidth="1px" rounded="md" maxW="2xl" maxH="300px" >
+        <Table.ScrollArea maxH="xl" >
             <Table.Root size="sm" stickyHeader >
                 <Table.Header>
-                    <Table.Row bg="bg.subtle">
-                        <Table.ColumnHeader minW="220px">Title</Table.ColumnHeader>
-                        <Table.ColumnHeader textAlign="center"></Table.ColumnHeader>
+                    <Table.Row bg="bg.panel">
+                        <Table.ColumnHeader>Title</Table.ColumnHeader>
+                        <Table.ColumnHeader></Table.ColumnHeader>
                     </Table.Row>
                 </Table.Header>
                 <Table.Body bg="none">
@@ -163,8 +162,8 @@ export function SearchableTable({ documents, title, navigateToBase, deleteItemMu
     const { search, setSearch, inputRef, results } = useSearchResults(documents);
     return (
 
-        <Box p="2" borderWidth="4px" borderColor="border.muted" borderRadius="lg" dropShadow="md" minWidth="xs" >
-            {title && <Heading size="sub">{title}</Heading>}
+        <Box p="4" minWidth="xs" >
+            {title && <Heading size="sub" mb="4">{title}</Heading>}
             <SearchInput
                 search={search}
                 setSearch={setSearch}

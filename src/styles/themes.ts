@@ -25,31 +25,6 @@ const appConfig = defineConfig({
         },
 
         recipes: {
-            box: defineRecipe({
-                base: {
-                    bg: "bg.panel",
-                    borderWidth: "1px",
-                    borderColor: "border",
-                    borderRadius: "md",
-                    boxShadow: "sm",
-                    padding: 4,
-                },
-                variants: {
-                    variant: {
-                        elevated: {
-                            padding: 2,
-                            borderWidth: "4px",
-                            borderColor: "border.muted",
-                            borderRadius: "lg",
-                            boxShadow: "md",
-                            minWidth: "xs",
-                        },
-                        outlined: {
-                            borderWidth: "2px",
-                        },
-                    },
-                },
-            }),
             button: defineRecipe({
                 base: {
                     color: "fg",
@@ -85,7 +60,7 @@ const appConfig = defineConfig({
 
                         },
                         sub: {
-                            color: 'fg.subtle',
+                            color: 'teal.100',
                             fontSize: { base: "2xl", lg: "4xl" },
                             fontWeight: "bold",
                             lineHeight: "short",
@@ -95,18 +70,6 @@ const appConfig = defineConfig({
                     },
                 },
             }),
-
-
-
-            //     // You can add variants here if needed
-            // }),
-            // button: buttonRecipe,
-            // input: inputRecipe,
-            // container: containerRecipe,
-            // icon: iconRecipe,
-            // textarea: textareaRecipe,
-            // heading: headingRecipe,
-            // spinner: spinnerRecipe,
         },
         // Design tokens for easy customization
         tokens: {
@@ -115,7 +78,7 @@ const appConfig = defineConfig({
             },
             colors: {
                 primary: { value: "#0f8dee" },
-                // secondary: { value: "#212020" },
+                secondary: { value: "#212020" },
                 emphasized: { value: "primary" }, // Light gray for emphasis
             },
             fonts: {
