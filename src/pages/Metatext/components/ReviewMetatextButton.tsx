@@ -8,12 +8,12 @@ export function ReviewMetatextButton(): React.ReactElement | null {
     const navigate = useNavigate();
     const { metatextId } = useParams<{ metatextId: string }>();
 
-    // If route param is missing, don't render the button
-    if (!metatextId) return null;
-
     const onClick = React.useCallback(() => {
         navigate(`/metatext/${metatextId}/review`);
     }, [navigate, metatextId]);
+
+    // If route param is missing, don't render the button
+    if (!metatextId) return null;
 
     return (
         <TooltipButton

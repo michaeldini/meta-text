@@ -1,5 +1,3 @@
-// Purpose: Render text as selectable tokens enabling click-and-drag multi-word selection.
-// Emits the selected phrase with the full text and selection char range via onSelection callback.
 // Also supports rendering incoming highlight ranges with custom background colors.
 
 import React, { useState } from 'react';
@@ -14,7 +12,7 @@ export type WordSelectorProps = {
 
 type Token = { value: string; isWord: boolean; start: number; end: number };
 
-export const WordSelector: React.FC<WordSelectorProps> = ({ text, onSelection, highlights }) => {
+export function WordSelector({ text, onSelection, highlights }: WordSelectorProps) {
     // Tokenize into words, whitespace, and punctuation; also track char offsets
     const regex = /(\w+|\s+|[^\s\w]+)/g;
     const tokens: Token[] = [];

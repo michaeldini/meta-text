@@ -37,11 +37,10 @@ export interface ImageGenerationDialogProps {
     onPromptChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
     loading: boolean;
-    error: string | null;
 }
 
 export function ImageGenerationDialog(props: ImageGenerationDialogProps) {
-    const { prompt, loading, error, onPromptChange, onSubmit } = props;
+    const { prompt, loading, onPromptChange, onSubmit } = props;
     const promptLength = prompt.length;
     const isPromptValid = promptLength >= MIN_PROMPT_LENGTH && promptLength <= MAX_PROMPT_LENGTH;
     const isPromptTooLong = promptLength > MAX_PROMPT_LENGTH;

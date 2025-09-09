@@ -17,7 +17,7 @@ import { Panel } from '../types/experiments';
 import PromptBar from '../features/russion-dolls/components/PromptBar';
 import PanelsRow from '../features/russion-dolls/components/PanelsRow';
 
-const RussianDollsPage: React.FC = () => {
+export function RussianDollsPage() {
     const [prompt, setPrompt] = useState('');
     const [panels, setPanels] = useState<Panel[]>([]);
     const [initialLoading, setInitialLoading] = useState(false);
@@ -55,8 +55,8 @@ const RussianDollsPage: React.FC = () => {
             };
             setPanels([panel]);
             setPrompt('');
-        } catch (err: any) {
-            setInitialError(err?.message ?? 'Failed to fetch explanation');
+        } catch {
+            setInitialError('Failed to fetch explanation');
         } finally {
             setInitialLoading(false);
         }
@@ -110,9 +110,9 @@ const RussianDollsPage: React.FC = () => {
                 }
                 : p
             ));
-        } catch (err: any) {
+        } catch {
             setPanels(prev => prev.map(p => p.key === key
-                ? { ...p, loading: false, error: err?.message ?? 'Failed to fetch explanation' }
+                ? { ...p, loading: false, error: 'Failed to fetch explanation' }
                 : p
             ));
         }

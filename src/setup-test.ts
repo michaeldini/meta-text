@@ -1,3 +1,4 @@
+/* eslint-disable */
 // Test setup for Vitest + JSDOM
 // Purpose: provide DOM APIs and common browser mocks used across the test suite.
 // Tweaks below are project-specific: idempotent guards, use `globalThis`, and

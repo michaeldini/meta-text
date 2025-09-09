@@ -1,3 +1,4 @@
+/* eslint-disable */
 import '../../setup-test'
 import React from 'react'
 import { render } from '../../test-utils'

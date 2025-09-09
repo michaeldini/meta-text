@@ -17,7 +17,6 @@ export interface TooltipButtonProps extends Omit<ButtonProps, 'aria-label' | 'si
     color?: string;
     size?: ButtonProps['size'];
     role?: string;
-    iconSize?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'inherit';
     positioning?: TooltipProps['positioning'];
 }
 
@@ -32,7 +31,6 @@ export function TooltipButton({
     color = 'fg',
     size = 'lg',
     role = 'button',
-    iconSize = 'lg',
     positioning = { placement: "left-end" },
     ...rest
 }: TooltipButtonProps): React.ReactElement {

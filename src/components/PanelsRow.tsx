@@ -13,7 +13,7 @@ export type PanelsRowProps = {
     onSelection: (selection: string, context: string, range: { start: number; end: number }, sourcePanelKey: string) => void;
 };
 
-const PanelsRow: React.FC<PanelsRowProps> = ({ panels, onToggleView, onMinimize, onClose, onSelection }) => {
+export function PanelsRow({ panels, onToggleView, onMinimize, onClose, onSelection }: PanelsRowProps) {
     return (
         <Box mt={2} overflowX="auto">
             <Wrap direction="row" gap={4} align="flex-start" minH="200px" pb={2}>

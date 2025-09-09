@@ -4,22 +4,18 @@ import { HiMagnifyingGlass } from 'react-icons/hi2';
 // Provides the main search interface as described in the feature guide
 
 import React, { useCallback } from 'react';
-import { Box, CloseButton, InputGroup, Input, Field, ConditionalValue } from '@chakra-ui/react';
-import { useSearchStore } from '../store/useSearchStore';
+import { CloseButton, InputGroup, Input, Field } from '@chakra-ui/react';
+import { useSearchStore } from './store/useSearchStore';
 
 
 // Props for the SearchBar component
 interface SearchBarProps {
     placeholder?: string;
-    variant?: ConditionalValue<"outline" | "subtle" | "flushed" | undefined>
-    size?: 'sm' | 'md';
 }
 
 
 export function SearchBar({
     placeholder = 'Search...(CMD+K)',
-    variant = 'outline',
-    size = 'md',
 }: SearchBarProps) {
     const { query, setQuery } = useSearchStore();
 
@@ -47,11 +43,12 @@ export function SearchBar({
                 endElement={endElement}
             >
                 <Input
+                    ref={inputRef}
                     placeholder={placeholder}
                     value={query}
                     onChange={handleQueryChange}
-                    variant={variant}
-                    size={size}
+                    variant="outline"
+                    size="md"
                     borderBottom="1px solid"
                 />
             </InputGroup>

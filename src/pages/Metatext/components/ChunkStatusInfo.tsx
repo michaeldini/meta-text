@@ -3,9 +3,9 @@ import React from 'react';
 import { Stack } from '@chakra-ui/react/stack';
 import { Box } from '@chakra-ui/react/box';
 import { Text } from '@chakra-ui/react/text';
-import { SearchContainer } from '@features/chunk-search';
-import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
 import { Spinner } from '@chakra-ui/react';
+import { SearchBar } from '@features/chunk-search';
+import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
 
 interface ChunkStatusInfoProps {
     totalFilteredChunks: number;
@@ -39,7 +39,9 @@ export function ChunkStatusInfo({
     return (
         <Stack direction="row" data-testid="chunk-status-info"
             wrap="wrap">
-            <SearchContainer />
+            <Box width="60%">
+                <SearchBar />
+            </Box>
             {isSearching && <Spinner size="sm" mr={2} data-testid="chunk-search-spinner" />}
             <Text
                 fontSize="sm"
@@ -53,4 +55,4 @@ export function ChunkStatusInfo({
             </Text>
         </Stack>
     );
-} 10
+}

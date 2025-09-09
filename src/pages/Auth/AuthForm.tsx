@@ -3,7 +3,6 @@
 // and submission flow. Pages pass the auth action, labels, and redirect route.
 
 import React, { useState, FormEvent } from 'react';
-import { keyframes } from '@emotion/react';
 
 import { Box } from '@chakra-ui/react/box';
 import { Heading } from '@chakra-ui/react/heading';

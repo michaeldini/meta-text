@@ -4,7 +4,7 @@ import { HiQuestionMarkCircle } from 'react-icons/hi2';
  * Tool for explaining a word in context. Uses custom hooks for API calls and state management.
  * Displays explanation and allows user to request definitions.
  */
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Text, Heading } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react/box';
 import { ErrorAlert } from '@components/ErrorAlert';
@@ -34,7 +34,7 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
         if (result) {
             setShowDefinition(true);
         }
-    }, [chunk.text, chunk.metatext_id, handleExplain]);
+    }, [chunk.text, chunk.metatext_id, handleExplain, word]);
     return (
         <>
             {/* Show button only if not showing definition */}
@@ -44,7 +44,6 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
                         label={`Explain`}
                         tooltip={`Get an explanation for "${word}"`}
                         icon={<HiQuestionMarkCircle />}
-                        iconSize="2xl"
                         size="2xl"
                         onClick={handleDefine}
                         disabled={loading}

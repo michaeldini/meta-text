@@ -12,7 +12,7 @@ import { FaPlay, FaPause } from 'react-icons/fa';
 // Minimal MP3 player that only supports Play / Pause using the HTML5 <audio> element.
 // Put MP3 files in `public/audio/` and reference them at `/audio/your-file.mp3`.
 
-const ExperimentsPage: React.FC = () => {
+export function ExperimentsPage() {
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [src] = useState<string>('/audio/Its Over But I Tried Before.mp3'); // default file in public/audio/

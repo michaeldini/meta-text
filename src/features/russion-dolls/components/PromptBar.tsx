@@ -11,7 +11,7 @@ export type PromptBarProps = {
     error?: string | null;
 };
 
-const PromptBar: React.FC<PromptBarProps> = ({ value, onChange, onSubmit, loading, error }) => {
+export function PromptBar({ value, onChange, onSubmit, loading, error }: PromptBarProps) {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const trimmed = value.trim();

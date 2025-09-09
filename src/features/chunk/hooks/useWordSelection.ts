@@ -24,7 +24,7 @@ export function useWordSelection(chunk: ChunkType) {
     // the selection logic can reference a stable words array.
     const words = useMemo(() => {
         return chunk && chunk.text ? chunk.text.split(/\s+/) : [] as string[];
-    }, [chunk?.text]);
+    }, [chunk]);
 
     // Memoize highlighted indices to avoid creating a new array every render.
     // Depend only on start/end so toggling `isSelecting` doesn't force recompute.

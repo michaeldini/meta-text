@@ -1,3 +1,4 @@
+/* eslint-disable */
 // Component test for MetatextCreateForm
 import '../../setup-test'
 import React from 'react'

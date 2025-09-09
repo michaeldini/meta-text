@@ -1,3 +1,4 @@
+/* eslint-disable */
 // Smoke test for the real HomePage component.
 // Load test setup first (JSDOM mocks) and then mock the data hooks and
 // heavy child components before importing HomePage so module initialization

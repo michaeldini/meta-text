@@ -38,7 +38,7 @@ function StyleNumberInput({ label, value, min, max, step, onChange, disabled }: 
                 max={max}
                 step={step}
                 value={String(value)}
-                onValueChange={details => onChange(Number((details as any).value || details))}
+                onValueChange={details => onChange(Number((details).value || details))}
                 disabled={disabled}
             >
                 <NumberInput.Control />

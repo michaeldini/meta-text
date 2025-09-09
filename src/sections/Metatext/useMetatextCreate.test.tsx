@@ -1,3 +1,4 @@
+/* eslint-disable */
 // Tests for useMetatextCreate hook
 import '../../setup-test'
 import React from 'react'

@@ -1,4 +1,4 @@
-
+/* eslint-disable */
 /**
  * Color mode management using next-themes and Chakra UI
  * - Provides a ThemeProvider to wrap the application

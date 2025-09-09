@@ -21,8 +21,6 @@ export function FlashcardBack(props: FlashcardBackProps) {
         context,
         setFlipped
     } = props;
-    // Highlight the word in context using <mark>
-    const highlightedText: string = context.replace(new RegExp(`(${word})`, 'gi'), '<mark>$1</mark>');
 
     return (
         <>
@@ -53,7 +51,6 @@ export function FlashcardBack(props: FlashcardBackProps) {
                         <Tooltip content="Definition In Context">
                             <IconButton
                                 aria-label={`open-definition-${word}`}
-                                color="secondary"
                             >
                                 <HiBars3 />
                             </IconButton>
@@ -73,7 +70,6 @@ export function FlashcardBack(props: FlashcardBackProps) {
                         <Tooltip content="Context">
                             <IconButton
                                 aria-label={`open-context-${word}`}
-                                color="secondary"
                             >
                                 <HiQuestionMarkCircle />
                             </IconButton>
@@ -83,7 +79,7 @@ export function FlashcardBack(props: FlashcardBackProps) {
                     size="xl"
                 >
                     <Highlight query={word}
-                        styles={{ px: "0.5", bg: "orange.subtle", color: "orange.fg" }}
+                        styles={{ p: "1", bg: "primary" }}
                     >{context}</Highlight>
                 </SimpleDrawer>
             </Card.Footer>

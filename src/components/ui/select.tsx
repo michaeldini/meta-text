@@ -14,6 +14,7 @@ import {
 export interface SelectOption {
     label: string;
     value: string;
+    /* eslint-disable */
     [key: string]: any;
 }
 

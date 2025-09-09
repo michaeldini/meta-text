@@ -26,7 +26,7 @@ type PanelHeaderProps = {
     headerBg?: string;
 };
 
-const PanelHeader: React.FC<PanelHeaderProps> = ({ sourceWord, minimized, onMinimize, onClose, headerBg }) => {
+export function PanelHeader({ sourceWord, minimized, onMinimize, onClose, headerBg }: PanelHeaderProps) {
     return (
         <>
             <Flex align="center" justify="space-between" mb={2}>
@@ -72,7 +72,7 @@ type PanelActionsProps = {
     onToggleView: () => void;
 };
 
-const PanelActions: React.FC<PanelActionsProps> = ({ sourceWord, viewMode, loading, onToggleView }) => {
+export function PanelActions({ sourceWord, viewMode, loading, onToggleView }: PanelActionsProps) {
     const encodedQuery = encodeURIComponent(sourceWord ?? '');
     const wikiUrl = `https://en.wikipedia.org/wiki/Special:Search?search=${encodedQuery}`;
     const googleUrl = `https://www.google.com/search?q=${encodedQuery}`;
@@ -94,7 +94,7 @@ const PanelActions: React.FC<PanelActionsProps> = ({ sourceWord, viewMode, loadi
     );
 };
 
-const PanelCard: React.FC<PanelCardProps> = ({ panel, onToggleView, onMinimize, onClose, onSelection }) => {
+export function PanelCard({ panel, onToggleView, onMinimize, onClose, onSelection }: PanelCardProps) {
     const activeText = panel.viewMode === 'concise'
         ? (panel.concise ?? panel.comprehensive ?? '')
         : (panel.comprehensive ?? panel.concise ?? '');
