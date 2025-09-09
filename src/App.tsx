@@ -2,10 +2,10 @@
 *  Main application component for MetaText
 *  - Sets up routing and lazy loading for pages
 */
-import React, { JSX, Suspense, lazy, ComponentType } from 'react';
+import React, { JSX, lazy, ComponentType } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-import { Box, Spinner, Stack, Text } from '@chakra-ui/react';
+import { Box, Spinner, Text } from '@chakra-ui/react';
 import { NavBar } from '@features/navbar';
 import { GlobalNotifications } from '@components/GlobalNotifications';
 import { Toaster } from '@components/ui/toaster'

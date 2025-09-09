@@ -47,7 +47,6 @@ export const useAuthStore = create<AuthState>()(
                         error: null
                     });
                     localStorage.setItem('access_token', access_token);
-                    log.info('User logged in', { username });
                     return true;
                 } catch (e: unknown) {
                     // Show a friendly message for login failures
@@ -88,7 +87,6 @@ export const useAuthStore = create<AuthState>()(
                         error: null
                     });
                     localStorage.setItem('access_token', access_token);
-                    log.info('Token refreshed');
                 } catch (e: unknown) {
                     set({
                         error: getErrorMessage(e, 'Failed to refresh token'),
@@ -109,7 +107,6 @@ export const useAuthStore = create<AuthState>()(
                     loading: false
                 });
                 localStorage.removeItem('access_token');
-                log.info('User logged out');
             },
 
             clearError: () => {
