@@ -17,6 +17,7 @@ import { Heading } from '@chakra-ui/react/heading';
 import { useValidatedRouteId } from '@hooks/useValidatedRouteId';
 import { SourceDocInfoDisplay } from '@components/SourceDocInfo';
 import { StyleControls } from '@components/stylecontrols';
+import { Container } from '@chakra-ui/react/container';
 
 function headingText(title: string) {
     return <>
@@ -48,8 +49,7 @@ function SourceDocDetailPage(): ReactElement | null {
     if (id === null) return null;
     if (!doc || !editor) return null;
     return (
-        <Box maxWidth="3xl" marginX="auto" data-testid="sourcedoc-detail-page">
-
+        <Container maxWidth="4xl" data-testid="sourcedoc-detail-page">
             <Box bg="bg.subtle" p="4" mb="10">
                 {headingText(doc.title)}
                 <SourceDocInfoDisplay sourceDocumentId={id} />
@@ -65,7 +65,7 @@ function SourceDocDetailPage(): ReactElement | null {
                 handleSave={editor.handleSave}
                 handleTextChange={editor.handleTextChange}
             />
-        </Box>
+        </Container>
 
     );
 }
