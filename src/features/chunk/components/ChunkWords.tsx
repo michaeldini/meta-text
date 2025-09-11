@@ -3,7 +3,7 @@
 // At the end of the chunk, there is a button to merge the current chunk with the next one
 
 import React, { memo, useCallback, useState, useEffect } from 'react';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@styles';
 import { ControlledDrawer } from '@components/ui';
 
 import InteractiveText from './InteractiveText';
@@ -64,8 +64,8 @@ const ChunkWords = memo(function ChunkWords({
     }, [selectedWords, selectedWordIndices]);
 
     return (
-        <Box as="div" padding={4} width="100%" data-chunk-id={`chunk-${chunkIdx}`}>
-            <Flex as="div" flexWrap="wrap" gap={0} color={color}>
+        <Box css={{ padding: 16, width: '100%' }} data-chunk-id={`chunk-${chunkIdx}`}>
+            <Flex css={{ flexWrap: 'wrap', gap: 0, color }}>
                 <InteractiveText
                     words={words}
                     chunkIdx={chunkIdx}
@@ -78,7 +78,7 @@ const ChunkWords = memo(function ChunkWords({
                     onWordEnter={handleWordEnter}
                     onWordUp={handleWordUp}
                 />
-                <Box as="span" display="inline-block">
+                <Box as="span" css={{ display: 'inline-block' }}>
                     <MergeChunksTool chunk={chunk} />
                 </Box>
             </Flex>

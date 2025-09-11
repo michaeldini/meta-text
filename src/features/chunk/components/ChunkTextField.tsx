@@ -1,5 +1,5 @@
 import React from 'react';
-import { Textarea } from '@chakra-ui/react/textarea';
+import { styled } from '@styles';
 
 export interface ChunkTextFieldProps {
     label: string;
@@ -10,18 +10,28 @@ export interface ChunkTextFieldProps {
 }
 
 
+const StyledTextarea = styled('textarea', {
+    width: '100%',
+    minHeight: '60px',
+    padding: '8px 6px',
+    border: 'none',
+    borderBottom: '1px solid $colors$gray400',
+    outline: 'none',
+    fontSize: '0.95rem',
+    background: 'transparent',
+    color: 'inherit',
+    resize: 'none',
+    '::placeholder': { color: '$colors$gray500' },
+});
+
 export function ChunkTextField({ label, value, onChange, onBlur, placeholder, ...rest }: ChunkTextFieldProps) {
     return (
-        <Textarea
+        <StyledTextarea
             value={value}
             onChange={onChange}
             onBlur={onBlur}
             placeholder={placeholder}
             data-testid={`${label} input field`}
-            variant="subtle"
-            size="lg"
-            resize="none"
-            autoresize
             {...rest}
         />
     );

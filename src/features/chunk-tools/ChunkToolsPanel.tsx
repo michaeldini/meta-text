@@ -3,64 +3,67 @@
  * Displays toggleable buttons for chunk tools
  * Allows users to select multiple tools at once
  */
+
 import React from 'react';
-import { ButtonGroup, IconButton } from '@chakra-ui/react/button';
-import { Box } from '@chakra-ui/react/box';
-import { Text } from '@chakra-ui/react';
-
-import { Tooltip } from '@components/ui/tooltip';
-
+import { styled } from '@styles';
+import TooltipButton from '@components/TooltipButton';
 import { useChunkToolsPanel } from './useChunkToolsPanel';
 
-export function ChunkToolsPanel() {
-    // Use custom hook for business logic
-    const {
-        activeTabs,
-        chunkToolsRegistry,
-        handleToolClick,
-    } = useChunkToolsPanel();
+const PanelContainer = styled('div', {
+    position: 'fixed',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 99999, // Increased z-index for highest stacking
+    width: '100vw',
+    background: 'black',
+    boxShadow: '0 -2px 8px rgba(0,0,0,0.04)',
+    minHeight: '48px',
+    color: 'white',
+});
 
-    //  Map tools to buttons
-    // Each button toggles the corresponding tool
-    // Active tools are highlighted
+const ButtonGroup = styled('div', {
+    display: 'flex',
+    justifyContent: 'stretch',
+    alignItems: 'center',
+    gap: 0,
+    width: '100%',
+    padding: '$2',
+});
+
+
+
+
+/**
+ * ChunkToolsPanel
+ * Renders a fixed bottom panel with toggleable chunk tool buttons.
+ * Uses TooltipButton for consistent UI and accessibility.
+ */
+export function ChunkToolsPanel() {
+    const { activeTabs, chunkToolsRegistry, handleToolClick } = useChunkToolsPanel();
+
     const toolButtons = chunkToolsRegistry.map((tool) => (
-        <Tooltip
+        <TooltipButton
             key={tool.id}
-            content={<Text fontSize="sm">{tool.tooltip}</Text>}
-        >
-            <IconButton
-                aria-label={tool.name}
-                onClick={() => handleToolClick(tool.id)}
-                flex={1}
-                bg="bg.subtle"
-                color={activeTabs.includes(tool.id) ? "primary" : "bg.emphasized"}
-                _hover={{ bg: "bg.muted", color: "primary" }}
-            >
-                {tool.icon}
-            </IconButton>
-        </Tooltip>
+            label={tool.name}
+            tooltip={tool.tooltip}
+            icon={tool.icon}
+            onClick={() => handleToolClick(tool.id)}
+            disabled={false}
+            size="md"
+            tone={activeTabs.includes(tool.id) ? 'primary' : 'default'}
+            style={{ width: '100%', height: '100%', borderRadius: 'var(--radius-md)' }}
+            role="button"
+            aria-label={tool.name}
+        />
     ));
 
-
-    // Render the bottom panel with tool buttons
-    // Uses Chakra UI Box for fixed positioning
-    // ButtonGroup for layout and styling
-    // Each button is wrapped in a Tooltip for accessibility
-    // Flex properties ensure buttons stretch evenly
     return (
-        <Box position='fixed' left={0} right={0} bottom={0} zIndex={9999}
-        >
-            <ButtonGroup
-                size="lg"
-                width="100vw"
-                display="flex"
-                justifyContent="stretch"
-                alignItems="center"
-                gap={0}
-            >
+        <PanelContainer>
+            <ButtonGroup>
                 {toolButtons}
             </ButtonGroup>
-        </Box>
+        </PanelContainer>
     );
 }
 

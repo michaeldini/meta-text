@@ -4,7 +4,7 @@
  * and blur-based persistence
  */
 import React, { useState, useEffect, useCallback } from 'react';
-import { Box, } from '@chakra-ui/react';
+import { Box } from '@styles';
 
 import { ChunkTextField } from '@features/chunk/components/ChunkTextField';
 import type { ChunkType, UpdateChunkFieldMutationFn } from '@mtypes/documents';

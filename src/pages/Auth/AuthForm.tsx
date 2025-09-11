@@ -1,99 +1,75 @@
-// Reusable auth form for login and registration pages.
-// Encapsulates shared UI (username/password inputs, strength meter, error, shake animation)
-// and submission flow. Pages pass the auth action, labels, and redirect route.
-
-import React, { useState, FormEvent } from 'react';
-
-import { Box } from '@chakra-ui/react/box';
-import { Heading } from '@chakra-ui/react/heading';
-import { Input } from '@chakra-ui/react/input';
-import { Button } from '@chakra-ui/react/button';
-import { PasswordInput, PasswordStrengthMeter } from '@components/ui/password-input';
-import { ErrorAlert } from '@components/ErrorAlert';
+// AuthForm: Simple login/register form using Stitches primitives. No password strength meter.
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+    Box,
+    Stack,
+    Heading,
+    Input,
+    Button,
+    AlertRoot,
+    AlertContent,
+    AlertTitle,
+} from '@styles';
 
-export type AuthFormProps = {
-    title: string;
-    submitText: string;
-    authAction: (username: string, password: string) => Promise<boolean>;
-    redirectOnSuccess: string;
-    loading: boolean;
-    error?: string | null;
-    disabled?: boolean;
-    usernameAutoComplete?: string; // e.g., 'username'
-    passwordAutoComplete?: string; // 'current-password' | 'new-password'
-    errorTestId?: string;
-};
+interface AuthFormProps {
+    type: 'login' | 'register';
+    onSubmit: (data: { email: string; password: string }) => Promise<boolean>;
+    error?: string;
+    loading?: boolean;
+    redirectOnSuccess?: string;
+}
 
-export function AuthForm({
-    title,
-    submitText,
-    authAction,
-    redirectOnSuccess,
-    loading,
-    error,
-    disabled = false,
-    usernameAutoComplete = 'username',
-    passwordAutoComplete = 'current-password',
-    errorTestId,
-}: AuthFormProps) {
-    const [username, setUsername] = useState('');
+const AuthForm = ({ type, onSubmit, error, loading, redirectOnSuccess }: AuthFormProps) => {
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [shakeAnim, setShakeAnim] = useState(false);
+    const [formError, setFormError] = useState<string | null>(null);
     const navigate = useNavigate();
 
-    const handleSubmit = async (e: FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const success = await authAction(username, password);
-        if (success) {
-            setPassword('');
-            navigate(redirectOnSuccess);
-        } else if (error) {
-            setPassword('');
-            setShakeAnim(true);
-            setTimeout(() => setShakeAnim(false), 600);
+        setFormError(null);
+        try {
+            const success = await onSubmit({ email, password });
+            if (success && redirectOnSuccess) {
+                navigate(redirectOnSuccess);
+            }
+        } catch (err: any) {
+            setFormError(err?.message || 'Something went wrong');
         }
     };
 
     return (
-        <Box display="flex" justifyContent="center">
-            <Box animation={shakeAnim ? `shakeX 0.6s` : undefined}>
-                <Heading mb={4}>{title}</Heading>
-                <form onSubmit={handleSubmit}>
-                    <Input
-                        placeholder="Username"
-                        value={username}
-                        onChange={e => setUsername(e.target.value)}
-                        mb={3}
-                        required
-                        autoFocus
-                        autoComplete={usernameAutoComplete}
-                    />
-                    <PasswordInput
-                        placeholder="Password"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                        mb={3}
-                        required
-                        autoComplete={passwordAutoComplete}
-                    />
-                    <PasswordStrengthMeter value={password.length} max={16} mb={2} />
-                    <ErrorAlert message={error ?? undefined} data-testid={errorTestId} mt={2} />
-                    <Button
-                        type="submit"
-                        variant="solid"
-                        colorScheme="blue"
-                        loading={loading}
-                        width="100%"
-                        mt={2}
-                        disabled={disabled || loading}
-                    >
-                        {submitText}
-                    </Button>
-                </form>
-            </Box>
+        <Box as="form" css={{ maxWidth: 350, margin: '40px auto 0', padding: 24, borderRadius: 8, boxShadow: '0 2px 16px rgba(0,0,0,0.08)' }} onSubmit={handleSubmit}>
+            <Stack>
+                <Heading css={{ textAlign: 'center', marginBottom: 0 }}>{type === 'login' ? 'Login' : 'Register'}</Heading>
+                <Input
+                    type="text"
+                    placeholder="Username"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    required
+                />
+                <Input
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    required
+                />
+                {(formError || error) && (
+                    <AlertRoot>
+                        <AlertContent>
+                            <AlertTitle>{formError || error}</AlertTitle>
+                        </AlertContent>
+                    </AlertRoot>
+                )}
+                <Button type="submit" size="md" tone="primary" disabled={loading} css={{ width: '100%' }}>
+                    {loading ? (type === 'login' ? 'Logging in...' : 'Registering...') : type === 'login' ? 'Login' : 'Register'}
+                </Button>
+            </Stack>
         </Box>
     );
-}
+};
 
 export default AuthForm;

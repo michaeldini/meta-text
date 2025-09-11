@@ -1,8 +1,8 @@
 // Container component that renders all active chunk tools
-// Replaces the old ChunkTabs component with a simpler, more direct approach
+// Sticky inside StyledChunk, scrolls with user and stops at end
 
 import React from 'react';
-import { Box, Stack, StackSeparator, } from '@chakra-ui/react';
+import { styled } from '@styles';
 import type { ChunkType } from '@mtypes/documents';
 
 // Stationary Tools
@@ -27,20 +27,37 @@ import { useChunkToolsStore } from '@store/chunkToolsStore';
 // Types
 import { uiPreferences } from '@mtypes/user';
 
+const StickyContainer = styled('div', {
+    position: 'sticky',
+    top: 24,
+    zIndex: 1,
+    maxHeight: 'calc(100vh - 32px)',
+    overflowY: 'auto',
+    width: '320px',
+    minWidth: '240px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '$3',
+    background: 'transparent',
+});
+
+const StationaryStack = styled('div', {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '$2',
+});
+
 function renderStationaryTools(chunk: ChunkType, asRow: boolean, uiPreferences?: uiPreferences) {
     return (
-        <Stack
-            flexDirection={asRow ? 'row' : 'column'}
-            alignItems="center"
-        >
+        <StationaryStack style={{ flexDirection: asRow ? 'row' : 'column' }}>
             <ChunkPosition chunk={chunk} uiPreferences={uiPreferences} />
             <CopyTool chunkText={chunk.text} />
             <ChunkBookmarkToggle chunk={chunk} />
             <ChunkFavoriteToggle chunk={chunk} />
-        </Stack>
+        </StationaryStack>
     );
 }
-
 
 interface ChunkToolsContainerProps {
     chunk: ChunkType;
@@ -53,57 +70,40 @@ export function ChunkToolsContainer(props: ChunkToolsContainerProps) {
     const { activeTools } = useChunkToolsStore();
 
     return (
-        <Box data-chunk-id={`chunk-tools-${chunk.id}`}
-            width={activeTools.length > 0 ? '1/3' : '1/12'}
-        >
-            {/* Main sticky stack */}
-            <Stack
-                position="sticky"
-                top={12}
-                zIndex={1}
-                pr="1"
-                separator={<StackSeparator />}
-            >
-
-
-                {/* Tools Always visible at the top */}
-                {renderStationaryTools(chunk, activeTools.length > 0, uiPreferences)}
-
-                {/* Chunk tools, each wrapped in ToolBoundary for error/loading isolation */}
-                {activeTools.includes('note-summary') && (
-                    <NotesTool
-                        chunk={chunk}
-                        mutateChunkField={updateChunkFieldMutation.mutate}
-                        isVisible={true}
-                    />
-                )}
-                {activeTools.includes('evaluation') && (
-                    <EvaluationTool
-                        chunk={chunk}
-                        isVisible={true}
-                    />
-                )}
-                {activeTools.includes('image') && (
-                    <ImageTool
-                        chunk={chunk}
-                        isVisible={true}
-                    />
-                )}
-                {activeTools.includes('rewrite') && (
-                    <RewriteDisplayTool
-                        chunk={chunk}
-                        isVisible={true}
-                    />
-                )}
-                {activeTools.includes('explanation') && (
-                    <ExplanationTool
-                        chunk={chunk}
-                        isVisible={true}
-                    />
-                )}
-            </Stack>
-
-        </Box>
+        <StickyContainer data-chunk-id={`chunk-tools-${chunk.id}`}>
+            {renderStationaryTools(chunk, activeTools.length > 0, uiPreferences)}
+            {activeTools.includes('note-summary') && (
+                <NotesTool
+                    chunk={chunk}
+                    mutateChunkField={updateChunkFieldMutation.mutate}
+                    isVisible={true}
+                />
+            )}
+            {activeTools.includes('evaluation') && (
+                <EvaluationTool
+                    chunk={chunk}
+                    isVisible={true}
+                />
+            )}
+            {activeTools.includes('image') && (
+                <ImageTool
+                    chunk={chunk}
+                    isVisible={true}
+                />
+            )}
+            {activeTools.includes('rewrite') && (
+                <RewriteDisplayTool
+                    chunk={chunk}
+                    isVisible={true}
+                />
+            )}
+            {activeTools.includes('explanation') && (
+                <ExplanationTool
+                    chunk={chunk}
+                    isVisible={true}
+                />
+            )}
+        </StickyContainer>
     );
 }
 

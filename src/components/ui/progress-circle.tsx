@@ -1,45 +1,85 @@
-import type { SystemStyleObject } from "@chakra-ui/react"
-import {
-    AbsoluteCenter,
-    ProgressCircle as ChakraProgressCircle,
-} from "@chakra-ui/react"
-import * as React from "react"
+// ProgressCircle migrated from Chakra UI to Stitches
+import * as React from "react";
+import { styled } from '@styles';
 
-interface ProgressCircleProps extends ChakraProgressCircle.RootProps {
-    showValueText?: boolean
-    valueText?: React.ReactNode
-    trackColor?: SystemStyleObject["stroke"]
-    cap?: SystemStyleObject["strokeLinecap"]
-    thickness?: SystemStyleObject["strokeWidth"]
+interface ProgressCircleProps {
+    value: number;
+    max?: number;
+    showValueText?: boolean;
+    valueText?: React.ReactNode;
+    trackColor?: string;
+    color?: string;
+    cap?: 'round' | 'butt' | 'square';
+    thickness?: number;
+    size?: number;
+    className?: string;
 }
 
-export const ProgressCircle = React.forwardRef<
-    HTMLDivElement,
-    ProgressCircleProps
->(function ProgressCircle(props, ref) {
-    const {
+const CircleContainer = styled('div', {
+    position: 'relative',
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+});
+
+const ValueText = styled('div', {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    fontWeight: 600,
+    fontSize: '1rem',
+    color: 'inherit',
+    pointerEvents: 'none',
+});
+
+export const ProgressCircle = React.forwardRef<HTMLDivElement, ProgressCircleProps>(
+    function ProgressCircle({
+        value,
+        max = 100,
         showValueText,
         valueText,
-        trackColor,
-        color,
-        cap,
-        thickness,
+        trackColor = '#e5e5e5',
+        color = '#0ea5a4',
+        cap = 'round',
+        thickness = 8,
+        size = 64,
+        className,
         ...rest
-    } = props
+    }, ref) {
+        const radius = (size - thickness) / 2;
+        const circumference = 2 * Math.PI * radius;
+        const percent = Math.max(0, Math.min(1, value / max));
+        const offset = circumference * (1 - percent);
 
-    return (
-        <ChakraProgressCircle.Root {...rest} ref={ref}>
-            <ChakraProgressCircle.Circle css={{ "--thickness": thickness }}>
-                <ChakraProgressCircle.Track stroke={trackColor} />
-                <ChakraProgressCircle.Range stroke={color} strokeLinecap={cap} />
-            </ChakraProgressCircle.Circle>
-            {showValueText && (
-                <AbsoluteCenter>
-                    <ChakraProgressCircle.ValueText>
-                        {valueText}
-                    </ChakraProgressCircle.ValueText>
-                </AbsoluteCenter>
-            )}
-        </ChakraProgressCircle.Root>
-    )
-})
+        return (
+            <CircleContainer ref={ref} className={className} style={{ width: size, height: size }} {...rest}>
+                <svg width={size} height={size} style={{ display: 'block' }}>
+                    <circle
+                        cx={size / 2}
+                        cy={size / 2}
+                        r={radius}
+                        stroke={trackColor}
+                        strokeWidth={thickness}
+                        fill="none"
+                    />
+                    <circle
+                        cx={size / 2}
+                        cy={size / 2}
+                        r={radius}
+                        stroke={color}
+                        strokeWidth={thickness}
+                        fill="none"
+                        strokeDasharray={circumference}
+                        strokeDashoffset={offset}
+                        strokeLinecap={cap}
+                        style={{ transition: 'stroke-dashoffset 0.4s cubic-bezier(.4,0,.2,1)' }}
+                    />
+                </svg>
+                {showValueText && (
+                    <ValueText>{valueText ?? Math.round(percent * 100) + '%'}</ValueText>
+                )}
+            </CircleContainer>
+        );
+    }
+);

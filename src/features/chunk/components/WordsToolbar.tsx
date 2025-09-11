@@ -1,7 +1,7 @@
 // Toolbar for word-level tools in a chunk
 
 import React, { memo } from 'react';
-import { Stack } from '@chakra-ui/react/stack';
+import { Stack } from '@styles';
 import { SplitChunkTool } from '@features/chunk-split';
 import { WordsExplanationTool } from '@features/chunk-explanation';
 import type { ChunkType } from '@mtypes/documents';
@@ -19,7 +19,7 @@ export interface WordsToolbarProps {
  */
 export function WordsToolbar({ onClose, word, wordIdx, chunk }: WordsToolbarProps) {
     return (
-        <Stack gap={4} alignItems="center" justifyContent="center" p={4}>
+        <Stack css={{ gap: 16, alignItems: 'center', justifyContent: 'center', padding: 16 }}>
             <SplitChunkTool
                 wordIdx={wordIdx}
                 word={word}

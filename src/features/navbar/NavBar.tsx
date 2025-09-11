@@ -5,8 +5,7 @@
  * - Chakra UI Color-mode button (toggle light/dark theme)
  */
 import React from 'react';
-import { Flex, Box, Button, Spacer } from '@chakra-ui/react';
-import { ColorModeButton } from '@components/ui/color-mode';
+import { Flex, Box, Button } from '@styles';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuthStore } from '@store/authStore';
@@ -32,28 +31,21 @@ export function NavBar() {
     const navItems = filterNavItems(navConfig.items, isAuthenticated);
 
     return (
-        <Flex
-            as="nav"
-            data-testid="navbar"
-        >
-            <Flex align="center" gap={2}>
+        <Flex as="nav" css={{ alignItems: 'center', width: '100%', py: 8, px: 16 }} data-testid="navbar">
+            <Flex css={{ alignItems: 'center', gap: '12px' }}>
                 {navItems.map(item => (
                     <Button
                         key={item.label}
                         onClick={item.action}
-                        color="fg"
-                        size="xl"
-                        fontWeight="medium"
+                        size="lg"
+                        css={{ fontWeight: 500 }}
                     >
-                        {item.icon ? <item.icon /> : undefined}
+                        {item.icon ? <span style={{ marginRight: 6 }}><item.icon /></span> : null}
                         {item.label}
                     </Button>
                 ))}
             </Flex>
-            <Spacer />
-            <Box>
-                <ColorModeButton />
-            </Box>
+            <Box css={{ flex: 1 }} />
         </Flex>
     );
 }

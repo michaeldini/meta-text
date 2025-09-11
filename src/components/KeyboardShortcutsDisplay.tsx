@@ -73,11 +73,6 @@
  *  - If the shortcut map is empty, the drawer will only show the section headers; you may choose to
  *    add a fallback message in that scenario.
  *
- * Styling & Theming
- * -----------------
- *  - Uses Chakra tokens (e.g., color="fg", "fg.muted", variant="outline"). Ensure your theme defines
- *    these semantic color tokens. Adjust tokens centrally for consistent visual changes.
- *
  * Extending
  * ---------
  *  - Add new categories/shortcuts: modify `@utils/keyboardShortcuts` definitions.
@@ -104,8 +99,8 @@
  * allowing you to reuse List & Item without duplicating code.
  */
 import React, { memo } from 'react';
-import { Box, Text, VStack, HStack, Badge } from '@chakra-ui/react';
-import { IconButton } from '@chakra-ui/react/button';
+import { Box, Text, Stack, TagRoot as Badge, Button, Heading } from '@styles';
+import TooltipButton from '@components/TooltipButton';
 import { getShortcutsByCategory, formatShortcut, type KeyboardShortcut } from '@utils/keyboardShortcuts';
 import { HiQuestionMarkCircle } from 'react-icons/hi2';
 import { SimpleDrawer } from '@components/ui/drawer';
@@ -116,12 +111,12 @@ export interface KeyboardShortcutItemProps {
 
 export const KeyboardShortcutItem = memo(function KeyboardShortcutItem({ shortcut }: KeyboardShortcutItemProps) {
     return (
-        <HStack justify="end" w="full">
-            <Text fontSize="sm">{shortcut.description}</Text>
-            <Badge color="fg" variant="outline" fontFamily="mono" fontSize="xs">
+        <Box css={{ display: 'flex', justifyContent: 'flex-end', width: '100%', alignItems: 'center', gap: 8 }}>
+            <Text css={{ fontSize: '0.95rem' }}>{shortcut.description}</Text>
+            <Badge colorPalette="gray" css={{ fontFamily: 'monospace', fontSize: '0.85rem', border: '1px solid $colors$gray400' }}>
                 {formatShortcut(shortcut)}
             </Badge>
-        </HStack>
+        </Box>
     );
 });
 KeyboardShortcutItem.displayName = 'KeyboardShortcutItem';
@@ -142,15 +137,13 @@ export function KeyboardShortcutList({ categories, align = 'center' }: KeyboardS
                 const shortcuts = shortcutsByCategory[category];
                 if (!shortcuts?.length) return null;
                 return (
-                    <Box key={category} w="full">
-                        <Text fontWeight="semibold" mb={2} color="fg">
-                            {category}
-                        </Text>
-                        <VStack align={align} gap={1} pl={4}>
+                    <Box key={category} css={{ width: '100%' }}>
+                        <Text css={{ fontWeight: 600, marginBottom: 8, color: 'inherit' }}>{category}</Text>
+                        <Stack css={{ flexDirection: 'column', alignItems: align === 'flex-start' ? 'flex-start' : 'center', gap: 4, paddingLeft: 16 }}>
                             {shortcuts.map((s, i) => (
                                 <KeyboardShortcutItem key={i} shortcut={s} />
                             ))}
-                        </VStack>
+                        </Stack>
                     </Box>
                 );
             })}
@@ -177,20 +170,21 @@ export function KeyboardShortcutsDisplay({ categories }: KeyboardShortcutsDispla
         <>
             <SimpleDrawer
                 triggerButton={
-                    <IconButton
+                    <TooltipButton
                         aria-label="Open help"
-                        variant="ghost"
-                    >
-                        <HiQuestionMarkCircle />
-                    </IconButton>
+                        label=""
+                        tooltip="Show keyboard shortcuts"
+                        icon={<HiQuestionMarkCircle />}
+                        size="sm"
+                    />
                 }
                 title="Help"
             >
-                <VStack align="start" gap={4} w="full">
-                    <Text color="fg" fontWeight="semibold">Keyboard Shortcuts</Text>
-                    <Text fontSize="sm" color="fg.muted">Use these shortcuts to speed up your workflow.</Text>
+                <Stack css={{ flexDirection: 'column', alignItems: 'flex-start', gap: 16, width: '100%' }}>
+                    <Heading css={{ fontWeight: 600 }}>Keyboard Shortcuts</Heading>
+                    <Text css={{ fontSize: '0.95rem', color: '$gray500' }}>Use these shortcuts to speed up your workflow.</Text>
                     <KeyboardShortcutList categories={categories} align="flex-start" />
-                </VStack>
+                </Stack>
             </SimpleDrawer>
         </>
     );

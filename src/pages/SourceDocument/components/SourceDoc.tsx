@@ -1,11 +1,8 @@
 import { HiCheck } from 'react-icons/hi2';
 // Component for displaying and editing source document content
-// This component is responsible for rendering the text content of a source document
-// with appropriate styles and preferences set by the user. It supports both view and edit modes
-// for potentially very long documents (book-length content).
-import React from 'react';
-import { Box } from '@chakra-ui/react/box';
-import { Text } from '@chakra-ui/react';
+// Migrated from Chakra UI to Stitches. Uses primitives and styles from stitches.config.ts via @styles alias.
+import React, { useState } from 'react';
+import { Box, Text, Panel, Button } from '@styles';
 import { ErrorAlert } from '@components/ErrorAlert';
 
 
@@ -23,13 +20,12 @@ export interface SourceDocProps {
 }
 
 
+
 /**
  * Component for displaying and editing source document content
  * Receives all state and handlers as props from parent
+ * Migrated to Stitches. Editable UX: double-click to edit, click check to save, click outside to cancel.
  */
-// Refactored for Chakra UI Editable integration
-import { Editable } from '@chakra-ui/react';
-
 export default function SourceDoc({
     doc,
     isSaving,
@@ -40,56 +36,92 @@ export default function SourceDoc({
     handleSave,
     handleTextChange,
 }: SourceDocProps) {
+    const [isEditing, setIsEditing] = useState(false);
+    const [value, setValue] = useState(doc.text);
+
+    // Sync value if doc.text changes externally
+    React.useEffect(() => {
+        setValue(doc.text);
+    }, [doc.text]);
+
+    const handleEdit = () => {
+        if (!isSaving) setIsEditing(true);
+    };
+    const handleCancel = () => {
+        setValue(doc.text);
+        setIsEditing(false);
+    };
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setValue(e.target.value);
+        handleTextChange(e.target.value);
+    };
+    const handleSubmit = () => {
+        handleSave();
+        setIsEditing(false);
+    };
+
     return (
-        <Box
-            data-testid="source-doc-container">
+        <Box data-testid="source-doc-container">
             <ErrorAlert message={error} />
-            <Box width="100%" zIndex={1}>
-                <Editable.Root
-                    value={doc.text}
-                    onValueChange={(e) => handleTextChange(e.value)}
-                    submitMode="blur"
-                    activationMode="dblclick"
-                    placeholder="Enter document text..."
-                    disabled={isSaving}
-                    selectOnFocus={false} // Prevents auto-select on focus
-                    autoResize={false} // Disable auto-resize to manage height manually
-
-                >
-                    <Editable.Preview
-                        fontSize={`${textSizePx}px`}
-                        fontFamily={fontFamily}
-                        lineHeight={lineHeight}
+            <Panel css={{ width: '100%', zIndex: 1, minHeight: '80vh', background: '$background' }}>
+                {!isEditing ? (
+                    <Box
+                        css={{
+                            fontSize: `${textSizePx}px`,
+                            fontFamily,
+                            lineHeight,
+                            whiteSpace: 'pre-line',
+                            minHeight: '48px',
+                            padding: '1rem',
+                            cursor: isSaving ? 'not-allowed' : 'pointer',
+                        }}
                         aria-label="Document Text"
-                        style={{ whiteSpace: 'pre-line', lineHeight: lineHeight }}
-                        p="1rem"
-                        minH="48px"
-                        alignItems="flex-start"
-                        width="full"
-                    />
-                    <Editable.Textarea
-                        fontSize={`${textSizePx}px`}
-                        fontFamily={fontFamily}
-                        lineHeight={lineHeight}
-                        disabled={isSaving}
-                        style={{ whiteSpace: 'pre-line', lineHeight: lineHeight }}
-                        minHeight="80vh"
-                        zIndex={1000}
-                        padding="1rem"
-
-                    />
-                    <Editable.Control>
-                        <Editable.SubmitTrigger asChild>
-                            <HiCheck style={{ fontSize: '1.25em', cursor: 'pointer' }} onClick={handleSave} />
-                        </Editable.SubmitTrigger >
-                    </Editable.Control>
-                    {isSaving && (
-                        <Box>
-                            <Text>Saving...</Text>
-                        </Box>
-                    )}
-                </Editable.Root>
-            </Box>
+                        onDoubleClick={handleEdit}
+                        tabIndex={0}
+                    >
+                        <Text>{value || <span style={{ color: '#aaa' }}>Enter document text...</span>}</Text>
+                    </Box>
+                ) : (
+                    <Box css={{ position: 'relative' }}>
+                        <textarea
+                            value={value}
+                            onChange={handleChange}
+                            disabled={isSaving}
+                            style={{
+                                fontSize: `${textSizePx}px`,
+                                fontFamily,
+                                lineHeight,
+                                whiteSpace: 'pre-line',
+                                minHeight: '60vh',
+                                width: '100%',
+                                padding: '1rem',
+                                border: '1px solid $colors$gray400',
+                                borderRadius: 8,
+                                background: 'transparent',
+                                color: 'inherit',
+                                resize: 'vertical',
+                                zIndex: 1000,
+                            }}
+                            aria-label="Edit Document Text"
+                            autoFocus
+                            onBlur={handleCancel}
+                        />
+                        <Button
+                            tone="primary"
+                            size="md"
+                            css={{ position: 'absolute', top: 12, right: 12, zIndex: 1100 }}
+                            onClick={handleSubmit}
+                            disabled={isSaving}
+                            aria-label="Save"
+                        >
+                            <HiCheck style={{ fontSize: '1.25em' }} />
+                        </Button>
+                    </Box>
+                )}
+                {isSaving && (
+                    <Text css={{ marginTop: '12px', color: '$colors$buttonPrimaryBg' }}>Saving...</Text>
+                )}
+            </Panel>
         </Box>
     );
 }

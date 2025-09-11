@@ -80,7 +80,6 @@ import { NAVIGATION_SHORTCUTS, GLOBAL_SHORTCUTS, CHUNK_TOOL_SHORTCUTS, type Shor
 import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
 import { useChunkToolsStore } from '@store/chunkToolsStore';
 import type { ChunkToolId } from '@features/chunk-tools/toolsRegistry';
-import { useColorMode } from '@components/ui/color-mode'
 import { useDrawerStore, DRAWERS } from '@store/drawerStore';
 
 interface UseMetatextDetailKeyboardOptions {
@@ -108,7 +107,6 @@ export const useMetatextDetailKeyboard = ({
     const { clearSearch, query } = useSearchStore();
     const activeTabs = useChunkToolsStore(state => state.activeTools);
     const setActiveTabs = useChunkToolsStore(state => state.setActiveTools);
-    const { toggleColorMode } = useColorMode();
     const toggleDrawer = useDrawerStore(s => s.toggleDrawer);
 
     const handleNextPage = useCallback(() => {
@@ -208,14 +206,6 @@ export const useMetatextDetailKeyboard = ({
             enabled,
         },
         // Global shortcuts
-        {
-            ...GLOBAL_SHORTCUTS.TOGGLE_THEME,
-            handler: () => {
-                toggleColorMode?.();
-            },
-            enabled,
-
-        },
         {
             ...GLOBAL_SHORTCUTS.TOGGLE_HELP,
             handler: () => toggleDrawer(DRAWERS.keyboardShortcuts),

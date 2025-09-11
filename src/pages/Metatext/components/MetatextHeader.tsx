@@ -1,7 +1,6 @@
 // Header component for Metatext detail page displaying title and review button
 import React from 'react';
-import { Stack } from '@chakra-ui/react/stack';
-import { Heading } from '@chakra-ui/react/heading';
+import { Stack, Heading } from '@styles';
 import { KeyboardShortcutsDisplay } from '@components/KeyboardShortcutsDisplay';
 import type { ChunkType } from '@mtypes/documents';
 import { MetatextHeaderControls, SourceDocInfo, StyleControls } from 'src';
@@ -35,15 +34,12 @@ export function MetatextHeader({
 }: MetatextHeaderProps) {
     return (
         <Stack
-            direction="row"
-            alignItems="center"
-            wrap="wrap"
+            css={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}
             data-testid="metatext-header"
         >
-            <Heading size="md">metatext:</Heading>
+            <Heading css={{ fontSize: '1.1rem', fontWeight: 600 }}>metatext:</Heading>
             <Heading
-                size="3xl"
-                color="fg.info"
+                css={{ fontSize: '2rem', color: '#0ea5a4', fontWeight: 700 }}
                 data-testid="metatext-title"
             >
                 {title}

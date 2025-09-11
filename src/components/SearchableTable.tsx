@@ -1,19 +1,18 @@
 
-import { HiMagnifyingGlass, HiOutlineTrash } from 'react-icons/hi2';
 
 /* eslint-disable react-refresh/only-export-components */
 /**
  * SearchableTable.tsx
  * This file contains components and hooks for creating a searchable table interface.
  * It includes a search input, controlled table, and table row components and a hook for managing search results.
- */
+*/
 import React, { useState, useRef, useMemo } from 'react';
+import { HiMagnifyingGlass, HiOutlineTrash } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
-import { Input, InputGroup, CloseButton, Box, Heading } from '@chakra-ui/react';
 import { MetatextSummary, SourceDocumentSummary } from '@mtypes/index';
-import { Table } from '@chakra-ui/react';
 import { TooltipButton } from '@components/TooltipButton';
 import { UseMutationResult } from '@tanstack/react-query';
+import { styled, Panel, Heading, Input, ClearButton } from '@styles';
 
 // useSearchResults: Hook to manage search/filter state and results
 // returns results that can be passed to a table component
@@ -44,24 +43,43 @@ function clearSearchAndFocus(setSearch: (value: string) => void, inputRef?: Reac
     }
 }
 
+// Stitches styled primitives used in this file
+const HeadingStyled = Heading;
+
+const InputGroupDiv = styled('div', {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    marginBottom: '8px',
+});
+
+const IconLeft = styled('span', {
+    display: 'inline-flex',
+    alignItems: 'center',
+    color: 'gray',
+});
+
+const InputStyled = Input;
+
 export function SearchInput({ search, setSearch, inputRef }: SearchInputProps) {
     return (
-        <InputGroup startElement={<HiMagnifyingGlass />} endElement={search ? (
-            <CloseButton
-                size="xs"
-                py="2"
-                me="-2"
-                onClick={() => clearSearchAndFocus(setSearch, inputRef)}
-            />
-        ) : undefined}>
-            <Input
-                ref={inputRef}
+        <InputGroupDiv>
+            <IconLeft aria-hidden>
+                <HiMagnifyingGlass />
+            </IconLeft>
+            <InputStyled
+                ref={inputRef as any}
                 placeholder="Search..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                borderBottom="1px solid"
+                aria-label="Search"
             />
-        </InputGroup>
+            {search ? (
+                <ClearButton onClick={() => clearSearchAndFocus(setSearch, inputRef)} aria-label="Clear search">
+                    ×
+                </ClearButton>
+            ) : null}
+        </InputGroupDiv>
     );
 }
 
@@ -74,35 +92,40 @@ export interface TableRowProps {
 }
 
 export function TableRow({ item, navigate, navigateToBase, deleteItemMutation }: TableRowProps) {
+    const base = navigateToBase.endsWith('/') ? navigateToBase : `${navigateToBase}/`;
     return (
-        <Table.Row key={item.id} bg="none">
-            <Table.Cell>
-                <TooltipButton
-                    label={item.title}
-                    tooltip={`View ${item.title}`}
-                    data-testid={`item-${item.id}`}
-                    onClick={() => {
-                        const base = navigateToBase.endsWith('/') ? navigateToBase : `${navigateToBase}/`;
-                        navigate(`${base}${item.id}`);
-                    }}
-                    tabIndex={0}
-                    _hover={{ textDecoration: 'underline' }}
-                    width="100%"
-                />
-            </Table.Cell>
-            <Table.Cell textAlign="center">
+        <tr key={item.id}>
+            <td>
+                <div style={{ width: '100%' }}>
+                    <div
+                        onClick={() => navigate(`${base}${item.id}`)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => { if (e.key === 'Enter') navigate(`${base}${item.id}`); }}
+                        style={{ width: '100%', cursor: 'pointer' }}
+                        aria-label={`View ${item.title}`}
+                    >
+                        <TooltipButton
+                            label={item.title}
+                            tooltip={`View ${item.title}`}
+                            data-testid={`item-${item.id}`}
+                            tabIndex={-1}
+                            style={{ width: '100%', textAlign: 'left' }}
+                        />
+                    </div>
+                </div>
+            </td>
+            <td style={{ textAlign: 'center' }}>
                 <TooltipButton
                     label=""
                     tooltip={`Delete ${item.title}`}
                     icon={<HiOutlineTrash />}
                     data-testid={`delete-button-${item.id}`}
                     onClick={() => deleteItemMutation.mutate(item.id)}
-                    _hover={{ color: 'red.500' }}
-                    color="fg.muted"
-                    width="auto"
+                    style={{ width: 'auto' }}
                 />
-            </Table.Cell>
-        </Table.Row>
+            </td>
+        </tr>
     );
 }
 
@@ -118,25 +141,58 @@ export function ControlledTable({ items, navigateToBase, deleteItemMutation }: C
 
     // If no items are provided, display a message
     if (!items || items.length === 0) {
+        const Empty = styled('div', {
+            padding: '16px',
+            textAlign: 'center',
+            color: '$colors$gray500',
+        });
         return (
-            <Box p={4} textAlign="center" color="fg.muted">
-                No documents found.
-            </Box>
+            <Empty>No documents found.</Empty>
         );
     }
 
     // Render the table with items
-    return (
-        <Table.ScrollArea maxH="xl" >
-            <Table.Root size="sm" stickyHeader >
-                <Table.Header>
-                    <Table.Row bg="bg.panel">
-                        <Table.ColumnHeader>Title</Table.ColumnHeader>
-                        <Table.ColumnHeader></Table.ColumnHeader>
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body bg="none">
+    const TableScrollArea = styled('div', {
+        maxHeight: '32rem',
+        overflow: 'auto',
+    });
 
+    const TableRoot = styled('table', {
+        width: '100%',
+        borderCollapse: 'collapse',
+    });
+
+    const THead = styled('thead', {
+        position: 'sticky',
+        top: 0,
+        background: 'transparent',
+    });
+
+    const TRow = styled('tr', {
+        background: 'transparent',
+    });
+
+    const Th = styled('th', {
+        textAlign: 'left',
+        padding: '8px',
+        fontWeight: 600,
+        borderBottom: '1px solid $colors$gray400',
+    });
+
+    const TBody = styled('tbody', {
+        background: 'transparent',
+    });
+
+    return (
+        <TableScrollArea>
+            <TableRoot>
+                <THead>
+                    <TRow>
+                        <Th>Title</Th>
+                        <Th style={{ width: '64px' }}></Th>
+                    </TRow>
+                </THead>
+                <TBody>
                     {items.map((item) => (
                         <TableRow key={item.id}
                             item={item}
@@ -144,9 +200,9 @@ export function ControlledTable({ items, navigateToBase, deleteItemMutation }: C
                             navigateToBase={navigateToBase}
                             deleteItemMutation={deleteItemMutation} />
                     ))}
-                </Table.Body>
-            </Table.Root>
-        </Table.ScrollArea>
+                </TBody>
+            </TableRoot>
+        </TableScrollArea>
     );
 }
 
@@ -161,9 +217,8 @@ interface SearchableTableProps {
 export function SearchableTable({ documents, title, navigateToBase, deleteItemMutation }: SearchableTableProps) {
     const { search, setSearch, inputRef, results } = useSearchResults(documents);
     return (
-
-        <Box p="4" minWidth="xs" >
-            {title && <Heading size="sub" mb="4">{title}</Heading>}
+        <Panel>
+            {title && <HeadingStyled>{title}</HeadingStyled>}
             <SearchInput
                 search={search}
                 setSearch={setSearch}
@@ -174,6 +229,6 @@ export function SearchableTable({ documents, title, navigateToBase, deleteItemMu
                 navigateToBase={navigateToBase}
                 deleteItemMutation={deleteItemMutation}
             />
-        </Box>
+        </Panel>
     );
 }

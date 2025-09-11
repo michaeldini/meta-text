@@ -122,12 +122,6 @@ export const GLOBAL_SHORTCUTS: Record<string, KeyboardShortcut> = {
         description: 'Clear search or escape current focus',
         category: 'Navigation',
     },
-    TOGGLE_THEME: {
-        key: 'u',
-        metaKey: true,
-        description: 'Toggle dark/light theme',
-        category: 'Interface',
-    },
     TOGGLE_HELP: {
         key: 'h',
         metaKey: true,

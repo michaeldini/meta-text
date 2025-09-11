@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontFamilySelect } from '@components/stylecontrols';
-import { Field, NumberInput } from '@chakra-ui/react';
+import { Box, Text, Input } from '@styles';
 import { useUIPreferences } from '@hooks/useUIPreferences';
 import { TooltipButton } from '@components/TooltipButton';
 
@@ -31,20 +31,19 @@ interface StyleNumberInputProps {
 // DRY: Common number input for style controls
 function StyleNumberInput({ label, value, min, max, step, onChange, disabled }: StyleNumberInputProps) {
     return (
-        <Field.Root width="100px">
-            <Field.HelperText>{label}</Field.HelperText>
-            <NumberInput.Root
+        <Box css={{ width: 100, display: 'flex', flexDirection: 'column', gap: 4, mb: 12 }}>
+            <Text css={{ fontSize: 14, color: '$gray11', mb: 2 }}>{label}</Text>
+            <Input
+                type="number"
                 min={min}
                 max={max}
                 step={step}
-                value={String(value)}
-                onValueChange={details => onChange(Number((details).value || details))}
+                value={value}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(Number(e.target.value))}
                 disabled={disabled}
-            >
-                <NumberInput.Control />
-                <NumberInput.Input />
-            </NumberInput.Root>
-        </Field.Root>
+                css={{ width: '100%', fontSize: 16, padding: '6px 8px', borderRadius: 6, border: '1px solid $gray400' }}
+            />
+        </Box>
     );
 }
 
@@ -72,7 +71,7 @@ export function StyleControls({
                             min={8}
                             max={72}
                             step={1}
-                            onChange={val => updateUserConfig.mutate({ textSizePx: val })}
+                            onChange={(val: number) => updateUserConfig.mutate({ textSizePx: val })}
                         />
                     )}
                     {showLineHeight && (
@@ -82,17 +81,17 @@ export function StyleControls({
                             min={1.0}
                             max={2.5}
                             step={0.05}
-                            onChange={val => updateUserConfig.mutate({ lineHeight: val })}
+                            onChange={(val: number) => updateUserConfig.mutate({ lineHeight: val })}
                         />
                     )}
                     {showPaddingX && (
                         <StyleNumberInput
                             label="Padding X"
                             value={paddingX}
-                            min={1}
-                            max={5}
-                            step={1}
-                            onChange={val => updateUserConfig.mutate({ paddingX: val })}
+                            min={.1}
+                            max={2}
+                            step={.05}
+                            onChange={(val: number) => updateUserConfig.mutate({ paddingX: val })}
                         />
                     )}
                     {showFontFamily && (

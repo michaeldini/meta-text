@@ -22,7 +22,7 @@ No existing files were modified; adoption can be done incrementally.
 // - Keeps UI concerns (e.g., drawers, toolbars) outside this component
 
 import React from 'react';
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Text } from '@styles';
 
 export type SelectableHighlight = {
     start: number; // inclusive character offset in `text`
@@ -211,31 +211,32 @@ export function SelectableText({
     return (
         <Text
             as="span"
-            userSelect={isSelecting ? 'none' : 'text'}
+            css={{ userSelect: isSelecting ? 'none' : 'text', color }}
             onPointerUp={finalizeSelection}
-            color={color}
             {...rest}
         >
             {tokens.map((tok, i) => {
                 if (tok.isWord) {
-                    const color = getTokenHighlightColor(tok.start, tok.end);
-                    const background = isTokenSelected(i) ? (color ?? selectedBg) : (color ?? 'transparent');
+                    const highlightColor = getTokenHighlightColor(tok.start, tok.end);
+                    const background = isTokenSelected(i) ? (highlightColor ?? selectedBg) : (highlightColor ?? 'transparent');
                     return (
                         <Box
-
-                            key={i}
                             as="span"
-                            px={wordPaddingX}
-                            mx={0}
-                            fontSize={`${fontSizePx}px`}
-                            lineHeight={lineHeight}
-                            fontFamily={fontFamily}
-                            cursor="pointer"
+                            key={i}
+                            css={{
+                                paddingLeft: wordPaddingX,
+                                paddingRight: wordPaddingX,
+                                marginLeft: 0,
+                                fontSize: `${fontSizePx}px`,
+                                lineHeight,
+                                fontFamily,
+                                cursor: 'pointer',
+                                background,
+                                display: 'inline-block',
+                                ':hover': { background: highlightColor ?? hoverBg },
+                            }}
                             onPointerDown={(e) => { e.preventDefault(); startSelecting(i, e); }}
                             onPointerEnter={() => updateHover(i)}
-                            _hover={{ background: color ?? hoverBg }}
-                            background={background}
-                            display="inline-block"
                             data-token-index={i}
                             data-word-idx={tokenToWord[i]}
                         >
@@ -245,7 +246,11 @@ export function SelectableText({
                 }
                 // punctuation/whitespace
                 return (
-                    <Box key={i} as="span" display="inline" fontSize={`${fontSizePx}px`} lineHeight={lineHeight} fontFamily={fontFamily}>
+                    <Box
+                        as="span"
+                        key={i}
+                        css={{ display: 'inline', fontSize: `${fontSizePx}px`, lineHeight, fontFamily }}
+                    >
                         {tok.value}
                     </Box>
                 );

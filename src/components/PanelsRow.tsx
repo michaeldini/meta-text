@@ -1,7 +1,7 @@
 // Purpose: Render the row of panels with horizontal scrolling and spacing.
 
 import React from 'react';
-import { Box, Wrap } from '@chakra-ui/react';
+import { Box, Wrap } from '@styles';
 import PanelCard from '../features/russion-dolls/components/PanelCard';
 import { Panel } from '../types/experiments';
 
@@ -15,8 +15,8 @@ export type PanelsRowProps = {
 
 export function PanelsRow({ panels, onToggleView, onMinimize, onClose, onSelection }: PanelsRowProps) {
     return (
-        <Box mt={2} overflowX="auto">
-            <Wrap direction="row" gap={4} align="flex-start" minH="200px" pb={2}>
+        <Box css={{ marginTop: 8, overflowX: 'auto' }}>
+            <Wrap css={{ flexDirection: 'row', gap: 16, alignItems: 'flex-start', minHeight: 200, paddingBottom: 8 }}>
                 {panels.map(panel => (
                     <PanelCard
                         key={panel.key}

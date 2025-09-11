@@ -1,11 +1,7 @@
 // Renders list of files with upload statuses and overall progress feedback.
 import React from 'react';
-import { Wrap, WrapItem } from '@chakra-ui/react/wrap';
-import { Tag } from '@chakra-ui/react/tag';
-import { Text } from '@chakra-ui/react/text';
-import { Box } from '@chakra-ui/react/box';
-import { Flex } from '@chakra-ui/react/flex';
-import { Tooltip } from '@components/ui/tooltip';
+import { Wrap, WrapItem, TagRoot, TagLabel, Text, Box, Flex } from '@styles';
+import TooltipButton from '@components/TooltipButton';
 
 export interface UploadStatus {
     uploading: boolean;
@@ -36,36 +32,44 @@ export function UploadFileStatusList({ files, statuses }: UploadFileStatusListPr
     // const percent = total ? Math.round((completed / total) * 100) : 0;
 
     return (
-        <Box mt={2} width="100%">
-            <Flex justify="space-between" align="center" mb={1} flexWrap="wrap" gap={2}>
-                <Text fontWeight="bold">Files to upload:</Text>
-                <Text fontSize="sm" color="fg.muted" aria-live="polite">
+        <Box style={{ marginTop: 8, width: '100%' }}>
+            <Flex css={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: 8, flexWrap: 'wrap', gap: 8 }}>
+                <Text css={{ fontWeight: 'bold' }}>Files to upload:</Text>
+                <Text css={{ fontSize: '0.9rem', color: '$colors$gray500' }} aria-live="polite">
                     {completed === total && total > 0
                         ? anyError
-                            ? `Completed with ${statuses.filter(s => s.error).length} error(s)`
+                            ? `Completed with ${statuses.filter(s => s && s.error).length} error(s)`
                             : 'All uploads completed'
                         : uploadingCount > 0
                             ? `Uploading ${completed + uploadingCount}/${total}...`
                             : `Ready (${total})`}
                 </Text>
             </Flex>
-            {/* Progress bar omitted due to Chakra namespace import issues; can be re-added when component is available */}
             <Wrap>
                 {files.map((f, idx) => {
                     const status = statuses[idx];
                     const { colorPalette, label } = deriveStatus(f, status);
                     const key = `${f.name}-${f.lastModified}-${f.size}-${idx}`;
                     const tag = (
-                        <Tag.Root colorPalette={colorPalette} variant="solid" size="md" maxW="260px">
-                            <Tag.Label truncate>{label}</Tag.Label>
-                        </Tag.Root>
+                        <TagRoot colorPalette={colorPalette}>
+                            <TagLabel>{label}</TagLabel>
+                        </TagRoot>
                     );
                     return (
                         <WrapItem key={key}>
                             {status?.error ? (
-                                <Tooltip content={status.error} positioning={{ placement: 'top' }}>
+                                <TooltipButton
+                                    label={label}
+                                    tooltip={status.error}
+                                    tone={colorPalette === 'red' ? 'danger' : colorPalette === 'yellow' ? 'primary' : 'default'}
+                                    size="md"
+                                    disabled={false}
+                                    style={{ padding: 0, background: 'none', border: 'none' }}
+                                    icon={null}
+                                    positioning={{ side: 'top', align: 'center', sideOffset: 6 }}
+                                >
                                     {tag}
-                                </Tooltip>
+                                </TooltipButton>
                             ) : tag}
                         </WrapItem>
                     );

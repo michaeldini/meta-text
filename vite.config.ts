@@ -12,11 +12,12 @@ export default defineConfig(({ command }) => ({
     plugins: [
         react(),
         tsconfigPaths(),
-        // command === 'build' ? visualizer({ open: true }) : null
+        command === 'build' ? visualizer({ open: true }) : null
     ].filter(Boolean),
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'src'),
+            '@styles': path.resolve(__dirname, 'src/stitches.config.ts'),
         },
     },
     build: {
@@ -27,7 +28,6 @@ export default defineConfig(({ command }) => ({
                     // Separate vendor chunks
                     'react-vendor': ['react', 'react-dom', 'react-dom/client', 'react-router-dom'],
                     'utils': ['zustand', 'loglevel', 'ky'],
-                    '@chakra-ui': ['@chakra-ui/react',],
                     'react-icons': ['react-icons/hi2'],
                     'react-query': ['@tanstack/react-query'],
                     // Split each feature into its own chunk for better code splitting
@@ -64,7 +64,6 @@ export default defineConfig(({ command }) => ({
         include: [
             'react',
             'react-dom',
-            'chakra-ui/react',
             'zustand',
             '@tanstack/react-query',
             'ky',

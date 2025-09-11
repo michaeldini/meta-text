@@ -1,5 +1,5 @@
-import { HiScissors } from 'react-icons/hi2';
 import React from 'react';
+import { HiScissors } from 'react-icons/hi2';
 import { TooltipButton } from '@components/TooltipButton';
 import { useSplitChunk } from '@features/chunk/hooks/useSplitChunk';
 import log from '@utils/logger';

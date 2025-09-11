@@ -5,8 +5,7 @@ import { HiQuestionMarkCircle } from 'react-icons/hi2';
  * Displays explanation and allows user to request definitions.
  */
 import React, { useState, useCallback } from 'react';
-import { Text, Heading } from '@chakra-ui/react';
-import { Box } from '@chakra-ui/react/box';
+import { Text, Heading, Box } from '@styles';
 import { ErrorAlert } from '@components/ErrorAlert';
 import { TooltipButton } from '@components/TooltipButton';
 import { useExplainHandler } from './hooks/useExplainHandler';
@@ -57,14 +56,14 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
             {/* Show explanation only if showDefinition is true */}
             {showDefinition && (
                 <Box>
-                    <Heading id="explanation-title" size="xl" mb={10} textAlign="left" textDecoration="underline">
+                    <Heading css={{ fontSize: '1.25rem', marginBottom: 10, textAlign: 'left', textDecoration: 'underline' }} id="explanation-title">
                         {word}
                     </Heading>
                     {explanation?.explanation && (
-                        <Text textStyle="lg" mb="2">{explanation.explanation}</Text>
+                        <Text css={{ fontSize: '1rem', marginBottom: 8 }}>{explanation.explanation}</Text>
                     )}
                     {explanation?.explanation_in_context && (
-                        <Text textStyle="lg">{explanation.explanation_in_context}</Text>
+                        <Text css={{ fontSize: '1rem' }}>{explanation.explanation_in_context}</Text>
                     )}
                     <ErrorAlert message={error} mt={2} />
                 </Box>

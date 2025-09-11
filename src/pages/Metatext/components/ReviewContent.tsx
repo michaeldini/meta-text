@@ -6,7 +6,7 @@ import { FlashCards, ReviewTable, Phrases } from '@features/review';
 import { ChunkType, } from '@mtypes/documents';
 import { Explanation } from '@mtypes/MetatextReview.types'
 import { useState } from 'react';
-import { Box, Button } from '@chakra-ui/react';
+import { Box, Button } from '@styles';
 
 interface ReviewContentProps {
     flashcards: Explanation[];
@@ -28,36 +28,36 @@ export function ReviewContent({ flashcards, phrases, chunkReviewTable }: ReviewC
 
     return (
         <>
-            <Box mb={4}>
+            <Box css={{ marginBottom: 16 }}>
                 <Button
                     data-testid="explanations-toggle"
                     onClick={() => setShowExplanations((v) => !v)}
-                    mb={2}
                     size="sm"
+                    css={{ marginBottom: 8 }}
                 >
                     {showExplanations ? 'Hide' : 'Show'} Explanations
                 </Button>
                 {showExplanations && <Phrases phrases={phrases} />}
             </Box>
 
-            <Box mb={4}>
+            <Box css={{ marginBottom: 16 }}>
                 <Button
                     data-testid="flashcards-toggle"
                     onClick={() => setShowFlashcards((v) => !v)}
-                    mb={2}
                     size="sm"
+                    css={{ marginBottom: 8 }}
                 >
                     {showFlashcards ? 'Hide' : 'Show'} Flashcards
                 </Button>
                 {showFlashcards && <FlashCards flashcardItems={flashcards} />}
             </Box>
 
-            <Box mb={4}>
+            <Box css={{ marginBottom: 16 }}>
                 <Button
                     data-testid="reviewtable-toggle"
                     onClick={() => setShowReviewTable((v) => !v)}
-                    mb={2}
                     size="sm"
+                    css={{ marginBottom: 8 }}
                 >
                     {showReviewTable ? 'Hide' : 'Show'} Review Table
                 </Button>

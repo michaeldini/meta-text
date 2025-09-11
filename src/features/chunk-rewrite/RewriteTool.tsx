@@ -5,14 +5,12 @@ import { HiPencilSquare } from 'react-icons/hi2';
  * Example styles: "like I'm 5", "like a bro", "academic"
  */
 import React, { useMemo, useState } from 'react';
-import { Box } from '@chakra-ui/react/box';
-import { Text } from '@chakra-ui/react/text';
+import { Box, Text, Button } from '@styles';
 import { TooltipButton } from '@components/TooltipButton';
 import { useRewriteTool } from './hooks/useRewriteTool';
 import type { ChunkType } from '@mtypes/documents';
 import { SimpleDrawer, EmptyState } from '@components/ui';
 import { Select } from '@components/ui/select';
-import { Button } from '@chakra-ui/react/button';
 
 
 
@@ -62,7 +60,15 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
             >
                 <Box>
                     <form id="rewrite-gen-form" onSubmit={handleFormSubmit}>
-                        <Button type="submit" form="rewrite-gen-form" disabled={isLoading} loading={isLoading}>Generate & Save</Button>
+                        <Button
+                            type="submit"
+                            form="rewrite-gen-form"
+                            disabled={isLoading}
+                            tone="primary"
+                            css={{ minWidth: 120 }}
+                        >
+                            {isLoading ? 'Generating…' : 'Generate & Save'}
+                        </Button>
                         <Box>
                             <label htmlFor="rewrite-style">Rewrite style:</label>
                             <Select
@@ -77,7 +83,7 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
                         </Box>
                     </form>
                     {error && (
-                        <Box mt={2} color="red.500">
+                        <Box css={{ marginTop: 8, color: '#e53e3e' }}>
                             {error}
                         </Box>
                     )}
@@ -85,7 +91,7 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
             </SimpleDrawer>
             {/* Select to browse previous rewrites */}
             {hasRewrites && (
-                <Box mt={6}>
+                <Box css={{ marginTop: 24 }}>
                     <Select
                         options={[{ label: "Browse previous rewrites", value: "" }, ...rewrites.map(r => ({ label: r.title || `Rewrite ${r.id}`, value: String(r.id) }))]}
                         value={selectedId === '' ? '' : String(selectedId)}
@@ -94,7 +100,7 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
                         placeholder="Browse previous rewrites"
                     />
                     {selected && (
-                        <Box p={3} borderWidth={1} borderRadius={4} mt={2}>
+                        <Box css={{ padding: 12, border: '1px solid $colors$gray400', borderRadius: 6, marginTop: 8 }}>
                             <Text>{selected.rewrite_text}</Text>
                         </Box>
                     )}

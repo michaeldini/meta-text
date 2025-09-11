@@ -1,9 +1,6 @@
 // Component for displaying chunk count and status information
 import React from 'react';
-import { Stack } from '@chakra-ui/react/stack';
-import { Box } from '@chakra-ui/react/box';
-import { Text } from '@chakra-ui/react/text';
-import { Spinner } from '@chakra-ui/react';
+import { Stack, Box, Text } from '@styles';
 import { SearchBar } from '@features/chunk-search';
 import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
 
@@ -37,19 +34,18 @@ export function ChunkStatusInfo({
     };
 
     return (
-        <Stack direction="row" data-testid="chunk-status-info"
-            wrap="wrap">
-            <Box width="60%">
+        <Stack css={{ flexDirection: 'row', flexWrap: 'wrap' }} data-testid="chunk-status-info">
+            <Box css={{ width: '60%' }}>
                 <SearchBar />
             </Box>
-            {isSearching && <Spinner size="sm" mr={2} data-testid="chunk-search-spinner" />}
+            {isSearching && (
+                <Box data-testid="chunk-search-spinner" css={{ display: 'inline-block', marginRight: 8 }}>
+                    <span role="status" aria-label="Loading" style={{ fontSize: '1.2em' }}>⏳</span>
+                </Box>
+            )}
             <Text
-                fontSize="sm"
-                color="fg.muted"
+                css={{ fontSize: '0.9rem', color: '#888', alignSelf: 'center', minWidth: 'fit-content', paddingLeft: 10, paddingRight: 10 }}
                 data-testid="chunk-status-text"
-                alignSelf="center"
-                minWidth="fit-content"
-                px="10"
             >
                 {getStatusMessage()}
             </Text>

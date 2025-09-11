@@ -4,7 +4,7 @@ import { HiMagnifyingGlass } from 'react-icons/hi2';
 // Provides the main search interface as described in the feature guide
 
 import React, { useCallback } from 'react';
-import { CloseButton, InputGroup, Input, Field } from '@chakra-ui/react';
+import { Box, Input, ClearButton } from '@styles';
 import { useSearchStore } from './store/useSearchStore';
 
 
@@ -25,33 +25,28 @@ export function SearchBar({
 
     const inputRef = React.useRef<HTMLInputElement>(null);
     const endElement = query ? (
-        <CloseButton
-            size="xs"
+        <ClearButton
             onClick={() => {
                 setQuery("");
                 inputRef.current?.focus();
             }}
-            me="-2"
-        />
-    ) : undefined
+            aria-label="Clear search"
+            style={{ marginLeft: -2 }}
+        >
+            ×
+        </ClearButton>
+    ) : undefined;
     return (
-
-        <Field.Root orientation="horizontal">
-            {/* <Field.Label color="fg" minWidth="fit-content">Search Chunks</Field.Label> */}
-            <InputGroup
-                startElement={<HiMagnifyingGlass />}
-                endElement={endElement}
-            >
-                <Input
-                    ref={inputRef}
-                    placeholder={placeholder}
-                    value={query}
-                    onChange={handleQueryChange}
-                    variant="outline"
-                    size="md"
-                    borderBottom="1px solid"
-                />
-            </InputGroup>
-        </Field.Root>
+        <Box css={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%' }}>
+            <span style={{ color: '#aaa', fontSize: '1.1rem' }}><HiMagnifyingGlass /></span>
+            <Input
+                ref={inputRef}
+                placeholder={placeholder}
+                value={query}
+                onChange={handleQueryChange}
+                css={{ flex: 1, borderBottom: '1px solid $colors$gray400', fontSize: '1rem', background: 'transparent' }}
+            />
+            {endElement}
+        </Box>
     );
 }

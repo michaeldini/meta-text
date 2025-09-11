@@ -5,7 +5,7 @@
 import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Text } from '@styles';
 import { NavBar } from '@features/navbar';
 import { GlobalNotifications } from '@components/GlobalNotifications';
 import { Toaster } from '@components/ui/toaster';
@@ -19,8 +19,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 // Static 404 component to prevent recreation on each render
 const NotFound = (
-    <Box>
-        <Text>Page not found</Text>
+    <Box css={{ padding: 32, textAlign: 'center' }}>
+        <Text as="h2" css={{ fontWeight: 600, fontSize: 20 }}>Page not found</Text>
     </Box>
 );
 
@@ -43,7 +43,7 @@ export function AppContent() {
     return (
         <Boundary fallbackText="Loading">
             <Suspense>
-                <Box>
+                <Box css={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '$colors$background' }}>
                     <Toaster />
                     <GlobalNotifications />
                     <NavBar />

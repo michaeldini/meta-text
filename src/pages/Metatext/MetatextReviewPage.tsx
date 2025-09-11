@@ -1,7 +1,7 @@
 // Review page for a Metatext document, providing a comprehensive review interface with flashcards, phrases, and chunk data table.
 
 import { useNavigate, useParams } from 'react-router-dom';
-import { Box } from '@chakra-ui/react/box';
+import { Box } from '@styles';
 import type { ReactElement } from 'react';
 
 import { Boundary } from '@components/Boundaries';
@@ -20,7 +20,7 @@ function MetatextReviewPage(): ReactElement {
     // Use Boundary to handle loading and error states for the review data
     return (
         <Boundary fallbackText="Loading review data...">
-            <Box data-testid="metatext-review-page" p="4">
+            <Box data-testid="metatext-review-page" css={{ padding: 16 }}>
                 {/* Page header with navigation and title */}
                 <Header metatextId={parsedId} navigate={navigate} />
                 {/* Review content sections */}

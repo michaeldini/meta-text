@@ -1,6 +1,5 @@
 import React from 'react';
-import { Box } from '@chakra-ui/react/box';
-import { Stack } from '@chakra-ui/react/stack';
+import { Box, Stack } from '@styles';
 import { ChunkStatusInfo } from './ChunkStatusInfo';
 import { ChunkPagination } from './ChunkPagination';
 import { ChunkList } from './ChunkList';
@@ -32,7 +31,7 @@ export function ChunkDisplayContainer({
 }: ChunkDisplayContainerProps) {
     return (
         <Box data-testid="chunk-display-container">
-            <Stack gap={10}>
+            <Stack css={{ gap: 10 }}>
                 <ChunkStatusInfo
                     totalFilteredChunks={totalFilteredChunks}
                     displayChunksCount={displayChunks.length}

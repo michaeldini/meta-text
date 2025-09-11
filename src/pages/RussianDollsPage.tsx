@@ -6,7 +6,7 @@
 
 
 import React, { useRef, useState } from 'react';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@styles';
 
 // Switch to the mock during development to avoid real API calls.
 // For production, change this import back to: '../services/aiService'
@@ -137,7 +137,7 @@ export function RussianDollsPage() {
     };
 
     return (
-        <Flex direction="column" h="100%" p={4}>
+        <Flex>
             {/* Step 1: Input is visible only when there are no panels */}
             {!hasPanels && (
                 <PromptBar

@@ -1,7 +1,5 @@
 import { HiArrowLeft } from 'react-icons/hi2';
-import { Heading, IconButton } from '@chakra-ui/react';
-import { Box } from '@chakra-ui/react/box';
-import { Tooltip } from '@components/ui/tooltip';
+import { Box, Heading, Button } from '@styles';
 import type { ReactElement } from 'react';
 
 interface HeaderProps {
@@ -17,19 +15,19 @@ interface HeaderProps {
  */
 export function Header({ metatextId, navigate }: HeaderProps): ReactElement {
     return (
-        <Box >
+        <Box>
             {metatextId && (
-                <Tooltip content="Back to Metatext Detail">
-                    <IconButton
-                        onClick={() => navigate(`/metatext/${metatextId}`)}
-                        variant="ghost"
-                        color="primary"
-                    >
-                        <HiArrowLeft />
-                    </IconButton>
-                </Tooltip>
+                <Button
+                    size="sm"
+                    tone="default"
+                    onClick={() => navigate(`/metatext/${metatextId}`)}
+                    title="Back to Metatext Detail"
+                    css={{ marginRight: 8, padding: 4, borderRadius: 6 }}
+                >
+                    <HiArrowLeft />
+                </Button>
             )}
-            <Heading >
+            <Heading>
                 Review
             </Heading>
         </Box>

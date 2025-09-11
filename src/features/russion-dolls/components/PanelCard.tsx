@@ -3,7 +3,7 @@ import { HiXMark } from 'react-icons/hi2';
 // and the content rendered via WordSelector to enable creating follow-up panels.
 
 import React from 'react';
-import { Box, Button, Flex, Spinner, Text, Link } from '@chakra-ui/react';
+import { Box, Button, Flex, Text, Link } from '@styles';
 import WordSelector from './WordSelector';
 import { Panel } from '@mtypes/experiments';
 import { HiArrowsPointingOut, HiArrowsPointingIn } from 'react-icons/hi2';
@@ -29,11 +29,11 @@ type PanelHeaderProps = {
 export function PanelHeader({ sourceWord, minimized, onMinimize, onClose, headerBg }: PanelHeaderProps) {
     return (
         <>
-            <Flex align="center" justify="space-between" mb={2}>
-                <Text fontWeight="bold" title={sourceWord ?? undefined} truncate bg={headerBg ? headerBg : 'transparent'} p="2">
+            <Flex css={{ alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                <Text title={sourceWord ?? undefined} css={{ fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', background: headerBg ?? 'transparent', padding: 8 }}>
                     {sourceWord}
                 </Text>
-                <Flex align="center">
+                <Flex css={{ alignItems: 'center' }}>
                     {minimized ? (
                         <TooltipButton
                             label=""
@@ -78,16 +78,16 @@ export function PanelActions({ sourceWord, viewMode, loading, onToggleView }: Pa
     const googleUrl = `https://www.google.com/search?q=${encodedQuery}`;
 
     return (
-        <Flex align="center" justify="flex-end" gap={2} mb={2}>
-            <Flex gap={2}>
+        <Flex css={{ alignItems: 'center', justifyContent: 'flex-end', gap: 8, marginBottom: 8 }}>
+            <Flex css={{ gap: 8 }}>
                 <Link href={wikiUrl} target="_blank" rel="noopener noreferrer">
-                    <Button size="xs" variant="ghost" disabled={!sourceWord}>W</Button>
+                    <Button size="sm" css={{ background: 'transparent', padding: '4px 6px' }} disabled={!sourceWord}>W</Button>
                 </Link>
                 <Link href={googleUrl} target="_blank" rel="noopener noreferrer">
-                    <Button size="xs" variant="ghost" disabled={!sourceWord}>G</Button>
+                    <Button size="sm" css={{ background: 'transparent', padding: '4px 6px' }} disabled={!sourceWord}>G</Button>
                 </Link>
             </Flex>
-            <Button size="xs" colorScheme="blue" onClick={onToggleView} disabled={!!loading}>
+            <Button size="sm" tone="primary" onClick={onToggleView} disabled={!!loading} css={{ padding: '6px 10px' }}>
                 {viewMode === 'comprehensive' ? 'Show concise' : 'Show comprehensive'}
             </Button>
         </Flex>
@@ -108,16 +108,18 @@ export function PanelCard({ panel, onToggleView, onMinimize, onClose, onSelectio
 
     return (
         <Box
-            border="1px solid"
-            borderColor="gray.700"
-            borderRadius="md"
-            p={4}
-            minW={{ base: '280px', md: '360px' }}
-            maxW={{ base: '90vw', md: '480px' }}
-            bg="gray.800"
-            color="gray.100"
-            boxShadow="lg"
-            {...leftBorderProps}
+            style={{
+                border: '1px solid',
+                borderColor: '#374151',
+                borderRadius: 8,
+                padding: 16,
+                minWidth: 280,
+                maxWidth: 480,
+                background: '#1f2937',
+                color: '#f3f4f6',
+                boxShadow: '0 10px 15px rgba(0,0,0,0.1)',
+                ...(leftBorderProps as any || {}),
+            }}
         >
             <PanelHeader
                 sourceWord={panel.sourceWord}
@@ -137,13 +139,13 @@ export function PanelCard({ panel, onToggleView, onMinimize, onClose, onSelectio
             )}
 
             {!panel.minimized && panel.loading && (
-                <Flex align="center" justify="center" minH="80px">
-                    <Spinner />
+                <Flex css={{ alignItems: 'center', justifyContent: 'center', minHeight: '80px' }}>
+                    <div>…</div>
                 </Flex>
             )}
 
             {!panel.minimized && panel.error && (
-                <Text color="red.300">{panel.error}</Text>
+                <Text css={{ color: '$colors$buttonDangerBg' }}>{panel.error}</Text>
             )}
 
             {!panel.minimized && !panel.loading && !panel.error && (

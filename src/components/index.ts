@@ -7,3 +7,4 @@ export { TooltipButton } from './TooltipButton';
 export { default as ChunkPosition } from './ChunkPosition';
 export { MetatextHeaderControls } from './MetatextHeaderControls';
 export { ErrorAlert } from './ErrorAlert';
+export * from './TooltipButton';

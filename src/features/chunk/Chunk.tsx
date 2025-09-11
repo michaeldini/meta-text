@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
 
 // UI
-import { Stack } from '@chakra-ui/react';
 import ChunkWords from './components/ChunkWords';
 import { ChunkToolsContainer } from '@features/chunk-tools';
+import { styled } from '@styles';
 
 // Types
 import type { ChunkType } from '@mtypes/documents';
@@ -15,18 +15,23 @@ export interface ChunkProps {
     uiPreferences: uiPreferences;
 }
 
+const StyledChunk = styled('div', {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    padding: '$4',
+    borderRadius: '$md',
+    backgroundColor: '$gray50',
+    gap: '$4',
+});
+
 const Chunk = memo(function Chunk({
     chunk,
     chunkIdx,
     uiPreferences
 }: ChunkProps) {
     return (
-        <Stack direction="row"
-            data-chunk-id={chunk.id}
-            width="100%"
-            borderBottom="1px solid"
-            borderColor="border.emphasized"
-        >
+        <StyledChunk data-chunk-id={chunk.id}>
             <ChunkWords
                 chunk={chunk}
                 chunkIdx={chunkIdx}
@@ -36,7 +41,7 @@ const Chunk = memo(function Chunk({
                 chunk={chunk}
                 uiPreferences={uiPreferences}
             />
-        </Stack>
+        </StyledChunk>
     );
 });
 

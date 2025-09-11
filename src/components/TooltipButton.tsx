@@ -1,12 +1,9 @@
 import React from 'react';
-import { Button } from '@chakra-ui/react/button';
-import { Tooltip, type TooltipProps } from '@components/ui/tooltip';
-import { Icon } from '@chakra-ui/react/icon';
-import type { ButtonProps } from '@chakra-ui/react/button';
-// import type { Placement } from '@chakra-ui/react/popper';
+import * as Tooltip from '@radix-ui/react-tooltip';
+import { styled, tooltipContentStyles, tooltipArrowStyles, buttonStyles, buttonSizes } from '@styles';
 
 // Generic button with tooltip for consistent UI usage. Accepts label, icon, onClick, disabled.
-export interface TooltipButtonProps extends Omit<ButtonProps, 'aria-label' | 'size' | 'color'> {
+export interface TooltipButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'color' | 'size'> {
     label: string;
     icon?: React.ReactNode;
     tooltip?: string;
@@ -15,9 +12,14 @@ export interface TooltipButtonProps extends Omit<ButtonProps, 'aria-label' | 'si
     onKeyDown?: (event: React.KeyboardEvent) => void;
     type?: 'button' | 'submit' | 'reset';
     color?: string;
-    size?: ButtonProps['size'];
+    // allow additional sizes for compatibility with callers (e.g. '2xl')
+    size?: any;
     role?: string;
-    positioning?: TooltipProps['positioning'];
+    // loose positioning object; we map common props to Radix Content props
+    positioning?: { side?: 'top' | 'right' | 'bottom' | 'left'; sideOffset?: number; align?: 'start' | 'center' | 'end' } | any;
+    tone?: 'default' | 'primary' | 'danger';
+    loading?: boolean;
+    iconSize?: string | number;
 }
 
 export function TooltipButton({
@@ -28,38 +30,76 @@ export function TooltipButton({
     onClick,
     onKeyDown,
     type = 'button',
-    color = 'fg',
+    color = 'inherit',
     size = 'lg',
+    tone = 'default',
     role = 'button',
-    positioning = { placement: "left-end" },
+    positioning = { side: 'left', align: 'end', sideOffset: 6 },
+    loading = false,
+    iconSize,
     ...rest
 }: TooltipButtonProps): React.ReactElement {
+    const StyledButton = styled('button', {
+        ...buttonStyles,
+        variants: {
+            size: {
+                sm: buttonSizes.sm,
+                md: buttonSizes.md,
+                lg: buttonSizes.lg,
+            },
+            tone: {
+                default: { color: '$colors$buttonText' },
+                primary: { background: '$colors$buttonPrimaryBg', color: '$colors$buttonPrimaryText' },
+                danger: { background: '$colors$buttonDangerBg', color: '$colors$buttonDangerText' },
+            },
+        },
+        defaultVariants: { size: 'md', tone: 'default' },
+    });
+
+    const IconWrapper = styled('span', {
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    });
+
+    const TooltipContent = styled(Tooltip.Content, tooltipContentStyles as any);
+    const TooltipArrow = styled(Tooltip.Arrow, tooltipArrowStyles as any);
+
+    const side = positioning?.side ?? 'left';
+    const sideOffset = positioning?.sideOffset ?? 6;
+    const align = positioning?.align;
+
+    // map tone fallback for inline style color prop
+    const toneProp = (tone as any) || 'default';
+
     return (
-        <Tooltip
-            content={tooltip || label}
-            positioning={positioning}
-        >
-            <Button
-                // bg="bg.emphasized"
-                // variant="ghost"
-                color={color}
-                size={size}
-                onClick={onClick}
-                disabled={disabled}
-                aria-label={label}
-                type={type}
-                onKeyDown={onKeyDown}
-                role={role}
-
-                {...rest}
-            >
-                {icon && (
-                    icon
-
-                )}
-                {label}
-            </Button>
-        </Tooltip>
+        <Tooltip.Provider>
+            <Tooltip.Root>
+                <Tooltip.Trigger asChild>
+                    <StyledButton
+                        onClick={onClick}
+                        disabled={disabled}
+                        aria-label={label}
+                        type={type}
+                        onKeyDown={onKeyDown}
+                        role={role}
+                        size={size}
+                        tone={toneProp}
+                        {...rest}
+                        style={{ color: color, ...(rest.style || {}) }}
+                    >
+                        {icon ? <IconWrapper style={{ fontSize: iconSize as any }}>{icon}</IconWrapper> : null}
+                        {loading ? '…' : label}
+                    </StyledButton>
+                </Tooltip.Trigger>
+                <Tooltip.Portal>
+                    <TooltipContent side={side} sideOffset={sideOffset} align={align}>
+                        {tooltip || label}
+                        <TooltipArrow />
+                    </TooltipContent>
+                </Tooltip.Portal>
+            </Tooltip.Root>
+        </Tooltip.Provider>
     );
 }
 

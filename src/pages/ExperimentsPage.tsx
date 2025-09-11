@@ -5,7 +5,7 @@
 // reference them at `/audio/your-file.mp3`.
 
 import React, { useRef, useState, useEffect } from 'react';
-import { Box, Flex, Button, Text, VStack } from '@chakra-ui/react';
+import { Box, Flex, Button, Text, Stack } from '@styles';
 import { FaPlay, FaPause } from 'react-icons/fa';
 
 // ExperimentsPage
@@ -43,11 +43,11 @@ export function ExperimentsPage() {
     const togglePlay = () => setIsPlaying(p => !p);
 
     return (
-        <Flex direction="column" minH="100vh" p={6}>
-            <Text fontSize="2xl" fontWeight="bold" mb={4}>MP3 Player</Text>
+        <Flex css={{ flexDirection: 'column', minHeight: '100vh', padding: 24 }}>
+            <Text css={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: 16 }}>MP3 Player</Text>
 
-            <Box p={6} borderRadius="md" boxShadow="sm">
-                <VStack align="start" gap={4}>
+            <Box css={{ padding: 24, borderRadius: 8, boxShadow: '0 1px 2px rgba(0,0,0,0.06)' }}>
+                <Stack css={{ alignItems: 'flex-start', gap: 16 }}>
                     <audio ref={audioRef} src={src} preload="auto" />
 
                     <Button onClick={togglePlay} aria-label={isPlaying ? 'Pause' : 'Play'}>
@@ -55,8 +55,8 @@ export function ExperimentsPage() {
                         {isPlaying ? 'Pause' : 'Play'}
                     </Button>
 
-                    <Text fontSize="sm">File: <Text as="span" fontWeight="semibold">{src.replace('/audio/', '')}</Text></Text>
-                </VStack>
+                    <Text css={{ fontSize: '0.875rem' }}>File: <span style={{ fontWeight: 600 }}>{src.replace('/audio/', '')}</span></Text>
+                </Stack>
             </Box>
         </Flex>
     );

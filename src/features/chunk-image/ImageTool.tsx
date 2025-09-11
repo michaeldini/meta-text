@@ -4,12 +4,7 @@ import { HiOutlineSparkles } from 'react-icons/hi2';
  * Provides an interface for generating and displaying images for text chunks.
  */
 import React from 'react';
-import { Box } from '@chakra-ui/react/box';
-import { Image } from '@chakra-ui/react/image';
-import { Spinner } from '@chakra-ui/react/spinner';
-
-import { Text } from '@chakra-ui/react/text';
-import { Button } from '@chakra-ui/react/button';
+import { Box, Text, Button } from '@styles';
 import { ErrorAlert } from '@components/ErrorAlert';
 import { TooltipButton } from '@components/TooltipButton';
 
@@ -90,7 +85,7 @@ export function ImageTool(props: ImageToolProps) {
                     <Box >
                         {/* Select to browse previous images */}
                         {images.length > 1 && (
-                            <Box mt={4} mb={4}>
+                            <Box css={{ marginTop: 16, marginBottom: 16 }}>
                                 <label htmlFor={`image-select-${chunk.id}`}>Browse previous images:</label>
                                 <Select
                                     options={[{ label: "Latest image", value: "" }, ...images.map(img => ({ label: `Image ${img.id}`, value: String(img.id) }))]}
@@ -103,27 +98,22 @@ export function ImageTool(props: ImageToolProps) {
                         )}
                         {/* Loader */}
                         {!imgLoaded && !imgError && (
-                            <Box display="flex" alignItems="center" justifyContent="center" h="300px" bg="blackAlpha.50" rounded="md">
-                                <Spinner size="lg" />
+                            <Box css={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 300, background: '#f6f6f6', borderRadius: 8 }}>
+                                <span style={{ fontSize: 32, color: '#aaa' }}>⏳</span>
                             </Box>
                         )}
                         {/* Error */}
                         {imgError && (
-                            <Box h="300px" rounded="md" border="1px dashed" borderColor="red.200" p={2} display="flex" alignItems="center" justifyContent="center" bg="red.25">
-                                <ErrorAlert message={<Text fontSize="sm">Image unavailable</Text>} />
+                            <Box css={{ height: 300, borderRadius: 8, border: '1px dashed #e53e3e', padding: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#ffeaea' }}>
+                                <ErrorAlert message={<Text css={{ fontSize: '0.9rem' }}>Image unavailable</Text>} />
                             </Box>
                         )}
                         {/* Image */}
                         {imageSrc && !imgError && (
-                            <Image
+                            <img
                                 src={state.selectedId ? `${imageSrc}?img=${state.selectedId}` : imageSrc}
                                 alt={selected?.prompt || state.prompt}
-                                h="100%"
-                                w="100%"
-                                objectFit="cover"
-                                display={imgLoaded ? 'block' : 'none'}
-                                rounded="md"
-                                cursor={imgLoaded ? 'pointer' : 'default'}
+                                style={{ height: '100%', width: '100%', objectFit: 'cover', display: imgLoaded ? 'block' : 'none', borderRadius: 8, cursor: imgLoaded ? 'pointer' : 'default' }}
                                 title={imgLoaded ? 'Click to view full size' : undefined}
                                 onClick={() => { if (imgLoaded) setViewerOpen(true); }}
                                 onLoad={() => setImgLoaded(true)}
@@ -156,45 +146,24 @@ export function ImageTool(props: ImageToolProps) {
             </SimpleDrawer>
             {viewerOpen && (
                 <Box
-                    position="fixed"
-                    top={0}
-                    left={0}
-                    w="100vw"
-                    h="100vh"
-                    zIndex={1400}
-                    bg="blackAlpha.800"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
+                    css={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 1400, background: 'rgba(0,0,0,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     onClick={() => setViewerOpen(false)}
                     role="dialog"
                     aria-modal="true"
                 >
                     <Box
-                        position="absolute"
-                        top={3}
-                        right={4}
-                        fontSize="2xl"
-                        color="whiteAlpha.800"
-                        cursor="pointer"
+                        css={{ position: 'absolute', top: 24, right: 32, fontSize: '2rem', color: '#eee', cursor: 'pointer' }}
                         onClick={() => setViewerOpen(false)}
                         aria-label="Close image viewer"
-
                     >
                         ×
                     </Box>
                     {imageSrc && (
-                        <Image
+                        <img
                             src={state.selectedId ? `${imageSrc}?img=${state.selectedId}&full=1` : imageSrc}
                             alt={selected?.prompt || state.prompt}
-                            maxH="90vh"
-                            maxW="90vw"
-                            objectFit="contain"
-                            rounded="md"
+                            style={{ maxHeight: '90vh', maxWidth: '90vw', objectFit: 'contain', borderRadius: 8, animation: 'fade-in .5s' }}
                             onClick={e => e.stopPropagation()}
-                            animationName="fade-in"
-                            animationDuration=".5s"
-
                         />
                     )}
                 </Box>

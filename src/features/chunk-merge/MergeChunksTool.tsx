@@ -5,8 +5,7 @@ import { HiArrowUturnLeft } from 'react-icons/hi2';
 
 // The tool is a an arrorw icon with a tooltip
 import React, { useState } from 'react';
-import { IconButton } from '@chakra-ui/react';
-import { Tooltip } from '@components/ui/tooltip'
+import TooltipButton from '@components/TooltipButton';
 
 // import a hook to handle merging chunks
 import { useMergeChunks } from './hooks/useMergeChunks';
@@ -53,17 +52,15 @@ export function MergeChunksTool({ chunk }: MergeChunksToolProps) {
         }
     };
     return (
-        <Tooltip content="Undo split (merge with next chunk)">
-            <IconButton
-                variant="ghost"
-                onClick={handleMerge}
-                disabled={isLoading}
-                aria-label="Undo split (merge with next chunk)"
-                color="primary"
-            >
-                <HiArrowUturnLeft />
-            </IconButton>
-        </Tooltip>
+        <TooltipButton
+            label=""
+            tooltip="Undo split (merge with next chunk)"
+            icon={<HiArrowUturnLeft style={{ fontSize: '1.25rem' }} />}
+            onClick={handleMerge}
+            disabled={isLoading}
+            size="sm"
+            aria-label="Undo split (merge with next chunk)"
+        />
     );
 }
 

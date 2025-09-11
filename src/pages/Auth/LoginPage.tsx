@@ -1,22 +1,23 @@
 import React from 'react';
 import { useAuthStore } from '@store/authStore';
-import { AuthForm } from './AuthForm';
+import AuthForm from './AuthForm';
 
-export function LoginPage() {
+const LoginPage = () => {
     const login = useAuthStore(state => state.login);
     const loading = useAuthStore(state => state.loading);
     const error = useAuthStore(state => state.error);
 
+    const handleLogin = async ({ email, password }: { email: string; password: string }) => {
+        // Map email to username for backend
+        return await login(email, password);
+    };
     return (
         <AuthForm
-            title="Login"
-            submitText="Login"
-            authAction={login}
-            redirectOnSuccess="/"
+            type="login"
+            onSubmit={handleLogin}
+            error={error ?? undefined}
             loading={loading}
-            error={error}
-            passwordAutoComplete="current-password"
-            errorTestId="login-error"
+            redirectOnSuccess="/"
         />
     );
 };

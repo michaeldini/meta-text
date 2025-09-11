@@ -5,8 +5,7 @@ import { HiOutlineSparkles } from 'react-icons/hi2';
  * Avoids mutating incoming props; uses local state and syncs if parent updates chunk.
  */
 import React, { useState, useEffect, useCallback } from 'react';
-import { Box } from '@chakra-ui/react/box'
-import { Text } from '@chakra-ui/react/text'
+import { Box, Text } from '@styles';
 import { ErrorAlert } from '@components/ErrorAlert';
 import { TooltipButton } from '@components/TooltipButton'
 import type { ChunkType } from '@mtypes/documents';
@@ -55,10 +54,10 @@ export function EvaluationTool({ chunk, isVisible }: EvaluationToolProps) {
                 disabled={loading || !chunk.id}
                 loading={loading}
             />
-            <Box mt={3}>
+            <Box css={{ marginTop: 12 }}>
                 {evaluationText
                     ? <Text>{evaluationText}</Text>
-                    : <Text textAlign="right" color="fg.muted">No evaluation yet.</Text>}
+                    : <Text css={{ textAlign: 'right', color: '$gray500' }}>No evaluation yet.</Text>}
             </Box>
             <ErrorAlert message={error} mt={2} />
         </Box>

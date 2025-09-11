@@ -6,32 +6,34 @@
 import React from 'react';
 import type { ReactElement } from 'react';
 
-// UI Components
-import { Wrap, Box } from "@chakra-ui/react"
-
 // Data Fetching Hooks
 import { useSourceDocuments, useMetatexts, useDeleteMetatext, useDeleteSourceDocument } from '@features/documents/useDocumentsData';
-import { Link } from '@chakra-ui/react';
+// styling (stitches)
+import { styled, Box, Flex, Link } from '@styles';
 import MetatextCreateForm from '@sections/Metatext/MetatextCreateForm';
 import { SearchableTable } from '@components/SearchableTable';
 import SourceDocUploadForm from '@sections/SourceDocuments/SourceDocUploadForm';
-
+// ...existing code...
 
 // HomePage component
-function HomePage(): ReactElement {
+const Container = Box;
+const WrapContainer = styled(Flex, {
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: '20px',
+    '@bp1': { gap: '40px' },
+});
 
+const StyledLink = Link;
+
+function HomePage(): ReactElement {
     // Fetch source documents and metatexts
     const sourceDocsQuery = useSourceDocuments();
     const metatextsQuery = useMetatexts();
 
     return (
-        <Box>
-            <Wrap
-                data-testid="homepage-content"
-                justify="center"
-                gap={{ base: 5, lg: 10 }} // Responsive gap
-
-            >
+        <Container>
+            <WrapContainer data-testid="homepage-content">
                 <SearchableTable
                     documents={metatextsQuery.data ?? []}
                     title="Metatexts"
@@ -49,15 +51,15 @@ function HomePage(): ReactElement {
                     navigateToBase="/sourcedoc/"
                     deleteItemMutation={useDeleteSourceDocument()}
                 />
-            </Wrap>
+            </WrapContainer>
 
-            <Link href="/experiments" color="blue.500" fontWeight="bold">
+            <StyledLink href="/experiments">
                 Go to Experiments
-            </Link>
-            <Link px="4" href="/russiandolls" color="blue.500" fontWeight="bold">
+            </StyledLink>
+            <StyledLink href="/russiandolls" style={{ paddingLeft: '1rem' }}>
                 Go to Experiments 2
-            </Link>
-        </Box>
+            </StyledLink>
+        </Container>
     );
 }
 

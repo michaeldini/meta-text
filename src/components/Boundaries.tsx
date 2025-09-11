@@ -1,9 +1,5 @@
 import React from 'react';
-import { Box } from '@chakra-ui/react/box';
-import { Button } from '@chakra-ui/react/button';
-import { Text } from '@chakra-ui/react/text';
-import { Spinner } from '@chakra-ui/react/spinner';
-import { Center } from '@chakra-ui/react/center';
+import { Box, Button, Text } from '@styles';
 import type { Logger } from '../types/global';
 
 interface ErrorBoundaryState {
@@ -51,17 +47,9 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     render() {
         if (this.state.hasError) {
             return (
-                <Box color="fg">
-                    <Text>
-                        An unexpected error occurred. Please try reloading the page.
-                    </Text>
-                    <Button
-                        variant="ghost"
-                        onClick={this.handleReload}
-                        color="fg"
-                    >
-                        Reload Page
-                    </Button>
+                <Box css={{ color: 'inherit', padding: 16 }}>
+                    <Text css={{ marginBottom: 12 }}>An unexpected error occurred. Please try reloading the page.</Text>
+                    <Button tone="default" onClick={this.handleReload} size="sm">Reload Page</Button>
                 </Box>
             );
         }
@@ -87,10 +75,10 @@ export function Boundary({ children, fallback, fallbackText = "Loading..." }: Bo
             <React.Suspense
                 fallback={
                     fallback || (
-                        <Center mt="10">
-                            <Spinner aria-label="Loading..." />
+                        <Box css={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 40 }}>
+                            <span style={{ fontSize: 32, color: '#aaa' }} aria-label="Loading...">⏳</span>
                             <Text as="span">{fallbackText}</Text>
-                        </Center>
+                        </Box>
                     )
                 }
             >

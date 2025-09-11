@@ -2,7 +2,7 @@
 // Encapsulates logic for reading user config and conditional rendering
 
 import React from 'react';
-import { Text } from '@chakra-ui/react';
+import { Text } from '@styles';
 import type { ChunkType } from '@mtypes/documents';
 import { uiPreferences } from '@mtypes/user';
 

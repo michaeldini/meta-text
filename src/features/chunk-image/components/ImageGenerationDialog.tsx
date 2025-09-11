@@ -12,12 +12,8 @@
  * Uses Chakra UI v3 components.
  */
 import React from 'react';
-import { Button } from '@chakra-ui/react/button';
-import { Textarea } from '@chakra-ui/react/textarea';
-import { Box } from '@chakra-ui/react/box';
-import { Text } from '@chakra-ui/react/text';
-import { Stack } from '@chakra-ui/react/stack';
-import { Badge } from '@chakra-ui/react/badge';
+import { Box, Text, Button, Stack, TagRoot as Badge } from '@styles';
+import { styled } from '@styles';
 
 
 // Constants for prompt validation
@@ -37,6 +33,7 @@ export interface ImageGenerationDialogProps {
     onPromptChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
     loading: boolean;
+    error?: string | null;
 }
 
 export function ImageGenerationDialog(props: ImageGenerationDialogProps) {
@@ -59,21 +56,33 @@ export function ImageGenerationDialog(props: ImageGenerationDialogProps) {
     };
 
     // Subcomponents
+    const StyledTextarea = styled('textarea', {
+        width: '100%',
+        minHeight: 80,
+        maxHeight: 180,
+        padding: '8px',
+        fontSize: '1rem',
+        border: '1px solid $colors$gray400',
+        borderRadius: 6,
+        resize: 'vertical',
+        outline: 'none',
+        background: 'white',
+        color: 'inherit',
+        marginBottom: 4,
+        '&:disabled': { background: '$colors$gray400' },
+    });
     function PromptInput() {
         return (
             <Box>
-                <Textarea
+                <StyledTextarea
                     value={prompt}
                     onChange={handlePromptChange}
                     placeholder="Describe the image you want to generate in detail..."
-                    minH="80px"
-                    maxH="180px"
                     disabled={loading}
-                    borderColor={isPromptTooLong ? 'red.500' : "fg.info"}
                     autoFocus
-                    resize="vertical"
+                    style={{ borderColor: isPromptTooLong ? '#e53e3e' : '#aaa' }}
                 />
-                <Text fontSize="sm" color={isPromptTooLong ? 'red.500' : 'gray.500'} mt={1}>
+                <Text css={{ fontSize: '0.9rem', color: isPromptTooLong ? '#e53e3e' : '$gray500', marginTop: 4 }}>
                     {isPromptTooLong
                         ? `Prompt is too long (${promptLength}/${MAX_PROMPT_LENGTH} characters)`
                         : `${promptLength}/${MAX_PROMPT_LENGTH} characters`}
@@ -85,18 +94,15 @@ export function ImageGenerationDialog(props: ImageGenerationDialogProps) {
     function SuggestedPrompts() {
         return (
             <Box>
-                <Text fontSize="sm" color="gray.500" mb={1}>
+                <Text css={{ fontSize: '0.9rem', color: '$gray500', marginBottom: 4 }}>
                     Suggested prompts:
                 </Text>
-                <Stack direction="row" flexWrap="wrap" gap={2}>
+                <Stack css={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
                     {SUGGESTED_PROMPTS.map((suggestion, index) => (
                         <Badge
                             key={index}
-                            variant="outline"
-                            color="fg"
-                            px={2}
-                            py={1}
-                            cursor="pointer"
+                            colorPalette="gray"
+                            css={{ cursor: 'pointer', padding: '4px 10px', fontSize: '0.95rem', border: '1px solid $colors$gray400' }}
                             onClick={() => handleSuggestedPromptClick(suggestion)}
                         >
                             {suggestion}
@@ -108,21 +114,18 @@ export function ImageGenerationDialog(props: ImageGenerationDialogProps) {
     }
 
     return (
-
         <form onSubmit={onSubmit}>
-            <Stack direction="column" align="stretch" gap={4}>
+            <Stack css={{ flexDirection: 'column', alignItems: 'stretch', gap: 16 }}>
                 <PromptInput />
                 {promptLength === 0 ? <SuggestedPrompts /> : null}
                 <Button
                     type="submit"
-                    colorScheme="blue"
+                    tone="primary"
                     disabled={loading || !isPromptValid}
-                    minW={100}
-                    loading={loading}
+                    css={{ minWidth: 100 }}
                 >
                     {loading ? 'Generating...' : 'Generate'}
                 </Button>
-
             </Stack>
         </form>
     );

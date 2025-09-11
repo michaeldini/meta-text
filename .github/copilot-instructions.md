@@ -6,8 +6,9 @@ The codebase uses modern best practices, but prioritizes readability, maintainab
 - Build System: Vite
 - Framework: React with TypeScript
 - State Management: Zustand and React Query
-- UI Library: Chakra UI v3
-- Icons: Heroicons
+- UI Library: Stitches and Radix UI
+- Styling: CSS-in-JS with Stitches. Import using the alias '@stitches'
+- Icons: React Heroicons
 - Design for tablet and mobile.
 - Location: `src/` folder
 - Logging: `src/utils/logger.ts`

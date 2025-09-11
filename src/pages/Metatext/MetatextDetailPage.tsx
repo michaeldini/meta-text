@@ -5,8 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 // Uses a stack layout for the main content
 import type { ReactElement } from 'react';
-import { Stack } from '@chakra-ui/react/stack';
-import { Box } from '@chakra-ui/react/box';
+import { Stack, Box } from '@styles';
 import { ErrorAlert } from '@components/ErrorAlert';
 
 // Imports for components
@@ -80,18 +79,17 @@ function MetatextDetailPage(): ReactElement | null {
     // Redirect if query error (invalid or not found)
     if (id === null) return null;
     return (
-        <Box data-testid="metatext-detail-page" paddingLeft="4" bg="bg">
+        <Box data-testid="metatext-detail-page" css={{ paddingLeft: 16 }}>
             <ErrorAlert
                 message={error ? (typeof error === 'string' ? error : (error && typeof error === 'object' && 'message' in error ? String((error as { message?: unknown }).message) : 'Something went wrong while fetching this metatext.')) : null}
                 title="Failed to load metatext"
                 data-testid="metatext-detail-error"
-                mb={4}
+                mb={16}
             />
             {metatext && (
                 <Stack
                     data-testid="metatext-detail-content"
-                    animationName="fade-in"
-                    animationDuration="fast"
+                    css={{ animationName: 'fade-in', animationDuration: '160ms', gap: 24 }}
                 >
                     <MetatextHeader
                         title={metatext.title}

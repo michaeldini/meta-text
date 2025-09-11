@@ -1,7 +1,6 @@
 import { HiOutlineSparkles } from 'react-icons/hi2';
 import React from 'react';
-import { Box, Heading, Button, Input } from '@chakra-ui/react';
-import { Fieldset } from '@chakra-ui/react';
+import { styled, css, buttonStyles } from '@styles';
 import { Select } from '@components/ui/select';
 import { useMetatextCreate } from './useMetatextCreate';
 import { SourceDocumentSummary } from '@mtypes/documents';
@@ -11,11 +10,59 @@ export interface MetatextCreateFormProps {
     sourceDocsLoading: boolean;
 }
 
-// 1. Header ---------------------------------------------------------------
+// 1. Stitches primitives --------------------------------------------------
+const Container = styled('div', {
+    padding: '16px',
+    // minWidth: 320,
+});
+
+const HeaderWrap = styled('div', {});
+
+const HeadingEl = styled('h3', {
+    fontSize: '0.95rem',
+    margin: 0,
+    marginBottom: '12px',
+    fontWeight: 600,
+});
+
+const FormEl = styled('form', {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 12,
+});
+
+const FieldsetEl = styled('fieldset', {
+    border: 'none',
+    padding: 0,
+    margin: 0,
+    display: 'grid',
+    gap: 12,
+});
+
+const InputEl = styled('input', {
+    padding: '8px 10px',
+    borderRadius: 6,
+    border: '1px solid $colors$gray400',
+    fontSize: '1rem',
+});
+
+const ButtonEl = styled('button', {
+    ...buttonStyles,
+    background: '$colors$buttonPrimaryBg',
+    color: '$colors$buttonPrimaryText',
+    padding: '8px 12px',
+    borderRadius: 6,
+    '&:disabled': {
+        opacity: 0.6,
+        cursor: 'not-allowed',
+    },
+});
+
+// Small header node
 const header = (
-    <Box>
-        <Heading size="sub" mb={4}>New</Heading>
-    </Box>
+    <HeaderWrap>
+        <HeadingEl>New</HeadingEl>
+    </HeaderWrap>
 );
 
 // 2. Source Document Select ----------------------------------------------
@@ -45,7 +92,7 @@ interface TitleInputProps {
 }
 function TitleInput({ value, onChange }: TitleInputProps) {
     return (
-        <Input
+        <InputEl
             placeholder="Title"
             value={value}
             onChange={onChange}
@@ -62,10 +109,10 @@ interface SubmitButtonProps {
 }
 function SubmitButton({ loading, disabled }: SubmitButtonProps) {
     return (
-        <Button type="submit" disabled={disabled} data-testid="submit-button" colorScheme="primary">
+        <ButtonEl type="submit" disabled={disabled} data-testid="submit-button">
             <HiOutlineSparkles style={{ marginRight: 8 }} />
             {loading ? 'Creating...' : 'Create Metatext'}
-        </Button>
+        </ButtonEl>
     );
 }
 
@@ -82,16 +129,16 @@ function MetatextCreateForm({ sourceDocs }: MetatextCreateFormProps): React.Reac
     const selectedSourceDocIdStr = selectedSourceDocId ? String(selectedSourceDocId) : '';
 
     return (
-        <Box p="4" minWidth="xs" >
+        <Container>
             {header}
-            <form onSubmit={handleSubmit}>
-                <Fieldset.Root>
+            <FormEl onSubmit={handleSubmit}>
+                <FieldsetEl>
                     <SourceDocSelect options={sourceDocOptions} value={selectedSourceDocIdStr} onChange={handleSourceDocChange} />
                     <TitleInput value={title} onChange={handleTitleChange} />
                     <SubmitButton loading={loading} disabled={isSubmitDisabled} />
-                </Fieldset.Root>
-            </form>
-        </Box>
+                </FieldsetEl>
+            </FormEl>
+        </Container>
     );
 }
 

@@ -1,7 +1,7 @@
 // Purpose: Reusable prompt input with submit button. Emits onSubmit with the typed value.
 
 import React from 'react';
-import { Box, Button, Flex, Input, Spinner, Text } from '@chakra-ui/react';
+import { Box, Button, Stack, Flex, Input as StInput, Text } from '@styles';
 
 export type PromptBarProps = {
     value: string;
@@ -20,20 +20,20 @@ export function PromptBar({ value, onChange, onSubmit, loading, error }: PromptB
     };
 
     return (
-        <Box as="form" onSubmit={handleSubmit} w="100%" maxW="960px" mx="auto">
-            <Flex gap={2} align="center" borderBottom="1px solid" borderColor="gray.200">
-                <Input
+        <Box as="form" onSubmit={handleSubmit} style={{ width: '100%', maxWidth: 960, marginInline: 'auto' }}>
+            <Flex css={{ gap: 8, alignItems: 'center', borderBottom: '1px solid $colors$gray400' }}>
+                <StInput
                     placeholder="Enter your prompt..."
                     value={value}
-                    onChange={e => onChange(e.target.value)}
+                    onChange={e => onChange((e.target as HTMLInputElement).value)}
                     disabled={!!loading}
                 />
-                <Button type="submit" colorScheme="blue" disabled={!value.trim() || !!loading}>
-                    {loading ? <Spinner size="sm" /> : 'Send'}
+                <Button type="submit" disabled={!value.trim() || !!loading}>
+                    {loading ? '…' : 'Send'}
                 </Button>
             </Flex>
             {error && (
-                <Text mt={2} color="red.400" fontSize="sm">{error}</Text>
+                <Text css={{ marginTop: 8, color: '$colors$buttonDangerBg', fontSize: '0.9rem' }}>{error}</Text>
             )}
         </Box>
     );

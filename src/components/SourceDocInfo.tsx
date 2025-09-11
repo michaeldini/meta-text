@@ -1,7 +1,6 @@
 import React from 'react';
-import { Box, Text, Stack } from '@chakra-ui/react';
-import { Editable } from '@chakra-ui/react/editable';
-import { Flex } from '@chakra-ui/react/flex';
+import { Box, Text, Stack, Flex } from '@styles';
+import { styled } from '@styles';
 import { SimpleDrawer } from '@components/ui';
 
 import { HiOutlineSparkles } from 'react-icons/hi2';
@@ -52,7 +51,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
 
     // Early return if no data
     if (!doc) {
-        return <Text color="fg.muted">No source document information available</Text>;
+        return <Text css={{ color: '$gray500' }}>No source document information available</Text>;
     }
 
     // Handle value commit for editable fields
@@ -62,7 +61,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
     };
 
     return (
-        <Flex wrap="wrap">
+        <Flex css={{ flexWrap: 'wrap', gap: 16 }}>
             <TooltipButton
                 label="Generate"
                 tooltip="Regenerate document info"
@@ -71,18 +70,17 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
                 loading={generateSourceDocInfo.loading}
                 icon={<HiOutlineSparkles />}
             />
-            <Text w="100%" color="fg.muted" mb="4">Click on a field to edit. Enter to Save. Tab to Cancel</Text>
-            <Stack p="2">
+            <Text css={{ width: '100%', color: '$gray500', marginBottom: 16 }}>Click on a field to edit. Enter to Save. Tab to Cancel</Text>
+            <Stack css={{ padding: 8, gap: 12 }}>
                 {FIELD_CONFIG.map(config => (
-                    <Box direction="row" key={config.key} maxWidth="20rem" px="4" >
-                        <Text fontWeight="bold">{config.label}</Text>
-                        <Editable.Root
+                    <Box css={{ display: 'flex', flexDirection: 'row', maxWidth: '20rem', paddingLeft: 16, alignItems: 'center', gap: 8 }} key={config.key}>
+                        <Text css={{ fontWeight: 600 }}>{config.label}</Text>
+                        {/* Editable field migration: replace with a simple input for now */}
+                        <input
                             defaultValue={doc[config.key] != null ? String(doc[config.key]) : 'N/A'}
-                            submitMode={"enter"}
-                            onValueCommit={handleValueCommit(config.key)}>
-                            <Editable.Preview />
-                            <Editable.Textarea minH="48px" alignItems="flex-start" width="full" />
-                        </Editable.Root>
+                            onBlur={e => handleValueCommit(config.key)({ value: e.target.value })}
+                            style={{ minHeight: 48, width: '100%', fontSize: '1rem', padding: 6, border: '1px solid #ccc', borderRadius: 6 }}
+                        />
                     </Box>
                 ))}
             </Stack>

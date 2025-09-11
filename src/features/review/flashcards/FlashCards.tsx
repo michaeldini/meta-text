@@ -3,7 +3,7 @@
 // It uses Card components that flip to show the definition and context of each word
 
 import React from 'react';
-import { Wrap } from '@chakra-ui/react/wrap';
+import { Wrap } from '@styles';
 import Flashcard from './components/Flashcard';
 import { Explanation } from '@mtypes/MetatextReview.types';
 import { EmptyState } from '@components/ui';

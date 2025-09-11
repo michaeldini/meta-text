@@ -4,7 +4,7 @@ import { HiArrowDownTray, HiBookmark, HiHashtag, HiOutlineStar, HiStar } from 'r
 // Self-contained component that manages its own state via hooks
 
 import React from 'react';
-import { Box } from '@chakra-ui/react/box';
+import { Box } from '@styles';
 
 import { TooltipButton } from '@components/TooltipButton';
 import { useUserConfig, useUpdateUserConfig } from '@services/userConfigService';
@@ -45,7 +45,7 @@ export function MetatextHeaderControls({
     } = useMetatextBookmark(metatextId, displayChunks, 5, setCurrentPage);
     // TODO passing 5 is not good here.
     return (
-        <Box display="flex" alignItems="center" justifyContent="space-between">
+        <Box css={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <TooltipButton
                 label=""
                 tooltip="Navigate to the bookmarked chunk in this metatext"

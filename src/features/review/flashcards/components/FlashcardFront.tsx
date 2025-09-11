@@ -1,32 +1,44 @@
 // Front of a flashcard component that displays a word and allows flipping to see its definition
 
 import React from 'react';
-import { Card } from '@chakra-ui/react/card';
-import { Button } from '@chakra-ui/react/button';
-import { Text } from '@chakra-ui/react/text';
+import { styled } from '@styles';
 
-interface FlashcardFrontProps {
-    word: string;
-    setFlipped: (flipped: boolean) => void;
-}
 
-export function FlashcardFront(props: FlashcardFrontProps) {
+const CardBody = styled('div', {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 0,
+    width: '100%',
+    padding: 0,
+});
+
+const FlashcardButton = styled('button', {
+    width: '100%',
+    height: 'auto',
+    fontSize: '2rem',
+    fontWeight: 'bold',
+    borderRadius: 12,
+    border: 'none',
+    cursor: 'pointer',
+    padding: '18px 0',
+    transition: 'background 0.2s',
+    '&:hover': { background: '$colors$buttonPrimaryBg' },
+});
+
+const WordText = styled('div', {
+    fontSize: '2rem',
+    fontWeight: 'bold',
+    textAlign: 'center',
+});
+
+export function FlashcardFront(props: { word: string; setFlipped: (flipped: boolean) => void }) {
     const { word, setFlipped } = props;
     return (
-        <Button
-            onClick={() => setFlipped(true)}
-            fontSize="2xl"
-            fontWeight="bold"
-            borderRadius="md"
-            width="100%"
-            height="auto"
-        >
-            <Card.Body gap="0">
-                <Text fontSize="2xl" fontWeight="bold" textAlign="center">
-                    {word}
-                </Text>
-            </Card.Body>
-        </Button>
+        <FlashcardButton onClick={() => setFlipped(true)}>
+            <CardBody>
+                <WordText>{word}</WordText>
+            </CardBody>
+        </FlashcardButton>
     );
 }
 

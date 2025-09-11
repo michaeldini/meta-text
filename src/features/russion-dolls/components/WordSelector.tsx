@@ -1,7 +1,7 @@
 // Also supports rendering incoming highlight ranges with custom background colors.
 
 import React, { useState } from 'react';
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Text } from '@styles';
 import { Highlight } from '../../../types/experiments';
 
 export type WordSelectorProps = {
@@ -95,7 +95,13 @@ export function WordSelector({ text, onSelection, highlights }: WordSelectorProp
     };
 
     return (
-        <Text as="span" userSelect={isSelecting ? 'none' : 'text'} onMouseUp={handleMouseUp}>
+        <Text
+            as="span"
+            css={{
+                userSelect: isSelecting ? 'none' : 'text'
+            }}
+            onMouseUp={handleMouseUp}
+        >
             {tokens.map((tok, i) => {
                 if (tok.isWord) {
                     const color = getTokenHighlightColor(tok.start, tok.end);
@@ -103,14 +109,20 @@ export function WordSelector({ text, onSelection, highlights }: WordSelectorProp
                         <Box
                             key={i}
                             as="span"
-                            px={0}
-                            mx={0}
-                            cursor="pointer"
+                            css={{
+                                paddingLeft: 0,
+                                paddingRight: 0,
+                                marginLeft: 0,
+                                marginRight: 0,
+                                cursor: 'pointer',
+                                background: isTokenSelected(i) ? (color ?? '#374151') : (color ?? 'transparent'),
+                                display: 'inline-block',
+                                '&:hover': {
+                                    background: color ?? '#374151'
+                                }
+                            }}
                             onMouseDown={(e) => { e.preventDefault(); handleMouseDown(i); }}
                             onMouseEnter={() => handleMouseEnter(i)}
-                            _hover={{ background: color ?? 'gray.700' }}
-                            background={isTokenSelected(i) ? (color ?? 'gray.700') : (color ?? 'transparent')}
-                            display="inline-block"
                         >
                             {tok.value}
                         </Box>
@@ -118,7 +130,7 @@ export function WordSelector({ text, onSelection, highlights }: WordSelectorProp
                 }
                 // punctuation/whitespace
                 return (
-                    <Box key={i} as="span" display="inline">{tok.value}</Box>
+                    <Box key={i} as="span" css={{ display: 'inline' }}>{tok.value}</Box>
                 );
             })}
         </Text>

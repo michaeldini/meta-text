@@ -68,6 +68,9 @@
             ],
             "@sections/*": [
                 "src/sections/*"
+            ],
+            "@styles": [
+                "src/stitches.config.ts"
             ]
         }
     },

@@ -1,9 +1,8 @@
 // ErrorAlert
-// Reusable dismissible error alert using Chakra UI v3 composed API (Alert.Root, Indicator, Content, Title, Description).
 // Implements local dismiss logic or delegates to provided onClose handler.
-import React, { useState, useEffect } from 'react';
-import { CloseButton } from '@chakra-ui/react/button';
-import { Alert } from '@chakra-ui/react/alert';
+import * as React from 'react';
+import { useState, useEffect } from 'react';
+import { AlertRoot, AlertIndicator, AlertContent, AlertTitle, AlertDescription, AlertDismissButton } from '@styles';
 
 export interface ErrorAlertProps {
     message: React.ReactNode;
@@ -32,32 +31,15 @@ export function ErrorAlert({
     const handleClose = () => {
         if (onClose) onClose(); else setDismissed(true);
     };
-
     return (
-        <Alert.Root
-            status="error"
-            variant="subtle"
-            borderRadius="md"
-            mt={mt}
-            mb={mb}
-            data-testid={dataTestId}
-            role="alert"
-        >
-            <Alert.Indicator />
-            <Alert.Content>
-                <Alert.Title>{title}</Alert.Title>
-                <Alert.Description>{message}</Alert.Description>
-            </Alert.Content>
-            <CloseButton
-                size="lg"
-                pos="relative"
-                top="-2"
-                insetEnd="-2"
-                color="primary"
-                aria-label="Dismiss error"
-                onClick={handleClose}
-            />
-        </Alert.Root>
+        <AlertRoot data-testid={dataTestId} role="alert" style={{ marginTop: mt as any, marginBottom: mb as any }}>
+            <AlertIndicator />
+            <AlertContent>
+                <AlertTitle>{title}</AlertTitle>
+                <AlertDescription>{message}</AlertDescription>
+            </AlertContent>
+            <AlertDismissButton aria-label="Dismiss error" onClick={handleClose}>&times;</AlertDismissButton>
+        </AlertRoot>
     );
 }
 

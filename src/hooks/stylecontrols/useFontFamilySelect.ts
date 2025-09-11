@@ -4,7 +4,7 @@
  * Handles font family options and change handler for FontFamilySelect component.
  */
 import React from 'react';
-import { createListCollection } from '@chakra-ui/react/collection';
+// Custom function to build font family options for FontFamilySelect
 
 const FONT_FAMILIES = [
     'Inter, sans-serif',
@@ -34,14 +34,14 @@ export function useFontFamilySelect({ value, onChange }: UseFontFamilySelectProp
     };
     // Ensure 'value' is referenced to avoid unused var lint
     const _currentValue = value;
-    const fontFamilyOptions = createListCollection({
+    const fontFamilyOptions = {
         items: FONT_FAMILIES.map(font => ({
             value: font,
             label: font.split(',')[0],
             style: { fontFamily: font }
         })),
-        itemToString: (item) => item?.label ?? '',
-    });
+        itemToString: (item: { label?: string }) => item?.label ?? '',
+    };
     return {
         fontFamilyOptions,
         handleChange,

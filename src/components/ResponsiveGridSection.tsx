@@ -7,7 +7,7 @@
  * children and forwards any additional Stack props for extensibility.
  */
 import React from 'react';
-import { Grid } from '@chakra-ui/react';
+import { Box } from '@styles';
 
 export interface ResponsiveGridProps {
     children: React.ReactNode;
@@ -16,13 +16,20 @@ export interface ResponsiveGridProps {
 
 function ResponsiveGridSection({ children, ...rest }: ResponsiveGridProps) {
     return (
-        <Grid
-            templateColumns={{ base: "repeat(1, 1fr)", lg: "repeat(3, 1fr)" }}
-            gap={{ base: 2, lg: 10 }}
+        <Box
+            css={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(1, 1fr)',
+                gap: 8,
+                '@media (min-width: 1024px)': {
+                    gridTemplateColumns: 'repeat(3, 1fr)',
+                    gap: 40,
+                },
+            }}
             {...rest}
         >
             {children}
-        </Grid>
+        </Box>
     );
 }
 
