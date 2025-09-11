@@ -23,7 +23,7 @@ export const {
             buttonPrimaryText: 'white',
             buttonDangerBg: '#e53e3e',
             buttonDangerText: 'white',
-            background: '#5a5a5cff',
+            background: '#424244ff',
         },
     },
     media: {
