@@ -43,7 +43,7 @@ export function AppContent() {
     return (
         <Boundary fallbackText="Loading">
             <Suspense>
-                <Box css={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '$colors$background' }}>
+                <Box css={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '$colors$background', padding: '8px' }}>
                     <Toaster />
                     <GlobalNotifications />
                     <NavBar />

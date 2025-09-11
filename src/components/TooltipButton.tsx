@@ -1,6 +1,6 @@
 import React from 'react';
 import * as Tooltip from '@radix-ui/react-tooltip';
-import { styled, tooltipContentStyles, tooltipArrowStyles, buttonStyles, buttonSizes } from '@styles';
+import { styled, tooltipContentStyles, tooltipArrowStyles, Button } from '@styles';
 
 // Generic button with tooltip for consistent UI usage. Accepts label, icon, onClick, disabled.
 export interface TooltipButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'color' | 'size'> {
@@ -39,22 +39,7 @@ export function TooltipButton({
     iconSize,
     ...rest
 }: TooltipButtonProps): React.ReactElement {
-    const StyledButton = styled('button', {
-        ...buttonStyles,
-        variants: {
-            size: {
-                sm: buttonSizes.sm,
-                md: buttonSizes.md,
-                lg: buttonSizes.lg,
-            },
-            tone: {
-                default: { color: '$colors$buttonText' },
-                primary: { background: '$colors$buttonPrimaryBg', color: '$colors$buttonPrimaryText' },
-                danger: { background: '$colors$buttonDangerBg', color: '$colors$buttonDangerText' },
-            },
-        },
-        defaultVariants: { size: 'md', tone: 'default' },
-    });
+    // Use centralized Button primitive from stitches.config.ts
 
     const IconWrapper = styled('span', {
         display: 'inline-flex',
@@ -76,7 +61,7 @@ export function TooltipButton({
         <Tooltip.Provider>
             <Tooltip.Root>
                 <Tooltip.Trigger asChild>
-                    <StyledButton
+                    <Button
                         onClick={onClick}
                         disabled={disabled}
                         aria-label={label}
@@ -90,7 +75,7 @@ export function TooltipButton({
                     >
                         {icon ? <IconWrapper style={{ fontSize: iconSize as any }}>{icon}</IconWrapper> : null}
                         {loading ? '…' : label}
-                    </StyledButton>
+                    </Button>
                 </Tooltip.Trigger>
                 <Tooltip.Portal>
                     <TooltipContent side={side} sideOffset={sideOffset} align={align}>

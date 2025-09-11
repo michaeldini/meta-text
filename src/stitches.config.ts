@@ -13,6 +13,9 @@ export const {
 } = createStitches({
     theme: {
         colors: {
+            background: '#424244ff',
+            text: '#888889ff',
+            heading: '#e0e0e0ff',
             gray400: 'gainsboro',
             gray500: 'lightgray',
             tooltipBg: '#111',
@@ -23,7 +26,6 @@ export const {
             buttonPrimaryText: 'white',
             buttonDangerBg: '#e53e3e',
             buttonDangerText: 'white',
-            background: '#424244ff',
         },
     },
     media: {
@@ -52,27 +54,40 @@ export const tooltipArrowStyles = {
 };
 
 // shared button styles (exported so components can import variants & base styles)
-export const buttonStyles = {
+// Button primitive: all base styles and size variants are defined here for DRYness
+export const Button = styled('button', {
     display: 'inline-flex',
     alignItems: 'center',
     gap: '8px',
     border: 'none',
     background: 'transparent',
     padding: '6px 8px',
-    borderRadius: 6,
+    borderRadius: 8,
     cursor: 'pointer',
     fontSize: '0.95rem',
-};
-
-export const buttonSizes: Record<string, any> = {
-    sm: { padding: '4px 6px', fontSize: '0.8rem' },
-    md: { padding: '6px 8px', fontSize: '0.95rem' },
-    lg: { padding: '8px 10px', fontSize: '1rem' },
-};
+    color: '$colors$buttonPrimaryText',
+    variants: {
+        size: {
+            sm: { padding: '4px 6px', fontSize: '0.8rem' },
+            md: { padding: '6px 8px', fontSize: '0.95rem' },
+            lg: { padding: '8px 10px', fontSize: '1rem' },
+        },
+        tone: {
+            default: {},
+            primary: { background: '$colors$buttonPrimaryBg', color: '$colors$buttonPrimaryText' },
+            danger: { background: '$colors$buttonDangerBg', color: '$colors$buttonDangerText' },
+        },
+    },
+    defaultVariants: {
+        size: 'md',
+        tone: 'default',
+    },
+});
 
 // Common reusable primitives for app-wide consistency
 export const Box = styled('div', {
     boxSizing: 'border-box',
+    color: '$colors$text',
 });
 
 export const Flex = styled('div', {
@@ -90,11 +105,28 @@ export const Heading = styled('h3', {
     marginBottom: '12px',
     fontSize: '1rem',
     fontWeight: 600,
+    color: '$colors$heading',
 });
 
 export const Text = styled('div', {
-    fontSize: '0.95rem',
-    color: 'inherit',
+    variants: {
+        tone: {
+            default: {
+                fontSize: '1rem',
+                color: 'inherit',
+            },
+            heading: {
+                margin: 0,
+                fontSize: '1.5rem',
+                fontWeight: 600,
+                color: '$colors$heading',
+                marginBottom: '12px',
+            },
+        },
+    },
+    defaultVariants: {
+        tone: 'default',
+    },
 });
 
 export const Panel = styled('div', {
@@ -176,29 +208,6 @@ export const AlertDismissButton = styled('button', {
     lineHeight: 1,
     flex: '0 0 auto',
     '&:hover': { background: 'rgba(255,255,255,0.06)' },
-});
-
-export const Button = styled('button', {
-    ...buttonStyles,
-    borderRadius: 8,
-    // background: '$colors$buttonPrimaryBg',
-    color: '$colors$buttonPrimaryText',
-    variants: {
-        size: {
-            sm: buttonSizes.sm,
-            md: buttonSizes.md,
-            lg: buttonSizes.lg,
-        },
-        tone: {
-            default: {},
-            primary: { background: '$colors$buttonPrimaryBg', color: '$colors$buttonPrimaryText' },
-            danger: { background: '$colors$buttonDangerBg', color: '$colors$buttonDangerText' },
-        },
-    },
-    defaultVariants: {
-        size: 'md',
-        tone: 'default',
-    },
 });
 
 // Simple wrap container for tag lists and chips

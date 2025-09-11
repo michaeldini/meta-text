@@ -1,6 +1,6 @@
 import { HiOutlineSparkles } from 'react-icons/hi2';
 import React from 'react';
-import { styled, css, buttonStyles } from '@styles';
+import { styled, css, Button, Text } from '@styles';
 import { Select } from '@components/ui/select';
 import { useMetatextCreate } from './useMetatextCreate';
 import { SourceDocumentSummary } from '@mtypes/documents';
@@ -17,13 +17,6 @@ const Container = styled('div', {
 });
 
 const HeaderWrap = styled('div', {});
-
-const HeadingEl = styled('h3', {
-    fontSize: '0.95rem',
-    margin: 0,
-    marginBottom: '12px',
-    fontWeight: 600,
-});
 
 const FormEl = styled('form', {
     display: 'flex',
@@ -46,22 +39,12 @@ const InputEl = styled('input', {
     fontSize: '1rem',
 });
 
-const ButtonEl = styled('button', {
-    ...buttonStyles,
-    background: '$colors$buttonPrimaryBg',
-    color: '$colors$buttonPrimaryText',
-    padding: '8px 12px',
-    borderRadius: 6,
-    '&:disabled': {
-        opacity: 0.6,
-        cursor: 'not-allowed',
-    },
-});
+// Use centralized Button primitive from stitches.config.ts
 
 // Small header node
 const header = (
     <HeaderWrap>
-        <HeadingEl>New</HeadingEl>
+        <Text tone="heading">New</Text>
     </HeaderWrap>
 );
 
@@ -109,10 +92,17 @@ interface SubmitButtonProps {
 }
 function SubmitButton({ loading, disabled }: SubmitButtonProps) {
     return (
-        <ButtonEl type="submit" disabled={disabled} data-testid="submit-button">
+        <Button
+            type="submit"
+            disabled={disabled}
+            data-testid="submit-button"
+            tone="primary"
+            size="md"
+            style={{ padding: '8px 12px', borderRadius: 6 }}
+        >
             <HiOutlineSparkles style={{ marginRight: 8 }} />
             {loading ? 'Creating...' : 'Create Metatext'}
-        </ButtonEl>
+        </Button>
     );
 }
 
