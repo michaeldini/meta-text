@@ -34,6 +34,7 @@ const Label = styled('label', {
 });
 
 const SelectEl = styled('select', {
+    color: '$colors$text',
     maxWidth: '320px',
     appearance: 'none',
     WebkitAppearance: 'none',
@@ -41,7 +42,7 @@ const SelectEl = styled('select', {
     padding: '8px 36px 8px 10px',
     borderRadius: 6,
     border: '1px solid $colors$gray400',
-    background: 'black',
+    background: 'transparent',
     fontSize: '1rem',
     lineHeight: '1.2',
     backgroundImage: 'linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%)',

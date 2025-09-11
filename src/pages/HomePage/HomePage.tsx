@@ -9,22 +9,13 @@ import type { ReactElement } from 'react';
 // Data Fetching Hooks
 import { useSourceDocuments, useMetatexts, useDeleteMetatext, useDeleteSourceDocument } from '@features/documents/useDocumentsData';
 // styling (stitches)
-import { styled, Box, Flex, Link } from '@styles';
+import { Box, Flex, Link } from '@styles';
 import MetatextCreateForm from '@sections/Metatext/MetatextCreateForm';
 import { SearchableTable } from '@components/SearchableTable';
 import SourceDocUploadForm from '@sections/SourceDocuments/SourceDocUploadForm';
-// ...existing code...
 
 // HomePage component
-const Container = Box;
-const WrapContainer = styled(Flex, {
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    gap: '20px',
-    '@bp1': { gap: '40px' },
-});
-
-const StyledLink = Link;
+// Use Box and Flex directly, with variants if needed
 
 function HomePage(): ReactElement {
     // Fetch source documents and metatexts
@@ -32,8 +23,16 @@ function HomePage(): ReactElement {
     const metatextsQuery = useMetatexts();
 
     return (
-        <Container>
-            <WrapContainer data-testid="homepage-content">
+        <Box>
+            <Flex
+                css={{
+                    flexWrap: 'wrap',
+                    justifyContent: 'center',
+                    gap: '20px',
+                    '@bp1': { gap: '40px' },
+                }}
+                data-testid="homepage-content"
+            >
                 <SearchableTable
                     documents={metatextsQuery.data ?? []}
                     title="Metatexts"
@@ -47,19 +46,19 @@ function HomePage(): ReactElement {
                 <SourceDocUploadForm />
                 <SearchableTable
                     documents={sourceDocsQuery.data ?? []}
-                    title='SourceDocs'
+                    title="SourceDocs"
                     navigateToBase="/sourcedoc/"
                     deleteItemMutation={useDeleteSourceDocument()}
                 />
-            </WrapContainer>
+            </Flex>
 
-            <StyledLink href="/experiments">
+            <Link href="/experiments">
                 Go to Experiments
-            </StyledLink>
-            <StyledLink href="/russiandolls" style={{ paddingLeft: '1rem' }}>
+            </Link>
+            <Link href="/russiandolls" css={{ paddingLeft: '1rem' }}>
                 Go to Experiments 2
-            </StyledLink>
-        </Container>
+            </Link>
+        </Box>
     );
 }
 

@@ -100,10 +100,16 @@ export const Stack = styled('div', {
     gap: '12px',
 });
 
+export const Panel = styled('div', {
+    padding: '16px',
+    minWidth: '20rem',
+    boxSizing: 'border-box',
+});
+
 export const Heading = styled('h3', {
     margin: 0,
     marginBottom: '12px',
-    fontSize: '1rem',
+    fontSize: '1.25rem',
     fontWeight: 600,
     color: '$colors$heading',
 });
@@ -115,13 +121,6 @@ export const Text = styled('div', {
                 fontSize: '1rem',
                 color: 'inherit',
             },
-            heading: {
-                margin: 0,
-                fontSize: '1.5rem',
-                fontWeight: 600,
-                color: '$colors$heading',
-                marginBottom: '12px',
-            },
         },
     },
     defaultVariants: {
@@ -129,11 +128,6 @@ export const Text = styled('div', {
     },
 });
 
-export const Panel = styled('div', {
-    padding: '16px',
-    minWidth: '20rem',
-    boxSizing: 'border-box',
-});
 
 export const Input = styled('input', {
     flex: 1,

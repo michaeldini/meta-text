@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { MetatextSummary, SourceDocumentSummary } from '@mtypes/index';
 import { TooltipButton } from '@components/TooltipButton';
 import { UseMutationResult } from '@tanstack/react-query';
-import { styled, Panel, Heading, Input, ClearButton } from '@styles';
+import { styled, Box, Heading, Input, ClearButton } from '@styles';
 
 // useSearchResults: Hook to manage search/filter state and results
 // returns results that can be passed to a table component
@@ -42,9 +42,6 @@ function clearSearchAndFocus(setSearch: (value: string) => void, inputRef?: Reac
         inputRef.current.focus();
     }
 }
-
-// Stitches styled primitives used in this file
-const HeadingStyled = Heading;
 
 const InputGroupDiv = styled('div', {
     display: 'flex',
@@ -216,9 +213,16 @@ interface SearchableTableProps {
 
 export function SearchableTable({ documents, title, navigateToBase, deleteItemMutation }: SearchableTableProps) {
     const { search, setSearch, inputRef, results } = useSearchResults(documents);
+
+    const TableContainer = styled(Box, {
+        padding: '16px',
+        minWidth: '20rem',
+        boxSizing: 'border-box',
+    });
+
     return (
-        <Panel>
-            {title && <HeadingStyled>{title}</HeadingStyled>}
+        <TableContainer>
+            {title && <Heading>{title}</Heading>}
             <SearchInput
                 search={search}
                 setSearch={setSearch}
@@ -229,6 +233,6 @@ export function SearchableTable({ documents, title, navigateToBase, deleteItemMu
                 navigateToBase={navigateToBase}
                 deleteItemMutation={deleteItemMutation}
             />
-        </Panel>
+        </TableContainer>
     );
 }

@@ -63,65 +63,63 @@ export default function SourceDoc({
     return (
         <Box data-testid="source-doc-container">
             <ErrorAlert message={error} />
-            <Panel css={{ width: '100%', zIndex: 1, minHeight: '80vh', background: '$background' }}>
-                {!isEditing ? (
-                    <Box
-                        css={{
+            {!isEditing ? (
+                <Box
+                    css={{
+                        fontSize: `${textSizePx}px`,
+                        fontFamily,
+                        lineHeight,
+                        whiteSpace: 'pre-line',
+                        minHeight: '48px',
+                        padding: '1rem',
+                        cursor: isSaving ? 'not-allowed' : 'pointer',
+                    }}
+                    aria-label="Document Text"
+                    onDoubleClick={handleEdit}
+                    tabIndex={0}
+                >
+                    <Text>{value || <span style={{ color: '#aaa' }}>Enter document text...</span>}</Text>
+                </Box>
+            ) : (
+                <Box css={{ position: 'relative' }}>
+                    <textarea
+                        value={value}
+                        onChange={handleChange}
+                        disabled={isSaving}
+                        style={{
                             fontSize: `${textSizePx}px`,
                             fontFamily,
                             lineHeight,
                             whiteSpace: 'pre-line',
-                            minHeight: '48px',
+                            minHeight: '60vh',
+                            width: '100%',
                             padding: '1rem',
-                            cursor: isSaving ? 'not-allowed' : 'pointer',
+                            border: '1px solid $colors$gray400',
+                            borderRadius: 8,
+                            background: 'transparent',
+                            color: 'inherit',
+                            resize: 'vertical',
+                            zIndex: 1000,
                         }}
-                        aria-label="Document Text"
-                        onDoubleClick={handleEdit}
-                        tabIndex={0}
+                        aria-label="Edit Document Text"
+                        autoFocus
+                        onBlur={handleCancel}
+                    />
+                    <Button
+                        tone="primary"
+                        size="md"
+                        css={{ position: 'absolute', top: 12, right: 12, zIndex: 1100 }}
+                        onClick={handleSubmit}
+                        disabled={isSaving}
+                        aria-label="Save"
                     >
-                        <Text>{value || <span style={{ color: '#aaa' }}>Enter document text...</span>}</Text>
-                    </Box>
-                ) : (
-                    <Box css={{ position: 'relative' }}>
-                        <textarea
-                            value={value}
-                            onChange={handleChange}
-                            disabled={isSaving}
-                            style={{
-                                fontSize: `${textSizePx}px`,
-                                fontFamily,
-                                lineHeight,
-                                whiteSpace: 'pre-line',
-                                minHeight: '60vh',
-                                width: '100%',
-                                padding: '1rem',
-                                border: '1px solid $colors$gray400',
-                                borderRadius: 8,
-                                background: 'transparent',
-                                color: 'inherit',
-                                resize: 'vertical',
-                                zIndex: 1000,
-                            }}
-                            aria-label="Edit Document Text"
-                            autoFocus
-                            onBlur={handleCancel}
-                        />
-                        <Button
-                            tone="primary"
-                            size="md"
-                            css={{ position: 'absolute', top: 12, right: 12, zIndex: 1100 }}
-                            onClick={handleSubmit}
-                            disabled={isSaving}
-                            aria-label="Save"
-                        >
-                            <HiCheck style={{ fontSize: '1.25em' }} />
-                        </Button>
-                    </Box>
-                )}
-                {isSaving && (
-                    <Text css={{ marginTop: '12px', color: '$colors$buttonPrimaryBg' }}>Saving...</Text>
-                )}
-            </Panel>
+                        <HiCheck style={{ fontSize: '1.25em' }} />
+                    </Button>
+                </Box>
+            )}
+            {isSaving && (
+                <Text css={{ marginTop: '12px', color: '$colors$buttonPrimaryBg' }}>Saving...</Text>
+            )}
         </Box>
     );
 }
