@@ -102,7 +102,7 @@ export function FlashcardBack(props: FlashcardBackProps) {
                     }
                     title="Definition In Context"
                 >
-                    <Box css={{ padding: 16 }}>
+                    <Box>
                         <Text css={{ fontWeight: 'bold' }}>Word: {word}</Text>
                         <Text css={{ marginTop: 8 }}>{definition_in_context}</Text>
                     </Box>

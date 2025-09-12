@@ -54,7 +54,7 @@ export function EvaluationTool({ chunk, isVisible }: EvaluationToolProps) {
                 disabled={loading || !chunk.id}
                 loading={loading}
             />
-            <Box css={{ marginTop: 12 }}>
+            <Box >
                 {evaluationText
                     ? <Text>{evaluationText}</Text>
                     : <Text css={{ textAlign: 'right', color: '$gray500' }}>No evaluation yet.</Text>}

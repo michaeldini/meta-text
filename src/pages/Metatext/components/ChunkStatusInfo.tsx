@@ -35,11 +35,9 @@ export function ChunkStatusInfo({
 
     return (
         <Stack css={{ flexDirection: 'row', flexWrap: 'wrap' }} data-testid="chunk-status-info">
-            <Box css={{ width: '60%' }}>
-                <SearchBar />
-            </Box>
+            <SearchBar />
             {isSearching && (
-                <Box data-testid="chunk-search-spinner" css={{ display: 'inline-block', marginRight: 8 }}>
+                <Box data-testid="chunk-search-spinner">
                     <span role="status" aria-label="Loading" style={{ fontSize: '1.2em' }}>⏳</span>
                 </Box>
             )}

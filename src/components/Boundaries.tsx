@@ -47,7 +47,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     render() {
         if (this.state.hasError) {
             return (
-                <Box css={{ color: 'inherit', padding: 16 }}>
+                <Box>
                     <Text css={{ marginBottom: 12 }}>An unexpected error occurred. Please try reloading the page.</Text>
                     <Button tone="default" onClick={this.handleReload} size="sm">Reload Page</Button>
                 </Box>
@@ -75,7 +75,7 @@ export function Boundary({ children, fallback, fallbackText = "Loading..." }: Bo
             <React.Suspense
                 fallback={
                     fallback || (
-                        <Box css={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 40 }}>
+                        <Box>
                             <span style={{ fontSize: 32, color: '#aaa' }} aria-label="Loading...">⏳</span>
                             <Text as="span">{fallbackText}</Text>
                         </Box>

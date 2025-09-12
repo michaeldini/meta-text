@@ -31,8 +31,8 @@ interface StyleNumberInputProps {
 // DRY: Common number input for style controls
 function StyleNumberInput({ label, value, min, max, step, onChange, disabled }: StyleNumberInputProps) {
     return (
-        <Box css={{ width: 100, display: 'flex', flexDirection: 'column', gap: 4, mb: 12 }}>
-            <Text css={{ fontSize: 14, color: '$gray11', mb: 2 }}>{label}</Text>
+        <Box>
+            <Text>{label}</Text>
             <Input
                 type="number"
                 min={min}
@@ -41,7 +41,7 @@ function StyleNumberInput({ label, value, min, max, step, onChange, disabled }: 
                 value={value}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(Number(e.target.value))}
                 disabled={disabled}
-                css={{ width: '100%', fontSize: 16, padding: '6px 8px', borderRadius: 6, border: '1px solid $gray400' }}
+                css={{ 'borderBottom': 'none' }}
             />
         </Box>
     );

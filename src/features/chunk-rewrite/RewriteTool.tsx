@@ -83,7 +83,7 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
                         </Box>
                     </form>
                     {error && (
-                        <Box css={{ marginTop: 8, color: '#e53e3e' }}>
+                        <Box>
                             {error}
                         </Box>
                     )}
@@ -91,7 +91,7 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
             </SimpleDrawer>
             {/* Select to browse previous rewrites */}
             {hasRewrites && (
-                <Box css={{ marginTop: 24 }}>
+                <Box>
                     <Select
                         options={[{ label: "Browse previous rewrites", value: "" }, ...rewrites.map(r => ({ label: r.title || `Rewrite ${r.id}`, value: String(r.id) }))]}
                         value={selectedId === '' ? '' : String(selectedId)}
@@ -100,7 +100,7 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
                         placeholder="Browse previous rewrites"
                     />
                     {selected && (
-                        <Box css={{ padding: 12, border: '1px solid $colors$gray400', borderRadius: 6, marginTop: 8 }}>
+                        <Box>
                             <Text>{selected.rewrite_text}</Text>
                         </Box>
                     )}

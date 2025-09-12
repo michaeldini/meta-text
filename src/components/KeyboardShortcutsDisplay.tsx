@@ -137,7 +137,7 @@ export function KeyboardShortcutList({ categories, align = 'center' }: KeyboardS
                 const shortcuts = shortcutsByCategory[category];
                 if (!shortcuts?.length) return null;
                 return (
-                    <Box key={category} css={{ width: '100%' }}>
+                    <Box key={category}>
                         <Text css={{ fontWeight: 600, marginBottom: 8, color: 'inherit' }}>{category}</Text>
                         <Stack css={{ flexDirection: 'column', alignItems: align === 'flex-start' ? 'flex-start' : 'center', gap: 4, paddingLeft: 16 }}>
                             {shortcuts.map((s, i) => (

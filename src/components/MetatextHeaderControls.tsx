@@ -45,7 +45,7 @@ export function MetatextHeaderControls({
     } = useMetatextBookmark(metatextId, displayChunks, 5, setCurrentPage);
     // TODO passing 5 is not good here.
     return (
-        <Box css={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Box>
             <TooltipButton
                 label=""
                 tooltip="Navigate to the bookmarked chunk in this metatext"

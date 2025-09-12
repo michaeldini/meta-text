@@ -17,7 +17,7 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
       <Box ref={ref} css={{ width: '100%', textAlign: 'center', paddingTop: 32, paddingBottom: 32, paddingLeft: 16, paddingRight: 16 }} {...rest}>
         <Stack css={{ alignItems: 'center', gap: 12 }}>
           {icon && (
-            <Box css={{ marginBottom: 12 }}>{icon}</Box>
+            <Box>{icon}</Box>
           )}
           <Text as="h2" css={{ fontWeight: 600, fontSize: 20, marginBottom: description ? 4 : 0 }}>{title}</Text>
           {description && (

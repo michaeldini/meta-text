@@ -64,7 +64,7 @@ const ChunkWords = memo(function ChunkWords({
     }, [selectedWords, selectedWordIndices]);
 
     return (
-        <Box css={{ padding: 16, width: '100%' }} data-chunk-id={`chunk-${chunkIdx}`}>
+        <Box css={{ width: '100%' }} data-chunk-id={`chunk-${chunkIdx}`}>
             <Flex css={{ gap: 0 }}>
                 <InteractiveText
                     words={words}

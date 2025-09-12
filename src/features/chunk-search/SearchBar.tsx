@@ -37,14 +37,14 @@ export function SearchBar({
         </ClearButton>
     ) : undefined;
     return (
-        <Box css={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%' }}>
-            <span style={{ color: '#aaa', fontSize: '1.1rem' }}><HiMagnifyingGlass /></span>
+        <Box >
+            <HiMagnifyingGlass />
             <Input
                 ref={inputRef}
                 placeholder={placeholder}
                 value={query}
                 onChange={handleQueryChange}
-                css={{ flex: 1, borderBottom: '1px solid $colors$gray400', fontSize: '1rem', background: 'transparent' }}
+
             />
             {endElement}
         </Box>

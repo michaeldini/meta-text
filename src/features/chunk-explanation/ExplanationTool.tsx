@@ -63,7 +63,7 @@ export function ExplanationTool({ chunk, isVisible }: ExplanationToolProps) {
                 disabled={loading || !chunk.id}
                 loading={loading}
             />
-            <Box css={{ marginTop: 12 }}>
+            <Box>
                 {explanationText ? <Text>{explanationText}</Text> : <Text css={{ textAlign: 'right', color: '$gray500' }}>No explanation yet.</Text>}
             </Box>
             <ErrorAlert message={error} mt={2} />

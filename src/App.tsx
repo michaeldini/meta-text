@@ -19,8 +19,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { globalStyles } from '@styles';
 // Static 404 component to prevent recreation on each render
 const NotFound = (
-    <Box css={{ padding: 32, textAlign: 'center' }}>
-        <Text as="h2" css={{ fontWeight: 600, fontSize: 20 }}>Page not found</Text>
+    <Box>
+        <Text as="h2">Page not found</Text>
     </Box>
 );
 

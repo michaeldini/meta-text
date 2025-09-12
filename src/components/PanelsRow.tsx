@@ -15,7 +15,7 @@ export type PanelsRowProps = {
 
 export function PanelsRow({ panels, onToggleView, onMinimize, onClose, onSelection }: PanelsRowProps) {
     return (
-        <Box css={{ marginTop: 8, overflowX: 'auto' }}>
+        <Box>
             <Wrap css={{ flexDirection: 'row', gap: 16, alignItems: 'flex-start', minHeight: 200, paddingBottom: 8 }}>
                 {panels.map(panel => (
                     <PanelCard

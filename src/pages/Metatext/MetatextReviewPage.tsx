@@ -20,7 +20,7 @@ function MetatextReviewPage(): ReactElement {
     // Use Boundary to handle loading and error states for the review data
     return (
         <Boundary fallbackText="Loading review data...">
-            <Box data-testid="metatext-review-page" css={{ padding: 16 }}>
+            <Box data-testid="metatext-review-page">
                 {/* Page header with navigation and title */}
                 <Header metatextId={parsedId} navigate={navigate} />
                 {/* Review content sections */}

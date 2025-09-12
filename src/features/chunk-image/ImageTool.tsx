@@ -103,7 +103,7 @@ export function ImageTool(props: ImageToolProps) {
                         )}
                         {/* Error */}
                         {imgError && (
-                            <Box css={{ height: 300, borderRadius: 8, border: '1px dashed #e53e3e', padding: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#ffeaea' }}>
+                            <Box>
                                 <ErrorAlert message={<Text css={{ fontSize: '0.9rem' }}>Image unavailable</Text>} />
                             </Box>
                         )}

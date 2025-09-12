@@ -73,7 +73,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
             <Text css={{ width: '100%', color: '$gray500', marginBottom: 16 }}>Click on a field to edit. Enter to Save. Tab to Cancel</Text>
             <Stack css={{ padding: 8, gap: 12 }}>
                 {FIELD_CONFIG.map(config => (
-                    <Box css={{ display: 'flex', flexDirection: 'row', maxWidth: '20rem', paddingLeft: 16, alignItems: 'center', gap: 8 }} key={config.key}>
+                    <Box key={config.key}>
                         <Text css={{ fontWeight: 600 }}>{config.label}</Text>
                         {/* Editable field migration: replace with a simple input for now */}
                         <input

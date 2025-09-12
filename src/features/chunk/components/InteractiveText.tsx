@@ -54,7 +54,7 @@ const InteractiveText = memo(function InteractiveText({
                     return (
                         <>
                             {before}
-                            <Box as="span" css={{ background: 'gold', color: 'black', px: '2px', borderRadius: '4px' }}>{match}</Box>
+                            <Box as="span" css={{ background: 'gold', color: 'black', borderRadius: '4px' }}>{match}</Box>
                             {after}
                         </>
                     );

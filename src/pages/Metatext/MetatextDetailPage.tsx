@@ -79,7 +79,7 @@ function MetatextDetailPage(): ReactElement | null {
     // Redirect if query error (invalid or not found)
     if (id === null) return null;
     return (
-        <Box data-testid="metatext-detail-page" css={{ paddingLeft: 16 }}>
+        <Box data-testid="metatext-detail-page">
             <ErrorAlert
                 message={error ? (typeof error === 'string' ? error : (error && typeof error === 'object' && 'message' in error ? String((error as { message?: unknown }).message) : 'Something went wrong while fetching this metatext.')) : null}
                 title="Failed to load metatext"
