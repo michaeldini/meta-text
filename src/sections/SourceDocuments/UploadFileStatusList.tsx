@@ -33,7 +33,7 @@ export function UploadFileStatusList({ files, statuses }: UploadFileStatusListPr
 
     return (
         <Box style={{ marginTop: 8, width: '100%' }}>
-            <Flex css={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: 8, flexWrap: 'wrap', gap: 8 }}>
+            <Flex >
                 <Text css={{ fontWeight: 'bold' }}>Files to upload:</Text>
                 <Text css={{ fontSize: '0.9rem', color: '$colors$gray500' }} aria-live="polite">
                     {completed === total && total > 0

@@ -2,7 +2,7 @@
 // Sticky inside StyledChunk, scrolls with user and stops at end
 
 import React from 'react';
-import { styled } from '@styles';
+import { Stack, styled } from '@styles';
 import type { ChunkType } from '@mtypes/documents';
 
 // Stationary Tools
@@ -31,31 +31,21 @@ const StickyContainer = styled('div', {
     position: 'sticky',
     top: 24,
     zIndex: 1,
-    maxHeight: 'calc(100vh - 32px)',
-    overflowY: 'auto',
-    width: '320px',
-    minWidth: '240px',
+    maxWidth: '320px',
     display: 'flex',
     flexDirection: 'column',
     gap: '$3',
     background: 'transparent',
 });
 
-const StationaryStack = styled('div', {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: '$2',
-});
-
 function renderStationaryTools(chunk: ChunkType, asRow: boolean, uiPreferences?: uiPreferences) {
     return (
-        <StationaryStack style={{ flexDirection: asRow ? 'row' : 'column' }}>
+        <Stack style={{ gap: 0, flexDirection: asRow ? 'row' : 'column' }}>
             <ChunkPosition chunk={chunk} uiPreferences={uiPreferences} />
             <CopyTool chunkText={chunk.text} />
             <ChunkBookmarkToggle chunk={chunk} />
             <ChunkFavoriteToggle chunk={chunk} />
-        </StationaryStack>
+        </Stack>
     );
 }
 

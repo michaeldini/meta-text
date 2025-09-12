@@ -43,7 +43,7 @@ export function ExperimentsPage() {
     const togglePlay = () => setIsPlaying(p => !p);
 
     return (
-        <Flex css={{ flexDirection: 'column', minHeight: '100vh', padding: 24 }}>
+        <Flex >
             <Text css={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: 16 }}>MP3 Player</Text>
 
             <Box css={{ padding: 24, borderRadius: 8, boxShadow: '0 1px 2px rgba(0,0,0,0.06)' }}>

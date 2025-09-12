@@ -67,6 +67,7 @@ const InteractiveText = memo(function InteractiveText({
                             fontSize: `${textSizePx}px`,
                             lineHeight,
                             fontFamily,
+                            padding: 0,
                             paddingLeft: `${paddingX}em`,
                             paddingRight: `${paddingX}em`,
                             color: isHighlighted ? '$colors$buttonPrimaryBg' : undefined,

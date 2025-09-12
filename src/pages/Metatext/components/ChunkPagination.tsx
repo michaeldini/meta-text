@@ -44,7 +44,7 @@ export function ChunkPagination({
     const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
     return (
-        <Flex css={{ justifyContent: 'center', alignItems: 'center', margin: '16px 0' }} data-testid="chunk-pagination">
+        <Flex data-testid="chunk-pagination">
             <Button
                 size="sm"
                 tone="default"

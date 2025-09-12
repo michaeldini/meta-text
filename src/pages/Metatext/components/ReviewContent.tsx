@@ -6,7 +6,7 @@ import { FlashCards, ReviewTable, Phrases } from '@features/review';
 import { ChunkType, } from '@mtypes/documents';
 import { Explanation } from '@mtypes/MetatextReview.types'
 import { useState } from 'react';
-import { Box, Button } from '@styles';
+import { Box, Button, Stack } from '@styles';
 
 interface ReviewContentProps {
     flashcards: Explanation[];
@@ -28,7 +28,7 @@ export function ReviewContent({ flashcards, phrases, chunkReviewTable }: ReviewC
 
     return (
         <>
-            <Box css={{ marginBottom: 16 }}>
+            <Stack>
                 <Button
                     data-testid="explanations-toggle"
                     onClick={() => setShowExplanations((v) => !v)}
@@ -38,9 +38,6 @@ export function ReviewContent({ flashcards, phrases, chunkReviewTable }: ReviewC
                     {showExplanations ? 'Hide' : 'Show'} Explanations
                 </Button>
                 {showExplanations && <Phrases phrases={phrases} />}
-            </Box>
-
-            <Box css={{ marginBottom: 16 }}>
                 <Button
                     data-testid="flashcards-toggle"
                     onClick={() => setShowFlashcards((v) => !v)}
@@ -50,9 +47,6 @@ export function ReviewContent({ flashcards, phrases, chunkReviewTable }: ReviewC
                     {showFlashcards ? 'Hide' : 'Show'} Flashcards
                 </Button>
                 {showFlashcards && <FlashCards flashcardItems={flashcards} />}
-            </Box>
-
-            <Box css={{ marginBottom: 16 }}>
                 <Button
                     data-testid="reviewtable-toggle"
                     onClick={() => setShowReviewTable((v) => !v)}
@@ -62,7 +56,7 @@ export function ReviewContent({ flashcards, phrases, chunkReviewTable }: ReviewC
                     {showReviewTable ? 'Hide' : 'Show'} Review Table
                 </Button>
                 {showReviewTable && <ReviewTable chunks={chunkReviewTable} />}
-            </Box>
+            </Stack>
         </>
     );
 }

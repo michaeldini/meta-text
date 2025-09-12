@@ -29,11 +29,11 @@ type PanelHeaderProps = {
 export function PanelHeader({ sourceWord, minimized, onMinimize, onClose, headerBg }: PanelHeaderProps) {
     return (
         <>
-            <Flex css={{ alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+            <Flex>
                 <Text title={sourceWord ?? undefined} css={{ fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', background: headerBg ?? 'transparent', padding: 8 }}>
                     {sourceWord}
                 </Text>
-                <Flex css={{ alignItems: 'center' }}>
+                <Flex>
                     {minimized ? (
                         <TooltipButton
                             label=""
@@ -78,8 +78,8 @@ export function PanelActions({ sourceWord, viewMode, loading, onToggleView }: Pa
     const googleUrl = `https://www.google.com/search?q=${encodedQuery}`;
 
     return (
-        <Flex css={{ alignItems: 'center', justifyContent: 'flex-end', gap: 8, marginBottom: 8 }}>
-            <Flex css={{ gap: 8 }}>
+        <Flex >
+            <Flex>
                 <Link href={wikiUrl} target="_blank" rel="noopener noreferrer">
                     <Button size="sm" css={{ background: 'transparent', padding: '4px 6px' }} disabled={!sourceWord}>W</Button>
                 </Link>
@@ -139,7 +139,7 @@ export function PanelCard({ panel, onToggleView, onMinimize, onClose, onSelectio
             )}
 
             {!panel.minimized && panel.loading && (
-                <Flex css={{ alignItems: 'center', justifyContent: 'center', minHeight: '80px' }}>
+                <Flex>
                     <div>…</div>
                 </Flex>
             )}

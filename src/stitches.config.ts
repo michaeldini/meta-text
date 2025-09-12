@@ -14,8 +14,8 @@ export const {
     theme: {
         colors: {
             background: '#424244ff',
-            text: '#888889ff',
-            heading: '#e0e0e0ff',
+            text: '#b7b7b8ff',
+            heading: '#6ea7f7ff',
             gray400: 'gainsboro',
             gray500: 'lightgray',
             tooltipBg: '#111',
@@ -27,11 +27,85 @@ export const {
             buttonDangerBg: '#e53e3e',
             buttonDangerText: 'white',
         },
+        fonts: {
+            body: 'Funnel Display, Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+            heading: 'Funnel Display',
+        },
     },
     media: {
         bp1: '(min-width: 480px)',
     },
 });
+
+export const globalStyles = globalCss({
+    // applied to the <body> element of index.html
+    '*': {
+        margin: 0,
+        padding: 0,
+        backgroundColor: '$colors$background',
+    },
+});
+
+
+export const Box = styled('div', {
+    boxSizing: 'border-box',
+    color: '$colors$text',
+    fontFamily: '$fonts$body',
+    padding: '16px',
+    variants: {
+        padding: {
+            none: { padding: 0 },
+            sm: { padding: '8px' },
+            md: { padding: '16px' },
+            lg: { padding: '24px' },
+        },
+    }
+
+});
+
+export const Flex = styled('div', {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: '20px',
+});
+
+export const Stack = styled('div', {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '12px',
+});
+
+export const Panel = styled('div', {
+    padding: '16px',
+    minWidth: '20rem',
+    boxSizing: 'border-box',
+});
+
+export const Heading = styled('h3', {
+    margin: 0,
+    marginBottom: '12px',
+    fontSize: '1.5rem',
+    fontWeight: 600,
+    color: '$colors$heading',
+    fontFamily: '$fonts$heading',
+});
+
+export const Text = styled('div', {
+    fontFamily: '$body',
+    variants: {
+        tone: {
+            default: {
+                fontSize: '1rem',
+                color: 'inherit',
+            },
+        },
+    },
+    defaultVariants: {
+        tone: 'default',
+    },
+});
+
 
 // Shared tooltip keyframe and style objects so components can import centralized styles
 export const tooltipFade = keyframes({
@@ -66,6 +140,8 @@ export const Button = styled('button', {
     cursor: 'pointer',
     fontSize: '0.95rem',
     color: '$colors$buttonPrimaryText',
+    fontFamily: '$fonts$body',
+    '&:hover': { background: 'rgba(0,0,0,0.06)' },
     variants: {
         size: {
             sm: { padding: '4px 6px', fontSize: '0.8rem' },
@@ -76,6 +152,7 @@ export const Button = styled('button', {
             default: {},
             primary: { background: '$colors$buttonPrimaryBg', color: '$colors$buttonPrimaryText' },
             danger: { background: '$colors$buttonDangerBg', color: '$colors$buttonDangerText' },
+            disabled: { background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)', cursor: 'not-allowed' },
         },
     },
     defaultVariants: {
@@ -84,49 +161,6 @@ export const Button = styled('button', {
     },
 });
 
-// Common reusable primitives for app-wide consistency
-export const Box = styled('div', {
-    boxSizing: 'border-box',
-    color: '$colors$text',
-});
-
-export const Flex = styled('div', {
-    display: 'flex',
-});
-
-export const Stack = styled('div', {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '12px',
-});
-
-export const Panel = styled('div', {
-    padding: '16px',
-    minWidth: '20rem',
-    boxSizing: 'border-box',
-});
-
-export const Heading = styled('h3', {
-    margin: 0,
-    marginBottom: '12px',
-    fontSize: '1.25rem',
-    fontWeight: 600,
-    color: '$colors$heading',
-});
-
-export const Text = styled('div', {
-    variants: {
-        tone: {
-            default: {
-                fontSize: '1rem',
-                color: 'inherit',
-            },
-        },
-    },
-    defaultVariants: {
-        tone: 'default',
-    },
-});
 
 
 export const Input = styled('input', {
@@ -245,5 +279,3 @@ export const TagLabel = styled('span', {
     display: 'inline-block',
     maxWidth: '200px',
 });
-
-// (tooltip color tokens are defined above in the createStitches theme)

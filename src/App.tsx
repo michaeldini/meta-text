@@ -16,7 +16,7 @@ import { useUserConfig } from '@services/userConfigService';
 
 import routes from './routes';
 import ProtectedRoute from './components/ProtectedRoute';
-
+import { globalStyles } from '@styles';
 // Static 404 component to prevent recreation on each render
 const NotFound = (
     <Box css={{ padding: 32, textAlign: 'center' }}>
@@ -43,10 +43,11 @@ export function AppContent() {
     return (
         <Boundary fallbackText="Loading">
             <Suspense>
-                <Box css={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '$colors$background', padding: '8px' }}>
+                <Box padding="none">
                     <Toaster />
                     <GlobalNotifications />
                     <NavBar />
+                    {globalStyles()}
                     <Routes>
                         {routes.map((route) => {
                             const Page = route.element;

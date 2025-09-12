@@ -31,7 +31,8 @@ function SourceDocUploadForm(): React.ReactElement {
                     />
                     <SubmitButton
                         type="submit"
-                        disabled={isPending || !files.length}
+                        tone={isPending || !files.length ? 'disabled' : 'primary'}
+
                         data-testid="submit-button"
                     >
                         {!isPending && <HiArrowDownTray />}

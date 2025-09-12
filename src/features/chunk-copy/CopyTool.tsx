@@ -2,7 +2,6 @@
  * IconButton to copy chunk text to clipboard
  */
 import React, { useState } from 'react';
-import { Box } from '@styles';
 import TooltipButton from '@components/TooltipButton';
 import { useNotifications } from '@store/notificationStore';
 import { HiOutlineClipboard, HiClipboard } from 'react-icons/hi2';
@@ -29,17 +28,14 @@ export function CopyTool({ chunkText }: CopyToolProps) {
     };
 
     return (
-        <Box data-testid='copy-tool'>
-            <TooltipButton
-                label=""
-                tooltip={copied ? 'Copied!' : 'Copy chunk text'}
-                icon={copied ? <HiClipboard style={{ fontSize: '1.25rem' }} /> : <HiOutlineClipboard style={{ fontSize: '1.25rem' }} />}
-                onClick={handleCopy}
-                size="sm"
-                tone={copied ? 'primary' : 'default'}
-                aria-label="Copy chunk text"
-            />
-        </Box>
+        <TooltipButton
+            label=""
+            tooltip={copied ? 'Copied!' : 'Copy chunk text'}
+            icon={copied ? <HiClipboard /> : <HiOutlineClipboard />}
+            onClick={handleCopy}
+            tone={copied ? 'primary' : 'default'}
+            aria-label="Copy chunk text"
+        />
     );
 }
 

@@ -25,12 +25,6 @@ function HomePage(): ReactElement {
     return (
         <Box>
             <Flex
-                css={{
-                    flexWrap: 'wrap',
-                    justifyContent: 'center',
-                    gap: '20px',
-                    '@bp1': { gap: '40px' },
-                }}
                 data-testid="homepage-content"
             >
                 <SearchableTable

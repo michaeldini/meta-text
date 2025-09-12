@@ -49,7 +49,7 @@ function SourceDocDetailPage(): ReactElement | null {
     if (!doc || !editor) return null;
     return (
         <Box data-testid="sourcedoc-detail-page" css={{ maxWidth: '900px', margin: '0 auto' }}>
-            <Box css={{ padding: 16, marginBottom: 40 }}>
+            <Box>
                 {headingText(doc.title)}
                 <SourceDocInfoDisplay sourceDocumentId={id} />
                 <StyleControls showPaddingX={false} />

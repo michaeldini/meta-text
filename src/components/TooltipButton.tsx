@@ -45,6 +45,7 @@ export function TooltipButton({
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
+        fontSize: '1.5em',
     });
 
     const TooltipContent = styled(Tooltip.Content, tooltipContentStyles as any);

@@ -21,7 +21,7 @@ export function PromptBar({ value, onChange, onSubmit, loading, error }: PromptB
 
     return (
         <Box as="form" onSubmit={handleSubmit} style={{ width: '100%', maxWidth: 960, marginInline: 'auto' }}>
-            <Flex css={{ gap: 8, alignItems: 'center', borderBottom: '1px solid $colors$gray400' }}>
+            <Flex>
                 <StInput
                     placeholder="Enter your prompt..."
                     value={value}

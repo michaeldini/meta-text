@@ -55,7 +55,7 @@ function SubmitButton({ loading, disabled }: SubmitButtonProps) {
     return (
         <Button
             type="submit"
-            disabled={disabled}
+            tone={disabled ? 'disabled' : 'primary'}
             data-testid="submit-button"
             size="md"
             css={{ padding: '8px 12px', borderRadius: 6 }}
@@ -79,7 +79,7 @@ function MetatextCreateForm({ sourceDocs }: MetatextCreateFormProps): React.Reac
     const selectedSourceDocIdStr = selectedSourceDocId ? String(selectedSourceDocId) : '';
 
     return (
-        <Box css={{ padding: '16px' }}>
+        <Box>
             <Heading>New</Heading>
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 <fieldset style={{ border: 'none', padding: 0, margin: 0, display: 'grid', gap: 12 }}>

@@ -31,21 +31,18 @@ export function NavBar() {
     const navItems = filterNavItems(navConfig.items, isAuthenticated);
 
     return (
-        <Flex as="nav" css={{ alignItems: 'center', width: '100%', py: 8, px: 16 }} data-testid="navbar">
-            <Flex css={{ alignItems: 'center', gap: '12px' }}>
-                {navItems.map(item => (
-                    <Button
-                        key={item.label}
-                        onClick={item.action}
-                        size="lg"
-                        css={{ fontWeight: 500 }}
-                    >
-                        {item.icon ? <span style={{ marginRight: 6 }}><item.icon /></span> : null}
-                        {item.label}
-                    </Button>
-                ))}
-            </Flex>
-            <Box css={{ flex: 1 }} />
+        <Flex as="nav" data-testid="navbar" css={{ justifyContent: 'start' }}>
+            {navItems.map(item => (
+                <Button
+                    key={item.label}
+                    onClick={item.action}
+                    size="lg"
+                    css={{ fontWeight: 500 }}
+                >
+                    {item.icon ? <span style={{ marginRight: 6 }}><item.icon /></span> : null}
+                    {item.label}
+                </Button>
+            ))}
         </Flex>
     );
 }

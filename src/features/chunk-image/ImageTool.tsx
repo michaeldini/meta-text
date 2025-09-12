@@ -85,20 +85,19 @@ export function ImageTool(props: ImageToolProps) {
                     <Box >
                         {/* Select to browse previous images */}
                         {images.length > 1 && (
-                            <Box css={{ marginTop: 16, marginBottom: 16 }}>
+                            <Box>
                                 <label htmlFor={`image-select-${chunk.id}`}>Browse previous images:</label>
                                 <Select
                                     options={[{ label: "Latest image", value: "" }, ...images.map(img => ({ label: `Image ${img.id}`, value: String(img.id) }))]}
                                     value={state.selectedId === null ? "" : String(state.selectedId)}
                                     onChange={(val: string) => setSelectedId(val === "" ? null : Number(val))}
                                     placeholder="Browse previous images"
-                                    width="100%"
                                 />
                             </Box>
                         )}
                         {/* Loader */}
                         {!imgLoaded && !imgError && (
-                            <Box css={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 300, background: '#f6f6f6', borderRadius: 8 }}>
+                            <Box>
                                 <span style={{ fontSize: 32, color: '#aaa' }}>⏳</span>
                             </Box>
                         )}
@@ -113,7 +112,7 @@ export function ImageTool(props: ImageToolProps) {
                             <img
                                 src={state.selectedId ? `${imageSrc}?img=${state.selectedId}` : imageSrc}
                                 alt={selected?.prompt || state.prompt}
-                                style={{ height: '100%', width: '100%', objectFit: 'cover', display: imgLoaded ? 'block' : 'none', borderRadius: 8, cursor: imgLoaded ? 'pointer' : 'default' }}
+                                style={{ height: '100%', width: '240px', objectFit: 'cover', display: imgLoaded ? 'block' : 'none', borderRadius: 8, cursor: imgLoaded ? 'pointer' : 'default' }}
                                 title={imgLoaded ? 'Click to view full size' : undefined}
                                 onClick={() => { if (imgLoaded) setViewerOpen(true); }}
                                 onLoad={() => setImgLoaded(true)}

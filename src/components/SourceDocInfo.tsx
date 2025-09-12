@@ -61,7 +61,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
     };
 
     return (
-        <Flex css={{ flexWrap: 'wrap', gap: 16 }}>
+        <Flex>
             <TooltipButton
                 label="Generate"
                 tooltip="Regenerate document info"

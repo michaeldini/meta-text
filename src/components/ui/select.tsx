@@ -29,6 +29,7 @@ export interface SelectProps {
 const Label = styled('label', {
     display: 'block',
     fontSize: '0.85rem',
+    fontFamily: '$fonts$body',
     color: '$colors$tooltipText',
     marginBottom: 6,
 });
@@ -44,6 +45,7 @@ const SelectEl = styled('select', {
     border: '1px solid $colors$gray400',
     background: 'transparent',
     fontSize: '1rem',
+    fontFamily: '$fonts$body',
     lineHeight: '1.2',
     backgroundImage: 'linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%)',
     backgroundPosition: 'calc(100% - 18px) calc(1em + 2px), calc(100% - 13px) calc(1em + 2px)',
