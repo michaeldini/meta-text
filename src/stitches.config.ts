@@ -20,7 +20,6 @@ export const {
             subtle: 'lightgray',
             tooltipBg: '#111',
             tooltipText: 'white',
-            // button colors
             buttonText: 'white',
             buttonHoverBg: 'rgba(255,255,255,0.1)',
             buttonDangerBg: '#e53e3e',
@@ -44,7 +43,9 @@ export const globalStyles = globalCss({
     },
 });
 
-
+// --------------------------------------------------------------
+// Layout primitives 
+// ------------------------------------------------------------
 export const Box = styled('div', {
     boxSizing: 'border-box',
     color: '$colors$text',
@@ -80,6 +81,9 @@ export const Panel = styled('div', {
     boxSizing: 'border-box',
 });
 
+// --------------------------------------------------------------
+// Typography
+// --------------------------------------------------------------
 export const Heading = styled('h3', {
     margin: 0,
     marginBottom: '12px',
@@ -104,6 +108,9 @@ export const Text = styled('div', {
     },
 });
 
+// --------------------------------------------------------------
+// Button, Input, Textarea, Link
+// --------------------------------------------------------------
 export const Button = styled('button', {
     display: 'inline-flex',
     alignItems: 'center',
@@ -128,8 +135,6 @@ export const Button = styled('button', {
     },
 });
 
-
-
 export const Input = styled('input', {
     flex: 1,
     padding: '8px 6px',
@@ -153,14 +158,23 @@ export const Textarea = styled('textarea', {
     resize: 'none',
     fontFamily: '$fonts$body',
     '::placeholder': { color: '$colors$subtle' },
-});
-
-export const ClearButton = styled('button', {
-    border: 'none',
-    background: 'transparent',
-    padding: '4px',
-    cursor: 'pointer',
-    color: 'inherit',
+    variants: {
+        emphasized: {
+            true: {
+                padding: '8px',
+                // allow vertical resizing and provide a visible border
+                resize: 'vertical',
+                border: '1px solid $colors$border',
+                borderRadius: 6,
+                background: 'white',
+                minHeight: 80,
+                maxHeight: 180,
+                minWidth: '100%',
+                marginBottom: 4,
+                '&:disabled': { background: '$colors$subtle' },
+            },
+        },
+    },
 });
 
 export const Link = styled('a', {
@@ -170,7 +184,9 @@ export const Link = styled('a', {
     '&:hover': { textDecoration: 'underline' },
 });
 
+// --------------------------------------------------------------
 // Alert primitives
+// --------------------------------------------------------------
 export const AlertRoot = styled('div', {
     display: 'flex',
     alignItems: 'flex-start',
@@ -259,3 +275,4 @@ export const TagLabel = styled('span', {
     display: 'inline-block',
     maxWidth: '200px',
 });
+

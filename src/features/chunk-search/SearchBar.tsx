@@ -4,7 +4,7 @@ import { HiMagnifyingGlass } from 'react-icons/hi2';
 // Provides the main search interface as described in the feature guide
 
 import React, { useCallback } from 'react';
-import { Box, Input, ClearButton } from '@styles';
+import { Box, Input, Button } from '@styles';
 import { useSearchStore } from './store/useSearchStore';
 
 
@@ -25,7 +25,7 @@ export function SearchBar({
 
     const inputRef = React.useRef<HTMLInputElement>(null);
     const endElement = query ? (
-        <ClearButton
+        <Button
             onClick={() => {
                 setQuery("");
                 inputRef.current?.focus();
@@ -34,7 +34,7 @@ export function SearchBar({
             style={{ marginLeft: -2 }}
         >
             ×
-        </ClearButton>
+        </Button>
     ) : undefined;
     return (
         <Box >

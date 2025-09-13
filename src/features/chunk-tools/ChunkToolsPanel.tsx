@@ -14,7 +14,6 @@ const PanelContainer = styled('div', {
     left: 0,
     right: 0,
     bottom: 0,
-    // zIndex: 99999, // Increased z-index for highest stacking
     width: '100vw',
     background: 'black',
     boxShadow: '0 -2px 8px rgba(0,0,0,0.04)',

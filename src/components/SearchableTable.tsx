@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { MetatextSummary, SourceDocumentSummary } from '@mtypes/index';
 import { TooltipButton } from '@components/TooltipButton';
 import { UseMutationResult } from '@tanstack/react-query';
-import { styled, Box, Heading, Input, ClearButton } from '@styles';
+import { styled, Box, Heading, Input, Button } from '@styles';
 
 // useSearchResults: Hook to manage search/filter state and results
 // returns results that can be passed to a table component
@@ -72,9 +72,9 @@ export function SearchInput({ search, setSearch, inputRef }: SearchInputProps) {
                 aria-label="Search"
             />
             {search ? (
-                <ClearButton onClick={() => clearSearchAndFocus(setSearch, inputRef)} aria-label="Clear search">
+                <Button onClick={() => clearSearchAndFocus(setSearch, inputRef)} aria-label="Clear search">
                     ×
-                </ClearButton>
+                </Button>
             ) : null}
         </InputGroupDiv>
     );
@@ -138,48 +138,12 @@ export function ControlledTable({ items, navigateToBase, deleteItemMutation }: C
 
     // If no items are provided, display a message
     if (!items || items.length === 0) {
-        const Empty = styled('div', {
-            padding: '16px',
-            textAlign: 'center',
-            color: '$colors$subtle',
-        });
         return (
             <Empty>No documents found.</Empty>
         );
     }
 
     // Render the table with items
-    const TableScrollArea = styled('div', {
-        maxHeight: '32rem',
-        overflow: 'auto',
-    });
-
-    const TableRoot = styled('table', {
-        width: '100%',
-        borderCollapse: 'collapse',
-    });
-
-    const THead = styled('thead', {
-        position: 'sticky',
-        top: 0,
-        background: 'transparent',
-    });
-
-    const TRow = styled('tr', {
-        background: 'transparent',
-    });
-
-    const Th = styled('th', {
-        textAlign: 'left',
-        padding: '8px',
-        fontWeight: 600,
-        borderBottom: '1px solid $colors$border',
-    });
-
-    const TBody = styled('tbody', {
-        background: 'transparent',
-    });
-
     return (
         <TableScrollArea>
             <TableRoot>
@@ -212,13 +176,6 @@ interface SearchableTableProps {
 
 export function SearchableTable({ documents, title, navigateToBase, deleteItemMutation }: SearchableTableProps) {
     const { search, setSearch, inputRef, results } = useSearchResults(documents);
-
-    const TableContainer = styled(Box, {
-        padding: '16px',
-        minWidth: '20rem',
-        boxSizing: 'border-box',
-    });
-
     return (
         <TableContainer>
             {title && <Heading>{title}</Heading>}
@@ -235,3 +192,47 @@ export function SearchableTable({ documents, title, navigateToBase, deleteItemMu
         </TableContainer>
     );
 }
+
+// Move non-primitive styled components to module scope so they aren't recreated on every render.
+const TableContainer = styled(Box, {
+    padding: '16px',
+    minWidth: '20rem',
+    boxSizing: 'border-box',
+});
+
+const Empty = styled('div', {
+    padding: '16px',
+    textAlign: 'center',
+    color: '$colors$subtle',
+});
+
+const TableScrollArea = styled('div', {
+    maxHeight: '32rem',
+    overflow: 'auto',
+});
+
+const TableRoot = styled('table', {
+    width: '100%',
+    borderCollapse: 'collapse',
+});
+
+const THead = styled('thead', {
+    position: 'sticky',
+    top: 0,
+    background: 'transparent',
+});
+
+const TRow = styled('tr', {
+    background: 'transparent',
+});
+
+const Th = styled('th', {
+    textAlign: 'left',
+    padding: '8px',
+    fontWeight: 600,
+    borderBottom: '1px solid $colors$border',
+});
+
+const TBody = styled('tbody', {
+    background: 'transparent',
+});
