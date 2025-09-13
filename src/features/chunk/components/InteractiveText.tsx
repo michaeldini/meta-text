@@ -75,7 +75,6 @@ const InteractiveText = memo(function InteractiveText({
                             userSelect: 'none',
                             touchAction: 'none',
                             display: 'inline-block',
-                            // background: isHighlighted ? '$colors$gray400' : undefined,
                             borderRadius: isHighlighted ? '4px' : undefined,
                             transition: 'color 0.15s',
                             '&:hover': !isHighlighted ? { color: '$colors$buttonPrimaryBg', } : undefined,

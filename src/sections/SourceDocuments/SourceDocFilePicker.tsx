@@ -17,7 +17,7 @@ const Dropzone = styled(Box, {
     gap: '6px',
     padding: '18px',
     borderRadius: 8,
-    border: '1px dashed $colors$gray400',
+    border: '1px dashed $colors$border',
     background: 'transparent',
     cursor: 'pointer',
     outline: 'none',
@@ -44,7 +44,7 @@ const PrimaryText = styled(Text, {
 
 const SecondaryText = styled(Text, {
     fontSize: '0.85rem',
-    color: '$colors$gray500',
+    color: '$colors$subtle',
     maxWidth: '320px',
 });
 

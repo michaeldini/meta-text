@@ -62,14 +62,14 @@ export function ImageGenerationDialog(props: ImageGenerationDialogProps) {
         maxHeight: 180,
         padding: '8px',
         fontSize: '1rem',
-        border: '1px solid $colors$gray400',
+        border: '1px solid $colors$border',
         borderRadius: 6,
         resize: 'vertical',
         outline: 'none',
         background: 'white',
         color: 'inherit',
         marginBottom: 4,
-        '&:disabled': { background: '$colors$gray400' },
+        '&:disabled': { background: '$colors$border' },
     });
     function PromptInput() {
         return (
@@ -82,7 +82,7 @@ export function ImageGenerationDialog(props: ImageGenerationDialogProps) {
                     autoFocus
                     style={{ borderColor: isPromptTooLong ? '#e53e3e' : '#aaa' }}
                 />
-                <Text css={{ fontSize: '0.9rem', color: isPromptTooLong ? '#e53e3e' : '$gray500', marginTop: 4 }}>
+                <Text css={{ fontSize: '0.9rem', color: isPromptTooLong ? '#e53e3e' : '$colors$subtle', marginTop: 4 }}>
                     {isPromptTooLong
                         ? `Prompt is too long (${promptLength}/${MAX_PROMPT_LENGTH} characters)`
                         : `${promptLength}/${MAX_PROMPT_LENGTH} characters`}
@@ -94,7 +94,7 @@ export function ImageGenerationDialog(props: ImageGenerationDialogProps) {
     function SuggestedPrompts() {
         return (
             <Box>
-                <Text css={{ fontSize: '0.9rem', color: '$gray500', marginBottom: 4 }}>
+                <Text css={{ fontSize: '0.9rem', color: '$colors$subtle', marginBottom: 4 }}>
                     Suggested prompts:
                 </Text>
                 <Stack css={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
@@ -102,7 +102,7 @@ export function ImageGenerationDialog(props: ImageGenerationDialogProps) {
                         <Badge
                             key={index}
                             colorPalette="gray"
-                            css={{ cursor: 'pointer', padding: '4px 10px', fontSize: '0.95rem', border: '1px solid $colors$gray400' }}
+                            css={{ cursor: 'pointer', padding: '4px 10px', fontSize: '0.95rem', border: '1px solid $colors$border' }}
                             onClick={() => handleSuggestedPromptClick(suggestion)}
                         >
                             {suggestion}

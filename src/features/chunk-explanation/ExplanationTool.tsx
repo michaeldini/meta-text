@@ -64,7 +64,7 @@ export function ExplanationTool({ chunk, isVisible }: ExplanationToolProps) {
                 loading={loading}
             />
             <Box>
-                {explanationText ? <Text>{explanationText}</Text> : <Text css={{ textAlign: 'right', color: '$gray500' }}>No explanation yet.</Text>}
+                {explanationText ? <Text>{explanationText}</Text> : <Text css={{ textAlign: 'right', color: '$colors$subtle' }}>No explanation yet.</Text>}
             </Box>
             <ErrorAlert message={error} mt={2} />
         </Box>

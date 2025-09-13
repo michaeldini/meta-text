@@ -94,7 +94,7 @@ export default function SourceDoc({
                             minHeight: '60vh',
                             width: '100%',
                             padding: '1rem',
-                            border: '1px solid $colors$gray400',
+                            border: '1px solid $colors$border',
                             borderRadius: 8,
                             background: 'transparent',
                             color: 'inherit',
@@ -107,7 +107,6 @@ export default function SourceDoc({
                     />
                     <Button
                         tone="primary"
-                        size="md"
                         css={{ position: 'absolute', top: 12, right: 12, zIndex: 1100 }}
                         onClick={handleSubmit}
                         disabled={isSaving}

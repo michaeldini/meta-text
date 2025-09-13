@@ -20,10 +20,7 @@ export interface SelectProps {
     placeholder?: string;
     disabled?: boolean;
     label?: string;
-    size?: 'xs' | 'sm' | 'md' | 'lg';
-    variant?: 'outline' | 'subtle';
     width?: string | number;
-    disablePortal?: boolean; // kept for compatibility but ignored for native select
 }
 
 const Label = styled('label', {
@@ -42,7 +39,7 @@ const SelectEl = styled('select', {
     MozAppearance: 'none',
     padding: '8px 36px 8px 10px',
     borderRadius: 6,
-    border: '1px solid $colors$gray400',
+    border: '1px solid $colors$border',
     background: 'transparent',
     fontSize: '1rem',
     fontFamily: '$fonts$body',
@@ -55,22 +52,6 @@ const SelectEl = styled('select', {
         opacity: 0.6,
         cursor: 'not-allowed',
     },
-    variants: {
-        size: {
-            xs: { padding: '4px 30px 4px 8px', fontSize: '0.8rem' },
-            sm: { padding: '6px 32px 6px 8px', fontSize: '0.9rem' },
-            md: { padding: '8px 36px 8px 10px', fontSize: '1rem' },
-            lg: { padding: '10px 40px 10px 12px', fontSize: '1.05rem' },
-        },
-        variant: {
-            outline: {},
-            subtle: { borderColor: '$colors$gray500', background: '$colors$gray400' },
-        },
-    },
-    defaultVariants: {
-        size: 'md',
-        variant: 'outline',
-    },
 });
 
 export const Select: React.FC<SelectProps> = ({
@@ -80,8 +61,6 @@ export const Select: React.FC<SelectProps> = ({
     placeholder = 'Select an option',
     disabled = false,
     label,
-    size = 'md',
-    variant = 'outline',
     width = '100%',
 }) => {
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -93,7 +72,7 @@ export const Select: React.FC<SelectProps> = ({
     return (
         <div style={{ width: styleWidth }}>
             {label && <Label>{label}</Label>}
-            <SelectEl value={value ?? ''} onChange={handleChange} disabled={disabled} size={size} variant={variant} aria-label={label ?? placeholder}>
+            <SelectEl value={value ?? ''} onChange={handleChange} disabled={disabled} aria-label={label ?? placeholder}>
                 {placeholder && (
                     <option value="" disabled={true} hidden={false}>
                         {placeholder}

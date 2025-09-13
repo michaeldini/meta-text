@@ -141,7 +141,7 @@ export function ControlledTable({ items, navigateToBase, deleteItemMutation }: C
         const Empty = styled('div', {
             padding: '16px',
             textAlign: 'center',
-            color: '$colors$gray500',
+            color: '$colors$subtle',
         });
         return (
             <Empty>No documents found.</Empty>
@@ -173,7 +173,7 @@ export function ControlledTable({ items, navigateToBase, deleteItemMutation }: C
         textAlign: 'left',
         padding: '8px',
         fontWeight: 600,
-        borderBottom: '1px solid $colors$gray400',
+        borderBottom: '1px solid $colors$border',
     });
 
     const TBody = styled('tbody', {
@@ -186,7 +186,6 @@ export function ControlledTable({ items, navigateToBase, deleteItemMutation }: C
                 <THead>
                     <TRow>
                         <Th>Title</Th>
-                        <Th style={{ width: '64px' }}></Th>
                     </TRow>
                 </THead>
                 <TBody>

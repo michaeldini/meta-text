@@ -35,7 +35,7 @@ export function UploadFileStatusList({ files, statuses }: UploadFileStatusListPr
         <Box style={{ marginTop: 8, width: '100%' }}>
             <Flex >
                 <Text css={{ fontWeight: 'bold' }}>Files to upload:</Text>
-                <Text css={{ fontSize: '0.9rem', color: '$colors$gray500' }} aria-live="polite">
+                <Text css={{ fontSize: '0.9rem', color: '$colors$subtle' }} aria-live="polite">
                     {completed === total && total > 0
                         ? anyError
                             ? `Completed with ${statuses.filter(s => s && s.error).length} error(s)`
@@ -62,11 +62,9 @@ export function UploadFileStatusList({ files, statuses }: UploadFileStatusListPr
                                     label={label}
                                     tooltip={status.error}
                                     tone={colorPalette === 'red' ? 'danger' : colorPalette === 'yellow' ? 'primary' : 'default'}
-                                    size="md"
                                     disabled={false}
                                     style={{ padding: 0, background: 'none', border: 'none' }}
                                     icon={null}
-                                    positioning={{ side: 'top', align: 'center', sideOffset: 6 }}
                                 >
                                     {tag}
                                 </TooltipButton>

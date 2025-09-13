@@ -16,8 +16,8 @@ export const {
             text: '#b7b7b8ff',
             primary: '#6ea7f7ff',
             heading: '$primary',
-            gray400: 'gainsboro',
-            gray500: 'lightgray',
+            border: 'gainsboro',
+            subtle: 'lightgray',
             tooltipBg: '#111',
             tooltipText: 'white',
             // button colors
@@ -138,7 +138,7 @@ export const Input = styled('input', {
     fontSize: '1rem',
     background: 'transparent',
     color: 'inherit',
-    '::placeholder': { color: '$colors$gray500' },
+    '::placeholder': { color: '$colors$subtle' },
 });
 
 export const Textarea = styled('textarea', {
@@ -152,7 +152,7 @@ export const Textarea = styled('textarea', {
     color: 'inherit',
     resize: 'none',
     fontFamily: '$fonts$body',
-    '::placeholder': { color: '$colors$gray500' },
+    '::placeholder': { color: '$colors$subtle' },
 });
 
 export const ClearButton = styled('button', {
@@ -240,7 +240,7 @@ export const TagRoot = styled('span', {
     whiteSpace: 'nowrap',
     variants: {
         colorPalette: {
-            gray: { background: '$colors$gray400', color: 'black' },
+            gray: { background: 'gainsboro', color: 'black' },
             yellow: { background: 'gold', color: 'black' },
             green: { background: 'lightgreen', color: 'black' },
             red: { background: '$colors$buttonDangerBg', color: '$colors$buttonDangerText' },

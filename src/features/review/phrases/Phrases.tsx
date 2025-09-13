@@ -43,7 +43,7 @@ export function PhraseCard({ title, content }: PhraseCardProps) {
 // Collapsible phrase item using Radix UI and Stitches
 const PhraseCollapsibleRoot = styled(Collapsible.Root, {
     borderRadius: 8,
-    border: '1px solid $colors$gray400',
+    border: '1px solid $colors$border',
     marginBottom: 12,
     background: 'white',
     boxShadow: '0 2px 8px rgba(0,0,0,0.04)',

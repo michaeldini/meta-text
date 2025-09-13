@@ -113,7 +113,7 @@ export const KeyboardShortcutItem = memo(function KeyboardShortcutItem({ shortcu
     return (
         <Box css={{ display: 'flex', justifyContent: 'flex-end', width: '100%', alignItems: 'center', gap: 8 }}>
             <Text css={{ fontSize: '0.95rem' }}>{shortcut.description}</Text>
-            <Badge colorPalette="gray" css={{ fontFamily: 'monospace', fontSize: '0.85rem', border: '1px solid $colors$gray400' }}>
+            <Badge colorPalette="gray" css={{ fontFamily: 'monospace' }}>
                 {formatShortcut(shortcut)}
             </Badge>
         </Box>
@@ -181,7 +181,7 @@ export function KeyboardShortcutsDisplay({ categories }: KeyboardShortcutsDispla
             >
                 <Stack css={{ flexDirection: 'column', alignItems: 'flex-start', gap: 16, width: '100%' }}>
                     <Heading css={{ fontWeight: 600 }}>Keyboard Shortcuts</Heading>
-                    <Text css={{ fontSize: '0.95rem', color: '$gray500' }}>Use these shortcuts to speed up your workflow.</Text>
+                    <Text css={{ fontSize: '0.95rem', color: '$colors$subtle' }}>Use these shortcuts to speed up your workflow.</Text>
                     <KeyboardShortcutList categories={categories} align="flex-start" />
                 </Stack>
             </SimpleDrawer>
