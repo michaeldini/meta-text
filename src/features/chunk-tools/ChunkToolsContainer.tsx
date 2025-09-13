@@ -30,7 +30,7 @@ import { uiPreferences } from '@mtypes/user';
 const StickyContainer = styled('div', {
     position: 'sticky',
     top: 24,
-    zIndex: 1,
+    // zIndex: 1,
     maxWidth: '320px',
     display: 'flex',
     flexDirection: 'column',

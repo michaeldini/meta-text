@@ -37,13 +37,7 @@ export function MetatextHeader({
             css={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}
             data-testid="metatext-header"
         >
-            <Heading css={{ fontSize: '1.1rem', fontWeight: 600 }}>metatext:</Heading>
-            <Heading
-                css={{ fontSize: '2rem', color: '#0ea5a4', fontWeight: 700 }}
-                data-testid="metatext-title"
-            >
-                {title}
-            </Heading>
+            <Heading>metatext: {title}</Heading>
             <ReviewMetatextButton />
             {/* <KeyboardShortcutsDisplay categories={['Navigation', 'Interface', 'Chunks']} /> */}
             <KeyboardShortcutsDisplay categories={['Navigation', 'Interface']} />

@@ -15,14 +15,16 @@ export const {
         colors: {
             background: '#424244ff',
             text: '#b7b7b8ff',
-            heading: '#6ea7f7ff',
+            primary: '#6ea7f7ff',
+            heading: '$primary',
             gray400: 'gainsboro',
             gray500: 'lightgray',
             tooltipBg: '#111',
             tooltipText: 'white',
             // button colors
             buttonText: 'inherit',
-            buttonPrimaryBg: '#0ea5a4',
+            buttonPrimaryBg: '$primary',
+            buttonHoverBg: 'rgba(255,255,255,0.1)',
             buttonPrimaryText: 'white',
             buttonDangerBg: '#e53e3e',
             buttonDangerText: 'white',
@@ -97,7 +99,7 @@ export const Text = styled('div', {
         tone: {
             default: {
                 fontSize: '1rem',
-                color: 'inherit',
+                color: '$colors$text',
             },
         },
     },
@@ -141,7 +143,7 @@ export const Button = styled('button', {
     fontSize: '0.95rem',
     color: '$colors$buttonPrimaryText',
     fontFamily: '$fonts$body',
-    '&:hover': { background: 'rgba(0,0,0,0.06)' },
+    '&:hover': { background: '$buttonHoverBg' },
     variants: {
         size: {
             sm: { padding: '4px 6px', fontSize: '0.8rem' },
@@ -167,11 +169,24 @@ export const Input = styled('input', {
     flex: 1,
     padding: '8px 6px',
     border: 'none',
-    borderBottom: '1px solid $colors$gray400',
+    outline: 'none',
+    fontSize: '1rem',
+    background: 'transparent',
+    color: 'inherit',
+    '::placeholder': { color: '$colors$gray500' },
+});
+
+export const Textarea = styled('textarea', {
+    width: '100%',
+    minHeight: 'fit-content',
+    height: '5rem',
+    border: 'none',
     outline: 'none',
     fontSize: '0.95rem',
     background: 'transparent',
     color: 'inherit',
+    resize: 'none',
+    fontFamily: '$fonts$body',
     '::placeholder': { color: '$colors$gray500' },
 });
 

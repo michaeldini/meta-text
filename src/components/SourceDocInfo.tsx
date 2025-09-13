@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Text, Stack, Flex } from '@styles';
-import { styled } from '@styles';
+import { Box, Text, Stack, Flex, Textarea } from '@styles';
+import { Input } from '@styles';
 import { SimpleDrawer } from '@components/ui';
 
 import { HiOutlineSparkles } from 'react-icons/hi2';
@@ -51,7 +51,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
 
     // Early return if no data
     if (!doc) {
-        return <Text css={{ color: '$gray500' }}>No source document information available</Text>;
+        return <Text>No source document information available</Text>;
     }
 
     // Handle value commit for editable fields
@@ -70,16 +70,15 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
                 loading={generateSourceDocInfo.loading}
                 icon={<HiOutlineSparkles />}
             />
-            <Text css={{ width: '100%', color: '$gray500', marginBottom: 16 }}>Click on a field to edit. Enter to Save. Tab to Cancel</Text>
-            <Stack css={{ padding: 8, gap: 12 }}>
+            <Text>Click on a field to edit. Enter to Save. Tab to Cancel</Text>
+            <Stack css={{ flex: 1, minWidth: '320px', gap: '2px' }}>
                 {FIELD_CONFIG.map(config => (
-                    <Box key={config.key}>
+                    <Box key={config.key} padding="none">
                         <Text css={{ fontWeight: 600 }}>{config.label}</Text>
-                        {/* Editable field migration: replace with a simple input for now */}
-                        <input
+                        <Textarea
                             defaultValue={doc[config.key] != null ? String(doc[config.key]) : 'N/A'}
                             onBlur={e => handleValueCommit(config.key)({ value: e.target.value })}
-                            style={{ minHeight: 48, width: '100%', fontSize: '1rem', padding: 6, border: '1px solid #ccc', borderRadius: 6 }}
+
                         />
                     </Box>
                 ))}
@@ -87,8 +86,6 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
         </Flex>
     );
 }
-
-
 
 export function SourceDocInfoDisplay({ sourceDocumentId }: SourceDocInfoProps) {
     return (

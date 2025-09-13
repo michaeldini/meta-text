@@ -12,8 +12,6 @@ export interface TooltipButtonProps extends Omit<React.ButtonHTMLAttributes<HTML
     onKeyDown?: (event: React.KeyboardEvent) => void;
     type?: 'button' | 'submit' | 'reset';
     color?: string;
-    // allow additional sizes for compatibility with callers (e.g. '2xl')
-    size?: any;
     role?: string;
     // loose positioning object; we map common props to Radix Content props
     positioning?: { side?: 'top' | 'right' | 'bottom' | 'left'; sideOffset?: number; align?: 'start' | 'center' | 'end' } | any;
@@ -31,7 +29,6 @@ export function TooltipButton({
     onKeyDown,
     type = 'button',
     color = 'inherit',
-    size = 'lg',
     tone = 'default',
     role = 'button',
     positioning = { side: 'left', align: 'end', sideOffset: 6 },
@@ -46,6 +43,7 @@ export function TooltipButton({
         alignItems: 'center',
         justifyContent: 'center',
         fontSize: '1.5em',
+        background: 'transparent',
     });
 
     const TooltipContent = styled(Tooltip.Content, tooltipContentStyles as any);
@@ -69,10 +67,9 @@ export function TooltipButton({
                         type={type}
                         onKeyDown={onKeyDown}
                         role={role}
-                        size={size}
                         tone={toneProp}
                         {...rest}
-                        style={{ color: color, ...(rest.style || {}) }}
+                        style={{ ...(rest.style || {}) }}
                     >
                         {icon ? <IconWrapper style={{ fontSize: iconSize as any }}>{icon}</IconWrapper> : null}
                         {loading ? '…' : label}

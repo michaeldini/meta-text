@@ -87,7 +87,6 @@ const ChunkWords = memo(function ChunkWords({
                 open={drawerOpen}
                 onClose={closeDrawer}
                 title="Word Tools"
-                placement="end"
             >
                 {selectedWords && selectedWords.length > 0 && (
                     <WordsToolbar
