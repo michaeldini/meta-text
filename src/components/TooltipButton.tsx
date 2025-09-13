@@ -1,8 +1,7 @@
 import React from 'react';
 import * as Tooltip from '@radix-ui/react-tooltip';
-import { styled, tooltipContentStyles, tooltipArrowStyles, Button } from '@styles';
+import { styled, Button, keyframes } from '@styles';
 
-// Generic button with tooltip for consistent UI usage. Accepts label, icon, onClick, disabled.
 export interface TooltipButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'color' | 'size'> {
     label: string;
     icon?: React.ReactNode;
@@ -10,11 +9,10 @@ export interface TooltipButtonProps extends Omit<React.ButtonHTMLAttributes<HTML
     disabled?: boolean;
     onClick?: (() => void) | ((event: React.MouseEvent<HTMLButtonElement>) => void);
     onKeyDown?: (event: React.KeyboardEvent) => void;
-    type?: 'button' | 'submit' | 'reset';
     color?: string;
     role?: string;
-    // loose positioning object; we map common props to Radix Content props
-    positioning?: { side?: 'top' | 'right' | 'bottom' | 'left'; sideOffset?: number; align?: 'start' | 'center' | 'end' } | any;
+    type?: 'button' | 'submit' | 'reset';
+    side?: 'top' | 'right' | 'bottom' | 'left';
     tone?: 'default' | 'primary' | 'danger';
     loading?: boolean;
     iconSize?: string | number;
@@ -29,30 +27,36 @@ export function TooltipButton({
     onKeyDown,
     type = 'button',
     color = 'inherit',
+    side = 'top',
     tone = 'default',
     role = 'button',
-    positioning = { side: 'left', align: 'end', sideOffset: 6 },
     loading = false,
     iconSize,
     ...rest
 }: TooltipButtonProps): React.ReactElement {
-    // Use centralized Button primitive from stitches.config.ts
 
     const IconWrapper = styled('span', {
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
         fontSize: '1.5em',
-        background: 'transparent',
     });
 
-    const TooltipContent = styled(Tooltip.Content, tooltipContentStyles as any);
-    const TooltipArrow = styled(Tooltip.Arrow, tooltipArrowStyles as any);
+    const tooltipFade = keyframes({
+        '0%': { opacity: 0, transform: 'translateY(4px)' },
+        '100%': { opacity: 1, transform: 'translateY(0)' },
+    });
 
-    const side = positioning?.side ?? 'left';
-    const sideOffset = positioning?.sideOffset ?? 6;
-    const align = positioning?.align;
-
+    const TooltipContent = styled(Tooltip.Content, {
+        background: '$colors$tooltipBg',
+        color: '$colors$primary',
+        padding: '8px 10px',
+        border: '2px solid $colors$primary',
+        borderRadius: '6px',
+        fontSize: '1.1rem',
+        boxShadow: '0 6px 18px rgba(0,0,0,0.18)',
+        animation: `${tooltipFade} 160ms ease`,
+    });
     // map tone fallback for inline style color prop
     const toneProp = (tone as any) || 'default';
 
@@ -72,17 +76,17 @@ export function TooltipButton({
                         style={{ ...(rest.style || {}) }}
                     >
                         {icon ? <IconWrapper style={{ fontSize: iconSize as any }}>{icon}</IconWrapper> : null}
+
                         {loading ? '…' : label}
                     </Button>
                 </Tooltip.Trigger>
                 <Tooltip.Portal>
-                    <TooltipContent side={side} sideOffset={sideOffset} align={align}>
+                    <TooltipContent side={side} sideOffset={10}>
                         {tooltip || label}
-                        <TooltipArrow />
                     </TooltipContent>
                 </Tooltip.Portal>
             </Tooltip.Root>
-        </Tooltip.Provider>
+        </Tooltip.Provider >
     );
 }
 

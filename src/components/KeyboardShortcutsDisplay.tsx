@@ -175,7 +175,6 @@ export function KeyboardShortcutsDisplay({ categories }: KeyboardShortcutsDispla
                         label=""
                         tooltip="Show keyboard shortcuts"
                         icon={<HiQuestionMarkCircle />}
-                        size="sm"
                     />
                 }
                 title="Help"

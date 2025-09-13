@@ -64,7 +64,7 @@ const AuthForm = ({ type, onSubmit, error, loading, redirectOnSuccess }: AuthFor
                         </AlertContent>
                     </AlertRoot>
                 )}
-                <Button type="submit" size="md" tone="primary" disabled={loading} css={{ width: '100%' }}>
+                <Button type="submit" tone="primary" disabled={loading} css={{ width: '100%' }}>
                     {loading ? (type === 'login' ? 'Logging in...' : 'Registering...') : type === 'login' ? 'Login' : 'Register'}
                 </Button>
             </Stack>

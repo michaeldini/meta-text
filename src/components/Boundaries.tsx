@@ -49,7 +49,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
             return (
                 <Box>
                     <Text css={{ marginBottom: 12 }}>An unexpected error occurred. Please try reloading the page.</Text>
-                    <Button tone="default" onClick={this.handleReload} size="sm">Reload Page</Button>
+                    <Button tone="default" onClick={this.handleReload} >Reload Page</Button>
                 </Box>
             );
         }

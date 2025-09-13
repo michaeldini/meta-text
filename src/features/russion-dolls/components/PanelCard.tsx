@@ -40,7 +40,6 @@ export function PanelHeader({ sourceWord, minimized, onMinimize, onClose, header
                             tooltip="Maximize"
                             onClick={() => onMinimize(false)}
                             icon={<HiArrowsPointingOut />}
-                            size="sm"
                         />
                     ) : (
                         <TooltipButton
@@ -48,7 +47,6 @@ export function PanelHeader({ sourceWord, minimized, onMinimize, onClose, header
                             tooltip="Minimize"
                             onClick={() => onMinimize(true)}
                             icon={<HiArrowsPointingIn />}
-                            size="sm"
                         />
                     )}
                     <TooltipButton
@@ -56,7 +54,6 @@ export function PanelHeader({ sourceWord, minimized, onMinimize, onClose, header
                         tooltip="Close panel"
                         onClick={onClose}
                         icon={<HiXMark />}
-                        size="sm"
                     />
                 </Flex>
             </Flex>
@@ -81,13 +78,13 @@ export function PanelActions({ sourceWord, viewMode, loading, onToggleView }: Pa
         <Flex >
             <Flex>
                 <Link href={wikiUrl} target="_blank" rel="noopener noreferrer">
-                    <Button size="sm" css={{ background: 'transparent', padding: '4px 6px' }} disabled={!sourceWord}>W</Button>
+                    <Button css={{ background: 'transparent', padding: '4px 6px' }} disabled={!sourceWord}>W</Button>
                 </Link>
                 <Link href={googleUrl} target="_blank" rel="noopener noreferrer">
-                    <Button size="sm" css={{ background: 'transparent', padding: '4px 6px' }} disabled={!sourceWord}>G</Button>
+                    <Button css={{ background: 'transparent', padding: '4px 6px' }} disabled={!sourceWord}>G</Button>
                 </Link>
             </Flex>
-            <Button size="sm" tone="primary" onClick={onToggleView} disabled={!!loading} css={{ padding: '6px 10px' }}>
+            <Button tone="primary" onClick={onToggleView} disabled={!!loading} css={{ padding: '6px 10px' }}>
                 {viewMode === 'comprehensive' ? 'Show concise' : 'Show comprehensive'}
             </Button>
         </Flex>

@@ -1,6 +1,5 @@
 import { createStitches } from '@stitches/react';
 
-
 export const {
     styled,
     css,
@@ -22,12 +21,9 @@ export const {
             tooltipBg: '#111',
             tooltipText: 'white',
             // button colors
-            buttonText: 'inherit',
-            buttonPrimaryBg: '$primary',
+            buttonText: 'white',
             buttonHoverBg: 'rgba(255,255,255,0.1)',
-            buttonPrimaryText: 'white',
             buttonDangerBg: '#e53e3e',
-            buttonDangerText: 'white',
         },
         fonts: {
             body: 'Funnel Display, Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
@@ -108,57 +104,26 @@ export const Text = styled('div', {
     },
 });
 
-
-// Shared tooltip keyframe and style objects so components can import centralized styles
-export const tooltipFade = keyframes({
-    '0%': { opacity: 0, transform: 'translateY(4px)' },
-    '100%': { opacity: 1, transform: 'translateY(0)' },
-});
-
-export const tooltipContentStyles = {
-    background: '$colors$tooltipBg',
-    color: '$colors$tooltipText',
-    padding: '8px 10px',
-    borderRadius: '6px',
-    fontSize: '0.85rem',
-    boxShadow: '0 6px 18px rgba(0,0,0,0.18)',
-    animation: `${tooltipFade} 160ms ease`,
-};
-
-export const tooltipArrowStyles = {
-    fill: '$colors$tooltipBg',
-};
-
-// shared button styles (exported so components can import variants & base styles)
-// Button primitive: all base styles and size variants are defined here for DRYness
 export const Button = styled('button', {
     display: 'inline-flex',
     alignItems: 'center',
-    gap: '8px',
     border: 'none',
-    background: 'transparent',
+    background: 'inherit',
     padding: '6px 8px',
-    borderRadius: 8,
     cursor: 'pointer',
-    fontSize: '0.95rem',
-    color: '$colors$buttonPrimaryText',
+    fontSize: '1rem',
+    color: '$colors$buttonText',
     fontFamily: '$fonts$body',
     '&:hover': { background: '$buttonHoverBg' },
     variants: {
-        size: {
-            sm: { padding: '4px 6px', fontSize: '0.8rem' },
-            md: { padding: '6px 8px', fontSize: '0.95rem' },
-            lg: { padding: '8px 10px', fontSize: '1rem' },
-        },
         tone: {
             default: {},
-            primary: { background: '$colors$buttonPrimaryBg', color: '$colors$buttonPrimaryText' },
-            danger: { background: '$colors$buttonDangerBg', color: '$colors$buttonDangerText' },
+            primary: { color: '$colors$primary' },
+            danger: { background: '$colors$buttonDangerBg' },
             disabled: { background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)', cursor: 'not-allowed' },
         },
     },
     defaultVariants: {
-        size: 'md',
         tone: 'default',
     },
 });
