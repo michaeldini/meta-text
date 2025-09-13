@@ -100,7 +100,7 @@
  */
 import React, { memo } from 'react';
 import { Box, Text, Stack, TagRoot as Badge, Button, Heading } from '@styles';
-import TooltipButton from '@components/TooltipButton';
+import TooltipButton from '@components/ui/TooltipButton';
 import { getShortcutsByCategory, formatShortcut, type KeyboardShortcut } from '@utils/keyboardShortcuts';
 import { HiQuestionMarkCircle } from 'react-icons/hi2';
 import { SimpleDrawer } from '@components/ui/drawer';

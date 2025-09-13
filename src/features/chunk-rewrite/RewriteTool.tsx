@@ -6,7 +6,7 @@ import { HiPencilSquare } from 'react-icons/hi2';
  */
 import React, { useMemo, useState } from 'react';
 import { Box, Text, Button } from '@styles';
-import { TooltipButton } from '@components/TooltipButton';
+import { TooltipButton } from '@components/ui/TooltipButton';
 import { useRewriteTool } from './hooks/useRewriteTool';
 import type { ChunkType } from '@mtypes/documents';
 import { SimpleDrawer, EmptyState } from '@components/ui';

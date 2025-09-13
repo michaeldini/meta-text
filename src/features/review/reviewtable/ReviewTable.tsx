@@ -4,65 +4,21 @@
 // A basic review table component to display summaries, notes, and images for chunks
 // ReviewTable migrated from Chakra UI to Stitches
 import React from 'react';
-import { Box, Flex, Text, Panel } from '@styles';
-import { styled } from '@styles';
+import { Panel, TableRoot, THead, TRow, Th, TBody } from '@styles';
 import { ChunkType } from '@mtypes/documents';
 
-// Table primitives using Stitches
-const TableRoot = styled('div', {
-    width: '100%',
-    borderCollapse: 'collapse',
-    overflowX: 'auto',
-});
-
-const TableHeader = styled('div', {
-    display: 'flex',
-    background: '#f6f6f6',
-    fontWeight: 600,
-    borderBottom: '1px solid #eaeaea',
-});
-
-const TableRow = styled('div', {
-    display: 'flex',
-    alignItems: 'center',
-    borderBottom: '1px solid #eaeaea',
-    '&:last-child': { borderBottom: 'none' },
-});
-
-const TableCell = styled('div', {
-    flex: 1,
-    padding: '12px',
-    minWidth: 0,
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-});
-
-const TableColumnHeader = styled(TableCell, {
-    fontWeight: 700,
-    background: '#f6f6f6',
-});
-
-const TableBody = styled('div', {
-    width: '100%',
-});
-
-const TableImage = styled('img', {
-    height: '100px',
-    width: '100px',
-    objectFit: 'cover',
-    borderRadius: '8px',
-    background: '#eee',
-});
+// ...existing code...
 
 // Table header for the review table
 function ReviewTableHeader() {
     return (
-        <TableHeader>
-            <TableColumnHeader>Summary</TableColumnHeader>
-            <TableColumnHeader>Notes</TableColumnHeader>
-            <TableColumnHeader>Image</TableColumnHeader>
-        </TableHeader>
+        <THead>
+            <TRow>
+                <Th>Summary</Th>
+                <Th>Notes</Th>
+                <Th>Image</Th>
+            </TRow>
+        </THead>
     );
 }
 
@@ -72,18 +28,19 @@ function ReviewTableRow({ chunk }: { chunk: ChunkType }) {
         ? chunk.images[chunk.images.length - 1]
         : null;
     return (
-        <TableRow key={chunk.id}>
-            <TableCell>{chunk.summary}</TableCell>
-            <TableCell>{chunk.note}</TableCell>
-            <TableCell>
+        <TRow key={chunk.id}>
+            <td>{chunk.summary}</td>
+            <td>{chunk.note}</td>
+            <td>
                 {latestImage && (
-                    <TableImage
+                    <img
                         src={`/${latestImage.path}`}
                         alt={latestImage.prompt}
+                        style={{ height: '100px', width: '100px', objectFit: 'cover', borderRadius: '8px', background: '#eee' }}
                     />
                 )}
-            </TableCell>
-        </TableRow>
+            </td>
+        </TRow>
     );
 }
 
@@ -96,11 +53,11 @@ export default function ReviewTable({ chunks }: ReviewTableProps) {
         <Panel css={{ padding: 0 }}>
             <TableRoot>
                 <ReviewTableHeader />
-                <TableBody>
+                <TBody>
                     {chunks.map(chunk => (
                         <ReviewTableRow key={chunk.id} chunk={chunk} />
                     ))}
-                </TableBody>
+                </TBody>
             </TableRoot>
         </Panel>
     );

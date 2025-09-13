@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { styled } from '@styles';
-import TooltipButton from '@components/TooltipButton';
+import TooltipButton from '@components/ui/TooltipButton';
 import { useChunkToolsPanel } from './useChunkToolsPanel';
 
 const PanelContainer = styled('div', {

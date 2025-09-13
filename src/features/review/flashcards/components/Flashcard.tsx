@@ -1,18 +1,20 @@
-// Flashcard component for displaying a word and its definition using Chakra UI v3 Card primitives
+
+// Flashcard component with header, text, and footer. Header toggles visibility of text/footer.
 import React, { useState } from 'react';
-import { styled } from '@styles';
-import FlashcardFront from './FlashcardFront';
-import FlashcardBack from './FlashcardBack';
+import { styled, Box, Heading, Text } from '@styles';
+import { HiBars3, HiQuestionMarkCircle } from 'react-icons/hi2';
+import { SimpleDrawer, TooltipButton } from '@components/ui';
+import * as Collapsible from '@radix-ui/react-collapsible';
 
-
-const CardRoot = styled('div', {
-    width: 300,
-    borderRadius: 12,
-    boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
-    padding: 0,
+const FlashcardContent = styled('div', {
+    flex: 1,
+    minHeight: 60,
     display: 'flex',
     flexDirection: 'column',
-    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    gap: 6,
+    transition: 'opacity 0.2s',
 });
 
 export interface FlashcardProps {
@@ -24,23 +26,53 @@ export interface FlashcardProps {
 
 export function Flashcard(props: FlashcardProps) {
     const { word, definition, definition_in_context, context } = props;
-    const [flipped, setFlipped] = useState(false);
+    const [open, setOpen] = useState(false);
 
     return (
-        <CardRoot>
-            {/* Front and Back are conditionally rendered based on flipped state */}
-            {!flipped ? (
-                <FlashcardFront word={word} setFlipped={setFlipped} />
-            ) : (
-                <FlashcardBack
-                    word={word}
-                    definition={definition}
-                    definition_in_context={definition_in_context}
-                    context={context}
-                    setFlipped={setFlipped}
-                />
-            )}
-        </CardRoot>
+        <Box css={{ width: 300 }}>
+            <Collapsible.Root open={open} onOpenChange={setOpen}>
+                <Collapsible.Trigger asChild>
+                    <Heading css={{ cursor: 'pointer' }}>{word}</Heading>
+                </Collapsible.Trigger>
+                <Collapsible.Content>
+                    <Text>{definition}</Text>
+                    <Box css={{ borderTop: '1px solid #eee', marginTop: 12 }}>
+                        {/* Definition In Context Drawer */}
+                        <SimpleDrawer
+                            triggerButton={
+                                <TooltipButton
+                                    label=""
+                                    tooltip="View the definition of the word in its original context"
+                                    onClick={() => { }}
+                                    icon={<HiBars3 />}
+                                />
+                            }
+                            title="Definition In Context"
+                        >
+                            <Box>
+                                <Text css={{ fontWeight: 'bold' }}>Word: {word}</Text>
+                                <Text css={{ marginTop: 8 }}>{definition_in_context}</Text>
+                            </Box>
+                        </SimpleDrawer>
+
+                        {/* Context Drawer */}
+                        <SimpleDrawer
+                            triggerButton={
+                                <TooltipButton
+                                    label=""
+                                    tooltip="View more context around the word"
+                                    onClick={() => { }}
+                                    icon={<HiQuestionMarkCircle />}
+                                />
+                            }
+                            title="Context"
+                        >
+                            <Text>{context}</Text>
+                        </SimpleDrawer>
+                    </Box>
+                </Collapsible.Content>
+            </Collapsible.Root>
+        </Box>
     );
 }
 

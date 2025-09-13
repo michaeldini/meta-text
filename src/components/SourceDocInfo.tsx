@@ -6,7 +6,7 @@ import { SimpleDrawer } from '@components/ui';
 import { HiOutlineSparkles } from 'react-icons/hi2';
 
 import { SourceDocumentSummary } from '@mtypes/documents';
-import { TooltipButton } from '@components/TooltipButton';
+import { TooltipButton } from '@components/ui/TooltipButton';
 
 
 import { useSourceDocumentDetail, useUpdateSourceDocument } from '@features/documents/useDocumentsData';

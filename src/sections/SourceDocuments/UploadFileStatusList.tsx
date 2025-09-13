@@ -1,7 +1,7 @@
 // Renders list of files with upload statuses and overall progress feedback.
 import React from 'react';
 import { Wrap, WrapItem, TagRoot, TagLabel, Text, Box, Flex } from '@styles';
-import TooltipButton from '@components/TooltipButton';
+import TooltipButton from '@components/ui/TooltipButton';
 
 export interface UploadStatus {
     uploading: boolean;

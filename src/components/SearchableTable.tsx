@@ -10,9 +10,9 @@ import React, { useState, useRef, useMemo } from 'react';
 import { HiMagnifyingGlass, HiOutlineTrash } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
 import { MetatextSummary, SourceDocumentSummary } from '@mtypes/index';
-import { TooltipButton } from '@components/TooltipButton';
+import { TooltipButton } from '@components/ui/TooltipButton';
 import { UseMutationResult } from '@tanstack/react-query';
-import { styled, Box, Heading, Input, Button } from '@styles';
+import { styled, Box, Heading, Input, Button, TableContainer, Empty, TableScrollArea, TableRoot, THead, TRow, Th, TBody } from '@styles';
 
 // useSearchResults: Hook to manage search/filter state and results
 // returns results that can be passed to a table component
@@ -43,28 +43,11 @@ function clearSearchAndFocus(setSearch: (value: string) => void, inputRef?: Reac
     }
 }
 
-const InputGroupDiv = styled('div', {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-    marginBottom: '8px',
-});
-
-const IconLeft = styled('span', {
-    display: 'inline-flex',
-    alignItems: 'center',
-    color: 'gray',
-});
-
-const InputStyled = Input;
-
 export function SearchInput({ search, setSearch, inputRef }: SearchInputProps) {
     return (
-        <InputGroupDiv>
-            <IconLeft aria-hidden>
-                <HiMagnifyingGlass />
-            </IconLeft>
-            <InputStyled
+        <Box>
+            <HiMagnifyingGlass />
+            <Input
                 ref={inputRef as any}
                 placeholder="Search..."
                 value={search}
@@ -76,7 +59,7 @@ export function SearchInput({ search, setSearch, inputRef }: SearchInputProps) {
                     ×
                 </Button>
             ) : null}
-        </InputGroupDiv>
+        </Box>
     );
 }
 
@@ -116,7 +99,7 @@ export function TableRow({ item, navigate, navigateToBase, deleteItemMutation }:
                 <TooltipButton
                     label=""
                     tooltip={`Delete ${item.title}`}
-                    icon={<HiOutlineTrash />}
+                    icon={<HiOutlineTrash style={{ color: 'gray' }} />}
                     data-testid={`delete-button-${item.id}`}
                     onClick={() => deleteItemMutation.mutate(item.id)}
                     style={{ width: 'auto' }}
@@ -193,46 +176,3 @@ export function SearchableTable({ documents, title, navigateToBase, deleteItemMu
     );
 }
 
-// Move non-primitive styled components to module scope so they aren't recreated on every render.
-const TableContainer = styled(Box, {
-    padding: '16px',
-    minWidth: '20rem',
-    boxSizing: 'border-box',
-});
-
-const Empty = styled('div', {
-    padding: '16px',
-    textAlign: 'center',
-    color: '$colors$subtle',
-});
-
-const TableScrollArea = styled('div', {
-    maxHeight: '32rem',
-    overflow: 'auto',
-});
-
-const TableRoot = styled('table', {
-    width: '100%',
-    borderCollapse: 'collapse',
-});
-
-const THead = styled('thead', {
-    position: 'sticky',
-    top: 0,
-    background: 'transparent',
-});
-
-const TRow = styled('tr', {
-    background: 'transparent',
-});
-
-const Th = styled('th', {
-    textAlign: 'left',
-    padding: '8px',
-    fontWeight: 600,
-    borderBottom: '1px solid $colors$border',
-});
-
-const TBody = styled('tbody', {
-    background: 'transparent',
-});

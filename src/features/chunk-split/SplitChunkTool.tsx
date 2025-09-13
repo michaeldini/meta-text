@@ -1,6 +1,6 @@
 import React from 'react';
 import { HiScissors } from 'react-icons/hi2';
-import { TooltipButton } from '@components/TooltipButton';
+import { TooltipButton } from '@components/ui/TooltipButton';
 import { useSplitChunk } from '@features/chunk/hooks/useSplitChunk';
 import log from '@utils/logger';
 // import { SplitChunkToolProps } from '@features/chunk-shared/types';

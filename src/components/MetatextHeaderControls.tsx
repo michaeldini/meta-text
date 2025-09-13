@@ -6,7 +6,7 @@ import { HiArrowDownTray, HiBookmark, HiHashtag, HiOutlineStar, HiStar } from 'r
 import React from 'react';
 import { Box } from '@styles';
 
-import { TooltipButton } from '@components/TooltipButton';
+import { TooltipButton } from '@components/ui/TooltipButton';
 import { useUserConfig, useUpdateUserConfig } from '@services/userConfigService';
 import { useDownloadMetatext } from '@pages/Metatext/hooks/useDownloadMetatext';
 import { useMetatextBookmark } from '@pages/Metatext/hooks/useMetatextBookmark';

@@ -7,7 +7,6 @@
 import React from 'react';
 import { Explanation } from '@mtypes/MetatextReview.types';
 import { Box, Text, Heading } from '@styles';
-import { styled } from '@styles';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import { EmptyState } from '@components/ui/empty-state';
 
@@ -20,12 +19,6 @@ interface PhraseItemProps {
     phrase: Explanation;
 }
 
-
-// Card container for phrase explanations
-const PhraseCardContainer = styled(Box, {
-    padding: '8px 0',
-});
-
 interface PhraseCardProps {
     title: string;
     content: string;
@@ -33,44 +26,21 @@ interface PhraseCardProps {
 
 export function PhraseCard({ title, content }: PhraseCardProps) {
     return (
-        <PhraseCardContainer>
-            <Heading css={{ color: '$colors$buttonPrimaryBg', marginBottom: 4 }}>{title}</Heading>
+        <Box>
+            <Heading>{title}</Heading>
             <Text>{content}</Text>
-        </PhraseCardContainer>
+        </Box>
     );
 }
 
-// Collapsible phrase item using Radix UI and Stitches
-const PhraseCollapsibleRoot = styled(Collapsible.Root, {
-    borderRadius: 8,
-    border: '1px solid $colors$border',
-    marginBottom: 12,
-    background: 'white',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-    padding: 12,
-});
-
-const PhraseCollapsibleTrigger = styled(Collapsible.Trigger, {
-    all: 'unset',
-    cursor: 'pointer',
-    fontWeight: 700,
-    fontSize: '1rem',
-    color: '$colors$buttonPrimaryBg',
-    marginBottom: 6,
-    display: 'block',
-});
-
-const PhraseCollapsibleContent = styled(Collapsible.Content, {
-    paddingLeft: 4,
-});
 
 export function PhraseItem({ phrase }: PhraseItemProps) {
     return (
-        <PhraseCollapsibleRoot key={phrase.id}>
-            <PhraseCollapsibleTrigger>
-                <Text css={{ fontSize: '1rem', fontWeight: 700 }}>{phrase.words}</Text>
-            </PhraseCollapsibleTrigger>
-            <PhraseCollapsibleContent>
+        <Collapsible.Root style={{ marginBottom: 12 }} key={phrase.id}>
+            <Collapsible.Trigger style={{ cursor: 'pointer' }} asChild>
+                <Text css={{ "color": "$colors$primary" }}>{phrase.words}</Text>
+            </Collapsible.Trigger>
+            <Collapsible.Content>
                 <PhraseCard
                     title="Explanation"
                     content={phrase.explanation}
@@ -79,8 +49,8 @@ export function PhraseItem({ phrase }: PhraseItemProps) {
                     title="Explanation in Context"
                     content={phrase.explanation_in_context}
                 />
-            </PhraseCollapsibleContent>
-        </PhraseCollapsibleRoot>
+            </Collapsible.Content>
+        </Collapsible.Root>
     );
 }
 

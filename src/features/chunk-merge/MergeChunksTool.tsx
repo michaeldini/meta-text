@@ -5,7 +5,7 @@ import { HiArrowUturnLeft } from 'react-icons/hi2';
 
 // The tool is a an arrorw icon with a tooltip
 import React, { useState } from 'react';
-import TooltipButton from '@components/TooltipButton';
+import TooltipButton from '@components/ui/TooltipButton';
 
 // import a hook to handle merging chunks
 import { useMergeChunks } from './hooks/useMergeChunks';

@@ -8,7 +8,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Box, Text } from '@styles';
 import { ErrorAlert } from '@components/ErrorAlert';
 
-import { TooltipButton } from '@components/TooltipButton';
+import { TooltipButton } from '@components/ui/TooltipButton';
 import type { ChunkType } from '@mtypes/documents';
 import { explainWordsOrChunk } from '@services/aiService';
 

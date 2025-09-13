@@ -7,7 +7,7 @@ import { HiQuestionMarkCircle } from 'react-icons/hi2';
 import React, { useState, useCallback } from 'react';
 import { Text, Heading, Box } from '@styles';
 import { ErrorAlert } from '@components/ErrorAlert';
-import { TooltipButton } from '@components/TooltipButton';
+import { TooltipButton } from '@components/ui/TooltipButton';
 import { useExplainHandler } from './hooks/useExplainHandler';
 import { ChunkType } from '@mtypes/documents';
 

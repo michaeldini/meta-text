@@ -5,7 +5,7 @@ import { Box } from '@styles';
 import { HiBookmark, HiOutlineBookmark } from 'react-icons/hi2';
 import { ChunkType } from '@mtypes/documents';
 import { useBookmark } from '@hooks/useBookmark';
-import TooltipButton from '../../../components/TooltipButton';
+import TooltipButton from '../../../components/ui/TooltipButton';
 
 interface ChunkBookmarkToggleProps {
     chunk: ChunkType;

@@ -6,7 +6,7 @@ import { HiOutlineSparkles } from 'react-icons/hi2';
 import React from 'react';
 import { Box, Text, Button } from '@styles';
 import { ErrorAlert } from '@components/ErrorAlert';
-import { TooltipButton } from '@components/TooltipButton';
+import { TooltipButton } from '@components/ui/TooltipButton';
 
 import { useImageTool } from './hooks/useImageTool';
 import ImageGenerationDialog from './components/ImageGenerationDialog';

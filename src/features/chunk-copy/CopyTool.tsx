@@ -2,7 +2,7 @@
  * IconButton to copy chunk text to clipboard
  */
 import React, { useState } from 'react';
-import TooltipButton from '@components/TooltipButton';
+import TooltipButton from '@components/ui/TooltipButton';
 import { useNotifications } from '@store/notificationStore';
 import { HiOutlineClipboard, HiClipboard } from 'react-icons/hi2';
 

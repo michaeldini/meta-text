@@ -2,7 +2,7 @@ import React from 'react';
 import { FontFamilySelect } from '@components/stylecontrols';
 import { Box, Text, Input } from '@styles';
 import { useUIPreferences } from '@hooks/useUIPreferences';
-import { TooltipButton } from '@components/TooltipButton';
+import { TooltipButton } from '@components/ui/TooltipButton';
 
 
 /**

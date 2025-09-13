@@ -1,3 +1,4 @@
+
 import { createStitches } from '@stitches/react';
 
 export const {
@@ -276,3 +277,67 @@ export const TagLabel = styled('span', {
     maxWidth: '200px',
 });
 
+
+
+// ---------------------------------------------------------------
+// Loading spinner
+// ---------------------------------------------------------------
+export const Spinner = styled('div', {
+    display: 'inline-block',
+    width: 32,
+    height: 32,
+    border: '4px solid $gray6',
+    borderTop: '4px solid $blue9',
+    borderRadius: '50%',
+    animation: 'spin 1s linear infinite',
+    '@keyframes spin': {
+        '0%': { transform: 'rotate(0deg)' },
+        '100%': { transform: 'rotate(360deg)' },
+    },
+});
+
+// --------------------------------------------------------------
+// Table primitives (moved from SearchableTable.tsx)
+// --------------------------------------------------------------
+export const TableContainer = styled(Box, {
+    padding: '16px',
+    minWidth: '20rem',
+    boxSizing: 'border-box',
+});
+
+export const Empty = styled('div', {
+    padding: '16px',
+    textAlign: 'center',
+    color: '$colors$subtle',
+});
+
+export const TableScrollArea = styled('div', {
+    maxHeight: '32rem',
+    overflow: 'auto',
+});
+
+export const TableRoot = styled('table', {
+    width: '100%',
+    borderCollapse: 'collapse',
+});
+
+export const THead = styled('thead', {
+    position: 'sticky',
+    top: 0,
+    background: 'transparent',
+});
+
+export const TRow = styled('tr', {
+    background: 'transparent',
+});
+
+export const Th = styled('th', {
+    textAlign: 'left',
+    padding: '8px',
+    fontWeight: 600,
+    borderBottom: '1px solid $colors$border',
+});
+
+export const TBody = styled('tbody', {
+    background: 'transparent',
+});

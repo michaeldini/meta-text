@@ -7,7 +7,7 @@ import { Box, Button, Flex, Text, Link } from '@styles';
 import WordSelector from './WordSelector';
 import { Panel } from '@mtypes/experiments';
 import { HiArrowsPointingOut, HiArrowsPointingIn } from 'react-icons/hi2';
-import { TooltipButton } from '@components/TooltipButton';
+import { TooltipButton } from '@components/ui/TooltipButton';
 
 export type PanelCardProps = {
     panel: Panel;
