@@ -19,11 +19,12 @@ export const {
             heading: '$primary',
             border: 'gainsboro',
             subtle: 'lightgray',
+            dangerBg: '#e53e3e',
+            dangerText: '#f6b0b0ff',
             tooltipBg: '#111',
             tooltipText: 'white',
             buttonText: 'white',
             buttonHoverBg: 'rgba(255,255,255,0.1)',
-            buttonDangerBg: '#e53e3e',
         },
         fonts: {
             body: 'Funnel Display, Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
@@ -59,6 +60,20 @@ export const Box = styled('div', {
             md: { padding: '16px' },
             lg: { padding: '24px' },
         },
+        variant: {
+            danger: {
+                alignItems: 'flex-start',
+                padding: '10px 12px',
+                borderRadius: 8,
+                border: '1px solid $colors$dangerBg',
+                background: 'rgba(229,62,62,0.08)',
+                color: '$colors$dangerText',
+                marginTop: 12,
+                marginBottom: 12,
+                flex: 1,
+                minWidth: 0
+            },
+        },
     }
 
 });
@@ -68,6 +83,21 @@ export const Flex = styled('div', {
     flexWrap: 'wrap',
     justifyContent: 'center',
     gap: '20px',
+    variants: {
+        variant: {
+            danger: {
+                alignItems: 'flex-start',
+                padding: '10px 12px',
+                borderRadius: 8,
+                border: '1px solid $colors$dangerBg',
+                color: '$colors$dangerText',
+                marginTop: 12,
+                marginBottom: 12,
+                flex: 1,
+                minWidth: 0
+            },
+        },
+    },
 });
 
 export const Stack = styled('div', {
@@ -76,22 +106,28 @@ export const Stack = styled('div', {
     gap: '12px',
 });
 
-export const Panel = styled('div', {
-    padding: '16px',
-    minWidth: '20rem',
-    boxSizing: 'border-box',
-});
-
 // --------------------------------------------------------------
 // Typography
 // --------------------------------------------------------------
 export const Heading = styled('h3', {
     margin: 0,
     marginBottom: '12px',
-    fontSize: '1.5rem',
     fontWeight: 600,
-    color: '$colors$heading',
     fontFamily: '$fonts$heading',
+    variants: {
+        tone: {
+            default: {
+                fontSize: '1.5rem',
+                color: '$colors$heading',
+            },
+            danger: {
+                color: '$colors$dangerText',
+            },
+        },
+    },
+    defaultVariants: {
+        tone: 'default',
+    },
 });
 
 export const Text = styled('div', {
@@ -127,7 +163,7 @@ export const Button = styled('button', {
         tone: {
             default: {},
             primary: { color: '$colors$primary' },
-            danger: { background: '$colors$buttonDangerBg' },
+            danger: { background: '$colors$dangerBg' },
             disabled: { background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)', cursor: 'not-allowed' },
         },
     },
@@ -185,56 +221,6 @@ export const Link = styled('a', {
     '&:hover': { textDecoration: 'underline' },
 });
 
-// --------------------------------------------------------------
-// Alert primitives
-// --------------------------------------------------------------
-export const AlertRoot = styled('div', {
-    display: 'flex',
-    alignItems: 'flex-start',
-    gap: '12px',
-    padding: '10px 12px',
-    borderRadius: 8,
-    background: '$colors$buttonDangerBg',
-    color: '$colors$buttonDangerText',
-    boxSizing: 'border-box',
-});
-
-export const AlertIndicator = styled('div', {
-    width: 10,
-    height: 10,
-    borderRadius: 9999,
-    background: 'rgba(255,255,255,0.9)',
-    marginTop: 6,
-    flex: '0 0 auto',
-});
-
-export const AlertContent = styled('div', {
-    flex: 1,
-    minWidth: 0,
-});
-
-export const AlertTitle = styled('div', {
-    fontWeight: 700,
-    marginBottom: 4,
-});
-
-export const AlertDescription = styled('div', {
-    fontSize: '0.95rem',
-});
-
-export const AlertDismissButton = styled('button', {
-    background: 'transparent',
-    border: 'none',
-    color: 'inherit',
-    cursor: 'pointer',
-    padding: 6,
-    borderRadius: 6,
-    fontSize: '1.1rem',
-    lineHeight: 1,
-    flex: '0 0 auto',
-    '&:hover': { background: 'rgba(255,255,255,0.06)' },
-});
-
 // Simple wrap container for tag lists and chips
 export const Wrap = styled('div', {
     display: 'flex',
@@ -260,7 +246,7 @@ export const TagRoot = styled('span', {
             gray: { background: 'gainsboro', color: 'black' },
             yellow: { background: 'gold', color: 'black' },
             green: { background: 'lightgreen', color: 'black' },
-            red: { background: '$colors$buttonDangerBg', color: '$colors$buttonDangerText' },
+            red: { background: '$colors$dangerBg', color: '$colors$dangerText' },
         },
         size: {
             md: { padding: '6px 10px', fontSize: '0.9rem' },

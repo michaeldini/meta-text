@@ -33,7 +33,7 @@ export function PromptBar({ value, onChange, onSubmit, loading, error }: PromptB
                 </Button>
             </Flex>
             {error && (
-                <Text css={{ marginTop: 8, color: '$colors$buttonDangerBg', fontSize: '0.9rem' }}>{error}</Text>
+                <Text css={{ marginTop: 8, color: '$colors$dangerText', fontSize: '0.9rem' }}>{error}</Text>
             )}
         </Box>
     );

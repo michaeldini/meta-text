@@ -2,15 +2,14 @@
 // Implements local dismiss logic or delegates to provided onClose handler.
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { AlertRoot, AlertIndicator, AlertContent, AlertTitle, AlertDescription, AlertDismissButton } from '@styles';
+import { Box, Heading, Text, Flex } from '@styles';
+import { HiXCircle } from 'react-icons/hi2';
 
 export interface ErrorAlertProps {
     message: React.ReactNode;
     title?: React.ReactNode;
     onClose?: () => void; // Optional external close handler (e.g. clear error in store)
     ['data-testid']?: string;
-    mt?: string | number;
-    mb?: string | number;
 }
 
 export function ErrorAlert({
@@ -18,8 +17,6 @@ export function ErrorAlert({
     title = 'Error',
     onClose,
     'data-testid': dataTestId,
-    mt,
-    mb,
 }: ErrorAlertProps) {
     const [dismissed, setDismissed] = useState(false);
 
@@ -32,14 +29,13 @@ export function ErrorAlert({
         if (onClose) onClose(); else setDismissed(true);
     };
     return (
-        <AlertRoot data-testid={dataTestId} role="alert" style={{ marginTop: mt as any, marginBottom: mb as any }}>
-            <AlertIndicator />
-            <AlertContent>
-                <AlertTitle>{title}</AlertTitle>
-                <AlertDescription>{message}</AlertDescription>
-            </AlertContent>
-            <AlertDismissButton aria-label="Dismiss error" onClick={handleClose}>&times;</AlertDismissButton>
-        </AlertRoot>
+        <Flex variant="danger" data-testid={dataTestId} role="alert">
+            <Box>
+                <Heading tone="danger">{title}</Heading>
+                <Text>{message}</Text>
+            </Box>
+            <HiXCircle style={{ flex: '0 0 auto', fontSize: '1.5rem', color: '$colors$dangerText' }} onClick={handleClose} />
+        </Flex>
     );
 }
 
