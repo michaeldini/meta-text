@@ -8,6 +8,7 @@ import SourceDocFilePicker from './SourceDocFilePicker';
 
 // Hook
 import { useSourceDocUploadForm } from './useSourceDocUploadForm';
+import { TooltipButton } from '@components/ui';
 
 function SourceDocUploadForm(): React.ReactElement {
     const { files, error, addSourceDocuments, handleFilesChange, handleSubmit, uploadStatuses } = useSourceDocUploadForm();
@@ -24,15 +25,18 @@ function SourceDocUploadForm(): React.ReactElement {
                         onFilesChange={handleFilesChange}
                         uploadStatuses={uploadStatuses}
                     />
-                    <Button
+                    <TooltipButton
+                        label="Upload Documents"
+                        tooltip={files.length === 0 ? 'Please select files to upload' : 'Submit to upload documents'}
+                        disabled={files.length === 0 || isPending}
+                        loading={isPending}
+                        icon={<HiArrowDownTray style={{ marginRight: 8 }} />}
                         type="submit"
-                        tone={isPending || !files.length ? 'disabled' : 'primary'}
-
                         data-testid="submit-button"
                     >
                         {!isPending && <HiArrowDownTray />}
                         {isPending ? 'Uploading...' : 'Upload Documents'}
-                    </Button>
+                    </TooltipButton>
                 </Stack>
             </form>
         </Box>

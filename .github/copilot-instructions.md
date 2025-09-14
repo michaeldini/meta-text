@@ -1,6 +1,7 @@
 # Project Overview
 This is a monorepo containing a full-stack application with a React frontend and FastAPI backend.
 The codebase uses modern best practices, but prioritizes readability, maintainability, and a clean user interface over complexity.
+App purpose: User-friendly interface for managing and interacting with documents
 
 ## Frontend Stack
 - Build System: Vite
@@ -13,16 +14,6 @@ The codebase uses modern best practices, but prioritizes readability, maintainab
 - Location: `src/` folder
 - Logging: `src/utils/logger.ts`
 
-## Frontend Testing
-- Use Vitest (tests colocated with components)
-- Use `src/tests/__mocks__/documentsData.mock` for consistent mock data
-- Use `src/utils/test-utils.tsx` for common testing utilities
-
-### Documentation
-- Write brief comments at the top of each file explaining its purpose
-- Comment complex logic or non-obvious code sections
-
-
 ## Backend Stack
 - Framework: FastAPI with SQLModel
 - Database: SQLite
@@ -30,11 +21,6 @@ The codebase uses modern best practices, but prioritizes readability, maintainab
 - Testing: pytest with FastAPI test client
 - Location: `backend/` folder
 - Logging: loguru
-
-## Development Guidelines
-- Focus on clean, maintainable UI and efficient state management in the frontend
-- Follow FastAPI + SQLModel best practices for robust and maintainable backend
-- App purpose: User-friendly interface for managing and interacting with documents
 
 ## Python Dependency Management (uv)
 - Activate virtual environment: `source .venv/bin/activate`

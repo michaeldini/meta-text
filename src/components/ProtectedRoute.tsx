@@ -5,7 +5,7 @@
  */
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { Spinner } from '@styles';
+import { Spinner, Text } from '@styles';
 import { useAuthStore } from '@store/authStore';
 
 interface Props {
@@ -16,7 +16,12 @@ interface Props {
 export default function ProtectedRoute({ children }: Props) {
     const { user, loading } = useAuthStore();
 
-    if (loading) return <Spinner aria-label="Loading page" />;
+    if (loading) return (
+        <>
+            <Text aria-label="Loading page"> Loading...</Text>
+            <Spinner style={{ margin: 'auto' }} aria-label="Loading spinner" />
+        </>
+    );
     if (!user) return <Navigate to="/login" replace />;
 
     return <>{children}</>;

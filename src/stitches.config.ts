@@ -43,6 +43,13 @@ export const globalStyles = globalCss({
         padding: 0,
         backgroundColor: '$colors$background',
     },
+    'svg': {
+        background: 'transparent !important',
+    },
+    '@keyframes spin': {
+        '0%': { transform: 'rotate(0deg)' },
+        '100%': { transform: 'rotate(360deg)' },
+    },
 });
 
 // --------------------------------------------------------------
@@ -158,14 +165,24 @@ export const Text = styled('div', {
 export const Button = styled('button', {
     display: 'inline-flex',
     alignItems: 'center',
-    border: 'none',
-    background: 'inherit',
+    border: 'transparent',
+    borderRadius: 6,
+    background: 'none',
     padding: '6px 8px',
     cursor: 'pointer',
     fontSize: '1rem',
     color: '$colors$buttonText',
     fontFamily: '$fonts$body',
     '&:hover': { background: '$buttonHoverBg' },
+    '&:disabled': {
+        background: 'rgba(255,255,255,0.1)',
+        color: 'rgba(255,255,255,0.5)',
+        cursor: 'not-allowed',
+        '&:hover': { background: 'rgba(255,255,255,0.1)' },
+    },
+    // smooth background transition
+    transition: 'background 120ms ease',
+    // tone variants
     variants: {
         tone: {
             default: {},
@@ -281,14 +298,11 @@ export const Spinner = styled('div', {
     display: 'inline-block',
     width: 32,
     height: 32,
-    border: '4px solid $gray6',
-    borderTop: '4px solid $blue9',
+    color: '$colors$primary',
+    border: '4px solid gray',
+    borderTop: '4px solid blue',
     borderRadius: '50%',
     animation: 'spin 1s linear infinite',
-    '@keyframes spin': {
-        '0%': { transform: 'rotate(0deg)' },
-        '100%': { transform: 'rotate(360deg)' },
-    },
 });
 
 // --------------------------------------------------------------
@@ -422,3 +436,13 @@ export const ButtonGroup = styled('div', {
 });
 
 
+// --------------------------------------------------------------
+// Icon wrapper (for icon buttons)
+// --------------------------------------------------------------
+export const IconWrapper = styled('span', {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '1.5em',
+    background: 'transparent',
+});

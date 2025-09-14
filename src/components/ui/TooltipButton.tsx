@@ -1,14 +1,7 @@
 import React from 'react';
 import * as Tooltip from '@radix-ui/react-tooltip';
-import { styled, Button, keyframes } from '@styles';
+import { styled, Button, IconWrapper, keyframes } from '@styles';
 
-// Define styled pieces at module scope to avoid recreating them on each render.
-const IconWrapper = styled('span', {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '1.5em',
-});
 
 const tooltipFade = keyframes({
     '0%': { opacity: 0, transform: 'translateY(4px)' },

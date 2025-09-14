@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Boundary } from '@components/Boundaries';
+import { globalStyles } from '@styles';
 
 
 const queryClient = new QueryClient();
@@ -19,6 +20,7 @@ export function AppRoot() {
             <Boundary>
                 <BrowserRouter>
                     <QueryClientProvider client={queryClient}>
+                        {globalStyles()}
                         <App />
                     </QueryClientProvider>
                 </BrowserRouter>

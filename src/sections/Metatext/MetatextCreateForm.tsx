@@ -1,7 +1,7 @@
 import { HiOutlineSparkles } from 'react-icons/hi2';
 import React from 'react';
-import { Box, Stack, Button, Text, Input, Heading } from '@styles';
-import { Select } from '@components/ui/select';
+import { Box, IconWrapper, Button, Input, Heading } from '@styles';
+import { Select, TooltipButton } from '@components/ui';
 import { useMetatextCreate } from './useMetatextCreate';
 import { SourceDocumentSummary } from '@mtypes/documents';
 
@@ -25,7 +25,6 @@ function SourceDocSelect({ options, value, onChange }: SourceDocSelectProps) {
             onChange={onChange}
             placeholder="Select a source document"
             label="Source Document"
-            width="100%"
         />
     );
 }
@@ -53,16 +52,16 @@ interface SubmitButtonProps {
 }
 function SubmitButton({ loading, disabled }: SubmitButtonProps) {
     return (
-        <Button
+        <TooltipButton
+            label="Create Metatext"
+            tooltip={disabled ? 'Please fill in all required fields' : 'Submit to create metatext'}
+            disabled={disabled}
+            loading={loading}
+            icon={<HiOutlineSparkles style={{ marginRight: 8 }} />}
             type="submit"
-            tone={disabled ? 'disabled' : 'primary'}
+            // tone={disabled ? 'disabled' : 'primary'}
             data-testid="submit-button"
-            size="md"
-            css={{ padding: '8px 12px', borderRadius: 6 }}
-        >
-            <HiOutlineSparkles style={{ marginRight: 8 }} />
-            {loading ? 'Creating...' : 'Create Metatext'}
-        </Button>
+        />
     );
 }
 

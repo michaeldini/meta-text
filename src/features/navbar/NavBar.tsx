@@ -5,7 +5,7 @@
  * - Chakra UI Color-mode button (toggle light/dark theme)
  */
 import React from 'react';
-import { Flex, Box, Button } from '@styles';
+import { Flex, IconWrapper, Button } from '@styles';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuthStore } from '@store/authStore';
@@ -36,10 +36,9 @@ export function NavBar() {
                 <Button
                     key={item.label}
                     onClick={item.action}
-                    size="lg"
                     css={{ fontWeight: 500 }}
                 >
-                    {item.icon ? <span style={{ marginRight: 6 }}><item.icon /></span> : null}
+                    <IconWrapper>{item.icon ? <item.icon /> : null}</IconWrapper>
                     {item.label}
                 </Button>
             ))}

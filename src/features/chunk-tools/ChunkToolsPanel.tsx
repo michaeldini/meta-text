@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { styled, PanelContainer, ButtonGroup } from '@styles';
+import { PanelContainer, ButtonGroup } from '@styles';
 import TooltipButton from '@components/ui/TooltipButton';
 import { useChunkToolsPanel } from './useChunkToolsPanel';
 
