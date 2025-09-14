@@ -50,7 +50,7 @@ export interface ReviewTableProps {
 
 export default function ReviewTable({ chunks }: ReviewTableProps) {
     return (
-        <Box css={{ padding: 0 }}>
+        <Box noPad>
             <TableRoot>
                 <ReviewTableHeader />
                 <TBody>

@@ -8,7 +8,6 @@ import { Routes, Route } from 'react-router-dom';
 import { Box, Text } from '@styles';
 import { NavBar } from '@features/navbar';
 import { GlobalNotifications } from '@components/GlobalNotifications';
-import { Toaster } from '@components/ui/toaster';
 import { Boundary } from '@components/Boundaries';
 import { useAuthRefresh } from '@hooks/useAuthRefresh';
 import { useAuthStore } from '@store/authStore';
@@ -16,7 +15,6 @@ import { useUserConfig } from '@services/userConfigService';
 
 import routes from './routes';
 import ProtectedRoute from './components/ProtectedRoute';
-import { globalStyles } from '@styles';
 // Static 404 component to prevent recreation on each render
 const NotFound = (
     <Box>
@@ -43,11 +41,9 @@ export function AppContent() {
     return (
         <Boundary fallbackText="Loading">
             <Suspense>
-                <Box padding="none">
-                    <Toaster />
+                <Box noPad>
                     <GlobalNotifications />
                     <NavBar />
-                    {globalStyles()}
                     <Routes>
                         {routes.map((route) => {
                             const Page = route.element;

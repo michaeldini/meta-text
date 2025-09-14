@@ -34,6 +34,13 @@ export const {
     media: {
         bp1: '(min-width: 480px)',
     },
+    utils: {
+        marginX: (value: string) => ({ marginLeft: value, marginRight: value }),
+        marginY: (value: string) => ({ marginTop: value, marginBottom: value }),
+        paddingX: (value: string) => ({ paddingLeft: value, paddingRight: value }),
+        paddingY: (value: string) => ({ paddingTop: value, paddingBottom: value }),
+
+    },
 });
 
 export const globalStyles = globalCss({
@@ -61,8 +68,10 @@ export const Box = styled('div', {
     fontFamily: '$fonts$body',
     padding: '16px',
     variants: {
+        noPad: { true: { padding: 0 } },
+        fullWidth: { true: { width: '100%' } },
+        center: { true: { marginLeft: 'auto', marginRight: 'auto' } },
         padding: {
-            none: { padding: 0 },
             sm: { padding: '8px' },
             md: { padding: '16px' },
             lg: { padding: '24px' },

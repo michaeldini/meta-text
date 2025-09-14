@@ -73,7 +73,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
             <Text>Click on a field to edit. Enter to Save. Tab to Cancel</Text>
             <Stack css={{ flex: 1, minWidth: '320px', gap: '2px' }}>
                 {FIELD_CONFIG.map(config => (
-                    <Box key={config.key} padding="none">
+                    <Box key={config.key} noPad>
                         <Text css={{ fontWeight: 600 }}>{config.label}</Text>
                         <Textarea
                             defaultValue={doc[config.key] != null ? String(doc[config.key]) : 'N/A'}

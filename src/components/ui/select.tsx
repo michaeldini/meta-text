@@ -36,7 +36,7 @@ export const Select: React.FC<SelectProps> = ({
     };
 
     return (
-        <Box padding="none">
+        <Box noPad>
             {label && <Text css={{ marginBottom: '.25rem' }}>{label}</Text>}
             <SelectEl value={value ?? ''} onChange={handleChange} disabled={disabled} aria-label={label ?? placeholder}>
                 {placeholder && (

@@ -3,7 +3,6 @@
  */
 import React, { useState } from 'react';
 import TooltipButton from '@components/ui/TooltipButton';
-import { useNotifications } from '@store/notificationStore';
 import { HiOutlineClipboard, HiClipboard } from 'react-icons/hi2';
 
 
@@ -12,7 +11,6 @@ interface CopyToolProps {
 }
 
 export function CopyTool({ chunkText }: CopyToolProps) {
-    const { showSuccess } = useNotifications();
     const formattedChunk = chunkText ? chunkText.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim() : '';
     const [copied, setCopied] = useState(false);
 
@@ -20,7 +18,6 @@ export function CopyTool({ chunkText }: CopyToolProps) {
         try {
             await navigator.clipboard.writeText(formattedChunk);
             setCopied(true);
-            showSuccess('Chunk copied to clipboard!', 3000);
             setTimeout(() => setCopied(false), 1200);
         } catch {
             setCopied(false);
