@@ -70,14 +70,14 @@ const InteractiveText = memo(function InteractiveText({
                             padding: 0,
                             paddingLeft: `${paddingX}em`,
                             paddingRight: `${paddingX}em`,
-                            color: isHighlighted ? '$colors$buttonPrimaryBg' : undefined,
+                            color: isHighlighted ? '$colors$primary' : undefined,
                             cursor: 'pointer',
                             userSelect: 'none',
                             touchAction: 'none',
                             display: 'inline-block',
                             borderRadius: isHighlighted ? '4px' : undefined,
                             transition: 'color 0.15s',
-                            '&:hover': !isHighlighted ? { color: '$colors$buttonPrimaryBg', } : undefined,
+                            '&:hover': !isHighlighted ? { color: '$colors$primary', } : undefined,
                         }}
                         onPointerDown={() => onWordDown(wordIdx)}
                         onPointerEnter={() => onWordEnter(wordIdx)}

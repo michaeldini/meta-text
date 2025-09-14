@@ -7,9 +7,7 @@ import {
     Heading,
     Input,
     Button,
-    AlertRoot,
-    AlertContent,
-    AlertTitle,
+    Text,
 } from '@styles';
 
 interface AuthFormProps {
@@ -58,11 +56,9 @@ const AuthForm = ({ type, onSubmit, error, loading, redirectOnSuccess }: AuthFor
                     required
                 />
                 {(formError || error) && (
-                    <AlertRoot>
-                        <AlertContent>
-                            <AlertTitle>{formError || error}</AlertTitle>
-                        </AlertContent>
-                    </AlertRoot>
+                    <Box>
+                        <Text>{formError || error}</Text>
+                    </Box>
                 )}
                 <Button type="submit" tone="primary" disabled={loading} css={{ width: '100%' }}>
                     {loading ? (type === 'login' ? 'Logging in...' : 'Registering...') : type === 'login' ? 'Login' : 'Register'}

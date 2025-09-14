@@ -3,50 +3,9 @@ import { HiArrowDownTray } from 'react-icons/hi2';
 // This keeps the parent form lean and makes the picker independently testable.
 import * as React from 'react';
 import { useRef, useCallback } from 'react';
-import { styled, Stack, Box, Text } from '@styles';
+import { Dropzone, Box, Text } from '@styles';
 import UploadFileStatusList, { UploadStatus } from './UploadFileStatusList';
 
-// Use shared primitives
-const Column = styled(Stack, { maxWidth: '320px' });
-
-const Dropzone = styled(Box, {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '6px',
-    padding: '18px',
-    borderRadius: 8,
-    border: '1px dashed $colors$border',
-    background: 'transparent',
-    cursor: 'pointer',
-    outline: 'none',
-    transition: 'box-shadow 120ms ease, border-color 120ms ease',
-    '&:hover': {
-        boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
-    },
-    '&:focus-visible': {
-        boxShadow: '0 0 0 3px hsla(200,100%,50%,0.08)',
-    },
-    variants: {
-        $disabled: {
-            true: { opacity: 0.6, cursor: 'not-allowed' },
-            false: {},
-        },
-    },
-});
-
-const PrimaryText = styled(Text, {
-    fontSize: '0.98rem',
-    fontWeight: 600,
-    color: '$colors$tooltipText',
-});
-
-const SecondaryText = styled(Text, {
-    fontSize: '0.85rem',
-    color: '$colors$subtle',
-    maxWidth: '320px',
-});
 
 export interface SourceDocFilePickerProps {
     files: File[];
@@ -105,7 +64,7 @@ export function SourceDocFilePicker({
     };
 
     return (
-        <Column>
+        <Box css={{ maxWidth: '320px' }}>
             <input
                 ref={inputRef}
                 data-testid="file-input"
@@ -129,12 +88,12 @@ export function SourceDocFilePicker({
                 $disabled={disabled}
             >
                 <HiArrowDownTray size={36} />
-                <PrimaryText aria-live="polite">{selectedCountLabel}</PrimaryText>
-                <SecondaryText aria-live="polite">{selectedFilesDetail}</SecondaryText>
+                <Text tone="subtle" aria-live="polite">{selectedCountLabel}</Text>
+                <Text tone="subtle" aria-live="polite">{selectedFilesDetail}</Text>
             </Dropzone>
 
             <UploadFileStatusList files={files} statuses={uploadStatuses} />
-        </Column>
+        </Box>
     );
 }
 

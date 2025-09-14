@@ -18,7 +18,7 @@ export const {
             primary: '#6ea7f7ff',
             heading: '$primary',
             border: 'gainsboro',
-            subtle: 'lightgray',
+            subtle: '#888',
             dangerBg: '#e53e3e',
             dangerText: '#f6b0b0ff',
             tooltipBg: '#111',
@@ -96,6 +96,7 @@ export const Flex = styled('div', {
                 flex: 1,
                 minWidth: 0
             },
+            noWrap: { flexWrap: 'nowrap' },
         },
     },
 });
@@ -137,6 +138,12 @@ export const Text = styled('div', {
             default: {
                 fontSize: '1rem',
                 color: '$colors$text',
+            },
+            subtle: {
+                color: '$colors$subtle',
+            },
+            danger: {
+                color: '$colors$dangerText',
             },
         },
     },
@@ -221,7 +228,9 @@ export const Link = styled('a', {
     '&:hover': { textDecoration: 'underline' },
 });
 
+// --------------------------------------------------------------
 // Simple wrap container for tag lists and chips
+// --------------------------------------------------------------
 export const Wrap = styled('div', {
     display: 'flex',
     flexWrap: 'wrap',
@@ -327,3 +336,89 @@ export const Th = styled('th', {
 export const TBody = styled('tbody', {
     background: 'transparent',
 });
+
+// --------------------------------------------------------------
+// Dropzone for file uploads
+// --------------------------------------------------------------
+export const Dropzone = styled(Box, {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '6px',
+    padding: '18px',
+    borderRadius: 8,
+    border: '1px dashed $colors$border',
+    background: 'transparent',
+    cursor: 'pointer',
+    outline: 'none',
+    transition: 'box-shadow 120ms ease, border-color 120ms ease',
+    '&:hover': {
+        boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+    },
+    '&:focus-visible': {
+        boxShadow: '0 0 0 3px hsla(200,100%,50%,0.08)',
+    },
+    variants: {
+        $disabled: {
+            true: { opacity: 0.6, cursor: 'not-allowed' },
+            false: {},
+        },
+    },
+});
+
+
+// --------------------------------------------------------------
+// Sticky container for chunk tools container
+// --------------------------------------------------------------
+export const StickyContainer = styled('div', {
+    position: 'sticky',
+    top: 24,
+    maxWidth: '40%',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '$3',
+    background: 'transparent',
+});
+
+// --------------------------------------------------------------
+// Select element
+// --------------------------------------------------------------
+
+export const SelectEl = styled('select', {
+    color: '$colors$text',
+    maxWidth: '320px',
+    padding: '8px 36px 8px 10px',
+    borderRadius: 6,
+    border: '1px solid $colors$border',
+    fontSize: '1rem',
+    fontFamily: '$fonts$body',
+});
+
+
+// --------------------------------------------------------------
+// Button group container
+// --------------------------------------------------------------
+
+export const PanelContainer = styled('div', {
+    position: 'fixed',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: '100vw',
+    background: 'black',
+    boxShadow: '0 -2px 8px rgba(0,0,0,0.04)',
+    minHeight: '48px',
+    color: 'white',
+});
+
+export const ButtonGroup = styled('div', {
+    display: 'flex',
+    justifyContent: 'stretch',
+    alignItems: 'center',
+    gap: 0,
+    width: '100%',
+    padding: '$2',
+});
+
+

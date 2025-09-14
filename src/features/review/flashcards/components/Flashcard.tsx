@@ -1,21 +1,10 @@
 
 // Flashcard component with header, text, and footer. Header toggles visibility of text/footer.
 import React, { useState } from 'react';
-import { styled, Box, Heading, Text } from '@styles';
+import { Box, Heading, Text } from '@styles';
 import { HiBars3, HiQuestionMarkCircle } from 'react-icons/hi2';
 import { SimpleDrawer, TooltipButton } from '@components/ui';
 import * as Collapsible from '@radix-ui/react-collapsible';
-
-const FlashcardContent = styled('div', {
-    flex: 1,
-    minHeight: 60,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    gap: 6,
-    transition: 'opacity 0.2s',
-});
 
 export interface FlashcardProps {
     word: string;

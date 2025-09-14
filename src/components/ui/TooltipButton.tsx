@@ -24,6 +24,7 @@ const TooltipContent = styled(Tooltip.Content, {
     fontSize: '1.1rem',
     boxShadow: '0 6px 18px rgba(0,0,0,0.18)',
     animation: `${tooltipFade} 160ms ease`,
+    zIndex: 1000,
 });
 
 export interface TooltipButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'color' | 'size'> {

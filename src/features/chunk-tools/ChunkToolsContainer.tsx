@@ -2,7 +2,7 @@
 // Sticky inside StyledChunk, scrolls with user and stops at end
 
 import React from 'react';
-import { Stack, styled } from '@styles';
+import { Stack, StickyContainer } from '@styles';
 import type { ChunkType } from '@mtypes/documents';
 
 // Stationary Tools
@@ -26,16 +26,6 @@ import { useChunkToolsStore } from '@store/chunkToolsStore';
 
 // Types
 import { uiPreferences } from '@mtypes/user';
-
-const StickyContainer = styled('div', {
-    position: 'sticky',
-    top: 24,
-    maxWidth: '40%',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '$3',
-    background: 'transparent',
-});
 
 function renderStationaryTools(chunk: ChunkType, asRow: boolean, uiPreferences?: uiPreferences) {
     return (

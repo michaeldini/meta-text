@@ -15,7 +15,7 @@ function SourceDocUploadForm(): React.ReactElement {
     return (
         <Box>
             <Heading>Upload</Heading>
-            <ErrorAlert message={"Test error message"} title="Upload failed" data-testid="upload-error" />
+            <ErrorAlert message={error} title="Upload failed" data-testid="upload-error" />
             <form onSubmit={handleSubmit} aria-busy={isPending}>
                 <Stack>
                     <SourceDocFilePicker

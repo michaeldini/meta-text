@@ -5,32 +5,9 @@
  */
 
 import React from 'react';
-import { styled } from '@styles';
+import { styled, PanelContainer, ButtonGroup } from '@styles';
 import TooltipButton from '@components/ui/TooltipButton';
 import { useChunkToolsPanel } from './useChunkToolsPanel';
-
-const PanelContainer = styled('div', {
-    position: 'fixed',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    width: '100vw',
-    background: 'black',
-    boxShadow: '0 -2px 8px rgba(0,0,0,0.04)',
-    minHeight: '48px',
-    color: 'white',
-});
-
-const ButtonGroup = styled('div', {
-    display: 'flex',
-    justifyContent: 'stretch',
-    alignItems: 'center',
-    gap: 0,
-    width: '100%',
-    padding: '$2',
-});
-
-
 
 
 /**
