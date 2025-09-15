@@ -23,9 +23,6 @@ interface ImageToolProps {
 export function ImageTool(props: ImageToolProps) {
     const { chunk, isVisible } = props;
 
-    // The new generation flow uses a contained dialog component (GenerateImageDialog)
-    // which implements a react-query mutation and invalidates the `metatextDetail` key
-    // so the page refreshes after generation completes.
     if (!isVisible) return null;
     return (
         <>
@@ -46,17 +43,8 @@ export function ImageTool(props: ImageToolProps) {
 }
 
 
-// New simplified image viewing component
-type ImageViewerProps = {
-    chunk: ChunkType;
-};
-
-
-const ImageViewer: React.FC<ImageViewerProps> = ({ chunk }) => {
-    // Assume chunk.images is an array of objects with a file location property (e.g., { file: string })
+function ImageViewer({ chunk }: { chunk: ChunkType }) {
     const images = Array.isArray(chunk.images) ? chunk.images : [];
-    // Ensure image src is correct for Vite public folder
-    // Always prepend /generated_images/ to image filenames
     const imageFiles = images.map((img: AiImage) => {
         const file = typeof img === 'string' ? img : img.path || '';
         return `/generated_images/${file.replace(/^.*[\\\/]/, '')}`;
