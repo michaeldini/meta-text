@@ -9,7 +9,7 @@ import { Box, Text, Button } from '@styles';
 import { TooltipButton } from '@components/ui/TooltipButton';
 import { useRewriteTool } from './hooks/useRewriteTool';
 import type { ChunkType } from '@mtypes/documents';
-import { SimpleDrawer, EmptyState } from '@components/ui';
+import { SimpleDialog, EmptyState } from '@components/ui';
 import { Select } from '@components/ui/select';
 
 
@@ -50,7 +50,7 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
     if (!isVisible) return null;
     return (
         <Box>
-            <SimpleDrawer
+            <SimpleDialog
                 title="Generate Rewrite"
                 triggerButton={<TooltipButton
                     label="Rewrite"
@@ -88,7 +88,7 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
                         </Box>
                     )}
                 </Box>
-            </SimpleDrawer>
+            </SimpleDialog>
             {/* Select to browse previous rewrites */}
             {hasRewrites && (
                 <Box>

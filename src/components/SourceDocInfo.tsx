@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Text, Stack, Flex, Textarea } from '@styles';
 import { Input } from '@styles';
-import { SimpleDrawer } from '@components/ui';
+import { SimpleDialog } from '@components/ui';
 
 import { HiOutlineSparkles } from 'react-icons/hi2';
 
@@ -89,7 +89,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
 
 export function SourceDocInfoDisplay({ sourceDocumentId }: SourceDocInfoProps) {
     return (
-        <SimpleDrawer
+        <SimpleDialog
             title="Source Document Info"
             triggerButton={<TooltipButton
                 label="Info"
@@ -97,7 +97,7 @@ export function SourceDocInfoDisplay({ sourceDocumentId }: SourceDocInfoProps) {
             />}
         >
             <SourceDocInfo sourceDocumentId={sourceDocumentId} />
-        </SimpleDrawer>
+        </SimpleDialog>
     );
 }
 

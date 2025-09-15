@@ -4,7 +4,7 @@
 
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import { Box, Flex } from '@styles';
-import { ControlledDrawer } from '@components/ui';
+import { ControlledDialog } from '@components/ui';
 
 import InteractiveText from './InteractiveText';
 import WordsToolbar from './WordsToolbar';
@@ -83,7 +83,7 @@ const ChunkWords = memo(function ChunkWords({
                 </Box>
             </Flex>
 
-            <ControlledDrawer
+            <ControlledDialog
                 open={drawerOpen}
                 onClose={closeDrawer}
                 title="Word Tools"
@@ -96,7 +96,7 @@ const ChunkWords = memo(function ChunkWords({
                         chunk={chunk}
                     />
                 )}
-            </ControlledDrawer>
+            </ControlledDialog>
         </Box>
     );
 });

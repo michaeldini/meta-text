@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Box, Heading, Text } from '@styles';
 import { HiBars3, HiQuestionMarkCircle } from 'react-icons/hi2';
-import { SimpleDrawer, TooltipButton } from '@components/ui';
+import { SimpleDialog, TooltipButton } from '@components/ui';
 import * as Collapsible from '@radix-ui/react-collapsible';
 
 export interface FlashcardProps {
@@ -27,7 +27,7 @@ export function Flashcard(props: FlashcardProps) {
                     <Text>{definition}</Text>
                     <Box css={{ borderTop: '1px solid #eee', marginTop: 12 }}>
                         {/* Definition In Context Drawer */}
-                        <SimpleDrawer
+                        <SimpleDialog
                             triggerButton={
                                 <TooltipButton
                                     label=""
@@ -42,10 +42,10 @@ export function Flashcard(props: FlashcardProps) {
                                 <Text css={{ fontWeight: 'bold' }}>Word: {word}</Text>
                                 <Text css={{ marginTop: 8 }}>{definition_in_context}</Text>
                             </Box>
-                        </SimpleDrawer>
+                        </SimpleDialog>
 
                         {/* Context Drawer */}
-                        <SimpleDrawer
+                        <SimpleDialog
                             triggerButton={
                                 <TooltipButton
                                     label=""
@@ -57,7 +57,7 @@ export function Flashcard(props: FlashcardProps) {
                             title="Context"
                         >
                             <Text>{context}</Text>
-                        </SimpleDrawer>
+                        </SimpleDialog>
                     </Box>
                 </Collapsible.Content>
             </Collapsible.Root>
