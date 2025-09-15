@@ -37,13 +37,13 @@ const closeButtonStyle: React.CSSProperties = {
 };
 
 
-export interface SimpleDrawerProps {
+export interface SimpleDialogProps {
     triggerButton: React.ReactNode
     title: string
     children: React.ReactNode
 }
 
-export function SimpleDrawer({ triggerButton, title, children }: SimpleDrawerProps) {
+export function SimpleDialog({ triggerButton, title, children }: SimpleDialogProps) {
     return (
         <Dialog.Root>
             <Dialog.Trigger asChild>
@@ -65,14 +65,14 @@ export function SimpleDrawer({ triggerButton, title, children }: SimpleDrawerPro
     );
 }
 
-export interface ControlledDrawerProps {
+export interface ControlledDialogProps {
     open: boolean
     onClose: () => void
     title: string
     children: React.ReactNode
 }
 
-export function ControlledDrawer({ open, onClose, title, children }: ControlledDrawerProps) {
+export function ControlledDialog({ open, onClose, title, children }: ControlledDialogProps) {
     // placement/size props intentionally ignored — unstyled dialog
     return (
         <Dialog.Root open={open} onOpenChange={val => { if (!val) onClose(); }} >

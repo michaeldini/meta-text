@@ -103,7 +103,7 @@ import { Box, Text, Stack, TagRoot as Badge, Button, Heading } from '@styles';
 import TooltipButton from '@components/ui/TooltipButton';
 import { getShortcutsByCategory, formatShortcut, type KeyboardShortcut } from '@utils/keyboardShortcuts';
 import { HiQuestionMarkCircle } from 'react-icons/hi2';
-import { SimpleDrawer } from '@components/ui/drawer';
+import { SimpleDialog } from '@components/ui/dialog';
 // 1. ITEM ------------------------------------------------------------------
 export interface KeyboardShortcutItemProps {
     shortcut: KeyboardShortcut;
@@ -168,7 +168,7 @@ export function KeyboardShortcutsDisplay({ categories }: KeyboardShortcutsDispla
 
     return (
         <>
-            <SimpleDrawer
+            <SimpleDialog
                 triggerButton={
                     <TooltipButton
                         aria-label="Open help"
@@ -184,7 +184,7 @@ export function KeyboardShortcutsDisplay({ categories }: KeyboardShortcutsDispla
                     <Text css={{ fontSize: '0.95rem', color: '$colors$subtle' }}>Use these shortcuts to speed up your workflow.</Text>
                     <KeyboardShortcutList categories={categories} align="flex-start" />
                 </Stack>
-            </SimpleDrawer>
+            </SimpleDialog>
         </>
     );
 }
