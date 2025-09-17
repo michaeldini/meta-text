@@ -1,6 +1,7 @@
 // Header component for Metatext detail page displaying title and review button
-import React from 'react';
+import React, { useState } from 'react';
 import { HiArrowDownTray, HiBookmark, HiHashtag, HiOutlineStar, HiStar } from 'react-icons/hi2';
+import { HiViewfinderCircle } from 'react-icons/hi2';
 import * as Toolbar from '@radix-ui/react-toolbar';
 import { Stack, Heading } from '@styles';
 import { styled } from '../../../stitches.config';
@@ -27,10 +28,21 @@ const StyledToolbarRoot = styled(Toolbar.Root, {
     borderRadius: '6px',
     flexWrap: 'wrap',
     boxShadow: '5px 10px 3px 0px rgba(0, 0, 0, 0.1)',
-    position: 'sticky',
-    top: 0,
     zIndex: 10,
-
+    variants: {
+        sticky: {
+            true: {
+                position: 'sticky',
+                top: 0,
+            },
+            false: {
+                position: 'static',
+            }
+        }
+    },
+    defaultVariants: {
+        sticky: true,
+    }
 });
 
 const StyledSeparator = styled(Toolbar.Separator, {
@@ -63,6 +75,9 @@ export function MetatextHeader({
     displayChunksCount,
     isSearching = false,
 }: MetatextHeaderProps) {
+    // Local state for sticky toggle
+    const [isSticky, setIsSticky] = useState(true);
+
     // Self-contained state management via hooks from MetatextHeaderControls
     const { data: userConfig } = useUserConfig();
     const updateUserConfig = useUpdateUserConfig();
@@ -93,6 +108,7 @@ export function MetatextHeader({
         <StyledToolbarRoot
             orientation="horizontal"
             data-testid="metatext-header"
+            sticky={isSticky}
         >
             <Toolbar.Button asChild>
                 <TooltipButton
@@ -177,6 +193,18 @@ export function MetatextHeader({
                 displayChunksCount={displayChunksCount}
                 isSearching={isSearching}
             />
+            <StyledSeparator />
+            <Toolbar.Button asChild>
+                <TooltipButton
+                    label=""
+                    tooltip={isSticky ? "Make toolbar non-sticky" : "Make toolbar sticky"}
+                    icon={<HiViewfinderCircle />}
+                    onClick={() => setIsSticky(!isSticky)}
+                    tone={isSticky ? 'primary' : 'default'}
+                    role="switch"
+                    aria-checked={isSticky}
+                />
+            </Toolbar.Button>
         </StyledToolbarRoot>
     );
 }

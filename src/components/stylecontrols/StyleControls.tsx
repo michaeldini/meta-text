@@ -86,7 +86,7 @@ export function StyleControls({
                     value={lineHeight}
                     min={1.0}
                     max={2.5}
-                    step={0.05}
+                    step={0.1}
                     onChange={(val: number) => updateUserConfig.mutate({ lineHeight: val })}
                 />
             )}

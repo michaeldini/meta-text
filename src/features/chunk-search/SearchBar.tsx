@@ -37,7 +37,7 @@ export function SearchBar({
         </Button>
     ) : undefined;
     return (
-        <Box noPad css={{ backgroundColor: 'transparent', borderRadius: 6, marginRight: 12, border: '1px solid $border', display: 'flex', alignItems: 'center', gap: 4, paddingLeft: 8, paddingRight: 4, height: 32, minWidth: 200 }}>
+        <Box noPad css={{ backgroundColor: 'transparent', borderRadius: 6, marginRight: 12, border: '1px solid $border', display: 'flex', alignItems: 'center' }}>
             <HiMagnifyingGlass />
             <Input
                 ref={inputRef}

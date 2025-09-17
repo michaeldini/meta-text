@@ -97,7 +97,7 @@ function MetatextDetailPage(): ReactElement | null {
             {metatext && (
                 <Stack
                     data-testid="metatext-detail-content"
-                    css={{ animationName: 'fade-in', animationDuration: '160ms', gap: 24 }}
+                    css={{ animationName: 'fade-in', animationDuration: '160ms', gap: 6 }}
                 >
                     <Heading >metatext: {metatext.title}</Heading>
                     <MetatextHeader
