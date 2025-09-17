@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 // Uses a stack layout for the main content
 import type { ReactElement } from 'react';
-import { Stack, Box } from '@styles';
+import { Stack, Box, Heading } from '@styles';
 import { ErrorAlert } from '@components/ErrorAlert';
 
 // Imports for components
@@ -99,10 +99,14 @@ function MetatextDetailPage(): ReactElement | null {
                     data-testid="metatext-detail-content"
                     css={{ animationName: 'fade-in', animationDuration: '160ms', gap: 24 }}
                 >
+                    <Heading >metatext: {metatext.title}</Heading>
                     <MetatextHeader
                         title={metatext.title}
                         metatextId={id}
                         sourceDocumentId={metatext?.source_document_id}
+                        totalFilteredChunks={totalFilteredChunks}
+                        displayChunksCount={displayChunks.length}
+                        isSearching={isSearching}
                     />
 
                     <ChunkDisplayContainer
@@ -113,10 +117,9 @@ function MetatextDetailPage(): ReactElement | null {
                         totalPages={totalPages}
                         onPageChange={(page) => setCurrentPage(page)}
                         startIndex={startIndex}
-                        isSearching={isSearching}
                     />
 
-                    <ChunkToolsPanel />
+                    {/* <ChunkToolsPanel /> */}
 
                 </Stack>
             )}

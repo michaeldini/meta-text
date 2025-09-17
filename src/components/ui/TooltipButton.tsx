@@ -9,7 +9,7 @@ const tooltipFade = keyframes({
 });
 
 const TooltipContent = styled(Tooltip.Content, {
-    background: '$colors$tooltipBg',
+    background: '$colors$altBackground',
     color: '$colors$primary',
     padding: '8px 10px',
     border: '2px solid $colors$primary',

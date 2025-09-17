@@ -19,8 +19,7 @@ export function FontFamilySelect(props: FontFamilySelectProps) {
             onChange={onChange}
             placeholder="Font"
             disabled={disabled}
-            width="200px"
-            label="Font"
+        // label="Font"
         />
     );
 }

@@ -37,14 +37,14 @@ export function SearchBar({
         </Button>
     ) : undefined;
     return (
-        <Box >
+        <Box noPad css={{ backgroundColor: 'transparent', borderRadius: 6, marginRight: 12, border: '1px solid $border', display: 'flex', alignItems: 'center', gap: 4, paddingLeft: 8, paddingRight: 4, height: 32, minWidth: 200 }}>
             <HiMagnifyingGlass />
             <Input
                 ref={inputRef}
                 placeholder={placeholder}
                 value={query}
                 onChange={handleQueryChange}
-
+                css={{ padding: '0', color: '$altText' }}
             />
             {endElement}
         </Box>

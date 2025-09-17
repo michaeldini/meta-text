@@ -14,16 +14,15 @@ export const {
     theme: {
         colors: {
             background: '#424244ff',
+            altBackground: 'black',
             text: '#b7b7b8ff',
+            altText: 'white',
             primary: '#6ea7f7ff',
             heading: '$primary',
             border: 'gainsboro',
             subtle: '#888',
             dangerBg: '#e53e3e',
             dangerText: '#f6b0b0ff',
-            tooltipBg: '#111',
-            tooltipText: 'white',
-            buttonText: 'white',
             buttonHoverBg: 'rgba(255,255,255,0.1)',
         },
         fonts: {
@@ -180,7 +179,7 @@ export const Button = styled('button', {
     padding: '6px 8px',
     cursor: 'pointer',
     fontSize: '1rem',
-    color: '$colors$buttonText',
+    color: '$colors$altText',
     fontFamily: '$fonts$body',
     '&:hover': { background: '$buttonHoverBg' },
     '&:disabled': {
@@ -213,7 +212,7 @@ export const Input = styled('input', {
     fontSize: '1rem',
     background: 'transparent',
     color: 'inherit',
-    '::placeholder': { color: '$colors$subtle' },
+    '&::placeholder': { color: '$colors$alText' },
 });
 
 export const Textarea = styled('textarea', {
@@ -396,12 +395,13 @@ export const Dropzone = styled(Box, {
 // --------------------------------------------------------------
 export const StickyContainer = styled('div', {
     position: 'sticky',
-    top: 24,
+    top: 80,
     maxWidth: '40%',
     display: 'flex',
     flexDirection: 'column',
     gap: '$3',
     background: 'transparent',
+    zIndex: 5, // Lower than MetatextHeader but above content
 });
 
 // --------------------------------------------------------------

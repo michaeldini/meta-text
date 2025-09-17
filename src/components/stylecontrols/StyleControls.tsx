@@ -46,7 +46,7 @@ interface StyleNumberInputProps {
 // DRY: Common number input for style controls
 function StyleNumberInput({ label, value, min, max, step, onChange, disabled }: StyleNumberInputProps) {
     return (
-        <Box>
+        <Box css={{ borderRadius: 8, padding: 1, gap: 4, display: 'flex', alignItems: 'center' }}>
             <Text>{label}</Text>
             <Input
                 type="number"
@@ -81,7 +81,7 @@ export function StyleControls({
                 <>
                     {showTextSize && (
                         <StyleNumberInput
-                            label="Text Size"
+                            label="Size"
                             value={textSizePx}
                             min={8}
                             max={72}
@@ -91,7 +91,7 @@ export function StyleControls({
                     )}
                     {showLineHeight && (
                         <StyleNumberInput
-                            label="Line Height"
+                            label="Height"
                             value={lineHeight}
                             min={1.0}
                             max={2.5}
@@ -101,7 +101,7 @@ export function StyleControls({
                     )}
                     {showPaddingX && (
                         <StyleNumberInput
-                            label="Padding X"
+                            label="Gap"
                             value={paddingX}
                             min={.1}
                             max={2}
