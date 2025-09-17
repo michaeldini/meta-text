@@ -14,7 +14,7 @@ import { useUIPreferences } from '@hooks/useUIPreferences';
 import SourceDoc from './components/SourceDoc';
 import { useValidatedRouteId } from '@hooks/useValidatedRouteId';
 import { SourceDocInfoDisplay } from '@components/SourceDocInfo';
-import { StyleControls } from '@components/stylecontrols';
+import { StyleControls } from '@components/StyleControls';
 
 function headingText(title: string) {
     return <>

@@ -1,4 +1,4 @@
-export * from './stylecontrols'
+export * from './StyleControls';
 export * from './ui';
 export * from './Boundaries';
 export { default as SourceDocInfo } from './SourceDocInfo';

@@ -1,9 +1,36 @@
 import React from 'react';
 import { css } from '@stitches/react';
 
-import { FontFamilySelect } from '@components/stylecontrols';
+// import { FontFamilySelect } from '@components/stylecontrols';
 import { Box, Text, Input } from '@styles';
 import { useUIPreferences } from '@hooks/useUIPreferences';
+
+
+
+import { Select } from '@components/ui/select';
+import { useFontFamilySelect } from '@hooks/stylecontrols/useFontFamilySelect';
+
+
+interface FontFamilySelectProps {
+    value: string;
+    onChange: (value: string) => void;
+    disabled?: boolean;
+}
+
+function FontFamilySelect(props: FontFamilySelectProps) {
+    const { value, onChange, disabled } = props;
+    const { fontFamilyOptions } = useFontFamilySelect({ value, onChange });
+    return (
+        <Select
+            options={fontFamilyOptions.items}
+            value={value}
+            onChange={onChange}
+            placeholder="Font"
+            disabled={disabled}
+        // label="Font"
+        />
+    );
+}
 
 // Custom CSS for always visible and cleaner spin buttons
 const numberInputStyle = css({
@@ -45,7 +72,7 @@ interface StyleNumberInputProps {
 // DRY: Common number input for style controls
 function StyleNumberInput({ label, value, min, max, step, onChange, disabled }: StyleNumberInputProps) {
     return (
-        <Box css={{ borderRadius: 8, padding: 2, gap: 4, display: 'flex', alignItems: 'center', marginRight: 8, backgroundColor: 'transparent' }}>
+        <Box css={{ padding: 1, display: 'flex', alignItems: 'center', backgroundColor: 'transparent' }}>
             <Text css={{ backgroundColor: 'transparent', color: '$colors$altText' }}>{label}</Text>
             <Input
                 type="number"
