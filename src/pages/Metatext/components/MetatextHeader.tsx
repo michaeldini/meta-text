@@ -1,14 +1,13 @@
 // Header component for Metatext detail page displaying title and review button
 import React, { useState } from 'react';
-import { HiArrowDownTray, HiBookmark, HiHashtag, HiOutlineStar, HiStar } from 'react-icons/hi2';
-import { HiViewfinderCircle } from 'react-icons/hi2';
+import { HiArrowDownTray, HiBookmark, HiHashtag, HiOutlineStar, HiStar, HiViewfinderCircle } from 'react-icons/hi2';
 import * as Toolbar from '@radix-ui/react-toolbar';
-import { styled } from '../../../stitches.config';
-import { KeyboardShortcutsDisplay } from '@components/KeyboardShortcutsDisplay';
-import { StyleControls } from '@components/StyleControls';
-import { SourceDocInfoDisplay } from '@components/SourceDocInfo';
-import { ReviewMetatextButton } from './ReviewMetatextButton';
+import { styled } from '@styles';
+
+import { KeyboardShortcutsDisplay, SourceDocInfoDisplay, StyleControls } from '@components';
 import { TooltipButton } from '@components/ui/TooltipButton';
+
+import { ReviewMetatextButton } from './ReviewMetatextButton';
 import { useUserConfig, useUpdateUserConfig } from '@services/userConfigService';
 import { useDownloadMetatext } from '@pages/Metatext/hooks/useDownloadMetatext';
 import { useBookmark } from '@hooks/useBookmark';

@@ -1,9 +1,10 @@
 export * from './StyleControls';
 export * from './ui';
 export * from './Boundaries';
-export { default as SourceDocInfo } from './SourceDocInfo';
+export { default as SourceDocInfo, SourceDocInfoDisplay } from './SourceDocInfo';
 export { default as GlobalNotifications } from './GlobalNotifications';
 export { TooltipButton } from './ui/TooltipButton';
 export { default as ChunkPosition } from './ChunkPosition';
 export { ErrorAlert } from './ErrorAlert';
 export * from './ui/TooltipButton';
+export * from './KeyboardShortcutsDisplay';
