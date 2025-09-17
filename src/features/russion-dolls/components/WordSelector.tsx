@@ -110,8 +110,7 @@ export function WordSelector({ text, onSelection, highlights }: WordSelectorProp
                             key={i}
                             as="span"
                             css={{
-                                paddingLeft: 0,
-                                paddingRight: 0,
+                                padding: 0,
                                 marginLeft: 0,
                                 marginRight: 0,
                                 cursor: 'pointer',
@@ -130,7 +129,7 @@ export function WordSelector({ text, onSelection, highlights }: WordSelectorProp
                 }
                 // punctuation/whitespace
                 return (
-                    <Box key={i} as="span" css={{ display: 'inline' }}>{tok.value}</Box>
+                    <Box key={i} as="span" css={{ display: 'inline', padding: 0 }}>{tok.value}</Box>
                 );
             })}
         </Text>

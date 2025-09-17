@@ -112,8 +112,6 @@ export function PanelCard({ panel, onToggleView, onMinimize, onClose, onSelectio
                 padding: 16,
                 minWidth: 280,
                 maxWidth: 480,
-                background: '#1f2937',
-                color: '#f3f4f6',
                 boxShadow: '0 10px 15px rgba(0,0,0,0.1)',
                 ...(leftBorderProps as any || {}),
             }}
