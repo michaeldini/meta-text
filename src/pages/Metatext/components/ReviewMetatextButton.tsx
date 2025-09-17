@@ -17,7 +17,6 @@ export function ReviewMetatextButton(): React.ReactElement | null {
 
     return (
         <Button
-            size="sm"
             tone="default"
             title="Review this metatext"
             onClick={onClick}

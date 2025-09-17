@@ -1,20 +1,31 @@
 /**
  * useChunkDisplay - Unified hook for chunk search, filtering, pagination, and display
  * 
+ * @deprecated This hook does too much and violates Single Responsibility Principle.
+ * Use useProcessedChunks + usePaginatedChunks instead for better separation of concerns.
+ * 
  * Combines search filtering, favorites filtering, and pagination into a single
  * streamlined interface. Integrates search logic directly instead of relying
  * on a separate search store for better cohesion and simpler architecture.
  */
 
-import { useEffect, useMemo, useState } from 'react';
-import { useDisplayChunksStore } from '@features/chunk/hooks/useDisplayChunksStore';
+import { useEffect, useMemo, useCallback } from 'react';
+import { useChunkFiltersStore } from '@features/chunk/hooks/useChunkFiltersStore';
 import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
 import { ChunkType } from '@mtypes/documents';
-import log from '@utils/logger';
+import { useChunkSearch } from '@features/chunk/hooks/useChunkSearch';
+import { useChunkPagination } from '@features/chunk/hooks/useChunkPagination';
+import { useChunkFilters } from '@features/chunk/hooks/useChunkFilters';
 
 interface UseChunkDisplayOptions {
     chunks: ChunkType[] | undefined;
     chunksPerPage?: number;
+    // Optional explicit inputs to avoid implicit global store reads
+    query?: string;
+    showOnlyFavorites?: boolean;
+    setShowOnlyFavorites?: (show: boolean) => void;
+    // Behavior controls
+    minQueryLength?: number;
 }
 
 interface UseChunkDisplayResult {
@@ -30,6 +41,10 @@ interface UseChunkDisplayResult {
     startIndex: number;
     endIndex: number;
 
+    // Navigation
+    goToChunkById: (chunkId: number) => void;
+    scrollToChunk: (chunkId: number) => void;
+
     // Filtering
     showOnlyFavorites: boolean;
     setShowOnlyFavorites: (show: boolean) => void;
@@ -37,124 +52,69 @@ interface UseChunkDisplayResult {
 }
 export function useChunkDisplay({
     chunks,
-    chunksPerPage = 5
+    chunksPerPage = 5,
+    // new optional params with defaults
+    query,
+    showOnlyFavorites: showOnlyFavoritesOpt,
+    setShowOnlyFavorites: setShowOnlyFavoritesOpt,
+    minQueryLength = 2
 }: UseChunkDisplayOptions): UseChunkDisplayResult {
 
-    // Get search state from the search store
-    const { query } = useSearchStore();
+    // Get search state from the search store and use the dedicated search hook
+    // Prefer explicit inputs; fall back to stores for backwards compatibility
+    const { query: queryFromStore } = useSearchStore();
+    const queryUsed = typeof query === 'string' ? query : queryFromStore;
+    const { results: searchResults, isSearching } = useChunkSearch(chunks, queryUsed);
 
-    // Local search results state
-    const [searchResults, setSearchResults] = useState<ChunkType[]>([]);
-    // TODO why is this unused
-    const [isSearching, setIsSearching] = useState(false);
+    // Get favorites toggle from the display store if not explicitly provided
+    const showOnlyFavoritesFromStore = useChunkFiltersStore((s) => s.showOnlyFavorites);
+    const setShowOnlyFavoritesFromStore = useChunkFiltersStore((s) => s.setShowOnlyFavorites);
+    const showOnlyFavorites = typeof showOnlyFavoritesOpt === 'boolean' ? showOnlyFavoritesOpt : showOnlyFavoritesFromStore;
+    const setShowOnlyFavorites = setShowOnlyFavoritesOpt ?? setShowOnlyFavoritesFromStore;
 
-    // Get display state (pagination + favorites)
-    const {
-        currentPage,
-        setCurrentPage,
-        setChunksPerPage,
-        showOnlyFavorites,
-        setShowOnlyFavorites,
-        chunksPerPage: storeChunksPerPage
-    } = useDisplayChunksStore();
+    // Search is handled by `useChunkSearch` (debounced) above.
 
-    // Set chunks per page on mount/change
+    // Combine search and filters. Decision to use search is configurable via `minQueryLength`.
+    const baseList = useMemo(() => (queryUsed && queryUsed.length >= minQueryLength) ? searchResults : (chunks ?? []), [queryUsed, minQueryLength, searchResults, chunks]);
+    const { filtered } = useChunkFilters(baseList, showOnlyFavorites);
+
+    // Pagination (fully local): use the chunksPerPage passed into this hook as the initial page size
+    const pager = useChunkPagination(filtered, { initialPage: 1, initialChunksPerPage: chunksPerPage });
+
+    // When the filtered set changes (or page size changes), ensure current page is valid.
     useEffect(() => {
-        setChunksPerPage(chunksPerPage);
-    }, [setChunksPerPage, chunksPerPage]);
-
-    // Execute search with debouncing
-    useEffect(() => {
-        if (!chunks || chunks.length === 0) {
-            setSearchResults([]);
-            setIsSearching(false);
-            return;
+        // If the current page is now out of range, clamp it.
+        const totalPages = pager.totalPages || 1;
+        if (pager.currentPage > totalPages) {
+            pager.setCurrentPage(Math.max(1, totalPages));
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pager.totalFilteredChunks, pager.chunksPerPage]);
 
-        // Clear search if query is too short
-        if (query.length < 2) {
-            setSearchResults([]);
-            setIsSearching(false);
-            return;
-        }
-
-        // Mark searching as active immediately (so UI can show spinner during debounce)
-        setIsSearching(true);
-
-        // Debounce search execution
-        const timeoutId = setTimeout(() => {
-            const searchTermLower = query.toLowerCase();
-            const matchingChunks: ChunkType[] = [];
-
-            log.info(`Searching for "${query}" in ${chunks.length} chunks`);
-
-            for (const chunk of chunks) {
-                const chunkText = chunk.text || '';
-                const chunkTextLower = chunkText.toLowerCase();
-                if (chunkTextLower.includes(searchTermLower)) {
-                    matchingChunks.push(chunk);
-                }
-            }
-
-            setSearchResults(matchingChunks);
-            setIsSearching(false);
-            log.info(`Search completed: ${matchingChunks.length} chunks found`);
-        }, 300); // 300ms debounce
-
-        return () => {
-            clearTimeout(timeoutId);
-            // Clear searching state when the pending debounce is cancelled
-            setIsSearching(false);
-        };
-    }, [query, chunks]);
-
-    // Calculate filtered chunks based on search and favorites
-    const filteredChunks = useMemo((): ChunkType[] => {
-        if (!chunks || chunks.length === 0) return [];
-
-        // Start with search results if searching, otherwise all chunks
-        let filtered = query.length >= 2 ? searchResults : chunks;
-
-        // Apply favorites filter if enabled
-        if (showOnlyFavorites) {
-            filtered = filtered.filter((chunk: ChunkType) => !!chunk.favorited_by_user_id);
-        }
-
-        return filtered;
-    }, [chunks, query, searchResults, showOnlyFavorites]);
-
-    // Calculate pagination values
-    const totalFilteredChunks = filteredChunks.length;
-    const totalPages = Math.ceil(totalFilteredChunks / storeChunksPerPage);
-    const startIndex = (currentPage - 1) * storeChunksPerPage;
-    const endIndex = startIndex + storeChunksPerPage;
-    const displayChunks = filteredChunks.slice(startIndex, endIndex);    // Reset to page 1 if current page is beyond available pages
-
-    useEffect(() => {
-        if (currentPage > totalPages && totalPages > 0) {
-            setCurrentPage(1);
-        }
-    }, [filteredChunks, totalPages, currentPage, setCurrentPage]);
-
-    useEffect(() => {
-        log.info(`Filtered Chunks: ${filteredChunks.length}`);
-        log.info(`Total Pages: ${totalPages}`);
-        log.info(`Start Index: ${startIndex}, End Index: ${endIndex}`);
-        log.info(`Current Page: ${currentPage}`);
-    }, [filteredChunks, totalPages, startIndex, endIndex, currentPage]);
+    // Provide a safe clamped setter so callers don't need to worry about invalid pages.
+    const setCurrentPageSafe = useCallback((page: number) => {
+        const totalPages = pager.totalPages || 1;
+        const clamped = Math.max(1, Math.min(page, totalPages));
+        pager.setCurrentPage(clamped);
+    }, [pager.totalPages, pager.setCurrentPage]);
 
     return {
         // Display data
-        displayChunks,
-        totalFilteredChunks,
-        chunksPerPage: storeChunksPerPage,
+        displayChunks: pager.displayChunks,
+        totalFilteredChunks: pager.totalFilteredChunks,
+        chunksPerPage: pager.chunksPerPage,
 
         // Pagination
-        currentPage,
-        totalPages,
-        setCurrentPage,
-        startIndex,
-        endIndex,
+        currentPage: pager.currentPage,
+        totalPages: pager.totalPages,
+        // Expose the safe setter to consumers
+        setCurrentPage: setCurrentPageSafe,
+        startIndex: pager.startIndex,
+        endIndex: pager.endIndex,
+
+        // Navigation helpers
+        goToChunkById: pager.goToChunkById,
+        scrollToChunk: pager.scrollToChunk,
 
         // Filtering
         showOnlyFavorites,

@@ -3,7 +3,7 @@
 // Provides bookmark state, set, and remove mutation functions
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchBookmark, setBookmark, removeBookmark } from '../services/bookmarksService';
+import { fetchBookmark, setBookmark, removeBookmark } from '@services/bookmarksService';
 
 export function useBookmark(metatextId: number) {
     const queryClient = useQueryClient();

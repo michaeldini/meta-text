@@ -9,25 +9,17 @@ import { Box } from '@styles';
 import { TooltipButton } from '@components/ui/TooltipButton';
 import { useUserConfig, useUpdateUserConfig } from '@services/userConfigService';
 import { useDownloadMetatext } from '@pages/Metatext/hooks/useDownloadMetatext';
-import { useMetatextBookmark } from '@pages/Metatext/hooks/useMetatextBookmark';
+import { useBookmark } from '@hooks/useBookmark';
 import getUiPreferences from '@utils/getUiPreferences';
-import { ChunkType } from '@mtypes/documents';
+import { useChunkFiltersStore } from '@features/chunk/hooks/useChunkFiltersStore';
+import { useChunkNavigationStore } from '@store/chunkNavigationStore';
 
 interface MetatextHeaderControlsProps {
     metatextId: number;
-    // Props for coordination with parent component
-    displayChunks: ChunkType[]; // For bookmark navigation
-    setCurrentPage: (page: number) => void; // For bookmark navigation
-    showOnlyFavorites: boolean; // From parent's chunk display logic
-    setShowOnlyFavorites: (show: boolean) => void; // From parent's chunk display logic
 }
 
 export function MetatextHeaderControls({
     metatextId,
-    displayChunks,
-    setCurrentPage,
-    showOnlyFavorites,
-    setShowOnlyFavorites,
 }: MetatextHeaderControlsProps): React.ReactElement {
     // Self-contained state management via hooks
     const { data: userConfig } = useUserConfig();
@@ -37,13 +29,20 @@ export function MetatextHeaderControls({
     // Download functionality
     const downloadMetatext = useDownloadMetatext(metatextId);
 
-    // Bookmark functionality
-    const {
-        bookmarkedChunkId,
-        goToBookmark,
-        bookmarkLoading,
-    } = useMetatextBookmark(metatextId, displayChunks, 5, setCurrentPage);
-    // TODO passing 5 is not good here.
+    // Favorites state from store
+    const showOnlyFavorites = useChunkFiltersStore((s) => s.showOnlyFavorites);
+    const setShowOnlyFavorites = useChunkFiltersStore((s) => s.setShowOnlyFavorites);
+
+    // Navigation store for bookmark navigation
+    const requestNavigateToChunk = useChunkNavigationStore(state => state.requestNavigateToChunk);
+
+    // Bookmark state (direct)
+    const { bookmarkedChunkId, isLoading: bookmarkLoading } = useBookmark(metatextId);
+    const goToBookmark = () => {
+        if (!bookmarkedChunkId) return;
+        // Use the navigation store to request navigation - this will trigger page change + scroll
+        requestNavigateToChunk(bookmarkedChunkId);
+    };
     return (
         <Box>
             <TooltipButton

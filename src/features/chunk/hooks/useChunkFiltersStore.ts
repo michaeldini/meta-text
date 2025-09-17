@@ -1,12 +1,6 @@
-/**
- * Store for managing chunk display state including pagination and filtering
- * Consolidates all chunk display-related state in one place for better cohesion
- */
-
 import { create } from 'zustand';
 
-interface DisplayChunksState {
-    // Filtering
+interface ChunkFiltersState {
     showOnlyFavorites: boolean;
     setShowOnlyFavorites: (show: boolean) => void;
 
@@ -18,7 +12,7 @@ const initialState = {
     showOnlyFavorites: false,
 };
 
-export const useDisplayChunksStore = create<DisplayChunksState>((set) => ({
+export const useChunkFiltersStore = create<ChunkFiltersState>((set) => ({
     ...initialState,
 
     setShowOnlyFavorites: (show: boolean) => set({ showOnlyFavorites: show }),

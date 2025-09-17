@@ -15,7 +15,8 @@ import { MetatextHeader, ChunkDisplayContainer } from '@pages/Metatext/component
 import { useMetatextDetail } from '@features/documents/useDocumentsData';
 import { useMetatextDetailKeyboard } from './hooks/useMetatextDetailKeyboard';
 
-import { useChunkDisplay } from './hooks/useChunkDisplay';
+import { useProcessedChunks } from './hooks/useProcessedChunks';
+import { usePaginatedChunks } from './hooks/usePaginatedChunks';
 import { useValidatedRouteId } from '@hooks/useValidatedRouteId';
 
 function MetatextDetailPage(): ReactElement | null {
@@ -35,8 +36,19 @@ function MetatextDetailPage(): ReactElement | null {
     const { data: metatext, error } = useMetatextDetail(id);
 
     // =========================
-    // Unified Chunk Display Logic
+    // Unified Chunk Display Logic (Split into focused hooks)
     // =========================
+
+    // Step 1: Process chunks (search + filtering)
+    const {
+        processedChunks,
+        isSearching,
+    } = useProcessedChunks({
+        chunks: metatext?.chunks,
+        minQueryLength: 2,
+    });
+
+    // Step 2: Paginate the processed chunks
     const {
         displayChunks,
         totalFilteredChunks,
@@ -45,12 +57,9 @@ function MetatextDetailPage(): ReactElement | null {
         totalPages,
         setCurrentPage,
         startIndex,
-        showOnlyFavorites,
-        setShowOnlyFavorites,
-        isSearching,
-    } = useChunkDisplay({
-        chunks: metatext?.chunks,
-        chunksPerPage: 5
+    } = usePaginatedChunks({
+        processedChunks,
+        initialChunksPerPage: 5,
     });
 
 
@@ -84,7 +93,6 @@ function MetatextDetailPage(): ReactElement | null {
                 message={error ? (typeof error === 'string' ? error : (error && typeof error === 'object' && 'message' in error ? String((error as { message?: unknown }).message) : 'Something went wrong while fetching this metatext.')) : null}
                 title="Failed to load metatext"
                 data-testid="metatext-detail-error"
-                mb={16}
             />
             {metatext && (
                 <Stack
@@ -95,10 +103,6 @@ function MetatextDetailPage(): ReactElement | null {
                         title={metatext.title}
                         metatextId={id}
                         sourceDocumentId={metatext?.source_document_id}
-                        displayChunks={metatext?.chunks || []}
-                        setCurrentPage={setCurrentPage}
-                        showOnlyFavorites={showOnlyFavorites}
-                        setShowOnlyFavorites={setShowOnlyFavorites}
                     />
 
                     <ChunkDisplayContainer

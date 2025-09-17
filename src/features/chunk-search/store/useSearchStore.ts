@@ -1,10 +1,11 @@
 /**
  * Search system architecture (updated):
  * - useSearchStore.ts: Simple store for search UI state (query, clearing)
- * - useChunkDisplay.ts: Unified hook that handles search execution, filtering, pagination, and display
+ * - useProcessedChunks.ts: Focused hook that handles search execution and filtering
+ * - usePaginatedChunks.ts: Focused hook that handles pagination of processed chunks
  * 
- * This simplified structure moves search logic to where it's consumed (useChunkDisplay)
- * while keeping UI state (query) in the store for sharing across components.
+ * This simplified structure moves search logic to focused hooks while keeping 
+ * UI state (query) in the store for sharing across components.
  */
 import { create } from 'zustand';
 

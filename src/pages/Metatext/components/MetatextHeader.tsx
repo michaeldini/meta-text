@@ -2,7 +2,6 @@
 import React from 'react';
 import { Stack, Heading } from '@styles';
 import { KeyboardShortcutsDisplay } from '@components/KeyboardShortcutsDisplay';
-import type { ChunkType } from '@mtypes/documents';
 import { MetatextHeaderControls, SourceDocInfo, StyleControls } from 'src';
 import { SourceDocInfoDisplay } from '@components/SourceDocInfo';
 import { ReviewMetatextButton } from './ReviewMetatextButton';
@@ -11,10 +10,6 @@ interface MetatextHeaderProps {
     title: string;
     metatextId: number;
     sourceDocumentId?: number;
-    displayChunks: ChunkType[];
-    setCurrentPage: (page: number) => void;
-    showOnlyFavorites: boolean;
-    setShowOnlyFavorites: (show: boolean) => void;
 }
 
 /**
@@ -27,10 +22,6 @@ export function MetatextHeader({
     title,
     metatextId,
     sourceDocumentId,
-    displayChunks,
-    setCurrentPage,
-    showOnlyFavorites,
-    setShowOnlyFavorites
 }: MetatextHeaderProps) {
     return (
         <Stack
@@ -43,10 +34,6 @@ export function MetatextHeader({
             <KeyboardShortcutsDisplay categories={['Navigation', 'Interface']} />
             <MetatextHeaderControls
                 metatextId={metatextId}
-                displayChunks={displayChunks}
-                setCurrentPage={setCurrentPage}
-                showOnlyFavorites={showOnlyFavorites}
-                setShowOnlyFavorites={setShowOnlyFavorites}
             />
             <SourceDocInfoDisplay sourceDocumentId={sourceDocumentId} />
             <StyleControls />
