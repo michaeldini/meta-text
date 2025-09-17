@@ -4,7 +4,6 @@ import { css } from '@stitches/react';
 import { FontFamilySelect } from '@components/stylecontrols';
 import { Box, Text, Input } from '@styles';
 import { useUIPreferences } from '@hooks/useUIPreferences';
-import { TooltipButton } from '@components/ui/TooltipButton';
 
 // Custom CSS for always visible and cleaner spin buttons
 const numberInputStyle = css({
@@ -46,8 +45,8 @@ interface StyleNumberInputProps {
 // DRY: Common number input for style controls
 function StyleNumberInput({ label, value, min, max, step, onChange, disabled }: StyleNumberInputProps) {
     return (
-        <Box css={{ borderRadius: 8, padding: 1, gap: 4, display: 'flex', alignItems: 'center' }}>
-            <Text>{label}</Text>
+        <Box css={{ borderRadius: 8, padding: 2, gap: 4, display: 'flex', alignItems: 'center', marginRight: 8, backgroundColor: 'transparent' }}>
+            <Text css={{ backgroundColor: 'transparent', color: '$colors$altText' }}>{label}</Text>
             <Input
                 type="number"
                 min={min}
@@ -69,53 +68,43 @@ export function StyleControls({
     showFontFamily = true,
 }: StyleControlsProps): React.ReactElement {
     const { textSizePx, fontFamily, lineHeight, paddingX, updateUserConfig } = useUIPreferences();
-    const [visible, setVisible] = React.useState(false);
     return (
         <>
-            <TooltipButton
-                label={visible ? "Hide" : "Styles"}
-                tooltip={visible ? 'Hide Style Controls' : 'Show Style Controls'}
-                onClick={() => setVisible(v => !v)}
-            />
-            {visible && (
-                <>
-                    {showTextSize && (
-                        <StyleNumberInput
-                            label="Size"
-                            value={textSizePx}
-                            min={8}
-                            max={72}
-                            step={1}
-                            onChange={(val: number) => updateUserConfig.mutate({ textSizePx: val })}
-                        />
-                    )}
-                    {showLineHeight && (
-                        <StyleNumberInput
-                            label="Height"
-                            value={lineHeight}
-                            min={1.0}
-                            max={2.5}
-                            step={0.05}
-                            onChange={(val: number) => updateUserConfig.mutate({ lineHeight: val })}
-                        />
-                    )}
-                    {showPaddingX && (
-                        <StyleNumberInput
-                            label="Gap"
-                            value={paddingX}
-                            min={.1}
-                            max={2}
-                            step={.05}
-                            onChange={(val: number) => updateUserConfig.mutate({ paddingX: val })}
-                        />
-                    )}
-                    {showFontFamily && (
-                        <FontFamilySelect
-                            value={fontFamily}
-                            onChange={(val: string) => updateUserConfig.mutate({ fontFamily: val })}
-                        />
-                    )}
-                </>
+            {showTextSize && (
+                <StyleNumberInput
+                    label="Size"
+                    value={textSizePx}
+                    min={8}
+                    max={72}
+                    step={1}
+                    onChange={(val: number) => updateUserConfig.mutate({ textSizePx: val })}
+                />
+            )}
+            {showLineHeight && (
+                <StyleNumberInput
+                    label="Height"
+                    value={lineHeight}
+                    min={1.0}
+                    max={2.5}
+                    step={0.05}
+                    onChange={(val: number) => updateUserConfig.mutate({ lineHeight: val })}
+                />
+            )}
+            {showPaddingX && (
+                <StyleNumberInput
+                    label="Gap"
+                    value={paddingX}
+                    min={.1}
+                    max={2}
+                    step={.05}
+                    onChange={(val: number) => updateUserConfig.mutate({ paddingX: val })}
+                />
+            )}
+            {showFontFamily && (
+                <FontFamilySelect
+                    value={fontFamily}
+                    onChange={(val: string) => updateUserConfig.mutate({ fontFamily: val })}
+                />
             )}
         </>
     );

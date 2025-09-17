@@ -416,6 +416,7 @@ export const SelectEl = styled('select', {
     border: '1px solid $colors$border',
     fontSize: '1rem',
     fontFamily: '$fonts$body',
+    background: 'transparent',
 });
 
 
