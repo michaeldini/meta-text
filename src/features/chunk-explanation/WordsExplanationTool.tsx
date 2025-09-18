@@ -43,13 +43,11 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
                         label={`Explain`}
                         tooltip={`Get an explanation for "${word}"`}
                         icon={<HiQuestionMarkCircle />}
-                        size="2xl"
                         onClick={handleDefine}
                         disabled={loading}
                         loading={loading}
                         aria-label={`Define ${word}`}
                         data-testid={`explain-word-${word}`}
-                        positioning={{ placement: "top" }}
                     />
                 </>
             )}
@@ -65,7 +63,7 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
                     {explanation?.explanation_in_context && (
                         <Text css={{ fontSize: '1rem' }}>{explanation.explanation_in_context}</Text>
                     )}
-                    <ErrorAlert message={error} mt={2} />
+                    <ErrorAlert message={error} />
                 </Box>
             )}
         </>

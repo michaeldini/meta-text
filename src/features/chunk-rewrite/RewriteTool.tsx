@@ -76,9 +76,7 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
                                 value={style}
                                 onChange={(val: string) => setStyle(val)}
                                 disabled={isLoading}
-                                width="100%"
                                 placeholder="Select style"
-                                disablePortal={true}
                             />
                         </Box>
                     </form>
@@ -96,7 +94,6 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
                         options={[{ label: "Browse previous rewrites", value: "" }, ...rewrites.map(r => ({ label: r.title || `Rewrite ${r.id}`, value: String(r.id) }))]}
                         value={selectedId === '' ? '' : String(selectedId)}
                         onChange={(val: string) => setSelectedId(val === '' ? '' : Number(val))}
-                        width="100%"
                         placeholder="Browse previous rewrites"
                     />
                     {selected && (

@@ -45,10 +45,8 @@ export function SplitChunkTool(props: SplitChunkToolProps) {
             label="Split"
             tooltip={`Split chunk at "${word}"`}
             icon={<HiScissors />}
-            iconSize="2xl"
             onClick={handleSplit}
             aria-label={`Split chunk at word "${word}"`}
-            size="2xl"
             disabled={!wordIdx}
 
         />

@@ -32,7 +32,6 @@ export function ReviewContent({ flashcards, phrases, chunkReviewTable }: ReviewC
                 <Button
                     data-testid="explanations-toggle"
                     onClick={() => setShowExplanations((v) => !v)}
-                    size="sm"
                     css={{ marginBottom: 8 }}
                 >
                     {showExplanations ? 'Hide' : 'Show'} Explanations
@@ -41,7 +40,6 @@ export function ReviewContent({ flashcards, phrases, chunkReviewTable }: ReviewC
                 <Button
                     data-testid="flashcards-toggle"
                     onClick={() => setShowFlashcards((v) => !v)}
-                    size="sm"
                     css={{ marginBottom: 8 }}
                 >
                     {showFlashcards ? 'Hide' : 'Show'} Flashcards
@@ -50,7 +48,6 @@ export function ReviewContent({ flashcards, phrases, chunkReviewTable }: ReviewC
                 <Button
                     data-testid="reviewtable-toggle"
                     onClick={() => setShowReviewTable((v) => !v)}
-                    size="sm"
                     css={{ marginBottom: 8 }}
                 >
                     {showReviewTable ? 'Hide' : 'Show'} Review Table

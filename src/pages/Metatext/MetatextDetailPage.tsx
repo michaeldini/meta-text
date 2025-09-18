@@ -101,7 +101,6 @@ function MetatextDetailPage(): ReactElement | null {
                 >
                     <Heading >metatext: {metatext.title}</Heading>
                     <MetatextHeader
-                        title={metatext.title}
                         metatextId={id}
                         sourceDocumentId={metatext?.source_document_id}
                         totalFilteredChunks={totalFilteredChunks}

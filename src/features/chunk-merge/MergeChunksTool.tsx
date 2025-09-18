@@ -58,7 +58,6 @@ export function MergeChunksTool({ chunk }: MergeChunksToolProps) {
             icon={<HiArrowUturnLeft style={{ fontSize: '1.25rem' }} />}
             onClick={handleMerge}
             disabled={isLoading}
-            size="sm"
             aria-label="Undo split (merge with next chunk)"
         />
     );

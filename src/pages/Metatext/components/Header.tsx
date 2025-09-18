@@ -18,7 +18,6 @@ export function Header({ metatextId, navigate }: HeaderProps): ReactElement {
         <Box>
             {metatextId && (
                 <Button
-                    size="sm"
                     tone="default"
                     onClick={() => navigate(`/metatext/${metatextId}`)}
                     title="Back to Metatext Detail"

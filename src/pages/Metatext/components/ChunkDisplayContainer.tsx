@@ -32,7 +32,6 @@ export function ChunkDisplayContainer({
                 <ChunkPagination
                     currentPage={currentPage}
                     totalPages={totalPages}
-                    totalItems={totalFilteredChunks}
                     pageSize={chunksPerPage}
                     onPageChange={onPageChange}
                 />
