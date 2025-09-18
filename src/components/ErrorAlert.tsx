@@ -34,7 +34,7 @@ export function ErrorAlert({
                 <Heading tone="danger">{title}</Heading>
                 <Text>{message}</Text>
             </Box>
-            <HiXCircle style={{ flex: '0 0 auto', fontSize: '1.5rem', color: '$colors$dangerText' }} onClick={handleClose} />
+            <HiXCircle style={{ flex: '0 0 auto', fontSize: '1.5rem' }} onClick={handleClose} />
         </Flex>
     );
 }

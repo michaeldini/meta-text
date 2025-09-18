@@ -140,7 +140,7 @@ export function PanelCard({ panel, onToggleView, onMinimize, onClose, onSelectio
             )}
 
             {!panel.minimized && panel.error && (
-                <Text css={{ color: '$colors$dangerText' }}>{panel.error}</Text>
+                <Text css={{}}>{panel.error}</Text>
             )}
 
             {!panel.minimized && !panel.loading && !panel.error && (
