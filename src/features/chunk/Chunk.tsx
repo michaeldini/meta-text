@@ -3,7 +3,7 @@ import React, { memo } from 'react';
 // UI
 import ChunkWords from './components/ChunkWords';
 import { ChunkToolsContainer } from '@features/chunk-tools';
-import { styled, Flex } from '@styles';
+import { Flex } from '@styles';
 
 // Types
 import type { ChunkType } from '@mtypes/documents';

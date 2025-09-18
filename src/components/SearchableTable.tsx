@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { MetatextSummary, SourceDocumentSummary } from '@mtypes/index';
 import { TooltipButton } from '@components/ui/TooltipButton';
 import { UseMutationResult } from '@tanstack/react-query';
-import { styled, Box, Heading, Input, Button, TableContainer, Empty, TableScrollArea, TableRoot, THead, TRow, Th, TBody } from '@styles';
+import { Box, Heading, Input, Button, TableContainer, Empty, TableScrollArea, TableRoot, THead, TRow, Th, TBody } from '@styles';
 
 // useSearchResults: Hook to manage search/filter state and results
 // returns results that can be passed to a table component
@@ -48,7 +48,7 @@ export function SearchInput({ search, setSearch, inputRef }: SearchInputProps) {
         <Box>
             <HiMagnifyingGlass />
             <Input
-                ref={inputRef as any}
+                ref={inputRef as React.RefObject<HTMLInputElement>}
                 placeholder="Search..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}

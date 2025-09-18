@@ -47,7 +47,7 @@ function ImageViewer({ chunk }: { chunk: ChunkType }) {
     const images = Array.isArray(chunk.images) ? chunk.images : [];
     const imageFiles = images.map((img: AiImage) => {
         const file = typeof img === 'string' ? img : img.path || '';
-        return `/generated_images/${file.replace(/^.*[\\\/]/, '')}`;
+        return `/generated_images/${file.replace(/^.*[\\/]/, '')}`;
     });
     const [selectedImage, setSelectedImage] = useState(imageFiles[0] || '');
 
@@ -95,7 +95,7 @@ function GenerateImageDialog({ chunk }: { chunk: ChunkType }) {
         if (promptLength < MIN_PROMPT_LENGTH) return;
         try {
             await mutation.mutateAsync(prompt);
-        } catch (err) {
+        } catch {
             // mutation will capture and expose error via mutation.error
         }
     };
@@ -144,7 +144,7 @@ function GenerateImageDialog({ chunk }: { chunk: ChunkType }) {
                 )}
 
                 {mutation.isError && (
-                    <ErrorAlert message={String((mutation.error as any)?.message ?? 'Failed to generate image')} />
+                    <ErrorAlert message={String((mutation.error as Error)?.message ?? 'Failed to generate image')} />
                 )}
 
                 <Button

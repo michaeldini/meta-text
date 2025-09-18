@@ -2,7 +2,7 @@ import { HiArrowDownTray } from 'react-icons/hi2';
 // SourceDocUploadForm: main form wrapper orchestrating file picker + submission
 import * as React from 'react';
 // UI (migrated from Chakra -> Stitches)
-import { styled, Heading, Stack, Button, Box } from '@styles';
+import { Heading, Stack, Box } from '@styles';
 import { ErrorAlert } from '@components/ErrorAlert';
 import SourceDocFilePicker from './SourceDocFilePicker';
 

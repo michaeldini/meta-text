@@ -48,6 +48,8 @@ export function usePaginatedChunks({
             pager.goToChunkById(requestedChunkId);
             clearNavigationRequest();
         }
+        // Only depend on the specific pager method we use, not the entire pager object
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [requestedChunkId, pager.goToChunkById, clearNavigationRequest]);
 
     // When the filtered set changes, ensure current page is valid
@@ -56,14 +58,17 @@ export function usePaginatedChunks({
         if (pager.currentPage > totalPages) {
             pager.setCurrentPage(Math.max(1, totalPages));
         }
+        // Only depend on the specific pager properties we read, not the entire pager object
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [pager.totalFilteredChunks, pager.chunksPerPage]);
+    }, [pager.totalFilteredChunks, pager.chunksPerPage, pager.currentPage, pager.totalPages, pager.setCurrentPage]);
 
     // Provide a safe clamped setter so callers don't need to worry about invalid pages
     const setCurrentPageSafe = useCallback((page: number) => {
         const totalPages = pager.totalPages || 1;
         const clamped = Math.max(1, Math.min(page, totalPages));
         pager.setCurrentPage(clamped);
+        // Only depend on the specific pager properties we read, not the entire pager object
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pager.totalPages, pager.setCurrentPage]);
 
     return {

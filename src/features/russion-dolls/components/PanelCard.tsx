@@ -99,7 +99,7 @@ export function PanelCard({ panel, onToggleView, onMinimize, onClose, onSelectio
     const headerBg = panel.linkColor ? panel.linkColor : undefined;
     const activeHighlights = panel.highlights?.filter(h => h.viewMode === panel.viewMode);
 
-    const leftBorderProps = panel.linkColor
+    const leftBorderProps: React.CSSProperties | undefined = panel.linkColor
         ? { borderLeft: '6px solid', borderLeftColor: panel.linkColor }
         : undefined;
 
@@ -113,7 +113,7 @@ export function PanelCard({ panel, onToggleView, onMinimize, onClose, onSelectio
                 minWidth: 280,
                 maxWidth: 480,
                 boxShadow: '0 10px 15px rgba(0,0,0,0.1)',
-                ...(leftBorderProps as any || {}),
+                ...(leftBorderProps || {}),
             }}
         >
             <PanelHeader

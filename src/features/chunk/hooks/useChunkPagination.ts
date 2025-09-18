@@ -25,7 +25,6 @@ export function useChunkPagination(
             const totalPages = Math.max(1, Math.ceil(chunks.length / chunksPerPage));
             return p > totalPages ? 1 : p;
         });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [chunks, chunksPerPage]);
 
     const totalFilteredChunks = chunks ? chunks.length : 0;

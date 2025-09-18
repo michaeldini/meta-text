@@ -2,7 +2,7 @@ import React from 'react';
 import { useAuthStore } from '@store/authStore';
 import AuthForm from './AuthForm';
 
-const RegisterPage = () => {
+function RegisterPage() {
     const register = useAuthStore(state => state.register);
     const loading = useAuthStore(state => state.loading);
     const error = useAuthStore(state => state.error);
@@ -20,6 +20,6 @@ const RegisterPage = () => {
             redirectOnSuccess="/login"
         />
     );
-};
+}
 
 export default RegisterPage;

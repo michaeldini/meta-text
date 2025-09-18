@@ -27,7 +27,6 @@ export interface TooltipButtonProps extends Omit<React.ButtonHTMLAttributes<HTML
     disabled?: boolean;
     onClick?: (() => void) | ((event: React.MouseEvent<HTMLButtonElement>) => void);
     onKeyDown?: (event: React.KeyboardEvent) => void;
-    color?: string;
     role?: string;
     type?: 'button' | 'submit' | 'reset';
     side?: 'top' | 'right' | 'bottom' | 'left';
@@ -44,7 +43,6 @@ export function TooltipButton({
     onClick,
     onKeyDown,
     type = 'button',
-    color = 'inherit',
     side = 'top',
     tone = 'default',
     role = 'button',
@@ -57,7 +55,9 @@ export function TooltipButton({
     // recreating styled components on every render which can cause DOM
     // remounts and unexpected focus changes.
     // map tone fallback for inline style color prop
-    const toneProp = (tone as any) || 'default';
+    const allowedTones = ['default', 'primary', 'danger', 'disabled'] as const;
+    type Tone = typeof allowedTones[number];
+    const toneProp: Tone = allowedTones.includes(tone as Tone) ? (tone as Tone) : 'default';
 
     return (
         <Tooltip.Provider>
@@ -74,7 +74,7 @@ export function TooltipButton({
                         {...rest}
                         style={{ ...(rest.style || {}) }}
                     >
-                        {icon ? <IconWrapper style={{ fontSize: iconSize as any }}>{icon}</IconWrapper> : null}
+                        {icon ? <IconWrapper style={{ fontSize: iconSize as React.CSSProperties['fontSize'] }}>{icon}</IconWrapper> : null}
 
                         {loading ? '…' : label}
                     </Button>

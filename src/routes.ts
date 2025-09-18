@@ -4,7 +4,7 @@
  */
 import React, { lazy } from 'react';
 
-export type LazyPage = React.LazyExoticComponent<React.ComponentType<any>>;
+export type LazyPage = React.LazyExoticComponent<React.ComponentType>;
 
 export interface RouteConfig {
     path: string;

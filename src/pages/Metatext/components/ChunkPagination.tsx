@@ -6,7 +6,6 @@ import { Flex, Button } from '@styles';
 interface ChunkPaginationProps {
     currentPage: number;
     totalPages: number;
-    totalItems: number;
     onPageChange: (page: number) => void;
     disabled?: boolean;
     pageSize?: number;
@@ -21,7 +20,6 @@ interface ChunkPaginationProps {
 export function ChunkPagination({
     currentPage,
     totalPages,
-    totalItems,
     onPageChange,
     disabled = false,
     pageSize = 5
@@ -46,7 +44,6 @@ export function ChunkPagination({
     return (
         <Flex data-testid="chunk-pagination">
             <Button
-                size="sm"
                 tone="default"
                 aria-label="Previous page"
                 disabled={disabled || currentPage <= 1}
@@ -59,7 +56,6 @@ export function ChunkPagination({
             {pageNumbers.map((page) => (
                 <Button
                     key={page}
-                    size="sm"
                     tone={page === currentPage ? 'primary' : 'default'}
                     onClick={() => handlePageClick(page)}
                     disabled={disabled}
@@ -70,7 +66,6 @@ export function ChunkPagination({
                 </Button>
             ))}
             <Button
-                size="sm"
                 tone="default"
                 aria-label="Next page"
                 disabled={disabled || currentPage >= totalPages}

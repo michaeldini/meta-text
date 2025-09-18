@@ -1,3 +1,22 @@
+/**
+ * 
+ * Main entry point for the React application.
+ * 
+ * This file sets up the React application with necessary providers.
+ * 
+ * It includes:
+ * - React StrictMode for highlighting potential problems.
+ * - React Router's BrowserRouter for client-side routing.
+ * - React Query's QueryClientProvider for managing server state.
+ * - A custom Boundary component for error handling.
+ * - Global styles applied across the application.
+ * 
+ * The application is rendered into the DOM element with the ID 'root'.
+ * 
+ * Note: Ensure that the 'root' element exists in your HTML file.
+ * 
+ */
+
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';

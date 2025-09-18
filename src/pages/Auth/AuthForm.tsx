@@ -18,7 +18,7 @@ interface AuthFormProps {
     redirectOnSuccess?: string;
 }
 
-const AuthForm = ({ type, onSubmit, error, loading, redirectOnSuccess }: AuthFormProps) => {
+function AuthForm({ type, onSubmit, error, loading, redirectOnSuccess }: AuthFormProps) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [formError, setFormError] = useState<string | null>(null);
@@ -32,8 +32,8 @@ const AuthForm = ({ type, onSubmit, error, loading, redirectOnSuccess }: AuthFor
             if (success && redirectOnSuccess) {
                 navigate(redirectOnSuccess);
             }
-        } catch (err: any) {
-            setFormError(err?.message || 'Something went wrong');
+        } catch (err: unknown) {
+            setFormError(err instanceof Error ? err.message : 'Something went wrong');
         }
     };
 
@@ -66,6 +66,6 @@ const AuthForm = ({ type, onSubmit, error, loading, redirectOnSuccess }: AuthFor
             </Stack>
         </Box>
     );
-};
+}
 
 export default AuthForm;

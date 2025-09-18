@@ -6,6 +6,8 @@ import { useRef, useCallback } from 'react';
 import { Dropzone, Box, Text } from '@styles';
 import UploadFileStatusList, { UploadStatus } from './UploadFileStatusList';
 
+const MAX_FILES = 100;
+const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
 
 export interface SourceDocFilePickerProps {
     files: File[];
@@ -29,8 +31,6 @@ export function SourceDocFilePicker({
         : 'Only .txt files are allowed';
 
     const inputRef = useRef<HTMLInputElement | null>(null);
-    const MAX_FILES = 100;
-    const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
 
     const handleFiles = useCallback((incoming: File[]) => {
         if (!incoming || incoming.length === 0) return;

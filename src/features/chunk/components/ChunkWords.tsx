@@ -32,7 +32,6 @@ const ChunkWords = memo(function ChunkWords({
     const fontFamily = uiPreferences.fontFamily ?? 'Inter, sans-serif';
     const lineHeight = uiPreferences.lineHeight ?? 1.5;
     const paddingX = uiPreferences.paddingX ?? 0.3;
-    const color = 'gray.400';
 
     // Selection state and handlers from shared hook. The hook now accepts
     // the chunk so it can compute and expose `words` directly.

@@ -51,7 +51,6 @@ const StyledSeparator = styled(Toolbar.Separator, {
 });
 
 interface MetatextHeaderProps {
-    title: string;
     metatextId: number;
     sourceDocumentId?: number;
     totalFilteredChunks: number;
@@ -66,7 +65,6 @@ interface MetatextHeaderProps {
  * of the metatext detail page with the title, review button, and keyboard shortcuts button.
  */
 export function MetatextHeader({
-    title,
     metatextId,
     sourceDocumentId,
     totalFilteredChunks,
