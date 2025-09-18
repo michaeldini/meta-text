@@ -4,7 +4,7 @@ backend/dependencies.py
 This module contains reusable FastAPI dependency functions for the backend.
 """
 
-from fastapi import Depends, HTTPException, Header, status
+from fastapi import Depends, HTTPException, Header, Cookie, status
 from backend.db import get_session
 from sqlmodel import Session
 from backend.services import (
@@ -49,22 +49,21 @@ def get_auth_service():
     return AuthService()
 
 def get_current_user(
-    authorization: str = Header(None),
+    access_token: str = Cookie(None),
     session: Session = Depends(get_session),
     auth_service: AuthService = Depends(get_auth_service)
 ):
     """
-    Dependency to extract and validate the current user from the Authorization header JWT.
+    Dependency to extract and validate the current user from the access_token cookie.
     Returns the user instance or raises HTTPException if invalid.
     """
-    if not authorization or not authorization.startswith("Bearer "):
+    if not access_token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Missing or invalid Authorization header",
+            detail="Missing access token cookie",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    token = authorization.split(" ", 1)[1]
-    user = auth_service.get_user_from_access_token(token, session)
+    user = auth_service.get_user_from_access_token(access_token, session)
     return user
 
 # Lazy initialization of service to avoid requiring API key at import time

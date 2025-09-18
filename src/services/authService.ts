@@ -15,21 +15,19 @@ export async function register({ username, password }: AuthPayload): Promise<Use
     return api.post(`${API_BASE}/register`, { json: { username, password } }).json<User>();
 }
 
-export async function login({ username, password }: AuthPayload): Promise<AuthResponse> {
-    // POST to /auth/login with JSON body
-    return api.post(`${API_BASE}/login`, { json: { username, password } }).json<AuthResponse>();
+export async function login({ username, password }: AuthPayload): Promise<{ message: string }> {
+    // POST to /auth/login with JSON body - tokens are set as httpOnly cookies
+    return api.post(`${API_BASE}/login`, { json: { username, password } }).json<{ message: string }>();
 }
 
-export async function refreshToken(): Promise<AuthResponse> {
-    return api.post(`${API_BASE}/refresh`).json<AuthResponse>();
+export async function refreshToken(): Promise<{ message: string }> {
+    return api.post(`${API_BASE}/refresh`).json<{ message: string }>();
 }
 
 export async function logout(): Promise<void> {
     await api.post(`${API_BASE}/logout`);
 }
 
-export async function getMe(token: string): Promise<User> {
-    return api.get(`${API_BASE}/me`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-    }).json<User>();
+export async function getMe(): Promise<User> {
+    return api.get(`${API_BASE}/me`).json<User>();
 }

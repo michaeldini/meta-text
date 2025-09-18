@@ -1,7 +1,8 @@
 /**
  * API client for making requests to the backend
  * Use to make requests.
- * Attaches authentication headers to requests.
+ * Provides fallback token refresh for edge cases.
+ * Primary refresh is handled by useAuthRefresh hook.
  */
 
 import ky from 'ky';
@@ -12,51 +13,40 @@ type RetryableOptions = RequestInit & { _retried?: boolean };
 // Centralized ky instance for all API requests
 export const api = ky.create({
     prefixUrl: '/api',
+    credentials: 'include', // Include cookies in all requests
     hooks: {
-        beforeRequest: [
-            request => {
-                // Add JWT token if available
-                const token = localStorage.getItem('access_token');
-                if (token) {
-                    request.headers.set('Authorization', `Bearer ${token}`);
-                }
-            }
-        ],
         afterResponse: [
             async (request: Request, options: RetryableOptions, response: Response) => {
-                const token = localStorage.getItem('access_token');
-                // Only attempt refresh if user was previously authenticated
-                if ((response.status === 401 || response.status === 403) && token) {
+                // Fallback refresh mechanism for edge cases (server restarts, network issues, etc.)
+                // Primary refresh is handled proactively by useAuthRefresh hook
+                if ((response.status === 401 || response.status === 403)) {
                     // Prevent infinite retry loops
                     if (options._retried) {
-                        localStorage.removeItem('access_token');
+                        console.warn('[ky] Auth retry failed, redirecting to login');
                         window.location.href = '/login';
                         return;
                     }
+
                     try {
+                        console.info('[ky] Attempting fallback token refresh');
                         const refreshResp = await ky.post('/api/auth/refresh', { credentials: 'include' });
+
                         if (refreshResp.ok) {
-                            const { access_token } = await refreshResp.json<{ access_token: string }>();
-                            localStorage.setItem('access_token', access_token);
-                            // Retry the original request with the new token, mark as retried
+                            console.info('[ky] Fallback refresh successful, retrying original request');
+                            // Retry the original request once with cookies
                             const retryOptions = { ...options, _retried: true };
-                            retryOptions.headers = new Headers(request.headers);
-                            retryOptions.headers.set('Authorization', `Bearer ${access_token}`);
-                            // Use ky directly to retry the request
                             return ky(request, retryOptions);
                         } else {
-                            // Refresh failed, log out
-                            localStorage.removeItem('access_token');
-                            window.location.href = '/login';
+                            console.warn('[ky] Fallback refresh failed - invalid response');
                         }
                     } catch (e) {
-                        // Refresh failed, log out
-                        console.error('Token refresh failed:', e);
-                        localStorage.removeItem('access_token');
-                        window.location.href = '/login';
+                        console.warn('[ky] Fallback refresh failed - network/server error:', e);
                     }
+
+                    // All fallback attempts failed, redirect to login
+                    window.location.href = '/login';
                 }
-                // If no token, let the frontend handle the error (e.g., failed login)
+                // For other response codes, return the response as-is
             }
         ]
     }

@@ -19,6 +19,14 @@ class DummyAuthService:
             refresh_token = "dummy-refresh"
             refresh_token_expires = 604800
         return DummyTokens()
+    def get_access_token_expires(self):
+        from datetime import timedelta
+        return timedelta(minutes=30)
+    def get_refresh_token_expires(self):
+        from datetime import timedelta
+        return timedelta(days=7)
+    def set_access_token_cookie(self, response: Response, token, expires):
+        response.set_cookie(key="access_token", value=token)
     def set_refresh_token_cookie(self, response: Response, token, expires):
         response.set_cookie(key="refresh_token", value=token)
     def refresh_access_token(self, refresh_token, session):
@@ -52,19 +60,19 @@ def test_register(client):
 def test_login(client):
     resp = client.post("/auth/login", json={"username": "alice", "password": "pw"})
     assert resp.status_code == status.HTTP_200_OK
-    assert resp.json()["access_token"] == "dummy-access"
+    assert resp.json()["message"] == "Login successful"
     assert resp.json()["token_type"] == "bearer"
 
 def test_refresh_token(client):
     cookies = {"refresh_token": "dummy-refresh"}
     resp = client.post("/auth/refresh", cookies=cookies)
     assert resp.status_code == status.HTTP_200_OK
-    assert resp.json()["access_token"] == "new-access"
+    assert resp.json()["message"] == "Token refreshed successfully"
     assert resp.json()["token_type"] == "bearer"
 
 def test_me(client):
-    # Simulate Authorization header with dummy access token
-    headers = {"Authorization": "Bearer dummy-access"}
-    resp = client.get("/auth/me", headers=headers)
+    # Simulate access token cookie
+    cookies = {"access_token": "dummy-access"}
+    resp = client.get("/auth/me", cookies=cookies)
     assert resp.status_code == status.HTTP_200_OK
     assert resp.json()["username"] == "testuser"

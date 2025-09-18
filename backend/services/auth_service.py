@@ -1,4 +1,5 @@
 """Authentication service for user management operations."""
+import os
 from datetime import timedelta
 import loguru
 from sqlmodel import select, Session
@@ -83,6 +84,8 @@ class AuthService:
         """
         Set the refresh token as an httpOnly cookie on the response.
         """
+        # Use secure cookies in production
+        is_production = os.environ.get("ENVIRONMENT") == "production"
         response.set_cookie(
             key="refresh_token",
             value=refresh_token,
@@ -90,7 +93,23 @@ class AuthService:
             max_age=int(refresh_token_expires.total_seconds()),
             expires=int(refresh_token_expires.total_seconds()),
             samesite="lax",
-            secure=False  # Set to True in production with HTTPS
+            secure=is_production  # True in production with HTTPS
+        )
+
+    def set_access_token_cookie(self, response: Response, access_token: str, access_token_expires: timedelta):
+        """
+        Set the access token as an httpOnly cookie on the response.
+        """
+        # Use secure cookies in production
+        is_production = os.environ.get("ENVIRONMENT") == "production"
+        response.set_cookie(
+            key="access_token",
+            value=access_token,
+            httponly=True,
+            max_age=int(access_token_expires.total_seconds()),
+            expires=int(access_token_expires.total_seconds()),
+            samesite="lax",
+            secure=is_production  # True in production with HTTPS
         )
 
     def generate_tokens(self, user, access_token_expires: timedelta, refresh_token_expires: timedelta):

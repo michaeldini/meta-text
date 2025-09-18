@@ -59,7 +59,7 @@ export function EvaluationTool({ chunk, isVisible }: EvaluationToolProps) {
                     ? <Text>{evaluationText}</Text>
                     : <Text css={{ textAlign: 'right', color: '$colors$subtle' }}>No evaluation yet.</Text>}
             </Box>
-            <ErrorAlert message={error} mt={2} />
+            <ErrorAlert message={error} />
         </Box>
     );
 }

@@ -35,21 +35,21 @@ def client():
     return TestClient(app)
 
 def test_valid_token(client):
-    response = client.get("/protected", headers={"Authorization": "Bearer validtoken"})
+    response = client.get("/protected", cookies={"access_token": "validtoken"})
     assert response.status_code == 200
     assert response.json() == {"username": "testuser"}
 
 def test_missing_authorization_header(client):
     response = client.get("/protected")
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
-    assert response.json()["detail"] == "Missing or invalid Authorization header"
+    assert response.json()["detail"] == "Missing access token cookie"
 
 def test_malformed_authorization_header(client):
-    response = client.get("/protected", headers={"Authorization": "InvalidHeader"})
+    response = client.get("/protected", cookies={"access_token": ""})
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
-    assert response.json()["detail"] == "Missing or invalid Authorization header"
+    assert response.json()["detail"] == "Missing access token cookie"
 
 def test_invalid_token(client):
-    response = client.get("/protected", headers={"Authorization": "Bearer badtoken"})
+    response = client.get("/protected", cookies={"access_token": "badtoken"})
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
     assert response.json()["detail"] == "Invalid token"

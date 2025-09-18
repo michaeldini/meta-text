@@ -6,8 +6,12 @@ from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 
 from backend.db import init_db
+from backend.middleware import SecurityHeadersMiddleware
 from backend.api import ai, chunk, explanation, metatext, source_documents, auth, logs, bookmark, user_config, favorite
 from backend.exceptions.auth_exceptions import (
     InvalidCredentialsError,
@@ -31,6 +35,20 @@ if not os.path.exists("public/generated_images"):
 
 # FastAPI application setup
 app = FastAPI()
+
+# Initialize rate limiter for the app
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+
+# Rate limit exception handler
+@app.exception_handler(RateLimitExceeded)
+async def rate_limit_handler(request: Request, exc: RateLimitExceeded):
+    response = JSONResponse(
+        status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+        content={"detail": f"Rate limit exceeded: {exc.detail}"}
+    )
+    response = _rate_limit_exceeded_handler(request, exc)
+    return response
 
 
 
@@ -86,6 +104,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Add security headers middleware
+app.add_middleware(SecurityHeadersMiddleware)
 
 init_db()
 
