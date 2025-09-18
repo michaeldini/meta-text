@@ -8,7 +8,7 @@
  * - React StrictMode for highlighting potential problems.
  * - React Router's BrowserRouter for client-side routing.
  * - React Query's QueryClientProvider for managing server state.
- * - A custom Boundary component for error handling.
+ * - A custom Boundary component for error + loading handling.
  * - Global styles applied across the application.
  * 
  * The application is rendered into the DOM element with the ID 'root'.

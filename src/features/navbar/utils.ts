@@ -10,8 +10,8 @@ export type NavItem = ReturnType<typeof getNavigationConfig>['items'][number];
 
 /**
  * Filter navigation items based on authentication state.
- * - Hides Login/Register when authenticated
- * - Shows Logout only when authenticated
+ * - Shows Logout and Hides Login/Register when authenticated
+ * - Shows Login/Register and Hides Logout when not authenticated
  * - Respects `protected` flag for other items
  */
 export function filterNavItems(items: NavItem[], isAuthenticated: boolean): NavItem[] {

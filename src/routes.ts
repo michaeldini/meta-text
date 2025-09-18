@@ -1,6 +1,25 @@
 /*
  * Route definitions for the application.
- * Keeps `src/App.tsx` focused on composition and routing logic.
+ * 
+ * To be used with React Router + imported in `src/App.tsx`.
+ * 
+ * Each route includes:
+ * - A path string
+ * - A React component (lazy loaded) to render
+ * - An optional 'protected' boolean indicating if the route requires authentication
+ * 
+ * Routes for the app include:
+ * - LoginPage, RegisterPage (public)
+ * - HomePage (protected)
+ * - SourceDocDetailPage (protected)
+ * - MetatextDetailPage, MetatextReviewPage (protected)
+ * - ExperimentsPage, RussianDollsPage (protected)
+ * 
+ * Unmatched routes are handled in `src/App.tsx` with a NotFound component.
+ * 
+ * Lazy loading is used for route components to optimize initial load time.
+ * 
+ * 
  */
 import React, { lazy } from 'react';
 
@@ -12,7 +31,13 @@ export interface RouteConfig {
     protected?: boolean;
 }
 
-// Lazy-load pages to keep bundle size small.
+/**
+ * 
+ * Lazy loaded route components
+ * 
+ * These components are only loaded when the user navigates to their respective routes.
+ * This helps reduce the initial bundle size and improve load times.
+ */
 const HomePage = lazy(() => import('@pages/HomePage/HomePage'));
 const LoginPage = lazy(() => import('@pages/Auth/LoginPage'));
 const RegisterPage = lazy(() => import('@pages/Auth/RegisterPage'));
@@ -25,6 +50,15 @@ const MetatextReviewPage = lazy(() => import('@pages/Metatext/MetatextReviewPage
 const ExperimentsPage = lazy(() => import('@pages/ExperimentsPage'));
 const RussianDollsPage = lazy(() => import('@pages/RussianDollsPage'));
 
+
+/**
+ * Route definitions
+ *
+ * Each route includes:
+ * - A path the user can navigate to
+ * - A React component to render
+ * - An optional 'protected' boolean indicating if the route requires authentication
+ */
 export const routes: RouteConfig[] = [
     { path: '/', element: HomePage, protected: true },
     { path: '/login', element: LoginPage, protected: false },

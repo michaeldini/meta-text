@@ -1,12 +1,42 @@
+/**
+ * 
+ * Stitches configuration and styled components for the application.
+ * 
+ * This file sets up the design system using Stitches, defining themes,
+ * global styles, and reusable styled components.
+ * 
+ * It includes:
+ * - Theme configuration with colors, fonts, and media queries.
+ * - Global styles applied across the application.
+ * - Reusable styled components for layout, typography, buttons, inputs, tables, etc.
+ * 
+ */
 
 import { createStitches } from '@stitches/react';
 
+
+/**
+ * 
+ * Stitches configuration with theme, media queries, and utility functions.
+ * 
+ * This configuration defines the design tokens and responsive breakpoints
+ * used throughout the application.
+ * 
+ * Exposed APIs include:
+ * - styled: for creating styled components.
+ * - css: for creating CSS classes.
+ * - globalCss: for defining global styles.
+ * - keyframes: for defining CSS animations.
+ * - theme: the default theme object.
+ * - createTheme: for creating additional themes.
+ * - config: the Stitches configuration object.
+ * 
+ */
 export const {
     styled,
     css,
     globalCss,
     keyframes,
-    getCssText,
     theme,
     createTheme,
     config,
@@ -42,15 +72,32 @@ export const {
     },
 });
 
+
+/**
+ * 
+ * Global styles applied to the entire application.
+ * 
+ * This includes:
+ * - Resetting margin and padding for all elements.
+ * - Setting a consistent background color for the body.
+ * 
+ * Note: This should be called once at the root of the application.
+ * 
+ */
 export const globalStyles = globalCss({
-    // applied to the <body> element of index.html
     '*': {
         margin: 0,
         padding: 0,
+    },
+    'body': {
         backgroundColor: '$colors$background',
     },
     'svg': {
         background: 'transparent !important',
+    },
+    'nav': {
+        justifyContent: 'start',
+        alignItems: 'center',
     },
     '@keyframes spin': {
         '0%': { transform: 'rotate(0deg)' },
@@ -96,7 +143,6 @@ export const Box = styled('div', {
 export const Flex = styled('div', {
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'center',
     gap: '20px',
     variants: {
         variant: {
@@ -307,8 +353,8 @@ export const Spinner = styled('div', {
     width: 32,
     height: 32,
     color: '$colors$primary',
-    border: '4px solid gray',
-    borderTop: '4px solid blue',
+    border: '4px solid $colors$altBackground',
+    borderTop: '4px solid $colors$primary',
     borderRadius: '50%',
     animation: 'spin 1s linear infinite',
 });
