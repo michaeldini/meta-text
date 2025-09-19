@@ -1,6 +1,6 @@
 import React from 'react';
 import * as Tooltip from '@radix-ui/react-tooltip';
-import { styled, Button, IconWrapper, keyframes } from '@styles';
+import { styled, Button, IconWrapper, keyframes, Text } from '@styles';
 
 
 const tooltipFade = keyframes({
@@ -76,7 +76,7 @@ export function TooltipButton({
                     >
                         {icon ? <IconWrapper style={{ fontSize: iconSize as React.CSSProperties['fontSize'] }}>{icon}</IconWrapper> : null}
 
-                        {loading ? '…' : label}
+                        <Text>{loading ? '…' : label}</Text>
                     </Button>
                 </Tooltip.Trigger>
                 <Tooltip.Portal>

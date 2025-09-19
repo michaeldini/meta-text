@@ -23,9 +23,11 @@ function HomePage(): ReactElement {
     const metatextsQuery = useMetatexts();
 
     return (
-        <Box>
+        <Box center>
             <Flex
                 data-testid="homepage-content"
+                gap="3"
+                justifyCenter
             >
                 <SearchableTable
                     documents={metatextsQuery.data ?? []}

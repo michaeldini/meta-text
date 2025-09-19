@@ -116,7 +116,7 @@ export default function App() {
     useUserConfig(!!user);
 
     return (
-        <Box noPad>
+        <Box>
 
             {/* Global components */}
             <GlobalNotifications />

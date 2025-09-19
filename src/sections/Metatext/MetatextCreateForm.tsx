@@ -78,7 +78,7 @@ function MetatextCreateForm({ sourceDocs }: MetatextCreateFormProps): React.Reac
     const selectedSourceDocIdStr = selectedSourceDocId ? String(selectedSourceDocId) : '';
 
     return (
-        <Box>
+        <Box variant="homepageSection">
             <Heading>New</Heading>
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 <fieldset style={{ border: 'none', padding: 0, margin: 0, display: 'grid', gap: 12 }}>

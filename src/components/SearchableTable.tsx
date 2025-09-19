@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { MetatextSummary, SourceDocumentSummary } from '@mtypes/index';
 import { TooltipButton } from '@components/ui/TooltipButton';
 import { UseMutationResult } from '@tanstack/react-query';
-import { Box, Heading, Input, Button, TableContainer, Empty, TableScrollArea, TableRoot, THead, TRow, Th, TBody } from '@styles';
+import { Box, Heading, Input, Button, Empty, TableScrollArea, TableRoot, THead, TRow, TData, Th, TBody } from '@styles';
 
 // useSearchResults: Hook to manage search/filter state and results
 // returns results that can be passed to a table component
@@ -74,28 +74,27 @@ export interface TableRowProps {
 export function TableRow({ item, navigate, navigateToBase, deleteItemMutation }: TableRowProps) {
     const base = navigateToBase.endsWith('/') ? navigateToBase : `${navigateToBase}/`;
     return (
-        <tr key={item.id}>
-            <td>
-                <div style={{ width: '100%' }}>
-                    <div
-                        onClick={() => navigate(`${base}${item.id}`)}
-                        role="button"
-                        tabIndex={0}
-                        onKeyDown={(e) => { if (e.key === 'Enter') navigate(`${base}${item.id}`); }}
-                        style={{ width: '100%', cursor: 'pointer' }}
-                        aria-label={`View ${item.title}`}
-                    >
-                        <TooltipButton
-                            label={item.title}
-                            tooltip={`View ${item.title}`}
-                            data-testid={`item-${item.id}`}
-                            tabIndex={-1}
-                            style={{ width: '100%', textAlign: 'left' }}
-                        />
-                    </div>
-                </div>
-            </td>
-            <td style={{ textAlign: 'center' }}>
+        <TRow key={item.id}>
+            <TData>
+                <Box
+                    onClick={() => navigate(`${base}${item.id}`)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => { if (e.key === 'Enter') navigate(`${base}${item.id}`); }}
+                    aria-label={`View ${item.title}`}
+                    fullWidth
+                    cursorPointer
+                >
+                    <TooltipButton
+                        label={item.title}
+                        tooltip={`View ${item.title}`}
+                        data-testid={`item-${item.id}`}
+                        tabIndex={-1}
+                        style={{ width: '100%', textAlign: 'left' }}
+                    />
+                </Box>
+            </TData>
+            <TData css={{ textAlign: 'center' }}>
                 <TooltipButton
                     label=""
                     tooltip={`Delete ${item.title}`}
@@ -104,8 +103,8 @@ export function TableRow({ item, navigate, navigateToBase, deleteItemMutation }:
                     onClick={() => deleteItemMutation.mutate(item.id)}
                     style={{ width: 'auto' }}
                 />
-            </td>
-        </tr>
+            </TData>
+        </TRow>
     );
 }
 
@@ -160,7 +159,7 @@ interface SearchableTableProps {
 export function SearchableTable({ documents, title, navigateToBase, deleteItemMutation }: SearchableTableProps) {
     const { search, setSearch, inputRef, results } = useSearchResults(documents);
     return (
-        <TableContainer>
+        <Box variant="homepageSection">
             {title && <Heading>{title}</Heading>}
             <SearchInput
                 search={search}
@@ -172,7 +171,7 @@ export function SearchableTable({ documents, title, navigateToBase, deleteItemMu
                 navigateToBase={navigateToBase}
                 deleteItemMutation={deleteItemMutation}
             />
-        </TableContainer>
+        </Box>
     );
 }
 

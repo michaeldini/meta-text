@@ -96,7 +96,14 @@ export const globalStyles = globalCss({
         padding: 0,
     },
     'body': {
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
         backgroundColor: '$colors$background',
+        color: '$colors$text',
+        fontFamily: '$fonts$body',
+        lineHeight: 1.5,
+        overflowY: 'scroll', // prevent layout shift when navigating between pages with/without scrollbars
     },
     'svg': {
         background: 'transparent !important',
@@ -114,65 +121,62 @@ export const globalStyles = globalCss({
 // --------------------------------------------------------------
 // Layout primitives 
 // ------------------------------------------------------------
-export const Box = styled('div', {
+export const BaseBox = styled('div', {
     boxSizing: 'border-box',
-    color: '$colors$text',
-    fontFamily: '$fonts$body',
-    padding: '16px',
     variants: {
         noPad: { true: { padding: 0 } },
         fullWidth: { true: { width: '100%' } },
         center: { true: { marginLeft: 'auto', marginRight: 'auto' } },
-        padding: {
-            sm: { padding: '8px' },
-            md: { padding: '16px' },
-            lg: { padding: '24px' },
+        p: {
+            0: { padding: 0 },
+            1: { padding: '8px' },
+            2: { padding: '16px' },
+            3: { padding: '24px' },
         },
-        variant: {
-            danger: {
-                alignItems: 'flex-start',
-                padding: '10px 12px',
-                borderRadius: 8,
-                border: '1px solid $colors$dangerBorder',
-                background: 'rgba(229,62,62,0.08)',
-                color: '$colors$dangerBg',
-                marginTop: 12,
-                marginBottom: 12,
-                flex: 1,
-                minWidth: 0
-            },
+        m: {
+            0: { margin: 0 },
+            1: { margin: '8px' },
+            2: { margin: '16px' },
+            3: { margin: '24px' },
         },
-    }
-
+        gap: {
+            0: { gap: 0 },
+            1: { gap: '8px' },
+            2: { gap: '16px' },
+            3: { gap: '24px' },
+        },
+        cursorPointer: { true: { cursor: 'pointer' } },
+    },
+    defaultVariants: {
+        noPad: true,
+    },
 });
-
-export const Flex = styled('div', {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: '20px',
+export const Box = styled(BaseBox, {
     variants: {
         variant: {
-            danger: {
-                alignItems: 'flex-start',
-                padding: '10px 12px',
-                borderRadius: 8,
-                border: '1px solid $colors$dangerBorder',
-                color: '$colors$dangerBg',
-                marginTop: 12,
-                marginBottom: 12,
-                flex: 1,
-                minWidth: 0
+            homepageSection: {
+                minWidth: '20rem',
             },
-            noWrap: { flexWrap: 'nowrap' },
         },
     },
 });
 
-export const Stack = styled('div', {
+export const Flex = styled(BaseBox, {
+    display: 'flex',
+    flexWrap: 'wrap',
+    variants: {
+        noWrap: { true: { flexWrap: 'nowrap' } },
+        justifyCenter: { true: { justifyContent: 'center' } },
+
+    },
+});
+
+export const Stack = styled(BaseBox, {
     display: 'flex',
     flexDirection: 'column',
-    gap: '12px',
-});
+    defaultVariants: { gap: '1' }
+},
+);
 
 // --------------------------------------------------------------
 // Typography
@@ -368,11 +372,6 @@ export const Spinner = styled('div', {
 // --------------------------------------------------------------
 // Table primitives (moved from SearchableTable.tsx)
 // --------------------------------------------------------------
-export const TableContainer = styled(Box, {
-    padding: '16px',
-    minWidth: '20rem',
-    boxSizing: 'border-box',
-});
 
 export const Empty = styled('div', {
     padding: '16px',
@@ -397,6 +396,10 @@ export const THead = styled('thead', {
 });
 
 export const TRow = styled('tr', {
+    background: 'transparent',
+});
+
+export const TData = styled('td', {
     background: 'transparent',
 });
 
