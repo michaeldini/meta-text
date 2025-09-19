@@ -99,7 +99,7 @@
  * allowing you to reuse List & Item without duplicating code.
  */
 import React, { memo } from 'react';
-import { Box, Text, Stack, TagRoot as Badge, Button, Heading } from '@styles';
+import { Box, Text, Column, TagRoot as Badge, Button, Heading } from '@styles';
 import TooltipButton from '@components/ui/TooltipButton';
 import { getShortcutsByCategory, formatShortcut, type KeyboardShortcut } from '@utils/keyboardShortcuts';
 import { HiQuestionMarkCircle } from 'react-icons/hi2';
@@ -139,11 +139,11 @@ export function KeyboardShortcutList({ categories, align = 'center' }: KeyboardS
                 return (
                     <Box key={category}>
                         <Text css={{ fontWeight: 600, marginBottom: 8, color: 'inherit' }}>{category}</Text>
-                        <Stack css={{ flexDirection: 'column', alignItems: align === 'flex-start' ? 'flex-start' : 'center', gap: 4, paddingLeft: 16 }}>
+                        <Column css={{ flexDirection: 'column', alignItems: align === 'flex-start' ? 'flex-start' : 'center', gap: 4, paddingLeft: 16 }}>
                             {shortcuts.map((s, i) => (
                                 <KeyboardShortcutItem key={i} shortcut={s} />
                             ))}
-                        </Stack>
+                        </Column>
                     </Box>
                 );
             })}
@@ -179,11 +179,11 @@ export function KeyboardShortcutsDisplay({ categories }: KeyboardShortcutsDispla
                 }
                 title="Help"
             >
-                <Stack css={{ flexDirection: 'column', alignItems: 'flex-start', gap: 16, width: '100%' }}>
+                <Column css={{ flexDirection: 'column', alignItems: 'flex-start', gap: 16, width: '100%' }}>
                     <Heading css={{ fontWeight: 600 }}>Keyboard Shortcuts</Heading>
                     <Text css={{ fontSize: '0.95rem', color: '$colors$subtle' }}>Use these shortcuts to speed up your workflow.</Text>
                     <KeyboardShortcutList categories={categories} align="flex-start" />
-                </Stack>
+                </Column>
             </SimpleDialog>
         </>
     );

@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Stack } from '@styles';
+import { Column } from '@styles';
 import Chunk from '@features/chunk/Chunk';
 import type { ChunkType } from '@mtypes/documents';
 import { useUserConfig } from '@services/userConfigService';
@@ -26,10 +26,15 @@ export function ChunkList({ chunks, startIndex }: ChunkListProps) {
 
 
     return (
-        <Stack css={{ gap: 4, marginBottom: 20 }} data-testid="chunk-list" >
-            {memoizedChunks.map((chunk: ChunkType, idx: number) => (
-                <Chunk key={chunk.id} chunk={chunk} chunkIdx={startIndex + idx} uiPreferences={uiPreferences} />
-            ))}
-        </Stack>
+        <Column
+            gap="2"
+            data-testid="chunk-list"
+        >
+            {
+                memoizedChunks.map((chunk: ChunkType, idx: number) => (
+                    <Chunk key={chunk.id} chunk={chunk} chunkIdx={startIndex + idx} uiPreferences={uiPreferences} />
+                ))
+            }
+        </Column >
     );
 }

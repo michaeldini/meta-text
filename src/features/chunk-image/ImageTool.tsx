@@ -4,7 +4,7 @@ import { HiOutlineSparkles } from 'react-icons/hi2';
  * Provides an interface for generating and displaying images for text chunks.
  */
 import React, { useState } from 'react';
-import { Box, Text, Button, Stack, TagRoot as Badge, Textarea } from '@styles';
+import { Box, Text, Button, Column, TagRoot as Badge, Textarea } from '@styles';
 import { ErrorAlert } from '@components/ErrorAlert';
 import { TooltipButton } from '@components/ui/TooltipButton';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -108,7 +108,7 @@ function GenerateImageDialog({ chunk }: { chunk: ChunkType }) {
 
     return (
         <form onSubmit={handleSubmit}>
-            <Stack css={{ flexDirection: 'column', alignItems: 'stretch', gap: 16 }}>
+            <Column css={{ flexDirection: 'column', alignItems: 'stretch', gap: 16 }}>
                 <Box>
                     <Textarea
                         emphasized
@@ -128,7 +128,7 @@ function GenerateImageDialog({ chunk }: { chunk: ChunkType }) {
                         <Text css={{ fontSize: '0.9rem', color: '$colors$subtle', marginBottom: 4 }}>
                             Suggested prompts:
                         </Text>
-                        <Stack css={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+                        <Column css={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
                             {SUGGESTED_PROMPTS.map((suggestion, index) => (
                                 <Badge
                                     key={index}
@@ -139,7 +139,7 @@ function GenerateImageDialog({ chunk }: { chunk: ChunkType }) {
                                     {suggestion}
                                 </Badge>
                             ))}
-                        </Stack>
+                        </Column>
                     </Box>
                 )}
 
@@ -155,7 +155,7 @@ function GenerateImageDialog({ chunk }: { chunk: ChunkType }) {
                 >
                     {mutation.isPending ? 'Generating...' : 'Generate'}
                 </Button>
-            </Stack>
+            </Column>
         </form>
     );
 }

@@ -2,7 +2,7 @@
 // Sticky inside StyledChunk, scrolls with user and stops at end
 
 import React from 'react';
-import { Stack, StickyContainer } from '@styles';
+import { Column, StickyContainer } from '@styles';
 import type { ChunkType } from '@mtypes/documents';
 
 // Stationary Tools
@@ -29,12 +29,12 @@ import { uiPreferences } from '@mtypes/user';
 
 function renderStationaryTools(chunk: ChunkType, asRow: boolean, uiPreferences?: uiPreferences) {
     return (
-        <Stack style={{ gap: 0, flexDirection: asRow ? 'row' : 'column' }}>
+        <Column style={{ gap: 0, flexDirection: asRow ? 'row' : 'column' }}>
             <ChunkPosition chunk={chunk} uiPreferences={uiPreferences} />
             <CopyTool chunkText={chunk.text} />
             <ChunkBookmarkToggle chunk={chunk} />
             <ChunkFavoriteToggle chunk={chunk} />
-        </Stack>
+        </Column>
     );
 }
 

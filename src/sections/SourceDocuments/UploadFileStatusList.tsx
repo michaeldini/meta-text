@@ -1,6 +1,6 @@
 // Renders list of files with upload statuses and overall progress feedback.
 import React from 'react';
-import { Wrap, WrapItem, TagRoot, TagLabel, Text, Box, Flex } from '@styles';
+import { Wrap, WrapItem, TagRoot, TagLabel, Text, Box, Row } from '@styles';
 import TooltipButton from '@components/ui/TooltipButton';
 
 export interface UploadStatus {
@@ -33,7 +33,7 @@ export function UploadFileStatusList({ files, statuses }: UploadFileStatusListPr
 
     return (
         <Box style={{ marginTop: 8, width: '100%' }}>
-            <Flex >
+            <Row >
                 <Text css={{ fontWeight: 'bold' }}>Files to upload:</Text>
                 <Text css={{ fontSize: '0.9rem', color: '$colors$subtle' }} aria-live="polite">
                     {completed === total && total > 0
@@ -44,7 +44,7 @@ export function UploadFileStatusList({ files, statuses }: UploadFileStatusListPr
                             ? `Uploading ${completed + uploadingCount}/${total}...`
                             : `Ready (${total})`}
                 </Text>
-            </Flex>
+            </Row>
             <Wrap>
                 {files.map((f, idx) => {
                     const status = statuses[idx];

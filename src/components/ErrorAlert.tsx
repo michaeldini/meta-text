@@ -2,7 +2,7 @@
 // Implements local dismiss logic or delegates to provided onClose handler.
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Box, Heading, Text, Flex } from '@styles';
+import { Box, Heading, Text, Row } from '@styles';
 import { HiXCircle } from 'react-icons/hi2';
 
 export interface ErrorAlertProps {
@@ -29,13 +29,13 @@ export function ErrorAlert({
         if (onClose) onClose(); else setDismissed(true);
     };
     return (
-        <Flex variant="danger" data-testid={dataTestId} role="alert">
+        <Row variant="danger" data-testid={dataTestId} role="alert">
             <Box>
                 <Heading tone="danger">{title}</Heading>
                 <Text>{message}</Text>
             </Box>
             <HiXCircle style={{ flex: '0 0 auto', fontSize: '1.5rem' }} onClick={handleClose} />
-        </Flex>
+        </Row>
     );
 }
 

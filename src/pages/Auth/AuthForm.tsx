@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     Box,
-    Stack,
+    Column,
     Heading,
     Input,
     Button,
@@ -39,7 +39,7 @@ function AuthForm({ type, onSubmit, error, loading, redirectOnSuccess }: AuthFor
 
     return (
         <Box as="form" css={{ maxWidth: 350, margin: '40px auto 0', padding: 24, borderRadius: 8, boxShadow: '0 2px 16px rgba(0,0,0,0.08)' }} onSubmit={handleSubmit}>
-            <Stack>
+            <Column>
                 <Heading css={{ textAlign: 'center', marginBottom: 0 }}>{type === 'login' ? 'Login' : 'Register'}</Heading>
                 <Input
                     type="text"
@@ -63,7 +63,7 @@ function AuthForm({ type, onSubmit, error, loading, redirectOnSuccess }: AuthFor
                 <Button type="submit" tone="primary" disabled={loading} css={{ width: '100%' }}>
                     {loading ? (type === 'login' ? 'Logging in...' : 'Registering...') : type === 'login' ? 'Login' : 'Register'}
                 </Button>
-            </Stack>
+            </Column>
         </Box>
     );
 }

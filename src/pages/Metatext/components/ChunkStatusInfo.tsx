@@ -1,6 +1,6 @@
 // Component for displaying chunk count and status information
 import React from 'react';
-import { Stack, Box, Text } from '@styles';
+import { Column, Box, Text } from '@styles';
 import { SearchBar } from '@features/chunk-search';
 import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
 

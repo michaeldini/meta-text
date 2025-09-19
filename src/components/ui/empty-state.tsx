@@ -2,7 +2,7 @@
  * EmptyState component from Chakra CLI.
  */
 import * as React from "react"
-import { Box, Text, Stack } from '@styles';
+import { Box, Text, Column } from '@styles';
 
 export interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
@@ -15,7 +15,7 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
     const { title, description, icon, children, ...rest } = props;
     return (
       <Box ref={ref} css={{ width: '100%', textAlign: 'center', paddingTop: 32, paddingBottom: 32, paddingLeft: 16, paddingRight: 16 }} {...rest}>
-        <Stack css={{ alignItems: 'center', gap: 12 }}>
+        <Column css={{ alignItems: 'center', gap: 12 }}>
           {icon && (
             <Box>{icon}</Box>
           )}
@@ -24,7 +24,7 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
             <Text as="p" css={{ color: '$gray11', fontSize: 16, marginBottom: 8 }}>{description}</Text>
           )}
           {children}
-        </Stack>
+        </Column>
       </Box>
     );
   }

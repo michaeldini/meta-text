@@ -5,7 +5,7 @@
 // reference them at `/audio/your-file.mp3`.
 
 import React, { useRef, useState, useEffect } from 'react';
-import { Box, Flex, Button, Text, Stack } from '@styles';
+import { Box, Row, Button, Text, Column } from '@styles';
 import { FaPlay, FaPause } from 'react-icons/fa';
 
 // ExperimentsPage
@@ -43,11 +43,11 @@ export function ExperimentsPage() {
     const togglePlay = () => setIsPlaying(p => !p);
 
     return (
-        <Flex >
+        <Row >
             <Text css={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: 16 }}>MP3 Player</Text>
 
             <Box>
-                <Stack css={{ alignItems: 'flex-start', gap: 16 }}>
+                <Column css={{ alignItems: 'flex-start', gap: 16 }}>
                     <audio ref={audioRef} src={src} preload="auto" />
 
                     <Button onClick={togglePlay} aria-label={isPlaying ? 'Pause' : 'Play'}>
@@ -56,9 +56,9 @@ export function ExperimentsPage() {
                     </Button>
 
                     <Text css={{ fontSize: '0.875rem' }}>File: <span style={{ fontWeight: 600 }}>{src.replace('/audio/', '')}</span></Text>
-                </Stack>
+                </Column>
             </Box>
-        </Flex>
+        </Row>
     );
 };
 

@@ -3,7 +3,7 @@
 // At the end of the chunk, there is a button to merge the current chunk with the next one
 
 import React, { memo, useCallback, useState, useEffect } from 'react';
-import { Box, Flex } from '@styles';
+import { Box, Row } from '@styles';
 import { ControlledDialog } from '@components/ui';
 
 import InteractiveText from './InteractiveText';
@@ -64,7 +64,7 @@ const ChunkWords = memo(function ChunkWords({
 
     return (
         <Box fullWidth data-chunk-id={`chunk-${chunkIdx}`}>
-            <Flex css={{ gap: 0 }}>
+            <Row css={{ gap: 0 }}>
                 <InteractiveText
                     words={words}
                     chunkIdx={chunkIdx}
@@ -80,7 +80,7 @@ const ChunkWords = memo(function ChunkWords({
                 <Box as="span" css={{ display: 'inline-block' }}>
                     <MergeChunksTool chunk={chunk} />
                 </Box>
-            </Flex>
+            </Row>
 
             <ControlledDialog
                 open={drawerOpen}

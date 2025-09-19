@@ -1,7 +1,7 @@
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2';
 // Pagination component for chunk navigation
 import React from 'react';
-import { Flex, Button } from '@styles';
+import { Row, Button } from '@styles';
 
 interface ChunkPaginationProps {
     currentPage: number;
@@ -42,7 +42,10 @@ export function ChunkPagination({
     const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
     return (
-        <Flex data-testid="chunk-pagination">
+        <Row
+            data-testid="chunk-pagination"
+            justifyCenter
+        >
             <Button
                 tone="default"
                 aria-label="Previous page"
@@ -75,6 +78,6 @@ export function ChunkPagination({
             >
                 <HiChevronRight />
             </Button>
-        </Flex>
+        </Row>
     );
 }

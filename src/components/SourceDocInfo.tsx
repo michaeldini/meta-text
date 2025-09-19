@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Text, Stack, Flex, Textarea } from '@styles';
+import { Box, Text, Column, Row, Textarea } from '@styles';
 import { Input } from '@styles';
 import { SimpleDialog } from '@components/ui';
 
@@ -61,7 +61,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
     };
 
     return (
-        <Flex>
+        <Row>
             <TooltipButton
                 label="Generate"
                 tooltip="Regenerate document info"
@@ -71,7 +71,7 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
                 icon={<HiOutlineSparkles />}
             />
             <Text>Click on a field to edit. Enter to Save. Tab to Cancel</Text>
-            <Stack css={{ flex: 1, minWidth: '320px', gap: '2px' }}>
+            <Column css={{ flex: 1, minWidth: '320px', gap: '2px' }}>
                 {FIELD_CONFIG.map(config => (
                     <Box key={config.key} noPad>
                         <Text css={{ fontWeight: 600 }}>{config.label}</Text>
@@ -82,8 +82,8 @@ export function SourceDocInfo(props: SourceDocInfoProps) {
                         />
                     </Box>
                 ))}
-            </Stack>
-        </Flex>
+            </Column>
+        </Row>
     );
 }
 

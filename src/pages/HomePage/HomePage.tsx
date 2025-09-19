@@ -9,13 +9,13 @@ import type { ReactElement } from 'react';
 // Data Fetching Hooks
 import { useSourceDocuments, useMetatexts, useDeleteMetatext, useDeleteSourceDocument } from '@features/documents/useDocumentsData';
 // styling (stitches)
-import { Box, Flex, Link } from '@styles';
+import { Box, Row, Link } from '@styles';
 import MetatextCreateForm from '@sections/Metatext/MetatextCreateForm';
 import { SearchableTable } from '@components/SearchableTable';
 import SourceDocUploadForm from '@sections/SourceDocuments/SourceDocUploadForm';
 
 // HomePage component
-// Use Box and Flex directly, with variants if needed
+// Use Box and Row directly, with variants if needed
 
 function HomePage(): ReactElement {
     // Fetch source documents and metatexts
@@ -24,7 +24,7 @@ function HomePage(): ReactElement {
 
     return (
         <Box center>
-            <Flex
+            <Row
                 data-testid="homepage-content"
                 gap="3"
                 justifyCenter
@@ -46,7 +46,7 @@ function HomePage(): ReactElement {
                     navigateToBase="/sourcedoc/"
                     deleteItemMutation={useDeleteSourceDocument()}
                 />
-            </Flex>
+            </Row>
 
             <Link href="/experiments">
                 Go to Experiments

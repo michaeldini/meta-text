@@ -23,7 +23,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@store/authStore';
 import { getNavigationConfig } from './navigationConfig';
 import { filterNavItems } from './utils';
-import { Flex, IconWrapper, Button } from '@styles';
+import { Row, IconWrapper, Button } from '@styles';
 
 
 /**
@@ -110,7 +110,7 @@ export function NavBar() {
     const navItems = filterNavItems(navConfig.items, isAuthenticated);
 
     return (
-        <Flex as="nav" data-testid="navbar">
+        <Row as="nav" data-testid="navbar">
             {navItems.map(item => (
                 <Button
                     key={item.label}
@@ -121,7 +121,7 @@ export function NavBar() {
                     {item.label}
                 </Button>
             ))}
-        </Flex>
+        </Row>
     );
 }
 

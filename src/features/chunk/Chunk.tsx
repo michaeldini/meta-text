@@ -3,7 +3,7 @@ import React, { memo } from 'react';
 // UI
 import ChunkWords from './components/ChunkWords';
 import { ChunkToolsContainer } from '@features/chunk-tools';
-import { Flex } from '@styles';
+import { Row } from '@styles';
 
 // Types
 import type { ChunkType } from '@mtypes/documents';
@@ -21,7 +21,11 @@ const Chunk = memo(function Chunk({
     uiPreferences
 }: ChunkProps) {
     return (
-        <Flex variant="noWrap" data-chunk-id={chunk.id}>
+        <Row
+            noWrap
+            data-chunk-id={chunk.id}
+            data-testid={`chunk-${chunkIdx}`}
+        >
             <ChunkWords
                 chunk={chunk}
                 chunkIdx={chunkIdx}
@@ -31,7 +35,7 @@ const Chunk = memo(function Chunk({
                 chunk={chunk}
                 uiPreferences={uiPreferences}
             />
-        </Flex>
+        </Row>
     );
 });
 

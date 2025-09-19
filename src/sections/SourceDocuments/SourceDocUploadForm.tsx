@@ -2,7 +2,7 @@ import { HiArrowDownTray } from 'react-icons/hi2';
 // SourceDocUploadForm: main form wrapper orchestrating file picker + submission
 import * as React from 'react';
 // UI (migrated from Chakra -> Stitches)
-import { Heading, Stack, Box } from '@styles';
+import { Heading, Column, Box } from '@styles';
 import { ErrorAlert } from '@components/ErrorAlert';
 import SourceDocFilePicker from './SourceDocFilePicker';
 
@@ -18,7 +18,7 @@ function SourceDocUploadForm(): React.ReactElement {
             <Heading>Upload</Heading>
             <ErrorAlert message={error} title="Upload failed" data-testid="upload-error" />
             <form onSubmit={handleSubmit} aria-busy={isPending}>
-                <Stack>
+                <Column>
                     <SourceDocFilePicker
                         files={files}
                         disabled={isPending}
@@ -37,7 +37,7 @@ function SourceDocUploadForm(): React.ReactElement {
                         {!isPending && <HiArrowDownTray />}
                         {isPending ? 'Uploading...' : 'Upload Documents'}
                     </TooltipButton>
-                </Stack>
+                </Column>
             </form>
         </Box>
     );

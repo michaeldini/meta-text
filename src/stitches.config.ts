@@ -127,6 +127,8 @@ export const BaseBox = styled('div', {
         noPad: { true: { padding: 0 } },
         fullWidth: { true: { width: '100%' } },
         center: { true: { marginLeft: 'auto', marginRight: 'auto' } },
+        justifyCenter: { true: { justifyContent: 'center' } },
+        noWrap: { true: { flexWrap: 'nowrap' } },
         p: {
             0: { padding: 0 },
             1: { padding: '8px' },
@@ -161,20 +163,21 @@ export const Box = styled(BaseBox, {
     },
 });
 
-export const Flex = styled(BaseBox, {
+export const Row = styled(BaseBox, {
     display: 'flex',
+    flexDirection: 'row',
     flexWrap: 'wrap',
-    variants: {
-        noWrap: { true: { flexWrap: 'nowrap' } },
-        justifyCenter: { true: { justifyContent: 'center' } },
-
+    defaultVariants: {
+        gap: '1',
     },
 });
 
-export const Stack = styled(BaseBox, {
+export const Column = styled(BaseBox, {
     display: 'flex',
     flexDirection: 'column',
-    defaultVariants: { gap: '1' }
+    defaultVariants: {
+        gap: '1'
+    }
 },
 );
 

@@ -5,11 +5,10 @@ import { useNavigate } from 'react-router-dom';
 
 // Uses a stack layout for the main content
 import type { ReactElement } from 'react';
-import { Stack, Box, Heading } from '@styles';
+import { Column, Box, Heading } from '@styles';
 import { ErrorAlert } from '@components/ErrorAlert';
 
 // Imports for components
-import { ChunkToolsPanel } from '@features/chunk-tools';
 import { MetatextHeader, ChunkDisplayContainer } from '@pages/Metatext/components';
 
 import { useMetatextDetail } from '@features/documents/useDocumentsData';
@@ -88,16 +87,19 @@ function MetatextDetailPage(): ReactElement | null {
     // Redirect if query error (invalid or not found)
     if (id === null) return null;
     return (
-        <Box data-testid="metatext-detail-page">
+        <Box
+            data-testid="metatext-detail-page"
+            p="2"
+        >
             <ErrorAlert
                 message={error ? (typeof error === 'string' ? error : (error && typeof error === 'object' && 'message' in error ? String((error as { message?: unknown }).message) : 'Something went wrong while fetching this metatext.')) : null}
                 title="Failed to load metatext"
                 data-testid="metatext-detail-error"
             />
             {metatext && (
-                <Stack
+                <Column
                     data-testid="metatext-detail-content"
-                    css={{ animationName: 'fade-in', animationDuration: '160ms', gap: 6 }}
+                    gap="1"
                 >
                     <Heading >metatext: {metatext.title}</Heading>
                     <MetatextHeader
@@ -110,7 +112,6 @@ function MetatextDetailPage(): ReactElement | null {
 
                     <ChunkDisplayContainer
                         displayChunks={displayChunks}
-                        totalFilteredChunks={totalFilteredChunks}
                         chunksPerPage={chunksPerPage}
                         currentPage={currentPage}
                         totalPages={totalPages}
@@ -120,7 +121,7 @@ function MetatextDetailPage(): ReactElement | null {
 
                     {/* <ChunkToolsPanel /> */}
 
-                </Stack>
+                </Column>
             )}
         </Box>
     );

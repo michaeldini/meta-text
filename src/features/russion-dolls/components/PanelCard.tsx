@@ -3,7 +3,7 @@ import { HiXMark } from 'react-icons/hi2';
 // and the content rendered via WordSelector to enable creating follow-up panels.
 
 import React from 'react';
-import { Box, Button, Flex, Text, Link } from '@styles';
+import { Box, Button, Row, Text, Link } from '@styles';
 import WordSelector from './WordSelector';
 import { Panel } from '@mtypes/experiments';
 import { HiArrowsPointingOut, HiArrowsPointingIn } from 'react-icons/hi2';
@@ -29,11 +29,11 @@ type PanelHeaderProps = {
 export function PanelHeader({ sourceWord, minimized, onMinimize, onClose, headerBg }: PanelHeaderProps) {
     return (
         <>
-            <Flex>
+            <Row>
                 <Text title={sourceWord ?? undefined} css={{ fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', background: headerBg ?? 'transparent', padding: 8 }}>
                     {sourceWord}
                 </Text>
-                <Flex>
+                <Row>
                     {minimized ? (
                         <TooltipButton
                             label=""
@@ -55,8 +55,8 @@ export function PanelHeader({ sourceWord, minimized, onMinimize, onClose, header
                         onClick={onClose}
                         icon={<HiXMark />}
                     />
-                </Flex>
-            </Flex>
+                </Row>
+            </Row>
         </>
     );
 };
@@ -75,19 +75,19 @@ export function PanelActions({ sourceWord, viewMode, loading, onToggleView }: Pa
     const googleUrl = `https://www.google.com/search?q=${encodedQuery}`;
 
     return (
-        <Flex >
-            <Flex>
+        <Row >
+            <Row>
                 <Link href={wikiUrl} target="_blank" rel="noopener noreferrer">
                     <Button css={{ background: 'transparent', padding: '4px 6px' }} disabled={!sourceWord}>W</Button>
                 </Link>
                 <Link href={googleUrl} target="_blank" rel="noopener noreferrer">
                     <Button css={{ background: 'transparent', padding: '4px 6px' }} disabled={!sourceWord}>G</Button>
                 </Link>
-            </Flex>
+            </Row>
             <Button tone="primary" onClick={onToggleView} disabled={!!loading} css={{ padding: '6px 10px' }}>
                 {viewMode === 'comprehensive' ? 'Show concise' : 'Show comprehensive'}
             </Button>
-        </Flex>
+        </Row>
     );
 };
 
@@ -134,9 +134,9 @@ export function PanelCard({ panel, onToggleView, onMinimize, onClose, onSelectio
             )}
 
             {!panel.minimized && panel.loading && (
-                <Flex>
+                <Row>
                     <div>…</div>
-                </Flex>
+                </Row>
             )}
 
             {!panel.minimized && panel.error && (
