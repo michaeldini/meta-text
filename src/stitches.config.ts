@@ -74,6 +74,7 @@ export const {
         marginY: (value: string) => ({ marginTop: value, marginBottom: value }),
         paddingX: (value: string) => ({ paddingLeft: value, paddingRight: value }),
         paddingY: (value: string) => ({ paddingTop: value, paddingBottom: value }),
+        bg: (value: string) => ({ backgroundColor: value }),
 
     },
 });
@@ -148,18 +149,17 @@ export const BaseBox = styled('div', {
             3: { gap: '24px' },
         },
         cursorPointer: { true: { cursor: 'pointer' } },
-    },
-    defaultVariants: {
-        noPad: true,
-    },
-});
-export const Box = styled(BaseBox, {
-    variants: {
         variant: {
             homepageSection: {
                 minWidth: '20rem',
             },
         },
+    },
+
+});
+export const Box = styled(BaseBox, {
+    defaultVariants: {
+        noPad: true,
     },
 });
 
@@ -513,4 +513,9 @@ export const IconWrapper = styled('span', {
     justifyContent: 'center',
     fontSize: '1.5em',
     background: 'transparent',
+    variants: {
+        closeButton: {
+            true: { alignSelf: 'flex-end', justifyContent: 'end', cursor: 'pointer', flex: '1 1 auto' },
+        },
+    },
 });
