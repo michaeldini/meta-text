@@ -14,7 +14,7 @@
  * - useProcessedChunks: Processes chunks based on search query.
  * - usePaginatedChunks: Manages pagination state for chunks.
  * - useValidatedRouteId: Validates the metatext ID from route params.
- * - useMetatextDetailKeyboard: Sets up keyboard shortcuts for navigation.
+ * - useHotkeys: Sets up keyboard shortcuts for navigation (from react-hotkeys-hook).
  * 
  * Error Handling:
  * - Displays an error alert if fetching the metatext fails.
@@ -26,14 +26,18 @@
  */
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useHotkeys } from 'react-hotkeys-hook';
 import type { ReactElement } from 'react';
 import { ErrorAlert } from '@components/ErrorAlert';
 import { MetatextToolbar, ChunkDisplayContainer } from './components';
 import { useMetatextDetail } from '@features/documents/useDocumentsData';
-import { useMetatextDetailKeyboard } from './hooks/useMetatextDetailKeyboard';
 import { useProcessedChunks } from './hooks/useProcessedChunks';
 import { usePaginatedChunks } from './hooks/usePaginatedChunks';
 import { useValidatedRouteId } from '@hooks/useValidatedRouteId';
+import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
+import { useChunkToolsStore } from '@store/chunkToolsStore';
+import { useDrawerStore, DRAWERS } from '@store/drawerStore';
+import { SHORTCUTS } from '@utils/keyboardShortcuts';
 import { Column, Box, Heading } from '@styles';
 
 function MetatextDetailPage(): ReactElement | null {
@@ -115,6 +119,12 @@ function MetatextDetailPage(): ReactElement | null {
         /** Function to set the current page. */
         setCurrentPage,
 
+        /** Function to navigate to the next page. */
+        nextPage,
+
+        /** Function to navigate to the previous page. */
+        prevPage,
+
         /** The starting index of the chunks for the current page. */
         startIndex,
 
@@ -130,6 +140,13 @@ function MetatextDetailPage(): ReactElement | null {
 
 
     // =========================
+    // Store hooks for shortcuts
+    // =========================
+    const { clearSearch, query } = useSearchStore();
+    const toggleTool = useChunkToolsStore(state => state.toggleTool);
+    const toggleDrawer = useDrawerStore(s => s.toggleDrawer);
+
+    // =========================
     // Other handlers
     // =========================
     // review button navigates itself; keep a handler only for keyboard shortcut
@@ -138,19 +155,45 @@ function MetatextDetailPage(): ReactElement | null {
         navigate(`/metatext/${id}/review`);
     }, [id, navigate]);
 
+    // Search-related functions
+    const focusSearch = React.useCallback(() => {
+        // Try to find search input in the DOM
+        const searchInput = document.querySelector('input[placeholder*="Search"]') as HTMLInputElement;
+        searchInput?.focus();
+    }, []);
+
+    const handleEscape = React.useCallback(() => {
+        const activeElement = document.activeElement;
+        const isSearchFocused = activeElement?.tagName === 'INPUT' &&
+            (activeElement as HTMLInputElement).placeholder?.includes('Search');
+
+        if (isSearchFocused || query) {
+            clearSearch();
+        }
+    }, [clearSearch, query]);
+
     // =========================
-    // Unified Keyboard Shortcuts (Navigation + Search)
+    // Keyboard Shortcuts with react-hotkeys-hook
     // =========================
 
-    useMetatextDetailKeyboard({
-        enabled: true,
-        onNextPage: () => setCurrentPage(currentPage + 1),
-        onPrevPage: () => setCurrentPage(currentPage - 1),
-        onGotoReview: goToReview,
-        currentPage,
-        totalPages,
-        searchInputRef: undefined, // Could pass a ref here if needed
-    });
+    // Navigation shortcuts
+    useHotkeys(SHORTCUTS.NEXT_PAGE.key, nextPage, { enabled: currentPage < totalPages });
+
+    useHotkeys(SHORTCUTS.PREV_PAGE.key, prevPage, { enabled: currentPage > 1 });
+
+    useHotkeys(SHORTCUTS.GOTO_REVIEW.key, goToReview);
+
+    // Global shortcuts
+    useHotkeys(SHORTCUTS.FOCUS_SEARCH.key, focusSearch);
+    useHotkeys(SHORTCUTS.CLEAR_SEARCH.key, handleEscape);
+    useHotkeys(SHORTCUTS.TOGGLE_HELP.key, () => toggleDrawer(DRAWERS.keyboardShortcuts));
+
+    // Chunk tool shortcuts (Alt+1 through Alt+5)
+    useHotkeys(SHORTCUTS.NOTE_SUMMARY.key, () => toggleTool('note-summary'));
+    useHotkeys(SHORTCUTS.EVALUATION.key, () => toggleTool('evaluation'));
+    useHotkeys(SHORTCUTS.IMAGE.key, () => toggleTool('image'));
+    useHotkeys(SHORTCUTS.REWRITE.key, () => toggleTool('rewrite'));
+    useHotkeys(SHORTCUTS.EXPLANATION.key, () => toggleTool('explanation'));
     // Redirect if query error (invalid or not found)
     if (id === null) return null;
     return (

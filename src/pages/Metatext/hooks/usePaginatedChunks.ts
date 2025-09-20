@@ -22,6 +22,8 @@ interface UsePaginatedChunksResult {
     currentPage: number;
     totalPages: number;
     setCurrentPage: (page: number) => void;
+    nextPage: () => void;
+    prevPage: () => void;
     startIndex: number;
     endIndex: number;
     goToChunkById: (chunkId: number) => void;
@@ -71,6 +73,22 @@ export function usePaginatedChunks({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pager.totalPages, pager.setCurrentPage]);
 
+    // Navigation functions for next/previous page
+    const nextPage = useCallback(() => {
+        const totalPages = pager.totalPages || 1;
+        if (pager.currentPage < totalPages) {
+            pager.setCurrentPage(pager.currentPage + 1);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pager.currentPage, pager.totalPages, pager.setCurrentPage]);
+
+    const prevPage = useCallback(() => {
+        if (pager.currentPage > 1) {
+            pager.setCurrentPage(pager.currentPage - 1);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pager.currentPage, pager.setCurrentPage]);
+
     return {
         displayChunks: pager.displayChunks,
         totalFilteredChunks: pager.totalFilteredChunks,
@@ -78,6 +96,8 @@ export function usePaginatedChunks({
         currentPage: pager.currentPage,
         totalPages: pager.totalPages,
         setCurrentPage: setCurrentPageSafe,
+        nextPage,
+        prevPage,
         startIndex: pager.startIndex,
         endIndex: pager.endIndex,
         goToChunkById: pager.goToChunkById,
