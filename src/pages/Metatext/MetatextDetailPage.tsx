@@ -157,8 +157,8 @@ function MetatextDetailPage(): ReactElement | null {
 
     // Search-related functions
     const focusSearch = React.useCallback(() => {
-        // Try to find search input in the DOM
-        const searchInput = document.querySelector('input[placeholder*="Search"]') as HTMLInputElement;
+        // Prefer a stable id selector for the search input so keyboard shortcut reliably focuses it
+        const searchInput = document.getElementById('metatext-search-input') as HTMLInputElement | null;
         searchInput?.focus();
     }, []);
 

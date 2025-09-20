@@ -40,6 +40,8 @@ export function SearchBar({
         <Box noPad css={{ backgroundColor: 'transparent', borderRadius: 6, marginRight: 12, border: '1px solid $border', display: 'flex', alignItems: 'center' }}>
             <HiMagnifyingGlass />
             <Input
+                id="metatext-search-input"
+                data-testid="metatext-search-input"
                 ref={inputRef}
                 placeholder={placeholder}
                 value={query}

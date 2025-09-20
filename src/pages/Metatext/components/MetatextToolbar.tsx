@@ -156,7 +156,7 @@ export function MetatextToolbar({
                 <ReviewMetatextButton />
             </Toolbar.Button>
             <Toolbar.Button asChild>
-                <KeyboardShortcutsDisplay categories={['Navigation', 'Interface']} />
+                <KeyboardShortcutsDisplay />
             </Toolbar.Button>
             <Toolbar.Button asChild>
                 <TooltipButton

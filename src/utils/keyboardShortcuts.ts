@@ -11,7 +11,7 @@ export interface ShortcutAction extends KeyboardShortcut {
 // Consolidated shortcuts registry (single source of truth)
 export const SHORTCUTS = {
     // Global
-    FOCUS_SEARCH: { key: 'cmd+k', description: 'Focus search input' },
+    FOCUS_SEARCH: { key: 'ctrl+k', description: 'Focus search input' },
     CLEAR_SEARCH: { key: 'escape', description: 'Clear search or escape current focus' },
     TOGGLE_HELP: { key: 'alt+h', description: 'Toggle help panel' },
 
@@ -26,28 +26,6 @@ export const SHORTCUTS = {
     IMAGE: { key: 'alt+3', description: 'Toggle Image tool' },
     REWRITE: { key: 'alt+4', description: 'Toggle Rewrite tool' },
     EXPLANATION: { key: 'alt+5', description: 'Toggle Explanation tool' },
-} as const;
-
-// Backwards-compatible named exports for commonly-used groups (map to SHORTCUTS)
-export const GLOBAL_SHORTCUTS = {
-    FOCUS_SEARCH: SHORTCUTS.FOCUS_SEARCH,
-    CLEAR_SEARCH: SHORTCUTS.CLEAR_SEARCH,
-    TOGGLE_HELP: SHORTCUTS.TOGGLE_HELP,
-} as const;
-
-export const NAVIGATION_SHORTCUTS = {
-    NEXT_PAGE: SHORTCUTS.NEXT_PAGE,
-    PREV_PAGE: SHORTCUTS.PREV_PAGE,
-    GOTO_REVIEW: SHORTCUTS.GOTO_REVIEW,
-} as const;
-
-
-export const CHUNK_TOOL_SHORTCUTS = {
-    NOTE_SUMMARY: SHORTCUTS.NOTE_SUMMARY,
-    EVALUATION: SHORTCUTS.EVALUATION,
-    IMAGE: SHORTCUTS.IMAGE,
-    REWRITE: SHORTCUTS.REWRITE,
-    EXPLANATION: SHORTCUTS.EXPLANATION,
 } as const;
 
 /**
