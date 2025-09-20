@@ -4,9 +4,6 @@ import { css } from '@stitches/react';
 // import { FontFamilySelect } from '@components/stylecontrols';
 import { Box, Text, Input } from '@styles';
 import { useUIPreferences } from '@hooks/useUIPreferences';
-
-
-
 import { Select } from '@components/ui/select';
 import { useFontFamilySelect } from '@hooks/stylecontrols/useFontFamilySelect';
 
@@ -51,13 +48,6 @@ const numberInputStyle = css({
  * Use boolean props to control which controls are rendered.
  */
 
-interface StyleControlsProps {
-    showTextSize?: boolean;
-    showLineHeight?: boolean;
-    showPaddingX?: boolean;
-    showFontFamily?: boolean;
-}
-
 
 interface StyleNumberInputProps {
     label: string;
@@ -88,12 +78,20 @@ function StyleNumberInput({ label, value, min, max, step, onChange, disabled }: 
     );
 }
 
-export function StyleControls({
+
+interface StyleToolsProps {
+    showTextSize?: boolean;
+    showLineHeight?: boolean;
+    showPaddingX?: boolean;
+    showFontFamily?: boolean;
+}
+
+export function StyleTools({
     showTextSize = true,
     showLineHeight = true,
     showPaddingX = true,
     showFontFamily = true,
-}: StyleControlsProps): React.ReactElement {
+}: StyleToolsProps): React.ReactElement {
     const { textSizePx, fontFamily, lineHeight, paddingX, updateUserConfig } = useUIPreferences();
     return (
         <>
@@ -137,4 +135,4 @@ export function StyleControls({
     );
 }
 
-export default StyleControls;
+export default StyleTools;

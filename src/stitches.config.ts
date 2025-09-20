@@ -196,7 +196,7 @@ export const Heading = styled('h3', {
                 color: '$colors$heading',
             },
             danger: {
-                color: '$colors$dangerBg',
+                color: 'black',
             },
         },
     },
@@ -217,7 +217,7 @@ export const Text = styled('div', {
                 color: '$colors$subtle',
             },
             danger: {
-                color: '$colors$dangerBg',
+                color: 'black',
             },
         },
     },

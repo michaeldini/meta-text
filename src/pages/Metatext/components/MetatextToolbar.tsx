@@ -4,7 +4,7 @@ import { HiArrowDownTray, HiBookmark, HiHashtag, HiOutlineStar, HiStar, HiViewfi
 import * as Toolbar from '@radix-ui/react-toolbar';
 import { styled } from '@styles';
 
-import { KeyboardShortcutsDisplay, SourceDocInfoDisplay, StyleControls } from '@components';
+import { KeyboardShortcutsDisplay, SourceDocInfoDisplay, StyleTools } from '@components';
 import { TooltipButton } from '@components/ui/TooltipButton';
 
 import { ReviewMetatextButton } from './ReviewMetatextButton';
@@ -50,7 +50,7 @@ const StyledSeparator = styled(Toolbar.Separator, {
     margin: '0 4px'
 });
 
-interface MetatextHeaderProps {
+interface MetaTextToolbarProps {
     metatextId: number;
     sourceDocumentId?: number;
     totalFilteredChunks: number;
@@ -58,19 +58,13 @@ interface MetatextHeaderProps {
     isSearching?: boolean;
 }
 
-/**
- * MetatextHeader - Displays the metatext title and review button
- * 
- * A simple presentational component that renders the header section
- * of the metatext detail page with the title, review button, and keyboard shortcuts button.
- */
-export function MetatextHeader({
+export function MetatextToolbar({
     metatextId,
     sourceDocumentId,
     totalFilteredChunks,
     displayChunksCount,
     isSearching = false,
-}: MetatextHeaderProps) {
+}: MetaTextToolbarProps) {
     // Local state for sticky toggle
     const [isSticky, setIsSticky] = useState(true);
 
@@ -179,7 +173,7 @@ export function MetatextHeader({
             </Toolbar.Button>
             <StyledSeparator />
             <Toolbar.Button asChild>
-                <StyleControls />
+                <StyleTools />
             </Toolbar.Button>
             <StyledSeparator />
 

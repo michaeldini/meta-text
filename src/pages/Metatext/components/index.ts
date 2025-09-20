@@ -1,7 +1,7 @@
 // Barrel exports for Metatext components
 
 // Phase 1 refactored components
-export { MetatextHeader } from './MetatextHeader';
+export { MetatextToolbar } from './MetatextToolbar';
 export { ReviewMetatextButton } from './ReviewMetatextButton';
 export { ChunkStatusInfo } from './ChunkStatusInfo';
 export { ChunkPagination } from './ChunkPagination';

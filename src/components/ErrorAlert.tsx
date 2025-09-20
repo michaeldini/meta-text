@@ -2,8 +2,26 @@
 // Implements local dismiss logic or delegates to provided onClose handler.
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Box, Heading, Text, Row } from '@styles';
+import { Heading, Text, Row, IconWrapper, Column, styled } from '@styles';
 import { HiXCircle } from 'react-icons/hi2';
+
+const ErrorRow = styled(Row, {
+    backgroundColor: '$colors$dangerBg',
+    border: '2px solid $colors$dangerBorder',
+    alignItems: 'center',
+    display: 'flex',
+    position: 'fixed' as const,
+    top: '0' as const,
+    left: '50%' as const,
+    right: '50%' as const,
+    marginLeft: '-50vw' as const,
+    marginRight: '-50vw' as const,
+    width: '100vw' as const,
+    borderRadius: 0,
+    paddingLeft: '1rem',
+    paddingRight: '1rem',
+}
+)
 
 export interface ErrorAlertProps {
     message: React.ReactNode;
@@ -28,14 +46,18 @@ export function ErrorAlert({
     const handleClose = () => {
         if (onClose) onClose(); else setDismissed(true);
     };
+
+
     return (
-        <Row variant="danger" data-testid={dataTestId} role="alert">
-            <Box>
+        <ErrorRow data-testid={dataTestId} role="alert">
+            <Column p="1" css={{ flex: 1 }}>
                 <Heading tone="danger">{title}</Heading>
-                <Text>{message}</Text>
-            </Box>
-            <HiXCircle style={{ flex: '0 0 auto', fontSize: '1.5rem' }} onClick={handleClose} />
-        </Row>
+                <Text tone="danger">{message}</Text>
+            </Column>
+            <IconWrapper css={{ color: 'black', cursor: 'pointer' }}>
+                <HiXCircle onClick={handleClose} />
+            </IconWrapper>
+        </ErrorRow>
     );
 }
 

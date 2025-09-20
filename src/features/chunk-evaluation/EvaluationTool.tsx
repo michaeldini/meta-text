@@ -46,6 +46,7 @@ export function EvaluationTool({ chunk, isVisible }: EvaluationToolProps) {
 
     return (
         <Box>
+            <ErrorAlert message={error} />
             <TooltipButton
                 label="Evaluate"
                 tooltip="Produce an evaluation of your summary and note."
@@ -59,7 +60,6 @@ export function EvaluationTool({ chunk, isVisible }: EvaluationToolProps) {
                     ? <Text>{evaluationText}</Text>
                     : <Text css={{ textAlign: 'right', color: '$colors$subtle' }}>No evaluation yet.</Text>}
             </Box>
-            <ErrorAlert message={error} />
         </Box>
     );
 }
