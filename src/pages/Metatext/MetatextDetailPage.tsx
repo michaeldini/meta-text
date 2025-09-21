@@ -25,7 +25,7 @@
  * 
  */
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, generatePath } from 'react-router-dom';
 import { useHotkeys } from 'react-hotkeys-hook';
 import type { ReactElement } from 'react';
 import { ErrorAlert } from '@components/ErrorAlert';
@@ -36,7 +36,6 @@ import { usePaginatedChunks } from './hooks/usePaginatedChunks';
 import { useValidatedRouteId } from '@hooks/useValidatedRouteId';
 import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
 import { useChunkToolsStore } from '@store/chunkToolsStore';
-import { useDrawerStore, DRAWERS } from '@store/drawerStore';
 import { SHORTCUTS } from '@utils/keyboardShortcuts';
 import { Column, Box, Heading } from '@styles';
 
@@ -142,9 +141,8 @@ function MetatextDetailPage(): ReactElement | null {
     // =========================
     // Store hooks for shortcuts
     // =========================
-    const { clearSearch, query } = useSearchStore();
     const toggleTool = useChunkToolsStore(state => state.toggleTool);
-    const toggleDrawer = useDrawerStore(s => s.toggleDrawer);
+    const focusSearch = useSearchStore(state => state.focusSearch);
 
     // =========================
     // Other handlers
@@ -152,25 +150,10 @@ function MetatextDetailPage(): ReactElement | null {
     // review button navigates itself; keep a handler only for keyboard shortcut
     const goToReview = React.useCallback(() => {
         if (id == null) return;
-        navigate(`/metatext/${id}/review`);
+        const path = generatePath('/metatext/:metatextId/review', { metatextId: String(id) });
+        navigate(path);
     }, [id, navigate]);
 
-    // Search-related functions
-    const focusSearch = React.useCallback(() => {
-        // Prefer a stable id selector for the search input so keyboard shortcut reliably focuses it
-        const searchInput = document.getElementById('metatext-search-input') as HTMLInputElement | null;
-        searchInput?.focus();
-    }, []);
-
-    const handleEscape = React.useCallback(() => {
-        const activeElement = document.activeElement;
-        const isSearchFocused = activeElement?.tagName === 'INPUT' &&
-            (activeElement as HTMLInputElement).placeholder?.includes('Search');
-
-        if (isSearchFocused || query) {
-            clearSearch();
-        }
-    }, [clearSearch, query]);
 
     // =========================
     // Keyboard Shortcuts with react-hotkeys-hook
@@ -178,15 +161,11 @@ function MetatextDetailPage(): ReactElement | null {
 
     // Navigation shortcuts
     useHotkeys(SHORTCUTS.NEXT_PAGE.key, nextPage, { enabled: currentPage < totalPages });
-
     useHotkeys(SHORTCUTS.PREV_PAGE.key, prevPage, { enabled: currentPage > 1 });
 
     useHotkeys(SHORTCUTS.GOTO_REVIEW.key, goToReview);
-
-    // Global shortcuts
     useHotkeys(SHORTCUTS.FOCUS_SEARCH.key, focusSearch);
-    useHotkeys(SHORTCUTS.CLEAR_SEARCH.key, handleEscape);
-    useHotkeys(SHORTCUTS.TOGGLE_HELP.key, () => toggleDrawer(DRAWERS.keyboardShortcuts));
+
 
     // Chunk tool shortcuts (Alt+1 through Alt+5)
     useHotkeys(SHORTCUTS.NOTE_SUMMARY.key, () => toggleTool('note-summary'));
@@ -196,6 +175,7 @@ function MetatextDetailPage(): ReactElement | null {
     useHotkeys(SHORTCUTS.EXPLANATION.key, () => toggleTool('explanation'));
     // Redirect if query error (invalid or not found)
     if (id === null) return null;
+
     return (
         <Box
             data-testid="metatext-detail-page"

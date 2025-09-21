@@ -265,7 +265,7 @@ export const Button = styled('button', {
 
 export const Input = styled('input', {
     flex: 1,
-    padding: '8px 6px',
+    padding: '10px 6px',
     border: 'none',
     outline: 'none',
     fontSize: '1rem',

@@ -18,12 +18,19 @@ export function SearchBar({
     placeholder = 'Search...(CMD+K)',
 }: SearchBarProps) {
     const { query, setQuery } = useSearchStore();
+    const clearSearch = useSearchStore(state => state.clearSearch);
 
     const handleQueryChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         setQuery(event.target.value);
     }, [setQuery]);
 
     const inputRef = React.useRef<HTMLInputElement>(null);
+    const registerSearchInput = useSearchStore(state => state.registerSearchInput);
+
+    React.useEffect(() => {
+        registerSearchInput(inputRef.current);
+        return () => registerSearchInput(null);
+    }, [registerSearchInput]);
     const endElement = query ? (
         <Button
             onClick={() => {
@@ -37,7 +44,7 @@ export function SearchBar({
         </Button>
     ) : undefined;
     return (
-        <Box noPad css={{ backgroundColor: 'transparent', borderRadius: 6, marginRight: 12, border: '1px solid $border', display: 'flex', alignItems: 'center' }}>
+        <Box noPad css={{ backgroundColor: 'transparent', borderRadius: 6, marginRight: 12, border: '1px solid $border', display: 'flex', alignItems: 'center', paddingLeft: '10px' }}>
             <HiMagnifyingGlass />
             <Input
                 id="metatext-search-input"
@@ -46,7 +53,13 @@ export function SearchBar({
                 placeholder={placeholder}
                 value={query}
                 onChange={handleQueryChange}
-                css={{ padding: '0', color: '$altText' }}
+                onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                    if (e.key === 'Escape' || e.key === 'Esc') {
+                        clearSearch();
+                        // Keep focus behavior consistent: focus the input after clearing
+                        inputRef.current?.focus();
+                    }
+                }}
             />
             {endElement}
         </Box>

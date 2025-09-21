@@ -10,11 +10,7 @@ export interface ShortcutAction extends KeyboardShortcut {
 
 // Consolidated shortcuts registry (single source of truth)
 export const SHORTCUTS = {
-    // Global
     FOCUS_SEARCH: { key: 'ctrl+k', description: 'Focus search input' },
-    CLEAR_SEARCH: { key: 'escape', description: 'Clear search or escape current focus' },
-    TOGGLE_HELP: { key: 'alt+h', description: 'Toggle help panel' },
-
     // Navigation
     NEXT_PAGE: { key: 'alt+right', description: 'Next page' },
     PREV_PAGE: { key: 'alt+left', description: 'Previous page' },
@@ -46,28 +42,6 @@ function parseHotkey(hotkeyString: string) {
         altKey: modifiers.includes('alt'),
     };
 }
-
-/**
- * Utility to check if a keyboard event matches a shortcut
- *
- * @example
- * matchesShortcut(event, GLOBAL_SHORTCUTS.FOCUS_SEARCH);
- * 
- * @param event - The keyboard event to check
- * @param shortcut - The shortcut to match against
- * @returns True if the event matches the shortcut, false otherwise
- */
-export const matchesShortcut = (event: KeyboardEvent, shortcut: KeyboardShortcut): boolean => {
-    const parsed = parseHotkey(shortcut.key);
-
-    const keyMatches = event.key.toLowerCase() === parsed.key;
-    const metaMatches = parsed.metaKey === (event.metaKey || event.ctrlKey);
-    const ctrlMatches = parsed.ctrlKey === event.ctrlKey;
-    const shiftMatches = parsed.shiftKey === event.shiftKey;
-    const altMatches = parsed.altKey === event.altKey;
-
-    return keyMatches && metaMatches && ctrlMatches && shiftMatches && altMatches;
-};
 
 /**
  * Formats a keyboard shortcut for display

@@ -121,7 +121,7 @@ export default function App() {
             {/* Global components */}
             <GlobalNotifications />
             <NavBar />
-            <CrashToggle />
+            {/* <CrashToggle /> */}
 
             {/* Routing
             Protected routes are wrapped in a ProtectedRoute component */}
