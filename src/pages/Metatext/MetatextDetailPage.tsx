@@ -64,6 +64,7 @@ function MetatextDetailPage(): ReactElement | null {
     const { data: metatext, error } = useMetatextDetail(id);
 
 
+
     /** 
      * ----------------------------------------------------------
      * Step 1: Process chunks (search + filtering) 
@@ -137,17 +138,21 @@ function MetatextDetailPage(): ReactElement | null {
         initialChunksPerPage: 5,
     });
 
-
-    // =========================
-    // Store hooks for shortcuts
-    // =========================
+    /**
+     *  the toggleTool function from the chunk tools store to open/close chunk tools.
+     */
     const toggleTool = useChunkToolsStore(state => state.toggleTool);
+
+    /**
+     * Function to focus the search input, enhancing user experience.
+     */
     const focusSearch = useSearchStore(state => state.focusSearch);
 
-    // =========================
-    // Other handlers
-    // =========================
-    // review button navigates itself; keep a handler only for keyboard shortcut
+    /**
+     * Navigate to the review page for the current metatext.
+     * - Constructs the path using the metatext ID.
+     * - Uses the navigate function from react-router-dom to change routes.
+     */
     const goToReview = React.useCallback(() => {
         if (id == null) return;
         const path = generatePath('/metatext/:metatextId/review', { metatextId: String(id) });
@@ -155,25 +160,41 @@ function MetatextDetailPage(): ReactElement | null {
     }, [id, navigate]);
 
 
-    // =========================
-    // Keyboard Shortcuts with react-hotkeys-hook
-    // =========================
+    /**
+     * ----------------------------------------------------------
+     * Keyboard Shortcuts
+     * ----------------------------------------------------------
+     */
 
-    // Navigation shortcuts
+    /**
+     * alt+Right Arrow: Next Page (if not on last page)
+     * alt+Left Arrow: Previous Page (if not on first page)
+     * alt+i: Go to Review Page
+     * alt+k: Focus Search Input
+     */
     useHotkeys(SHORTCUTS.NEXT_PAGE.key, nextPage, { enabled: currentPage < totalPages });
     useHotkeys(SHORTCUTS.PREV_PAGE.key, prevPage, { enabled: currentPage > 1 });
-
     useHotkeys(SHORTCUTS.GOTO_REVIEW.key, goToReview);
     useHotkeys(SHORTCUTS.FOCUS_SEARCH.key, focusSearch);
 
-
-    // Chunk tool shortcuts (Alt+1 through Alt+5)
+    /**
+    * alt+1-6: Toggle Chunk Tools
+    * 1: Note Summary
+    * 2: Evaluation
+    * 3: Image Generation
+    * 4: Rewrite
+    * 5: Explanation
+    */
     useHotkeys(SHORTCUTS.NOTE_SUMMARY.key, () => toggleTool('note-summary'));
     useHotkeys(SHORTCUTS.EVALUATION.key, () => toggleTool('evaluation'));
     useHotkeys(SHORTCUTS.IMAGE.key, () => toggleTool('image'));
     useHotkeys(SHORTCUTS.REWRITE.key, () => toggleTool('rewrite'));
     useHotkeys(SHORTCUTS.EXPLANATION.key, () => toggleTool('explanation'));
-    // Redirect if query error (invalid or not found)
+
+
+    /**
+     * if the ID is null (invalid), return null to avoid rendering.
+     */
     if (id === null) return null;
 
     return (
@@ -209,7 +230,6 @@ function MetatextDetailPage(): ReactElement | null {
                         startIndex={startIndex}
                     />
 
-                    {/* <ChunkToolsPanel /> */}
 
                 </Column>
             )}

@@ -1,14 +1,44 @@
+/**
+ * Centralized keyboard shortcuts definitions and types.
+ * This file serves as the single source of truth for all keyboard shortcuts used in the app.
+ * Each shortcut includes its key combination and a brief description.
+ * 
+ * USAGE:
+ * - Import the SHORTCUTS constant and useHotkeys hook to bind shortcuts in components. Only need the .key value for useHotkeys.
+ * - Use the description for displaying in help menus or tooltips.
+ * 
+ * EXAMPLE:
+ * import { SHORTCUTS } from '@utils/keyboardShortcuts';
+ * useHotkeys(SHORTCUTS.NEXT_PAGE.key, goToNextPage);
+ * 
+ * This ensures consistency across the app and makes it easy to update shortcuts in one place.
+ * 
+ */
+
+
+/**
+ * Represents a keyboard shortcut.
+ * - key: The key combination (e.g., 'ctrl+k', 'alt+1').
+ * - description: A brief description of what the shortcut does.
+ * 
+ * The key should be a valid Hotkey format as per the useHotkeys library.
+ * The description is helpful for displaying in help menus or tooltips.
+ */
 export interface KeyboardShortcut {
     key: string; // Hotkey format: 'cmd+k', 'alt+1', 'escape', etc.
     description: string;
 }
 
-export interface ShortcutAction extends KeyboardShortcut {
-    handler: (event: KeyboardEvent) => void;
-    enabled?: boolean;
-}
-
-// Consolidated shortcuts registry (single source of truth)
+/**
+ * Defines all keyboard shortcuts used in the application.
+ * Each shortcut includes a key combination and a description.
+ * 
+ * This object serves as the single source of truth for keyboard shortcuts,
+ * ensuring consistency across the app and simplifying updates.
+ * Example usage:
+ * - useHotkeys(SHORTCUTS.NEXT_PAGE.key, goToNextPage);
+ * - Display SHORTCUTS.NEXT_PAGE.description in a help menu.
+ */
 export const SHORTCUTS = {
     FOCUS_SEARCH: { key: 'ctrl+k', description: 'Focus search input' },
     // Navigation
@@ -23,68 +53,3 @@ export const SHORTCUTS = {
     REWRITE: { key: 'alt+4', description: 'Toggle Rewrite tool' },
     EXPLANATION: { key: 'alt+5', description: 'Toggle Explanation tool' },
 } as const;
-
-/**
- * Parse a hotkey string into its component parts
- * @param hotkeyString - String like 'cmd+k', 'alt+1', 'shift+escape'
- * @returns Object with modifier flags and the main key
- */
-function parseHotkey(hotkeyString: string) {
-    const parts = hotkeyString.toLowerCase().split('+');
-    const key = parts[parts.length - 1]; // Last part is always the main key
-    const modifiers = parts.slice(0, -1); // All parts except the last
-
-    return {
-        key,
-        metaKey: modifiers.includes('cmd') || modifiers.includes('meta'),
-        ctrlKey: modifiers.includes('ctrl'),
-        shiftKey: modifiers.includes('shift'),
-        altKey: modifiers.includes('alt'),
-    };
-}
-
-/**
- * Formats a keyboard shortcut for display
- * Parses the hotkey format and converts to display-friendly symbols
- *
- * @example
- * formatShortcut({ key: 'cmd+k' });
- * // Returns "⌘+K" on macOS, "Ctrl+K" on Windows/Linux
- *
- * @param shortcut - The keyboard shortcut to format
- * @returns A string representation of the shortcut for display
- */
-export const formatShortcut = (shortcut: KeyboardShortcut): string => {
-    const parsed = parseHotkey(shortcut.key);
-    const parts: string[] = [];
-
-    if (parsed.metaKey) {
-        parts.push(navigator.platform.includes('Mac') ? '⌘' : 'Ctrl');
-    }
-    if (parsed.ctrlKey) parts.push('Ctrl');
-    if (parsed.shiftKey) parts.push('⇧');
-    if (parsed.altKey) parts.push(navigator.platform.includes('Mac') ? '⌥' : 'Alt');
-
-    // Capitalize and format the key for display
-    let displayKey = parsed.key;
-    if (displayKey === 'escape') displayKey = 'Esc';
-    else if (displayKey === 'left') displayKey = '←';
-    else if (displayKey === 'right') displayKey = '→';
-    else if (displayKey === 'up') displayKey = '↑';
-    else if (displayKey === 'down') displayKey = '↓';
-    else displayKey = displayKey.toUpperCase();
-
-    parts.push(displayKey);
-
-    return parts.join('+');
-};
-
-// Get all shortcuts grouped by a single category (backwards-compatible for UI)
-export function getShortcutsByCategory(): Record<string, KeyboardShortcut[]> {
-    // For simplicity we place all shortcuts under one 'General' category.
-    const allShortcuts: KeyboardShortcut[] = Object.values(SHORTCUTS) as KeyboardShortcut[];
-    return {
-        General: allShortcuts,
-    };
-}
-;

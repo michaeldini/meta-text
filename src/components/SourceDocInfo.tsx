@@ -1,27 +1,41 @@
+/**
+ * Component to display and edit source document metadata fields.
+ * Fetches its own data using React Query hooks and manages updates internally.
+ * 
+ * @module SourceDocInfo
+ */
 import React from 'react';
-import { Box, Text, Column, Row, Textarea } from '@styles';
-import { Input } from '@styles';
-import { SimpleDialog } from '@components/ui';
 
-import { HiOutlineSparkles } from 'react-icons/hi2';
-
+/** Import the shared SourceDocSummary type for type safety. */
 import { SourceDocumentSummary } from '@mtypes/documents';
-import { TooltipButton } from '@components/ui/TooltipButton';
 
-
+/**
+ * These imports are for data fetching and mutations.
+ * - useSourceDocumentDetail: Fetches source document details by ID.
+ * - useUpdateSourceDocument: Mutation hook to update source document details.
+ */
 import { useSourceDocumentDetail, useUpdateSourceDocument } from '@features/documents/useDocumentsData';
+
+/**
+ * Import the hook for generating source document info.
+ * - useGenerateSourceDocInfo: Custom hook to handle generating source document info.
+ */
 import { useGenerateSourceDocInfo } from '@hooks/useGenerateSourceDocInfo';
 
-interface SourceDocInfoProps {
-    sourceDocumentId?: number | null;
-}
+/** UI Components and Icons */
+import { TooltipButton } from '@components/ui/TooltipButton';
+import { SimpleDialog } from '@components/ui';
+import { Box, Text, Column, Row, Textarea } from '@styles';
+import { HiOutlineSparkles } from 'react-icons/hi2';
 
 
-// Configuration for rendering fields in the document info
+/**
+ * The source document summary fields to display and edit.
+ * Each field has a key corresponding to the SourceDocumentSummary type and a label for display.
+ */
 interface FieldConfig {
     key: keyof SourceDocumentSummary;
     label: string;
-    isListField?: boolean;
 }
 const FIELD_CONFIG: FieldConfig[] = [
     { key: 'title', label: 'Title' },
@@ -32,6 +46,10 @@ const FIELD_CONFIG: FieldConfig[] = [
     { key: 'symbols', label: 'Symbols' },
     { key: 'summary', label: 'Summary' },
 ];
+
+interface SourceDocInfoProps {
+    sourceDocumentId?: number | null;
+}
 
 /**
  * Displays and allows editing of source document metadata fields.

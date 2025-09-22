@@ -1,21 +1,39 @@
-// Header component for Metatext detail page displaying title and review button
+/**
+ * Toolbar for the metatext detail page
+ * 
+ * Mostly a collection of buttons and hooks/functions/state for the buttons to act on.
+ * 
+ * Uses Radix UI Toolbar: https://www.radix-ui.com/docs/primitives/components/toolbar
+ * 
+ * @module MetatextToolbar
+ */
 import React, { useState } from 'react';
-import { HiArrowDownTray, HiBookmark, HiHashtag, HiOutlineStar, HiStar, HiViewfinderCircle } from 'react-icons/hi2';
-import * as Toolbar from '@radix-ui/react-toolbar';
-import { styled } from '@styles';
 
+/**
+ * These imports are dropped in as is or with props. No setup is needed.
+ * 
+ * KeyboardShortcutsDisplay: Button to show keyboard shortcuts/help menu.
+ * SourceDocInfoDisplay: Button to show info about the source document.
+ * StyleTools: Button to show style tools (e.g., toggle chunk positions).
+ * ReviewMetatextButton: Button to navigate to the review page for the metatext.
+ */
 import { KeyboardShortcutsDisplay, SourceDocInfoDisplay, StyleTools } from '@components';
-import { TooltipButton } from '@components/ui/TooltipButton';
-
 import { ReviewMetatextButton } from './ReviewMetatextButton';
+
+
 import { useUserConfig, useUpdateUserConfig } from '@services/userConfigService';
+import getUiPreferences from '@utils/getUiPreferences';
+
 import { useDownloadMetatext } from '@pages/Metatext/hooks/useDownloadMetatext';
 import { useBookmark } from '@hooks/useBookmark';
-import getUiPreferences from '@utils/getUiPreferences';
 import { useChunkFiltersStore } from '@features/chunk/hooks/useChunkFiltersStore';
 import { useChunkNavigationStore } from '@store/chunkNavigationStore';
 import { useChunkToolsPanel } from '@features/chunk-tools/useChunkToolsPanel';
 import { ChunkStatusInfo } from './ChunkStatusInfo';
+import { TooltipButton } from '@components/ui/TooltipButton';
+import { HiArrowDownTray, HiBookmark, HiHashtag, HiOutlineStar, HiStar, HiViewfinderCircle } from 'react-icons/hi2';
+import * as Toolbar from '@radix-ui/react-toolbar';
+import { styled } from '@styles';
 
 const StyledToolbarRoot = styled(Toolbar.Root, {
     display: 'flex',
