@@ -4,7 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Box } from '@styles';
 import type { ReactElement } from 'react';
 
-import { Boundary } from '@components/Boundaries';
 import { Header, ReviewContent } from './components';
 import { useMetatextReviewData } from './hooks/useMetatextReviewData';
 
@@ -19,18 +18,16 @@ function MetatextReviewPage(): ReactElement {
 
     // Use Boundary to handle loading and error states for the review data
     return (
-        <Boundary fallbackText="Loading review data...">
-            <Box data-testid="metatext-review-page">
-                {/* Page header with navigation and title */}
-                <Header metatextId={parsedId} navigate={navigate} />
-                {/* Review content sections */}
-                <ReviewContent
-                    flashcards={wordList}
-                    phrases={phraseList}
-                    chunkReviewTable={chunks}
-                />
-            </Box>
-        </Boundary>
+        <Box data-testid="metatext-review-page" p="2">
+            {/* Page header with navigation and title */}
+            <Header metatextId={parsedId} navigate={navigate} />
+            {/* Review content sections */}
+            <ReviewContent
+                flashcards={wordList}
+                phrases={phraseList}
+                chunkReviewTable={chunks}
+            />
+        </Box>
     );
 }
 // Default export for React component usage

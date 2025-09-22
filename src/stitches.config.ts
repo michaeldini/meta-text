@@ -79,6 +79,20 @@ export const {
     },
 });
 
+// Accordion keyframes for animating collapsible content size.
+// These follow Radix UI's recommendation to animate using
+// a CSS variable `--radix-collapsible-content-height` that Radix
+// sets on the content element when measuring.
+export const accordionDown = keyframes({
+    from: { height: '0' },
+    to: { height: 'var(--radix-collapsible-content-height)' },
+});
+
+export const accordionUp = keyframes({
+    from: { height: 'var(--radix-collapsible-content-height)' },
+    to: { height: '0' },
+});
+
 
 /**
  * 

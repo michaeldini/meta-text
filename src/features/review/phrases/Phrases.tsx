@@ -6,9 +6,21 @@
 // Migrated from Chakra UI to Stitches and Radix UI
 import React from 'react';
 import { Explanation } from '@mtypes/MetatextReview.types';
-import { Box, Text, Heading } from '@styles';
+import { Box, Text, Heading, styled, accordionDown, accordionUp } from '@styles';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import { EmptyState } from '@components/ui/empty-state';
+
+
+// Styled Radix Collapsible.Content that animates height using Stitches keyframes.
+const StyledContent = styled(Collapsible.Content, {
+    overflow: 'hidden',
+    '&[data-state="open"]': {
+        animation: `${accordionDown} 300ms ease-out`,
+    },
+    '&[data-state="closed"]': {
+        animation: `${accordionUp} 300ms ease-out`,
+    },
+});
 
 
 interface PhrasesProps {
@@ -38,9 +50,9 @@ export function PhraseItem({ phrase }: PhraseItemProps) {
     return (
         <Collapsible.Root style={{ marginBottom: 12 }} key={phrase.id}>
             <Collapsible.Trigger style={{ cursor: 'pointer' }} asChild>
-                <Text css={{ "color": "$colors$primary" }}>{phrase.words}</Text>
+                <Text css={{ color: '$colors$primary' }}>{phrase.words}</Text>
             </Collapsible.Trigger>
-            <Collapsible.Content>
+            <StyledContent>
                 <PhraseCard
                     title="Explanation"
                     content={phrase.explanation}
@@ -49,7 +61,7 @@ export function PhraseItem({ phrase }: PhraseItemProps) {
                     title="Explanation in Context"
                     content={phrase.explanation_in_context}
                 />
-            </Collapsible.Content>
+            </StyledContent>
         </Collapsible.Root>
     );
 }
