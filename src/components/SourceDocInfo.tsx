@@ -1,6 +1,7 @@
 /**
  * Component to display and edit source document metadata fields.
  * Fetches its own data using React Query hooks and manages updates internally.
+ * Each field is editable in place, with changes committed on blur.
  * 
  * @module SourceDocInfo
  */
@@ -55,8 +56,8 @@ interface SourceDocInfoProps {
  * Displays and allows editing of source document metadata fields.
  * Fetches its own data using React Query hooks and manages updates internally.
  */
-export function SourceDocInfo(props: SourceDocInfoProps) {
-    const { sourceDocumentId } = props;
+export function SourceDocInfo(sourceDocInfoProps: SourceDocInfoProps) {
+    const { sourceDocumentId } = sourceDocInfoProps;
 
     // Fetch source document data
     const { data: doc, invalidate } = useSourceDocumentDetail(sourceDocumentId);

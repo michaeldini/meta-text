@@ -18,7 +18,6 @@ export function ReviewMetatextButton(): React.ReactElement | null {
                 label=""
                 tooltip="Review this metatext"
                 tone="default"
-                // no onClick: link handles navigation
                 icon={<HiAcademicCap />}
                 data-testid="review-button"
             />

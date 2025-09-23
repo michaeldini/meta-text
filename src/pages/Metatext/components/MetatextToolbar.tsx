@@ -20,11 +20,22 @@ import React, { useState } from 'react';
 import { KeyboardShortcutsDisplay, SourceDocInfoDisplay, StyleTools } from '@components';
 import { ReviewMetatextButton } from './ReviewMetatextButton';
 
-
+/**
+ * The user config is used to get and set UI preferences, such as showing chunk positions, styles, etc.
+ * 
+ * The user config service provides hooks to get the current config and to update it.
+ * 
+ */
 import { useUserConfig, useUpdateUserConfig } from '@services/userConfigService';
 import getUiPreferences from '@utils/getUiPreferences';
 
+/** Hook to download the metatext in JSON format */
 import { useDownloadMetatext } from '@pages/Metatext/hooks/useDownloadMetatext';
+
+/** 
+ * Hook to get the bookmark state used to navigate to the bookmarked chunk.
+ * 
+*/
 import { useBookmark } from '@hooks/useBookmark';
 import { useChunkFiltersStore } from '@features/chunk/hooks/useChunkFiltersStore';
 import { useChunkNavigationStore } from '@store/chunkNavigationStore';

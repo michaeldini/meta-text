@@ -1,35 +1,100 @@
+/**
+ * Buttons for adjusting styling:
+ * 
+ * Current style controls:
+ * - Text Size
+ * - Line Height
+ * - Horizontal Padding
+ * - Font Family
+ * 
+ */
 import React from 'react';
-import { css } from '@stitches/react';
 
-// import { FontFamilySelect } from '@components/stylecontrols';
-import { Box, Text, Input } from '@styles';
+/**
+ * UiPreferences are stored in userConfig and managed via useUIPreferences hook. These are used to persist user style settings.
+ */
 import { useUIPreferences } from '@hooks/useUIPreferences';
+
+/**
+ * import a select componenet for the font family selection
+ */
 import { Select } from '@components/ui/select';
-import { useFontFamilySelect } from '@hooks/stylecontrols/useFontFamilySelect';
 
+/** UI components */
+import { css } from '@stitches/react';
+import { Box, Text, Input, Row } from '@styles';
 
+/** A list of available fonts the user can select */
+const FONT_FAMILIES = [
+    'Inter, sans-serif',
+    'Roboto, sans-serif',
+    'Arial, sans-serif',
+    'Georgia, serif',
+    'Times New Roman, Times, serif',
+    'Courier New, Courier, monospace',
+    'monospace',
+    'Funnel Display, sans-serif',
+    'Open Sans, sans-serif',
+];
+
+/** Options for the font family select component */
+const FONT_FAMILY_OPTIONS = FONT_FAMILIES.map(font => ({
+    value: font,
+    label: font.split(',')[0],
+    style: { fontFamily: font },
+}));
+
+/**
+ * Font Family Select
+ * 
+ * Gives user the ability to choose a font. 
+ * 
+ */
 interface FontFamilySelectProps {
+
+    /**options passed to the select component */
+    options: {
+        value: string;
+        label: string;
+        style: { fontFamily: string };
+    }[];
+
+    /** Current selected value */
     value: string;
+
+    /** onChange handler */
     onChange: (value: string) => void;
+
+    /** Disable the select */
     disabled?: boolean;
 }
 
+
+/**
+ * Font Selection Componenent
+ * 
+ */
 function FontFamilySelect(props: FontFamilySelectProps) {
-    const { value, onChange, disabled } = props;
-    const { fontFamilyOptions } = useFontFamilySelect({ value, onChange });
+    const { options, value, onChange, disabled } = props;
+
     return (
         <Select
-            options={fontFamilyOptions.items}
+            options={options}
             value={value}
             onChange={onChange}
             placeholder="Font"
             disabled={disabled}
-        // label="Font"
         />
     );
 }
 
-// Custom CSS for always visible and cleaner spin buttons
+/**
+ * We need to use Stitches css function to modify the classes for number input buttons.
+ * 
+ * We define the styles here to hide the buttons. 
+ * We pass the object to the component.
+ * The inputs are easily changed by focusing and using the arrow keys.
+ */
 const numberInputStyle = css({
     // Hide spin buttons in Webkit browsers
     '&::-webkit-inner-spin-button, &::-webkit-outer-spin-button': {
@@ -47,8 +112,6 @@ const numberInputStyle = css({
  * StyleControls component for adjusting UI preferences.
  * Use boolean props to control which controls are rendered.
  */
-
-
 interface StyleNumberInputProps {
     label: string;
     value: number;
@@ -59,11 +122,17 @@ interface StyleNumberInputProps {
     disabled?: boolean;
 }
 
-// DRY: Common number input for style controls
+/**
+ * 
+ * A common component for number inputs used in StyleTools.
+ * 
+ * Uses custom CSS to hide the default number input buttons.
+ * 
+ */
 function StyleNumberInput({ label, value, min, max, step, onChange, disabled }: StyleNumberInputProps) {
     return (
-        <Box css={{ padding: 1, display: 'flex', alignItems: 'center', backgroundColor: 'transparent' }}>
-            <Text css={{ backgroundColor: 'transparent', color: '$colors$altText' }}>{label}</Text>
+        <Row alignCenter p="1">
+            <Text css={{ color: '$colors$altText' }}>{label}</Text>
             <Input
                 type="number"
                 min={min}
@@ -74,11 +143,16 @@ function StyleNumberInput({ label, value, min, max, step, onChange, disabled }: 
                 disabled={disabled}
                 className={numberInputStyle()} // Apply custom CSS class
             />
-        </Box>
+        </Row>
     );
 }
 
-
+/**
+ * StyleTools component for adjusting UI preferences.
+ * 
+ * Use boolean props to control which controls are rendered. This allows for flexible use of the component, only showing the controls needed in a given context.
+ * 
+ */
 interface StyleToolsProps {
     showTextSize?: boolean;
     showLineHeight?: boolean;
@@ -86,6 +160,14 @@ interface StyleToolsProps {
     showFontFamily?: boolean;
 }
 
+/**
+ * StyleTools component for adjusting UI preferences.
+ * 
+ * Use boolean props to control which controls are rendered. This allows for flexible use of the component, only showing the controls needed in a given context.
+ * 
+ * Example usage:
+ * <StyleTools showTextSize={true} showLineHeight={false}/>
+ */
 export function StyleTools({
     showTextSize = true,
     showLineHeight = true,
@@ -127,6 +209,7 @@ export function StyleTools({
             )}
             {showFontFamily && (
                 <FontFamilySelect
+                    options={FONT_FAMILY_OPTIONS}
                     value={fontFamily}
                     onChange={(val: string) => updateUserConfig.mutate({ fontFamily: val })}
                 />

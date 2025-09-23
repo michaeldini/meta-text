@@ -162,6 +162,7 @@ export const BaseBox = styled('div', {
             2: { gap: '16px' },
             3: { gap: '24px' },
         },
+        alignCenter: { true: { alignItems: 'center' } },
         cursorPointer: { true: { cursor: 'pointer' } },
         variant: {
             homepageSection: {
