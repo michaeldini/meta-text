@@ -10,11 +10,10 @@
  */
 import React from 'react';
 
-/**
- * UiPreferences are stored in userConfig and managed via useUIPreferences hook. These are used to persist user style settings.
- */
-import { useUIPreferences } from '@hooks/useUIPreferences';
 
+/** Hook to fetch user configuration and ui preferences. */
+import { useUpdateUserConfig, useUserConfig } from '@services/userConfigService';
+import getUiPreferences from '@utils/getUiPreferences';
 /**
  * import a select componenet for the font family selection
  */
@@ -131,7 +130,7 @@ interface StyleNumberInputProps {
  */
 function StyleNumberInput({ label, value, min, max, step, onChange, disabled }: StyleNumberInputProps) {
     return (
-        <Row alignCenter p="1">
+        <Row alignCenter p="0">
             <Text css={{ color: '$colors$altText' }}>{label}</Text>
             <Input
                 type="number"
@@ -174,7 +173,9 @@ export function StyleTools({
     showPaddingX = true,
     showFontFamily = true,
 }: StyleToolsProps): React.ReactElement {
-    const { textSizePx, fontFamily, lineHeight, paddingX, updateUserConfig } = useUIPreferences();
+    const { data: userConfig } = useUserConfig();
+    const updateUserConfig = useUpdateUserConfig();
+    const { textSizePx, fontFamily, lineHeight, paddingX } = getUiPreferences(userConfig);
     return (
         <>
             {showTextSize && (

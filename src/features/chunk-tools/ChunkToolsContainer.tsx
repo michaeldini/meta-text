@@ -6,7 +6,6 @@ import { Column, StickyContainer } from '@styles';
 import type { ChunkType } from '@mtypes/documents';
 
 // Stationary Tools
-import { ChunkPosition } from '@components/ChunkPosition';
 import { CopyTool } from '@features/chunk-copy';
 import { ChunkFavoriteToggle } from '@features/chunk-favorite';
 import ChunkBookmarkToggle from '@features/chunk-bookmark/components/ChunkBookmarkToggle';
@@ -27,10 +26,9 @@ import { useChunkToolsStore } from '@store/chunkToolsStore';
 // Types
 import { uiPreferences } from '@mtypes/user';
 
-function renderStationaryTools(chunk: ChunkType, asRow: boolean, uiPreferences?: uiPreferences) {
+function renderStationaryTools(chunk: ChunkType, asRow: boolean) {
     return (
         <Column style={{ gap: 0, flexDirection: asRow ? 'row' : 'column' }}>
-            <ChunkPosition chunk={chunk} uiPreferences={uiPreferences} />
             <CopyTool chunkText={chunk.text} />
             <ChunkBookmarkToggle chunk={chunk} />
             <ChunkFavoriteToggle chunk={chunk} />
@@ -40,17 +38,16 @@ function renderStationaryTools(chunk: ChunkType, asRow: boolean, uiPreferences?:
 
 interface ChunkToolsContainerProps {
     chunk: ChunkType;
-    uiPreferences: uiPreferences;
 }
 
 export function ChunkToolsContainer(props: ChunkToolsContainerProps) {
-    const { chunk, uiPreferences } = props;
+    const { chunk } = props;
     const updateChunkFieldMutation = useUpdateChunkField();
     const { activeTools } = useChunkToolsStore();
 
     return (
         <StickyContainer data-chunk-id={`chunk-tools-${chunk.id}`}>
-            {renderStationaryTools(chunk, activeTools.length > 0, uiPreferences)}
+            {renderStationaryTools(chunk, activeTools.length > 0)}
             {activeTools.includes('note-summary') && (
                 <NotesTool
                     chunk={chunk}

@@ -10,7 +10,10 @@ import { useSourceDocEditor } from './hooks/useSourceDocEditor';
 
 import { useNavigate } from 'react-router-dom';
 import { useSourceDocumentDetail, useUpdateSourceDocument } from '@features/documents/useDocumentsData';
-import { useUIPreferences } from '@hooks/useUIPreferences';
+
+/** Hook to fetch user configuration and ui preferences. */
+import { useUserConfig } from '@services/userConfigService';
+import getUiPreferences from '@utils/getUiPreferences';
 import SourceDoc from './components/SourceDoc';
 import { useValidatedRouteId } from '@hooks/useValidatedRouteId';
 import { SourceDocInfoDisplay } from '@components/SourceDocInfo';
@@ -32,7 +35,8 @@ function SourceDocDetailPage(): ReactElement | null {
     // Fetch and update using the raw ID; backend will validate and send errors
     const { data: doc, isLoading, error } = useSourceDocumentDetail(id);
     const updateMutation = useUpdateSourceDocument(id);
-    const { textSizePx, fontFamily, lineHeight } = useUIPreferences();
+    const { data: userConfig } = useUserConfig();
+    const { textSizePx, fontFamily, lineHeight } = getUiPreferences(userConfig);
 
     // Use editor hook only if doc is loaded
     const editor = useSourceDocEditor(doc ?? null, updateMutation.mutate);

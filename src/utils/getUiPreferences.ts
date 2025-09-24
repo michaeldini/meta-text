@@ -3,18 +3,18 @@
 
 import { UserConfig } from '../types/user'
 export interface UiPreferences {
-    textSizePx?: number;
-    fontFamily?: string;
-    lineHeight?: number;
-    paddingX?: number;
+    textSizePx: number;
+    fontFamily: string;
+    lineHeight: number;
+    paddingX: number;
     showChunkPositions: boolean;
 }
 
 const DEFAULT_UI_PREFERENCES: UiPreferences = {
-    textSizePx: undefined,
-    fontFamily: undefined,
-    lineHeight: undefined,
-    paddingX: undefined,
+    textSizePx: 18,
+    fontFamily: 'Inter, sans-serif',
+    lineHeight: 2.0,
+    paddingX: 0.25,
     showChunkPositions: false,
 };
 

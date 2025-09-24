@@ -67,7 +67,7 @@ export default function SourceDoc({
                 <Box
                     css={{
                         fontSize: `${textSizePx}px`,
-                        fontFamily,
+                        font: fontFamily,
                         lineHeight,
                         whiteSpace: 'pre-line',
                         minHeight: '48px',

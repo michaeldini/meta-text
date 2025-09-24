@@ -47,7 +47,7 @@ export function ChunkList({ chunks }: ChunkListProps) {
      * We expose this here so that each Chunk component does not need to fetch the user config individually.
      */
     const { data: userConfig } = useUserConfig();
-    const uiPreferences = getUiPreferences(userConfig);
+    const uiPreferences = useMemo(() => getUiPreferences(userConfig), [userConfig]);
 
     if (!chunks || chunks.length === 0) {
         return null;

@@ -1,16 +1,37 @@
+/**
+ * Chunk Component
+ * 
+ * This component represents a single chunk of text within a document.
+ * It displays the words in the chunk and provides tools for interacting with the chunk.
+ * 
+ * It is a simple presentation component that displays the chunk data and tools in a row layout.
+ */
+
 import React, { memo } from 'react';
 
-// UI
+/** Component to display the words in a chunk */
 import ChunkWords from './components/ChunkWords';
+
+/** 
+ * Container for chunk tools other than word selection tools.
+ * These tools live in on the side of the chunk.
+ */
 import { ChunkToolsContainer } from '@features/chunk-tools';
-import { Row } from '@styles';
+
+
+import { ChunkPosition } from '@components/ChunkPosition';
 
 // Types
 import type { ChunkType } from '@mtypes/documents';
 import { uiPreferences } from '@mtypes/user';
 
+// UI
+import { Row } from '@styles';
+
 export interface ChunkProps {
+    /** The chunk data to be displayed. */
     chunk: ChunkType;
+    /** User interface preferences for rendering the chunk. */
     uiPreferences: uiPreferences;
 }
 
@@ -29,8 +50,9 @@ const Chunk = memo(function Chunk({
             />
             <ChunkToolsContainer
                 chunk={chunk}
-                uiPreferences={uiPreferences}
             />
+            <ChunkPosition chunk={chunk} uiPreferences={uiPreferences} />
+
         </Row>
     );
 });
