@@ -7,7 +7,6 @@ import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
 
 export interface InteractiveTextProps {
     words: string[];
-    chunkIdx: number;
     selectedWordIndices: number[];
     textSizePx: number;
     lineHeight: number | string;
@@ -21,7 +20,6 @@ export interface InteractiveTextProps {
 
 const InteractiveText = memo(function InteractiveText({
     words,
-    chunkIdx,
     selectedWordIndices,
     textSizePx,
     lineHeight,
@@ -83,7 +81,7 @@ const InteractiveText = memo(function InteractiveText({
                         onPointerEnter={() => onWordEnter(wordIdx)}
                         onPointerUp={onWordUp}
                         onPointerMove={onPointerMove}
-                        data-word-idx={`${chunkIdx}-${wordIdx}`}
+                        data-word-idx={wordIdx}
                     >
                         {content}
                     </Box>

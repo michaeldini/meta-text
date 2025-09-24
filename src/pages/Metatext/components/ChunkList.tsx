@@ -1,22 +1,51 @@
+/**
+ * A list of Chunk components.
+ * 
+ * Each chunk is rendered using the Chunk component.
+ * The list is displayed in a column layout with spacing between chunks.
+ * Props:
+ * - chunks: An array of chunk objects to be displayed.
+ * 
+ */
 import React, { useMemo } from 'react';
-import { Column } from '@styles';
+
+/** The main chunk component */
 import Chunk from '@features/chunk/Chunk';
-import type { ChunkType } from '@mtypes/documents';
+
+/** Hook to fetch user configuration and ui preferences. */
 import { useUserConfig } from '@services/userConfigService';
 import getUiPreferences from '@utils/getUiPreferences';
 
+// Types
+import type { ChunkType } from '@mtypes/documents';
+
+// UI
+import { Column } from '@styles';
+
 interface ChunkListProps {
+    /** An array of chunk objects to be displayed. */
     chunks: ChunkType[];
-    startIndex: number;
 }
 
 /**
  * ChunkList - Renders a list of Chunk components
  */
-export function ChunkList({ chunks, startIndex }: ChunkListProps) {
+export function ChunkList({ chunks }: ChunkListProps) {
 
-    // Memoize chunks to ensure stable references for Chunk components
+    /**
+     * Why use memoization here?
+     * - Memoization helps to prevent unnecessary re-renders of the Chunk components.
+     * - Each Chunk component may have its own internal state and complex rendering logic.
+     * - By memoizing the chunks array, we ensure that each Chunk component only re-renders
+     *   when its specific data changes, rather than on every parent render.
+     */
     const memoizedChunks = useMemo(() => chunks, [chunks]);
+
+    /**
+     * Fetch user configuration to determine UI preferences.
+     * We only need get the user preferences, not update them here, since we use them to render the chunks with the correct styles.
+     * We expose this here so that each Chunk component does not need to fetch the user config individually.
+     */
     const { data: userConfig } = useUserConfig();
     const uiPreferences = getUiPreferences(userConfig);
 
@@ -24,17 +53,17 @@ export function ChunkList({ chunks, startIndex }: ChunkListProps) {
         return null;
     }
 
-
     return (
         <Column
             gap="2"
             data-testid="chunk-list"
         >
-            {
-                memoizedChunks.map((chunk: ChunkType, idx: number) => (
-                    <Chunk key={chunk.id} chunk={chunk} chunkIdx={startIndex + idx} uiPreferences={uiPreferences} />
-                ))
-            }
+            {memoizedChunks.map((chunk: ChunkType) => (
+                <Chunk
+                    key={chunk.id}
+                    chunk={chunk}
+                    uiPreferences={uiPreferences} />
+            ))}
         </Column >
     );
 }

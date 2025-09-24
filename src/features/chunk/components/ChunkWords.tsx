@@ -16,7 +16,6 @@ import { uiPreferences } from '@mtypes/user';
 
 export interface ChunkWordsProps {
     chunk: ChunkType;
-    chunkIdx: number;
     uiPreferences: uiPreferences;
 }
 /**
@@ -24,7 +23,6 @@ export interface ChunkWordsProps {
  */
 const ChunkWords = memo(function ChunkWords({
     chunk,
-    chunkIdx,
     uiPreferences
 }: ChunkWordsProps) {
 
@@ -63,11 +61,10 @@ const ChunkWords = memo(function ChunkWords({
     }, [selectedWords, selectedWordIndices]);
 
     return (
-        <Box fullWidth data-chunk-id={`chunk-${chunkIdx}`}>
+        <Box fullWidth data-chunk-id={`chunk-${chunk.id}`}>
             <Row css={{ gap: 0 }}>
                 <InteractiveText
                     words={words}
-                    chunkIdx={chunkIdx}
                     selectedWordIndices={selectedWordIndices}
                     textSizePx={textSizePx}
                     lineHeight={lineHeight}

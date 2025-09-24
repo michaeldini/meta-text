@@ -107,9 +107,6 @@ function MetatextDetailPage(): ReactElement | null {
         /** Total number of chunks after filtering/searching. */
         totalFilteredChunks,
 
-        /** Number of chunks to display per page. */
-        chunksPerPage,
-
         /** Current page number. */
         currentPage,
 
@@ -124,9 +121,6 @@ function MetatextDetailPage(): ReactElement | null {
 
         /** Function to navigate to the previous page. */
         prevPage,
-
-        /** The starting index of the chunks for the current page. */
-        startIndex,
 
 
     } = usePaginatedChunks({
@@ -223,11 +217,9 @@ function MetatextDetailPage(): ReactElement | null {
 
                     <ChunkDisplayContainer
                         displayChunks={displayChunks}
-                        chunksPerPage={chunksPerPage}
                         currentPage={currentPage}
                         totalPages={totalPages}
                         onPageChange={(page) => setCurrentPage(page)}
-                        startIndex={startIndex}
                     />
 
 
