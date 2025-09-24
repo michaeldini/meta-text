@@ -22,6 +22,8 @@ import { Select } from '@components/ui/select';
 /** UI components */
 import { css } from '@stitches/react';
 import { Box, Text, Input, Row } from '@styles';
+import { TooltipButton } from '@components';
+import { HiHashtag } from 'react-icons/hi2';
 
 /** A list of available fonts the user can select */
 const FONT_FAMILIES = [
@@ -157,6 +159,7 @@ interface StyleToolsProps {
     showLineHeight?: boolean;
     showPaddingX?: boolean;
     showFontFamily?: boolean;
+    showShowChunkPositions?: boolean;
 }
 
 /**
@@ -167,17 +170,30 @@ interface StyleToolsProps {
  * Example usage:
  * <StyleTools showTextSize={true} showLineHeight={false}/>
  */
-export function StyleTools({
+export function UserConfigTools({
     showTextSize = true,
     showLineHeight = true,
     showPaddingX = true,
     showFontFamily = true,
+    showShowChunkPositions = false,
 }: StyleToolsProps): React.ReactElement {
     const { data: userConfig } = useUserConfig();
     const updateUserConfig = useUpdateUserConfig();
-    const { textSizePx, fontFamily, lineHeight, paddingX } = getUiPreferences(userConfig);
+    const { textSizePx, fontFamily, lineHeight, paddingX, showChunkPositions } = getUiPreferences(userConfig);
     return (
         <>
+            {showShowChunkPositions && (
+                <TooltipButton
+                    label=""
+                    tooltip={showChunkPositions ? "Hide chunk positions" : "Show chunk positions"}
+                    icon={<HiHashtag />}
+                    onClick={() => updateUserConfig.mutate({ showChunkPositions: !showChunkPositions })}
+                    role="switch"
+                    aria-checked={!!showChunkPositions}
+                    disabled={userConfig == null}
+                />
+            )}
+
             {showTextSize && (
                 <StyleNumberInput
                     label="Size"
@@ -219,4 +235,4 @@ export function StyleTools({
     );
 }
 
-export default StyleTools;
+export default UserConfigTools;

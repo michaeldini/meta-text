@@ -17,7 +17,7 @@ import getUiPreferences from '@utils/getUiPreferences';
 import SourceDoc from './components/SourceDoc';
 import { useValidatedRouteId } from '@hooks/useValidatedRouteId';
 import { SourceDocInfoDisplay } from '@components/SourceDocInfo';
-import { StyleTools } from '@components/StyleTools';
+import { UserConfigTools } from '@components/UserConfigTools';
 
 function headingText(title: string) {
     return <>
@@ -56,7 +56,7 @@ function SourceDocDetailPage(): ReactElement | null {
             <Box>
                 {headingText(doc.title)}
                 <SourceDocInfoDisplay sourceDocumentId={id} />
-                <StyleTools showPaddingX={false} />
+                <UserConfigTools showPaddingX={false} />
             </Box>
             <SourceDoc
                 doc={doc}

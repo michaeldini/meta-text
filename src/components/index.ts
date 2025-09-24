@@ -1,4 +1,4 @@
-export * from './StyleTools';
+export * from './UserConfigTools';
 export * from './ui';
 export * from './Boundaries';
 export { default as SourceDocInfo, SourceDocInfoDisplay } from './SourceDocInfo';
@@ -8,4 +8,4 @@ export { default as ChunkPosition } from './ChunkPosition';
 export { ErrorAlert } from './ErrorAlert';
 export * from './ui/TooltipButton';
 export * from './KeyboardShortcutsDisplay';
-export * from './StyleTools';
+export * from './UserConfigTools';

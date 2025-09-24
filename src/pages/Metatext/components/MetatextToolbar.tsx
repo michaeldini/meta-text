@@ -17,17 +17,8 @@ import React, { useState } from 'react';
  * StyleTools: Button to show style tools (e.g., toggle chunk positions).
  * ReviewMetatextButton: Button to navigate to the review page for the metatext.
  */
-import { KeyboardShortcutsDisplay, SourceDocInfoDisplay, StyleTools } from '@components';
+import { KeyboardShortcutsDisplay, SourceDocInfoDisplay, UserConfigTools } from '@components';
 import { ReviewMetatextButton } from './ReviewMetatextButton';
-
-/**
- * The user config is used to get and set UI preferences, such as showing chunk positions, styles, etc.
- * 
- * The user config service provides hooks to get the current config and to update it.
- * 
- */
-import { useUserConfig, useUpdateUserConfig } from '@services/userConfigService';
-import getUiPreferences from '@utils/getUiPreferences';
 
 /** Hook to download the metatext in JSON format */
 import { useDownloadMetatext } from '@pages/Metatext/hooks/useDownloadMetatext';
@@ -42,7 +33,7 @@ import { useChunkNavigationStore } from '@store/chunkNavigationStore';
 import { useChunkToolsPanel } from '@features/chunk-tools/useChunkToolsPanel';
 import { ChunkStatusInfo } from './ChunkStatusInfo';
 import { TooltipButton } from '@components/ui/TooltipButton';
-import { HiArrowDownTray, HiBookmark, HiHashtag, HiOutlineStar, HiStar, HiViewfinderCircle } from 'react-icons/hi2';
+import { HiArrowDownTray, HiBookmark, HiOutlineStar, HiStar, HiViewfinderCircle } from 'react-icons/hi2';
 import * as Toolbar from '@radix-ui/react-toolbar';
 import { styled } from '@styles';
 
@@ -97,11 +88,6 @@ export function MetatextToolbar({
     // Local state for sticky toggle
     const [isSticky, setIsSticky] = useState(true);
 
-    // Self-contained state management via hooks from MetatextHeaderControls
-    const { data: userConfig } = useUserConfig();
-    const updateUserConfig = useUpdateUserConfig();
-    const uiPreferences = getUiPreferences(userConfig);
-
     // Download functionality
     const downloadMetatext = useDownloadMetatext(metatextId);
 
@@ -150,17 +136,6 @@ export function MetatextToolbar({
                     role="switch"
                 />
             </Toolbar.Button>
-            <Toolbar.Button asChild>
-                <TooltipButton
-                    label=""
-                    tooltip={uiPreferences?.showChunkPositions ? "Hide chunk positions" : "Show chunk positions"}
-                    icon={<HiHashtag />}
-                    onClick={() => updateUserConfig.mutate({ showChunkPositions: !uiPreferences?.showChunkPositions })}
-                    role="switch"
-                    aria-checked={!!uiPreferences?.showChunkPositions}
-                    disabled={uiPreferences == null}
-                />
-            </Toolbar.Button>
 
             {/* Chunk Tools */}
             <StyledSeparator />
@@ -201,9 +176,10 @@ export function MetatextToolbar({
                 <SourceDocInfoDisplay sourceDocumentId={sourceDocumentId} />
             </Toolbar.Button>
             <StyledSeparator />
-            <Toolbar.Button asChild>
-                <StyleTools />
-            </Toolbar.Button>
+
+            {/* tools for adjusting UI preferences */}
+            <UserConfigTools showShowChunkPositions />
+
             <StyledSeparator />
 
             {/* Chunk Status and Search */}
