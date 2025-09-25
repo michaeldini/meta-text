@@ -289,6 +289,19 @@ export const Input = styled('input', {
     '&::placeholder': { color: '$colors$alText' },
 });
 
+export const NumberInput = styled(Input, {
+    // Hide spin buttons in Webkit browsers
+    '&::-webkit-inner-spin-button, &::-webkit-outer-spin-button': {
+        display: 'none',
+        WebkitAppearance: 'none',
+        margin: 0,
+    },
+    // Hide spin buttons in Firefox
+    '&': {
+        MozAppearance: 'textfield',
+    },
+});
+
 export const Textarea = styled('textarea', {
     width: '100%',
     minHeight: 'fit-content',

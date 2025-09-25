@@ -20,8 +20,7 @@ import getUiPreferences from '@utils/getUiPreferences';
 import { Select } from '@components/ui/select';
 
 /** UI components */
-import { css } from '@stitches/react';
-import { Box, Text, Input, Row } from '@styles';
+import { Text, Row, NumberInput } from '@styles';
 import { TooltipButton } from '@components';
 import { HiHashtag } from 'react-icons/hi2';
 
@@ -44,70 +43,6 @@ const FONT_FAMILY_OPTIONS = FONT_FAMILIES.map(font => ({
     label: font.split(',')[0],
     style: { fontFamily: font },
 }));
-
-/**
- * Font Family Select
- * 
- * Gives user the ability to choose a font. 
- * 
- */
-interface FontFamilySelectProps {
-
-    /**options passed to the select component */
-    options: {
-        value: string;
-        label: string;
-        style: { fontFamily: string };
-    }[];
-
-    /** Current selected value */
-    value: string;
-
-    /** onChange handler */
-    onChange: (value: string) => void;
-
-    /** Disable the select */
-    disabled?: boolean;
-}
-
-
-/**
- * Font Selection Componenent
- * 
- */
-function FontFamilySelect(props: FontFamilySelectProps) {
-    const { options, value, onChange, disabled } = props;
-
-    return (
-        <Select
-            options={options}
-            value={value}
-            onChange={onChange}
-            placeholder="Font"
-            disabled={disabled}
-        />
-    );
-}
-
-/**
- * We need to use Stitches css function to modify the classes for number input buttons.
- * 
- * We define the styles here to hide the buttons. 
- * We pass the object to the component.
- * The inputs are easily changed by focusing and using the arrow keys.
- */
-const numberInputStyle = css({
-    // Hide spin buttons in Webkit browsers
-    '&::-webkit-inner-spin-button, &::-webkit-outer-spin-button': {
-        display: 'none',
-        WebkitAppearance: 'none',
-        margin: 0,
-    },
-    // Hide spin buttons in Firefox
-    '&': {
-        MozAppearance: 'textfield',
-    },
-});
 
 /**
  * StyleControls component for adjusting UI preferences.
@@ -134,7 +69,7 @@ function StyleNumberInput({ label, value, min, max, step, onChange, disabled }: 
     return (
         <Row alignCenter p="0">
             <Text css={{ color: '$colors$altText' }}>{label}</Text>
-            <Input
+            <NumberInput
                 type="number"
                 min={min}
                 max={max}
@@ -142,7 +77,6 @@ function StyleNumberInput({ label, value, min, max, step, onChange, disabled }: 
                 value={value}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(Number(e.target.value))}
                 disabled={disabled}
-                className={numberInputStyle()} // Apply custom CSS class
             />
         </Row>
     );
@@ -154,7 +88,7 @@ function StyleNumberInput({ label, value, min, max, step, onChange, disabled }: 
  * Use boolean props to control which controls are rendered. This allows for flexible use of the component, only showing the controls needed in a given context.
  * 
  */
-interface StyleToolsProps {
+interface UserConfigToolsProps {
     showTextSize?: boolean;
     showLineHeight?: boolean;
     showPaddingX?: boolean;
@@ -176,7 +110,7 @@ export function UserConfigTools({
     showPaddingX = true,
     showFontFamily = true,
     showShowChunkPositions = false,
-}: StyleToolsProps): React.ReactElement {
+}: UserConfigToolsProps): React.ReactElement {
     const { data: userConfig } = useUserConfig();
     const updateUserConfig = useUpdateUserConfig();
     const { textSizePx, fontFamily, lineHeight, paddingX, showChunkPositions } = getUiPreferences(userConfig);
@@ -225,10 +159,11 @@ export function UserConfigTools({
                 />
             )}
             {showFontFamily && (
-                <FontFamilySelect
+                <Select
                     options={FONT_FAMILY_OPTIONS}
                     value={fontFamily}
                     onChange={(val: string) => updateUserConfig.mutate({ fontFamily: val })}
+                    disabled={userConfig == null}
                 />
             )}
         </>
