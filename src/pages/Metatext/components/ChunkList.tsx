@@ -13,8 +13,7 @@ import React, { useMemo } from 'react';
 import Chunk from '@features/chunk/Chunk';
 
 /** Hook to fetch user configuration and ui preferences. */
-import { useUserConfig } from '@services/userConfigService';
-import getUiPreferences from '@utils/getUiPreferences';
+import { getPreferences, useUserConfig } from '@services/userConfigService';
 
 // Types
 import type { ChunkType } from '@mtypes/documents';
@@ -47,7 +46,7 @@ export function ChunkList({ chunks }: ChunkListProps) {
      * We expose this here so that each Chunk component does not need to fetch the user config individually.
      */
     const { data: userConfig } = useUserConfig();
-    const uiPreferences = useMemo(() => getUiPreferences(userConfig), [userConfig]);
+    const uiPreferences = useMemo(() => getPreferences(userConfig).uiPreferences, [userConfig]);
 
     if (!chunks || chunks.length === 0) {
         return null;

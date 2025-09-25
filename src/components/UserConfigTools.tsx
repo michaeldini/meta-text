@@ -12,8 +12,8 @@ import React from 'react';
 
 
 /** Hook to fetch user configuration and ui preferences. */
-import { useUpdateUserConfig, useUserConfig } from '@services/userConfigService';
-import getUiPreferences from '@utils/getUiPreferences';
+import { useUpdateUserConfig, useUserConfig, getPreferences } from '@services/userConfigService';
+
 /**
  * import a select componenet for the font family selection
  */
@@ -111,9 +111,14 @@ export function UserConfigTools({
     showFontFamily = true,
     showShowChunkPositions = false,
 }: UserConfigToolsProps): React.ReactElement {
-    const { data: userConfig } = useUserConfig();
+
+    /**
+     * Update user config mutation
+     * 
+     */
     const updateUserConfig = useUpdateUserConfig();
-    const { textSizePx, fontFamily, lineHeight, paddingX, showChunkPositions } = getUiPreferences(userConfig);
+    const { data: userConfig } = useUserConfig();
+    const { textSizePx, fontFamily, lineHeight, paddingX, showChunkPositions } = getPreferences(userConfig).uiPreferences;
     return (
         <>
             {showShowChunkPositions && (
