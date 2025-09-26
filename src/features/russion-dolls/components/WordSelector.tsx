@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Box, Text } from '@styles';
-import { Highlight } from '../../../types/experiments';
+import { Highlight } from '@mtypes/experiments';
 
 export type WordSelectorProps = {
     text: string;

@@ -3,7 +3,7 @@
 import React from 'react';
 import { Box, Wrap } from '@styles';
 import PanelCard from './PanelCard';
-import { Panel } from '../../../types/experiments';
+import { Panel } from '@mtypes/experiments';
 
 export type PanelsRowProps = {
     panels: Panel[];

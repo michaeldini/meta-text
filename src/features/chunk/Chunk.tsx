@@ -18,7 +18,7 @@ import ChunkWords from './components/ChunkWords';
  */
 import { ChunkToolsContainer } from '@features/chunk-tools';
 
-
+/** Component to display the position of the chunk within the document */
 import { ChunkPosition } from '@components/ChunkPosition';
 
 // Types
@@ -51,7 +51,7 @@ const Chunk = memo(function Chunk({
             <ChunkToolsContainer
                 chunk={chunk}
             />
-            <ChunkPosition chunk={chunk} uiPreferences={uiPreferences} />
+            <ChunkPosition position={chunk.position} visible={uiPreferences.showChunkPositions} />
 
         </Row>
     );

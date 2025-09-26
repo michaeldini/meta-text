@@ -13,9 +13,9 @@ import { Box, Row } from '@styles';
 // import { explain2, ExplanationResponse2 } from '../services/aiService.mock';
 import { explain2, ExplanationResponse2 } from '../services/aiService';
 import { buildContextSlice } from '../utils/textContext';
-import { Panel } from '../types/experiments';
-import PromptBar from '../features/russion-dolls/components/PromptBar';
-import PanelsRow from '../features/russion-dolls/components/PanelsRow';
+import { Panel } from '@mtypes/experiments';
+import PromptBar from '@features/russion-dolls/components/PromptBar';
+import PanelsRow from '@features/russion-dolls/components/PanelsRow';
 
 export function RussianDollsPage() {
     const [prompt, setPrompt] = useState('');

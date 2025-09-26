@@ -1,7 +1,25 @@
-// Service to hydrate Zustand stores with user config from backend
+/**
+ * User Configuration Service
+ * Handles fetching and updating user-specific settings
+ * such as UI preferences.
+ * 
+ * This is the single source of truth for user configuration. There is no other hook, state, or context for user config. Components should use this service to read and update user settings. This helps for consistency, reducing indirection and complexity. This is done by leveraging TanStack Query's caching and state management.
+ * 
+ * Uses TanStack Query for data fetching and caching.
+ * 
+ * Depends on `ky` for HTTP requests.
+ * 
+ * Example usage:
+ * const { data: userConfig, isLoading } = useUserConfig();
+ * const updateUserConfig = useUpdateUserConfig();
+ * 
+ * or use the helper function to merge defaults:
+ * const preferences = getPreferences(userConfig);
+ * 
+ */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '../utils/ky';
-import { UserConfig } from '../types/user'
+import { api } from '@utils/ky';
+import { UserConfig } from '@mtypes/user'
 
 
 export const DEFAULT_CONFIG: UserConfig = {
@@ -14,6 +32,13 @@ export const DEFAULT_CONFIG: UserConfig = {
     }
 };
 
+/**
+ * Merges user config with default settings.
+ * Ensures all expected fields are present.
+ * 
+ * @param userConfig Partial user config object
+ * @returns Complete user config with defaults applied
+ */
 export function getPreferences(userConfig?: UserConfig): UserConfig {
     return {
         ...DEFAULT_CONFIG,
@@ -21,8 +46,12 @@ export function getPreferences(userConfig?: UserConfig): UserConfig {
     };
 }
 
-// TanStack Query: Fetch user config
-// Accepts user object, hydrates only when user is present/changes
+/**
+ * 
+ * @param enabled Whether to enable the query. Defaults to true.
+ * 
+ * @returns 
+ */
 export function useUserConfig(enabled: boolean = true) {
     const { isPending, isError, data, error } = useQuery<UserConfig>({
         queryKey: ['user-config'],

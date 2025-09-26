@@ -3,3 +3,4 @@ export * from './MetatextReview.types';
 export * from './error';
 export * from './experiments';
 export { getErrorMessage } from './error';
+export * from './user';

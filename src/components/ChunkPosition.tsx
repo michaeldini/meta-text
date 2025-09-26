@@ -1,24 +1,21 @@
-// Displays the position of a chunk if enabled in user preferences
-// Encapsulates logic for reading user config and conditional rendering
 
 import React from 'react';
 import { Text } from '@styles';
-import type { ChunkType } from '@mtypes/documents';
-import { uiPreferences } from '@mtypes/user';
 
 interface ChunkPositionProps {
-    chunk: ChunkType;
-    uiPreferences?: uiPreferences;
+    position: number;
+    visible: boolean;
 }
-export function ChunkPosition({ chunk, uiPreferences }: ChunkPositionProps) {
-    const showChunkPositions = uiPreferences?.showChunkPositions ?? false;
-
-    if (!showChunkPositions) return null;
-
-    return (
-        <Text>
-            {chunk.position}
-        </Text>
+/** Component to display the position of a chunk within the document.
+ * 
+ * @param position The position of the chunk (1-based index).
+ * @param visible Whether to show the position. If false, renders nothing.
+ * 
+ * @returns A Text component displaying the chunk position, or null if not visible.
+ */
+export function ChunkPosition({ position, visible }: ChunkPositionProps) {
+    if (!visible) return null;
+    return (<Text>{position}</Text>
     );
 };
 
