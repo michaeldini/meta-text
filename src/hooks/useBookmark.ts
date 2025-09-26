@@ -39,13 +39,7 @@ export function useBookmark(metatextId: number) {
     return {
         bookmarkedChunkId,
         isLoading,
-        isError,
-        error,
         setBookmark: setMutation.mutate,
-        setBookmarkAsync: setMutation.mutateAsync,
-        isSetting: setMutation.isPending,
         removeBookmark: removeMutation.mutate,
-        removeBookmarkAsync: removeMutation.mutateAsync,
-        isRemoving: removeMutation.isPending,
     };
 }

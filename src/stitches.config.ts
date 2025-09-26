@@ -487,7 +487,7 @@ export const StickyContainer = styled('div', {
     flexDirection: 'column',
     gap: '$3',
     background: 'transparent',
-    zIndex: 5, // Lower than MetatextHeader but above content
+    zIndex: 5,
 });
 
 // --------------------------------------------------------------

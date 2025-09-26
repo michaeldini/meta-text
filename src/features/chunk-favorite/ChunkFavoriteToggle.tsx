@@ -10,13 +10,13 @@ interface ChunkFavoriteToggleProps {
 }
 
 function ChunkFavoriteToggle({ chunk }: ChunkFavoriteToggleProps) {
-    const { loading, favorited, toggle: handleToggle } = useChunkFavoriteToggle(chunk);
+    const { loading, favorited, toggle } = useChunkFavoriteToggle(chunk);
     return (
         <TooltipButton
             label=""
             tooltip={favorited ? 'Unfavorite' : 'Favorite'}
             icon={favorited ? <HiStar /> : <HiOutlineStar />}
-            onClick={handleToggle}
+            onClick={toggle}
             tone={favorited ? 'primary' : 'default'}
             disabled={loading}
         />
