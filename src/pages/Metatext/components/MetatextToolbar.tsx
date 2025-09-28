@@ -28,8 +28,8 @@ import { useDownloadMetatext } from '@pages/Metatext/hooks/useDownloadMetatext';
  * 
 */
 import { useBookmark } from '@hooks/useBookmark';
-import { useChunkFiltersStore } from '@features/chunk/hooks/useChunkFiltersStore';
 import { useChunkNavigationStore } from '@store/chunkNavigationStore';
+import { useChunkFiltersStore } from '@features/chunk/hooks/useChunkFiltersStore';
 import { useChunkToolsPanel } from '@features/chunk-tools/useChunkToolsPanel';
 import { ChunkStatusInfo } from './ChunkStatusInfo';
 import { TooltipButton } from '@components/ui/TooltipButton';
@@ -85,6 +85,7 @@ export function MetatextToolbar({
     displayChunksCount,
     isSearching = false,
 }: MetaTextToolbarProps) {
+
     // Local state for sticky toggle
     const [isSticky, setIsSticky] = useState(true);
 
@@ -102,7 +103,8 @@ export function MetatextToolbar({
     const { activeTabs, chunkToolsRegistry, handleToolClick } = useChunkToolsPanel();
 
     // Bookmark state (direct)
-    const { bookmarkedChunkId, isLoading: bookmarkLoading } = useBookmark(metatextId);
+    const { bookmarkedChunkId } = useBookmark(metatextId);
+
     const goToBookmark = () => {
         if (!bookmarkedChunkId) return;
         // Use the navigation store to request navigation - this will trigger page change + scroll
@@ -111,8 +113,9 @@ export function MetatextToolbar({
 
     return (
         <StyledToolbarRoot
+            id="metatext-toolbar"
             orientation="horizontal"
-            data-testid="metatext-header"
+            data-testid="metatext-toolbar"
             sticky={isSticky}
         >
             <Toolbar.Button asChild>
@@ -122,7 +125,6 @@ export function MetatextToolbar({
                     icon={<HiBookmark />}
                     onClick={goToBookmark}
                     disabled={!bookmarkedChunkId}
-                    loading={bookmarkLoading}
                     data-testid="goto-bookmark-button"
                 />
             </Toolbar.Button>
@@ -136,10 +138,9 @@ export function MetatextToolbar({
                     role="switch"
                 />
             </Toolbar.Button>
-
-            {/* Chunk Tools */}
             <StyledSeparator />
 
+            {/* Chunk Tools */}
             {chunkToolsRegistry.map((tool) => (
                 <Toolbar.Button key={tool.id} asChild>
                     <TooltipButton
@@ -153,15 +154,16 @@ export function MetatextToolbar({
                     />
                 </Toolbar.Button>
             ))}
-
             <StyledSeparator />
 
             <Toolbar.Button asChild>
                 <ReviewMetatextButton />
             </Toolbar.Button>
+
             <Toolbar.Button asChild>
                 <KeyboardShortcutsDisplay />
             </Toolbar.Button>
+
             <Toolbar.Button asChild>
                 <TooltipButton
                     label=""
@@ -172,6 +174,7 @@ export function MetatextToolbar({
                     loading={downloadMetatext.loading}
                 />
             </Toolbar.Button>
+
             <Toolbar.Button asChild>
                 <SourceDocInfoDisplay sourceDocumentId={sourceDocumentId} />
             </Toolbar.Button>
@@ -179,8 +182,8 @@ export function MetatextToolbar({
 
             {/* tools for adjusting UI preferences */}
             <UserConfigTools showShowChunkPositions />
-
             <StyledSeparator />
+
 
             {/* Chunk Status and Search */}
             <ChunkStatusInfo
@@ -189,6 +192,7 @@ export function MetatextToolbar({
                 isSearching={isSearching}
             />
             <StyledSeparator />
+
             <Toolbar.Button asChild>
                 <TooltipButton
                     label=""

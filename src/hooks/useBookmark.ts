@@ -11,8 +11,6 @@ export function useBookmark(metatextId: number) {
     const {
         data: bookmarkedChunkId,
         isLoading,
-        isError,
-        error,
     } = useQuery({
         queryKey: ['bookmark', metatextId],
         queryFn: () => fetchBookmark(metatextId),

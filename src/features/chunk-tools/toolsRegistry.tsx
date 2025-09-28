@@ -1,10 +1,10 @@
-import { HiCheck, HiDocumentText, HiPencilSquare, HiPhoto, HiQuestionMarkCircle } from 'react-icons/hi2';
-// Central registry for chunk tools (that appear in the ChunkToolsPanel)
+// Central registry for chunk tools
 // Defines available tools with their metadata and components
 // This centralizes tool management and makes it easy to add/remove tools
 
 import React from 'react';
 import type { ChunkType } from '@mtypes/documents';
+import { HiCheck, HiDocumentText, HiPencilSquare, HiPhoto, HiQuestionMarkCircle } from 'react-icons/hi2';
 
 // Tool component interface - all tools must implement this
 export interface ChunkToolProps {
