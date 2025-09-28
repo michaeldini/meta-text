@@ -12,7 +12,7 @@
  * Hooks:
  * - useMetatextDetail: Fetches metatext details by ID.
  * - useProcessedChunks: Processes chunks based on search query.
- * - usePaginatedChunks: Manages pagination state for chunks.
+ * - useChunkPagination: Manages pagination state for chunks.
  * - useValidatedRouteId: Validates the metatext ID from route params.
  * - useHotkeys: Sets up keyboard shortcuts for navigation (from react-hotkeys-hook).
  * 
@@ -32,10 +32,11 @@ import { ErrorAlert } from '@components/ErrorAlert';
 import { MetatextToolbar, ChunkDisplayContainer } from './components';
 import { useMetatextDetail } from '@features/documents/useDocumentsData';
 import { useProcessedChunks } from './hooks/useProcessedChunks';
-import { useChunkPaginationWithNavigation } from './hooks/useChunkPaginationWithNavigation';
+import { useChunkPagination } from '@features/chunk/hooks/useChunkPagination';
 import { useValidatedRouteId } from '@hooks/useValidatedRouteId';
 import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
 import { useChunkToolsStore } from '@store/chunkToolsStore';
+import { useChunkNavigationStore } from '@store/chunkNavigationStore';
 import { SHORTCUTS } from '@utils/keyboardShortcuts';
 import { Column, Box, Heading } from '@styles';
 
@@ -99,41 +100,28 @@ function MetatextDetailPage(): ReactElement | null {
      * Step 2: Paginate the processed chunks
      * ----------------------------------------------------------
      */
-    const {
 
-        /** The chunks to be displayed on the current page. */
-        displayChunks,
+    /**
+     * Pagination state and controls for processed chunks.
+     * - Uses the useChunkPagination hook to manage pagination.
+     * - Initializes to page 1 with 5 chunks per page.
+     * @returns {object} Pagination state and helper functions.
+     * 
+     */
+    const pager = useChunkPagination(processedChunks, 1, 5);
 
-        /** Total number of chunks after filtering/searching. */
-        totalFilteredChunks,
+    // next/prev controls local to the page for clarity
+    const nextPage = React.useCallback(() => {
+        if (pager.hasNext) {
+            pager.setCurrentPage(pager.currentPage + 1);
+        }
+    }, [pager.currentPage, pager.hasNext, pager.setCurrentPage]);
 
-        /** Current page number. */
-        currentPage,
-
-        /** Total number of pages based on filtered chunks and chunks per page. */
-        totalPages,
-
-        /** Function to navigate to the next page. */
-        nextPage,
-
-        /** Function to navigate to the previous page. */
-        prevPage,
-
-        /** Whether there is a previous page available. */
-        hasPrev,
-        /** Whether there is a next page available. */
-        hasNext,
-        /** Alias for a safe clamped page jump (1-based). */
-        gotoPage,
-
-    } = useChunkPaginationWithNavigation({
-
-        /** The chunks that have been processed (filtered/searched). */
-        processedChunks,
-
-        /** Number of chunks to display per page. */
-        initialChunksPerPage: 5,
-    });
+    const prevPage = React.useCallback(() => {
+        if (pager.hasPrev) {
+            pager.setCurrentPage(pager.currentPage - 1);
+        }
+    }, [pager.currentPage, pager.hasPrev, pager.setCurrentPage]);
 
     /**
      *  the toggleTool function from the chunk tools store to open/close chunk tools.
@@ -169,8 +157,8 @@ function MetatextDetailPage(): ReactElement | null {
      * alt+i: Go to Review Page
      * alt+k: Focus Search Input
      */
-    useHotkeys(SHORTCUTS.NEXT_PAGE.key, nextPage, { enabled: currentPage < totalPages });
-    useHotkeys(SHORTCUTS.PREV_PAGE.key, prevPage, { enabled: currentPage > 1 });
+    useHotkeys(SHORTCUTS.NEXT_PAGE.key, nextPage, { enabled: pager.hasNext });
+    useHotkeys(SHORTCUTS.PREV_PAGE.key, prevPage, { enabled: pager.hasPrev });
     useHotkeys(SHORTCUTS.GOTO_REVIEW.key, goToReview);
     useHotkeys(SHORTCUTS.FOCUS_SEARCH.key, focusSearch);
 
@@ -194,6 +182,16 @@ function MetatextDetailPage(): ReactElement | null {
      */
     if (id === null) return null;
 
+    // Handle external navigation requests (e.g., bookmarks) via store
+    const requestedChunkId = useChunkNavigationStore(state => state.requestedChunkId);
+    const clearNavigationRequest = useChunkNavigationStore(state => state.clearNavigationRequest);
+    React.useEffect(() => {
+        if (requestedChunkId !== null) {
+            pager.goToChunkById(requestedChunkId);
+            clearNavigationRequest();
+        }
+    }, [requestedChunkId, pager.goToChunkById, clearNavigationRequest]);
+
     return (
         <Box
             data-testid="metatext-detail-page"
@@ -213,19 +211,13 @@ function MetatextDetailPage(): ReactElement | null {
                     <MetatextToolbar
                         metatextId={id}
                         sourceDocumentId={metatext?.source_document_id}
-                        totalFilteredChunks={totalFilteredChunks}
-                        displayChunksCount={displayChunks.length}
+                        totalFilteredChunks={pager.totalFilteredChunks}
+                        displayChunksCount={pager.displayChunks.length}
                         isSearching={isSearching}
                     />
 
-                    <ChunkDisplayContainer
-                        displayChunks={displayChunks}
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        onPageChange={gotoPage}
-                        hasPrev={hasPrev}
-                        hasNext={hasNext}
-                    />
+                    {/* the pager object contains all the chunk data */}
+                    <ChunkDisplayContainer pager={pager} />
 
 
                 </Column>

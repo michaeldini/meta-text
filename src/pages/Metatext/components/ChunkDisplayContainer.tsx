@@ -5,12 +5,7 @@
  * Pagination controls allow navigation through different pages of chunks.
  * 
  * Props:
- * - displayChunks: The chunks to be displayed on the current page.
- * - chunksPerPage: Number of chunks to display per page (default is 5).
- * - currentPage: Current page number.
- * - totalPages: Total number of pages based on filtered chunks and chunks per page.
- * - onPageChange: Function to set the current page.
- * - startIndex: The starting index for chunk numbering in the list.
+ * - pager: The pager abstraction returned from useChunkPagination (or compatible shape).
  * 
  */
 
@@ -20,43 +15,36 @@ import { ChunkList } from './ChunkList';
 import type { ChunkType } from '@mtypes/documents';
 import { Column } from '@styles';
 
-interface ChunkDisplayContainerProps {
-    /** The chunks to be displayed on the current page. */
+// Minimal pager interface needed by this component (compatible with useChunkPagination)
+interface PagerLike {
     displayChunks: ChunkType[];
-    /** Current page number. */
     currentPage: number;
-    /** Total number of pages based on filtered chunks and chunks per page. */
-    totalPages: number;
-    /** Function to set the current page. */
-    onPageChange: (page: number) => void;
-    /** Whether there is a previous page available. */
+    pageNumbers: number[];
+    gotoPage: (page: number) => void;
     hasPrev: boolean;
-    /** Whether there is a next page available. */
     hasNext: boolean;
+}
+
+interface ChunkDisplayContainerProps {
+    /** Pager abstraction containing pagination state and actions */
+    pager: PagerLike;
 }
 
 /**
  * ChunkDisplayContainer - Combines pagination and list rendering for chunks
  */
-export function ChunkDisplayContainer({
-    displayChunks,
-    currentPage,
-    totalPages,
-    onPageChange,
-    hasPrev,
-    hasNext,
-}: ChunkDisplayContainerProps) {
+export function ChunkDisplayContainer({ pager }: ChunkDisplayContainerProps) {
     return (
         <Column data-testid="chunk-display-container" p="3">
             <PaginationControls
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={onPageChange}
-                hasPrev={hasPrev}
-                hasNext={hasNext}
+                currentPage={pager.currentPage}
+                pageNumbers={pager.pageNumbers}
+                onPageChange={pager.gotoPage}
+                hasPrev={pager.hasPrev}
+                hasNext={pager.hasNext}
             />
 
-            <ChunkList chunks={displayChunks} />
+            <ChunkList chunks={pager.displayChunks} />
         </Column>
     );
 }

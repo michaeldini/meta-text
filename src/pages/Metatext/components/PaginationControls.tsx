@@ -18,12 +18,10 @@ import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2';
 interface PaginationControlProps {
     /** Current page number */
     currentPage: number;
-    /** Total number of pages */
-    totalPages: number;
+    /** Array of page numbers [1..totalPages] for rendering page buttons. */
+    pageNumbers: number[];
     /** Callback function to change the page */
     onPageChange: (page: number) => void;
-    /** Disable pagination controls */
-    disabled?: boolean;
     /** Whether there is a previous page (from pagination hook) */
     hasPrev: boolean;
     /** Whether there is a next page (from pagination hook) */
@@ -42,24 +40,16 @@ interface PaginationControlProps {
  */
 export function PaginationControls({
     currentPage,
-    totalPages,
+    pageNumbers,
     onPageChange,
-    disabled = false,
     hasPrev,
     hasNext,
 }: PaginationControlProps) {
 
     /** Don't render if there's only one page or no pages */
-    if (totalPages <= 1) {
+    if (pageNumbers.length <= 1) {
         return null;
     }
-
-    /** Generate an array of page numbers [1, 2, ..., totalPages] */
-    const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
-
-    // Determine disabled states based solely on flags from the hook (plus global disabled)
-    const prevDisabled = disabled || !hasPrev;
-    const nextDisabled = disabled || !hasNext;
 
     /**
      * Render block:
@@ -75,7 +65,7 @@ export function PaginationControls({
             <Button
                 tone="default"
                 aria-label="Previous page"
-                disabled={prevDisabled}
+                disabled={!hasPrev}
                 onClick={() => onPageChange(currentPage - 1)}
                 data-testid="prev-page-button"
             >
@@ -86,7 +76,7 @@ export function PaginationControls({
                     key={page}
                     tone={page === currentPage ? 'primary' : 'default'}
                     onClick={() => onPageChange(page)}
-                    disabled={disabled || currentPage === page}
+                    disabled={currentPage === page}
                     data-testid={`page-${page}-button`}
                 >
                     {page}
@@ -95,7 +85,7 @@ export function PaginationControls({
             <Button
                 tone="default"
                 aria-label="Next page"
-                disabled={nextDisabled}
+                disabled={!hasNext}
                 onClick={() => onPageChange(currentPage + 1)}
                 data-testid="next-page-button"
             >

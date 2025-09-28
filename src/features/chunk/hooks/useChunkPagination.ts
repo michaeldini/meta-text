@@ -47,22 +47,12 @@ interface UseChunkPaginationResult {
     displayChunks: ChunkType[];
     /** Total number of filtered chunks */
     totalFilteredChunks: number;
-    /** Number of chunks per page. */
-    chunksPerPage: number;
-    /** Set the number of chunks per page. */
-    setChunksPerPage: (n: number) => void;
     /** Current page number (1-based). */
     currentPage: number;
-    /** Total number of pages. */
-    totalPages: number;
+    /** Array of page numbers [1..totalPages] for rendering page buttons. */
+    pageNumbers: number[];
     /** Set the current page number (1-based). */
     setCurrentPage: (page: number) => void;
-    /** Safe clamped setter for current page (1..totalPages). */
-    setCurrentPageSafe: (page: number) => void;
-    /** The index of the first chunk on the current page (0-based). */
-    startIndex: number;
-    /** The index of the last chunk on the current page (0-based). */
-    endIndex: number;
     /** Navigate to a specific chunk by its ID, updating the page if necessary. */
     goToChunkById: (chunkId: number) => void;
     /** Whether there is a previous page available. */
@@ -71,8 +61,6 @@ interface UseChunkPaginationResult {
     hasNext: boolean;
     /** Alias for a safe clamped page jump (1-based). */
     gotoPage: (page: number) => void;
-    /** Scroll to a specific chunk by its ID without changing the page. */
-    // scrollToChunk: (chunkId: number) => void; --- IGNORE ---
 }
 
 /**
@@ -176,17 +164,15 @@ export function useChunkPagination(
         /** Scroll to a specific chunk by its ID without changing the page. */
         requestAnimationFrame(() => scrollToChunkDOM(chunkId));
     }, [chunks, chunksPerPage]);
+
+    const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+
     return {
         displayChunks,
         totalFilteredChunks,
-        chunksPerPage,
-        setChunksPerPage,
         currentPage,
-        totalPages,
+        pageNumbers,
         setCurrentPage,
-        setCurrentPageSafe,
-        startIndex,
-        endIndex,
         goToChunkById,
         hasPrev,
         hasNext,
