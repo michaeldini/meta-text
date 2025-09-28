@@ -32,7 +32,7 @@ import { ErrorAlert } from '@components/ErrorAlert';
 import { MetatextToolbar, ChunkDisplayContainer } from './components';
 import { useMetatextDetail } from '@features/documents/useDocumentsData';
 import { useProcessedChunks } from './hooks/useProcessedChunks';
-import { usePaginatedChunks } from './hooks/usePaginatedChunks';
+import { useChunkPaginationWithNavigation } from './hooks/useChunkPaginationWithNavigation';
 import { useValidatedRouteId } from '@hooks/useValidatedRouteId';
 import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
 import { useChunkToolsStore } from '@store/chunkToolsStore';
@@ -113,17 +113,20 @@ function MetatextDetailPage(): ReactElement | null {
         /** Total number of pages based on filtered chunks and chunks per page. */
         totalPages,
 
-        /** Function to set the current page. */
-        setCurrentPage,
-
         /** Function to navigate to the next page. */
         nextPage,
 
         /** Function to navigate to the previous page. */
         prevPage,
 
+        /** Whether there is a previous page available. */
+        hasPrev,
+        /** Whether there is a next page available. */
+        hasNext,
+        /** Alias for a safe clamped page jump (1-based). */
+        gotoPage,
 
-    } = usePaginatedChunks({
+    } = useChunkPaginationWithNavigation({
 
         /** The chunks that have been processed (filtered/searched). */
         processedChunks,
@@ -219,7 +222,9 @@ function MetatextDetailPage(): ReactElement | null {
                         displayChunks={displayChunks}
                         currentPage={currentPage}
                         totalPages={totalPages}
-                        onPageChange={(page) => setCurrentPage(page)}
+                        onPageChange={gotoPage}
+                        hasPrev={hasPrev}
+                        hasNext={hasNext}
                     />
 
 

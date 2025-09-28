@@ -24,6 +24,20 @@ function HomePage(): ReactElement {
 
     return (
         <Box center>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="128" height="128" aria-label="Monoline vehicle icon">
+                <g stroke="#de0f0fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    {/* Seat */}
+                    <path d="M20 20 H44 V26 H20 Z" />
+                    {/* Seat support */}
+                    <path d="M32 26 V34" />
+                    {/* Wheel */}
+                    <circle cx="32" cy="44" r="10" />
+                    {/* Wave / ground */}
+                    <path d="M8 56 C20 52 44 60 56 56" />
+                </g>
+            </svg>
+
+
             <Row
                 data-testid="homepage-content"
                 gap="3"

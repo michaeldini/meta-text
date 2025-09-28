@@ -10,14 +10,14 @@ import { ChunkType } from '@mtypes/documents';
 import { useChunkPagination } from '@features/chunk/hooks/useChunkPagination';
 import { useChunkNavigationStore } from '@store/chunkNavigationStore';
 
-interface UsePaginatedChunksOptions {
+interface UseChunkPaginationWithNavigationProps {
     /** The processed chunks to paginate */
     processedChunks: ChunkType[];
     /** Initial number of chunks per page */
     initialChunksPerPage?: number;
 }
 
-interface UsePaginatedChunksResult {
+interface UseChunkPaginationWithNavigationResult {
     /** The chunks to be displayed on the current page. */
     displayChunks: ChunkType[];
     /** Total number of chunks after filtering/searching. */
@@ -51,10 +51,10 @@ interface UsePaginatedChunksResult {
 /**
  * Custom hook to manage paginated chunks with automatic page adjustment
  */
-export function usePaginatedChunks({
+export function useChunkPaginationWithNavigation({
     processedChunks,
     initialChunksPerPage = 5
-}: UsePaginatedChunksOptions): UsePaginatedChunksResult {
+}: UseChunkPaginationWithNavigationProps): UseChunkPaginationWithNavigationResult {
 
     /**
      * Use the chunk pagination hook to manage pagination state and logic.

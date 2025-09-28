@@ -15,7 +15,7 @@
  */
 
 import React from 'react';
-import { ChunkPagination } from './ChunkPagination';
+import { PaginationControls } from './PaginationControls';
 import { ChunkList } from './ChunkList';
 import type { ChunkType } from '@mtypes/documents';
 import { Column } from '@styles';
@@ -29,6 +29,10 @@ interface ChunkDisplayContainerProps {
     totalPages: number;
     /** Function to set the current page. */
     onPageChange: (page: number) => void;
+    /** Whether there is a previous page available. */
+    hasPrev: boolean;
+    /** Whether there is a next page available. */
+    hasNext: boolean;
 }
 
 /**
@@ -39,13 +43,17 @@ export function ChunkDisplayContainer({
     currentPage,
     totalPages,
     onPageChange,
+    hasPrev,
+    hasNext,
 }: ChunkDisplayContainerProps) {
     return (
         <Column data-testid="chunk-display-container" p="3">
-            <ChunkPagination
+            <PaginationControls
                 currentPage={currentPage}
                 totalPages={totalPages}
                 onPageChange={onPageChange}
+                hasPrev={hasPrev}
+                hasNext={hasNext}
             />
 
             <ChunkList chunks={displayChunks} />

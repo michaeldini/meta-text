@@ -15,7 +15,7 @@ import React from 'react';
 import { Row, Button } from '@styles';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2';
 
-interface ChunkPaginationProps {
+interface PaginationControlProps {
     /** Current page number */
     currentPage: number;
     /** Total number of pages */
@@ -24,10 +24,14 @@ interface ChunkPaginationProps {
     onPageChange: (page: number) => void;
     /** Disable pagination controls */
     disabled?: boolean;
+    /** Whether there is a previous page (from pagination hook) */
+    hasPrev: boolean;
+    /** Whether there is a next page (from pagination hook) */
+    hasNext: boolean;
 }
 
 /**
- * ChunkPagination - Pagination controls for chunk navigation
+ * PaginationControls - Pagination controls for chunk navigation
  * 
  * - Renders a compact control: Previous, numbered page buttons (1..totalPages), and Next.
  * - `currentPage` is a 1-based index representing the currently active page.
@@ -36,11 +40,14 @@ interface ChunkPaginationProps {
  *   or when the `disabled` prop is true.
  *
  */
-export function ChunkPagination({
+export function PaginationControls({
     currentPage,
     totalPages,
     onPageChange,
-}: ChunkPaginationProps) {
+    disabled = false,
+    hasPrev,
+    hasNext,
+}: PaginationControlProps) {
 
     /** Don't render if there's only one page or no pages */
     if (totalPages <= 1) {
@@ -49,6 +56,10 @@ export function ChunkPagination({
 
     /** Generate an array of page numbers [1, 2, ..., totalPages] */
     const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+
+    // Determine disabled states based solely on flags from the hook (plus global disabled)
+    const prevDisabled = disabled || !hasPrev;
+    const nextDisabled = disabled || !hasNext;
 
     /**
      * Render block:
@@ -64,7 +75,7 @@ export function ChunkPagination({
             <Button
                 tone="default"
                 aria-label="Previous page"
-                disabled={currentPage <= 1}
+                disabled={prevDisabled}
                 onClick={() => onPageChange(currentPage - 1)}
                 data-testid="prev-page-button"
             >
@@ -75,7 +86,7 @@ export function ChunkPagination({
                     key={page}
                     tone={page === currentPage ? 'primary' : 'default'}
                     onClick={() => onPageChange(page)}
-                    disabled={currentPage === page}
+                    disabled={disabled || currentPage === page}
                     data-testid={`page-${page}-button`}
                 >
                     {page}
@@ -84,7 +95,7 @@ export function ChunkPagination({
             <Button
                 tone="default"
                 aria-label="Next page"
-                disabled={currentPage >= totalPages}
+                disabled={nextDisabled}
                 onClick={() => onPageChange(currentPage + 1)}
                 data-testid="next-page-button"
             >

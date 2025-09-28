@@ -4,7 +4,7 @@
 export { MetatextToolbar } from './MetatextToolbar';
 export { ReviewMetatextButton } from './ReviewMetatextButton';
 export { ChunkStatusInfo } from './ChunkStatusInfo';
-export { ChunkPagination } from './ChunkPagination';
+export { PaginationControls as ChunkPagination } from './PaginationControls';
 // Phase 2 refactored components
 export { ChunkDisplayContainer } from './ChunkDisplayContainer';
 export { ChunkList } from './ChunkList';
