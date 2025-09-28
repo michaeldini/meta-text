@@ -43,7 +43,6 @@ interface UseChunkDisplayResult {
 
     // Navigation
     goToChunkById: (chunkId: number) => void;
-    scrollToChunk: (chunkId: number) => void;
 
     // Filtering
     showOnlyFavorites: boolean;
@@ -79,7 +78,7 @@ export function useChunkDisplay({
     const { filtered } = useChunkFilters(baseList, showOnlyFavorites);
 
     // Pagination (fully local): use the chunksPerPage passed into this hook as the initial page size
-    const pager = useChunkPagination(filtered, { initialPage: 1, initialChunksPerPage: chunksPerPage });
+    const pager = useChunkPagination(filtered, 1, chunksPerPage);
 
     // When the filtered set changes (or page size changes), ensure current page is valid.
     useEffect(() => {
@@ -117,7 +116,6 @@ export function useChunkDisplay({
 
         // Navigation helpers
         goToChunkById: pager.goToChunkById,
-        scrollToChunk: pager.scrollToChunk,
 
         // Filtering
         showOnlyFavorites,

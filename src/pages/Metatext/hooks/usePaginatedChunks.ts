@@ -11,34 +11,49 @@ import { useChunkPagination } from '@features/chunk/hooks/useChunkPagination';
 import { useChunkNavigationStore } from '@store/chunkNavigationStore';
 
 interface UsePaginatedChunksOptions {
+    /** The processed chunks to paginate */
     processedChunks: ChunkType[];
+    /** Initial number of chunks per page */
     initialChunksPerPage?: number;
 }
 
 interface UsePaginatedChunksResult {
+    /** The chunks to be displayed on the current page. */
     displayChunks: ChunkType[];
+    /** Total number of chunks after filtering/searching. */
     totalFilteredChunks: number;
+    /** Number of chunks per page. */
     chunksPerPage: number;
+    /** Current page number. */
     currentPage: number;
+    /** Total number of pages. */
     totalPages: number;
+    /** Set the current page number. */
     setCurrentPage: (page: number) => void;
+    /** Navigate to the next page. */
     nextPage: () => void;
+    /** Navigate to the previous page. */
     prevPage: () => void;
+    /** The index of the first chunk on the current page (0-based). */
     startIndex: number;
+    /** The index of the last chunk on the current page (0-based). */
     endIndex: number;
+    /** Navigate to a specific chunk by its ID. */
     goToChunkById: (chunkId: number) => void;
-    scrollToChunk: (chunkId: number) => void;
 }
 
+/**
+ * Custom hook to manage paginated chunks with automatic page adjustment
+ */
 export function usePaginatedChunks({
     processedChunks,
     initialChunksPerPage = 5
 }: UsePaginatedChunksOptions): UsePaginatedChunksResult {
 
-    const pager = useChunkPagination(processedChunks, {
-        initialPage: 1,
-        initialChunksPerPage
-    });
+    /**
+     * Use the chunk pagination hook to manage pagination state and logic.
+     */
+    const pager = useChunkPagination(processedChunks, 1, initialChunksPerPage);
 
     // Listen for navigation requests from other components (e.g., bookmark navigation)
     const requestedChunkId = useChunkNavigationStore(state => state.requestedChunkId);
@@ -101,6 +116,5 @@ export function usePaginatedChunks({
         startIndex: pager.startIndex,
         endIndex: pager.endIndex,
         goToChunkById: pager.goToChunkById,
-        scrollToChunk: pager.scrollToChunk,
     };
 }
