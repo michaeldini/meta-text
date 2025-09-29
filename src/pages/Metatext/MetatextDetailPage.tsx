@@ -101,9 +101,9 @@ function MetatextDetailPage(): ReactElement | null {
      * 
      * @returns {ChunkType[]} The final list of chunks to display after search and filtering.
      */
-    const processedChunks = showOnlyFavorites
+    const processedChunks = React.useMemo(() => showOnlyFavorites
         ? searchResults.filter(chunk => !!chunk.favorited_by_user_id)
-        : searchResults;
+        : searchResults, [searchResults, showOnlyFavorites]);
 
     /**
      * ---------------------------------------------------------- 
