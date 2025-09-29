@@ -74,7 +74,6 @@ interface MetaTextToolbarProps {
     sourceDocumentId?: number;
     totalFilteredChunks: number;
     displayChunksCount: number;
-    isSearching?: boolean;
     showOnlyFavorites: boolean;
     setShowOnlyFavorites: (show: boolean) => void;
 }
@@ -84,7 +83,6 @@ export function MetatextToolbar({
     sourceDocumentId,
     totalFilteredChunks,
     displayChunksCount,
-    isSearching = false,
     showOnlyFavorites,
     setShowOnlyFavorites,
 }: MetaTextToolbarProps) {
@@ -187,7 +185,6 @@ export function MetatextToolbar({
             <ChunkStatusInfo
                 totalFilteredChunks={totalFilteredChunks}
                 displayChunksCount={displayChunksCount}
-                isSearching={isSearching}
             />
             <StyledSeparator />
 

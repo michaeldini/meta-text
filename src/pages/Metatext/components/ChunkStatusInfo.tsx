@@ -2,12 +2,11 @@
 import React from 'react';
 import { Column, Box, Text } from '@styles';
 import { SearchBar } from '@features/chunk-search';
-import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
+import { useSearch } from '@features/chunk-search/hooks/useSearch';
 
 interface ChunkStatusInfoProps {
     totalFilteredChunks: number;
     displayChunksCount: number;
-    isSearching?: boolean;
 }
 
 /**
@@ -19,9 +18,8 @@ interface ChunkStatusInfoProps {
 export function ChunkStatusInfo({
     totalFilteredChunks,
     displayChunksCount,
-    isSearching = false
 }: ChunkStatusInfoProps) {
-    const { query } = useSearchStore();
+    const { query, isSearching } = useSearch();
     const hasQuery = query.length >= 2;
     const getStatusMessage = () => {
         if (totalFilteredChunks === 0) {

@@ -69,19 +69,40 @@ function MetatextDetailPage(): ReactElement | null {
      * ----------------------------------------------------------
      * Step 1: Process chunks (search + filtering) 
      * ----------------------------------------------------------
+     * 
+     * - `useSearch` takes the metatext chunks and provides:
+     *   - `results`: the chunks filtered by the current search query.
+     *   - `isSearching`: boolean indicating if a search is in progress.
+     *   - `focusSearch`: function to focus the search input (for keyboard shortcut).
+     * - `useSearch` internally manages the search query state via `useSearchStore`.
+     * - We then apply additional filtering for favorites based on local state
+     * 
+     * `SearchBar` component uses `useSearch` internally to get/set the query.
+     * `InteractiveText` components also use `useSearchStore` to highlight search terms.
     */
-    // search + favorites filtering
     const {
-        query,
-        setQuery,          // your setter for the input
-        clearSearch,       // to clear it
-        registerSearchInput, // to wire up refs
-        focusSearch,       // your existing focus-shortcut helper
+        focusSearch,       // focus-shortcut helper
         results: searchResults,
         isSearching,
     } = useSearch(metatext?.chunks);
+
+
+    /**
+     * Setup favorites state and filtering.
+     */
     const [showOnlyFavorites, setShowOnlyFavorites] = React.useState(false);
-    // inline favorites filtering
+
+    /**
+     * The chunks after applying search and filtering(favorites).
+     * - If showOnlyFavorites is true, filter to only favorited chunks.
+     * - Otherwise, use all search results.
+     * - This ensures that both search and favorites filtering are applied together.
+     * - The order is important: search first, then filter by favorites if needed.
+     * - We only have one thing to filter on, favorited_by_user_id, so this is simple. In the future,
+     *   if we add more filters, we may want to abstract this logic out.
+     * 
+     * @returns {ChunkType[]} The final list of chunks to display after search and filtering.
+     */
     const processedChunks = showOnlyFavorites
         ? searchResults.filter(chunk => !!chunk.favorited_by_user_id)
         : searchResults;
@@ -199,7 +220,6 @@ function MetatextDetailPage(): ReactElement | null {
                         sourceDocumentId={metatext?.source_document_id}
                         totalFilteredChunks={pager.totalFilteredChunks}
                         displayChunksCount={pager.displayChunks.length}
-                        isSearching={isSearching}
                         showOnlyFavorites={showOnlyFavorites}
                         setShowOnlyFavorites={setShowOnlyFavorites}
                     />

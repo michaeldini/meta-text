@@ -22,7 +22,7 @@ import type { ChunkType } from '@mtypes/documents';
  * @param chunks - array of chunks to search
  * @param debounceMs - optional debounce delay in ms
  */
-export function useSearch(chunks: ChunkType[] | undefined, debounceMs = 300) {
+export function useSearch(chunks?: ChunkType[], debounceMs = 300) {
     // store-driven UI state
     const { query, setQuery, clearSearch, registerSearchInput, focusSearch } = useSearchStore();
     // internal chunk-search state

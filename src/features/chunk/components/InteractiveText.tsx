@@ -5,7 +5,8 @@ import React, { memo } from 'react';
 import { Box } from '@styles';
 
 //* Get current search query from store for highlighting */
-import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
+
+import { useSearch } from '@features/chunk-search/hooks/useSearch';
 
 export interface InteractiveTextProps {
     words: string[];
@@ -36,7 +37,7 @@ const InteractiveText = memo(function InteractiveText({
     const highlightedSet = React.useMemo(() => new Set(selectedWordIndices), [selectedWordIndices]);
 
     // Get current search query from store
-    const { query } = useSearchStore();
+    const { query } = useSearch();
     const lowerQuery = (query || '').toLowerCase();
     const showSearchHighlights = lowerQuery.length >= 2;
 

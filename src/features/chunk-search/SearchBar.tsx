@@ -7,7 +7,7 @@ import React, { useCallback } from 'react';
 import { Box, Input, Button } from '@styles';
 
 /* Get current search query from store */
-import { useSearchStore } from './store/useSearchStore';
+import { useSearch } from './hooks/useSearch';
 
 
 // Props for the SearchBar component
@@ -19,15 +19,14 @@ interface SearchBarProps {
 export function SearchBar({
     placeholder = 'Search...(CMD+K)',
 }: SearchBarProps) {
-    const { query, setQuery, clearSearch } = useSearchStore();
-    // const clearSearch = useSearchStore(state => state.clearSearch);
+    const { query, setQuery, clearSearch, registerSearchInput } = useSearch();
 
     const handleQueryChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         setQuery(event.target.value);
     }, [setQuery]);
 
     const inputRef = React.useRef<HTMLInputElement>(null);
-    const registerSearchInput = useSearchStore(state => state.registerSearchInput);
+    // registerSearchInput now comes from useSearch
 
     React.useEffect(() => {
         registerSearchInput(inputRef.current);
