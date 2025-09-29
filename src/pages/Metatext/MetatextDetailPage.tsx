@@ -73,7 +73,6 @@ function MetatextDetailPage(): ReactElement | null {
      * - `useSearch` takes the metatext chunks and provides:
      *   - `results`: the chunks filtered by the current search query.
      *   - `isSearching`: boolean indicating if a search is in progress.
-     *   - `focusSearch`: function to focus the search input (for keyboard shortcut).
      * - `useSearch` internally manages the search query state via `useSearchStore`.
      * - We then apply additional filtering for favorites based on local state
      * 
@@ -83,7 +82,6 @@ function MetatextDetailPage(): ReactElement | null {
     const {
         focusSearch,       // focus-shortcut helper
         results: searchResults,
-        isSearching,
     } = useSearch(metatext?.chunks);
 
 
