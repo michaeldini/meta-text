@@ -29,7 +29,6 @@ import { useDownloadMetatext } from '@pages/Metatext/hooks/useDownloadMetatext';
 */
 import { useBookmark } from '@hooks/useBookmark';
 import { useChunkNavigationStore } from '@store/chunkNavigationStore';
-import { useChunkFiltersStore } from '@features/chunk/hooks/useChunkFiltersStore';
 import { useChunkToolsPanel } from '@features/chunk-tools/useChunkToolsPanel';
 import { ChunkStatusInfo } from './ChunkStatusInfo';
 import { TooltipButton } from '@components/ui/TooltipButton';
@@ -76,6 +75,8 @@ interface MetaTextToolbarProps {
     totalFilteredChunks: number;
     displayChunksCount: number;
     isSearching?: boolean;
+    showOnlyFavorites: boolean;
+    setShowOnlyFavorites: (show: boolean) => void;
 }
 
 export function MetatextToolbar({
@@ -84,17 +85,14 @@ export function MetatextToolbar({
     totalFilteredChunks,
     displayChunksCount,
     isSearching = false,
+    showOnlyFavorites,
+    setShowOnlyFavorites,
 }: MetaTextToolbarProps) {
 
     // Local state for sticky toggle
     const [isSticky, setIsSticky] = useState(true);
-
     // Download functionality
     const downloadMetatext = useDownloadMetatext(metatextId);
-
-    // Favorites state from store
-    const showOnlyFavorites = useChunkFiltersStore((s) => s.showOnlyFavorites);
-    const setShowOnlyFavorites = useChunkFiltersStore((s) => s.setShowOnlyFavorites);
 
     // Navigation store for bookmark navigation
     const requestNavigateToChunk = useChunkNavigationStore(state => state.requestNavigateToChunk);

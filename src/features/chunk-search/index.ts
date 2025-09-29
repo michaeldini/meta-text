@@ -3,3 +3,4 @@
 
 export { SearchBar } from './SearchBar';
 export { useSearchStore } from './store/useSearchStore';
+export { useSearch } from './hooks/useSearch';

@@ -3,6 +3,8 @@
 
 import React, { memo } from 'react';
 import { Box } from '@styles';
+
+//* Get current search query from store for highlighting */
 import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
 
 export interface InteractiveTextProps {

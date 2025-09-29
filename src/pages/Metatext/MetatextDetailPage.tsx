@@ -11,7 +11,7 @@
  * 
  * Hooks:
  * - useMetatextDetail: Fetches metatext details by ID.
- * - useProcessedChunks: Processes chunks based on search query.
+ * - (search + favorites filtering inlined)
  * - useChunkPagination: Manages pagination state for chunks.
  * - useValidatedRouteId: Validates the metatext ID from route params.
  * - useHotkeys: Sets up keyboard shortcuts for navigation (from react-hotkeys-hook).
@@ -31,10 +31,9 @@ import type { ReactElement } from 'react';
 import { ErrorAlert } from '@components/ErrorAlert';
 import { MetatextToolbar, ChunkDisplayContainer } from './components';
 import { useMetatextDetail } from '@features/documents/useDocumentsData';
-import { useProcessedChunks } from './hooks/useProcessedChunks';
+import { useSearch } from '@features/chunk-search/hooks/useSearch';
 import { useChunkPagination } from '@features/chunk/hooks/useChunkPagination';
 import { useValidatedRouteId } from '@hooks/useValidatedRouteId';
-import { useSearchStore } from '@features/chunk-search/store/useSearchStore';
 import { useChunkToolsStore } from '@store/chunkToolsStore';
 import { useChunkNavigationStore } from '@store/chunkNavigationStore';
 import { SHORTCUTS } from '@utils/keyboardShortcuts';
@@ -71,29 +70,21 @@ function MetatextDetailPage(): ReactElement | null {
      * Step 1: Process chunks (search + filtering) 
      * ----------------------------------------------------------
     */
+    // search + favorites filtering
     const {
-        /**
-         * The processed chunks after applying search and filtering.
-         */
-        processedChunks,
-
-        /**
-         * Indicates if a search operation is currently active.
-         */
+        query,
+        setQuery,          // your setter for the input
+        clearSearch,       // to clear it
+        registerSearchInput, // to wire up refs
+        focusSearch,       // your existing focus-shortcut helper
+        results: searchResults,
         isSearching,
-
-    } = useProcessedChunks({
-
-        /**
-         * The original chunks from the fetched metatext.
-         */
-        chunks: metatext?.chunks,
-
-        /**
-         * Minimum query length to trigger search.
-         */
-        minQueryLength: 2,
-    });
+    } = useSearch(metatext?.chunks);
+    const [showOnlyFavorites, setShowOnlyFavorites] = React.useState(false);
+    // inline favorites filtering
+    const processedChunks = showOnlyFavorites
+        ? searchResults.filter(chunk => !!chunk.favorited_by_user_id)
+        : searchResults;
 
     /**
      * ---------------------------------------------------------- 
@@ -127,11 +118,6 @@ function MetatextDetailPage(): ReactElement | null {
      *  the toggleTool function from the chunk tools store to open/close chunk tools.
      */
     const toggleTool = useChunkToolsStore(state => state.toggleTool);
-
-    /**
-     * Function to focus the search input, enhancing user experience.
-     */
-    const focusSearch = useSearchStore(state => state.focusSearch);
 
     /**
      * Navigate to the review page for the current metatext.
@@ -214,6 +200,8 @@ function MetatextDetailPage(): ReactElement | null {
                         totalFilteredChunks={pager.totalFilteredChunks}
                         displayChunksCount={pager.displayChunks.length}
                         isSearching={isSearching}
+                        showOnlyFavorites={showOnlyFavorites}
+                        setShowOnlyFavorites={setShowOnlyFavorites}
                     />
 
                     {/* the pager object contains all the chunk data */}

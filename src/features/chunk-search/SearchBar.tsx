@@ -5,6 +5,8 @@ import { HiMagnifyingGlass } from 'react-icons/hi2';
 
 import React, { useCallback } from 'react';
 import { Box, Input, Button } from '@styles';
+
+/* Get current search query from store */
 import { useSearchStore } from './store/useSearchStore';
 
 
@@ -17,8 +19,8 @@ interface SearchBarProps {
 export function SearchBar({
     placeholder = 'Search...(CMD+K)',
 }: SearchBarProps) {
-    const { query, setQuery } = useSearchStore();
-    const clearSearch = useSearchStore(state => state.clearSearch);
+    const { query, setQuery, clearSearch } = useSearchStore();
+    // const clearSearch = useSearchStore(state => state.clearSearch);
 
     const handleQueryChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         setQuery(event.target.value);

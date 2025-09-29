@@ -1,7 +1,7 @@
 /**
  * Search system architecture (updated):
  * - useSearchStore.ts: Simple store for search UI state (query, clearing)
- * - useProcessedChunks.ts: Focused hook that handles search execution and filtering
+
 
  * 
  * This simplified structure moves search logic to focused hooks while keeping 
