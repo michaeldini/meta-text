@@ -25,3 +25,6 @@ export * from './chunk-bookmark';
 // Favorite feature
 export * from './chunk-favorite';
 
+export * from './keyboard-shortcuts/KeyboardShortcutsDisplay'
+
+export { default as SourceDocInfo, SourceDocInfoDisplay } from './sourcedoc-info/SourceDocInfo';

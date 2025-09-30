@@ -17,7 +17,9 @@ import React, { useState } from 'react';
  * StyleTools: Button to show style tools (e.g., toggle chunk positions).
  * ReviewMetatextButton: Button to navigate to the review page for the metatext.
  */
-import { KeyboardShortcutsDisplay, SourceDocInfoDisplay, UserConfigTools } from '@components';
+import { UserConfigTools } from '@features/user-config/UserConfigTools';
+import { KeyboardShortcutsDisplay } from '@features/keyboard-shortcuts/KeyboardShortcutsDisplay';
+import { SourceDocInfoDisplay } from '@features/sourcedoc-info/SourceDocInfo';
 import { ReviewMetatextButton } from './ReviewMetatextButton';
 
 /** Hook to download the metatext in JSON format */

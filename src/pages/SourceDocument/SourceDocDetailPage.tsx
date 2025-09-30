@@ -15,8 +15,8 @@ import { useSourceDocumentDetail, useUpdateSourceDocument } from '@features/docu
 import { useUserConfig, getPreferences } from '@services/userConfigService';
 import SourceDoc from './components/SourceDoc';
 import { useValidatedRouteId } from '@hooks/useValidatedRouteId';
-import { SourceDocInfoDisplay } from '@components/SourceDocInfo';
-import { UserConfigTools } from '@components/UserConfigTools';
+import { SourceDocInfoDisplay } from '@features/sourcedoc-info/SourceDocInfo';
+import { UserConfigTools } from '@features/user-config/UserConfigTools';
 
 function headingText(title: string) {
     return <>
