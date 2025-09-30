@@ -168,6 +168,16 @@ export const BaseBox = styled('div', {
             homepageSection: {
                 minWidth: '20rem',
             },
+            searchBar: {
+                padding: 0,
+                backgroundColor: 'transparent',
+                borderRadius: 6,
+                marginRight: 12,
+                border: '1px solid $border',
+                display: 'flex',
+                alignItems: 'center',
+                paddingLeft: '10px'
+            },
         },
     },
 

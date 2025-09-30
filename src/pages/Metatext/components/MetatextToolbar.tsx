@@ -30,10 +30,11 @@ import { useDownloadMetatext } from '@pages/Metatext/hooks/useDownloadMetatext';
 import { useBookmark } from '@hooks/useBookmark';
 import { useChunkNavigationStore } from '@store/chunkNavigationStore';
 import { useChunkToolsPanel } from '@features/chunk-tools/useChunkToolsPanel';
-import { ChunkStatusInfo } from './ChunkStatusInfo';
 import { TooltipButton } from '@components/ui/TooltipButton';
+import { SearchBar } from '@features/chunk-search';
 import { HiArrowDownTray, HiBookmark, HiOutlineStar, HiStar, HiViewfinderCircle } from 'react-icons/hi2';
 import * as Toolbar from '@radix-ui/react-toolbar';
+
 import { styled } from '@styles';
 
 const StyledToolbarRoot = styled(Toolbar.Root, {
@@ -72,8 +73,6 @@ const StyledSeparator = styled(Toolbar.Separator, {
 interface MetaTextToolbarProps {
     metatextId: number;
     sourceDocumentId?: number;
-    totalFilteredChunks: number;
-    displayChunksCount: number;
     showOnlyFavorites: boolean;
     setShowOnlyFavorites: (show: boolean) => void;
 }
@@ -81,8 +80,6 @@ interface MetaTextToolbarProps {
 export function MetatextToolbar({
     metatextId,
     sourceDocumentId,
-    totalFilteredChunks,
-    displayChunksCount,
     showOnlyFavorites,
     setShowOnlyFavorites,
 }: MetaTextToolbarProps) {
@@ -182,10 +179,7 @@ export function MetatextToolbar({
 
 
             {/* Chunk Status and Search */}
-            <ChunkStatusInfo
-                totalFilteredChunks={totalFilteredChunks}
-                displayChunksCount={displayChunksCount}
-            />
+            <SearchBar />
             <StyledSeparator />
 
             <Toolbar.Button asChild>

@@ -4,7 +4,7 @@ import { HiMagnifyingGlass } from 'react-icons/hi2';
 // Provides the main search interface as described in the feature guide
 
 import React, { useCallback } from 'react';
-import { Box, Input, Button } from '@styles';
+import { Box, Input, Button, Row } from '@styles';
 
 /* Get current search query from store */
 import { useSearch } from './hooks/useSearch';
@@ -17,7 +17,7 @@ interface SearchBarProps {
 
 
 export function SearchBar({
-    placeholder = 'Search...(CMD+K)',
+    placeholder = 'Search...(ctrl+k)',
 }: SearchBarProps) {
     const { query, setQuery, clearSearch, registerSearchInput } = useSearch();
 
@@ -26,7 +26,6 @@ export function SearchBar({
     }, [setQuery]);
 
     const inputRef = React.useRef<HTMLInputElement>(null);
-    // registerSearchInput now comes from useSearch
 
     React.useEffect(() => {
         registerSearchInput(inputRef.current);
@@ -45,7 +44,7 @@ export function SearchBar({
         </Button>
     ) : undefined;
     return (
-        <Box noPad css={{ backgroundColor: 'transparent', borderRadius: 6, marginRight: 12, border: '1px solid $border', display: 'flex', alignItems: 'center', paddingLeft: '10px' }}>
+        <Row noPad variant="searchBar">
             <HiMagnifyingGlass />
             <Input
                 id="metatext-search-input"
@@ -63,6 +62,6 @@ export function SearchBar({
                 }}
             />
             {endElement}
-        </Box>
+        </Row>
     );
 }

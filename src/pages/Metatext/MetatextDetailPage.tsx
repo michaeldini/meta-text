@@ -216,8 +216,6 @@ function MetatextDetailPage(): ReactElement | null {
                     <MetatextToolbar
                         metatextId={id}
                         sourceDocumentId={metatext?.source_document_id}
-                        totalFilteredChunks={pager.totalFilteredChunks}
-                        displayChunksCount={pager.displayChunks.length}
                         showOnlyFavorites={showOnlyFavorites}
                         setShowOnlyFavorites={setShowOnlyFavorites}
                     />
