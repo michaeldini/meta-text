@@ -29,11 +29,11 @@ import { useDownloadMetatext } from '@pages/Metatext/hooks/useDownloadMetatext';
  * Hook to get the bookmark state used to navigate to the bookmarked chunk.
  * 
 */
-import { useBookmark } from '@hooks/useBookmark';
-import { useChunkNavigationStore } from '@store/chunkNavigationStore';
-import { useChunkToolsPanel } from '@features/chunk-tools/useChunkToolsPanel';
-import { TooltipButton } from '@components/ui/TooltipButton';
+import { useBookmark } from '@features/chunk-bookmark';
+import { useChunkToolsPanel } from '@features/chunk-tools';
 import { SearchBar } from '@features/chunk-search';
+import { useChunkNavigationStore } from '@store/chunkNavigationStore';
+import { TooltipButton } from '@components';
 import { HiArrowDownTray, HiBookmark, HiOutlineStar, HiStar, HiViewfinderCircle } from 'react-icons/hi2';
 import * as Toolbar from '@radix-ui/react-toolbar';
 

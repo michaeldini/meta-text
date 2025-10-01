@@ -13,7 +13,7 @@
 import React from 'react';
 import { HiBookmark, HiOutlineBookmark } from 'react-icons/hi2';
 import { ChunkType } from '@mtypes/documents';
-import { useBookmark } from '@hooks/useBookmark';
+import { useBookmark } from '@features/chunk-bookmark/hooks/useBookmark';
 import TooltipButton from '@components/ui/TooltipButton';
 
 interface ChunkBookmarkToggleProps {

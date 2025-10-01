@@ -190,6 +190,7 @@ function MetatextDetailPage(): ReactElement | null {
     // Handle external navigation requests (e.g., bookmarks) via store
     const requestedChunkId = useChunkNavigationStore(state => state.requestedChunkId);
     const clearNavigationRequest = useChunkNavigationStore(state => state.clearNavigationRequest);
+
     React.useEffect(() => {
         if (requestedChunkId !== null) {
             pager.goToChunkById(requestedChunkId);
