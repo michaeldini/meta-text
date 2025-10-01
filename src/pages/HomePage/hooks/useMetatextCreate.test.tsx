@@ -1,12 +1,12 @@
 /* eslint-disable */
 // Tests for useMetatextCreate hook
-import '../../setup-test'
+import '../../../setup-test'
 import React from 'react'
-import { render } from '../../test-utils'
+import { render } from '../../../test-utils'
 import { screen, fireEvent, waitFor } from '@testing-library/react'
 import { vi } from 'vitest'
-import '../../tests/__mocks__/documentsData.mock'
-import { docsSpies } from '../../tests/__mocks__/documentsData.mock'
+import '../../../tests/__mocks__/documentsData.mock'
+import { docsSpies } from '../../../tests/__mocks__/documentsData.mock'
 
 // Mock the documents hook that the hook uses
 const mutateMock = vi.fn((payload: any, options?: any) => {

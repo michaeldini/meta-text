@@ -2,7 +2,7 @@ import { HiOutlineSparkles } from 'react-icons/hi2';
 import React from 'react';
 import { Box, IconWrapper, Button, Input, Heading } from '@styles';
 import { Select, TooltipButton } from '@components/ui';
-import { useMetatextCreate } from './useMetatextCreate';
+import { useMetatextCreate } from '../hooks/useMetatextCreate';
 import { SourceDocumentSummary } from '@mtypes/documents';
 
 export interface MetatextCreateFormProps {

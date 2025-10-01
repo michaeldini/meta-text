@@ -1,11 +1,11 @@
 /* eslint-disable */
 import '../../setup-test'
 import React from 'react'
-import { render } from '../../test-utils'
+import { render } from '../../../test-utils'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { vi } from 'vitest'
 import '../../tests/__mocks__/documentsData.mock'
-import { docsSpies } from '../../tests/__mocks__/documentsData.mock'
+import { docsSpies } from '../../../tests/__mocks__/documentsData.mock'
 
 import { useSourceDocUploadForm } from './useSourceDocUploadForm'
 

@@ -4,19 +4,18 @@
  * */
 import React from 'react';
 
-import { Box, Text, Heading } from '@styles';
 import type { ReactElement } from 'react';
-import { useSourceDocEditor } from './hooks/useSourceDocEditor';
-
 import { useNavigate } from 'react-router-dom';
-import { useSourceDocumentDetail, useUpdateSourceDocument } from '@features/documents/useDocumentsData';
 
-/** Hook to fetch user configuration and ui preferences. */
-import { useUserConfig, getPreferences } from '@services/userConfigService';
-import SourceDoc from './components/SourceDoc';
+import { useSourceDocumentDetail, useUpdateSourceDocument } from '@features/documents/useDocumentsData';
+import { useSourceDocEditor } from './hooks/useSourceDocEditor';
 import { useValidatedRouteId } from '@hooks/useValidatedRouteId';
-import { SourceDocInfoDisplay } from '@features/sourcedoc-info/SourceDocInfo';
+import { useUserConfig, getPreferences } from '@services/userConfigService';
 import { UserConfigTools } from '@features/user-config/UserConfigTools';
+import { SourceDocInfoDisplay } from '@features/sourcedoc-info/SourceDocInfo';
+
+import SourceDoc from './components/SourceDoc';
+import { Box, Text, Heading } from '@styles';
 
 function headingText(title: string) {
     return <>

@@ -10,12 +10,9 @@ import type { ReactElement } from 'react';
 import { useSourceDocuments, useMetatexts, useDeleteMetatext, useDeleteSourceDocument } from '@features/documents/useDocumentsData';
 // styling (stitches)
 import { Box, Row, Link } from '@styles';
-import MetatextCreateForm from '@sections/Metatext/MetatextCreateForm';
+import MetatextCreateForm from '@pages/HomePage/components/MetatextCreateForm';
 import { SearchableTable } from '@components/SearchableTable';
-import SourceDocUploadForm from '@sections/SourceDocuments/SourceDocUploadForm';
-
-// HomePage component
-// Use Box and Row directly, with variants if needed
+import SourceDocUploadForm from '@pages/HomePage/components/SourceDocUploadForm';
 
 function HomePage(): ReactElement {
     // Fetch source documents and metatexts

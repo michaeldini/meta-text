@@ -7,7 +7,7 @@ import { ErrorAlert } from '@components/ErrorAlert';
 import SourceDocFilePicker from './SourceDocFilePicker';
 
 // Hook
-import { useSourceDocUploadForm } from './useSourceDocUploadForm';
+import { useSourceDocUploadForm } from '../hooks/useSourceDocUploadForm';
 import { TooltipButton } from '@components/ui';
 
 function SourceDocUploadForm(): React.ReactElement {
