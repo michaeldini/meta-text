@@ -1,11 +1,12 @@
 // Review page for a Metatext document, providing a comprehensive review interface with flashcards, phrases, and chunk data table.
 
 import { useNavigate, useParams } from 'react-router-dom';
-import { Box } from '@styles';
+import { Box, Button, Heading, Row } from '@styles';
 import type { ReactElement } from 'react';
 
-import { Header, ReviewContent } from './components';
+import { ReviewContent } from './components';
 import { useMetatextReviewData } from './hooks/useMetatextReviewData';
+import { HiArrowLeft } from 'react-icons/hi2';
 
 function MetatextReviewPage(): ReactElement {
     // Get the raw Metatext ID string from the URL parameters (may be undefined or invalid)
@@ -20,14 +21,27 @@ function MetatextReviewPage(): ReactElement {
     return (
         <Box data-testid="metatext-review-page" p="2">
             {/* Page header with navigation and title */}
-            <Header metatextId={parsedId} navigate={navigate} />
+            <Row alignCenter center>
+
+                <Button
+                    tone="default"
+                    onClick={() => navigate(`/metatext/${metatextId}`)}
+                    title="Back to Metatext Detail"
+                    css={{ marginBottom: '12px' }}
+                >
+                    <HiArrowLeft />
+                </Button>
+                <Heading>
+                    Review
+                </Heading>
+            </Row>
             {/* Review content sections */}
             <ReviewContent
                 flashcards={wordList}
                 phrases={phraseList}
                 chunkReviewTable={chunks}
             />
-        </Box>
+        </Box >
     );
 }
 // Default export for React component usage
