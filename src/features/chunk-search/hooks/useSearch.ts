@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSearchStore } from '@store/useSearchStore';
+import { searchStore } from '@store/searchStore';
 import type { ChunkType } from '@mtypes/documents';
 
 /**
@@ -24,7 +24,7 @@ import type { ChunkType } from '@mtypes/documents';
  */
 export function useSearch(chunks?: ChunkType[], debounceMs = 300) {
     // store-driven UI state
-    const { query, setQuery, clearSearch, registerSearchInput, focusSearch } = useSearchStore();
+    const { query, setQuery, clearSearch, registerSearchInput, focusSearch } = searchStore();
     // internal chunk-search state
     const [results, setResults] = useState<ChunkType[]>([]);
     const [isSearching, setIsSearching] = useState(false);

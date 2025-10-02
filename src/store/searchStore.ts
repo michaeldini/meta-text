@@ -27,7 +27,7 @@ interface SearchState {
     focusSearch: () => void;
 }
 
-export const useSearchStore = create<SearchState>((set, get) => ({
+export const searchStore = create<SearchState>((set, get) => ({
     // Input state
     query: '',
 

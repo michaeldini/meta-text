@@ -2,7 +2,7 @@
 // Provides API calls for managing meta text documents (summaries, analyses, etc.)
 // Follows the ky pattern for API requests, see sourceDocumentService.ts for reference
 
-import { api } from '../utils/ky';
+import { api } from '@utils/ky';
 import type { MetatextSummary, MetatextDetail, MetatextCreate } from '@mtypes/documents';
 
 // Fetch all meta texts

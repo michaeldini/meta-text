@@ -18,7 +18,7 @@ const initialState = {
     showOnlyFavorites: false,
 };
 
-export const useDisplayChunksStore = create<DisplayChunksState>((set) => ({
+export const displayChunksStore = create<DisplayChunksState>((set) => ({
     ...initialState,
 
     setShowOnlyFavorites: (show: boolean) => set({ showOnlyFavorites: show }),
