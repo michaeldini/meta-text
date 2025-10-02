@@ -5,7 +5,7 @@
 // Component to review explanations of phrases with context and explanations
 // Migrated from Chakra UI to Stitches and Radix UI
 import React from 'react';
-import { Explanation } from '@mtypes/MetatextReview.types';
+import { Explanation } from '@mtypes/review';
 import { Box, Text, Heading, styled, accordionDown, accordionUp } from '@styles';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import { EmptyState } from '@components/ui/empty-state';

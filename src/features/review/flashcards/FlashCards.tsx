@@ -5,7 +5,7 @@
 import React from 'react';
 import { Wrap } from '@styles';
 import Flashcard from './components/Flashcard';
-import { Explanation } from '@mtypes/MetatextReview.types';
+import { Explanation } from '@mtypes/review';
 import { EmptyState } from '@components/ui';
 
 interface FlashCardsProps {

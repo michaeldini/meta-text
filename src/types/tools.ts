@@ -1,24 +1,10 @@
-
-// =============================================================================
-// NOTES TOOL TYPES
-// =============================================================================
+/**
+ * Types related to tools (e.g., AI image generation, rewriting) and used in `ChunkType` (documents.ts)
+ */
 
 /**
- * Props for notes tool components
+ * An AI-generated image associated with a chunk
  */
-export interface NotesToolProps {
-    summary?: string;
-    note?: string;
-    onSummaryBlur?: (val: string) => void;
-    onNoteBlur?: (val: string) => void;
-    summaryFieldSx?: object;
-    noteFieldSx?: object;
-}
-
-// =============================================================================
-// CHUNKTYPE ATTRIBUTE TOOL TYPES
-// =====================================================
-// for chunktype
 export type AiImage = {
     id: number;
     prompt: string;
@@ -26,7 +12,9 @@ export type AiImage = {
     chunk_id: number;
 };
 
-// for chunktype
+/**
+ * An AI-generated rewrite associated with a chunk
+ */
 export interface Rewrite {
     id: number;
     title: string;

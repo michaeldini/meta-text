@@ -1,4 +1,9 @@
-// TODO add this to a tool type file. 
+/**
+ * 
+ * Types for Metatext Review page and features. 
+ */
+
+
 /**
  * Represents an explanation for a word or phrase from a metatext.
  * 

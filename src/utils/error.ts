@@ -9,25 +9,6 @@ export interface ApiError {
     details?: Record<string, unknown>;
 }
 
-export interface ValidationError {
-    field: string;
-    message: string;
-}
-
-export interface AuthError {
-    message: string;
-    type: 'authentication' | 'authorization' | 'token' | 'network';
-}
-
-/**
- * Generic error response from the API
- */
-export interface ApiErrorResponse {
-    detail?: string;
-    message?: string;
-    errors?: ValidationError[];
-}
-
 /**
  * Type guard to check if an error is an API error
  */

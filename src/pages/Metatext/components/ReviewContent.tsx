@@ -4,7 +4,7 @@
 import type { ReactElement } from 'react';
 import { FlashCards, ReviewTable, Phrases } from '@features/review';
 import { ChunkType, } from '@mtypes/documents';
-import { Explanation } from '@mtypes/MetatextReview.types'
+import { Explanation } from '@mtypes/review'
 import { useState } from 'react';
 import { Box, Button, Column } from '@styles';
 

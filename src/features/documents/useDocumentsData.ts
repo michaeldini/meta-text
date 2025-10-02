@@ -26,7 +26,7 @@ import type {
     MetatextSummary,
     MetatextDetail
 } from '@mtypes/documents';
-import { getErrorMessage } from '@mtypes/error';
+import { getErrorMessage } from '@utils/error';
 import { HTTPError } from 'ky';
 
 

@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchReviewData } from '@services/reviewService';
 import { ChunkType } from '@mtypes/documents';
-import { Explanation } from '@mtypes/MetatextReview.types'
+import { Explanation } from '@mtypes/review'
 import { useMetatextDetail } from '@features/documents/useDocumentsData';
 // Return type for useMetatextReviewData hook
 export interface UseMetatextReviewDataReturn {

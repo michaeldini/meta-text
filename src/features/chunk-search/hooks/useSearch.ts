@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSearchStore } from '../store/useSearchStore';
+import { useSearchStore } from '@store/useSearchStore';
 import type { ChunkType } from '@mtypes/documents';
 
 /**

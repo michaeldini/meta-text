@@ -36,7 +36,7 @@ import { useChunkPagination } from '@features/chunk/hooks/useChunkPagination';
 import { useValidatedRouteId } from '@hooks/useValidatedRouteId';
 import { useChunkToolsStore } from '@store/chunkToolsStore';
 import { useChunkNavigationStore } from '@store/chunkNavigationStore';
-import { SHORTCUTS } from '@utils/keyboardShortcuts';
+import { SHORTCUTS } from '@features/keyboard-shortcuts/keyboardShortcuts';
 import { Column, Box, Heading } from '@styles';
 
 function MetatextDetailPage(): ReactElement | null {

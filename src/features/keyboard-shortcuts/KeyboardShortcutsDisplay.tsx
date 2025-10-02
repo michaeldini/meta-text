@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { type KeyboardShortcut, SHORTCUTS } from '@utils/keyboardShortcuts';
+import { type KeyboardShortcut, SHORTCUTS } from '@features/keyboard-shortcuts/keyboardShortcuts';
 import { Box, Text, Column, TagRoot as Badge, Heading } from '@styles';
 import TooltipButton from '@components/ui/TooltipButton';
 import { HiQuestionMarkCircle } from 'react-icons/hi2';

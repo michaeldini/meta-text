@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 
 import { login as apiLogin, register as apiRegister, getMe, refreshToken, logout as apiLogout } from '@services/authService';
 import log from '@utils/logger';
-import { getErrorMessage } from '@mtypes/error';
+import { getErrorMessage } from '@utils/error';
 
 
 /**

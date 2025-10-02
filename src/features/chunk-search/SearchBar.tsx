@@ -4,7 +4,7 @@ import { HiMagnifyingGlass } from 'react-icons/hi2';
 // Provides the main search interface as described in the feature guide
 
 import React, { useCallback } from 'react';
-import { Box, Input, Button, Row } from '@styles';
+import { Input, Button, Row } from '@styles';
 
 /* Get current search query from store */
 import { useSearch } from './hooks/useSearch';
