@@ -10,7 +10,7 @@ import SourceDocFilePicker from './SourceDocFilePicker';
 import { useSourceDocUploadForm } from '../hooks/useSourceDocUploadForm';
 import { TooltipButton } from '@components/ui';
 
-function SourceDocUploadForm(): React.ReactElement {
+export function SourceDocUploadForm(): React.ReactElement {
     const { files, error, addSourceDocuments, handleFilesChange, handleSubmit, uploadStatuses } = useSourceDocUploadForm();
     const isPending = addSourceDocuments.isPending;
     return (

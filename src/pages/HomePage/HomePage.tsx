@@ -11,8 +11,7 @@ import { useSourceDocuments, useMetatexts, useDeleteMetatext, useDeleteSourceDoc
 // styling (stitches)
 import { Box, Row, Link } from '@styles';
 import MetatextCreateForm from '@pages/HomePage/components/MetatextCreateForm';
-import { SearchableTable } from '@components/SearchableTable';
-import SourceDocUploadForm from '@pages/HomePage/components/SourceDocUploadForm';
+import { SearchableTable, SourceDocUploadForm } from '@pages/HomePage/components';
 
 function HomePage(): ReactElement {
     // Fetch source documents and metatexts
@@ -21,6 +20,7 @@ function HomePage(): ReactElement {
 
     return (
         <Box center>
+            {/* delete this when it is no longer amusing */}
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="128" height="128" aria-label="Monoline vehicle icon">
                 <g stroke="#de0f0fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     {/* Seat */}
