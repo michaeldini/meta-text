@@ -30,7 +30,6 @@ import { useDownloadMetatext } from '@pages/Metatext/hooks/useDownloadMetatext';
  * 
 */
 import { useBookmark } from '@features/chunk-bookmark';
-import { useChunkToolsPanel } from '@features/chunk-tools';
 import { SearchBar } from '@features/chunk-search';
 import { useChunkNavigationStore } from '@store/chunkNavigationStore';
 import { TooltipButton } from '@components';
@@ -38,6 +37,8 @@ import { HiArrowDownTray, HiBookmark, HiOutlineStar, HiStar, HiViewfinderCircle 
 import * as Toolbar from '@radix-ui/react-toolbar';
 
 import { styled } from '@styles';
+import { useChunkToolsStore } from '@store/chunkToolsStore';
+import { chunkToolsRegistry, type ChunkToolId } from '@features/chunk-tools/toolsRegistry';
 
 const StyledToolbarRoot = styled(Toolbar.Root, {
     display: 'flex',
@@ -94,9 +95,19 @@ export function MetatextToolbar({
     // Navigation store for bookmark navigation
     const requestNavigateToChunk = useChunkNavigationStore(state => state.requestNavigateToChunk);
 
-    // Chunk tools panel logic
-    const { activeTabs, chunkToolsRegistry, handleToolClick } = useChunkToolsPanel();
+    // State from store
+    const activeTabs = useChunkToolsStore(state => state.activeTools);
+    const setActiveTabs = useChunkToolsStore(state => state.setActiveTools);
 
+
+    // Toggle tool selection
+    const handleToolClick = (toolId: ChunkToolId) => {
+        if (activeTabs.includes(toolId)) {
+            setActiveTabs(activeTabs.filter(id => id !== toolId));
+        } else {
+            setActiveTabs([...activeTabs, toolId]);
+        }
+    };
     // Bookmark state (direct)
     const { bookmarkedChunkId } = useBookmark(metatextId);
 

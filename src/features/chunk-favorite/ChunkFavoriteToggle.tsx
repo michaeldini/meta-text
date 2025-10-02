@@ -1,9 +1,8 @@
 import React from 'react';
-import { HiOutlineStar, HiStar } from 'react-icons/hi2';
-import { Box } from '@styles';
 import type { ChunkType } from '@mtypes/documents';
 import useChunkFavoriteToggle from './useChunkFavoriteToggle';
 import TooltipButton from '@components/ui/TooltipButton';
+import { HiOutlineStar, HiStar } from 'react-icons/hi2';
 
 interface ChunkFavoriteToggleProps {
     chunk: ChunkType;

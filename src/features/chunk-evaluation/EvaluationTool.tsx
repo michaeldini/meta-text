@@ -21,7 +21,6 @@ export function EvaluationTool({ chunk, isVisible }: EvaluationToolProps) {
     const [error, setError] = useState<string | null>(null);
     const [evaluationText, setEvaluationText] = useState<string>(chunk.evaluation || '');
 
-    // Keep local state in sync if parent provides updated evaluation (e.g. after a refetch)
     useEffect(() => {
         setEvaluationText(chunk.evaluation || '');
     }, [chunk.id, chunk.evaluation]);
