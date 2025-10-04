@@ -19,7 +19,7 @@ export interface WordsToolbarProps {
  */
 export function WordsToolbar({ onClose, word, wordIdx, chunk }: WordsToolbarProps) {
     return (
-        <Column css={{ gap: 16, alignItems: 'center', justifyContent: 'center', padding: 16 }}>
+        <Column gap="2" alignCenter justifyCenter>
             <SplitChunkTool
                 wordIdx={wordIdx}
                 word={word}
