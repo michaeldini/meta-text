@@ -22,7 +22,7 @@ function HomePage(): ReactElement {
         <Box center>
             {/* delete this when it is no longer amusing */}
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="128" height="128" aria-label="Monoline vehicle icon">
-                <g stroke="#de0f0fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <g stroke="#de0f0fff" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
                     {/* Seat */}
                     <path d="M20 20 H44 V26 H20 Z" />
                     {/* Seat support */}

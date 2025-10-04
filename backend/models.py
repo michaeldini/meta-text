@@ -112,9 +112,15 @@ class ChunkBase(SQLModel):
 class Chunk(ChunkBase, table=True):
     id: int = Field(default=None, primary_key=True)
     metatext: Optional[Metatext] = Relationship(back_populates="chunks")
-    images: List["Image"] = Relationship(back_populates="chunk")
+    images: List["Image"] = Relationship(back_populates="chunk", sa_relationship_kwargs={"cascade": "all, delete-orphan"})
     # rewrite the chunk in different ways
-    rewrites: List["Rewrite"] = Relationship(back_populates="chunk") 
+    # Add cascade so that when a Chunk is deleted (e.g. via Metatext deletion),
+    # associated Rewrite rows are also deleted instead of attempting to nullify
+    # the NOT NULL foreign key (which caused IntegrityError before).
+    rewrites: List["Rewrite"] = Relationship(
+        back_populates="chunk",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"}
+    ) 
     favorited_by_user_id: Optional[int] = Field(default=None, foreign_key="user.id")
     favorited_by_user: Optional["User"] = Relationship(
         back_populates="favorite_chunks",
