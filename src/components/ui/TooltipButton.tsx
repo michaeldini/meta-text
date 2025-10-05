@@ -26,7 +26,6 @@ export interface TooltipButtonProps extends Omit<React.ButtonHTMLAttributes<HTML
     tooltip?: string;
     disabled?: boolean;
     onClick?: (() => void) | ((event: React.MouseEvent<HTMLButtonElement>) => void);
-    onKeyDown?: (event: React.KeyboardEvent) => void;
     role?: string;
     type?: 'button' | 'submit' | 'reset';
     side?: 'top' | 'right' | 'bottom' | 'left';
@@ -41,23 +40,14 @@ export function TooltipButton({
     icon,
     disabled = false,
     onClick,
-    onKeyDown,
     type = 'button',
     side = 'top',
     tone = 'default',
     role = 'button',
     loading = false,
     iconSize,
-    ...rest
 }: TooltipButtonProps): React.ReactElement {
 
-    // Re-usable components (defined at module scope) are used here to avoid
-    // recreating styled components on every render which can cause DOM
-    // remounts and unexpected focus changes.
-    // map tone fallback for inline style color prop
-    const allowedTones = ['default', 'primary', 'danger', 'disabled'] as const;
-    type Tone = typeof allowedTones[number];
-    const toneProp: Tone = allowedTones.includes(tone as Tone) ? (tone as Tone) : 'default';
 
     return (
         <Tooltip.Provider>
@@ -68,11 +58,8 @@ export function TooltipButton({
                         disabled={disabled}
                         aria-label={label}
                         type={type}
-                        onKeyDown={onKeyDown}
                         role={role}
-                        tone={toneProp}
-                        {...rest}
-                        style={{ ...(rest.style || {}) }}
+                        tone={tone}
                     >
                         {icon ? <IconWrapper style={{ fontSize: iconSize as React.CSSProperties['fontSize'] }}>{icon}</IconWrapper> : null}
 
