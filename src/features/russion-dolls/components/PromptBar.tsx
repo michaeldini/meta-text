@@ -1,7 +1,7 @@
 // Purpose: Reusable prompt input with submit button. Emits onSubmit with the typed value.
 
 import React from 'react';
-import { Box, Button, Column, Row, Input as StInput, Text, Spinner } from '@styles';
+import { Box, BaseButton, Column, Row, Input as StInput, Text, Spinner } from '@styles';
 
 export type PromptBarProps = {
     value: string;
@@ -28,9 +28,9 @@ export function PromptBar({ value, onChange, onSubmit, loading, error }: PromptB
                     onChange={e => onChange((e.target as HTMLInputElement).value)}
                     disabled={!!loading}
                 />
-                <Button type="submit" disabled={!value.trim() || !!loading}>
+                <BaseButton type="submit" disabled={!value.trim() || !!loading}>
                     {loading ? <Spinner /> : 'Send'}
-                </Button>
+                </BaseButton>
             </Row>
             {error && (
                 <Text css={{ marginTop: 8, fontSize: '0.9rem' }}>{error}</Text>

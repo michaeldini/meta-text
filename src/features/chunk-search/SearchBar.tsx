@@ -4,7 +4,7 @@ import { HiMagnifyingGlass } from 'react-icons/hi2';
 // Provides the main search interface as described in the feature guide
 
 import React, { useCallback } from 'react';
-import { Input, Button, Row } from '@styles';
+import { Input, BaseButton, Row } from '@styles';
 
 /* Get current search query from store */
 import { useSearch } from './hooks/useSearch';
@@ -32,7 +32,7 @@ export function SearchBar({
         return () => registerSearchInput(null);
     }, [registerSearchInput]);
     const endElement = query ? (
-        <Button
+        <BaseButton
             onClick={() => {
                 setQuery("");
                 inputRef.current?.focus();
@@ -41,7 +41,7 @@ export function SearchBar({
             style={{ marginLeft: -2 }}
         >
             ×
-        </Button>
+        </BaseButton>
     ) : undefined;
     return (
         <Row noPad variant="searchBar">

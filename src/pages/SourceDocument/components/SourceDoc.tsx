@@ -2,7 +2,7 @@ import { HiCheck } from 'react-icons/hi2';
 // Component for displaying and editing source document content
 // Migrated from Chakra UI to Stitches. Uses primitives and styles from stitches.config.ts via @styles alias.
 import React, { useState } from 'react';
-import { Box, Text, Button } from '@styles';
+import { Box, Text, BaseButton } from '@styles';
 import { ErrorAlert } from '@components/ErrorAlert';
 
 
@@ -105,7 +105,7 @@ export default function SourceDoc({
                         autoFocus
                         onBlur={handleCancel}
                     />
-                    <Button
+                    <BaseButton
                         tone="primary"
                         css={{ position: 'absolute', top: 12, right: 12, zIndex: 1100 }}
                         onClick={handleSubmit}
@@ -113,7 +113,7 @@ export default function SourceDoc({
                         aria-label="Save"
                     >
                         <HiCheck style={{ fontSize: '1.25em' }} />
-                    </Button>
+                    </BaseButton>
                 </Box>
             )}
             {isSaving && (

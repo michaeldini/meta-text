@@ -254,7 +254,7 @@ export const Text = styled('div', {
 // --------------------------------------------------------------
 // Button, Input, Textarea, Link
 // --------------------------------------------------------------
-export const Button = styled('button', {
+export const BaseButton = styled('button', {
     display: 'inline-flex',
     alignItems: 'center',
     border: 'transparent',

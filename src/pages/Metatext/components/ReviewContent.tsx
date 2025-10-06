@@ -6,7 +6,7 @@ import { FlashCards, ReviewTable, Phrases } from '@features/review';
 import { ChunkType, } from '@mtypes/documents';
 import { Explanation } from '@mtypes/review'
 import { useState } from 'react';
-import { Box, Button, Column } from '@styles';
+import { Box, BaseButton, Column } from '@styles';
 
 interface ReviewContentProps {
     flashcards: Explanation[];
@@ -29,29 +29,29 @@ export function ReviewContent({ flashcards, phrases, chunkReviewTable }: ReviewC
     return (
         <>
             <Column>
-                <Button
+                <BaseButton
                     data-testid="explanations-toggle"
                     onClick={() => setShowExplanations((v) => !v)}
                     css={{ marginBottom: 8 }}
                 >
                     {showExplanations ? 'Hide' : 'Show'} Explanations
-                </Button>
+                </BaseButton>
                 {showExplanations && <Phrases phrases={phrases} />}
-                <Button
+                <BaseButton
                     data-testid="flashcards-toggle"
                     onClick={() => setShowFlashcards((v) => !v)}
                     css={{ marginBottom: 8 }}
                 >
                     {showFlashcards ? 'Hide' : 'Show'} Flashcards
-                </Button>
+                </BaseButton>
                 {showFlashcards && <FlashCards flashcardItems={flashcards} />}
-                <Button
+                <BaseButton
                     data-testid="reviewtable-toggle"
                     onClick={() => setShowReviewTable((v) => !v)}
                     css={{ marginBottom: 8 }}
                 >
                     {showReviewTable ? 'Hide' : 'Show'} Review Table
-                </Button>
+                </BaseButton>
                 {showReviewTable && <ReviewTable chunks={chunkReviewTable} />}
             </Column>
         </>

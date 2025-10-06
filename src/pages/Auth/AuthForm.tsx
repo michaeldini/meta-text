@@ -6,7 +6,7 @@ import {
     Column,
     Heading,
     Input,
-    Button,
+    BaseButton,
     Text,
 } from '@styles';
 
@@ -60,9 +60,9 @@ function AuthForm({ type, onSubmit, error, loading, redirectOnSuccess }: AuthFor
                         <Text>{formError || error}</Text>
                     </Box>
                 )}
-                <Button type="submit" tone="primary" disabled={loading} css={{ width: '100%' }}>
+                <BaseButton type="submit" tone="primary" disabled={loading} css={{ width: '100%' }}>
                     {loading ? (type === 'login' ? 'Logging in...' : 'Registering...') : type === 'login' ? 'Login' : 'Register'}
-                </Button>
+                </BaseButton>
             </Column>
         </Box>
     );

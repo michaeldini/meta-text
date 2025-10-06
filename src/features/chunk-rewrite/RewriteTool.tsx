@@ -5,7 +5,7 @@ import { HiPencilSquare } from 'react-icons/hi2';
  * Example styles: "like I'm 5", "like a bro", "academic"
  */
 import React, { useMemo, useState } from 'react';
-import { Box, Text, Button } from '@styles';
+import { Box, Text, BaseButton } from '@styles';
 import { TooltipButton } from '@components/ui/TooltipButton';
 import { useRewriteTool } from './hooks/useRewriteTool';
 import type { ChunkType } from '@mtypes/documents';
@@ -60,7 +60,7 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
             >
                 <Box>
                     <form id="rewrite-gen-form" onSubmit={handleFormSubmit}>
-                        <Button
+                        <BaseButton
                             type="submit"
                             form="rewrite-gen-form"
                             disabled={isLoading}
@@ -68,7 +68,7 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
                             css={{ minWidth: 120 }}
                         >
                             {isLoading ? 'Generating…' : 'Generate & Save'}
-                        </Button>
+                        </BaseButton>
                         <Box>
                             <label htmlFor="rewrite-style">Rewrite style:</label>
                             <Select
