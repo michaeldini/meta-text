@@ -41,15 +41,13 @@ export function SplitChunkTool(props: SplitChunkToolProps) {
     };
 
     return (
-        <Tooltip content={`Split chunk at "${word}"`}>
-            <Button
-                icon={<HiScissors />}
-                onClick={handleSplit}
-                aria-label={`Split chunk at word "${word}"`}
-                disabled={!wordIdx}
+        <Button
+            icon={<HiScissors />}
+            onClick={handleSplit}
+            aria-label={`Split chunk at word "${word}"`}
+            disabled={!wordIdx}
 
-            />
-        </Tooltip>
+        />
     );
 }
 

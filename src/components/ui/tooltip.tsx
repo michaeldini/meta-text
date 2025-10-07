@@ -45,7 +45,9 @@ export function Tooltip({
                 <TooltipPrimitive.Trigger asChild>
                     {children}
                 </TooltipPrimitive.Trigger>
-                <TooltipContent side="top" align="center" sideOffset={10} {...props}>
+                <TooltipContent side="top" align="center" sideOffset={10} {...props}
+                    onFocusCapture={e => e.stopPropagation()} // prevent focus stealing
+                >
                     {content}
                 </TooltipContent>
             </TooltipPrimitive.Root>

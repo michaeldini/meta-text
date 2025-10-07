@@ -1,7 +1,7 @@
 // Toolbar for word-level tools in a chunk
 
 import React, { memo } from 'react';
-import { Column } from '@styles';
+import { Column, Text } from '@styles';
 import { SplitChunkTool } from '@features/chunk-split';
 import { WordsExplanationTool } from '@features/chunk-explanation';
 import type { ChunkType } from '@mtypes/documents';
@@ -20,6 +20,7 @@ export interface WordsToolbarProps {
 export function WordsToolbar({ onClose, word, wordIdx, chunk }: WordsToolbarProps) {
     return (
         <Column gap="2" alignCenter justifyCenter>
+            <Text>{word}</Text>
             <SplitChunkTool
                 wordIdx={wordIdx}
                 word={word}

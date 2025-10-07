@@ -38,17 +38,13 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
         <>
             {/* Show button only if not showing definition */}
             {!showDefinition && (
-                <>
-                    <Tooltip content={`Get an explanation for "${word}"`}>
-                        <Button
-                            icon={<HiQuestionMarkCircle />}
-                            onClick={handleDefine}
-                            disabled={loading}
-                            aria-label={`Define ${word}`}
-                            data-testid={`explain-word-${word}`}
-                        />
-                    </Tooltip>
-                </>
+                <Button
+                    icon={<HiQuestionMarkCircle />}
+                    onClick={handleDefine}
+                    disabled={loading}
+                    aria-label={`Define ${word}`}
+                    data-testid={`explain-word-${word}`}
+                />
             )}
             {/* Show explanation only if showDefinition is true */}
             {showDefinition && (

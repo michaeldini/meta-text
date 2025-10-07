@@ -70,7 +70,8 @@ export function SimpleDialog({ triggerButton, tooltip, title, children }: Simple
                 </ToolTipPrimitive.Root>
                 <Dialog.Portal>
                     <Overlay />
-                    <Content>
+                    <Content
+                    >
                         <Dialog.Close asChild>
                             <IconWrapper>
                                 <HiXCircle />
