@@ -27,7 +27,7 @@ const Content = styled(Dialog.Content, {
     boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
     maxWidth: '90vw',
     maxHeight: '90vh',
-    overflow: 'auto',
+    overflow: 'visible', // 'visible' to allow tooltips to overflow dialogs
     zIndex: 60,
 });
 
