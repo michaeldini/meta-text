@@ -18,10 +18,9 @@ const Content = styled(Dialog.Content, {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    // // Use theme tokens so dialogs are opaque and follow the design system
     background: '$colors$altBackground',
     color: '$colors$altText',
-    padding: '24px',
+    padding: '48px',
     borderRadius: 8,
     border: '1px solid $colors$border',
     boxShadow: '0 10px 30px rgba(0,0,0,0.2)',

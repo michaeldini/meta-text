@@ -90,7 +90,7 @@ export function SourceDocInfo(sourceDocInfoProps: SourceDocInfoProps) {
                 />
             </Tooltip>
             <Text>Click on a field to edit. Enter to Save. Tab to Cancel</Text>
-            <Column css={{ flex: 1, minWidth: '320px', gap: '2px' }}>
+            <Row css={{ flex: 1, minWidth: '320px' }}>
                 {FIELD_CONFIG.map(config => (
                     <Box key={config.key} noPad>
                         <Text css={{ fontWeight: 600 }}>{config.label}</Text>
@@ -101,7 +101,7 @@ export function SourceDocInfo(sourceDocInfoProps: SourceDocInfoProps) {
                         />
                     </Box>
                 ))}
-            </Column>
+            </Row>
         </Row>
     );
 }
