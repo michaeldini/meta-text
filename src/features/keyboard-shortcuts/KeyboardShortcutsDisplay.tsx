@@ -9,7 +9,7 @@
 import React from 'react';
 import { type KeyboardShortcut, SHORTCUTS } from '@features/keyboard-shortcuts/keyboardShortcuts';
 import { Box, Text, Column, TagRoot as Badge, Heading } from '@styles';
-import TooltipButton from '@components/ui/TooltipButton';
+import { Button } from '@components';
 import { HiQuestionMarkCircle } from 'react-icons/hi2';
 import { SimpleDialog } from '@components/ui/dialog';
 
@@ -19,18 +19,14 @@ export function KeyboardShortcutsDisplay() {
     return (
         <SimpleDialog
             title="Help"
-
-            // Button to activate the dialog
+            tooltip="Show keyboard shortcuts"
             triggerButton={
-                <TooltipButton
-                    aria-label="Open help"
-                    label=""
-                    tooltip="Show keyboard shortcuts"
+                <Button
+                    aria-label="Show keyboard shortcuts"
                     icon={<HiQuestionMarkCircle />}
                 />
             }
         >
-
             {/* Dialog content */}
             <Column>
                 <Heading>Keyboard Shortcuts</Heading>

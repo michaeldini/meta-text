@@ -8,7 +8,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Box, Text } from '@styles';
 import { ErrorAlert } from '@components/ErrorAlert';
 
-import { TooltipButton } from '@components/ui/TooltipButton';
+import { Button, Tooltip } from '@components';
 import type { ChunkType } from '@mtypes/documents';
 import { explainWordsOrChunk } from '@services/aiService';
 
@@ -55,14 +55,15 @@ export function ExplanationTool({ chunk, isVisible }: ExplanationToolProps) {
 
     return (
         <Box>
-            <TooltipButton
-                label="Explain"
-                tooltip="Generate a detailed explanation of this chunk's text."
-                icon={<HiOutlineSparkles />}
-                onClick={handleGenerate}
-                disabled={loading || !chunk.id}
-                loading={loading}
-            />
+            <Tooltip content="Generate a detailed explanation of this chunk's text.">
+                <Button
+                    icon={<HiOutlineSparkles />}
+                    onClick={handleGenerate}
+                    disabled={loading || !chunk.id}
+                >
+                    Explain
+                </Button>
+            </Tooltip   >
             <Box>
                 {explanationText ? <Text>{explanationText}</Text> : <Text css={{ textAlign: 'right', color: '$colors$subtle' }}>No explanation yet.</Text>}
             </Box>

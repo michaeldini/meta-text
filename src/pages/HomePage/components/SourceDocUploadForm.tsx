@@ -8,7 +8,7 @@ import SourceDocFilePicker from './SourceDocFilePicker';
 
 // Hook
 import { useSourceDocUploadForm } from '../hooks/useSourceDocUploadForm';
-import { TooltipButton } from '@components/ui';
+import { Button, Tooltip } from '@components';
 
 export function SourceDocUploadForm(): React.ReactElement {
     const { files, error, addSourceDocuments, handleFilesChange, handleSubmit, uploadStatuses } = useSourceDocUploadForm();
@@ -25,18 +25,20 @@ export function SourceDocUploadForm(): React.ReactElement {
                         onFilesChange={handleFilesChange}
                         uploadStatuses={uploadStatuses}
                     />
-                    <TooltipButton
-                        label="Upload Documents"
-                        tooltip={files.length === 0 ? 'Please select files to upload' : 'Submit to upload documents'}
-                        disabled={files.length === 0 || isPending}
-                        loading={isPending}
-                        icon={<HiArrowDownTray style={{ marginRight: 8 }} />}
-                        type="submit"
-                        data-testid="submit-button"
+                    <Tooltip
+                        content={files.length === 0 ? 'Please select files to upload' : 'Submit to upload documents'}
                     >
-                        {!isPending && <HiArrowDownTray />}
-                        {isPending ? 'Uploading...' : 'Upload Documents'}
-                    </TooltipButton>
+                        <Button
+                            type="submit"
+                            icon={<HiArrowDownTray style={{ marginRight: 8 }} />}
+                            disabled={files.length === 0 || isPending}
+                            data-testid="submit-button"
+                        >
+
+                            {!isPending && <HiArrowDownTray />}
+                            {isPending ? 'Uploading...' : 'Upload Documents'}
+                        </Button>
+                    </Tooltip>
                 </Column>
             </form>
         </Box>

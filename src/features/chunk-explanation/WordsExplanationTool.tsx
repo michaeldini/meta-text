@@ -7,7 +7,7 @@ import { HiQuestionMarkCircle } from 'react-icons/hi2';
 import React, { useState, useCallback } from 'react';
 import { Text, Heading, Box } from '@styles';
 import { ErrorAlert } from '@components/ErrorAlert';
-import { TooltipButton } from '@components/ui/TooltipButton';
+import { Button, Tooltip } from '@components';
 import { useExplainHandler } from './hooks/useExplainHandler';
 import { ChunkType } from '@mtypes/documents';
 
@@ -39,16 +39,15 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
             {/* Show button only if not showing definition */}
             {!showDefinition && (
                 <>
-                    <TooltipButton
-                        label={`Explain`}
-                        tooltip={`Get an explanation for "${word}"`}
-                        icon={<HiQuestionMarkCircle />}
-                        onClick={handleDefine}
-                        disabled={loading}
-                        loading={loading}
-                        aria-label={`Define ${word}`}
-                        data-testid={`explain-word-${word}`}
-                    />
+                    <Tooltip content={`Get an explanation for "${word}"`}>
+                        <Button
+                            icon={<HiQuestionMarkCircle />}
+                            onClick={handleDefine}
+                            disabled={loading}
+                            aria-label={`Define ${word}`}
+                            data-testid={`explain-word-${word}`}
+                        />
+                    </Tooltip>
                 </>
             )}
             {/* Show explanation only if showDefinition is true */}

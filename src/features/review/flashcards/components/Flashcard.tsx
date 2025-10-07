@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Box, Heading, styled, Text, accordionDown, accordionUp } from '@styles';
 import { HiBars3, HiQuestionMarkCircle } from 'react-icons/hi2';
-import { SimpleDialog, TooltipButton } from '@components/ui';
+import { Button, SimpleDialog } from '@components/ui';
 import * as Collapsible from '@radix-ui/react-collapsible';
 
 // Styled Radix Collapsible.Content that animates height using Stitches keyframes.
@@ -39,15 +39,14 @@ export function Flashcard(props: FlashcardProps) {
                     <Box css={{ borderTop: '1px solid #eee', marginTop: 12 }}>
                         {/* Definition In Context Drawer */}
                         <SimpleDialog
+                            title="Definition In Context"
+                            tooltip="View the definition of the word in its original context"
                             triggerButton={
-                                <TooltipButton
-                                    label=""
-                                    tooltip="View the definition of the word in its original context"
+                                <Button
                                     onClick={() => { }}
                                     icon={<HiBars3 />}
                                 />
                             }
-                            title="Definition In Context"
                         >
                             <Box>
                                 <Text css={{ fontWeight: 'bold' }}>Word: {word}</Text>
@@ -57,15 +56,14 @@ export function Flashcard(props: FlashcardProps) {
 
                         {/* Context Drawer */}
                         <SimpleDialog
+                            title="Context"
+                            tooltip="View the context around the word"
                             triggerButton={
-                                <TooltipButton
-                                    label=""
-                                    tooltip="View more context around the word"
+                                <Button
                                     onClick={() => { }}
                                     icon={<HiQuestionMarkCircle />}
                                 />
                             }
-                            title="Context"
                         >
                             <Text>{context}</Text>
                         </SimpleDialog>

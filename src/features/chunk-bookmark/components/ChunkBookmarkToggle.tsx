@@ -14,7 +14,7 @@ import React from 'react';
 import { HiBookmark, HiOutlineBookmark } from 'react-icons/hi2';
 import { ChunkType } from '@mtypes/documents';
 import { useBookmark } from '@features/chunk-bookmark/hooks/useBookmark';
-import TooltipButton from '@components/ui/TooltipButton';
+import { Button, Tooltip } from '@components';
 
 interface ChunkBookmarkToggleProps {
     chunk: ChunkType;
@@ -68,15 +68,14 @@ function ChunkBookmarkToggle({ chunk }: ChunkBookmarkToggleProps) {
     };
 
     return (
-        <TooltipButton
-            label=""
-            tooltip={isBookmarked ? 'Remove bookmark' : 'Add bookmark'}
-            icon={isBookmarked ? <HiBookmark /> : <HiOutlineBookmark />}
-            onClick={handleToggle}
-            tone={isBookmarked ? 'primary' : 'default'}
-            disabled={isLoading}
-            loading={isLoading}
-        />
+        <Tooltip content={isBookmarked ? 'Remove bookmark' : 'Add bookmark'}>
+            <Button
+                icon={isBookmarked ? <HiBookmark /> : <HiOutlineBookmark />}
+                onClick={handleToggle}
+                tone={isBookmarked ? 'primary' : 'default'}
+                disabled={isLoading}
+            />
+        </Tooltip>
     );
 }
 

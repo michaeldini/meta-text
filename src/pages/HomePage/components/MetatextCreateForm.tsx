@@ -1,7 +1,9 @@
 import { HiOutlineSparkles } from 'react-icons/hi2';
 import React from 'react';
 import { Box, IconWrapper, BaseButton, Input, Heading } from '@styles';
-import { Select, TooltipButton } from '@components/ui';
+
+import { Select, Button, Tooltip } from '@components';
+
 import { useMetatextCreate } from '../hooks/useMetatextCreate';
 import { SourceDocumentSummary } from '@mtypes/documents';
 
@@ -52,16 +54,16 @@ interface SubmitButtonProps {
 }
 function SubmitButton({ loading, disabled }: SubmitButtonProps) {
     return (
-        <TooltipButton
-            label="Create Metatext"
-            tooltip={disabled ? 'Please fill in all required fields' : 'Submit to create metatext'}
-            disabled={disabled}
-            loading={loading}
-            icon={<HiOutlineSparkles style={{ marginRight: 8 }} />}
-            type="submit"
-            // tone={disabled ? 'disabled' : 'primary'}
-            data-testid="submit-button"
-        />
+        <Tooltip
+            content="Create Metatext"
+        >
+            <Button
+                icon={<HiOutlineSparkles style={{ marginRight: 8 }} />}
+                type="submit"
+                disabled={disabled}
+                data-testid="submit-button"
+            >Generate Metatext</Button>
+        </Tooltip>
     );
 }
 

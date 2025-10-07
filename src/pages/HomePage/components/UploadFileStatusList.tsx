@@ -1,7 +1,7 @@
 // Renders list of files with upload statuses and overall progress feedback.
 import React from 'react';
 import { Wrap, WrapItem, TagRoot, TagLabel, Text, Box, Row } from '@styles';
-import TooltipButton from '@components/ui/TooltipButton';
+import { Button, Tooltip } from '@components';
 
 export interface UploadStatus {
     uploading: boolean;
@@ -58,16 +58,19 @@ export function UploadFileStatusList({ files, statuses }: UploadFileStatusListPr
                     return (
                         <WrapItem key={key}>
                             {status?.error ? (
-                                <TooltipButton
-                                    label={label}
-                                    tooltip={status.error}
-                                    tone={colorPalette === 'red' ? 'danger' : colorPalette === 'yellow' ? 'primary' : 'default'}
-                                    disabled={false}
-                                    style={{ padding: 0, background: 'none', border: 'none' }}
-                                    icon={null}
+                                <Tooltip
+                                    content={status.error}
                                 >
-                                    {tag}
-                                </TooltipButton>
+                                    <Button
+                                        aria-label={label}
+                                        tone={colorPalette === 'red' ? 'danger' : colorPalette === 'yellow' ? 'primary' : 'default'}
+                                        disabled={false}
+                                        style={{ padding: 0, background: 'none', border: 'none' }}
+                                        icon={null}
+                                    >
+                                        {tag}
+                                    </Button>
+                                </Tooltip>
                             ) : tag}
                         </WrapItem>
                     );

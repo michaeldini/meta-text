@@ -7,7 +7,7 @@ import { HiOutlineSparkles } from 'react-icons/hi2';
 import React, { useState, useEffect, useCallback } from 'react';
 import { Box, Text } from '@styles';
 import { ErrorAlert } from '@components/ErrorAlert';
-import { TooltipButton } from '@components/ui/TooltipButton'
+import { Button, Tooltip } from '@components';
 import type { ChunkType } from '@mtypes/documents';
 import { generateEvaluation } from '@services/aiService';
 
@@ -46,14 +46,13 @@ export function EvaluationTool({ chunk, isVisible }: EvaluationToolProps) {
     return (
         <Box>
             <ErrorAlert message={error} />
-            <TooltipButton
-                label="Evaluate"
-                tooltip="Produce an evaluation of your summary and note."
-                icon={<HiOutlineSparkles />}
-                onClick={handleGenerate}
-                disabled={loading || !chunk.id}
-                loading={loading}
-            />
+            <Tooltip content="Produce an evaluation of your summary and note.">
+                <Button
+                    icon={<HiOutlineSparkles />}
+                    onClick={handleGenerate}
+                    disabled={loading || !chunk.id}
+                >Evaluate</Button>
+            </Tooltip>
             <Box >
                 {evaluationText
                     ? <Text>{evaluationText}</Text>

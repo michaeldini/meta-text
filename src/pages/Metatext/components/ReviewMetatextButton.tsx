@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { HiAcademicCap } from 'react-icons/hi2';
-import { TooltipButton } from '@components/ui';
+import { Button, Tooltip } from '@components/ui';
 
 export function ReviewMetatextButton(): React.ReactElement | null {
     const { metatextId } = useParams<{ metatextId: string }>();
@@ -11,16 +11,15 @@ export function ReviewMetatextButton(): React.ReactElement | null {
 
     const to = `/metatext/${metatextId}/review`;
 
-    // Wrap the TooltipButton in a Link so it's a real anchor and works with keyboard navigation
+    // Wrap the button in a Link so it's a real anchor and works with keyboard navigation
     return (
         <Link to={to} data-testid="review-link">
-            <TooltipButton
-                label=""
-                tooltip="Review this metatext"
-                tone="default"
-                icon={<HiAcademicCap />}
-                data-testid="review-button"
-            />
+            <Tooltip content="Review this metatext">
+                <Button
+                    icon={<HiAcademicCap />}
+                    aria-label="Review this metatext"
+                />
+            </Tooltip>
         </Link>
     );
 }

@@ -10,7 +10,8 @@ import React, { useState, useRef, useMemo } from 'react';
 import { HiMagnifyingGlass, HiOutlineTrash } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
 import { MetatextSummary, SourceDocumentSummary } from '@mtypes/index';
-import { TooltipButton } from '@components/ui/TooltipButton';
+import { Button, Tooltip } from '@components';
+
 import { UseMutationResult } from '@tanstack/react-query';
 import { Box, Heading, Input, BaseButton, Empty, TableScrollArea, TableRoot, THead, TRow, TData, Th, TBody } from '@styles';
 
@@ -85,24 +86,28 @@ export function TableRow({ item, navigate, navigateToBase, deleteItemMutation }:
                     fullWidth
                     cursorPointer
                 >
-                    <TooltipButton
-                        label={item.title}
-                        tooltip={`View ${item.title}`}
-                        data-testid={`item-${item.id}`}
-                        tabIndex={-1}
-                        style={{ width: '100%', textAlign: 'left' }}
-                    />
+                    <Tooltip
+                        content={`View ${item.title}`}
+                    >
+                        <Button
+                            data-testid={`item-${item.id}`}
+                            tabIndex={-1}
+                            style={{ width: '100%', textAlign: 'left' }}
+                        >{item.title}</Button>
+                    </Tooltip>
                 </Box>
             </TData>
             <TData css={{ textAlign: 'center' }}>
-                <TooltipButton
-                    label=""
-                    tooltip={`Delete ${item.title}`}
-                    icon={<HiOutlineTrash style={{ color: 'gray' }} />}
-                    data-testid={`delete-button-${item.id}`}
-                    onClick={() => deleteItemMutation.mutate(item.id)}
-                    style={{ width: 'auto' }}
-                />
+                <Tooltip
+                    content={`Delete ${item.title}`}
+                >
+                    <Button
+                        icon={<HiOutlineTrash style={{ color: 'gray' }} />}
+                        data-testid={`delete-button-${item.id}`}
+                        onClick={() => deleteItemMutation.mutate(item.id)}
+                        style={{ width: 'auto' }}
+                    />
+                </Tooltip>
             </TData>
         </TRow>
     );

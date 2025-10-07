@@ -1,6 +1,7 @@
 import React from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import { Heading, Box, styled, IconWrapper } from '@styles';
+import * as ToolTipPrimitive from "@radix-ui/react-tooltip";
+import { Heading, Box, styled, IconWrapper, keyframes } from '@styles';
 import { HiXCircle } from 'react-icons/hi2';
 
 // Stitches-styled Radix primitives
@@ -31,33 +32,59 @@ const Content = styled(Dialog.Content, {
 });
 
 
+const tooltipFade = keyframes({
+    '0%': { opacity: 0, transform: 'translateY(4px)' },
+    '100%': { opacity: 1, transform: 'translateY(0)' },
+});
+const TooltipContent = styled(ToolTipPrimitive.Content, {
+    background: '$colors$altBackground',
+    color: '$colors$primary',
+    padding: '8px 10px',
+    border: '2px solid $colors$primary',
+    borderRadius: '6px',
+    fontSize: '1.1rem',
+    boxShadow: '0 6px 18px rgba(0,0,0,0.18)',
+    animation: `${tooltipFade} 160ms ease`,
+    zIndex: 1000,
+});
+
 export interface SimpleDialogProps {
     triggerButton: React.ReactNode
+    tooltip: React.ReactNode
     title: string
     children: React.ReactNode
 }
 
-export function SimpleDialog({ triggerButton, title, children }: SimpleDialogProps) {
+export function SimpleDialog({ triggerButton, tooltip, title, children }: SimpleDialogProps) {
     return (
-        <Dialog.Root>
-            <Dialog.Trigger asChild>
-                {triggerButton}
-            </Dialog.Trigger>
-            <Dialog.Portal>
-                <Overlay />
-                <Content>
-                    <Dialog.Close asChild>
-                        <IconWrapper>
-                            <HiXCircle />
-                        </IconWrapper>
-                    </Dialog.Close>
-                    <Dialog.Title asChild>
-                        <Heading>{title}</Heading>
-                    </Dialog.Title>
-                    {children}
-                </Content>
-            </Dialog.Portal>
-        </Dialog.Root>
+        <ToolTipPrimitive.Provider>
+            <Dialog.Root>
+                <ToolTipPrimitive.Root>
+                    <ToolTipPrimitive.Trigger asChild>
+                        <Dialog.Trigger asChild>
+                            {triggerButton}
+                        </Dialog.Trigger>
+                    </ToolTipPrimitive.Trigger>
+                    <TooltipContent side="top" align="center" sideOffset={10}>
+                        {tooltip}
+                    </TooltipContent>
+                </ToolTipPrimitive.Root>
+                <Dialog.Portal>
+                    <Overlay />
+                    <Content>
+                        <Dialog.Close asChild>
+                            <IconWrapper>
+                                <HiXCircle />
+                            </IconWrapper>
+                        </Dialog.Close>
+                        <Dialog.Title asChild>
+                            <Heading>{title}</Heading>
+                        </Dialog.Title>
+                        {children}
+                    </Content>
+                </Dialog.Portal>
+            </Dialog.Root>
+        </ToolTipPrimitive.Provider >
     );
 }
 

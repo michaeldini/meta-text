@@ -6,12 +6,11 @@ import { HiOutlineSparkles } from 'react-icons/hi2';
 import React, { useState } from 'react';
 import { Box, Text, BaseButton, Column, TagRoot as Badge, Textarea } from '@styles';
 import { ErrorAlert } from '@components/ErrorAlert';
-import { TooltipButton } from '@components/ui/TooltipButton';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { generateImage } from '@services/aiService';
 import { queryKeys } from '@services/queryKeys';
 import type { ChunkType } from '@mtypes/documents';
-import { SimpleDialog } from '@components/ui';
+import { Button, SimpleDialog } from '@components/ui';
 import { Select } from '@components/ui/select';
 import { AiImage } from '@mtypes/tools';
 
@@ -29,12 +28,10 @@ export function ImageTool(props: ImageToolProps) {
             <ImageViewer chunk={chunk} />
             <SimpleDialog
                 title="Generate Image"
-                triggerButton={<TooltipButton
-                    label="Generate Image"
-                    tooltip="Generate an image for this chunk using AI"
+                tooltip="Generate an image for this chunk using AI"
+                triggerButton={<Button
                     icon={<HiOutlineSparkles />}
-                // generation state managed inside dialog component
-                />}
+                >Generate Image</Button>}
             >
                 <GenerateImageDialog chunk={chunk} />
             </SimpleDialog>

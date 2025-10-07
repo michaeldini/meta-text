@@ -7,7 +7,7 @@ import { Box, BaseButton, Row, Text, Link } from '@styles';
 import WordSelector from './WordSelector';
 import { Panel } from '@mtypes/experiments';
 import { HiArrowsPointingOut, HiArrowsPointingIn } from 'react-icons/hi2';
-import { TooltipButton } from '@components/ui/TooltipButton';
+import { Button, Tooltip } from '@components';
 
 export type PanelCardProps = {
     panel: Panel;
@@ -35,26 +35,29 @@ export function PanelHeader({ sourceWord, minimized, onMinimize, onClose, header
                 </Text>
                 <Row>
                     {minimized ? (
-                        <TooltipButton
-                            label=""
-                            tooltip="Maximize"
-                            onClick={() => onMinimize(false)}
-                            icon={<HiArrowsPointingOut />}
-                        />
+                        <Tooltip content="Maximize">
+                            <Button
+                                onClick={() => onMinimize(false)}
+                                icon={<HiArrowsPointingOut />}
+                                aria-label="Maximize"
+                            />
+                        </Tooltip>
                     ) : (
-                        <TooltipButton
-                            label=""
-                            tooltip="Minimize"
-                            onClick={() => onMinimize(true)}
-                            icon={<HiArrowsPointingIn />}
-                        />
+                        <Tooltip content="Minimize">
+                            <Button
+                                onClick={() => onMinimize(true)}
+                                icon={<HiArrowsPointingIn />}
+                                aria-label="Minimize"
+                            />
+                        </Tooltip>
                     )}
-                    <TooltipButton
-                        label=""
-                        tooltip="Close panel"
-                        onClick={onClose}
-                        icon={<HiXMark />}
-                    />
+                    <Tooltip content="Close panel">
+                        <Button
+                            onClick={onClose}
+                            icon={<HiXMark />}
+                            aria-label="Close panel"
+                        />
+                    </Tooltip>
                 </Row>
             </Row>
         </>

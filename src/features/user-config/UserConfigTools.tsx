@@ -21,7 +21,7 @@ import { Select } from '@components/ui/select';
 
 /** UI components */
 import { Text, Row, NumberInput } from '@styles';
-import { TooltipButton } from '@components';
+import { Button, Tooltip } from '@components';
 import { HiHashtag } from 'react-icons/hi2';
 
 /** A list of available fonts the user can select */
@@ -122,15 +122,15 @@ export function UserConfigTools({
     return (
         <>
             {showShowChunkPositions && (
-                <TooltipButton
-                    label=""
-                    tooltip={showChunkPositions ? "Hide chunk positions" : "Show chunk positions"}
-                    icon={<HiHashtag />}
-                    onClick={() => updateUserConfig.mutate({ showChunkPositions: !showChunkPositions })}
-                    role="switch"
-                    aria-checked={!!showChunkPositions}
-                    disabled={userConfig == null}
-                />
+                <Tooltip content={showChunkPositions ? "Hide chunk positions" : "Show chunk positions"}>
+                    <Button
+                        icon={<HiHashtag />}
+                        onClick={() => updateUserConfig.mutate({ showChunkPositions: !showChunkPositions })}
+                        role="switch"
+                        aria-checked={!!showChunkPositions}
+                        disabled={userConfig == null}
+                    />
+                </Tooltip>
             )}
 
             {showTextSize && (

@@ -6,10 +6,9 @@ import { HiPencilSquare } from 'react-icons/hi2';
  */
 import React, { useMemo, useState } from 'react';
 import { Box, Text, BaseButton } from '@styles';
-import { TooltipButton } from '@components/ui/TooltipButton';
 import { useRewriteTool } from './hooks/useRewriteTool';
 import type { ChunkType } from '@mtypes/documents';
-import { SimpleDialog, EmptyState } from '@components/ui';
+import { SimpleDialog, EmptyState, Button } from '@components/ui';
 import { Select } from '@components/ui/select';
 
 
@@ -52,11 +51,10 @@ export function RewriteDisplayTool(props: RewriteDisplayToolProps) {
         <Box>
             <SimpleDialog
                 title="Generate Rewrite"
-                triggerButton={<TooltipButton
-                    label="Rewrite"
-                    tooltip="Generate a rewrite for this chunk"
+                tooltip="Generate a rewrite for this chunk using AI"
+                triggerButton={<Button
                     icon={<HiPencilSquare />}
-                />}
+                >Generate Rewrite</Button>}
             >
                 <Box>
                     <form id="rewrite-gen-form" onSubmit={handleFormSubmit}>

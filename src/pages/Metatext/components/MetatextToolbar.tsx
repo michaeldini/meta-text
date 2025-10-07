@@ -32,13 +32,14 @@ import { useDownloadMetatext } from '@pages/Metatext/hooks/useDownloadMetatext';
 import { useBookmark } from '@features/chunk-bookmark';
 import { SearchBar } from '@features/chunk-search';
 import { useChunkNavigationStore } from '@store/chunkNavigationStore';
-import { TooltipButton } from '@components';
+import { Button, Tooltip } from '@components';
 import { HiArrowDownTray, HiBookmark, HiOutlineStar, HiStar, HiViewfinderCircle } from 'react-icons/hi2';
 import * as Toolbar from '@radix-ui/react-toolbar';
 
 import { styled } from '@styles';
 import { useChunkToolsStore } from '@store/chunkToolsStore';
 import { chunkToolsRegistry, type ChunkToolId } from '@features/chunk-tools/toolsRegistry';
+
 
 const StyledToolbarRoot = styled(Toolbar.Root, {
     display: 'flex',
@@ -125,39 +126,42 @@ export function MetatextToolbar({
             sticky={isSticky}
         >
             <Toolbar.Button asChild>
-                <TooltipButton
-                    label=""
-                    tooltip="Navigate to the bookmarked chunk in this metatext"
-                    icon={<HiBookmark />}
-                    onClick={goToBookmark}
-                    disabled={!bookmarkedChunkId}
-                    data-testid="goto-bookmark-button"
-                />
+                <Tooltip content={bookmarkedChunkId ? "Go to bookmarked chunk" : "No bookmarked chunk"}>
+                    <Button
+                        icon={<HiBookmark />}
+                        onClick={goToBookmark}
+                        disabled={!bookmarkedChunkId}
+                        aria-label="Go to bookmarked chunk"
+                    />
+                </Tooltip>
+
             </Toolbar.Button>
+
             <Toolbar.Button asChild>
-                <TooltipButton
-                    label=""
-                    tooltip={showOnlyFavorites ? "Show all chunks" : "Show only favorites"}
-                    icon={showOnlyFavorites ? <HiStar /> : <HiOutlineStar />}
-                    onClick={() => setShowOnlyFavorites(!showOnlyFavorites)}
-                    aria-pressed={showOnlyFavorites}
-                    role="switch"
-                />
+                <Tooltip content={showOnlyFavorites ? "Show all chunks" : "Show only favorites"}>
+                    <Button
+                        icon={showOnlyFavorites ? <HiStar /> : <HiOutlineStar />}
+                        onClick={() => setShowOnlyFavorites(!showOnlyFavorites)}
+                        aria-pressed={showOnlyFavorites}
+                        role="switch"
+                    />
+                </Tooltip>
             </Toolbar.Button>
             <StyledSeparator />
 
             {/* Chunk Tools */}
             {chunkToolsRegistry.map((tool) => (
                 <Toolbar.Button key={tool.id} asChild>
-                    <TooltipButton
-                        label="" // {tool.name}
-                        tooltip={tool.tooltip}
-                        icon={tool.icon}
-                        onClick={() => handleToolClick(tool.id)}
-                        tone={activeTabs.includes(tool.id) ? 'primary' : 'default'}
-                        role="button"
-                        aria-label={tool.name}
-                    />
+                    <Tooltip content={tool.tooltip}>
+                        <Button
+                            icon={tool.icon}
+                            onClick={() => handleToolClick(tool.id)}
+                            tone={activeTabs.includes(tool.id) ? 'primary' : 'default'}
+                            aria-pressed={activeTabs.includes(tool.id)}
+                            role="button"
+                            aria-label={tool.name}
+                        />
+                    </Tooltip>
                 </Toolbar.Button>
             ))}
             <StyledSeparator />
@@ -171,14 +175,13 @@ export function MetatextToolbar({
             </Toolbar.Button>
 
             <Toolbar.Button asChild>
-                <TooltipButton
-                    label=""
-                    tooltip="Download MetaText as JSON"
-                    icon={<HiArrowDownTray />}
-                    onClick={() => void downloadMetatext.handleDownload()}
-                    disabled={downloadMetatext.disabled}
-                    loading={downloadMetatext.loading}
-                />
+                <Tooltip content="Download MetaText as JSON">
+                    <Button
+                        icon={<HiArrowDownTray />}
+                        onClick={() => void downloadMetatext.handleDownload()}
+                        disabled={downloadMetatext.disabled}
+                    />
+                </Tooltip>
             </Toolbar.Button>
 
             <Toolbar.Button asChild>
@@ -196,15 +199,15 @@ export function MetatextToolbar({
             <StyledSeparator />
 
             <Toolbar.Button asChild>
-                <TooltipButton
-                    label=""
-                    tooltip={isSticky ? "Make toolbar non-sticky" : "Make toolbar sticky"}
-                    icon={<HiViewfinderCircle />}
-                    onClick={() => setIsSticky(!isSticky)}
-                    tone={isSticky ? 'primary' : 'default'}
-                    role="switch"
-                    aria-checked={isSticky}
-                />
+                <Tooltip content={isSticky ? "Make toolbar non-sticky" : "Make toolbar sticky"}>
+                    <Button
+                        icon={<HiViewfinderCircle />}
+                        onClick={() => setIsSticky(!isSticky)}
+                        tone={isSticky ? 'primary' : 'default'}
+                        role="switch"
+                        aria-checked={isSticky}
+                    />
+                </Tooltip>
             </Toolbar.Button>
         </StyledToolbarRoot>
     );

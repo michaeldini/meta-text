@@ -24,8 +24,7 @@ import { useSourceDocumentDetail, useUpdateSourceDocument } from '@features/docu
 import { useGenerateSourceDocInfo } from '@hooks/useGenerateSourceDocInfo';
 
 /** UI Components and Icons */
-import { TooltipButton } from '@components/ui/TooltipButton';
-import { SimpleDialog } from '@components/ui';
+import { Button, SimpleDialog, Tooltip } from '@components/ui';
 import { Box, Text, Column, Row, Textarea } from '@styles';
 import { HiOutlineSparkles } from 'react-icons/hi2';
 
@@ -81,14 +80,15 @@ export function SourceDocInfo(sourceDocInfoProps: SourceDocInfoProps) {
 
     return (
         <Row>
-            <TooltipButton
-                label="Generate"
-                tooltip="Regenerate document info"
-                onClick={generateSourceDocInfo.handleClick}
-                disabled={generateSourceDocInfo.loading}
-                loading={generateSourceDocInfo.loading}
-                icon={<HiOutlineSparkles />}
-            />
+            <Tooltip
+                content="Regenerate document info"
+            >
+                <Button
+                    onClick={generateSourceDocInfo.handleClick}
+                    disabled={generateSourceDocInfo.loading}
+                    icon={<HiOutlineSparkles />}
+                />
+            </Tooltip>
             <Text>Click on a field to edit. Enter to Save. Tab to Cancel</Text>
             <Column css={{ flex: 1, minWidth: '320px', gap: '2px' }}>
                 {FIELD_CONFIG.map(config => (
@@ -110,10 +110,8 @@ export function SourceDocInfoDisplay({ sourceDocumentId }: SourceDocInfoProps) {
     return (
         <SimpleDialog
             title="Source Document Info"
-            triggerButton={<TooltipButton
-                label="Info"
-                tooltip="Show Info"
-            />}
+            tooltip="Show Info"
+            triggerButton={<Button>Info</Button>}
         >
             <SourceDocInfo sourceDocumentId={sourceDocumentId} />
         </SimpleDialog>
