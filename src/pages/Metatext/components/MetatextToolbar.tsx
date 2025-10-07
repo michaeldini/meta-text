@@ -180,6 +180,7 @@ export function MetatextToolbar({
                         icon={<HiArrowDownTray />}
                         onClick={() => void downloadMetatext.handleDownload()}
                         disabled={downloadMetatext.disabled}
+                        aria-label="Download metatext"
                     />
                 </Tooltip>
             </Toolbar.Button>

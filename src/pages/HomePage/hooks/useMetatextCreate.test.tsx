@@ -1,6 +1,5 @@
 /* eslint-disable */
 // Tests for useMetatextCreate hook
-import '../../../setup-test'
 import React from 'react'
 import { render } from '../../../test-utils'
 import { screen, fireEvent, waitFor } from '@testing-library/react'
