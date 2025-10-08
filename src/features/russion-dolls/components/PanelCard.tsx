@@ -3,7 +3,8 @@ import { HiXMark } from 'react-icons/hi2';
 // and the content rendered via WordSelector to enable creating follow-up panels.
 
 import React from 'react';
-import { Box, BaseButton, Row, Text, Link } from '@styles';
+import { Box, Row, Text, Link } from '@styles';
+import { Button as UIButton } from '@components/ui/button';
 import WordSelector from './WordSelector';
 import { Panel } from '@mtypes/experiments';
 import { HiArrowsPointingOut, HiArrowsPointingIn } from 'react-icons/hi2';
@@ -81,15 +82,15 @@ export function PanelActions({ sourceWord, viewMode, loading, onToggleView }: Pa
         <Row >
             <Row>
                 <Link href={wikiUrl} target="_blank" rel="noopener noreferrer">
-                    <BaseButton css={{ background: 'transparent', padding: '4px 6px' }} disabled={!sourceWord}>W</BaseButton>
+                    <UIButton css={{ background: 'transparent', padding: '4px 6px' }} disabled={!sourceWord}>W</UIButton>
                 </Link>
                 <Link href={googleUrl} target="_blank" rel="noopener noreferrer">
-                    <BaseButton css={{ background: 'transparent', padding: '4px 6px' }} disabled={!sourceWord}>G</BaseButton>
+                    <UIButton css={{ background: 'transparent', padding: '4px 6px' }} disabled={!sourceWord}>G</UIButton>
                 </Link>
             </Row>
-            <BaseButton tone="primary" onClick={onToggleView} disabled={!!loading} css={{ padding: '6px 10px' }}>
+            <UIButton tone="primary" onClick={onToggleView} disabled={!!loading} css={{ padding: '6px 10px' }}>
                 {viewMode === 'comprehensive' ? 'Show concise' : 'Show comprehensive'}
-            </BaseButton>
+            </UIButton>
         </Row>
     );
 };

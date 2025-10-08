@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, BaseButton, Spinner, Text } from '@styles';
+import { Box, Spinner, Text } from '@styles';
+import { Button } from '@components';
 import log from '@utils/logger';
 
 interface ErrorBoundaryState {
@@ -62,7 +63,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
             return (
                 <Box>
                     <Text css={{ marginBottom: 12 }}>An unexpected error occurred. Please try reloading the page.</Text>
-                    <BaseButton tone="default" onClick={this.handleReload} >Reload Page</BaseButton>
+                    <Button tone="default" onClick={this.handleReload} >Reload Page</Button>
                 </Box>
             );
         }

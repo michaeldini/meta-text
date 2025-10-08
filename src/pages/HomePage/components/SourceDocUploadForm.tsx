@@ -34,8 +34,6 @@ export function SourceDocUploadForm(): React.ReactElement {
                             disabled={files.length === 0 || isPending}
                             data-testid="submit-button"
                         >
-
-                            {!isPending && <HiArrowDownTray />}
                             {isPending ? 'Uploading...' : 'Upload Documents'}
                         </Button>
                     </Tooltip>

@@ -6,7 +6,8 @@ import { FlashCards, ReviewTable, Phrases } from '@features/review';
 import { ChunkType, } from '@mtypes/documents';
 import { Explanation } from '@mtypes/review'
 import { useState } from 'react';
-import { Box, BaseButton, Column } from '@styles';
+import { Box, Column } from '@styles';
+import { Button } from '@components/ui/button';
 
 interface ReviewContentProps {
     flashcards: Explanation[];
@@ -29,29 +30,29 @@ export function ReviewContent({ flashcards, phrases, chunkReviewTable }: ReviewC
     return (
         <>
             <Column>
-                <BaseButton
+                <Button
                     data-testid="explanations-toggle"
                     onClick={() => setShowExplanations((v) => !v)}
                     css={{ marginBottom: 8 }}
                 >
                     {showExplanations ? 'Hide' : 'Show'} Explanations
-                </BaseButton>
+                </Button>
                 {showExplanations && <Phrases phrases={phrases} />}
-                <BaseButton
+                <Button
                     data-testid="flashcards-toggle"
                     onClick={() => setShowFlashcards((v) => !v)}
                     css={{ marginBottom: 8 }}
                 >
                     {showFlashcards ? 'Hide' : 'Show'} Flashcards
-                </BaseButton>
+                </Button>
                 {showFlashcards && <FlashCards flashcardItems={flashcards} />}
-                <BaseButton
+                <Button
                     data-testid="reviewtable-toggle"
                     onClick={() => setShowReviewTable((v) => !v)}
                     css={{ marginBottom: 8 }}
                 >
                     {showReviewTable ? 'Hide' : 'Show'} Review Table
-                </BaseButton>
+                </Button>
                 {showReviewTable && <ReviewTable chunks={chunkReviewTable} />}
             </Column>
         </>

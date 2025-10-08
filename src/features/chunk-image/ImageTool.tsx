@@ -4,7 +4,7 @@ import { HiOutlineSparkles } from 'react-icons/hi2';
  * Provides an interface for generating and displaying images for text chunks.
  */
 import React, { useState } from 'react';
-import { Box, Text, BaseButton, Column, TagRoot as Badge, Textarea } from '@styles';
+import { Box, Text, Column, TagRoot as Badge, Textarea } from '@styles';
 import { ErrorAlert } from '@components/ErrorAlert';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { generateImage } from '@services/aiService';
@@ -144,14 +144,14 @@ function GenerateImageDialog({ chunk }: { chunk: ChunkType }) {
                     <ErrorAlert message={String((mutation.error as Error)?.message ?? 'Failed to generate image')} />
                 )}
 
-                <BaseButton
+                <Button
                     type="submit"
                     tone="primary"
                     disabled={mutation.isPending || promptLength < MIN_PROMPT_LENGTH}
                     css={{ minWidth: 100 }}
                 >
                     {mutation.isPending ? 'Generating...' : 'Generate'}
-                </BaseButton>
+                </Button>
             </Column>
         </form>
     );

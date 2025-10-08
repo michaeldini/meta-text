@@ -1,7 +1,7 @@
 import React from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import * as ToolTipPrimitive from "@radix-ui/react-tooltip";
-import { Heading, Box, styled, IconWrapper, keyframes } from '@styles';
+import { Heading, Box, styled, IconWrapper, tooltipFade } from '@styles';
 import { HiXCircle } from 'react-icons/hi2';
 
 // Stitches-styled Radix primitives
@@ -31,10 +31,7 @@ const Content = styled(Dialog.Content, {
 });
 
 
-const tooltipFade = keyframes({
-    '0%': { opacity: 0, transform: 'translateY(4px)' },
-    '100%': { opacity: 1, transform: 'translateY(0)' },
-});
+
 const TooltipContent = styled(ToolTipPrimitive.Content, {
     background: '$colors$altBackground',
     color: '$colors$primary',

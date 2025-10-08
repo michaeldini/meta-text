@@ -94,6 +94,10 @@ export const accordionUp = keyframes({
 });
 
 
+export const tooltipFade = keyframes({
+    '0%': { opacity: 0, transform: 'translateY(4px)' },
+    '100%': { opacity: 1, transform: 'translateY(0)' },
+});
 /**
  * 
  * Global styles applied to the entire application.
@@ -351,17 +355,8 @@ export const Link = styled('a', {
 });
 
 // --------------------------------------------------------------
-// Simple wrap container for tag lists and chips
+// tag lists and chips
 // --------------------------------------------------------------
-export const Wrap = styled('div', {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: '8px',
-});
-
-export const WrapItem = styled('div', {
-    display: 'inline-flex',
-});
 
 // Tag / Badge primitive with a few color variants
 export const TagRoot = styled('span', {
@@ -513,32 +508,6 @@ export const SelectEl = styled('select', {
     fontSize: '1rem',
     fontFamily: '$fonts$body',
     background: 'transparent',
-});
-
-
-// --------------------------------------------------------------
-// Button group container
-// --------------------------------------------------------------
-
-export const PanelContainer = styled('div', {
-    position: 'fixed',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    width: '100vw',
-    background: 'black',
-    boxShadow: '0 -2px 8px rgba(0,0,0,0.04)',
-    minHeight: '48px',
-    color: 'white',
-});
-
-export const ButtonGroup = styled('div', {
-    display: 'flex',
-    justifyContent: 'stretch',
-    alignItems: 'center',
-    gap: 0,
-    width: '100%',
-    padding: '$2',
 });
 
 

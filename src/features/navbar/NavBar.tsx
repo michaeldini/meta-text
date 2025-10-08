@@ -23,7 +23,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@store/authStore';
 import { getNavigationConfig } from './navigationConfig';
 import { filterNavItems } from './utils';
-import { Row, IconWrapper, BaseButton } from '@styles';
+import { Row, IconWrapper } from '@styles';
+import { Button } from '@components/ui/button';
 
 
 /**
@@ -112,14 +113,14 @@ export function NavBar() {
     return (
         <Row as="nav" data-testid="navbar">
             {navItems.map(item => (
-                <BaseButton
+                <Button
                     key={item.label}
                     onClick={item.action}
                     css={{ fontWeight: 500 }}
+                    icon={item.icon ? <IconWrapper><item.icon /></IconWrapper> : undefined}
                 >
-                    <IconWrapper>{item.icon ? <item.icon /> : null}</IconWrapper>
                     {item.label}
-                </BaseButton>
+                </Button>
             ))}
         </Row>
     );

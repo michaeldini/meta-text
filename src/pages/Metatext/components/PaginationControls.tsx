@@ -12,7 +12,8 @@
  * 
  */
 import React from 'react';
-import { Row, BaseButton } from '@styles';
+import { Row } from '@styles';
+import { Button } from '@components/ui/button';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2';
 
 interface PaginationControlProps {
@@ -62,7 +63,7 @@ export function PaginationControls({
             data-testid="chunk-pagination"
             justifyCenter
         >
-            <BaseButton
+            <Button
                 tone="default"
                 aria-label="Previous page"
                 disabled={!hasPrev}
@@ -70,9 +71,9 @@ export function PaginationControls({
                 data-testid="prev-page-button"
             >
                 <HiChevronLeft />
-            </BaseButton>
+            </Button>
             {pageNumbers.map((page) => (
-                <BaseButton
+                <Button
                     key={page}
                     tone={page === currentPage ? 'primary' : 'default'}
                     onClick={() => onPageChange(page)}
@@ -80,9 +81,9 @@ export function PaginationControls({
                     data-testid={`page-${page}-button`}
                 >
                     {page}
-                </BaseButton>
+                </Button>
             ))}
-            <BaseButton
+            <Button
                 tone="default"
                 aria-label="Next page"
                 disabled={!hasNext}
@@ -90,7 +91,7 @@ export function PaginationControls({
                 data-testid="next-page-button"
             >
                 <HiChevronRight />
-            </BaseButton>
+            </Button>
         </Row>
     );
 }

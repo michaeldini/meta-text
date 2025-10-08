@@ -1,7 +1,7 @@
 // Purpose: Render the row of panels with horizontal scrolling and spacing.
 
 import React from 'react';
-import { Box, Wrap } from '@styles';
+import { Box, Row } from '@styles';
 import PanelCard from './PanelCard';
 import { Panel } from '@mtypes/experiments';
 
@@ -16,7 +16,7 @@ export type PanelsRowProps = {
 export function PanelsRow({ panels, onToggleView, onMinimize, onClose, onSelection }: PanelsRowProps) {
     return (
         <Box style={{ marginTop: 8, overflowX: 'auto' }}>
-            <Wrap css={{ flexDirection: 'row', gap: '16px', alignItems: 'flex-start', minHeight: '200px', paddingBottom: 8 }}>
+            <Row css={{ flexDirection: 'row', gap: '16px', alignItems: 'flex-start', minHeight: '200px', paddingBottom: 8 }}>
                 {panels.map(panel => (
                     <PanelCard
                         key={panel.key}
@@ -27,7 +27,7 @@ export function PanelsRow({ panels, onToggleView, onMinimize, onClose, onSelecti
                         onSelection={onSelection}
                     />)
                 )}
-            </Wrap>
+            </Row>
         </Box>
     );
 };

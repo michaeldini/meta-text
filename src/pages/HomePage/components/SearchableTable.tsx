@@ -13,7 +13,8 @@ import { MetatextSummary, SourceDocumentSummary } from '@mtypes/index';
 import { Button, Tooltip } from '@components';
 
 import { UseMutationResult } from '@tanstack/react-query';
-import { Box, Heading, Input, BaseButton, Empty, TableScrollArea, TableRoot, THead, TRow, TData, Th, TBody } from '@styles';
+import { Box, Heading, Input, Empty, TableScrollArea, TableRoot, THead, TRow, TData, Th, TBody } from '@styles';
+import { Button as UIBaseButton } from '@components/ui/button';
 
 // useSearchResults: Hook to manage search/filter state and results
 // returns results that can be passed to a table component
@@ -56,9 +57,9 @@ export function SearchInput({ search, setSearch, inputRef }: SearchInputProps) {
                 aria-label="Search"
             />
             {search ? (
-                <BaseButton onClick={() => clearSearchAndFocus(setSearch, inputRef)} aria-label="Clear search">
+                <UIBaseButton onClick={() => clearSearchAndFocus(setSearch, inputRef)} aria-label="Clear search">
                     ×
-                </BaseButton>
+                </UIBaseButton>
             ) : null}
         </Box>
     );

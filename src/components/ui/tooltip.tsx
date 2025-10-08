@@ -1,12 +1,8 @@
 import * as React from "react";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { keyframes, styled } from "@styles";
+import { tooltipFade, styled } from "@styles";
 
 
-const tooltipFade = keyframes({
-    '0%': { opacity: 0, transform: 'translateY(4px)' },
-    '100%': { opacity: 1, transform: 'translateY(0)' },
-});
 const TooltipContent = styled(TooltipPrimitive.Content, {
     background: '$colors$altBackground',
     color: '$colors$primary',

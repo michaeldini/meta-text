@@ -1,6 +1,6 @@
 import { HiOutlineSparkles } from 'react-icons/hi2';
 import React from 'react';
-import { Box, IconWrapper, BaseButton, Input, Heading } from '@styles';
+import { Box, Input, Heading } from '@styles';
 
 import { Select, Button, Tooltip } from '@components';
 

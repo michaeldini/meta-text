@@ -1,14 +1,8 @@
 // AuthForm: Simple login/register form using Stitches primitives. No password strength meter.
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-    Box,
-    Column,
-    Heading,
-    Input,
-    BaseButton,
-    Text,
-} from '@styles';
+import { Box, Column, Heading, Input, Text } from '@styles';
+import { Button } from '@components/ui/button';
 
 interface AuthFormProps {
     type: 'login' | 'register';
@@ -60,9 +54,9 @@ function AuthForm({ type, onSubmit, error, loading, redirectOnSuccess }: AuthFor
                         <Text>{formError || error}</Text>
                     </Box>
                 )}
-                <BaseButton type="submit" tone="primary" disabled={loading} css={{ width: '100%' }}>
+                <Button type="submit" tone="primary" disabled={loading} css={{ width: '100%' }}>
                     {loading ? (type === 'login' ? 'Logging in...' : 'Registering...') : type === 'login' ? 'Login' : 'Register'}
-                </BaseButton>
+                </Button>
             </Column>
         </Box>
     );

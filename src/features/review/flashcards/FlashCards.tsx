@@ -3,7 +3,7 @@
 // It uses Card components that flip to show the definition and context of each word
 
 import React from 'react';
-import { Wrap } from '@styles';
+import { Row } from '@styles';
 import Flashcard from './components/Flashcard';
 import { Explanation } from '@mtypes/review';
 import { EmptyState } from '@components/ui';
@@ -19,7 +19,7 @@ export function FlashCards({ flashcardItems }: FlashCardsProps) {
 
     return (
         <>
-            <Wrap >
+            <Row >
                 {flashcardItems.map(item => (
                     <Flashcard
                         key={item.id}
@@ -29,7 +29,7 @@ export function FlashCards({ flashcardItems }: FlashCardsProps) {
                         context={item.context}
                     />
                 ))}
-            </Wrap>
+            </Row>
         </>
     );
 };
