@@ -28,7 +28,7 @@ import React from 'react';
 import { useNavigate, generatePath } from 'react-router-dom';
 import { useHotkeys } from 'react-hotkeys-hook';
 import type { ReactElement } from 'react';
-import { ErrorAlert } from '@components/ErrorAlert';
+import { Alert } from '@components/Alert';
 import { MetatextToolbar, ChunkDisplayContainer } from './components';
 import { useMetatextDetail } from '@features/documents/useDocumentsData';
 import { useSearch } from '@features/chunk-search/hooks/useSearch';
@@ -203,7 +203,8 @@ function MetatextDetailPage(): ReactElement | null {
             data-testid="metatext-detail-page"
             p="2"
         >
-            {error && <ErrorAlert
+            {error && <Alert
+                type="error"
                 message='Something went wrong while fetching this metatext.'
                 title="Failed to load metatext"
                 data-testid="metatext-detail-error"

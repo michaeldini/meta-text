@@ -1,5 +1,4 @@
 export * from './ui';
 export * from './Boundaries';
-export { ErrorAlert } from './ErrorAlert';
-export { default as GlobalNotifications } from './GlobalNotifications';
+export { Alert } from './Alert';
 export * from './ProtectedRoute';

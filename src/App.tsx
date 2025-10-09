@@ -67,7 +67,6 @@ import { Routes, Route } from 'react-router-dom';
 import routes from './routes';
 import ProtectedRoute from './components/ProtectedRoute';
 import { NavBar } from '@features/navbar';
-import { GlobalNotifications } from '@components/GlobalNotifications';
 import { useAuthRefresh } from '@hooks/useAuthRefresh';
 import { useAuthStore } from '@store/authStore';
 import { useUserConfig } from '@services/userConfigService';
@@ -117,10 +116,8 @@ export default function App() {
 
     return (
         <Box>
-
-            {/* Global components */}
-            <GlobalNotifications />
             <NavBar />
+
             {/* <CrashToggle /> */}
 
             {/* Routing

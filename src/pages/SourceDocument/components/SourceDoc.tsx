@@ -4,7 +4,7 @@ import { HiCheck } from 'react-icons/hi2';
 import React, { useState } from 'react';
 import { Box, Text } from '@styles';
 import { Button } from '@components/ui/button';
-import { ErrorAlert } from '@components/ErrorAlert';
+import { Alert } from '@components/Alert';
 
 
 // Props for SourceDoc presentational component
@@ -63,7 +63,7 @@ export default function SourceDoc({
 
     return (
         <Box data-testid="source-doc-container">
-            <ErrorAlert message={error} />
+            <Alert type="error" message={error} />
             {!isEditing ? (
                 <Box
                     css={{

@@ -6,8 +6,8 @@ import { HiQuestionMarkCircle } from 'react-icons/hi2';
  */
 import React, { useState, useCallback } from 'react';
 import { Text, Heading, Box } from '@styles';
-import { ErrorAlert } from '@components/ErrorAlert';
-import { Button, Tooltip } from '@components';
+import { Alert } from '@components/Alert';
+import { Button } from '@components';
 import { useExplainHandler } from './hooks/useExplainHandler';
 import { ChunkType } from '@mtypes/documents';
 
@@ -58,7 +58,7 @@ export const WordsExplanationTool = React.memo((props: ExplanationToolProps) => 
                     {explanation?.explanation_in_context && (
                         <Text css={{ fontSize: '1rem' }}>{explanation.explanation_in_context}</Text>
                     )}
-                    <ErrorAlert message={error} />
+                    <Alert type="error" message={error} />
                 </Box>
             )}
         </>

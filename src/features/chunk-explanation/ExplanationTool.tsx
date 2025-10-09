@@ -6,7 +6,7 @@ import { HiOutlineSparkles } from 'react-icons/hi2';
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { Box, Text } from '@styles';
-import { ErrorAlert } from '@components/ErrorAlert';
+import { Alert } from '@components/Alert';
 
 import { Button, Tooltip } from '@components';
 import type { ChunkType } from '@mtypes/documents';
@@ -67,7 +67,7 @@ export function ExplanationTool({ chunk, isVisible }: ExplanationToolProps) {
             <Box>
                 {explanationText ? <Text>{explanationText}</Text> : <Text css={{ textAlign: 'right', color: '$colors$subtle' }}>No explanation yet.</Text>}
             </Box>
-            <ErrorAlert message={error} />
+            <Alert type="error" message={error} />
         </Box>
     );
 }

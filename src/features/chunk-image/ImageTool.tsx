@@ -5,7 +5,7 @@ import { HiOutlineSparkles } from 'react-icons/hi2';
  */
 import React, { useState } from 'react';
 import { Box, Text, Column, TagRoot as Badge, Textarea } from '@styles';
-import { ErrorAlert } from '@components/ErrorAlert';
+import { Alert } from '@components/Alert';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { generateImage } from '@services/aiService';
 import { queryKeys } from '@services/queryKeys';
@@ -141,7 +141,7 @@ function GenerateImageDialog({ chunk }: { chunk: ChunkType }) {
                 )}
 
                 {mutation.isError && (
-                    <ErrorAlert message={String((mutation.error as Error)?.message ?? 'Failed to generate image')} />
+                    <Alert type="error" message={String((mutation.error as Error)?.message ?? 'Failed to generate image')} />
                 )}
 
                 <Button

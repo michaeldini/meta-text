@@ -3,7 +3,7 @@ import { HiArrowDownTray } from 'react-icons/hi2';
 import * as React from 'react';
 // UI (migrated from Chakra -> Stitches)
 import { Heading, Column, Box } from '@styles';
-import { ErrorAlert } from '@components/ErrorAlert';
+import { Alert } from '@components/Alert';
 import SourceDocFilePicker from './SourceDocFilePicker';
 
 // Hook
@@ -16,7 +16,7 @@ export function SourceDocUploadForm(): React.ReactElement {
     return (
         <Box variant="homepageSection">
             <Heading>Upload</Heading>
-            <ErrorAlert message={error} title="Upload failed" data-testid="upload-error" />
+            <Alert message={error} title="Upload failed" data-testid="upload-error" />
             <form onSubmit={handleSubmit} aria-busy={isPending}>
                 <Column>
                     <SourceDocFilePicker

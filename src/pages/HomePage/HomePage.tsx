@@ -12,7 +12,7 @@ import { useSourceDocuments, useMetatexts, useDeleteMetatext, useDeleteSourceDoc
 import { Box, Row, Link } from '@styles';
 import MetatextCreateForm from '@pages/HomePage/components/MetatextCreateForm';
 import { SearchableTable, SourceDocUploadForm } from '@pages/HomePage/components';
-
+import Alert from '@components/Alert';
 function HomePage(): ReactElement {
     // Fetch source documents and metatexts
     const sourceDocsQuery = useSourceDocuments();
@@ -20,6 +20,7 @@ function HomePage(): ReactElement {
 
     return (
         <Box center>
+            <Alert message="test" type="warning" autoDismiss />
             {/* delete this when it is no longer amusing */}
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="128" height="128" aria-label="Monoline vehicle icon">
                 <g stroke="#de0f0fff" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
