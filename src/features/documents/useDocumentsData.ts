@@ -26,12 +26,6 @@ import type {
     MetatextDetail
 } from '@mtypes/documents';
 import { getErrorMessage } from '@utils/error';
-import { HTTPError } from 'ky';
-
-
-
-
-// Source Document Queries & Mutations
 
 export function useSourceDocuments() {
     return useSuspenseQuery<SourceDocumentSummary[]>({
@@ -40,15 +34,7 @@ export function useSourceDocuments() {
             try {
                 return await fetchSourceDocuments();
             } catch (err) {
-                if (err instanceof HTTPError) {
-                    const status = err.response.status;
-                    // Differentiate common API errors for upstream UI handling
-                    if (status === 404) throw new Error('No source documents found.');
-                    if (status === 400) throw new Error('Invalid request.');
-                    if (status === 422) throw new Error('Invalid query parameters.');
-                    throw new Error('Failed to load source documents.');
-                    throw err;
-                }
+                // Service layer maps HTTP errors to friendly messages. Wrap unexpected errors.
                 const msg = getErrorMessage(err, 'Failed to load source documents.');
                 throw new Error(msg);
             }
@@ -68,13 +54,6 @@ export function useSourceDocumentDetail(id?: number | null) {
             try {
                 return await fetchSourceDocument(id);
             } catch (err) {
-                if (err instanceof HTTPError) {
-                    const status = err.response.status;
-                    if (status === 404) throw new Error('Document not found.');
-                    if (status === 400) throw new Error('Invalid request.');
-                    if (status === 422) throw new Error('Invalid document id.');
-                    throw new Error('Failed to load document.');
-                }
                 const msg = getErrorMessage(err, 'Failed to load document.');
                 throw new Error(msg);
             }
@@ -85,6 +64,7 @@ export function useSourceDocumentDetail(id?: number | null) {
     });
 
     // Invalidate function for this query
+    // Consumed by SourceDocInfo.tsx to allow manual refresh of data after generating source doc info.
     const invalidate = React.useCallback(() => {
         queryClient.invalidateQueries({ queryKey: ['sourceDocumentDetail', id] });
     }, [queryClient, id]);
@@ -125,13 +105,6 @@ export function useMetatexts() {
             try {
                 return await fetchMetatexts();
             } catch (err) {
-                if (err instanceof HTTPError) {
-                    const status = err.response.status;
-                    if (status === 404) throw new Error('No metatexts found.');
-                    if (status === 400) throw new Error('Invalid request.');
-                    if (status === 422) throw new Error('Invalid query parameters.');
-                    throw new Error('Failed to load metatexts.');
-                }
                 const msg = getErrorMessage(err, 'Failed to load metatexts.');
                 throw new Error(msg);
             }
@@ -150,13 +123,6 @@ export function useMetatextDetail(id: number | null) {
             try {
                 return await fetchMetatext(id);
             } catch (err) {
-                if (err instanceof HTTPError) {
-                    const status = err.response.status;
-                    if (status === 404) throw new Error('Metatext not found.');
-                    if (status === 400) throw new Error('Invalid request.');
-                    if (status === 422) throw new Error('Invalid metatext id.');
-                    throw new Error('Failed to load metatext.');
-                }
                 const msg = getErrorMessage(err, 'Failed to load metatext.');
                 throw new Error(msg);
             }
